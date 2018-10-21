@@ -1,14 +1,6 @@
-var HERE = `
-[1,2,3]
-map *2
-map *2
-map *2
-filter ==16`
+var DATA = `[1,2,3]`
+var LOGICS = `map*2|filter==4|map*3`
+var PARSABLELOGIC = LOGICS.split('|').map(v=>v.replace(/(map|filter)+/g,".$&(v=>v").replace(/$/g,")")).join('')
 
-var REPLACEDHERE = HERE.replace(/ /gm,"(v=>v").replace(/map/gm,".map").replace(/filter/gm,".filter").replace(/^\..*$/g,")").replace(/$/g,")")
-var SPLITED = REPLACEDHERE.split(/\n/)
-var MIDDLE = SPLITED.filter(v=>v).filter(v=>v.match(/[^)]$/)).filter(v=>v.match(/=>/)).map(v=>v+")").join('')
-var CODE = SPLITED[1]+MIDDLE+SPLITED.slice(-1)[0]
-
-document.write(CODE)
+document.write( CODE=DATA+PARSABLELOGIC )
 document.write( Function('"use strict";return (' + CODE + ')')() )
