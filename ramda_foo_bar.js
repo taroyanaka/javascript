@@ -30,3 +30,15 @@ document.write( R.inc(42) ) //=> 43
 document.write( " R.pipe " )
 var f = R.pipe(Math.pow, R.negate, R.inc);
 document.write( f(10, 3) ) // -(10^3) + 1
+
+document.write( " prop " )
+var OBJ = {"a":"A","b":"B"}
+document.write( R.prop('a', OBJ) )
+document.write( " assoc " )
+document.write( R.prop('c', R.assoc('c', 3, OBJ ) ) )
+
+document.write( " lensProp " )
+var xLens = R.lensProp('x');
+document.write( R.view(xLens, {x: 1, y: 2}) )           //=> 1
+document.write( JSON.stringify(　R.set(xLens, 4, {x: 1, y: 2}) )　)          //=> {x: 4, y: 2}
+document.write( JSON.stringify(　R.over(xLens, R.negate, {x: 1, y: 2}) ) ) //=> {x: -1, y: 2}
