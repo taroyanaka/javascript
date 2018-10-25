@@ -4,8 +4,12 @@
 </head>  
 
 <body>  
+<a href="https://dionyziz.github.io/stream.js-website/">stream.js</a>
+<a href="https://ramdajs.com/docs/">ramda.js</a>
 <p>% browser-sync start --server --files='*.*'</p>
+
 <script src="stream.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
 
 <script>
 const dw = document.write.bind(document);
@@ -36,6 +40,13 @@ function f (x) {
 var s = Stream.range(10, 15); // 10, 11, 12, 13, 14, 15
 var doubled = s.map(f);
 doubled.print(); 
+
+
+// ramda.js
+dw("ramda.js");
+dw(R.keys({a: 1, b: 2, c: 3})); //=> ['a', 'b', 'c']
+
+
 
 </script>
 
