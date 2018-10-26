@@ -17,9 +17,11 @@
       <li>on js?</li>
     </ol>
     <p> <img src="./crimson.png" alt="" style="width: 72px; height: 40px;"> </p>
-    <textarea name="foo" cols="10" rows="10" placeholder="this is textarea" maxlength="100000"
+    <p> <textarea name="foo" cols="10" rows="10" placeholder="this is textarea"
+maxlength="100000"
 autofocus="autofocus"
-wrap="hard"></textarea><br>
+wrap="hard"></textarea></p>
+    <br>
     <p>
       <script src="stream.js"></script>
       <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
@@ -61,6 +63,12 @@ dw(R.keys({
     b: 2,
     c: 3
 })); //=> ['a', 'b', 'c']
+        
+var requestURL = 'https://firestore.googleapis.com/v1beta1/projects/taro-fe94c/databases/(default)/documents/cities';
+var request = new XMLHttpRequest();
+var foo = request.open('GET', requestURL);
+
+        
     </script> </p>
   </body>
 </html>
