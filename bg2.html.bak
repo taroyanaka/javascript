@@ -29,6 +29,6 @@ dw( s.head() );   // => 10
 dw( s.item(0) );  // exactly equivalent to the line above
 dw( s.item(1) );  // => 20
 dw( s.item(2) );  // => 30
-    </script>script>
+    </script>
   </body>
 </html>
