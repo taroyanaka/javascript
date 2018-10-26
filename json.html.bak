@@ -8,10 +8,9 @@
   const URL = 'https://firestore.googleapis.com/v1beta1/projects/taro-fe94c/databases/(default)/documents/cities/LA';
 </script></head>
   <body>
-<div id="foo"></div>
-<script>
-onload=foo=()=>{fetch(URL).then(res=>{return res.json()}).then((txt)=>{DQS('#foo').innerHTML=txt["fields"]["state"]["stringValue"]})};
-</script>
+
+<div id="foo"></div><script>onload=foo=()=>{fetch(URL).then(res=>{return res.json()}).then((txt)=>{DQS('#foo').innerHTML=txt["fields"]["state"]["stringValue"]})};</script>
+    
     <h3>fetchテスト</h3>
     <input id="test" value="テスト" onclick="test_click()" type="button">
     <div id="result"></div>
