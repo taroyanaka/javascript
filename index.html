@@ -8,6 +8,19 @@
 <a href="https://ramdajs.com/docs/">ramda.js</a>
 <p>% browser-sync start --server --files='*.*'</p>
 
+
+
+
+
+
+<input id="loadFile" type="file" multiple><br>
+<textarea id="info"></textarea>
+
+
+
+
+
+
 <script src="stream.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
 
@@ -48,9 +61,30 @@ dw(R.keys({a: 1, b: 2, c: 3})); //=> ['a', 'b', 'c']
 
 
 
+
+
+
+$("#loadFile").onchange = function(evt){
+    var file = evt.target.files[0];
+    if(!file.type.match(/text/)){
+        alert('テキストファイルを' + '選んで下さい');
+        return;
+}
+ 
+var reader = new FileReader();
+reader.onload = function(evt) {
+    $("#info").value = evt.target.result;
+}
+ 
+reader.readAsText(file, "Shift_JIS");
+}
+ 
+function $(id) {
+    return document.querySelector(id);
+}
+
+
 </script>
-
-
 
 </body> 
 </html> 
