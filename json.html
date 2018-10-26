@@ -13,7 +13,9 @@
 <body>
 
 <div id="foo"></div>
-<script>onload=foo=()=>{fetch(URL).then(res=>{return res.json()}).then((txt)=>{DQS('#foo').innerHTML=txt["fields"]["state"]["stringValue"]})};</script>
+<script>
+onload=foo=()=>{fetch(URL).then(res=>{return res.json()}).then((txt)=>{DQS('#foo').innerHTML=txt["fields"]["state"]["stringValue"]})};
+</script>
 
     
   <h3>fetchテスト</h3>
