@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>bg2.html</title>
+  </head>
+  <body>
+    <p style="text-align: left;"><br>
+    </p>
+    <ol style="text-align: left;">
+      <li>foo</li>
+      <li>bar</li>
+      <li>baz</li>
+      <li>blue is not my mood</li>
+    </ol>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <br>
+    <script src="stream.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
+
+<script>
+const dw = document.write.bind(document);
+var s = Stream.make(10, 20, 30); // s is now a stream containing 10, 20, and 30
+dw( s.length() ); // => 3
+dw( s.head() );   // => 10
+dw( s.item(0) );  // exactly equivalent to the line above
+dw( s.item(1) );  // => 20
+dw( s.item(2) );  // => 30
+    </script>
+  </body>
+</html>
