@@ -67,7 +67,7 @@ dw(R.keys({
 var requestURL = 'https://firestore.googleapis.com/v1beta1/projects/taro-fe94c/databases/(default)/documents/cities';
 var request = new XMLHttpRequest();
 var foo = request.open('GET', requestURL);
-var hoge = 'hogehoge';
+
         
     </script> </p>
   </body>

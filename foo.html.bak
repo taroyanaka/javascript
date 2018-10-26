@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>Sample</title>
+<script type='text/javascript'>
+function test_click() {
+    const url = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
+    fetch(url).then(function(response) {
+        return response.text();
+    }).then(function(text) {
+        var result = document.querySelector('#result');
+        result.innerHTML = text;
+    });
+};
+</script>
+</head>
+<body>
+    <h3>fetchテスト</h3>
+    <input type="button" id="test" value="テスト" onclick="test_click()">
+    <div id="result">
+</body>
+</html>
