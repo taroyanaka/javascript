@@ -1,50 +1,37 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>Sample</title>
-  </head>
-      <script type="text/javascript">
-const DQS = document.querySelector.bind(document);
-const URL = 'https://firestore.googleapis.com/v1beta1/projects/taro-fe94c/databases/(default)/documents/cities/LA';
-      </script>
-  <body>
 
-<div id="foo"></div>
-<script>onload=foo=()=>{fetch(URL).then(res=>{return res.json()}).then((text)=>{DQS('#foo').innerHTML=text["fields"]["state"]["stringValue"]})};</script>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>Sample</title>
+</head>
+<script type="text/javascript">
+  const DQS = document.querySelector.bind(document);
+  const URL = 'https://firestore.googleapis.com/v1beta1/projects/taro-fe94c/databases/(default)/documents/cities/LA';
+</script>
+
+<body>
+
+	<div id="foo"></div>
+	<script>onload=foo=()=>{fetch(URL).then(res=>{return res.json()}).then((txt)=>{DQS('#foo').innerHTML=txt["fields"]["state"]["stringValue"]})};</script>
 
     
-        <h3>fetchテスト</h3>
-    <input id="test" value="テスト" onclick="test_click()" type="button">
-    <div id="result"></div>
+  <h3>fetchテスト</h3>
+  <input id="test" value="テスト" onclick="test_click()" type="button">
+  <div id="result"></div>
 
-
-      <script type="text/javascript">
-function test_click() {
+  <script type="text/javascript">
+    function test_click() {
       const url = 'https://firestore.googleapis.com/v1beta1/projects/taro-fe94c/databases/(default)/documents/cities/LA';
-    fetch(url).then(function(response) {
+      fetch(url).then(function(response) {
         return response.json();
-    }).then(function(text) {
+      }).then(function(text) {
         var result = document.querySelector('#result');
         result.innerHTML = text["fields"]["state"]["stringValue"];
-    });
-};
+      });
+    };
+  </script>
 
+</body>
 
-//onload = foo = () => {
-  //fetch(URL).then(res => {
-    //return res.json();
-  //}).then((text) => {
-    //DQS('#foo').innerHTML = text["fields"]["state"]["stringValue"];
-  //});
-//};
-      
-      
-      
-//onload = foo = () => {  fetch(URL).then(res => {    return res.json()  }).then((text) => {    DQS('#foo').innerHTML = text["fields"]["state"]["stringValue"]  })}; 
-//onload=foo=()=>{fetch(URL).then(res=>{return res.json()}).then((text)=>{DQS('#foo').innerHTML=text["fields"]["state"]["stringValue"]})};
-    
-    </script>
-
-  </body>
 </html>
