@@ -7,6 +7,8 @@
   <body>
     <h3>fetchテスト</h3>
     <div id="foo"></div>
+<script>onload=foo=()=>{fetch(URL).then(res=>{return res.json()}).then((text)=>{DQS('#foo').innerHTML=text["fields"]["state"]["stringValue"]})};
+</script>
     <input id="test" value="テスト" onclick="test_click()" type="button">
     <div id="result"></div>
 
@@ -36,7 +38,7 @@ function test_click() {
       
       
 //onload = foo = () => {  fetch(URL).then(res => {    return res.json()  }).then((text) => {    DQS('#foo').innerHTML = text["fields"]["state"]["stringValue"]  })}; 
-onload=foo=()=>{fetch(URL).then(res=>{return res.json()}).then((text)=>{DQS('#foo').innerHTML=text["fields"]["state"]["stringValue"]})};
+//onload=foo=()=>{fetch(URL).then(res=>{return res.json()}).then((text)=>{DQS('#foo').innerHTML=text["fields"]["state"]["stringValue"]})};
     
     </script>
 
