@@ -7,10 +7,10 @@
 function test_click() {
     const url = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
     fetch(url).then(function(response) {
-        return response.text();
+        return response.json();
     }).then(function(text) {
         var result = document.querySelector('#result');
-        result.innerHTML = text;
+        result.innerHTML = text["squadName"];
     });
 };
 </script>

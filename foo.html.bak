@@ -10,7 +10,7 @@ function test_click() {
         return response.text();
     }).then(function(text) {
         var result = document.querySelector('#result');
-        result.innerHTML = text;
+        result.innerHTML = text["squadName"];
     });
 };
 </script>

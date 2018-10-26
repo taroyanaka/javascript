@@ -64,9 +64,6 @@ dw(R.keys({
     c: 3
 })); //=> ['a', 'b', 'c']
         
-var requestURL = 'https://firestore.googleapis.com/v1beta1/projects/taro-fe94c/databases/(default)/documents/cities';
-var request = new XMLHttpRequest();
-var foo = request.open('GET', requestURL);
 
         
     </script> </p>
