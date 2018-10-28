@@ -1,0 +1,3 @@
+// stop two times...
+function* pages(from, to) {while (from <= to) yield from++};
+for (var num of pages(1,100)){document.querySelector('#content > div > span > div > div.App__body > * > div > main > div > div > div > div+div > button+button+button+button').click()}
