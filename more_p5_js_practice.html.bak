@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Creative Coding</title>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.min.js"></script>
+  <script src="sketch.js"></script>
+  <script>
+  
+function setup() {
+  createCanvas(200, 200);
+  background(0);
+  noStroke();
+  fill(255);
+
+  const size = 5;
+
+  ellipse(50, 50, size, size);
+  ellipse(100, 50, size, size);
+  ellipse(150, 50, size, size);
+
+  ellipse(50, 100, size, size);
+  ellipse(100, 100, size, size);
+  ellipse(150, 100, size, size);
+
+  ellipse(50, 150, size, size);
+  ellipse(100, 150, size, size);
+  ellipse(150, 150, size, size);
+}
+
+
+  
+  </script>
+</body>
+</html>
