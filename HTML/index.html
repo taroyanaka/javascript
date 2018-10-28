@@ -11,8 +11,6 @@
 
 
 
-
-
 <input id="loadFile" type="file" multiple><br>
 <textarea id="info"></textarea>
 
@@ -21,10 +19,12 @@
 
 
 
-<script src="stream.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
+<script src="../stream.js"></script>
+<script src="../ramda.min.js"></script>
+<!--<script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>-->
 
 <script>
+
 const dw = document.write.bind(document);
 var s = Stream.make(10, 20, 30); // s is now a stream containing 10, 20, and 30
 dw( s.length() ); // => 3
