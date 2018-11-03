@@ -59,6 +59,13 @@ dw(R.pipe(R.reverse,R.unnest,R.unnest,R.sort(diff),R.reverse)([1,2,[10,20,[100,2
 dw(R.pluck(0)(R.toPairs({a:1,b:2,c:3}))); //=>["a", "b", "c"]
 dw(R.pluck(1)(R.toPairs({a:1,b:2,c:3}))); //=> [1, 2, 3]
 
+// https://github.com/ramda/ramda/wiki/Cookbook
+const mapKeys = R.curry((fn, obj) =>
+  R.fromPairs(R.map(R.adjust(fn, 0), R.toPairs(obj))));
+const mapkeys = mapKeys(R.toUpper, { a: 1, b: 2, c: 3 });
+// => { A: 1, B: 2, C: 3 }
+dw(R.toString(mapkeys));
+
 
 dw( R.pipe(R.reverse)(R.pluck(1)(R.toPairs({a:1,b:2,c:3}))) );
 // => [3, 2, 1]
@@ -76,22 +83,19 @@ dw( R.pipe(R.toPairs,R.pluck(0),R.map(R.toUpper),R.join(''))({a:1,b:2,c:3}) );
 // => "ABC"
 dw( R.pipe(R.values,R.product)({a:1,b:2,c:3}) );
 // => 6
-dw( R.range(1, 4) )
+dw( R.range(1, 4) );
 // => [1, 2, 3]
-dw( R.product([1, 2, 3]) )
+dw( R.product([1, 2, 3]) );
 // => 6
-dw( R.pipe(R.product)(R.range(1, 4)) )
+dw( R.pipe(R.product)(R.range(1, 4)) );
 // => 6
-dw( R.pipe(R.range(1),R.product)(4) )
+dw( R.pipe(R.range(1),R.product)(4) );
 // => 6
-dw( R.pipe(R.range,R.product)(1,4) )
+dw( R.pipe(R.range,R.product)(1,4) );
 // => 6
 
-const mapKeys = R.curry((fn, obj) =>
-  R.fromPairs(R.map(R.adjust(fn, 0), R.toPairs(obj))));
-const mapkeys = mapKeys(R.toUpper, { a: 1, b: 2, c: 3 });
-// => { A: 1, B: 2, C: 3 }
-dw(R.toString(mapkeys));
+dw( R.pipe(R.keys,R.map(R.toUpper),R.join(''))({a:1,b:2,c:3}) );
+// => "ABC"
 
 
 $("#loadFile").onchange = function(evt) {
