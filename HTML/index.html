@@ -97,6 +97,12 @@ dw( R.pipe(R.range,R.product)(1,4) );
 dw( R.pipe(R.keys,R.map(R.toUpper),R.join(''))({a:1,b:2,c:3}) );
 // => "ABC"
 
+//長方形の面積 https://keisan.casio.jp/exec/system/1161228783
+R.pipe(R.multiply)(10, 20);
+// => 200
+//台形の面積 https://keisan.casio.jp/exec/system/1161228791
+R.pipe(R.add,R.divide(R.__, 2),R.multiply)(2, 4)(3);
+// => 9
 
 $("#loadFile").onchange = function(evt) {
     var file = evt.target.files[0];
