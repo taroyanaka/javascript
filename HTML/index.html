@@ -59,7 +59,12 @@ doubled.print();
 dw("ramda.js");
 dw(R.keys({a: 1, b: 2, c: 3})); //=> ['a', 'b', 'c']
 
-
+var diff = function(a, b) { return a - b; };
+dw(R.prop('x', {x: 100})); //=> 100
+dw(R.pipe(R.reverse,R.unnest,R.unnest,R.sort(diff))([1,2,3,[10,20,[100,200]]]));
+dw(R.pipe(R.reverse,R.unnest,R.unnest,R.sort(diff),R.reverse)([1,2,[10,20,[100,200]]]));
+dw(R.pluck(0)(R.toPairs({a:1,b:2,c:3}))); //=>["a", "b", "c"]
+dw(R.pluck(1)(R.toPairs({a:1,b:2,c:3}))); //=> [1, 2, 3]
 
 
 
