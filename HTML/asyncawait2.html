@@ -22,11 +22,18 @@
             // }
         })
 
+        // promiseExample().then((JP) => {
+        //     console.log(`成功: ${JP} ${EN}`)
+        //     console.log(`${R.pipe(R.zip)(JP, EN)}`)
+        // }).catch((error) => {
+        //     console.log(`失敗: ${error}`)
+        // })
+
         promiseExample().then((JP) => {
-            console.log(`成功: ${JP} ${EN}`)
-            console.log(`${R.pipe(R.zip)(JP, EN)}`)
+            document.write(`成功: ${JP} ${EN}`)
+            document.write(`${R.pipe(R.zip)(JP, EN)}`)
         }).catch((error) => {
-            console.log(`失敗: ${error}`)
+            document.write(`失敗: ${error}`)
         })
         // =>   成功: success
     </script>
