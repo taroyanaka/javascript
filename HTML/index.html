@@ -127,7 +127,7 @@
 
     EN = ["me", "you"];
     JP = [];
-    hoge = [];
+    TRNS = [];
     EN.forEach(v => {
       fetch(`https://script.google.com/macros/s/AKfycbyTWiXeDZaIkMRXS5S2unsIuVc6ybjGuQ0HVnkhmBj7EaAfZfuO/exec?text=${v}&source=en&target=ja`)
         .then(res => {
@@ -145,7 +145,7 @@
     <p id="text">クリック</p>
   </div>
   <script>    document.getElementById("text-button").onclick = function () {
-      document.getElementById("text").innerHTML = `${R.pipe(R.zip)(JP, EN)[0][0]}`;
+      document.getElementById("text").innerHTML = `${R.pipe(R.zip)(JP, EN)}`;
     };
   </script>
 
