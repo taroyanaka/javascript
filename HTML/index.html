@@ -125,83 +125,28 @@
     }
 
 
-
-
-
-
-
-
-    // var foo(bar).then((bar) => {
-    // var EN = ["me", "you"]
-    // var JP = []
-    // var jpTrans = []
-    // EN.forEach(v => {
-    //   fetch(`https://script.google.com/macros/s/AKfycbyTWiXeDZaIkMRXS5S2unsIuVc6ybjGuQ0HVnkhmBj7EaAfZfuO/exec?text=${v}&source=en&target=ja`)
-    //     .then(res => {
-    //       return res.text();
-    //     }).then(text => {
-    //       console.log(text);
-    //     });
-    // })
-    // }).then(() => {
-    //   var jpTrans = R.pipe(R.zip)(JP, EN);
-    //   jpTrans
-    // });
-    // foo();
-    // var JP = ["俺", "お前"]
-    // var EN = ["me", "you"]
-    //var jpTrans = []
-    //R.zip([1, 2, 3], ['a', 'b', 'c']); 
-    //var jpTrans = R.pipe(R.zip)([1, 2, 3], ['a', 'b', 'c']);
-
-    function transStack() {
-      return new Promise(resolve => {
-        hoge = R.pipe(R.zip)(JP, EN)
-        console.log(hoge);
-      });
-    }
-
-    function jpTrans() {
-      // return new Promise(resolve => {
-      return jpTransResolve()
-        .catch(e => {
-          EN.forEach(v => {
-            fetch('https://script.google.com/macros/s/AKfycbwK7J2zrpdVBXLaFlreHTXSYCabLuoEiCzuTWKkxjp_flZR86M/exec?text=こんにちわ&source=ja&target=en')
-              .then(res => {
-                return res.text();
-              }).then(text => {
-                console.log(text);
-                JP.push(text); //=> ['tests']
-              });
-          });
-        })
-        .then(v => {
-          hoge = R.pipe(R.zip)(JP, EN)
-          console.log(hoge);
+    EN = ["me", "you"];
+    JP = [];
+    hoge = [];
+    EN.forEach(v => {
+      fetch(`https://script.google.com/macros/s/AKfycbyTWiXeDZaIkMRXS5S2unsIuVc6ybjGuQ0HVnkhmBj7EaAfZfuO/exec?text=${v}&source=en&target=ja`)
+        .then(res => {
+          return res.text();
+        }).then(text => {
+          // console.log(text);
+          JP.push(text); //=> ['tests']
         });
-    }
 
-    async function asyncCall() {
-      EN = ["me", "you"];
-      JP = [];
-      hoge = [];
-      console.log('calling');
-      // var result = await jpTrans();
-      await jpTrans().then();
-      // await transStack();
-      // await transStack();
-      // await console.log(hoge);
-    }
+    });
 
+  </script>
 
-    asyncCall();
-
-
-
-
-
-
-
+  <div id="text-button">
+    <p id="text">クリック</p>
+  </div>
+  <script>    document.getElementById("text-button").onclick = function () {
+      document.getElementById("text").innerHTML = `${R.pipe(R.zip)(JP, EN)[0][0]}`;
+    };
   </script>
 
 </body>
