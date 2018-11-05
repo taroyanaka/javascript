@@ -2,10 +2,11 @@
 <html>
 
 <head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
 </head>
 
 <body>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
+
     <script>
 
         // https://qiita.com/rawHam/items/838eefc80bc35a90e49a
@@ -21,16 +22,46 @@
         async function f1() {
             return new Promise(resolve => {
                 console.log("#1: f1");
+                EN = ["me", "you"];
+                JP = [];
+                // JP = "";
+                TRNS = [];
+                // EN.forEach(v => {
+                // for (v of EN) {
+                fetch(`https://script.google.com/macros/s/AKfycbyTWiXeDZaIkMRXS5S2unsIuVc6ybjGuQ0HVnkhmBj7EaAfZfuO/exec?text=${EN[0]},${EN[1]}&source=en&target=ja`)
+                    .then(res => {
+                        return res.text();
+                    }).then(text => {
+                        JP.push(text);
+                        // JP = text;
+                    });
+
+                // };
+                // JP = JP[0];
+                resolve(JP);
             })
             // return "f1 ==> f2";
         }
         async function f2(passVal) {
-            console.log("#2: f2");
+            return new Promise(resolve => {
+                console.log("#2: f2");
+                // resolve(R.pipe(R.zip)(JP, EN));
+                EN = EN.join('')
+                resolve(EN);
+            });
         }
 
         async function f3(passVal) {
-            console.log("#3: f3");
-            // return Timeout("f3 ==> f4")//, Math.random() * 3000);
+            return new Promise(resolve => {
+                console.log("#3: f3");
+                // return Timeout("f3 ==> f4")//, Math.random() * 3000);
+                // resolve(JP);
+                // resolve(`${R.pipe(R.zip)(JP, EN)}`);
+                RES = JP[0] + EN
+                resolve(RES);
+                // resolve(EN);
+            });
+
         }
 
         async function f4(passVal) {

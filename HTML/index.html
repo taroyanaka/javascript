@@ -128,7 +128,8 @@
     EN = ["me", "you"];
     JP = [];
     TRNS = [];
-    EN.forEach(v => {
+    // EN.forEach(v => {
+    for (v of EN) {
       fetch(`https://script.google.com/macros/s/AKfycbyTWiXeDZaIkMRXS5S2unsIuVc6ybjGuQ0HVnkhmBj7EaAfZfuO/exec?text=${v}&source=en&target=ja`)
         .then(res => {
           return res.text();
@@ -136,7 +137,7 @@
           JP.push(text);
         });
 
-    });
+    };
 
   </script>
 

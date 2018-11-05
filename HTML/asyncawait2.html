@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
+</head>
+
+<body>
+    <script>
+        const promiseExample = () => new Promise((resolve, reject) => {
+            EN = ["me", "you"];
+            // for (v of EN) {
+            fetch(`https://script.google.com/macros/s/AKfycbyTWiXeDZaIkMRXS5S2unsIuVc6ybjGuQ0HVnkhmBj7EaAfZfuO/exec?text=${EN[0]},${EN[1]}&source=en&target=ja`)
+                // fetch(`https://script.google.com/macros/s/AKfycbyTWiXeDZaIkMRXS5S2unsIuVc6ybjGuQ0HVnkhmBj7EaAfZfuO/exec?text=${v}&source=en&target=ja`)
+                .then(res => {
+                    return res.text();
+                }).then(text => {
+                    return text.split("、");
+                }).then(JP => {
+                    resolve(JP);
+                });
+            // }
+        })
+
+        promiseExample().then((JP) => {
+            console.log(`成功: ${JP} ${EN}`)
+            console.log(`${R.pipe(R.zip)(JP, EN)}`)
+        }).catch((error) => {
+            console.log(`失敗: ${error}`)
+        })
+        // =>   成功: success
+    </script>
+
+
+
+</body>
+
+</html>
