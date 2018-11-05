@@ -1,129 +1,209 @@
-<!DOCTYPE html>  
-<html>  
-<head>  
-</head>  
+<!DOCTYPE html>
+<html>
 
-<body>  
-<a href="https://dionyziz.github.io/stream.js-website/">stream.js</a>
-<a href="https://ramdajs.com/docs/">ramda.js</a>
-<!-- <p>% browser-sync start --server --files='*.*'</p> -->
+<head>
+</head>
 
-
-<input id="loadFile" type="file" multiple><br>
-<textarea id="info"></textarea>
-
-<script src="../stream.js"></script>
-<!-- <script src="../ramda.min.js"></script> -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
-
-<script>
-
-const dw = document.write.bind(document);
-var s = Stream.make(10, 20, 30); // s is now a stream containing 10, 20, and 30
-dw( s.length() ); // => 3
-dw( s.head() );   // => 10
-dw( s.item(0) );  // exactly equivalent to the line above
-dw( s.item(1) );  // => 20
-dw( s.item(2) );  // => 30
-
-var naturalNumbers = Stream.range(); // naturalNumbers is now 1, 2, 3, ...
-
-var evenNumbers = naturalNumbers.map(function (x) {
-  return 2 * x; // evenNumbers is now 2, 4, 6, ...
-});
-
-var oddNumbers = naturalNumbers.filter(function (x) {
-  return x % 2 != 0; // oddNumbers is now 1, 3, 5, ...
-});
-
-evenNumbers.take(3).print(); // => 2, 4, 6
-oddNumbers.take(3).print(); // => 1, 3, 5
-
-function f (x) {
-  return 2 * x;
-}
-
-var s = Stream.range(10, 15); // 10, 11, 12, 13, 14, 15
-var doubled = s.map(f);
-doubled.print(); 
+<body>
+  <a href="https://dionyziz.github.io/stream.js-website/">stream.js</a>
+  <a href="https://ramdajs.com/docs/">ramda.js</a>
+  <!-- <p>% browser-sync start --server --files='*.*'</p> -->
 
 
-// ramda.js
-dw("ramda.js");
-dw(R.keys({a: 1, b: 2, c: 3})); //=> ['a', 'b', 'c']
+  <input id="loadFile" type="file" multiple><br>
+  <textarea id="info"></textarea>
 
-var diff = function(a, b) { return a - b; };
-dw(R.prop('x', {x: 100})); //=> 100
-dw(R.pipe(R.reverse,R.unnest,R.unnest,R.sort(diff))([1,2,3,[10,20,[100,200]]]));
-dw(R.pipe(R.reverse,R.unnest,R.unnest,R.sort(diff),R.reverse)([1,2,[10,20,[100,200]]]));
-dw(R.pluck(0)(R.toPairs({a:1,b:2,c:3}))); //=>["a", "b", "c"]
-dw(R.pluck(1)(R.toPairs({a:1,b:2,c:3}))); //=> [1, 2, 3]
+  <script src="../stream.js"></script>
+  <!-- <script src="../ramda.min.js"></script> -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
 
-// https://github.com/ramda/ramda/wiki/Cookbook
-const mapKeys = R.curry((fn, obj) =>
-  R.fromPairs(R.map(R.adjust(fn, 0), R.toPairs(obj))));
-const mapkeys = mapKeys(R.toUpper, { a: 1, b: 2, c: 3 });
-// => { A: 1, B: 2, C: 3 }
-dw(R.toString(mapkeys));
+  <script>
+
+    const dw = document.write.bind(document);
+    var s = Stream.make(10, 20, 30); // s is now a stream containing 10, 20, and 30
+    dw(s.length()); // => 3
+    dw(s.head());   // => 10
+    dw(s.item(0));  // exactly equivalent to the line above
+    dw(s.item(1));  // => 20
+    dw(s.item(2));  // => 30
+
+    var naturalNumbers = Stream.range(); // naturalNumbers is now 1, 2, 3, ...
+
+    var evenNumbers = naturalNumbers.map(function (x) {
+      return 2 * x; // evenNumbers is now 2, 4, 6, ...
+    });
+
+    var oddNumbers = naturalNumbers.filter(function (x) {
+      return x % 2 != 0; // oddNumbers is now 1, 3, 5, ...
+    });
+
+    evenNumbers.take(3).print(); // => 2, 4, 6
+    oddNumbers.take(3).print(); // => 1, 3, 5
+
+    function f(x) {
+      return 2 * x;
+    }
+
+    var s = Stream.range(10, 15); // 10, 11, 12, 13, 14, 15
+    var doubled = s.map(f);
+    doubled.print();
 
 
-dw( R.pipe(R.reverse)(R.pluck(1)(R.toPairs({a:1,b:2,c:3}))) );
-// => [3, 2, 1]
-var abc = {a:1,b:2,c:3};
-dw( R.pipe(R.toPairs,R.pluck(1),R.reverse)(abc) );
-// => [3, 2, 1]
-dw( R.pipe(R.toPairs,R.pluck(1),R.reverse)({a:1,b:2,c:3}) );
-// => [3, 2, 1]
-dw( R.pipe(R.toPairs,R.pluck(0))({a:1,b:2,c:3}) );
-// => ["a", "b", "c"]
-dw( R.pipe(R.toPairs,R.pluck(0),R.map(R.toUpper))({a:1,b:2,c:3}) )
-// => ["A", "B", "C"]
+    // ramda.js
+    dw("ramda.js");
+    dw(R.keys({ a: 1, b: 2, c: 3 })); //=> ['a', 'b', 'c']
 
-dw( R.pipe(R.toPairs,R.pluck(0),R.map(R.toUpper),R.join(''))({a:1,b:2,c:3}) );
-// => "ABC"
-dw( R.pipe(R.values,R.product)({a:1,b:2,c:3}) );
-// => 6
-dw( R.range(1, 4) );
-// => [1, 2, 3]
-dw( R.product([1, 2, 3]) );
-// => 6
-dw( R.pipe(R.product)(R.range(1, 4)) );
-// => 6
-dw( R.pipe(R.range(1),R.product)(4) );
-// => 6
-dw( R.pipe(R.range,R.product)(1,4) );
-// => 6
+    var diff = function (a, b) { return a - b; };
+    dw(R.prop('x', { x: 100 })); //=> 100
+    dw(R.pipe(R.reverse, R.unnest, R.unnest, R.sort(diff))([1, 2, 3, [10, 20, [100, 200]]]));
+    dw(R.pipe(R.reverse, R.unnest, R.unnest, R.sort(diff), R.reverse)([1, 2, [10, 20, [100, 200]]]));
+    dw(R.pluck(0)(R.toPairs({ a: 1, b: 2, c: 3 }))); //=>["a", "b", "c"]
+    dw(R.pluck(1)(R.toPairs({ a: 1, b: 2, c: 3 }))); //=> [1, 2, 3]
 
-dw( R.pipe(R.keys,R.map(R.toUpper),R.join(''))({a:1,b:2,c:3}) );
-// => "ABC"
+    // https://github.com/ramda/ramda/wiki/Cookbook
+    const mapKeys = R.curry((fn, obj) =>
+      R.fromPairs(R.map(R.adjust(fn, 0), R.toPairs(obj))));
+    const mapkeys = mapKeys(R.toUpper, { a: 1, b: 2, c: 3 });
+    // => { A: 1, B: 2, C: 3 }
+    dw(R.toString(mapkeys));
 
-//長方形の面積 https://keisan.casio.jp/exec/system/1161228783
-R.pipe(R.multiply)(10, 20);
-// => 200
-//台形の面積 https://keisan.casio.jp/exec/system/1161228791
-R.pipe(R.add,R.divide(R.__, 2),R.multiply)(2, 4)(3);
-// => 9
 
-$("#loadFile").onchange = function(evt) {
-    var file = evt.target.files[0];
-    if (!file.type.match(/text/)) {
+    dw(R.pipe(R.reverse)(R.pluck(1)(R.toPairs({ a: 1, b: 2, c: 3 }))));
+    // => [3, 2, 1]
+    var abc = { a: 1, b: 2, c: 3 };
+    dw(R.pipe(R.toPairs, R.pluck(1), R.reverse)(abc));
+    // => [3, 2, 1]
+    dw(R.pipe(R.toPairs, R.pluck(1), R.reverse)({ a: 1, b: 2, c: 3 }));
+    // => [3, 2, 1]
+    dw(R.pipe(R.toPairs, R.pluck(0))({ a: 1, b: 2, c: 3 }));
+    // => ["a", "b", "c"]
+    dw(R.pipe(R.toPairs, R.pluck(0), R.map(R.toUpper))({ a: 1, b: 2, c: 3 }))
+    // => ["A", "B", "C"]
+
+    dw(R.pipe(R.toPairs, R.pluck(0), R.map(R.toUpper), R.join(''))({ a: 1, b: 2, c: 3 }));
+    // => "ABC"
+    dw(R.pipe(R.values, R.product)({ a: 1, b: 2, c: 3 }));
+    // => 6
+    dw(R.range(1, 4));
+    // => [1, 2, 3]
+    dw(R.product([1, 2, 3]));
+    // => 6
+    dw(R.pipe(R.product)(R.range(1, 4)));
+    // => 6
+    dw(R.pipe(R.range(1), R.product)(4));
+    // => 6
+    dw(R.pipe(R.range, R.product)(1, 4));
+    // => 6
+
+    dw(R.pipe(R.keys, R.map(R.toUpper), R.join(''))({ a: 1, b: 2, c: 3 }));
+    // => "ABC"
+
+    //長方形の面積 https://keisan.casio.jp/exec/system/1161228783
+    R.pipe(R.multiply)(10, 20);
+    // => 200
+    //台形の面積 https://keisan.casio.jp/exec/system/1161228791
+    R.pipe(R.add, R.divide(R.__, 2), R.multiply)(2, 4)(3);
+    // => 9
+
+    $("#loadFile").onchange = function (evt) {
+      var file = evt.target.files[0];
+      if (!file.type.match(/text/)) {
         alert('テキストファイルを' + '選んで下さい');
         return;
-    }
+      }
 
-    var reader = new FileReader();
-    reader.onload = function(evt) {
+      var reader = new FileReader();
+      reader.onload = function (evt) {
         $("#info").value = evt.target.result;
+      }
+
+      reader.readAsText(file, "utf-8");
     }
 
-    reader.readAsText(file, "utf-8");
-}
+    function $(id) {
+      return document.querySelector(id);
+    }
 
-function $(id) {
-    return document.querySelector(id);
-}
 
-</script>
 
-</body> 
-</html> 
+
+
+
+
+
+    // var foo(bar).then((bar) => {
+    // var EN = ["me", "you"]
+    // var JP = []
+    // var jpTrans = []
+    // EN.forEach(v => {
+    //   fetch(`https://script.google.com/macros/s/AKfycbyTWiXeDZaIkMRXS5S2unsIuVc6ybjGuQ0HVnkhmBj7EaAfZfuO/exec?text=${v}&source=en&target=ja`)
+    //     .then(res => {
+    //       return res.text();
+    //     }).then(text => {
+    //       console.log(text);
+    //     });
+    // })
+    // }).then(() => {
+    //   var jpTrans = R.pipe(R.zip)(JP, EN);
+    //   jpTrans
+    // });
+    // foo();
+    // var JP = ["俺", "お前"]
+    // var EN = ["me", "you"]
+    //var jpTrans = []
+    //R.zip([1, 2, 3], ['a', 'b', 'c']); 
+    //var jpTrans = R.pipe(R.zip)([1, 2, 3], ['a', 'b', 'c']);
+
+    function transStack() {
+      return new Promise(resolve => {
+        hoge = R.pipe(R.zip)(JP, EN)
+        console.log(hoge);
+      });
+    }
+
+    function jpTrans() {
+      // return new Promise(resolve => {
+      return jpTransResolve()
+        .catch(e => {
+          EN.forEach(v => {
+            fetch('https://script.google.com/macros/s/AKfycbwK7J2zrpdVBXLaFlreHTXSYCabLuoEiCzuTWKkxjp_flZR86M/exec?text=こんにちわ&source=ja&target=en')
+              .then(res => {
+                return res.text();
+              }).then(text => {
+                console.log(text);
+                JP.push(text); //=> ['tests']
+              });
+          });
+        })
+        .then(v => {
+          hoge = R.pipe(R.zip)(JP, EN)
+          console.log(hoge);
+        });
+    }
+
+    async function asyncCall() {
+      EN = ["me", "you"];
+      JP = [];
+      hoge = [];
+      console.log('calling');
+      // var result = await jpTrans();
+      await jpTrans().then();
+      // await transStack();
+      // await transStack();
+      // await console.log(hoge);
+    }
+
+
+    asyncCall();
+
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>
