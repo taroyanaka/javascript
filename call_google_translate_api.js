@@ -5,5 +5,5 @@ fetch('https://script.google.com/macros/s/AKfycbwK7J2zrpdVBXLaFlreHTXSYCabLuoEiC
     .then(function (response) {
         return response.text();
     }).then(function (text) {
-        console.log(text);
+        console.log(text); // hello
     });
