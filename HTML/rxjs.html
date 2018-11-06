@@ -168,19 +168,19 @@
         // }, false);
 
         // ↓ with mouse move
-        // var result = document.getElementById('result');
-        // var source = Rx.Observable.fromEvent(document, 'mousemove');
-        // var subscription = source.subscribe(function (e) {
-        //     result.innerHTML = e.clientX + ', ' + e.clientY;
-        // });
-
-        // ↓ with click
         var result = document.getElementById('result');
-        var sources = document.querySelectorAll('div');
-        var source = Rx.Observable.fromEvent(sources, 'click');
+        var source = Rx.Observable.fromEvent(document, 'mousemove');
         var subscription = source.subscribe(function (e) {
             result.innerHTML = e.clientX + ', ' + e.clientY;
         });
+
+        // ↓ with click
+        // var result = document.getElementById('result');
+        // var sources = document.querySelectorAll('div');
+        // var source = Rx.Observable.fromEvent(sources, 'click');
+        // var subscription = source.subscribe(function (e) {
+        //     result.innerHTML = e.clientX + ', ' + e.clientY;
+        // });
 
 
 
