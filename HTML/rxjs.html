@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style type=”text/css”> .box { position: relative; width: 150px; height: 150px; background:black; cursor: pointer;
+        } </style> <!-- <script src="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js"></script> -->
+    <script src="../rx.all.js"></script>
+    <script type="text/javascript" src="../rx.lite.js"></script>
+    <script type="text/javascript" src="../rx.dom.js"></script>
+
+
+ 
+        </head> <body>
+        <script>
+            // Reference to https://github.com/Reactive-Extensions/RxJS/blob/master/doc/gettingstarted/creating.md
+
+
+            var source = Rx.Observable.create(function (observer) {
+                // Yield a single value and complete
+                observer.onNext(42);
+                observer.onCompleted();
+
+                // Any cleanup logic might go here
+                return function () {
+                    console.log('disposed');
+                }
+            });
+
+            var subscription = source.subscribe(
+                function (x) { console.log('onNext: %s', x); },
+                function (e) { console.log('onError: %s', e); },
+                function () { console.log('onCompleted'); });
+
+            // => onNext: 42
+            // => onCompleted
+
+            subscription.dispose();
+            // => disposed
+
+            // Creates an observable sequence of 5 integers, starting from 1
+            var source = Rx.Observable.range(1, 5);
+
+            // Prints out each item
+            var subscription = source.subscribe(
+                function (x) { console.log('onNext: %s', x); },
+                function (e) { console.log('onError: %s', e); },
+                function () { console.log('onCompleted'); });
+
+            // => onNext: 1
+            // => onNext: 2
+            // => onNext: 3
+            // => onNext: 4
+            // => onNext: 5
+            // => onCompleted
+
+            // var x = Rx.Observable.zip(a, b, function (a1, b1) { return a1 + b1; }).subscribe();
+
+            // Creates an observable sequence of 5 integers, starting from 1
+            var source = Rx.Observable.range(1, 5);
+
+            // Create observer
+            var observer = Rx.Observer.create(
+                function (x) { console.log('onNext: %s', x); },
+                function (e) { console.log('onError: %s', e); },
+                function () { console.log('onCompleted'); });
+
+            // Prints out each item
+            var subscription = source.subscribe(observer);
+
+            // => onNext: 1
+            // => onNext: 2
+            // => onNext: 3
+            // => onNext: 4
+            // => onNext: 5
+            // => onCompleted
+
+
+            var array = [1, 2, 3, 4, 5];
+
+            // Converts an array to an observable sequence
+            var source = Rx.Observable.from(array);
+
+            // Prints out each item
+            var subscription = source.subscribe(
+                function (x) { console.log('onNext: %s', x); },
+                function (e) { console.log('onError: %s', e); },
+                function () { console.log('onCompleted'); });
+
+            // => onNext: 1
+            // => onNext: 2
+            // => onNext: 3
+            // => onNext: 4
+            // => onNext: 5
+            // => onCompleted
+
+            var arrayLike = { length: 5 };
+
+            // Converts an array to an observable sequence
+            var source = Rx.Observable.from(arrayLike, function (v, k) { return k + 1; });
+
+            // Prints out each item
+            var subscription = source.subscribe(
+                function (x) { console.log('onNext: %s', x); },
+                function (e) { console.log('onError: %s', e); },
+                function () { console.log('onCompleted'); });
+
+            // => onNext: 1
+            // => onNext: 2
+            // => onNext: 3
+            // => onNext: 4
+            // => onNext: 5
+            // => onCompleted
+
+
+            var set = new Set([1, 2, 3, 4, 5]);
+
+            // Converts a Set to an observable sequence
+            var source = Rx.Observable.from(set);
+
+            // Prints out each item
+            var subscription = source.subscribe(
+                function (x) { console.log('onNext: %s', x); },
+                function (e) { console.log('onError: %s', e); },
+                function () { console.log('onCompleted'); });
+
+            // => onNext: 1
+            // => onNext: 2
+            // => onNext: 3
+            // => onNext: 4
+            // => onNext: 5
+            // => onCompleted
+
+            var map = new Map([['key1', 1], ['key2', 2]]);
+
+            // Converts a Map to an observable sequence
+            var source = Rx.Observable.from(map);
+
+            // Prints out each item
+            var subscription = source.subscribe(
+                function (x) { console.log('onNext: %s', x); },
+                function (e) { console.log('onError: %s', e); },
+                function () { console.log('onCompleted'); });
+
+        // => onNext: key1, 1
+        // => onNext: key2, 2
+        // => onCompleted
+
+
+
+
+
+        </script>
+
+    <a id="result">foo</a>
+    <div>bar</div>
+
+
+    <input id="textInput" type="text"></input>
+    <ul id="results"></ul>
+
+    <script>
+        // Reference https://github.com/Reactive-Extensions/RxJS/blob/master/doc/gettingstarted/events.md
+
+        // ↓ this is pure js
+        // var result = document.getElementById('result');
+        // document.addEventListener('mousemove', function (e) {
+        //     result.innerHTML = e.clientX + ', ' + e.clientY;
+        // }, false);
+
+        // ↓ with mouse move
+        // var result = document.getElementById('result');
+        // var source = Rx.Observable.fromEvent(document, 'mousemove');
+        // var subscription = source.subscribe(function (e) {
+        //     result.innerHTML = e.clientX + ', ' + e.clientY;
+        // });
+
+        // ↓ with click
+        var result = document.getElementById('result');
+        var sources = document.querySelectorAll('div');
+        var source = Rx.Observable.fromEvent(sources, 'click');
+        var subscription = source.subscribe(function (e) {
+            result.innerHTML = e.clientX + ', ' + e.clientY;
+        });
+
+
+
+
+
+
+        // Reference https://github.com/Reactive-Extensions/RxJS-DOM#getting-started-with-the-html-dom-bindings
+        var textInput = document.querySelector('#textInput');
+        var throttledInput = Rx.DOM.keyup(textInput)
+            .pluck('target', 'value')
+            .filter(function (text) {
+                return text.length > 2;
+            })
+            .debounce(500)
+            .distinctUntilChanged();
+
+        function searchWikipedia(term) {
+            var url = 'http://en.wikipedia.org/w/api.php?action=opensearch&format=json&search='
+                + encodeURIComponent(term) + '&callback=JSONPCallback';
+            return Rx.DOM.jsonpRequest(url);
+        }
+        var suggestions = throttledInput.flatMapLatest(searchWikipedia);
+
+
+        var resultList = document.getElementById('results');
+
+        function clearSelector(element) {
+            while (element.firstChild) {
+                element.removeChild(element.firstChild);
+            }
+        }
+
+        function createLineItem(text) {
+            var li = document.createElement('li');
+            li.innerHTML = text;
+            return li;
+        }
+
+        suggestions.subscribe(
+            function (data) {
+                var results = data.response[1];
+
+                clearSelector(resultList);
+
+                for (var i = 0; i < results.length; i++) {
+                    resultList.appendChild(createLineItem(results[i]));
+                }
+            },
+            function (e) {
+                clearSelector(resultList);
+                resultList.appendChild(createLineItem('Error: ' + e));
+            }
+        );
+    </script>
+
+
+
+    <div class="box" style="position:relative; width:150px; height:150px; background:white; cursor:pointer;">this_is_draggable_text</div>
+    <script>
+        // Reference https://codepen.io/joshblack/pen/zGZZjX
+        const { fromEvent } = Rx.Observable;
+        const target = document.querySelector('.box');
+
+        const mouseup = fromEvent(target, 'mouseup');
+        const mousemove = fromEvent(document, 'mousemove');
+        const mousedown = fromEvent(target, 'mousedown');
+
+        const mousedrag = mousedown.selectMany((md) => {
+            const startX = md.clientX + window.scrollX,
+                startY = md.clientY + window.scrollY,
+                startLeft = parseInt(md.target.style.left, 10) || 0,
+                startTop = parseInt(md.target.style.top, 10) || 0;
+
+            return mousemove.map((mm) => {
+                mm.preventDefault();
+
+                return {
+                    left: startLeft + mm.clientX - startX,
+                    top: startTop + mm.clientY - startY
+                };
+            }).takeUntil(mouseup);
+        });
+
+        var subscription = mousedrag.subscribe((pos) => {
+            target.style.top = pos.top + 'px';
+            target.style.left = pos.left + 'px';
+        });
+    </script>
+
+
+
+</body>
+
+</html>

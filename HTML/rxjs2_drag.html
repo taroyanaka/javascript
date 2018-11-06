@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="../rx.all.js"></script>
+    <script type="text/javascript" src="../rx.lite.js"></script>
+    <script type="text/javascript" src="../rx.dom.js"></script>
+</head>
+
+<body>
+
+    <div class="box" style="position:relative; width:150px; height:150px; background:black; cursor:pointer;"></div>
+    <script>
+        const { fromEvent } = Rx.Observable;
+        const target = document.querySelector('.box');
+
+        const mouseup = fromEvent(target, 'mouseup');
+        const mousemove = fromEvent(document, 'mousemove');
+        const mousedown = fromEvent(target, 'mousedown');
+
+        const mousedrag = mousedown.selectMany((md) => {
+            const startX = md.clientX + window.scrollX,
+                startY = md.clientY + window.scrollY,
+                startLeft = parseInt(md.target.style.left, 10) || 0,
+                startTop = parseInt(md.target.style.top, 10) || 0;
+
+            return mousemove.map((mm) => {
+                mm.preventDefault();
+
+                return {
+                    left: startLeft + mm.clientX - startX,
+                    top: startTop + mm.clientY - startY
+                };
+            }).takeUntil(mouseup);
+        });
+
+        const subscription = mousedrag.subscribe((pos) => {
+            target.style.top = pos.top + 'px';
+            target.style.left = pos.left + 'px';
+        });
+    </script>
+
+
+
+</body>
+
+</html>
