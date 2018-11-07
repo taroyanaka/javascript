@@ -5,7 +5,6 @@
     <style type=”text/css”> .box { position: relative; width: 150px; height: 150px; background:black; cursor: pointer;
         } </style> <!-- <script src="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js"></script> -->
     <script src="../rx.all.js"></script>
-    <script type="text/javascript" src="../rx.lite.js"></script>
     <script type="text/javascript" src="../rx.dom.js"></script>
 
 
@@ -42,7 +41,7 @@
 
             // Prints out each item
             var subscription = source.subscribe(
-                function (x) { console.log('onNext: %s', x); },
+                function (x) { console.log('FOOonNext: %s', x); },
                 function (e) { console.log('onError: %s', e); },
                 function () { console.log('onCompleted'); });
 

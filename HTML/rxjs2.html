@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="../ramda.min.js"></script>
+    <script src="../rx.all.js"></script>
+    <!-- <script type="text/javascript" src="../rx.lite.js"></script> -->
+    <script type="text/javascript" src="../rx.dom.js"></script>
+
+
+
+</head>
+
+<body>
+    <script>
+        // Reference to https://github.com/Reactive-Extensions/RxJS/blob/master/doc/gettingstarted/creating.md
+
+        // var source = Rx.Observable.range(1, 2);
+        var source = Rx.Observable.just(42);
+        // Prints out each item
+        source.subscribe(
+            function (x) { document.write(`FOOonNext: ${x}`); },
+            function (e) { document.write(`onError: ${e}`); },
+            function () { document.write(`onCompleted`); }
+        );
+
+        source.subscribe(
+            function (x) { document.write(`BARonNext: ${R.sum([x, 100])}`); },
+            function (e) { document.write(`onError: ${e}`); },
+            function () { document.write(`onCompleted`); });
+
+
+        var source = Rx.Observable.generate(
+            0,
+            function (x) { return x < 10; },
+            function (x) { return x + 1; },
+            function (x) { return x; }
+        );
+
+        var subscription = source.subscribe(
+            function (x) { document.write(`generateonNext: ${x}`); },
+            function (e) { document.write(`onError: ${e}`); },
+            function () { document.write(`onCompleted`); }
+        );
+
+        var source = Rx.Observable.range(0, 3)
+        // .delay(new Date(Date.now() + 3000));
+
+        // var delay = source.subscribe(
+        var subscription = source.delay(new Date(Date.now() + 3000)).subscribe(
+            function (x) {
+                console.log('Next: %s', x);
+            },
+            function (err) {
+                console.log('Error: %s', err);
+            },
+            function () {
+                console.log('Completed');
+            });
+    </script>
+
+
+
+</body>
+
+</html>
