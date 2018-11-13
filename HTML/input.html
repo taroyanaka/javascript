@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <title>foobarbaz</title>
+    <meta charset="UTF-8">
+    <script>
+
+    </script>
+    <script>
+        function init() {
+            window.document.getElementById("foo").textContent = window.document.forms[0].elements["text"].value;
+        }
+    </script>
+</head>
+
+<body>
+
+    <h2 id="foo">神経衰弱</h2>
+
+    <form name="hoge" action="" method="GET" enctype="text/plain"><input name="hogehoge" value="1" placeholder="abc@gmail.com"
+            type="email"><br>
+        <input name="foo" value="bar" type="text"><br>
+        <button name="button1" value="button1" type="submit" formmethod="get"></button><br>
+    </form>
+    <!-- <button onclick="init()">change</button> -->
+
+
+</body>
+
+</html>
