@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>text load</title>
+</head>
+
+<body>
+    <form>
+    <div>
+        <label for="name">氏名：</label><br />
+        <input id="name" name="name" type="text" size="20" />
+    </div>
+    <div>
+        <label for="profile">プロフィール：</label><br />
+        <textarea id="profile" name="profile" rows="4" cols="30"></textarea>
+    </div>
+    <input id="btn" type="button" value="送信" />
+</form>
+<script>
+let name = document.getElementById('name');
+let profile = document.getElementById('profile');
+document.getElementById('btn').addEventListener('click', function () {
+console.log(name.value);
+//console.log(profile.value);
+console.log(profile.value.split('\n'));
+    promiseExample().then((JP) => {
+        document.write(`成功: ${JP} ${EN}`)
+        document.write(`${R.pipe(R.zip)(JP, EN)}`)
+    }).catch((error) => {
+        document.write(`失敗: ${error}`)
+    })
+}, false);
+
+const promiseExample = () => new Promise((resolve, reject) => {
+    EN = profile.value.split('\n');
+    // for (v of EN) {
+    fetch(`https://script.google.com/macros/s/AKfycbyTWiXeDZaIkMRXS5S2unsIuVc6ybjGuQ0HVnkhmBj7EaAfZfuO/exec?text=${EN[0]}%0A${EN[1]}&source=en&target=ja`)
+        // fetch(`https://script.google.com/macros/s/AKfycbyTWiXeDZaIkMRXS5S2unsIuVc6ybjGuQ0HVnkhmBj7EaAfZfuO/exec?text=${v}&source=en&target=ja`)
+        .then(res => {
+            return res.text();
+        }).then(text => {
+            return text.split("\n");
+        }).then(JP => {
+            resolve(JP);
+        });
+    // }
+})
+
+
+        // =>   成功: success
+
+</script>
+</body>
+
+</html>
