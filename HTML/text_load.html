@@ -1,0 +1,33 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>text load</title>
+</head>
+<body>
+<form>
+  <label for="file">ファイル：</label>
+  <input id="file" name="file" type="file" />
+  <input id="btn" type="button" value="表示" />
+</form>
+<hr />
+<div id="result"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  let file = document.getElementById('file');
+  let result = document.getElementById('result');
+  let reader = new FileReader();
+
+  reader.addEventListener('load', function () {
+    result.innerHTML = reader.result.replace(/(\n|\r)/g, '<br />');
+  }, false);
+  reader.addEventListener('error', function () {
+    document.write('エラー発生：' + reader.error.message);
+  }, false);
+
+  document.getElementById('btn').addEventListener('click', function (e) {
+    reader.readAsText(file.files[0], 'UTF-8');
+  }, false);
+}, false);
+</script>
+</body>
+</html>
