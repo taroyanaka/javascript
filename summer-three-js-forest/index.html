@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Summer. Three.js. Forest.</title>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+
+	<link rel="stylesheet" href="css/style.css">
+
+
+</head>
+
+<body>
+	<!-- from https://codepen.io/kotAndy/pen/yQGZJM -->
+	<script type="x-shader/x-vertex" id="vertexshader">
+	uniform float amplitude;
+	attribute vec3 displacement;
+	attribute vec3 customColor;
+	varying vec3 vColor;
+	void main() {
+		vec3 newPosition = position + amplitude * displacement;
+		vColor = customColor;
+		gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+	}
+</script>
+	<script type="x-shader/x-fragment" id="fragmentshader">
+	uniform vec3 color;
+	uniform float opacity;
+	varying vec3 vColor;
+	void main() {
+		gl_FragColor = vec4( vColor * color, opacity );
+	}
+</script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/TweenMax.min.js'></script>
+	<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/108082/WebGL.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/three.js/98/three.min.js'></script>
+	<script src='https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js'></script>
+
+
+
+	<script src="js/index.js"></script>
+
+
+
+
+</body>
+
+</html>
