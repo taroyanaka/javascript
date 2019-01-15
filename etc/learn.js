@@ -46,10 +46,10 @@ Array.from(foo).forEach(v => { console.log(v) });
 
 const request = require('request');
 const HTMLParser = require('fast-html-parser');
+
 const req = () => {
-    let target = [];
     return new Promise( (resolve, reject) =>{
-        request('https://www.yahoo.co.jp/', (error, response, body) => { //console.log(
+        request('https://www.yahoo.co.jp/', (error, response, body) => {
             resolve(HTMLParser.parse(body).querySelectorAll('a'));
             }
         );
