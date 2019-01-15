@@ -4,19 +4,20 @@
 
 <script type="text/javascript">
 
-    const simpleCrawler = (url = "https://www.yahoo.co.jp/") => {
+    const simpleCrawler = (url = 'https://www.yahoo.co.jp/') => {
         let target = [];
-        fetch(url)
+        fetch(url, {mode: 'cors'})
             .then(res => res.text())
-            .then(text => new DOMParser().parseFromString(text, "text/html"))
+            .then(text => new DOMParser().parseFromString(text, 'text/html'))
             .then(doc => {
                 doc.querySelectorAll('a')
-                    .forEach(aElm => { target.push([aElm.innerText, aElm.href]) })
+                    // .forEach(aElm => { target.push([aElm.innerText, aElm.href]) })
+                                        .forEach(aElm => { aElm.innerText })
             });
         return target
     }
 
-    console.log(simpleCrawler('https://github.com/taroyanaka'));
+    console.log(simpleCrawler());
 
 </script>
 

@@ -1,0 +1,21 @@
+{
+  "name": "withnode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "n"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fast-html-parser": "^1.0.1",
+    "htmlparser2": "^3.10.0",
+    "ramda": "^0.26.1",
+    "request": "^2.88.0"
+  }
+}
