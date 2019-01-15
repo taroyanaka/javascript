@@ -41,10 +41,44 @@ Array.from(foo).forEach(v => { console.log(v) });
 
 
 
-const request = require('request'); let target = [];
+
+
+
+const request = require('request');
 const HTMLParser = require('fast-html-parser');
-request('https://www.yahoo.co.jp/', (error, response, body) => { //console.log(
-    HTMLParser.parse(body)
-        .querySelectorAll('a').forEach(v => { target.push(v.rawAttrs) })
-    //)
-});
+const req = () => {
+    let target = [];
+    return new Promise( (resolve, reject) =>{
+        request('https://www.yahoo.co.jp/', (error, response, body) => { //console.log(
+            resolve(HTMLParser.parse(body).querySelectorAll('a'));
+            }
+        );
+    });
+}
+
+req()
+.then(res =>(
+    res.forEach(v => {
+        console.log(v.rawAttrs)
+    })
+));
+
+
+
+
+
+
+
+
+
+
+const crawler = async () => {
+    return new Promise(resolve => {
+        let target = [];
+
+        resolve(target);
+    })
+    // return target;
+}
+
+crawler().then(res => (console.log(res)));
