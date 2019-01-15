@@ -44,26 +44,33 @@ Array.from(foo).forEach(v => { console.log(v) });
 
 
 
+
+
+
+
+
+
+
+
+
 const request = require('request');
 const HTMLParser = require('fast-html-parser');
 
 const req = () => {
     return new Promise((resolve, reject) => {
         request('https://www.yahoo.co.jp/', (error, response, body) => {
-            resolve(HTMLParser.parse(body).querySelectorAll('a'));
-            }
+            resolve(body);
+        }
         );
     });
 }
 
 req()
-.then(res =>(
-    res.forEach(v => {
-        console.log(v.rawAttrs)
-    })
-));
-
-
+    .then(res => (
+        HTMLParser.parse(res).querySelectorAll('a').forEach(v => {
+            console.log(v.rawAttrs)
+        })
+    ));
 
 
 
