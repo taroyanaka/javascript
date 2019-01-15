@@ -48,7 +48,7 @@ const request = require('request');
 const HTMLParser = require('fast-html-parser');
 
 const req = () => {
-    return new Promise( (resolve, reject) =>{
+    return new Promise((resolve, reject) => {
         request('https://www.yahoo.co.jp/', (error, response, body) => {
             resolve(HTMLParser.parse(body).querySelectorAll('a'));
             }
