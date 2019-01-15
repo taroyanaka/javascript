@@ -1,0 +1,26 @@
+<html>
+<head>
+<title>learn</title>
+
+<script type="text/javascript">
+
+    const simpleCrawler = (url = "https://www.yahoo.co.jp/") => {
+        let target = [];
+        fetch(url)
+            .then(res => res.text())
+            .then(text => new DOMParser().parseFromString(text, "text/html"))
+            .then(doc => {
+                doc.querySelectorAll('a')
+                    .forEach(aElm => { target.push([aElm.innerText, aElm.href]) })
+            });
+        return target
+    }
+
+    console.log(simpleCrawler('https://github.com/taroyanaka'));
+
+</script>
+
+</head>
+<body>
+</body>
+</html>
