@@ -56,20 +56,21 @@ Array.from(foo).forEach(v => { console.log(v) });
 const request = require('request');
 const HTMLParser = require('fast-html-parser');
 
-const req = () => {
+const req = (url = 'https://www.yahoo.co.jp/') => {
     return new Promise((resolve, reject) => {
-        request('https://www.yahoo.co.jp/', (error, response, body) => {
+        request(url, (error, response, body) => {
             resolve(body);
-        }
-        );
+        });
     });
 }
 
-req()
-    .then(res => (
-        HTMLParser.parse(res).querySelectorAll('a').forEach(v => {
-            console.log(v.rawAttrs)
-        })
+req('https://qiita.com/murase/items/908cf31b6776448a5b1d')
+    .then(body => (
+        HTMLParser.parse(body)
+            .querySelectorAll('a')
+            .forEach(element => {
+                console.log(element.rawAttrs)
+            })
     ));
 
 
@@ -89,3 +90,42 @@ const crawler = async () => {
 }
 
 crawler().then(res => (console.log(res)));
+
+
+
+
+
+
+
+
+
+
+
+const request = require('request');
+const HTMLParser = require('fast-html-parser');
+var ary = [];
+
+const httpRequest = (url = 'https://www.yahoo.co.jp/') => {
+    return new Promise((resolve, reject) => {
+        let proxyUrl = process.env.PROXYURL
+        let proxiedRequest = request.defaults({ 'proxy': proxyUrl });
+        // request(url, (error, response, body) => {
+        proxiedRequest.get(url, (error, response, body) => {
+            resolve(body);
+        });
+    });
+}
+
+httpRequest('https://gihyo.jp/')
+    .then(body => {
+        HTMLParser.parse(body)
+            .querySelectorAll('a')
+            .forEach(element => {
+                // console.log(element.rawAttrs)
+                ary.push(element.rawAttrs)
+            })
+        // return ary;
+    })
+    .then(result => {
+        console.log(ary)
+    });
