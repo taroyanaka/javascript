@@ -129,3 +129,59 @@ httpRequest('https://gihyo.jp/')
     .then(result => {
         console.log(ary)
     });
+
+
+
+
+
+
+
+// package.json
+// {
+//     "dependencies": {
+//         "request": "^2.88.0",
+//             "fast-html-parser": "^1.0.1"
+//     }
+// }
+
+
+
+/**
+* Responds to any HTTP request.
+*
+* @param {!express:Request} req HTTP request context.
+* @param {!express:Response} res HTTP response context.
+*/
+
+// using proxy, using environment variable "PROXYURL"
+// reference with https://stackoverflow.com/a/23856484/9740478
+
+const request = require('request');
+const HTMLParser = require('fast-html-parser');
+
+exports.nodeSimpleCrawlerFromJP = (req, res) => {
+    const httpRequest = (url = 'https://www.yahoo.co.jp/') => {
+        return new Promise((resolve, reject) => {
+            let proxyUrl = process.env.PROXYURL
+            let proxiedRequest = request.defaults({ 'proxy': proxyUrl });
+            // request(url, (error, response, body) => {
+            proxiedRequest.get(url, (error, response, body) => {
+                resolve(body);
+            });
+        });
+    }
+
+    var ary = [];
+
+    httpRequest('https://gihyo.jp/')
+        .then(body => {
+            HTMLParser.parse(body)
+                .querySelectorAll('a')
+                .forEach(element => {
+                    ary.push(element.rawAttrs)
+                })
+        })
+        .then(result => {
+            res.status(200).send(ary);
+        });
+};
