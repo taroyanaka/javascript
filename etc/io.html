@@ -10,11 +10,12 @@
         </div>
         <input id="btn" type="button" value="送信" />
     </form>
-    <div id='response'>Character count:</div>
+    <div>Character count:<span id='response'></span></div>
+    <div>Qiita tag count:<span id='qiitaTagCount'></span></div>
 </body>
 <script src="ramda.js"></script>
-<script type="text/javascript" defer>
-    console.log(R.length([1, 2, 3]))
+<script src="tags.js"></script>
+<script type="text/javascript">
     document.getElementById('btn').addEventListener('click', () => {
         document.getElementById('response').textContent = 
             R.pipe(
@@ -22,6 +23,10 @@
                 R.length
             )
             (document.getElementById('txt').value)
+
+        document.getElementById('qiitaTagCount').textContent = 
+            R.view(R.lensProp(document.getElementById('txt').value), tags)
+
     }, false); 
 </script>
 </html>
