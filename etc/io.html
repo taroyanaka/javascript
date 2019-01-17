@@ -10,12 +10,18 @@
         </div>
         <input id="btn" type="button" value="送信" />
     </form>
-    <div id='response'></div>
+    <div id='response'>Character count:</div>
 </body>
-<script type="text/javascript">
-    let txt = document.getElementById('txt');
-    document.getElementById('btn').addEventListener('click', function () {
-        document.getElementById('response').textContent = txt.value;
+<script src="ramda.js"></script>
+<script type="text/javascript" defer>
+    console.log(R.length([1, 2, 3]))
+    document.getElementById('btn').addEventListener('click', () => {
+        document.getElementById('response').textContent = 
+            R.pipe(
+                R.split(''),
+                R.length
+            )
+            (document.getElementById('txt').value)
     }, false); 
 </script>
 </html>

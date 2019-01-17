@@ -9,7 +9,18 @@ describe('ramda.js', () => {
         R.head
       )([3,2,3])
         ,
-        '1'
+        '3'
+    )
+  })
+
+  it("return 3", () => {
+    assert.equal(
+      R.pipe(
+        R.split(''),
+        R.length
+      )('foo')
+      ,
+      3
     )
   })
 
