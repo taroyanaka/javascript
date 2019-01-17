@@ -1,15 +1,21 @@
 <html>
 <head>
-<title>learn</title>
-
-<script type="text/javascript">
-
-
-    console.log(123);
-
-</script>
-
+<title>text IO</title>
 </head>
 <body>
+    <form>
+        <div>
+            <label for="txt">text：</label><br />
+            <textarea id="txt" name="txt" rows="4" cols="30"></textarea>
+        </div>
+        <input id="btn" type="button" value="送信" />
+    </form>
+    <div id='response'></div>
 </body>
+<script type="text/javascript">
+    let txt = document.getElementById('txt');
+    document.getElementById('btn').addEventListener('click', function () {
+        document.getElementById('response').textContent = txt.value;
+    }, false); 
+</script>
 </html>
