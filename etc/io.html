@@ -6,9 +6,11 @@
     <form>
         <div>
             <label for="txt">text：</label><br />
-            <textarea id="txt" name="txt" rows="4" cols="30"></textarea>
+            <!-- <textarea id="txt" name="txt" rows="4" cols="30" minlength="1" maxlength="3"></textarea> -->
+            <input type="text" id="txt" name="txt" size="50" minlength="1" maxlength="100">
+                
         </div>
-        <input id="btn" type="button" value="送信" />
+        <!-- <input id="btn" type="button" value="送信" /> -->
     </form>
     <div>Character count:<span id='response'></span></div>
     <div>Qiita tag count:<span id='qiitaTagCount'></span></div>
@@ -16,7 +18,7 @@
 <script src="ramda.js"></script>
 <script src="tags.js"></script>
 <script type="text/javascript">
-    document.getElementById('btn').addEventListener('click', () => {
+    document.getElementById('txt').addEventListener('input', () => {
         document.getElementById('response').textContent = 
             R.pipe(
                 R.split(''),
