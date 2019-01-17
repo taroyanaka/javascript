@@ -2,9 +2,11 @@
 const request = require('request')
 const HTMLParser = require('fast-html-parser')
 
+
+
 const getElm = targetUrl => {
   'use strict'
-  var ary = []
+  let ary = []
 
   const httpRequest = (url = 'https://www.yahoo.co.jp/') => {
     return new Promise((resolve, reject) => {
@@ -31,4 +33,5 @@ const getElm = targetUrl => {
       console.log(ary)
     })
 }
+
 getElm('https://gist.github.com/taroyanaka')
