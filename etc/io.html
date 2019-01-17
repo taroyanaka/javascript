@@ -5,7 +5,7 @@
 <body>
     <form>
         <div>
-            <label for="txt">text：</label><br />
+            <label for="txt">qiita tag:</label><br />
             <input type="text" id="txt" name="txt" size="50" minlength="1" maxlength="100" value="Python">
         </div>
     </form>
@@ -16,15 +16,15 @@
 <script src="tags.js" defer></script>
 <script type="text/javascript">
     let procedure = () => {
-        document.getElementById('response').textContent = 
-            R.pipe(
-                R.split(''),
-                R.length
-            )
-            (document.getElementById('txt').value)
+        document.getElementById('response').textContent = R.pipe(
+            R.split(''),
+            R.length
+        )(document.getElementById('txt').value)
 
         document.getElementById('qiitaTagCount').textContent = 
-            R.view(R.lensProp(document.getElementById('txt').value), tags)
+            R.view(
+                R.lensProp(document.getElementById('txt').value)
+            , tags)
     }
     document.getElementById('txt').addEventListener('focus', procedure, false);
     document.getElementById('txt').addEventListener('input', procedure, false);
