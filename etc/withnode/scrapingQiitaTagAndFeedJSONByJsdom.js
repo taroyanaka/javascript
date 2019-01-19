@@ -10,15 +10,15 @@
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
 const R = require("ramda");
-// const tag = "Python";
-const tag = req.query['tag'].toString();
 
 exports.scrapingQiitaTagAndFeedJSONByJsdom = (req, res) => {
-    //        res.header('Access-Control-Allow-Origin', "*");
+    // res.header('Access-Control-Allow-Origin', "*");
     // res.header('Access-Control-Allow-Origin', "http://localhost:5500");
     res.header('Access-Control-Allow-Origin', "https://taroyanaka.github.io");
     res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
 
+    // const tag = "Python";
+    const tag = req.query['tag'].toString();
     JSDOM.fromURL(`https://qiita.com/tags/${tag}`).then(dom => {
         // result return [[title, URL][title, URL][title, URL]...]
         let result = [];
@@ -32,9 +32,8 @@ exports.scrapingQiitaTagAndFeedJSONByJsdom = (req, res) => {
         R.forEach(getTitleAndArticle, R.times(R.identity, 20));
         return result;
     })
-    .then(res => {
-        res.send(JSON.stringify(res))
-        // console.log(JSON.stringify(res))
+    .then(result => {
+        res.send(JSON.stringify(result))
+        // console.log(JSON.stringify(result))
     });
-
 };
