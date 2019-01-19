@@ -9,6 +9,9 @@
 
 const jsdom = require("jsdom");
 const { JSDOM } = jsdom;
+const R = require("ramda");
+// const tag = "Python";
+const tag = req.query['tag'].toString();
 
 exports.scrapingQiitaTagAndFeedJSONByJsdom = (req, res) => {
     //        res.header('Access-Control-Allow-Origin', "*");
@@ -16,23 +19,22 @@ exports.scrapingQiitaTagAndFeedJSONByJsdom = (req, res) => {
     res.header('Access-Control-Allow-Origin', "https://taroyanaka.github.io");
     res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
 
-    // const tag = "Python";
-    const tag = req.query['tag'].toString();
-
-    let result = [];
     JSDOM.fromURL(`https://qiita.com/tags/${tag}`).then(dom => {
-        for (let i = 1; i <= 20; i++) {
+        // result return [[title, URL][title, URL][title, URL]...]
+        let result = [];
+        const getTitleAndArticle = x => {
             result.push(
-                [
-                    dom.window.document.querySelector(`body > div.allWrapper > div.p-tagShow > div > div.p-tagShow_main > div.p-tagShow_mainBottom > section > div.tsf-ArticleList_view > article:nth-child(${i}) > div.tsf-ArticleBody > a`).textContent
-                ,
-                    dom.window.document.querySelector(`body > div.allWrapper > div.p-tagShow > div > div.p-tagShow_main > div.p-tagShow_mainBottom > section > div.tsf-ArticleList_view > article:nth-child(${i}) > div.tsf-ArticleBody > a`).href
-                ]
+                [dom.window.document.querySelector(`body > div.allWrapper > div.p-tagShow > div > div.p-tagShow_main > div.p-tagShow_mainBottom > section > div.tsf-ArticleList_view > article:nth-child(${(x + 1).toString()}) > div.tsf-ArticleBody > a`).textContent
+                 ,
+                 dom.window.document.querySelector(`body > div.allWrapper > div.p-tagShow > div > div.p-tagShow_main > div.p-tagShow_mainBottom > section > div.tsf-ArticleList_view > article:nth-child(${(x + 1).toString()}) > div.tsf-ArticleBody > a`).href]
             )
-        }
+        };
+        R.forEach(getTitleAndArticle, R.times(R.identity, 20));
+        return result;
     })
-    .then(v => {
-        res.send(JSON.stringify(result))
+    .then(res => {
+        res.send(JSON.stringify(res))
+        // console.log(JSON.stringify(res))
     });
 
 };
