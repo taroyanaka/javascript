@@ -17,7 +17,9 @@
     "csvtojson": "^2.0.8",
     "fast-html-parser": "^1.0.1",
     "htmlparser2": "^3.10.0",
+    "jsdom": "^13.1.0",
     "mocha": "^5.2.0",
+    "query-selector": "^1.0.9",
     "ramda": "^0.26.1",
     "request": "^2.88.0"
   },

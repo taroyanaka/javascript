@@ -15,15 +15,15 @@
 
 
 
-// const request = require('request');
-// //const HTMLParser = require('fast-html-parser');
-// const HTMLParser = require('htmlparser2');
-// request('https://www.yahoo.co.jp/', (error, response, body) => { 'body:', 
-//         HTMLParser.parse(body)
-//         .querySelectorAll('a')
-// //        .forEach(aElm => { console.log(aElm.textContent) })
-// });
-// [1, 2, 3].forEach(v => { console.log(v) });
+const request = require('request');
+//const HTMLParser = require('fast-html-parser');
+const HTMLParser = require('htmlparser2');
+request('https://www.yahoo.co.jp/', (error, response, body) => { 'body:', 
+        HTMLParser.parse(body)
+        .querySelectorAll('a')
+//        .forEach(aElm => { console.log(aElm.textContent) })
+});
+[1, 2, 3].forEach(v => { console.log(v) });
 
 
 // const request = require('request'); let foo = [];
