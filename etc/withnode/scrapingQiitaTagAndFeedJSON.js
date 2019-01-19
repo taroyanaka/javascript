@@ -1,5 +1,5 @@
 // query sample is
-// https://asia-northeast1-taro-fe94c.cloudfunctions.net/scrapingQiitaTagAndFeedJSON?tag=Python
+// https://foo-bar-baz.cloudfunctions.net/scrapingQiitaTagAndFeedJSON?tag=Python
 
 /**
  * Responds to any HTTP request.
