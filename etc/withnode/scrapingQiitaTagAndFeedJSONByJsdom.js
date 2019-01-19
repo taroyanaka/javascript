@@ -1,4 +1,5 @@
 // query sample is
+// https://area-region-bar-baz.cloudfunctions.net/scrapingQiitaTagAndFeedJSONByJsdom?tag=Python
 
 /**
  * Responds to any HTTP request.
