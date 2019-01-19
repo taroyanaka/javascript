@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "chai": "^4.2.0",
+    "csvtojson": "^2.0.8",
     "fast-html-parser": "^1.0.1",
     "htmlparser2": "^3.10.0",
     "mocha": "^5.2.0",
