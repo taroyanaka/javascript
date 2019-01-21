@@ -10,22 +10,15 @@
             <input type="button" id="list" name="list" value="list">
         </div>
     </form>
-    <!-- <div>Character count:<span id='charCount'></span></div> -->
     <div>Qiita tag count:<span id='qiitaTagCount'></span></div>
     <div>Teratail tag count:<span id='teratailTagCount'></span></div>
-    <ul id='qiitaArticle'>
-    </ul>
+    <ul id='qiitaArticle'></ul>
 </body>
-<script src="ramda.js"></script>
+<script src="ramda.js" defer></script>
 <script src="qiitaTags.js" defer></script>
 <script src="teratailTags.js" defer></script>
 <script type="text/javascript">
     const procedure = () => {
-        // document.getElementById('charCount').textContent = R.pipe(
-        //     R.split(''),
-        //     R.length
-        // )(document.getElementById('txt').value)
-
         document.getElementById('qiitaTagCount').textContent = 
             R.view(
                 R.lensProp(document.getElementById('txt').value)
@@ -36,6 +29,10 @@
                 R.lensProp(document.getElementById('txt').value)
             , teratailTags)
     }
+    document.getElementById('txt').addEventListener('focus', procedure, false);
+    document.getElementById('txt').addEventListener('input', procedure, false);
+
+
     const setTitleAndHref = (titleAndHref) => {
             let a = document.createElement('a'); a.textContent = titleAndHref[0]; a.href = titleAndHref[1];
             let li = document.createElement('li'); li.appendChild(a);
@@ -47,8 +44,6 @@
             R.forEach(setTitleAndHref, JSON.parse(v));
         })
     }
-    document.getElementById('txt').addEventListener('focus', procedure, false);
-    document.getElementById('txt').addEventListener('input', procedure, false);
     document.getElementById('list').addEventListener('click', getTitleAndHref, false);
 </script>
 </html>
