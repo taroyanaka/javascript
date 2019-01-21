@@ -18,7 +18,7 @@
 <script src="qiitaTags.js" defer></script>
 <script src="teratailTags.js" defer></script>
 <script type="text/javascript">
-    const procedure = () => {
+    const tagCount = () => {
         document.getElementById('qiitaTagCount').textContent = 
             R.view(
                 R.lensProp(document.getElementById('txt').value)
@@ -29,8 +29,8 @@
                 R.lensProp(document.getElementById('txt').value)
             , teratailTags)
     }
-    document.getElementById('txt').addEventListener('focus', procedure, false);
-    document.getElementById('txt').addEventListener('input', procedure, false);
+    document.getElementById('txt').addEventListener('focus', tagCount, false);
+    document.getElementById('txt').addEventListener('input', tagCount, false);
 
 
     const setTitleAndHref = (titleAndHref) => {
