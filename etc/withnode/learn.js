@@ -217,3 +217,10 @@ csv({
     })
 
 
+for (let num of range(1, 3)) {
+    Array.from(
+        document.querySelectorAll(`#container > section.boxTagList.data-tag.clearFix > ul > li:nth-child(${num}) > dl > dt > a > span,#container > section.boxTagList.data-tag.clearFix > ul > li:nth-child(${num}) > dl > dd.txtNumber`))
+        .forEach(v => {
+            ary.push([v.textContent.replace(/,/, "").replace(/ 投稿/, "").split('\n') ])
+        })
+}

@@ -1,4 +1,4 @@
-var tags = {
+var qiitaTags = {
 "Python":	23609,
 "JavaScript":	23252,
 "Ruby":	19485,

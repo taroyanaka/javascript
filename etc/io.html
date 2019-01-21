@@ -5,26 +5,46 @@
 <body>
     <form>
         <div>
-            <label for="txt">qiita tag:</label><br />
+            <label for="txt">Tag:</label><br />
             <input type="text" id="txt" name="txt" size="50" minlength="1" maxlength="100" value="Python">
+            <input type="button" id="list" name="list" value="list">
         </div>
     </form>
-    <div>Character count:<span id='response'></span></div>
+    <!-- <div>Character count:<span id='charCount'></span></div> -->
     <div>Qiita tag count:<span id='qiitaTagCount'></span></div>
+    <div>Teratail tag count:<span id='teratailTagCount'></span></div>
+    <ul id='qiitaArticle'>
+    </ul>
 </body>
 <script src="ramda.js"></script>
-<script src="tags.js" defer></script>
+<script src="qiitaTags.js" defer></script>
+<script src="teratailTags.js" defer></script>
 <script type="text/javascript">
-    let procedure = () => {
-        document.getElementById('response').textContent = R.pipe(
-            R.split(''),
-            R.length
-        )(document.getElementById('txt').value)
+    const procedure = () => {
+        // document.getElementById('charCount').textContent = R.pipe(
+        //     R.split(''),
+        //     R.length
+        // )(document.getElementById('txt').value)
 
         document.getElementById('qiitaTagCount').textContent = 
             R.view(
                 R.lensProp(document.getElementById('txt').value)
-            , tags)
+            , qiitaTags)
+        
+        document.getElementById('teratailTagCount').textContent =
+            R.view(
+                R.lensProp(document.getElementById('txt').value)
+            , teratailTags)
+
+        const setTitleAndHref = (titleAndHref) => {
+            let a = document.createElement('a');a.textContent = titleAndHref[0];a.href = titleAndHref[1];
+            let li = document.createElement('li');li.appendChild(a);
+            let ul = document.getElementById('qiitaArticle');ul.appendChild(li);
+        }
+        fetch(`https://asia-northeast1-taro-fe94c.cloudfunctions.net/scrapingQiitaTagAndFeedJSONByJsdom?tag=${document.getElementById('txt').value}`).then(v => { return v.text() }).then(v => {
+            // R.forEach(setTitleAndHref, [['titleFoo','https://www.yahoo.co.jp/'],['titleBar','http://google.co.jp']]);
+            R.forEach( setTitleAndHref, JSON.parse(v) );
+        })
     }
     document.getElementById('txt').addEventListener('focus', procedure, false);
     document.getElementById('txt').addEventListener('input', procedure, false);
