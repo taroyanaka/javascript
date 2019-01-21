@@ -46,10 +46,10 @@
         let ul = document.getElementById('qiitaArticle'); ul.appendChild(li);
     }
     const getTitleAndHref = () => {
-        // fetch(`https://asia-northeast1-taro-fe94c.cloudfunctions.net/scrapingQiitaTagAndFeedJSONByJsdom?tag=${document.getElementById('txt').value}`).then(v => { return v.text() }).then(v => {
+        fetch(`https://asia-northeast1-taro-fe94c.cloudfunctions.net/scrapingQiitaTagAndFeedJSONByJsdom?tag=${document.getElementById('txt').value}`).then(v => { return v.text() }).then(v => {
             // R.forEach(setTitleAndHref, [['titleFoo','https://www.yahoo.co.jp/'],['titleBar','http://google.co.jp']]);
             R.forEach(setTitleAndHref, JSON.parse(v));
-        // })
+        })
     }
     document.getElementById('list').addEventListener('click', getTitleAndHref, false);
 </script>
