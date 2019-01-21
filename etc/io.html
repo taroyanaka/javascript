@@ -12,7 +12,24 @@
     </form>
     <div>Qiita tag count:<span id='qiitaTagCount'></span></div>
     <div>Teratail tag count:<span id='teratailTagCount'></span></div>
-    <ul id='qiitaArticle'></ul>
+    <!-- <ul id='qiitaArticle'>
+        <li></li>
+        <li></li>
+    </ul> -->
+    <table id='qiitaArticle'>
+        <tr>
+            <td>愛美ちゃん</td>
+            <td>ピアノ</td>
+        </tr>
+        <tr>
+            <td>Tomoくん</td>
+            <td>ベース</td>
+        </tr>
+        <tr>
+            <td>さおりさん</td>
+            <td>ドラム</td>
+        </tr>
+    </table>
 </body>
 <script src="ramda.js" defer></script>
 <script src="qiitaTags.js" defer></script>
@@ -31,10 +48,10 @@
         let ul = document.getElementById('qiitaArticle'); ul.appendChild(li);
     }
     const getTitleAndHref = () => {
-        fetch(`https://asia-northeast1-taro-fe94c.cloudfunctions.net/scrapingQiitaTagAndFeedJSONByJsdom?tag=${document.getElementById('txt').value}`).then(v => { return v.text() }).then(v => {
-            // R.forEach(setTitleAndHref, [['titleFoo','https://www.yahoo.co.jp/'],['titleBar','http://google.co.jp']]);
-            R.forEach(setTitleAndHref, JSON.parse(v));
-        })
+        // fetch(`https://asia-northeast1-taro-fe94c.cloudfunctions.net/scrapingQiitaTagAndFeedJSONByJsdom?tag=${document.getElementById('txt').value}`).then(v => { return v.text() }).then(v => {
+            R.forEach(setTitleAndHref, [['titleFoo','https://www.yahoo.co.jp/'],['titleBar','http://google.co.jp']]);
+            // R.forEach(setTitleAndHref, JSON.parse(v));
+        // })
     }
     document.getElementById('list').addEventListener('click', getTitleAndHref, false);
 </script>
