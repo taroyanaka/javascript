@@ -19,25 +19,17 @@
 <script src="teratailTags.js" defer></script>
 <script type="text/javascript">
     const tagCount = () => {
-        document.getElementById('qiitaTagCount').textContent = 
-            R.view(
-                R.lensProp(document.getElementById('txt').value)
-            , qiitaTags)
-        
-        document.getElementById('teratailTagCount').textContent =
-            R.view(
-                R.lensProp(document.getElementById('txt').value)
-            , teratailTags)
+        document.getElementById('qiitaTagCount').textContent = R.view(R.lensProp(document.getElementById('txt').value), qiitaTags)
+        document.getElementById('teratailTagCount').textContent =　R.view(R.lensProp(document.getElementById('txt').value), teratailTags)
     }
     document.getElementById('txt').addEventListener('focus', tagCount, false);
     document.getElementById('txt').addEventListener('input', tagCount, false);
 
-
     const setTitleAndHref = (titleAndHref) => {
-            let a = document.createElement('a'); a.textContent = titleAndHref[0]; a.href = titleAndHref[1];
-            let li = document.createElement('li'); li.appendChild(a);
-            let ul = document.getElementById('qiitaArticle'); ul.appendChild(li);
-        }
+        let a = document.createElement('a'); a.textContent = titleAndHref[0]; a.href = titleAndHref[1];
+        let li = document.createElement('li'); li.appendChild(a);
+        let ul = document.getElementById('qiitaArticle'); ul.appendChild(li);
+    }
     const getTitleAndHref = () => {
         fetch(`https://asia-northeast1-taro-fe94c.cloudfunctions.net/scrapingQiitaTagAndFeedJSONByJsdom?tag=${document.getElementById('txt').value}`).then(v => { return v.text() }).then(v => {
             // R.forEach(setTitleAndHref, [['titleFoo','https://www.yahoo.co.jp/'],['titleBar','http://google.co.jp']]);
