@@ -1,4 +1,4 @@
 *.bak
-a.txt
+etc/a.txt
 call_google_translate_api_open.js
 node_modules/
