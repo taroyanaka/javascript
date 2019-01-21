@@ -1,24 +1,48 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <title>bar</title>
   <script>
     // FUNCTIONS
-    function* pages(from, to) {while (from <= to) yield from++};
+    function* pages(from, to) {
+      while (from <= to) yield from++
+    };
     const DQSA = document.querySelector.bind(document);
     const DCE = document.createElement.bind(document);
     const GEBI = document.getElementById.bind(document);
     // DATA
     const URL = 'https://firestore.googleapis.com/v1beta1/projects/taro-fe94c/databases/(default)/documents/porncom/';
+
+    curl - X POST "https://firestore.googleapis.com/v1beta1/projects/yanaka-7bb50/databases/(default)/documents/foo/bar"
+
+    curl - X GET "https://firestore.googleapis.com/v1beta1/projects/yanaka-7bb50/databases/(default)/documents/foo/bar?mask.fieldPaths=hoge"
+    curl - X DELETE "https://firestore.googleapis.com/v1beta1/projects/yanaka-7bb50/databases/(default)/documents/foo/bar?currentDocument.exists=true"
+
+    フィールド削除
+    curl - X PATCH "https://firestore.googleapis.com/v1beta1/projects/yanaka-7bb50/databases/(default)/documents/foo/bar
+      ? currentDocument.exists = true & updateMask.fieldPaths=qx"
   </script>
 </head>
+
+
 <body onLoad='init()'>
   <div id="foo"></div>
   <script>
     init = () => {
       //paging and access elements
-      for (var num of pages(1, 3)) {        (() => {          fetch(URL + num.toString()).then(res => {            return res.json()          }).then((txt) => {            var div = DCE('div'); div.innerHTML = txt["fields"]["views"]["integerValue"]; GEBI('foo').appendChild(div);          })        })();      }
+      for (var num of pages(1, 3)) {
+        (() => {
+          fetch(URL + num.toString()).then(res => {
+            return res.json()
+          }).then((txt) => {
+            var div = DCE('div');
+            div.innerHTML = txt["fields"]["views"]["integerValue"];
+            GEBI('foo').appendChild(div);
+          })
+        })();
+      }
 
       // for (var num of pages(1, 3)) {
       //   (() => {
@@ -35,4 +59,5 @@
     }
   </script>
 </body>
+
 </html>
