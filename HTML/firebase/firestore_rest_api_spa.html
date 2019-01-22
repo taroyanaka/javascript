@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>foo</title>
+    <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script>
+    <script>
+        firebase.initializeApp({ projectId: "yanaka-7bb50" });
+        firebase.firestore().settings({ timestampsInSnapshots: true });
+    </script>
+</head>
+
+<body>
+
+
+    <div id="foo">hoge</div>
+</body>
+
+<script type="text/javascript">
+    const db = () => {
+        // DELETE document
+        // firebase.firestore().collection("users").doc("1").delete().then((result) => {
+        //     console.dir("SUCCESS")
+        // }).catch(function (error) {
+        //     console.error("ERROR: ", error);
+        // });
+
+        // DELETE field
+        // firebase.firestore().collection("users").doc("2").update(
+        //     { foo: firebase.firestore.FieldValue.delete() }
+        // );
+
+        // DELETE collection is no API, use DELETE each document
+
+        // UPDATE
+        // firebase.firestore().collection("users").doc("2").update(
+        //     // { foo2: "bar"} → { foo2: "hogehogehoge" }
+        //     { foo2: "hogehoge" }
+        // ).then(() => {
+        //     console.dir("UPDATE SUCCESS");
+        // });
+
+    }
+    document.addEventListener('DOMContentLoaded', db, false);
+</script>
+
+</html>
