@@ -28,11 +28,11 @@ exports.scrapingTeratailTagAndFeedJSONByJsdom = (req, res) => {
     // res.header('Access-Control-Allow-Origin', "https://taroyanaka.github.io");
     res.header('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept");
 
-function* range(start, end) {
-    for (let i = start; i <= end; i++) {
-        yield i;
+    function* range(start, end) {
+        for (let i = start; i <= end; i++) {
+            yield i;
+        }
     }
-}
     // const tag = "Python";
     const tag = req.query['tag'].toString();
     JSDOM.fromURL(`https://teratail.com/tags/${tag}`).then(dom => {
@@ -41,12 +41,12 @@ function* range(start, end) {
             for (let num of range(1, 20)) {
                 Array.from(dom.window.document.querySelectorAll(`#mainContainer > div.boxContentWrap.j-feedContentsWrapper.btnActive > ul > li:nth-child(${num}) > div.boxItemContent > h2 > a`))
                     .forEach(v => {
-                    // result return [[title, URL][title, URL][title, URL]...]
-                    result.push([
-                        v.textContent,
-                        v.href
-                    ])
-                })
+                        // result return [[title, URL][title, URL][title, URL]...]
+                        result.push([
+                            v.textContent,
+                            v.href
+                        ])
+                    })
             }
         };
         getTitleAndArticle();

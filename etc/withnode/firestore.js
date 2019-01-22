@@ -1,3 +1,5 @@
+// reference https://firebase.google.com/docs/firestore/quickstart?hl=ja
+
 const admin = require('firebase-admin');
 admin.initializeApp({
   credential: admin.credential.cert(require('/Users/yanakataro/googleDrive/javascript/HTML/firebase/yanaka-7bb50.json'))
