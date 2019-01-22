@@ -19,6 +19,34 @@
 
 <script type="text/javascript">
     const db = () => {
+        // console.dir(firebase.firestore());
+
+        // CREATE document
+        // firebase.firestore().collection("users").add({
+        //     foo: "bar",
+        //     foo2: "bar2"
+        // }).then(docRef => {
+        //     console.log("Document written with ID: ", docRef.id);
+        // }).catch(error => {
+        //     console.error("Error adding document: ", error);
+        // });
+
+        // READ collection, document, field
+        // firebase.firestore().collection("users").get().then(col => {
+        //     col.forEach(doc => {
+        //         console.log(`${doc.id} => ${doc.data().foo2}`);
+        //         console.dir(Object.keys(doc.data()));
+        //     });
+        // });
+
+        // UPDATE
+        // firebase.firestore().collection("users").doc("2").update(
+        //     // { foo2: "bar"} → { foo2: "hogehogehoge" }
+        //     { foo2: "hogehoge" }
+        // ).then(() => {
+        //     console.dir("UPDATE SUCCESS");
+        // });
+
         // DELETE document
         // firebase.firestore().collection("users").doc("1").delete().then((result) => {
         //     console.dir("SUCCESS")
@@ -32,15 +60,6 @@
         // );
 
         // DELETE collection is no API, use DELETE each document
-
-        // UPDATE
-        // firebase.firestore().collection("users").doc("2").update(
-        //     // { foo2: "bar"} → { foo2: "hogehogehoge" }
-        //     { foo2: "hogehoge" }
-        // ).then(() => {
-        //     console.dir("UPDATE SUCCESS");
-        // });
-
     }
     document.addEventListener('DOMContentLoaded', db, false);
 </script>
