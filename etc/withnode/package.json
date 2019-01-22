@@ -16,6 +16,7 @@
     "chai": "^4.2.0",
     "csvtojson": "^2.0.8",
     "fast-html-parser": "^1.0.1",
+    "firebase-admin": "^6.5.0",
     "htmlparser2": "^3.10.0",
     "jsdom": "^13.1.0",
     "mocha": "^5.2.0",
