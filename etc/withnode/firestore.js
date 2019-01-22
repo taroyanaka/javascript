@@ -6,8 +6,8 @@ admin.initializeApp({
 admin.firestore().settings({ timestampsInSnapshots: true });
 
 admin.firestore().collection('users').get()
-  .then((snapshot) => {
-    snapshot.forEach((doc) => {
+  .then((collection) => {
+    collection.forEach((doc) => {
       console.log(doc.id, '=>', doc.data());
     });
   })
