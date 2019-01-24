@@ -224,3 +224,130 @@ for (let num of range(1, 3)) {
             ary.push([v.textContent.replace(/,/, "").replace(/ 投稿/, "").split('\n') ])
         })
 }
+
+
+
+// node wc.js|cat|sort|uniq|sort -n
+
+
+
+
+
+// const jsdom = require("jsdom");
+// const { JSDOM } = jsdom;
+// JSDOM.fromURL(`https://www.aozora.gr.jp/cards/001850/files/57353_57270.html`).then(dom => {
+//     return dom.window.document.querySelectorAll('body > div.main_text')[0].textContent.split('');
+// }).then(myCurrentArray => {
+//     let counts = {};
+//     for (let i = 0; i < myCurrentArray.length; i++) {
+//         let key = myCurrentArray[i];
+//         counts[key] = (counts[key]) ? counts[key] + 1 : 1;
+//     }
+//     return counts
+// }).then( counts =>{
+//     for(let key in counts) {
+//         console.log(counts[key]+" "+key);
+//     }
+// }).catch( error => {
+//     console.log(error);
+// });
+
+
+
+// let globalTunnel = require('global-tunnel-ng');
+
+
+// globalTunnel.initialize({
+//     host: '*************.com',
+//     port: ****,
+//     proxyAuth: 'id:pas'
+// });
+//requestをrequire
+//ヘッダーを定義
+
+
+//オプションを定義
+// var options = {
+//     // url: `https://www.aozora.gr.jp/cards/001850/files/57353_57270.html`    // headers: headers,
+//     url: `https://www.yahoo.co.jp/`    // headers: headers,
+//     // json: true,
+//     // form: { "hoge": "fuga" }
+// }
+// npm config set https - proxy http://id:pass@host:port
+
+
+
+// //リクエスト送信
+// // const bar = options => {
+// const foo = new Promise(resolve =>{
+//     request({ url: `https://www.yahoo.co.jp/` }, function (error, response, body) {
+//         resolve(body);
+//         // reject(error);
+//     })
+// })
+
+
+// let foo = new Promise(function (resolve, reject) {
+//     resolve('foo');
+// });
+
+// const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+// const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// bar.then(body => { console.log(body) });
+
+// foo.then(body => {
+// JSDOM.fromURL(`https://www.aozora.gr.jp/cards/001850/files/57353_57270.html`).then(dom => {
+// console.log(
+//     dom.window.document.querySelector(`body > div.main_text`).textContent
+// )
+//     // return dom;
+//     // console.log(dom.window.document.querySelectorAll('#topicsfb > div.topicsindex > ul.emphasis > li:nth-child(1) > a').textContent);
+//         // console.log(dom.window.document.querySelectorAll('body')[0].textContent );
+//     // console.log(dom.window.document.querySelectorAll('*'));
+// })
+//     .then(myCurrentArray => {
+//     let counts = {};
+//     for (let i = 0; i < myCurrentArray.length; i++) {
+//         let key = myCurrentArray[i];
+//         counts[key] = (counts[key]) ? counts[key] + 1 : 1;
+//     }
+//     return counts
+// }).then( counts =>{
+//     for(let key in counts) {
+//         console.log(counts[key]+" "+key);
+//     }
+// }).catch( error => {
+//     console.log(error);
+// });
+
+// var request = require('request');
+const { JSDOM } = require('jsdom')
+const jsdom = require("jsdom");
+
+const resourceLoader = new jsdom.ResourceLoader({
+    proxy: "id:pass@host:port"
+});
+
+
+JSDOM.fromURL(`https://www.aozora.gr.jp/cards/001850/files/57353_57270.html`, { resources: resourceLoader }).then(dom => {
+    console.log(
+        dom.window.document.querySelector(`body > div.main_text`).textContent
+    )
+    // return dom;
+    // console.log(dom.window.document.querySelectorAll('#topicsfb > div.topicsindex > ul.emphasis > li:nth-child(1) > a').textContent);
+    // console.log(dom.window.document.querySelectorAll('body')[0].textContent );
+    // console.log(dom.window.document.querySelectorAll('*'));
+})
+
+
+// request({ url: `https://www.yahoo.co.jp/` }, function (error, response, body) {
+//         console.log(body)
+//         // resolve(body);
+//         // reject(error);
+//     })
+
+
+
+// const dom = new JSDOM(``, { resources: resourceLoader });
+
