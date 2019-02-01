@@ -5,8 +5,8 @@
     "tasks": [
         {
             "taskName": "node",
-            // "command": "node scrapingSeiyuJSONByJsdom.js",
-            "command": "node scrapingSeiyuJSONByJsdom.js >> result.txt",
+            "command": "node scrapingSeiyuJSONByJsdom.js",
+            // "command": "node scrapingSeiyuJSONByJsdom.js >> result.txt",
             "isShellCommand": true,
             "showOutput": "always",
             "isWatching": true,

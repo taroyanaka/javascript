@@ -111,6 +111,7 @@ const paging = (page) => {
                 process.on("exit", function () {
                     process.exit(1);
                 });
+                console.log("ここを通るの1回だけでちゃんとイテレーションが中止できているか確認")
             }
         }).catch(error => {
             return
