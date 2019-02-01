@@ -15,15 +15,15 @@
 
 
 
-const request = require('request');
-//const HTMLParser = require('fast-html-parser');
-const HTMLParser = require('htmlparser2');
-request('https://www.yahoo.co.jp/', (error, response, body) => { 'body:', 
-        HTMLParser.parse(body)
-        .querySelectorAll('a')
-//        .forEach(aElm => { console.log(aElm.textContent) })
-});
-[1, 2, 3].forEach(v => { console.log(v) });
+// const request = require('request');
+// //const HTMLParser = require('fast-html-parser');
+// const HTMLParser = require('htmlparser2');
+// request('https://www.yahoo.co.jp/', (error, response, body) => { 'body:', 
+//         HTMLParser.parse(body)
+//         .querySelectorAll('a')
+// //        .forEach(aElm => { console.log(aElm.textContent) })
+// });
+// [1, 2, 3].forEach(v => { console.log(v) });
 
 
 // const request = require('request'); let foo = [];
@@ -221,7 +221,7 @@ for (let num of range(1, 3)) {
     Array.from(
         document.querySelectorAll(`#container > section.boxTagList.data-tag.clearFix > ul > li:nth-child(${num}) > dl > dt > a > span,#container > section.boxTagList.data-tag.clearFix > ul > li:nth-child(${num}) > dl > dd.txtNumber`))
         .forEach(v => {
-            ary.push([v.textContent.replace(/,/, "").replace(/ 投稿/, "").split('\n') ])
+            ary.push([v.textContent.replace(/,/, "").replace(/ 投稿/, "").split('\n')])
         })
 }
 
@@ -322,23 +322,23 @@ for (let num of range(1, 3)) {
 // });
 
 // var request = require('request');
-const { JSDOM } = require('jsdom')
-const jsdom = require("jsdom");
+// const { JSDOM } = require('jsdom')
+// const jsdom = require("jsdom");
 
-const resourceLoader = new jsdom.ResourceLoader({
-    proxy: "id:pass@host:port"
-});
+// const resourceLoader = new jsdom.ResourceLoader({
+//     proxy: "id:pass@host:port"
+// });
 
 
-JSDOM.fromURL(`https://www.aozora.gr.jp/cards/001850/files/57353_57270.html`, { resources: resourceLoader }).then(dom => {
-    console.log(
-        dom.window.document.querySelector(`body > div.main_text`).textContent
-    )
-    // return dom;
-    // console.log(dom.window.document.querySelectorAll('#topicsfb > div.topicsindex > ul.emphasis > li:nth-child(1) > a').textContent);
-    // console.log(dom.window.document.querySelectorAll('body')[0].textContent );
-    // console.log(dom.window.document.querySelectorAll('*'));
-})
+// JSDOM.fromURL(`https://www.aozora.gr.jp/cards/001850/files/57353_57270.html`, { resources: resourceLoader }).then(dom => {
+//     console.log(
+//         dom.window.document.querySelector(`body > div.main_text`).textContent
+//     )
+//     // return dom;
+//     // console.log(dom.window.document.querySelectorAll('#topicsfb > div.topicsindex > ul.emphasis > li:nth-child(1) > a').textContent);
+//     // console.log(dom.window.document.querySelectorAll('body')[0].textContent );
+//     // console.log(dom.window.document.querySelectorAll('*'));
+// })
 
 
 // request({ url: `https://www.yahoo.co.jp/` }, function (error, response, body) {
