@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>text splitter for tweet</title>
+</head>
+
+<body>
+  <form>
+    <div>
+      <textarea id="foo" name="foo" cols="300" rows="50" placeholder="ここに文章を入れて" required="required" maxlength="1400"
+        autofocus="autofocus" wrap="hard"></textarea>
+    </div>
+    <input id="btn" type="button" value="分割" />
+    <br />
+  </form>
+  <script>
+    let res = [];
+    let joinedRes = [];
+
+    document.getElementById('btn').addEventListener('click', function () {
+      let bar = document.getElementById('foo').value.split('');
+
+      while (bar.length !== 0) { if (bar.length === 0) { break } res.push(bar.splice(0, 110)) }
+      res.map(v => joinedRes.push(v.join('')))
+
+      for (let dataText of joinedRes) {
+        let a = document.createElement("a"); a.setAttribute("class", "twitter-share-button"); a.setAttribute("data-text", dataText);
+        let script = document.createElement("script"); script.setAttribute("src", "https://platform.twitter.com/widgets.js"); script.setAttribute("charset", "utf-8");
+        document.querySelector("body").insertBefore(a, null)
+        document.querySelector("body").insertBefore(script, null)
+      }
+    }, false);
+  </script>
+</body>
+
+</html>
