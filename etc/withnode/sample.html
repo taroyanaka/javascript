@@ -45,7 +45,7 @@
 
     // allShutudai:全部の出題
     let allShutudai = [];
-    document.getElementById('btn').addEventListener('click', function () {
+    const makeAllShutudai = () => new Promise((resolve, reject) => {
       // 全問題から回答して減っていく問題の配列をコピー(参照渡しではないのでArray.from)
       let question = document.getElementById('foo').value.split('\n');
       let answer = document.getElementById('bar').value.split('\n');
@@ -53,7 +53,6 @@
       const mondai = zip(question)(answer);
       // shuffuledNokoriMondai:シャッフルしたあとの残りの全ての問題
       let shuffuledNokoriMondai = shuffleArray(Array.from(mondai))
-
       // 問題数分の出題を繰り返す
       const count = shuffuledNokoriMondai.length
       for (let i = 0; i < count; i++) {
@@ -66,6 +65,20 @@
         // 全部の出題の配列にpushしていく
         allShutudai.push([fuseikai.splice(0, 3), seikai[0]])
       }
+      resolve(allShutudai);
+    })
+
+    document.getElementById('btn').addEventListener('click', function () {
+      makeAllShutudai().then(() => {
+        // for (let a of allShutudai) { a.concat }
+        for (let a of allShutudai) {
+          let oneShutudai = shuffleArray(a[0].concat([a[1]]));
+          console.log(oneShutudai);
+          console.log(a[1]);
+        }
+      }).catch((error) => {
+        // document.write(`失敗: ${error}`)
+      })
     }, false);
 
 

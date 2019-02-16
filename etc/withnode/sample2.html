@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>text splitter for tweet</title>
+</head>
+
+<body>
+  <div>
+    <input id="btn" type="button" value="makeQandA" />
+    <input id="btn" type="button" value="makeQandA" />
+  </div>
+  <div>
+
+  </div>
+  <script>
+    allShutudai =
+      [
+        [
+          [
+            [
+              "cut",
+              "カット"
+            ],
+            [
+              "found",
+              "見つかった"
+            ],
+            [
+              "caught",
+              "捕まった"
+            ]
+          ],
+          [
+            "felt",
+            "フェルト"
+          ]
+        ],
+        [
+          [
+            [
+              "built",
+              "建てた"
+            ],
+            [
+              "caught",
+              "捕まった"
+            ],
+            [
+              "found",
+              "見つかった"
+            ]
+          ],
+          [
+            "bought",
+            "買った"
+          ]
+        ],
+        [
+          [
+            [
+              "bought",
+              "買った"
+            ],
+            [
+              "built",
+              "建てた"
+            ],
+            [
+              "felt",
+              "フェルト"
+            ]
+          ],
+          [
+            "caught",
+            "捕まった"
+          ]
+        ],
+        [
+          [
+            [
+              "built",
+              "建てた"
+            ],
+            [
+              "felt",
+              "フェルト"
+            ],
+            [
+              "bought",
+              "買った"
+            ]
+          ],
+          [
+            "cut",
+            "カット"
+          ]
+        ],
+        [
+          [
+            [
+              "bought",
+              "買った"
+            ],
+            [
+              "built",
+              "建てた"
+            ],
+            [
+              "cut",
+              "カット"
+            ]
+          ],
+          [
+            "found",
+            "見つかった"
+          ]
+        ],
+        [
+          [
+            [
+              "found",
+              "見つかった"
+            ],
+            [
+              "cut",
+              "カット"
+            ],
+            [
+              "caught",
+              "捕まった"
+            ]
+          ],
+          [
+            "built",
+            "建てた"
+          ]
+        ]
+      ];
+
+    const shuffleArray = array => {
+      for (let i = array.length - 1; i > 0; i--) {
+        let r = Math.floor(Math.random() * (i + 1));
+        let tmp = array[i];
+        array[i] = array[r];
+        array[r] = tmp;
+      }
+      return array
+    }
+
+    for (let a of allShutudai) {
+      let oneShutudai = shuffleArray(a[0].concat([a[1]]));
+      console.log(oneShutudai);
+      console.log(a[1]);
+    }
+
+  </script>
+</body>
+
+</html>
