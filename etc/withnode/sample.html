@@ -7,17 +7,50 @@
 </head>
 
 <body>
-  <form>
-    <div>
-      <textarea id="foo" name="foo" cols="150" rows="50" placeholder="ここに文章を入れて" required="required" maxlength="1400"
-        autofocus="autofocus" wrap="hard"></textarea>
-    </div>
-    <input id="btn" type="button" value="分割" />
-    <br />
-  </form>
+  <div>
+    <input id="btn" type="button" value="makeQandA" />
+  </div>
+  <div>
+    <textarea name="foo" id="foo" cols="20" rows="100" required="required" maxlength="100000"
+      autofocus="autofocus"></textarea>
+    <textarea name="bar" id="bar" cols="20" rows="100" required="required" maxlength="100000"></textarea>
+  </div>
   <script>
-    let res = [];
-    let joinedRes = [];
+    // bar = [["up", "上"], ["down", "下"], ["right", "右"], ["left", "左"]]
+    // let min = 0;
+    // let max = bar.length - 1;
+
+    // question.push(bar.splice(getRandomIndex(min, max - 1), 1))
+    // question.push(bar.splice(getRandomIndex(min, max - 2), 1))
+    // question.push(bar.splice(getRandomIndex(min, max - 3), 1))
+
+
+    // let getRandomIndex = (min, max) => {
+    //   return Math.floor(Math.random() * (max - min + 1)) + min;
+    // }
+
+    // function* range(from, to) { while (from <= to) yield from++ }; let hoge = []; for (let a of range(0, 100000000)) { hoge.push(a) };
+    // const shuffleArray = paramArray => {
+    //   let array = Array.from(paramArray);
+    //   let resultArray = [];
+    //   while (array.length !== 0) { resultArray.push(array.splice((Math.floor(Math.random() * (array.length - 1 - 0 + 1)) + 0), 1)[0]) };
+    //   return resultArray;
+    // }
+    // console.time('処理時間：');
+    // /*
+    // 計測したい処理
+    // */
+    // shuffleArray(hoge);
+    // console.timeEnd('処理時間：');
+    // // shuffleArray(hoge);
+
+    // const shuffleArray1 = array => {
+    //   for (let i = array.length - 1; i >= 0; i--) {
+    //     let rand = Math.floor(Math.random() * (i + 1));
+    //     [array[i], array[rand]] = [array[rand], array[i]]
+    //   }
+    //   return array
+    // }
 
     document.getElementById('btn').addEventListener('click', function () {
       let bar = document.getElementById('foo').value.split('');
@@ -32,6 +65,132 @@
         document.querySelector("body").insertBefore(script, null)
       }
     }, false);
+
+
+    // 配列をシャッフルする関数
+    const shuffleArray = array => {
+      for (let i = array.length - 1; i > 0; i--) {
+        let r = Math.floor(Math.random() * (i + 1));
+        let tmp = array[i];
+        array[i] = array[r];
+        array[r] = tmp;
+      }
+      return array
+    }
+
+    // mondai:全部の問題。破壊的変更はしない。
+    // shuffledMondai:全部の問題をシャッフルしたもの。
+    // nokoriMondai:シャッフルされたあと出題ごとに配列をunshiftしていく。
+    // shuffuledNokoriMondai:出題ごとに配列をunshiftしていく。
+    // Q:問題文
+    // seikai:Qに問題を入れたあと["ok","正解"]の形式になる
+    // fuseikai:shuffledMondaiからランダムで3つ取り出したものを[["ng":"不正解"],["ng":"不正解"],["ng":"不正解"]]の形にする
+    // shutudai:seikaiとfuseikaiを連結してシャッフルした結果の配列(例 [["ng":"不正解"],["ng":"不正解"],["ng":"不正解"],["ok":"正解"]]　(正解の配列の要素の位置はランダム)になっている)
+
+    // reference https://qiita.com/ttatsf/items/fdb9fc5dc12af7b6cb68
+    const zip = xs => ys =>
+      (xs.length < ys.length) ? xs.map((e, i) => [e, ys[i]])
+        : ys.map((e, i) => [xs[i], e]);
+    let foo = [
+      "up",
+      "down",
+      "right",
+      "left",
+      "tree",
+      "fire",
+      "dog"
+    ]
+    let bar = [
+      "上",
+      "下",
+      "右",
+      "左",
+      "木",
+      "火",
+      "犬"
+    ]
+    const mondai = zip(foo)(bar);
+    // const mondai = [["up", "上"], ["down", "下"], ["right", "右"], ["left", "左"], ["tree", "木"], ["fire", "火"], ["dog", "犬"]]
+
+    // 全問題から回答して減っていく問題の配列をコピー(参照渡しではないのでArray.from)
+    let shuffuledNokoriMondai = shuffleArray(Array.from(mondai))
+
+    // 問題数分の出題を繰り返す
+    let num = shuffuledNokoriMondai.length
+    for (let i = 0; i < num; i++) {
+      // 1問分取り出す
+      let seikai = shuffuledNokoriMondai.splice(0, 1)
+
+      // ランダムで正解とかぶってない配列だけを3つ取り出して不正解の配列を作る
+      let shuffledMondai = Array.from(shuffleArray(mondai))
+      let fuseikai = shuffledMondai.filter(v => v !== seikai[0])
+      let randomFuseikai = fuseikai.splice(0, 3)
+      randomFuseikai.map(v => v[0] = "ng")
+
+      // 問題文を作って、正解の配列を作って、出題の配列をランダムで作る
+      let Q = seikai[0][0]
+      seikai[0][0] = "ok"
+      let shutudai = shuffleArray(randomFuseikai.concat(seikai))
+
+      // 出題のロジック
+      console.log("出題")
+      for (let a of shutudai) { console.log(a) }
+      console.log("-------------------")
+
+      // "ok"から元の["問題","回答"]の状態に戻す
+      seikai[0][0] = Q
+    }
+
+
+
+
+    // modai.push(seikai)
+
+    // const shuffle = array => {
+    //   for (var i = array.length - 1; i > 0; i--) {
+    //     var r = Math.floor(Math.random() * (i + 1));
+    //     var tmp = array[i];
+    //     array[i] = array[r];
+    //     array[r] = tmp;
+    //   }
+    //   return array
+    // }
+    // shuffledMondai = shuffle(mondai)
+
+    // question = []
+    // answer = []
+    // for (let q of bar) { question.push(q[0]) }
+    // for (let a of bar) { answer.push(a[1]) }
+    // const shuffle = array => {
+    //   for (var i = array.length - 1; i > 0; i--) {
+    //     var r = Math.floor(Math.random() * (i + 1));
+    //     var tmp = array[i];
+    //     array[i] = array[r];
+    //     array[r] = tmp;
+    //   }
+    //   return array
+    // }
+
+
+    // let getRandomIndex = (min, max) => {
+    //   return Math.floor(Math.random() * (max - min + 1)) + min;
+    // }
+    // ok = bar.splice(getRandomIndex(min, max), 1)
+
+    // // let original = [["up", "上"], ["down", "下"], ["right", "右"], ["left", "左"], ["tree", "木"], ["fire", "火"], ["dog", "犬"]]
+    // let original = [[0, 0], [1, 1], [2, 2]]
+    // let result = []
+    // while (original.length !== 0) {
+    //   result.push(
+    //     original.splice(
+    //       (
+    //         Math.floor(Math.random() * (original.length - 1 - 0 + 1)) + 0)
+    //       ,
+    //       1
+    //     )[0]
+    //   )
+    // }
+
   </script>
 </body>
 
