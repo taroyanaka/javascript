@@ -14,7 +14,7 @@
     <textarea name="foo" id="foo" cols="20" rows="100" required="required" maxlength="100000"
       autofocus="autofocus"></textarea>
     <textarea name="bar" id="bar" cols="20" rows="100" required="required" maxlength="100000"></textarea>
-    <textarea name="baz" id="baz" cols="20" rows="100" required="required" maxlength="100000"></textarea>
+    <!-- <textarea name="baz" id="baz" cols="20" rows="100" required="required" maxlength="100000"></textarea> -->
   </div>
   <script>
     // 配列をシャッフルする関数
@@ -43,52 +43,28 @@
     // "建てた\n買った\n捕まった\nカット\nフェルト\n見つかった\n持っていました\n聞いた\n守った\n左\n貸した";
     // "建てた\n買った\n捕まった\nカット\nフェルト\n見つかった\n持っていました\n聞いた\n守った\n左\n貸した\nさせて\n迷った\n製\n会った\nプット\n読む\n前記\n売った\n送られた\n座っていた\n寝た\n費やした\n立っていた\n教えた\n言った\n思想\nわかる";
 
+    // allShutudai:全部の出題
     let allShutudai = [];
-    allShutudai = [];
-    let question = document.getElementById('foo').value.split('\n');
-    let answer = document.getElementById('bar').value.split('\n');
     document.getElementById('btn').addEventListener('click', function () {
-      // mondai:全部の問題。破壊的変更はしない。
-      // shuffledMondai:全部の問題をシャッフルしたもの。
-      // nokoriMondai:シャッフルされたあと出題ごとに配列をunshiftしていく。
-      // shuffuledNokoriMondai:出題ごとに配列をunshiftしていく。
-      // Q:問題文
-      // seikai:Qに問題を入れたあと["ok","正解"]の形式になる
-      // fuseikai:shuffledMondaiからランダムで3つ取り出したものを[["ng":"不正解"],["ng":"不正解"],["ng":"不正解"]]の形にする
-      // shutudai:seikaiとfuseikaiを連結してシャッフルした結果の配列(例 [["ng":"不正解"],["ng":"不正解"],["ng":"不正解"],["ok":"正解"]]　(正解の配列の要素の位置はランダム)になっている)
-      // mondai = zip(question)(answer);
-      // mondai = document.getElementById('baz').value.split("\n");
-
       // 全問題から回答して減っていく問題の配列をコピー(参照渡しではないのでArray.from)
-      mondai = zip(question)(answer);
-      shuffuledNokoriMondai = shuffleArray(Array.from(mondai))
+      let question = document.getElementById('foo').value.split('\n');
+      let answer = document.getElementById('bar').value.split('\n');
+      // mondai:全部の問題。破壊的変更はしない
+      const mondai = zip(question)(answer);
+      // shuffuledNokoriMondai:シャッフルしたあとの残りの全ての問題
+      let shuffuledNokoriMondai = shuffleArray(Array.from(mondai))
 
       // 問題数分の出題を繰り返す
-      num = shuffuledNokoriMondai.length
-      for (let i = 0; i < num; i++) {
-        // 1問分取り出す
+      const count = shuffuledNokoriMondai.length
+      for (let i = 0; i < count; i++) {
+        // seikai:正解の配列 1問分取り出す
         seikai = Array.from(shuffuledNokoriMondai.splice(0, 1))
-
-        // ランダムで正解とかぶってない配列だけを3つ取り出して不正解の配列を作る
+        // shuffledMondai:全部の問題をシャッフルしたもの ランダムで正解とかぶってない配列だけを3つ取り出して不正解の配列を作る
         shuffledMondai = Array.from(shuffleArray(mondai))
+        // fuseikai:不正解の配列
         fuseikai = Array.from(shuffledMondai.filter(v => v !== seikai[0]))
-        // randomFuseikai = fuseikai.splice(0, 3)
-        // randomFuseikai.map(v => v[0] = "ng")
-
-        // 問題文を作って、正解の配列を作って、出題の配列をランダムで作る
-        // Q = seikai[0][0]
-        // seikai[0][0] = "ok"
-        // shutudai = shuffleArray(randomFuseikai.concat(seikai))
-
-        // 問題の配列を作る
-        // for (let a of shutudai) { allShutudai.push([Q, a]) }
-        // allShutudai.push(randomFuseikai.concat(seikai))
+        // 全部の出題の配列にpushしていく
         allShutudai.push([fuseikai.splice(0, 3), seikai[0]])
-        // console.log([Q, shutudai])
-
-
-        // "ok"から元の["問題","回答"]の状態に戻す
-        // seikai[0][0] = Q
       }
     }, false);
 
