@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>text splitter for tweet</title>
+  <title>quiz</title>
 </head>
 
 <body>
@@ -176,10 +176,19 @@
       let br = document.createElement("br"); block.insertBefore(br, null)
     }
 
-    let button = document.querySelector('body > div > div > input');
-    button.addEventListener('click', function () {
-      console.log(button.parentElement.parentElement.id);
-    }, false);
+    let allButton = document.querySelectorAll('body > div > div > input');
+    allButton.forEach(button => {
+      button.addEventListener('click', function () {
+        if (button.name === "seikai") {
+          let mondaiBlock_Num = button.parentElement.parentElement.id;
+          document.getElementById(`${mondaiBlock_Num}`).parentNode.removeChild(document.getElementById(`${mondaiBlock_Num}`))
+          // document.getElementById('mondaiBlock_0').parentNode.removeChild(document.getElementById('mondaiBlock_0'))
+        } else {
+          console.log("fuseikai")
+        };
+        // console.log(button.parentElement.parentElement.id);
+      }, false);
+    })
 
   </script>
 </body>
