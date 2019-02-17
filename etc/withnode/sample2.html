@@ -150,10 +150,48 @@
     }
 
     for (let a of allShutudai) {
-      let oneShutudai = shuffleArray(a[0].concat([a[1]]));
-      console.log(oneShutudai);
-      console.log(a[1]);
+      let text = document.createElement("text"); text.setAttribute("class", "question");
+      text.textContent = `${a[1][0]}`;
+      document.querySelector("body").insertBefore(text, null)
+      oneShutudai = shuffleArray(
+        a[0]
+          .concat(
+            [
+              [
+                [a[1], "seikai"]
+              ]
+            ])
+      );
+      // console.log(oneShutudai);
+      // console.log(a[1]);
+
+      // let div = document.createElement("div"); div.setAttribute("class", "foo"); document.querySelector("body").insertBefore(div, null)
+
+      for (let i of oneShutudai) {
+        let div = document.createElement("div"); div.setAttribute("class", "bar"); document.querySelector("body").insertBefore(div, null)
+
+        let input = document.createElement("input");
+        input.setAttribute("class", "question");
+        input.setAttribute("type", "button");
+        if (i[0][1] === "seikai") {
+          input.setAttribute("value", i[0][0][1]);
+          input.setAttribute("name", i[0][1]);
+          // let a = document.createElement("a");
+          // a.setAttribute("class", "mondai"); a.textContent = i[0];
+          // document.querySelector("div").insertBefore(a, null)
+        } else {
+          input.setAttribute("value", i[1]);
+        }
+        // input.setAttribute("name", "fuseikai")
+        // if (i[0][1] === i[1][1]) { input.setAttribute("name", "seikai") };
+        div.appendChild(input);
+      }
+      // document.querySelector("body").insertBefore(a, null)
+      let br = document.createElement("br"); document.querySelector("body").insertBefore(br, null)
+
     }
+
+
 
   </script>
 </body>
