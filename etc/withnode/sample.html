@@ -8,6 +8,10 @@
 </head>
 
 <body>
+  <div>
+    <input type="button" id="start" value="start" style="width:100px;height:50px" />
+  </div>
+
   <canvas id="MyCanvas" style="paddling:0;"></canvas>
   <canvas id='c1'></canvas>
   <div id="position"></div>
@@ -17,8 +21,14 @@
   var canvas; // キャンバス
   var ctx;    // コンテキスト
 
-  var canvas_magnification = 10;    // 表示倍率  
-  // var canvas_magnification = 25;    // 表示倍率  
+  let col;
+  let row;
+
+  let spotCol;
+  let spotRow;
+
+  // var canvas_magnification = 10;    // 表示倍率  
+  var canvas_magnification = 25;    // 表示倍率  
   var canvas_width = 10;           // キャンバス横幅   
   var canvas_height = 10;           // キャンバス縦幅 
 
@@ -72,6 +82,9 @@
     canvas = document.getElementById("MyCanvas");
 
     canvas.addEventListener('mousemove', OnMousemove);
+    canvas.addEventListener('mousedown', OnMousedown);
+    document.querySelector('#start').addEventListener('click', move);
+
 
     canvas.width = canvas_width * canvas_magnification;
     canvas.height = canvas_height * canvas_magnification;
@@ -79,6 +92,7 @@
     ctx = canvas.getContext("2d");
 
     init_canvas();
+
   }
 
   function OnMousemove(e) {
@@ -89,31 +103,47 @@
     Point2BlockName(mouseX, mouseY);
   }
   function Point2BlockName(x, y) {
-    var col = 'C' + (Math.floor(x / canvas_magnification) + 1);
-    var row = 'R' + (Math.floor(y / canvas_magnification) + 1);
+    col = (Math.floor(x / canvas_magnification) + 1);
+    row = (Math.floor(y / canvas_magnification) + 1);
 
-    document.getElementById('position').innerHTML = 'セル番号　' + row + ' x ' + col;
+    document.getElementById('position').innerHTML = 'セル番号　' + `R${row}` + ' x ' + `C${col}`;
   }
 
-  x = 10
-  y = -10;
-  (function timer() {
-    setTimeout(function () {
-      init_canvas();
-      let m = document.getElementById('MyCanvas');
-      mover = m.getContext('2d');
-      mover.beginPath();
-      y = y + 10;
-      mover.fillStyle = "rgb(73, 0, 127)";
-      // mover.moveTo(10, y)
-      mover.fillRect(x, y, 10, 10);
-      // mover.fillRect()
-      if (x == 10 && y == 40) { init_canvas(); exit; }
-      // console.dir(mover.canvas.);
-      if (y === 100) { exit; }
-      timer();
-    }, 1000);
-  })();
+  function OnMousedown(e) {
+    spotCol = col;
+    spotRow = row;
+    let spot = document.getElementById('MyCanvas');
+    tyle = spot.getContext('2d');
+    tyle.beginPath();
+    tyle.fillStyle = "rgb(0, 0, 127)";
+    // tyle.moveTo(10, y)
+    // tyle.fillRect((row * 10), (col * 10), 10, 10);
+    // tyle.fillRect((col * 10), (row * 10), 10, 10);
+    tyle.fillRect((col * canvas_magnification) - canvas_magnification, (row * canvas_magnification) - canvas_magnification, canvas_magnification, canvas_magnification);
+  }
+
+  const move = () => {
+    // x = (canvas_magnification - 25);
+    x = 0;
+    y = -(canvas_magnification);
+    (function timer() {
+      setTimeout(function () {
+        init_canvas();
+        let m = document.getElementById('MyCanvas');
+        mover = m.getContext('2d');
+        mover.beginPath();
+        y = y + canvas_magnification;
+        mover.fillStyle = "rgb(73, 0, 127)";
+        // mover.moveTo(canvas_magnification, y)
+        mover.fillRect(x, y, canvas_magnification, canvas_magnification);
+        // mover.fillRect()
+        if (x == ((spotCol - 1) * canvas_magnification) && y == ((spotRow - 1) * canvas_magnification)) { init_canvas(); exit; }
+        // console.dir(mover.canvas.);
+        if (y === (10 * canvas_magnification)) { exit; }
+        timer();
+      }, 1000);
+    })();
+  }
 
 </script>
 
