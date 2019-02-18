@@ -2,200 +2,141 @@
 <html>
 
 <head>
-  <meta charset="UTF-8" />
-  <title>quiz</title>
+  <meta charset="UTF-8">
+  <script>
+    var canvas; // キャンバス
+    var ctx;    // コンテキスト
+
+    var canvas_magnification = 25;    // 表示倍率  
+    var canvas_width = 10;           // キャンバス横幅   
+    var canvas_height = 10;           // キャンバス縦幅 
+    var canvas_mousedown_flg = false; // マウスダウンフラグ
+
+    ///// 内部関数
+
+    function init_canvas() {
+      canvas_mousedown_flg = false;
+
+      ctx.fillStyle = "rgb(255, 255, 255)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      drawRule();
+    }
+
+    // 座標からブロック名を取得する   
+    function Point2BlockName(x, y) {
+      var col = 'C' + (Math.floor(x / canvas_magnification) + 1);
+      var row = 'R' + (Math.floor(y / canvas_magnification) + 1);
+
+      document.getElementById('msg3').innerHTML = 'セル番号　' + row + ' x ' + col;
+    }
+
+    // キャンバスに罫線を描画する
+    function drawRule() {
+
+      // 線の色
+      ctx.strokeStyle = "#1e90ff";
+
+      // 線の太さ
+      ctx.lineWidth = 2;
+
+      // 破線
+      if (ctx.setLineDash) {
+        ctx.setLineDash([1, 2]);
+      }
+
+      ctx.beginPath();
+
+      // 縦線
+      for (var i = 0; i < canvas_width + 1; i++) {
+        ctx.moveTo((i * canvas_magnification), 0);
+        ctx.lineTo((i * canvas_magnification), canvas.height);
+      }
+
+      // 横線
+      for (var i = 0; i < canvas_height + 1; i++) {
+        ctx.moveTo(0, (i * canvas_magnification));
+        ctx.lineTo(canvas.height, (i * canvas_magnification));
+      }
+
+      ctx.stroke();
+    }
+
+    ///// イベント
+
+    window.onload = function () {
+      // キャンバス
+      canvas = document.getElementById("MyCanvas");
+
+      canvas.width = canvas_width * canvas_magnification;
+      canvas.height = canvas_height * canvas_magnification;
+
+      ctx = canvas.getContext("2d");
+
+      canvas.addEventListener('mousedown', OnMousedown);
+      canvas.addEventListener('mousemove', OnMousemove);
+      canvas.addEventListener('mouseup', OnMouseup);
+      window.addEventListener('mouseup', OnMouseup);
+
+      init_canvas();
+    }
+
+    function OnMousedown(e) {
+      var rect = e.target.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+
+      // 塗りつぶし
+      var col = Math.floor(mouseX / canvas_magnification);
+      var row = Math.floor(mouseY / canvas_magnification);
+
+      ctx.fillStyle = "rgb(200, 0, 0)";
+      ctx.fillRect(col * canvas_magnification, row * canvas_magnification,
+        canvas_magnification, canvas_magnification);
+
+      // 罫線の描画
+      drawRule();
+
+      document.getElementById('msg2').innerHTML = 'マウスダウン　X:' + mouseX + ' Y' + mouseY;
+
+      canvas_mousedown_flg = true;
+    }
+
+    function OnMousemove(e) {
+      var rect = e.target.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+
+      if (canvas_mousedown_flg) {
+        // 塗りつぶし
+        var col = Math.floor(mouseX / canvas_magnification);
+        var row = Math.floor(mouseY / canvas_magnification);
+
+        ctx.fillStyle = "rgb(200, 0, 0)";
+        ctx.fillRect(col * canvas_magnification, row * canvas_magnification,
+          canvas_magnification, canvas_magnification);
+
+        drawRule();
+      }
+
+      document.getElementById('msg1').innerHTML = '現在座標　X:' + mouseX + ' Y' + mouseY;
+      Point2BlockName(mouseX, mouseY);
+    }
+
+    function OnMouseup(e) {
+      canvas_mousedown_flg = false;
+    }            
+  </script>
 </head>
-<canvas id='c1'></canvas>
 
 <body>
-  <script>
-    allShutudai =
-      [
-        [
-          [
-            [
-              "cut",
-              "カット"
-            ],
-            [
-              "found",
-              "見つかった"
-            ],
-            [
-              "caught",
-              "捕まった"
-            ]
-          ],
-          [
-            "felt",
-            "フェルト"
-          ]
-        ],
-        [
-          [
-            [
-              "built",
-              "建てた"
-            ],
-            [
-              "caught",
-              "捕まった"
-            ],
-            [
-              "found",
-              "見つかった"
-            ]
-          ],
-          [
-            "bought",
-            "買った"
-          ]
-        ],
-        [
-          [
-            [
-              "bought",
-              "買った"
-            ],
-            [
-              "built",
-              "建てた"
-            ],
-            [
-              "felt",
-              "フェルト"
-            ]
-          ],
-          [
-            "caught",
-            "捕まった"
-          ]
-        ],
-        [
-          [
-            [
-              "built",
-              "建てた"
-            ],
-            [
-              "felt",
-              "フェルト"
-            ],
-            [
-              "bought",
-              "買った"
-            ]
-          ],
-          [
-            "cut",
-            "カット"
-          ]
-        ],
-        [
-          [
-            [
-              "bought",
-              "買った"
-            ],
-            [
-              "built",
-              "建てた"
-            ],
-            [
-              "cut",
-              "カット"
-            ]
-          ],
-          [
-            "found",
-            "見つかった"
-          ]
-        ],
-        [
-          [
-            [
-              "found",
-              "見つかった"
-            ],
-            [
-              "cut",
-              "カット"
-            ],
-            [
-              "caught",
-              "捕まった"
-            ]
-          ],
-          [
-            "built",
-            "建てた"
-          ]
-        ]
-      ];
+  <button onclick="init_canvas();">クリア</button>
+  <p></p>
+  <canvas id="MyCanvas" style="paddling:0;"></canvas>
+  <div id="msg1"></div>
+  <div id="msg2"></div>
+  <div id="msg3"></div>
 
-    const shuffleArray = array => {
-      for (let i = array.length - 1; i > 0; i--) {
-        let r = Math.floor(Math.random() * (i + 1));
-        let tmp = array[i];
-        array[i] = array[r];
-        array[r] = tmp;
-      }
-      return array
-    }
-
-    let score = document.createElement("a");
-    score.setAttribute("id", "score");
-    score.textContent = "0";
-    document.querySelector("body").appendChild(score)
-
-    let numberOfQuestions = document.createElement("a");
-    numberOfQuestions.setAttribute("id", "numberOfQuestions");
-    numberOfQuestions.textContent = `/${allShutudai.length}`;
-    document.querySelector("body").appendChild(numberOfQuestions)
-
-    for (let a of allShutudai) {
-      let block = document.createElement("div");
-      block.setAttribute("id", `mondaiBlock_${allShutudai.indexOf(a)}`);
-      document.querySelector("body").appendChild(block)
-
-      let text = document.createElement("text"); text.setAttribute("class", "question");
-      text.textContent = `${a[1][0]}`;
-      block.insertBefore(text, null)
-      oneShutudai = shuffleArray(a[0].concat([[[a[1], "seikai"]]]));
-
-      for (let i of oneShutudai) {
-        // let div = document.createElement("div"); div.setAttribute("class", "bar"); block.insertBefore(div, null)
-
-        let input = document.createElement("input");
-        input.setAttribute("class", "question");
-        input.setAttribute("type", "button");
-        if (i[0][1] === "seikai") {
-          input.setAttribute("value", i[0][0][1]);
-          input.setAttribute("name", i[0][1]);
-        } else {
-          input.setAttribute("value", i[1]);
-        }
-        block.appendChild(input);
-      }
-      let br = document.createElement("br"); block.insertBefore(br, null)
-    }
-
-    // let allButton = document.querySelectorAll('body > div > div > input');
-    let allButton = document.querySelectorAll('body > div > input');
-    allButton.forEach(button => {
-      button.addEventListener('click', function () {
-        if (button.name === "seikai") {
-          // let mondaiBlock_Num = button.parentElement.parentElement.id;
-          let mondaiBlock_Num = button.parentElement.id;
-          document.getElementById(`${mondaiBlock_Num}`).parentNode.removeChild(document.getElementById(`${mondaiBlock_Num}`))
-          score.textContent = (score.textContent - 0) + 1
-        } else {
-          console.log("fuseikai")
-        };
-      }, false);
-    })
-
-  </script>
 </body>
 
 </html>
