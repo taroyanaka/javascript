@@ -164,7 +164,7 @@
       oneShutudai = shuffleArray(a[0].concat([[[a[1], "seikai"]]]));
 
       for (let i of oneShutudai) {
-        let div = document.createElement("div"); div.setAttribute("class", "bar"); block.insertBefore(div, null)
+        // let div = document.createElement("div"); div.setAttribute("class", "bar"); block.insertBefore(div, null)
 
         let input = document.createElement("input");
         input.setAttribute("class", "question");
@@ -175,16 +175,18 @@
         } else {
           input.setAttribute("value", i[1]);
         }
-        div.appendChild(input);
+        block.appendChild(input);
       }
       let br = document.createElement("br"); block.insertBefore(br, null)
     }
 
-    let allButton = document.querySelectorAll('body > div > div > input');
+    // let allButton = document.querySelectorAll('body > div > div > input');
+    let allButton = document.querySelectorAll('body > div > input');
     allButton.forEach(button => {
       button.addEventListener('click', function () {
         if (button.name === "seikai") {
-          let mondaiBlock_Num = button.parentElement.parentElement.id;
+          // let mondaiBlock_Num = button.parentElement.parentElement.id;
+          let mondaiBlock_Num = button.parentElement.id;
           document.getElementById(`${mondaiBlock_Num}`).parentNode.removeChild(document.getElementById(`${mondaiBlock_Num}`))
           score.textContent = (score.textContent - 0) + 1
         } else {
@@ -192,10 +194,6 @@
         };
       }, false);
     })
-
-
-
-
 
   </script>
 </body>
