@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>quiz</title>
+</head>
+
+<body>
+  <div>
+    <input id="btn" type="button" value="make" style="width:100px;height:50px" />
+  </div>
+  <div>
+    <textarea name="foo" id="foo" cols="20" rows="100" required="required" maxlength="100000"
+      autofocus="autofocus"></textarea>
+    <textarea name="bar" id="bar" cols="20" rows="100" required="required" maxlength="100000"></textarea>
+  </div>
+  <script>
+    // 配列をシャッフルする関数
+    const shuffleArray = array => {
+      for (let i = array.length - 1; i > 0; i--) {
+        let r = Math.floor(Math.random() * (i + 1));
+        let tmp = array[i];
+        array[i] = array[r];
+        array[r] = tmp;
+      }
+      return array
+    }
+
+    // reference https://qiita.com/ttatsf/items/fdb9fc5dc12af7b6cb68
+    // zip関数
+    const zip = xs => ys =>
+      (xs.length < ys.length) ? xs.map((e, i) => [e, ys[i]])
+        : ys.map((e, i) => [xs[i], e]);
+
+    // document.getElementById('foo').value =
+    // "built\nbought\ncaught\ncut\nfelt\nfound";
+    // "built\nbought\ncaught\ncut\nfelt\nfound\nhad\nheard\nkept\nleft\nlent";
+    // "built\nbought\ncaught\ncut\nfelt\nfound\nhad\nheard\nkept\nleft\nlent\nlet\nlost\nmade\nmet\nput\nread\nsaid\nsold\nsent\nsat\nslept\nspent\nstood\ntaught\ntold\nthought\nunderstand";
+    // document.getElementById('bar').value =
+    // "建てた\n買った\n捕まった\nカット\nフェルト\n見つかった";
+    // "建てた\n買った\n捕まった\nカット\nフェルト\n見つかった\n持っていました\n聞いた\n守った\n左\n貸した";
+    // "建てた\n買った\n捕まった\nカット\nフェルト\n見つかった\n持っていました\n聞いた\n守った\n左\n貸した\nさせて\n迷った\n製\n会った\nプット\n読む\n前記\n売った\n送られた\n座っていた\n寝た\n費やした\n立っていた\n教えた\n言った\n思想\nわかる";
+
+    // allShutudai:全部の出題
+    let allShutudai = [];
+    const makeAllShutudai = () => new Promise((resolve, reject) => {
+      // 全問題から回答して減っていく問題の配列をコピー(参照渡しではないのでArray.from)
+      let question = document.getElementById('foo').value.split('\n');
+      let answer = document.getElementById('bar').value.split('\n');
+      // mondai:全部の問題。破壊的変更はしない
+      const mondai = zip(question)(answer);
+      // shuffuledNokoriMondai:シャッフルしたあとの残りの全ての問題
+      let shuffuledNokoriMondai = shuffleArray(Array.from(mondai))
+      // 問題数分の出題を繰り返す
+      const count = shuffuledNokoriMondai.length
+      for (let i = 0; i < count; i++) {
+        // seikai:正解の配列 1問分取り出す
+        seikai = Array.from(shuffuledNokoriMondai.splice(0, 1))
+        // shuffledMondai:全部の問題をシャッフルしたもの ランダムで正解とかぶってない配列だけを3つ取り出して不正解の配列を作る
+        shuffledMondai = Array.from(shuffleArray(mondai))
+        // fuseikai:不正解の配列
+        fuseikai = Array.from(shuffledMondai.filter(v => v !== seikai[0]))
+        // 全部の出題の配列にpushしていく
+        allShutudai.push([fuseikai.splice(0, 3), seikai[0]])
+      }
+      resolve(allShutudai);
+    })
+
+    document.getElementById('btn').addEventListener('click', function () {
+      makeAllShutudai().then(() => {
+        init();
+      }).catch((error) => {
+        document.write(`失敗: ${error}`)
+      })
+    }, false);
+
+    const init = () => {
+      let score = document.createElement("a");
+      score.setAttribute("id", "score");
+      score.textContent = "0";
+      document.querySelector("body").appendChild(score)
+
+      let numberOfQuestions = document.createElement("a");
+      numberOfQuestions.setAttribute("id", "numberOfQuestions");
+      numberOfQuestions.textContent = `/${allShutudai.length}`;
+      document.querySelector("body").appendChild(numberOfQuestions)
+
+      for (let a of allShutudai) {
+        let block = document.createElement("div");
+        block.setAttribute("id", `mondaiBlock_${allShutudai.indexOf(a)}`);
+        document.querySelector("body").appendChild(block)
+
+        let text = document.createElement("text"); text.setAttribute("class", "question");
+        text.textContent = `${a[1][0]}`;
+        block.insertBefore(text, null)
+        oneShutudai = shuffleArray(a[0].concat([[[a[1], "seikai"]]]));
+
+        for (let i of oneShutudai) {
+          // let div = document.createElement("div"); div.setAttribute("class", "bar"); block.insertBefore(div, null)
+
+          let input = document.createElement("input");
+          input.setAttribute("class", "question");
+          input.setAttribute("type", "button");
+          input.setAttribute("style", "width:100px;height:50px");
+          if (i[0][1] === "seikai") {
+            input.setAttribute("value", i[0][0][1]);
+            input.setAttribute("name", i[0][1]);
+          } else {
+            input.setAttribute("value", i[1]);
+          }
+          block.appendChild(input);
+        }
+        let br = document.createElement("br"); block.insertBefore(br, null)
+      }
+
+      // let allButton = document.querySelectorAll('body > div > div > input');
+      let allButton = document.querySelectorAll('body > div > input');
+      allButton.forEach(button => {
+        button.addEventListener('click', function () {
+          if (button.name === "seikai") {
+            // let mondaiBlock_Num = button.parentElement.parentElement.id;
+            let mondaiBlock_Num = button.parentElement.id;
+            document.getElementById(`${mondaiBlock_Num}`).parentNode.removeChild(document.getElementById(`${mondaiBlock_Num}`))
+            score.textContent = (score.textContent - 0) + 1
+          } else {
+            console.log("fuseikai")
+          };
+        }, false);
+      })
+    }
+
+  </script>
+</body>
+
+</html>
