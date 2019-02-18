@@ -22,3 +22,5 @@ if (Array.from(palindrome).reduceRight((r, k) => r += k) === Array.from(palindro
 } else {
   "NG"
 };
+
+

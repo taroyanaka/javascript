@@ -5,11 +5,9 @@
   <meta charset="UTF-8" />
   <title>quiz</title>
 </head>
+<canvas id='c1'></canvas>
 
 <body>
-  <!-- <input id="btn" type="button" value="makeQandA" /> -->
-  <!-- <input id="btn" type="button" value="makeQandA" /> -->
-
   <script>
     allShutudai =
       [
@@ -145,20 +143,27 @@
       return array
     }
 
+    let score = document.createElement("a");
+    score.setAttribute("id", "score");
+    score.textContent = "0";
+    document.querySelector("body").appendChild(score)
+
+    let numberOfQuestions = document.createElement("a");
+    numberOfQuestions.setAttribute("id", "numberOfQuestions");
+    numberOfQuestions.textContent = `/${allShutudai.length}`;
+    document.querySelector("body").appendChild(numberOfQuestions)
+
     for (let a of allShutudai) {
       let block = document.createElement("div");
       block.setAttribute("id", `mondaiBlock_${allShutudai.indexOf(a)}`);
-      // document.querySelector("body").insertBefore(block, null)
       document.querySelector("body").appendChild(block)
 
       let text = document.createElement("text"); text.setAttribute("class", "question");
       text.textContent = `${a[1][0]}`;
-      // document.querySelector("body").insertBefore(text, null)
       block.insertBefore(text, null)
       oneShutudai = shuffleArray(a[0].concat([[[a[1], "seikai"]]]));
 
       for (let i of oneShutudai) {
-        // let div = document.createElement("div"); div.setAttribute("class", "bar"); document.querySelector("body").insertBefore(div, null)
         let div = document.createElement("div"); div.setAttribute("class", "bar"); block.insertBefore(div, null)
 
         let input = document.createElement("input");
@@ -172,7 +177,6 @@
         }
         div.appendChild(input);
       }
-      // let br = document.createElement("br"); document.querySelector("body").insertBefore(br, null)
       let br = document.createElement("br"); block.insertBefore(br, null)
     }
 
@@ -182,13 +186,16 @@
         if (button.name === "seikai") {
           let mondaiBlock_Num = button.parentElement.parentElement.id;
           document.getElementById(`${mondaiBlock_Num}`).parentNode.removeChild(document.getElementById(`${mondaiBlock_Num}`))
-          // document.getElementById('mondaiBlock_0').parentNode.removeChild(document.getElementById('mondaiBlock_0'))
+          score.textContent = (score.textContent - 0) + 1
         } else {
           console.log("fuseikai")
         };
-        // console.log(button.parentElement.parentElement.id);
       }, false);
     })
+
+
+
+
 
   </script>
 </body>
