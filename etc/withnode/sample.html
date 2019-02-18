@@ -3,18 +3,17 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>text splitter for tweet</title>
+  <title>quiz</title>
 </head>
 
 <body>
   <div>
-    <input id="btn" type="button" value="makeQandA" />
+    <input id="btn" type="button" value="make" style="width:100px;height:50px" />
   </div>
   <div>
     <textarea name="foo" id="foo" cols="20" rows="100" required="required" maxlength="100000"
       autofocus="autofocus"></textarea>
     <textarea name="bar" id="bar" cols="20" rows="100" required="required" maxlength="100000"></textarea>
-    <!-- <textarea name="baz" id="baz" cols="20" rows="100" required="required" maxlength="100000"></textarea> -->
   </div>
   <script>
     // 配列をシャッフルする関数
@@ -34,12 +33,12 @@
       (xs.length < ys.length) ? xs.map((e, i) => [e, ys[i]])
         : ys.map((e, i) => [xs[i], e]);
 
-    document.getElementById('foo').value =
-      "built\nbought\ncaught\ncut\nfelt\nfound";
+    // document.getElementById('foo').value =
+    // "built\nbought\ncaught\ncut\nfelt\nfound";
     // "built\nbought\ncaught\ncut\nfelt\nfound\nhad\nheard\nkept\nleft\nlent";
     // "built\nbought\ncaught\ncut\nfelt\nfound\nhad\nheard\nkept\nleft\nlent\nlet\nlost\nmade\nmet\nput\nread\nsaid\nsold\nsent\nsat\nslept\nspent\nstood\ntaught\ntold\nthought\nunderstand";
-    document.getElementById('bar').value =
-      "建てた\n買った\n捕まった\nカット\nフェルト\n見つかった";
+    // document.getElementById('bar').value =
+    // "建てた\n買った\n捕まった\nカット\nフェルト\n見つかった";
     // "建てた\n買った\n捕まった\nカット\nフェルト\n見つかった\n持っていました\n聞いた\n守った\n左\n貸した";
     // "建てた\n買った\n捕まった\nカット\nフェルト\n見つかった\n持っていました\n聞いた\n守った\n左\n貸した\nさせて\n迷った\n製\n会った\nプット\n読む\n前記\n売った\n送られた\n座っていた\n寝た\n費やした\n立っていた\n教えた\n言った\n思想\nわかる";
 
@@ -70,107 +69,66 @@
 
     document.getElementById('btn').addEventListener('click', function () {
       makeAllShutudai().then(() => {
-        // for (let a of allShutudai) { a.concat }
-        for (let a of allShutudai) {
-          let oneShutudai = shuffleArray(a[0].concat([a[1]]));
-          console.log(oneShutudai);
-          console.log(a[1]);
-        }
+        init();
       }).catch((error) => {
-        // document.write(`失敗: ${error}`)
+        document.write(`失敗: ${error}`)
       })
     }, false);
 
+    const init = () => {
+      let score = document.createElement("a");
+      score.setAttribute("id", "score");
+      score.textContent = "0";
+      document.querySelector("body").appendChild(score)
 
-      // while (bar.length !== 0) { if (bar.length === 0) { break } res.push(bar.splice(0, 110)) }
-      // res.map(v => joinedRes.push(v.join('')))
+      let numberOfQuestions = document.createElement("a");
+      numberOfQuestions.setAttribute("id", "numberOfQuestions");
+      numberOfQuestions.textContent = `/${allShutudai.length}`;
+      document.querySelector("body").appendChild(numberOfQuestions)
 
-      // for (let dataText of joinedRes) {
-      //   let a = document.createElement("a"); a.setAttribute("class", "twitter-share-button"); a.setAttribute("data-text", dataText);
-      //   let script = document.createElement("script"); script.setAttribute("src", "https://platform.twitter.com/widgets.js"); script.setAttribute("charset", "utf-8");
-      //   document.querySelector("body").insertBefore(a, null)
-      //   document.querySelector("body").insertBefore(script, null)
-      // }
+      for (let a of allShutudai) {
+        let block = document.createElement("div");
+        block.setAttribute("id", `mondaiBlock_${allShutudai.indexOf(a)}`);
+        document.querySelector("body").appendChild(block)
 
+        let text = document.createElement("text"); text.setAttribute("class", "question");
+        text.textContent = `${a[1][0]}`;
+        block.insertBefore(text, null)
+        oneShutudai = shuffleArray(a[0].concat([[[a[1], "seikai"]]]));
 
+        for (let i of oneShutudai) {
+          // let div = document.createElement("div"); div.setAttribute("class", "bar"); block.insertBefore(div, null)
 
+          let input = document.createElement("input");
+          input.setAttribute("class", "question");
+          input.setAttribute("type", "button");
+          input.setAttribute("style", "width:100px;height:50px");
+          if (i[0][1] === "seikai") {
+            input.setAttribute("value", i[0][0][1]);
+            input.setAttribute("name", i[0][1]);
+          } else {
+            input.setAttribute("value", i[1]);
+          }
+          block.appendChild(input);
+        }
+        let br = document.createElement("br"); block.insertBefore(br, null)
+      }
 
-
-
-    // let foo = [
-    //   "up",
-    //   "down",
-    //   "right",
-    //   "left",
-    //   "tree",
-    //   "fire",
-    //   "dog"
-    // ]
-    // let bar = [
-    //   "上",
-    //   "下",
-    //   "右",
-    //   "左",
-    //   "木",
-    //   "火",
-    //   "犬"
-    // ]
-    // const mondai = zip(foo)(bar);
-    // const mondai = [["up", "上"], ["down", "下"], ["right", "右"], ["left", "左"], ["tree", "木"], ["fire", "火"], ["dog", "犬"]]
-
-
-
-
-
-
-
-
-    // modai.push(seikai)
-
-    // const shuffle = array => {
-    //   for (var i = array.length - 1; i > 0; i--) {
-    //     var r = Math.floor(Math.random() * (i + 1));
-    //     var tmp = array[i];
-    //     array[i] = array[r];
-    //     array[r] = tmp;
-    //   }
-    //   return array
-    // }
-    // shuffledMondai = shuffle(mondai)
-
-    // question = []
-    // answer = []
-    // for (let q of bar) { question.push(q[0]) }
-    // for (let a of bar) { answer.push(a[1]) }
-    // const shuffle = array => {
-    //   for (var i = array.length - 1; i > 0; i--) {
-    //     var r = Math.floor(Math.random() * (i + 1));
-    //     var tmp = array[i];
-    //     array[i] = array[r];
-    //     array[r] = tmp;
-    //   }
-    //   return array
-    // }
-
-
-    // let getRandomIndex = (min, max) => {
-    //   return Math.floor(Math.random() * (max - min + 1)) + min;
-    // }
-    // ok = bar.splice(getRandomIndex(min, max), 1)
-
-    // // let original = [["up", "上"], ["down", "下"], ["right", "右"], ["left", "左"], ["tree", "木"], ["fire", "火"], ["dog", "犬"]]
-    // let original = [[0, 0], [1, 1], [2, 2]]
-    // let result = []
-    // while (original.length !== 0) {
-    //   result.push(
-    //     original.splice(
-    //       (
-    //         Math.floor(Math.random() * (original.length - 1 - 0 + 1)) + 0)
-    //       ,
-    //       1
-    //     )[0]
-    //   )
-    // }
+      // let allButton = document.querySelectorAll('body > div > div > input');
+      let allButton = document.querySelectorAll('body > div > input');
+      allButton.forEach(button => {
+        button.addEventListener('click', function () {
+          if (button.name === "seikai") {
+            // let mondaiBlock_Num = button.parentElement.parentElement.id;
+            let mondaiBlock_Num = button.parentElement.id;
+            document.getElementById(`${mondaiBlock_Num}`).parentNode.removeChild(document.getElementById(`${mondaiBlock_Num}`))
+            score.textContent = (score.textContent - 0) + 1
+          } else {
+            console.log("fuseikai")
+          };
+        }, false);
+      })
+    }
 
   </script>
 </body>
