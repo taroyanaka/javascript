@@ -71,6 +71,7 @@
     document.getElementById('btn').addEventListener('click', function () {
       makeAllShutudai().then(() => {
         init();
+        keyConfig();
       }).catch((error) => {
         document.write(`失敗: ${error}`)
       })
