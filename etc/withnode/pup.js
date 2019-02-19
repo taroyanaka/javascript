@@ -25,7 +25,7 @@ const path = require('path');
         ary1 = []
         for (let i = 0; i < document.querySelectorAll('a#video-title').length; i++) {
             ary1.push([
-                "'" + document.querySelectorAll('a#video-title').item(i).getAttribute("href") + "'",
+                "'" + document.querySelectorAll('a#video-title').item(i).getAttribute("href").replace(/\/watch\?v=/, "") + "'",
                 "'" + document.querySelectorAll('a#video-title').item(i).getAttribute("aria-label").split("作成者")[0] + "'"
             ])
         }
