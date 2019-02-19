@@ -3,140 +3,261 @@
 
 <head>
   <meta charset="UTF-8">
-  <script>
-    var canvas; // キャンバス
-    var ctx;    // コンテキスト
-
-    var canvas_magnification = 25;    // 表示倍率  
-    var canvas_width = 10;           // キャンバス横幅   
-    var canvas_height = 10;           // キャンバス縦幅 
-    var canvas_mousedown_flg = false; // マウスダウンフラグ
-
-    ///// 内部関数
-
-    function init_canvas() {
-      canvas_mousedown_flg = false;
-
-      ctx.fillStyle = "rgb(255, 255, 255)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      drawRule();
-    }
-
-    // 座標からブロック名を取得する   
-    function Point2BlockName(x, y) {
-      var col = 'C' + (Math.floor(x / canvas_magnification) + 1);
-      var row = 'R' + (Math.floor(y / canvas_magnification) + 1);
-
-      document.getElementById('msg3').innerHTML = 'セル番号　' + row + ' x ' + col;
-    }
-
-    // キャンバスに罫線を描画する
-    function drawRule() {
-
-      // 線の色
-      ctx.strokeStyle = "#1e90ff";
-
-      // 線の太さ
-      ctx.lineWidth = 2;
-
-      // 破線
-      if (ctx.setLineDash) {
-        ctx.setLineDash([1, 2]);
-      }
-
-      ctx.beginPath();
-
-      // 縦線
-      for (var i = 0; i < canvas_width + 1; i++) {
-        ctx.moveTo((i * canvas_magnification), 0);
-        ctx.lineTo((i * canvas_magnification), canvas.height);
-      }
-
-      // 横線
-      for (var i = 0; i < canvas_height + 1; i++) {
-        ctx.moveTo(0, (i * canvas_magnification));
-        ctx.lineTo(canvas.height, (i * canvas_magnification));
-      }
-
-      ctx.stroke();
-    }
-
-    ///// イベント
-
-    window.onload = function () {
-      // キャンバス
-      canvas = document.getElementById("MyCanvas");
-
-      canvas.width = canvas_width * canvas_magnification;
-      canvas.height = canvas_height * canvas_magnification;
-
-      ctx = canvas.getContext("2d");
-
-      canvas.addEventListener('mousedown', OnMousedown);
-      canvas.addEventListener('mousemove', OnMousemove);
-      canvas.addEventListener('mouseup', OnMouseup);
-      window.addEventListener('mouseup', OnMouseup);
-
-      init_canvas();
-    }
-
-    function OnMousedown(e) {
-      var rect = e.target.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-
-      // 塗りつぶし
-      var col = Math.floor(mouseX / canvas_magnification);
-      var row = Math.floor(mouseY / canvas_magnification);
-
-      ctx.fillStyle = "rgb(200, 0, 0)";
-      ctx.fillRect(col * canvas_magnification, row * canvas_magnification,
-        canvas_magnification, canvas_magnification);
-
-      // 罫線の描画
-      drawRule();
-
-      document.getElementById('msg2').innerHTML = 'マウスダウン　X:' + mouseX + ' Y' + mouseY;
-
-      canvas_mousedown_flg = true;
-    }
-
-    function OnMousemove(e) {
-      var rect = e.target.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-
-      if (canvas_mousedown_flg) {
-        // 塗りつぶし
-        var col = Math.floor(mouseX / canvas_magnification);
-        var row = Math.floor(mouseY / canvas_magnification);
-
-        ctx.fillStyle = "rgb(200, 0, 0)";
-        ctx.fillRect(col * canvas_magnification, row * canvas_magnification,
-          canvas_magnification, canvas_magnification);
-
-        drawRule();
-      }
-
-      document.getElementById('msg1').innerHTML = '現在座標　X:' + mouseX + ' Y' + mouseY;
-      Point2BlockName(mouseX, mouseY);
-    }
-
-    function OnMouseup(e) {
-      canvas_mousedown_flg = false;
-    }            
-  </script>
+  <title>sample2</title>
 </head>
+<script src="./data.js" charset="utf-8"></script>
 
 <body>
-  <button onclick="init_canvas();">クリア</button>
-  <p></p>
-  <canvas id="MyCanvas" style="paddling:0;"></canvas>
-  <div id="msg1"></div>
-  <div id="msg2"></div>
-  <div id="msg3"></div>
-
 </body>
+<script>
+  // count = Array.from(data.length);
+  // for (let i; i < data.length; i++) {
+  ary = [];
+  while (data.length !== 0) {
+    ary.push(data.splice(0, 4))
+    // console.dir(data)
+  }
+  ary.splice(0, 200);
+  // data.forEach(v => { console.dir(v) })
+  // console.dir(ary)
+
+  for (let a of ary) {
+    console.dir(a)
+    let iframe = document.createElement('iframe')
+    iframe.setAttribute('src', `https://www.youtube.com${a[0]}`)
+    iframe.setAttribute('height', '180')
+    iframe.setAttribute('width', '320')
+    document.querySelector('body').insertBefore(iframe, null)
+  }
+  // }
+
+  const id = [
+    [
+      "ro3wdGLveLw",
+      "mvN055oCEw4",
+      "aqtx9sbhKbA",
+      "dtoAGrzCh3g",
+      "YN_sPDBsN6s",
+      "rsGDskuGLx4",
+      "PIdCt6005sw",
+      "ow9QW8vot2M",
+      "MbplpcAGSZ8",
+      "pwsTaJN_-Xo",
+      "cqqZdmatIlQ",
+      "Z4V857N1oWs",
+      "8iu_1PvTFY8",
+      "2GmcMqHCuS4",
+      "8A3QyYkbCHg",
+      "VTnyrkXUTnY",
+      "H2FXK5AvxWM",
+      "ZmLCKP8GxHY",
+      "v-Y5v_bJxRY",
+      "Vs52i0vTpoA",
+      "uejEBQz68vQ",
+      "ZAbtm01_0u8",
+      "taCXLNxyd4U",
+      "-c07QNF8lmM",
+      "mToIHkrsLv4",
+      "Cit4I-rIvz0",
+      "MXRp2MOyAS8",
+      "6b5c9AyMVCM",
+      "bViB_P7RTDU",
+      "8HeYUZ5epK4",
+      "-2Fd7z3UxB8",
+      "COoKRYk-HWU",
+      "kJxI-Rn9igU",
+      "CEiFeypSjIc",
+      "UPJbEXPZJ94",
+      "GmNtBRn1zXA",
+      "SbH_MQjTqtY",
+      "WR1Ri1q9Jlk",
+      "x5NRmFSTEgU",
+      "gBfmo3HWC7I",
+      "mBTc_ZH5Tos",
+      "Oc98bOxWgmI",
+      "ChT0OtXd38A",
+      "aVlKRfn2JOA",
+      "MCEpzF32CvM",
+      "P0-ERP6Mma8",
+      "65Agd6hWO4I",
+      "wSugTdAAPWM",
+      "BLuNeH-Rb_s",
+      "Ul7AeF_vULg"
+    ],
+    [
+      "0eHE-jfRQPo",
+      "Q516Xg1Yyp4",
+      "wv2u8chsvME",
+      "jQgBOYbMqyA",
+      "UQCWq_ffMBI",
+      "aTqpW9ycoa4",
+      "Ze84e_Q1DpE",
+      "qp0qwmhgfX8",
+      "VF24QAR8hFA",
+      "fjpTLExIpdI",
+      "FX4SiEt5_tE",
+      "EAYzxcCltPE",
+      "qqoNGI4TzEg",
+      "UKJexpV71zc",
+      "oE-Ddi1J4Bg",
+      "boVn0-uTLAA",
+      "Ui5npNQJqUQ",
+      "IHd6JU-yvKs",
+      "zmzLoQMWbKg",
+      "wY5b950J3pg",
+      "5oQ3uwKPWvI",
+      "LVoBZQvbFBY",
+      "jXSWrRf2GbI",
+      "yGsHT23Nhe0",
+      "RkHMOwscpo0",
+      "U0ReKHcNHoM",
+      "9ZkHLRTiSkY",
+      "LYwCjIYaeA4",
+      "9Tvx8yFO13c",
+      "DU6jo4kVx1M",
+      "fO1n8O6OUSY",
+      "qwj46cIlum0",
+      "2GtPP6LMZ9o",
+      "kPrz2mHkYig",
+      "8IKCYuhsxWA",
+      "3XfvyV-waaU",
+      "y1wVuhFrGEM",
+      "dIpp7PMtRjQ",
+      "0XW3zl29E88",
+      "0NdNZRb2QIA",
+      "PiQbtffFaPE",
+      "JXzai83-DYM",
+      "jdENca9tiPY",
+      "vfc8rbT-qvM",
+      "INM1WQn85qU",
+      "gbxNSmIwKjY",
+      "EczNJZMm3N8",
+      "3cTbqI4rdtg",
+      "mg3yvNI_V1k",
+      "UbdUZqKGfzk"
+    ],
+    [
+      "KMXJhVHFl58",
+      "TxoLYUMVzwc",
+      "PSUj5ApbdMY",
+      "3lceSnyMqWc",
+      "5kzKKyR4sOM",
+      "PDLlXUJt72M",
+      "77GgCa8hIM4",
+      "eTTVvajQa7s",
+      "IfvMYor50Jw",
+      "0SlkUL5Zh_8",
+      "nsxtjjG_2mc",
+      "3xXg5rtpPt0",
+      "zINy5acy9mQ",
+      "4Kn4F-sBqk8",
+      "YQbZh8sHZcM",
+      "XvaOk3ofjmI",
+      "rD6EQNfxPVg",
+      "D9XJfT8y8tY",
+      "9cw73ojwKaY",
+      "itZqqSUDAkI",
+      "aYdBTbWvfSc",
+      "l9jKiaeCqpI",
+      "dGfnQSfUQz0",
+      "jgH1QeiSovw",
+      "GCg0dxa080k",
+      "7TGeCd9CLwo",
+      "Aa-p5FwlTnQ",
+      "MysG2WM-z7M",
+      "qvtnZMvYLjA",
+      "xu6U1Ax3XxQ",
+      "PsEoPdCGcYg",
+      "E3RhZFRF3cI",
+      "QEKaTCsJGO8",
+      "4zZFJlzn4vk",
+      "iG8UAHIuHeI",
+      "d6V8FHl8UYo",
+      "OR0B48QiJCk",
+      "eyIzSzrbNjM",
+      "FrsKSq0Z_vk",
+      "0tf7_k1QrIQ",
+      "oT4vLQZJHPY",
+      "IRHYxJy_Uxw",
+      "0dx-7vwJJrc",
+      "JxRDI5zuEls",
+      "v3yfH2VQ-YM",
+      "7GdKL73c9Ps",
+      "cqGF-Eo619w",
+      "AWwByXghUrI",
+      "n_6V6LiMwic",
+      "lTWlJYcqXQQ"
+    ],
+    [
+      "gL4BTjesguo",
+      "JoEwfyKaGRg",
+      "Ncp4LiKEA1Y",
+      "oGaLDnvvZyE",
+      "i6PVl6hdD0Q",
+      "LE-JN7_rxtE",
+      "caNJJ0prYtg",
+      "txaNSynY4nc",
+      "bVJGxBMAW6I",
+      "Bul44v1mbnY",
+      "dS6QyCENcd8",
+      "2zSPu2J4-nc",
+      "FnLYpzYwctM",
+      "JB3N6tLgXW8",
+      "TjxAtc_8nuA",
+      "jHCsYeVWK5A",
+      "kjyKUIx3Ou8"
+    ]
+  ]
+
+
+
+
+  // // let ids = [];
+  // for (let ary of id) {
+  //   ary.forEach(v => ids.push(v));
+  // }
+  // let iframe = document.createElement('iframe')
+  // iframe.setAttribute('src', `http://www.youtube.com/embed/${ids[0]}`)
+  // iframe.setAttribute('height', '180')
+  // iframe.setAttribute('width', '320')
+
+
+  // document.querySelector('body').insertBefore(iframe, null)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // ary1.forEach(v => console.log(v))
+
+  // chrome \
+  // --headless \
+  // --disable - gpu \
+  // --remote - debugging - port=9222 \
+  // https://www.chromestatus.com
+
+  // result = "HIKAKIN Beatbox 2015 ver. 作成者: HIKAKIN 3 年前 85 秒 3,141,205 回視聴".replace(/作成者/, `\n`).replace(/前/, `\n`).split("\n");
+  // ary3 = []
+  // ary2.forEach(text => {
+    // result = text.replace(/前/, `\n`).split("\n");
+    // result[1] = result[1].replace(/HIKAKIN/g, "");
+    // [time, count] = result[2].split("秒");
+    // result.pop(); result.push(time); result.push(count);
+    // result = [result[0]].concat(result.filter(v => { return v !== result[0] }).map(v => v.replace(/:| |,|回視聴/g, "")));
+    // ary3.push(result);
+  // })
+
+</script>
+
 
 </html>

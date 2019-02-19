@@ -21,6 +21,7 @@
     "htmlparser2": "^3.10.0",
     "jsdom": "^13.1.0",
     "mocha": "^5.2.0",
+    "puppeteer": "^1.12.2",
     "query-selector": "^1.0.9",
     "ramda": "^0.26.1",
     "request": "^2.88.0"

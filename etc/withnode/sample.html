@@ -145,6 +145,45 @@
     })();
   }
 
+  // let APIKEY = "AIzaSyBXIXZRXdIst4E4sHg11LgoYV8VRyFRfx0";
+  // let ID = "UClLV6D8S4CrVJL64-aQvwTw";
+
+  // let obj;
+  // let requestURL;
+  // requestURLArray = ["https://www.googleapis.com/youtube/v3/search?part=id",
+  //   "order=date",
+  //   "maxResults=50",
+  //   "type=video",
+  //   `key=${APIKEY}`,
+  //   `channelId=${ID}`]
+
+  // requestYouTube = () => {
+  //   fetch(requestURLArray.join('&'))
+  //     .then(response => response.json())
+  //     .catch(error => console.log(error))
+  //     .then(response => {
+  //       // obj = JSON.parse(JSON.stringify(response))
+  //       allVideoId.push(JSON.parse(JSON.stringify(response)).items.map(v => v.id.videoId));
+  //       if (JSON.parse(JSON.stringify(response)).nextPageToken) {
+  //         requestURLArray = ["https://www.googleapis.com/youtube/v3/search?part=id",
+  //           "order=date",
+  //           "maxResults=50",
+  //           "type=video",
+  //           `key=${APIKEY}`,
+  //           `channelId=${ID}`,
+  //           `pageToken=${JSON.parse(JSON.stringify(response)).nextPageToken}`]
+  //         requestYouTube();
+  //       }
+  //     })
+  // }
+
+  // allVideoId = [];
+  // requestYouTube();
+
+  // while (obj.nextPageToken) {
+  //   requestYouTube();
+  // }
+
 </script>
 
 </html>
