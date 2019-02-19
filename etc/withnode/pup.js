@@ -1,6 +1,8 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
+const DIRPATH = '/Users/yanakataro/Desktop/javascript/etc/withnode';
+const FILENAME = 'data.js';
 
 (async () => {
     const browser = await puppeteer.launch({ headless: true });
@@ -53,7 +55,7 @@ const path = require('path');
         return "var data = [" + data + "]"
     });
 
-    await fs.writeFile(path.join('/Users/yanakataro/Desktop/javascript/etc/withnode', 'data.js'), datas, (error) => {
+    await fs.writeFile(path.join(DIRPATH, FILENAME), datas, (error) => {
         console.log(error);
         if (error) {
             console.log('ファイル書き込みエラーです.');
