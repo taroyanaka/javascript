@@ -8,6 +8,7 @@
 </head>
 
 <body>
+  <div><br></div>
   <div>
     <input type="button" id="start" value="start" style="width:100px;height:50px" />
   </div>
@@ -15,6 +16,9 @@
   <canvas id="MyCanvas" style="paddling:0;"></canvas>
   <canvas id='c1'></canvas>
   <div id="position"></div>
+  <div id="msg0"></div>
+  <div id="msg1"></div>
+  <div id="msg2"></div>
 </body>
 <script>
 
@@ -99,7 +103,9 @@
     var rect = e.target.getBoundingClientRect();
     mouseX = e.clientX - rect.left;
     mouseY = e.clientY - rect.top;
-    // document.getElementById('msg1').innerHTML = '現在座標　X:' + mouseX + ' Y' + mouseY;
+    document.getElementById('msg0').innerHTML = '現在座標　X:' + mouseX + ' Y' + mouseY;
+    document.getElementById('msg1').innerHTML = '現在座標　rect.left:' + rect.left + ' rect.top' + rect.top;
+    document.getElementById('msg2').innerHTML = '現在座標　e.clientX ' + e.clientX + ' e.clientY' + e.clientY;
     Point2BlockName(mouseX, mouseY);
   }
   function Point2BlockName(x, y) {
