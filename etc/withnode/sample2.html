@@ -24,7 +24,7 @@
   for (let a of ary) {
     console.dir(a)
     let iframe = document.createElement('iframe')
-    iframe.setAttribute('src', `https://www.youtube.com${a[0]}`)
+    iframe.setAttribute('src', `https://www.youtube.com/embed/${a[0]}`)
     iframe.setAttribute('height', '180')
     iframe.setAttribute('width', '320')
     document.querySelector('body').insertBefore(iframe, null)
