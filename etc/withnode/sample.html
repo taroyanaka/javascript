@@ -9,6 +9,7 @@
 
 <body>
   <div><br></div>
+
   <div>
     <input type="button" id="start" value="start" style="width:100px;height:50px" />
   </div>
@@ -19,6 +20,7 @@
   <div id="msg0"></div>
   <div id="msg1"></div>
   <div id="msg2"></div>
+  <div id="msg3"></div>
 </body>
 <script>
 
@@ -87,6 +89,15 @@
 
     canvas.addEventListener('mousemove', OnMousemove);
     canvas.addEventListener('mousedown', OnMousedown);
+
+    document.querySelector("body").addEventListener('mousemove', ((e) => {
+      document.getElementById('msg2').innerHTML = 'スクロール後のページ表示の中の座標　e.clientX ' + e.clientX + ' e.clientY' + e.clientY;
+    }))
+
+    document.querySelector("body").addEventListener('mousemove', ((e) => {
+      document.getElementById('msg3').innerHTML = 'page全体の中の座標　e.pageX ' + e.pageX + ' e.pageY' + e.pageY;
+    }))
+
     document.querySelector('#start').addEventListener('click', move);
 
 
@@ -105,7 +116,7 @@
     mouseY = e.clientY - rect.top;
     document.getElementById('msg0').innerHTML = '現在座標　X:' + mouseX + ' Y' + mouseY;
     document.getElementById('msg1').innerHTML = '現在座標　rect.left:' + rect.left + ' rect.top' + rect.top;
-    document.getElementById('msg2').innerHTML = '現在座標　e.clientX ' + e.clientX + ' e.clientY' + e.clientY;
+    // document.getElementById('msg2').innerHTML = '現在座標　e.clientX ' + e.clientX + ' e.clientY' + e.clientY;
     Point2BlockName(mouseX, mouseY);
   }
   function Point2BlockName(x, y) {
@@ -117,8 +128,8 @@
   }
 
   function OnMousedown(e) {
-    spotCol = col;
-    spotRow = row;
+    spotCol = col - 1;
+    spotRow = row - 1;
     let spot = document.getElementById('MyCanvas');
     tyle = spot.getContext('2d');
     tyle.beginPath();
@@ -126,7 +137,7 @@
     // tyle.moveTo(10, y)
     // tyle.fillRect((row * 10), (col * 10), 10, 10);
     // tyle.fillRect((col * 10), (row * 10), 10, 10);
-    tyle.fillRect((col * canvas_magnification) - canvas_magnification, (row * canvas_magnification) - canvas_magnification, canvas_magnification, canvas_magnification);
+    tyle.fillRect((spotCol * canvas_magnification), (spotRow * canvas_magnification), canvas_magnification, canvas_magnification);
   }
 
   const move = () => {
