@@ -101,6 +101,7 @@ function namedArgumentFunc({
 
 
 
+
 namedArgumentFunc({
     qux: false,
     foo: 'content.html',
@@ -109,6 +110,25 @@ namedArgumentFunc({
 // 関数定義引数末尾に={}を付けたので引数無しで関数を実行できる
 // namedArgumentFunc();
 
+
+
+/**
+ *
+ *
+ * @param {*} [{
+ *     foo = 'bar',
+ *     baz = 200,
+ *     qux = false
+ * }={}]
+ * @returns
+ */
+function namedArgumentFunc2({
+    foo = 'bar',
+    baz = 200,
+    qux = false
+} = {}) {
+    return `a=${foo}, b=${baz}, c=${qux}`;
+}
 
 
 // function showPanel(

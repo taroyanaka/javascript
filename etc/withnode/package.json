@@ -15,6 +15,7 @@
   "dependencies": {
     "chai": "^4.2.0",
     "csvtojson": "^2.0.8",
+    "faker": "^4.1.0",
     "fast-html-parser": "^1.0.1",
     "firebase-admin": "^6.5.0",
     "global-tunnel-ng": "^2.7.1",
