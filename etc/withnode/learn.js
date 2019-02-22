@@ -64,6 +64,61 @@
 //     });
 // }
 
+
+// function foo(bar) {
+//     bar += 1
+//     return bar
+// }
+
+/**
+ * @param  {} {a=10
+ * @param  {} b=20
+ * @param  {} c=30}={}
+ */
+// function hoge({ a = 10, b = 20, c = 30 } = {}) {
+
+
+
+// VS codeのAdd jsdoc commentsというpluginでJSDocを生成
+/**
+ * @param  {} {foo='bar'
+ * @param  {} baz=200
+ * @param  {} qux=false}={}
+ */
+function namedArgumentFunc({
+    foo = 'bar',
+    baz = 200,
+    qux = false
+} = {}) {
+    console.log(`a=${foo}`, `b=${baz}`, `c=${qux}`);
+}
+
+namedArgumentFunc({
+    qux: false,
+    foo: 'content.html',
+    // 引数の順序関係無し&必要な引数だけを指定できる
+});
+// 関数定義引数末尾に={}を付けたので引数無しで関数を実行できる
+namedArgumentFunc();
+
+
+
+// function showPanel(
+//     path = 'content.html',
+//     height = 200,
+//     modeless = false
+// ) {
+//     console.log(`a=${path}`, `b=${height}`, `c=${modeless}`);
+// }
+
+// showPanel(
+//     modeless: false,
+//     //全ての引数を指定しないとerrorになる
+//     path: 'content.html',
+// );
+
+
+
 // req('https://qiita.com/murase/items/908cf31b6776448a5b1d')
 //     .then(body => (
 //         HTMLParser.parse(body)
@@ -203,27 +258,27 @@
 
 
 
-const csvStr = '1,2,3\n3,4,5\n7,8,9'
-const value = ["https://www.xvideos.com/video25717629/best-2017-01/0/aya_kawasaki", "https://www.xvideos.com/video25718969/best-2017-01/0/asian_schoolgirl", "https://www.xvideos.com/video26134121/best-2017-01/0/loped_mature_asian"].toString();
+// const csvStr = '1,2,3\n3,4,5\n7,8,9'
+// const value = ["https://www.xvideos.com/video25717629/best-2017-01/0/aya_kawasaki", "https://www.xvideos.com/video25718969/best-2017-01/0/asian_schoolgirl", "https://www.xvideos.com/video26134121/best-2017-01/0/loped_mature_asian"].toString();
 
-const csv = require("csvtojson")
-csv({
-    noheader: true,
-    output: "csv"
-})
-    .fromString(value)
-    .then((jsonObj) => {
-        console.log(jsonObj) // => [["1","2","3"], ["4","5","6"], ["7","8","9"]]
-    })
+// const csv = require("csvtojson")
+// csv({
+//     noheader: true,
+//     output: "csv"
+// })
+//     .fromString(value)
+//     .then((jsonObj) => {
+//         console.log(jsonObj) // => [["1","2","3"], ["4","5","6"], ["7","8","9"]]
+//     })
 
 
-for (let num of range(1, 3)) {
-    Array.from(
-        document.querySelectorAll(`#container > section.boxTagList.data-tag.clearFix > ul > li:nth-child(${num}) > dl > dt > a > span,#container > section.boxTagList.data-tag.clearFix > ul > li:nth-child(${num}) > dl > dd.txtNumber`))
-        .forEach(v => {
-            ary.push([v.textContent.replace(/,/, "").replace(/ 投稿/, "").split('\n')])
-        })
-}
+// for (let num of range(1, 3)) {
+//     Array.from(
+//         document.querySelectorAll(`#container > section.boxTagList.data-tag.clearFix > ul > li:nth-child(${num}) > dl > dt > a > span,#container > section.boxTagList.data-tag.clearFix > ul > li:nth-child(${num}) > dl > dd.txtNumber`))
+//         .forEach(v => {
+//             ary.push([v.textContent.replace(/,/, "").replace(/ 投稿/, "").split('\n')])
+//         })
+// }
 
 
 
