@@ -80,16 +80,27 @@ function hoge(foo = "bar") {
  * @param  {string} {foo='bar'
  * @param  {string} baz=200
  * @param  {boolean} qux=false}={}
- * @returns {string} `a=${foo}`, `b=${baz}`, `c=${qux}`
+ * @returns {string} `a=${foo}, b=${baz}, c=${qux}`
+ * @example
+     *
+     namedArgumentFunc({
+         qux: false,
+         foo: 'content.html',
+     });
+ * // returns {string} `a=content.html b=200 c=false`
  */
 function namedArgumentFunc({
     foo = 'bar',
     baz = 200,
     qux = false
 } = {}) {
-    // console.log(`a=${foo}`, `b=${baz}`, `c=${qux}`);
-    return `a=${foo}`, `b=${baz}`, `c=${qux}`;
+    return `a=${foo}, b=${baz}, c=${qux}`;
 }
+
+
+
+
+
 
 namedArgumentFunc({
     qux: false,
@@ -97,7 +108,7 @@ namedArgumentFunc({
     // 引数の順序関係無し&必要な引数だけを指定できる
 });
 // 関数定義引数末尾に={}を付けたので引数無しで関数を実行できる
-namedArgumentFunc();
+// namedArgumentFunc();
 
 
 
