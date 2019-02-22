@@ -77,7 +77,6 @@ function hoge(foo = "bar") {
 // VS codeのAdd jsdoc commentsというpluginでJSDocを生成
 // const namedArgumentFunc = ... =>{...} の形式で関数定義するとAdd jsdoc comments不可(対応してほしい...)
 /**
- * @param {type} name="default" description
  * @param  {string} {foo='bar' first argument
  * @param  {string} baz=200 second argument
  * @param  {boolean} qux=false}={} third argument
