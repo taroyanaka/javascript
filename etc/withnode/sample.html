@@ -22,10 +22,18 @@
   <div id="msg2"></div>
   <div id="msg3"></div>
 </body>
-<script>
 
+<!-- <script src="https://rawgit.com/Marak/faker.js/master/examples/browser/js/faker.js" type="text/javascript"></script> -->
+<script src="faker.js" type="text/javascript"></script>
+<script>
+  var randomName = faker.name.findName(); // Caitlyn Kerluke
+  console.log(randomName);
+  var randomEmail = faker.internet.email(); // Rusty@arne.info
+  var randomCard = faker.helpers.createCard(); // random contact card containing many properties
+</script>
+<script>
   var canvas; // キャンバス
-  var ctx;    // コンテキスト
+  var ctx; // コンテキスト
 
   let col;
   let row;
@@ -34,9 +42,9 @@
   let spotRow;
 
   // var canvas_magnification = 10;    // 表示倍率  
-  var canvas_magnification = 25;    // 表示倍率  
-  var canvas_width = 10;           // キャンバス横幅   
-  var canvas_height = 10;           // キャンバス縦幅 
+  var canvas_magnification = 25; // 表示倍率  
+  var canvas_width = 10; // キャンバス横幅   
+  var canvas_height = 10; // キャンバス縦幅 
 
 
   ///// 内部関数
@@ -91,7 +99,8 @@
     canvas.addEventListener('mousedown', OnMousedown);
 
     document.querySelector("body").addEventListener('mousemove', ((e) => {
-      document.getElementById('msg2').innerHTML = 'スクロール後のページ表示の中の座標　e.clientX ' + e.clientX + ' e.clientY' + e.clientY;
+      document.getElementById('msg2').innerHTML = 'スクロール後のページ表示の中の座標　e.clientX ' + e.clientX + ' e.clientY' + e
+        .clientY;
     }))
 
     document.querySelector("body").addEventListener('mousemove', ((e) => {
@@ -119,6 +128,7 @@
     // document.getElementById('msg2').innerHTML = '現在座標　e.clientX ' + e.clientX + ' e.clientY' + e.clientY;
     Point2BlockName(mouseX, mouseY);
   }
+
   function Point2BlockName(x, y) {
     col = (Math.floor(x / canvas_magnification) + 1);
     // col = x / canvas_magnification + 1;
@@ -137,7 +147,8 @@
     // tyle.moveTo(10, y)
     // tyle.fillRect((row * 10), (col * 10), 10, 10);
     // tyle.fillRect((col * 10), (row * 10), 10, 10);
-    tyle.fillRect((spotCol * canvas_magnification), (spotRow * canvas_magnification), canvas_magnification, canvas_magnification);
+    tyle.fillRect((spotCol * canvas_magnification), (spotRow * canvas_magnification), canvas_magnification,
+      canvas_magnification);
   }
 
   const move = () => {
@@ -155,14 +166,18 @@
         // mover.moveTo(canvas_magnification, y)
         mover.fillRect(x, y, canvas_magnification, canvas_magnification);
         // mover.fillRect()
-        if (x == ((spotCol - 1) * canvas_magnification) && y == ((spotRow - 1) * canvas_magnification)) { init_canvas(); exit; }
+        if (x == ((spotCol - 1) * canvas_magnification) && y == ((spotRow - 1) * canvas_magnification)) {
+          init_canvas();
+          exit;
+        }
         // console.dir(mover.canvas.);
-        if (y === (10 * canvas_magnification)) { exit; }
+        if (y === (10 * canvas_magnification)) {
+          exit;
+        }
         timer();
       }, 1000);
     })();
   }
-
 </script>
 
 </html>

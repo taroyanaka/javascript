@@ -77,16 +77,16 @@ function hoge(foo = "bar") {
 // VS codeのAdd jsdoc commentsというpluginでJSDocを生成
 // const namedArgumentFunc = ... =>{...} の形式で関数定義するとAdd jsdoc comments不可(対応してほしい...)
 /**
- * @param  {string} {foo='bar' first argument
- * @param  {string} baz=200 second argument
- * @param  {boolean} qux=false}={} third argument
+ * @param  {string} {foo='bar' random.number
+ * @param  {string} baz=200 random.word
+ * @param  {boolean} qux=false}={} random.boolean
  * @returns {string} `a=${foo}, b=${baz}, c=${qux}`
  * @example
      namedArgumentFunc({
          qux: false,
          foo: 'content.html',
      });
- * // returns {string} `a=content.html b=200 c=false`
+ * // returns {string} a=content.html, b=200, c=false'
  */
 function namedArgumentFunc({
     foo = 'bar',
@@ -96,8 +96,107 @@ function namedArgumentFunc({
     return `a=${foo}, b=${baz}, c=${qux}`;
 }
 
+for (let i = 0; i <= 100; i++) {
+    randomNumber = require("faker").random.number();
+    randomWord = require('faker').random.word();
+    randomBoolean = require('faker').random.boolean();
+    res = `a=${randomNumber}, b=${randomWord}, c=${randomBoolean}`
+
+    require('assert').equal(
+        namedArgumentFunc({
+            foo: randomNumber,
+            baz: randomWord,
+            qux: randomBoolean,
+        }),
+        res,
+        console.log("ok!")
+    )
+}
 
 
+const foo = (bar) => {
+    return "bar"
+}
+
+require('assert').equal(
+    foo("bar"),
+    "bar",
+    console.log(`test is clear`)
+)
+
+
+
+
+
+require('assert').equal(
+    namedArgumentFunc({
+        qux: false,
+        foo: 'content.html',
+    }),
+    'a=content.html b=200 c=false'
+);
+
+
+
+const assert = require('assert').strict;
+assert.ok(true);
+
+console.log(require("ramda").add(2, 3));
+
+
+const assert = require('assert');
+
+require('assert').ok(/^hello/.test('hello world!'));
+
+
+
+
+// var http = require('http'),
+//     vm = require('vm'),
+//     concat = require('concat-stream'); // this is just a helper to receive the
+// // http payload in a single callback
+// // see https://www.npmjs.com/package/concat-stream
+
+// http.get({
+//         host: "https://rawgit.com",
+//         port: 80,
+//         path: '/Marak/faker.js/master/examples/browser/js/faker.js'
+//     },
+//     function (res) {
+//         res.setEncoding('utf8');
+//         res.pipe(concat({
+//             encoding: 'string'
+//         }, function (remoteSrc) {
+//             vm.runInThisContext(remoteSrc, 'remote_modules/faker.js');
+//         }));
+//     });
+
+
+// email regexp https://qiita.com/sakuro/items/1eaa307609ceaaf51123
+// node.js assert http://sucrose.hatenablog.com/entry/20120304/p1
+// faker.js https://github.com/Marak/faker.js/tree/master/build/build
+require('assert').ok(
+    // check true
+    /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    .test(
+        require("faker").internet.email()
+    ),
+    console.log(`test is clear`)
+);
+
+[1, 2, 3].forEach(currentItem => {
+    console.log(currentItem);
+});
+console.log()
+
+
+
+var regex1 = RegExp('foo*');
+var regex2 = RegExp('foo*', 'g');
+var str1 = 'table football';
+
+console.log(/^hello/.test('hello world!'))
+// expected output: true
 
 
 
@@ -109,6 +208,7 @@ namedArgumentFunc({
 });
 // 関数定義引数末尾に={}を付けたので引数無しで関数を実行できる
 // namedArgumentFunc();
+
 
 
 
