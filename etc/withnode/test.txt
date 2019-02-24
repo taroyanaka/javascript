@@ -1,0 +1,7 @@
+ * @example
+     namedArgumentFunc({
+         qux: false,
+         foo: 'content.html',
+     })
+ * // returns {string} 'a=content.html, b=200, c=false'
+ */

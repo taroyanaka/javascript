@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<result>
+<version>1.1</version>
+<address>中原図書館</address>
+<coordinate>
+<lat>35.576038</lat>
+<lng>139.659245</lng>
+<lat_dms>35,34,33.736</lat_dms>
+<lng_dms>139,39,33.283</lng_dms>
+</coordinate>
+<url>https://www.geocoding.jp/?q=%E4%B8%AD%E5%8E%9F%E5%9B%B3%E6%9B%B8%E9%A4%A8</url>
+<needs_to_verify>no</needs_to_verify>
+<google_maps>中原図書館</google_maps>
+</result>
