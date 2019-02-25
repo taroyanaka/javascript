@@ -2,9 +2,21 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
 const DIRPATH = '/Users/yanakataro/Desktop/javascript/etc/withnode/YT/data';
-// const FILENAME = 'data.js';
-let id = 'UC3LAEwEhZ0Yn3l4-WatZo2Q';
 
+// let ids = ['UC3LAEwEhZ0Yn3l4-WatZo2Q','UCaminwG9MTO4sLYeC3s6udA']
+// let ids = ['UC3LAEwEhZ0Yn3l4-WatZo2Q']//,'UCaminwG9MTO4sLYeC3s6udA']
+let ids = `UC8XBizOfQBLUrUcv_9DHCog
+UCNqbJ7zpxAxC2BxPx-xmx6g
+UCTFT5NbDl0Fa_fE9Cz_yOAA
+UCXqoK3nPrsCnPIxyavw0jOw`.split("\n")
+// UCoHvCDsrfF4I4-dGuyrH-3Q
+// UCJxYlnZBZc7Ol4FZB9kwl4g
+// UCrZUphkUSr0akC0oGui4QOA
+// UC8i702PRk-GvL1bJu5_6dAQ
+// UCsN0m1lwpEDOcMy4SoLI8Pw
+// UC7RMi15o0aQacJhxOc6LLmw
+
+for(let id of ids){
 (async () => {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
@@ -18,7 +30,7 @@ let id = 'UC3LAEwEhZ0Yn3l4-WatZo2Q';
             y: 0,
             xDistance: 0,
             yDistance: -5000,
-            repeatCount: 2,
+            repeatCount: 100,
             repeatDelayMs: 200
 
         }
@@ -57,16 +69,9 @@ let id = 'UC3LAEwEhZ0Yn3l4-WatZo2Q';
         return data;
     });
 
-    await require('fs').writeFileSync(`./${id}.js`, `var ${id} = [${datas}]`);
-
-    // await fs.writeFile(path.join(DIRPATH, FILENAME), datas, (error) => {
-    //     console.log(error);
-    //     if (error) {
-    //         console.log('ファイル書き込みエラーです.');
-    //     } else {
-    //         console.log('ファイルに書き込みました.');
-    //     }
-    // });
+    await require('fs').writeFileSync(`${DIRPATH}/${id}.js`, `var ${id} = [${datas}]`);
 
     await browser.close();
 })();
+
+}
