@@ -1,3 +1,5 @@
+// cat library.txt |xargs -n1 wget
+
 const fileNameAry = [
 "三重県の図書館一覧",
 "京都府の図書館一覧",
@@ -73,6 +75,9 @@ const scrape = (fileName) =>{
   }
   let ary = await R.flatten(all).filter(V=>/図書館/.test(V))//.filter(V=>/!template|!Template|!プロジェクト|!一覧/.test(V));
   let txt = await ary.join("','");
-  await require('fs').writeFileSync('./hogehogehoge.txt', txt);
+  await require('fs').writeFileSync('./result.txt', txt);
 })();
 
+// cat result.txt|sort|uniq > result2.txt
+// cat result2.txt|while read LINE;do wget "https://www.geocoding.jp/api/?v=1.1&q="$LINE;sleep 10;done;
+// ls www.geocoding.jp/api/

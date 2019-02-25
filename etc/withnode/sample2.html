@@ -5,222 +5,70 @@
   <meta charset="UTF-8">
   <title>sample2</title>
 </head>
-<script src="./data.js" charset="utf-8"></script>
+<script src="./YT/data/all2.js" charset="utf-8"></script>
+<script src="../ramda.js" charset="utf-8"></script>
 
 <body>
 </body>
 <script>
   // count = Array.from(data.length);
   // for (let i; i < data.length; i++) {
-  ary = [];
-  while (data.length !== 0) {
-    ary.push(data.splice(0, 4))
-    // console.dir(data)
+  // const R = require('ramda');
+
+  let name = data.filter(V => V[0]).map(V => V.splice(0, 1))
+  let all = [];
+  data.filter(V => V[0]).map(V => {
+    ary = [];
+    while (V.length !== 0) {
+      ary.push(V.splice(0, 4))
+    }
+    all.push(ary)
+  })
+  let res = R.zip(name, all)
+
+  let result = [];
+  let hoge = [];
+  for (let r of res) {
+    let name = r[0][0];
+    for (let list of r[1]) {
+      list.unshift(name);
+      result.push(list);
+    }
   }
-  ary.splice(0, 235);
+
+  // ary.splice(0, 235);
   // data.forEach(v => { console.dir(v) })
   // console.dir(ary)
 
-  for (let a of ary) {
-    console.dir(a)
+  // for (let a of ary) {
+  //   console.dir(a)
+  //   let iframe = document.createElement('iframe')
+  //   iframe.setAttribute('src', `https://www.youtube.com/embed/${a[0]}`)
+  //   iframe.setAttribute('height', '180')
+  //   iframe.setAttribute('width', '320')
+  //   document.querySelector('body').insertBefore(iframe, null)
+  // }
+  // }
+
+
+
+
+
+
+  // let ids = [];
+  result.splice(0, 2410);
+  // for (let ary of result) {
+  //   ids.push(ary[1])
+  // }
+  // ids.splice(0, 2410)
+  const makeIFrame = (id) => {
     let iframe = document.createElement('iframe')
-    iframe.setAttribute('src', `https://www.youtube.com/embed/${a[0]}`)
+    iframe.setAttribute('src', `https://www.youtube.com/embed/${id}`)
     iframe.setAttribute('height', '180')
     iframe.setAttribute('width', '320')
     document.querySelector('body').insertBefore(iframe, null)
   }
-  // }
-
-  const id = [
-    [
-      "ro3wdGLveLw",
-      "mvN055oCEw4",
-      "aqtx9sbhKbA",
-      "dtoAGrzCh3g",
-      "YN_sPDBsN6s",
-      "rsGDskuGLx4",
-      "PIdCt6005sw",
-      "ow9QW8vot2M",
-      "MbplpcAGSZ8",
-      "pwsTaJN_-Xo",
-      "cqqZdmatIlQ",
-      "Z4V857N1oWs",
-      "8iu_1PvTFY8",
-      "2GmcMqHCuS4",
-      "8A3QyYkbCHg",
-      "VTnyrkXUTnY",
-      "H2FXK5AvxWM",
-      "ZmLCKP8GxHY",
-      "v-Y5v_bJxRY",
-      "Vs52i0vTpoA",
-      "uejEBQz68vQ",
-      "ZAbtm01_0u8",
-      "taCXLNxyd4U",
-      "-c07QNF8lmM",
-      "mToIHkrsLv4",
-      "Cit4I-rIvz0",
-      "MXRp2MOyAS8",
-      "6b5c9AyMVCM",
-      "bViB_P7RTDU",
-      "8HeYUZ5epK4",
-      "-2Fd7z3UxB8",
-      "COoKRYk-HWU",
-      "kJxI-Rn9igU",
-      "CEiFeypSjIc",
-      "UPJbEXPZJ94",
-      "GmNtBRn1zXA",
-      "SbH_MQjTqtY",
-      "WR1Ri1q9Jlk",
-      "x5NRmFSTEgU",
-      "gBfmo3HWC7I",
-      "mBTc_ZH5Tos",
-      "Oc98bOxWgmI",
-      "ChT0OtXd38A",
-      "aVlKRfn2JOA",
-      "MCEpzF32CvM",
-      "P0-ERP6Mma8",
-      "65Agd6hWO4I",
-      "wSugTdAAPWM",
-      "BLuNeH-Rb_s",
-      "Ul7AeF_vULg"
-    ],
-    [
-      "0eHE-jfRQPo",
-      "Q516Xg1Yyp4",
-      "wv2u8chsvME",
-      "jQgBOYbMqyA",
-      "UQCWq_ffMBI",
-      "aTqpW9ycoa4",
-      "Ze84e_Q1DpE",
-      "qp0qwmhgfX8",
-      "VF24QAR8hFA",
-      "fjpTLExIpdI",
-      "FX4SiEt5_tE",
-      "EAYzxcCltPE",
-      "qqoNGI4TzEg",
-      "UKJexpV71zc",
-      "oE-Ddi1J4Bg",
-      "boVn0-uTLAA",
-      "Ui5npNQJqUQ",
-      "IHd6JU-yvKs",
-      "zmzLoQMWbKg",
-      "wY5b950J3pg",
-      "5oQ3uwKPWvI",
-      "LVoBZQvbFBY",
-      "jXSWrRf2GbI",
-      "yGsHT23Nhe0",
-      "RkHMOwscpo0",
-      "U0ReKHcNHoM",
-      "9ZkHLRTiSkY",
-      "LYwCjIYaeA4",
-      "9Tvx8yFO13c",
-      "DU6jo4kVx1M",
-      "fO1n8O6OUSY",
-      "qwj46cIlum0",
-      "2GtPP6LMZ9o",
-      "kPrz2mHkYig",
-      "8IKCYuhsxWA",
-      "3XfvyV-waaU",
-      "y1wVuhFrGEM",
-      "dIpp7PMtRjQ",
-      "0XW3zl29E88",
-      "0NdNZRb2QIA",
-      "PiQbtffFaPE",
-      "JXzai83-DYM",
-      "jdENca9tiPY",
-      "vfc8rbT-qvM",
-      "INM1WQn85qU",
-      "gbxNSmIwKjY",
-      "EczNJZMm3N8",
-      "3cTbqI4rdtg",
-      "mg3yvNI_V1k",
-      "UbdUZqKGfzk"
-    ],
-    [
-      "KMXJhVHFl58",
-      "TxoLYUMVzwc",
-      "PSUj5ApbdMY",
-      "3lceSnyMqWc",
-      "5kzKKyR4sOM",
-      "PDLlXUJt72M",
-      "77GgCa8hIM4",
-      "eTTVvajQa7s",
-      "IfvMYor50Jw",
-      "0SlkUL5Zh_8",
-      "nsxtjjG_2mc",
-      "3xXg5rtpPt0",
-      "zINy5acy9mQ",
-      "4Kn4F-sBqk8",
-      "YQbZh8sHZcM",
-      "XvaOk3ofjmI",
-      "rD6EQNfxPVg",
-      "D9XJfT8y8tY",
-      "9cw73ojwKaY",
-      "itZqqSUDAkI",
-      "aYdBTbWvfSc",
-      "l9jKiaeCqpI",
-      "dGfnQSfUQz0",
-      "jgH1QeiSovw",
-      "GCg0dxa080k",
-      "7TGeCd9CLwo",
-      "Aa-p5FwlTnQ",
-      "MysG2WM-z7M",
-      "qvtnZMvYLjA",
-      "xu6U1Ax3XxQ",
-      "PsEoPdCGcYg",
-      "E3RhZFRF3cI",
-      "QEKaTCsJGO8",
-      "4zZFJlzn4vk",
-      "iG8UAHIuHeI",
-      "d6V8FHl8UYo",
-      "OR0B48QiJCk",
-      "eyIzSzrbNjM",
-      "FrsKSq0Z_vk",
-      "0tf7_k1QrIQ",
-      "oT4vLQZJHPY",
-      "IRHYxJy_Uxw",
-      "0dx-7vwJJrc",
-      "JxRDI5zuEls",
-      "v3yfH2VQ-YM",
-      "7GdKL73c9Ps",
-      "cqGF-Eo619w",
-      "AWwByXghUrI",
-      "n_6V6LiMwic",
-      "lTWlJYcqXQQ"
-    ],
-    [
-      "gL4BTjesguo",
-      "JoEwfyKaGRg",
-      "Ncp4LiKEA1Y",
-      "oGaLDnvvZyE",
-      "i6PVl6hdD0Q",
-      "LE-JN7_rxtE",
-      "caNJJ0prYtg",
-      "txaNSynY4nc",
-      "bVJGxBMAW6I",
-      "Bul44v1mbnY",
-      "dS6QyCENcd8",
-      "2zSPu2J4-nc",
-      "FnLYpzYwctM",
-      "JB3N6tLgXW8",
-      "TjxAtc_8nuA",
-      "jHCsYeVWK5A",
-      "kjyKUIx3Ou8"
-    ]
-  ]
-
-
-
-
-  // // let ids = [];
-  // for (let ary of id) {
-  //   ary.forEach(v => ids.push(v));
-  // }
-  // let iframe = document.createElement('iframe')
-  // iframe.setAttribute('src', `http://www.youtube.com/embed/${ids[0]}`)
-  // iframe.setAttribute('height', '180')
-  // iframe.setAttribute('width', '320')
-
+  result.forEach(ary => makeIFrame(ary[1]))
 
   // document.querySelector('body').insertBefore(iframe, null)
 
@@ -249,14 +97,13 @@
   // result = "HIKAKIN Beatbox 2015 ver. 作成者: HIKAKIN 3 年前 85 秒 3,141,205 回視聴".replace(/作成者/, `\n`).replace(/前/, `\n`).split("\n");
   // ary3 = []
   // ary2.forEach(text => {
-    // result = text.replace(/前/, `\n`).split("\n");
-    // result[1] = result[1].replace(/HIKAKIN/g, "");
-    // [time, count] = result[2].split("秒");
-    // result.pop(); result.push(time); result.push(count);
-    // result = [result[0]].concat(result.filter(v => { return v !== result[0] }).map(v => v.replace(/:| |,|回視聴/g, "")));
-    // ary3.push(result);
+  // result = text.replace(/前/, `\n`).split("\n");
+  // result[1] = result[1].replace(/HIKAKIN/g, "");
+  // [time, count] = result[2].split("秒");
+  // result.pop(); result.push(time); result.push(count);
+  // result = [result[0]].concat(result.filter(v => { return v !== result[0] }).map(v => v.replace(/:| |,|回視聴/g, "")));
+  // ary3.push(result);
   // })
-
 </script>
 
 
