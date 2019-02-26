@@ -35,6 +35,13 @@
       result.push(list);
     }
   }
+  // let fuga = result.map(V => {
+  //   let res = []
+  //   for(let i;i<V.length;i++){
+  //     (i===3)?res.push(v[i]):res.push((v[i].replace(/万/,"0000")-0))
+  //   }
+  //   return res
+  // })
 
   // ary.splice(0, 235);
   // data.forEach(v => { console.dir(v) })
@@ -51,7 +58,17 @@
   // }
 
 
-
+  let fuga = result.map(V => {
+    let res = []
+    for (let i = 0; i < V.length; i++) {
+      if (i === 3) {
+        res.push((V[i].replace(/万/, "0000").replace(/\./, "") - 0))
+      } else {
+        res.push(V[i])
+      }
+    }
+    return res
+  })
 
 
 
@@ -68,42 +85,111 @@
     iframe.setAttribute('width', '320')
     document.querySelector('body').insertBefore(iframe, null)
   }
-  result.forEach(ary => makeIFrame(ary[1]))
+  // result.forEach(ary => makeIFrame(ary[1]))
 
   // document.querySelector('body').insertBefore(iframe, null)
 
 
 
 
+  ary = ["10万", "5.0万", "123"];
+  ary.map(V => (V.replace(/\.[0-9]/, "").replace(/万/, "0000") - 0))
 
 
 
+  // console.log(expr.replace(/^[0-9]+$/,""))
+  //console.log( ('10ヶ月前'.replace(/\D+/,"")-0)*30 ) // =>10
+
+  const extractionNumber = (str) => {
+    return (str.replace(/\D+/g, "") - 0)
+  }
+  const makeSecond = (str) => {
+    switch (true) {
+      case /月/.test(str):
+        return extractionNumber(str) * 30 * 24 * 60 * 60
+        break;
+      case /週/.test(str):
+        return extractionNumber(str) * 7 * 24 * 60 * 60
+        break;
+      case /日/.test(str):
+        return extractionNumber(str) * 24 * 60 * 60
+        break;
+      case /時間/.test(str):
+        return extractionNumber(str) * 60 * 60
+        break;
+      case /分/.test(str):
+        return extractionNumber(str) * 60
+        break;
+      case /秒/.test(str):
+        return extractionNumber(str)
+        break;
+      default:
+        return null
+        break;
+    }
+  }
+  let exprs = ['10ヶ月前', "1 週間前", "6 日前", "23 時間前", "1 分前", "30 秒前"];
+  let hoge = exprs.map(V => makeSecond(V))
+  hoge.forEach(V => console.log(V))
 
 
+  const extractionNumber = (str) => {
+    return (str.replace(/\D+/, "") - 0)
+  }
+  const makeSecond = (num) => {
+    switch (true) {
+      case /月/.test(str):
+        console.log(num * 30 * 24 * 60 * 60) // =>10
+        break;
+      case /週/.test(str):
+        console.log(num * 7 * 24 * 60 * 60)
+        break;
+      case /日/.test(str):
+        console.log(num * 24 * 60 * 60)
+        break;
+      case /時間/.test(str):
+        console.log(num * 60 * 60)
+        break;
+      case /分/.test(str):
+        console.log(num * 60)
+        break;
+      case /秒/.test(str):
+        console.log(num)
+        break;
+      default:
+        console.log(1)
+        break;
+    }
+  }
 
+  let timeExp = ['10ヶ月前', "1 週間前", "6 日前", "23 時間前", "1 分前", "30 秒前"];
+  timeExp.forEach(V =>
+      makeSecond(extractionNumber(V))
+      // =>
+      // > 25920000
+      // > 604800
+      // > 518400
+      // > 82800
+      // > 60
+      // > 30
+      // ary1.forEach(v => console.log(v))
 
+      // chrome \
+      // --headless \
+      // --disable - gpu \
+      // --remote - debugging - port=9222 \
+      // https://www.chromestatus.com
 
-
-
-
-  // ary1.forEach(v => console.log(v))
-
-  // chrome \
-  // --headless \
-  // --disable - gpu \
-  // --remote - debugging - port=9222 \
-  // https://www.chromestatus.com
-
-  // result = "HIKAKIN Beatbox 2015 ver. 作成者: HIKAKIN 3 年前 85 秒 3,141,205 回視聴".replace(/作成者/, `\n`).replace(/前/, `\n`).split("\n");
-  // ary3 = []
-  // ary2.forEach(text => {
-  // result = text.replace(/前/, `\n`).split("\n");
-  // result[1] = result[1].replace(/HIKAKIN/g, "");
-  // [time, count] = result[2].split("秒");
-  // result.pop(); result.push(time); result.push(count);
-  // result = [result[0]].concat(result.filter(v => { return v !== result[0] }).map(v => v.replace(/:| |,|回視聴/g, "")));
-  // ary3.push(result);
-  // })
+      // result = "HIKAKIN Beatbox 2015 ver. 作成者: HIKAKIN 3 年前 85 秒 3,141,205 回視聴".replace(/作成者/, `\n`).replace(/前/, `\n`).split("\n");
+      // ary3 = []
+      // ary2.forEach(text => {
+      // result = text.replace(/前/, `\n`).split("\n");
+      // result[1] = result[1].replace(/HIKAKIN/g, "");
+      // [time, count] = result[2].split("秒");
+      // result.pop(); result.push(time); result.push(count);
+      // result = [result[0]].concat(result.filter(v => { return v !== result[0] }).map(v => v.replace(/:| |,|回視聴/g, "")));
+      // ary3.push(result);
+      // })
 </script>
 
 
