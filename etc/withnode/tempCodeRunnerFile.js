@@ -1,24 +1,16 @@
-function namedArgumentFunc({
-    foo = 'bar',
-    baz = 200,
-    qux = false
-} = {}) {
-    return `a=${foo}, b=${baz}, c=${qux}`;
-}
+// flat and fullflat a.k.a flatten function
+unFlattenAry = [1, 2, [3, 4, [5, 6]]];
 
-for (let i = 0; i <= 100;i++){
-randomNumber = require("faker").random.number();
-randomWord = require('faker').random.word();
-randomBoolean = require('faker').random.boolean();
-res = `a=${randomNumber}, b=${randomWord}, c=${randomBoolean}`
+const flat = (array) => {
+    return array.reduce((acc, val) => acc.concat(val), [])
+};
 
-require('assert').equal(
-    namedArgumentFunc({
-        foo: randomNumber,
-        baz: randomWord,
-        qux: randomBoolean,
-    }),
-    res,
-    console.log("ok!")
-)
+console.log(flat(unFlattenAry)); // => [ 1, 2, 3, 4, [ 5, 6 ] ]
+
+const fullFlat = ary => {
+    while (ary.some(V => Array.isArray(V))) {
+        ary = flat(ary)
+    }
+    return ary;
 }
+console.log(fullFlat(unFlattenAry)); // => [ 1, 2, 3, 4, 5, 6 ]
