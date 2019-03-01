@@ -12,11 +12,11 @@ const R = require('ramda');
 // console.log(toUpperCaseFirstChar(chars)); // => "Abc"
 
 
-// var foo = 123;
+// var 123;
 // console.log(foo);
 
 // const sample = () => {
-//   foo = 100;
+//   100;
 //   console.log(foo);
 // }
 // sample();
@@ -31,27 +31,54 @@ const R = require('ramda');
 // console.log(bar);
 
 
-
-
-
-
+let a;
+let b;
+let c;
+let d;
+let e;
+let f;
+let g;
+let h;
+let i;
+let j;
+let k;
+let l;
+let m;
+let n;
+let o;
+let p;
+let q;
+let r;
+let s;
+let t;
+let u;
+let v;
+let w;
+let x;
+let y;
+let z;
 
 // ramda.js samples
-let foo;
-foo = R.sortBy(R.prop(1))([
-  [10, 1],
-  [5, 2],
-  [2.5, 3]
-]);
-console.dir(foo);
-foo = R.pipe(R.sortBy(R.prop(1)), R.reverse)([
-  [10, 1],
-  [5, 2],
-  [2.5, 3]
-]);
-console.dir(foo);
 
-foo = R.sortBy(R.prop('name'))([{
+a = R.sortBy(R.prop(1))([
+  [10, 1],
+  [5, 2],
+  [2.5, 3],
+]);
+
+b = R.pipe(R.sortBy(R.prop(1)), R.reverse)([
+  [10, 1],
+  [5, 2],
+  [2.5, 3]
+]);
+
+c = R.sortBy(R.prop(1))([
+  [10, 1],
+  [5, 2],
+  [2.5, 3]
+]);
+
+d = R.sortBy(R.prop('name'))([{
   name: "Taro",
   age: 28
 }, {
@@ -61,8 +88,8 @@ foo = R.sortBy(R.prop('name'))([{
   name: "Aka",
   age: 24
 }]);
-console.dir(foo);
-foo = R.sortBy(R.prop('age'))([{
+
+e = R.sortBy(R.prop('age'))([{
   name: "Taro",
   age: 28
 }, {
@@ -72,7 +99,7 @@ foo = R.sortBy(R.prop('age'))([{
   name: "Aka",
   age: 24
 }]);
-console.dir(foo);
+
 
 var albums = [{
     title: "Sabbath Bloody Sabbath",
@@ -91,44 +118,44 @@ var dub = {
   title: "Scientist",
   genre: "Dub"
 }
-foo = R.groupBy(R.prop('genre'))(albums);
-console.dir(foo);
-foo = R.countBy(R.prop('genre'))(albums);
-console.dir(foo);
+f = R.groupBy(R.prop('genre'))(albums);
+
+g = R.countBy(R.prop('genre'))(albums);
+
 var nums = [
   [1, 2],
   [3, 4],
   [5, 6]
 ];
-foo = R.reduce(R.concat, [], [
+h = R.reduce(R.concat, [], [
   [1, 2],
   [3, 4],
   [5, 6]
 ]);
-console.dir(foo);
 
-foo = R.pluck(0)([
+
+i = R.pluck(0)([
   [1, 2],
   [3, 4]
 ]);
-console.dir(foo);
-foo = R.pluck('title')(albums);
-console.dir(foo);
-foo = R.keys(dub);
-console.dir(foo);
-foo = R.values(dub);
-console.dir(foo);
-foo = R.map([
+
+j = R.pluck('title')(albums);
+
+k = R.keys(dub);
+
+l = R.values(dub);
+
+m = R.map([
   ['name', 'number'],
   ['Taro', 32]
 ]);
-console.dir(foo);
-foo = R.invert({
+
+n = R.invert({
   first: 'alice',
   second: 'jake',
   third: 'alice',
 });
-console.dir(foo);
+
 
 const pred = R.where({
   a: R.equals('foo'),
@@ -136,22 +163,22 @@ const pred = R.where({
   x: R.gt(R.__, 10),
   y: R.lt(R.__, 20)
 });
-console.dir(foo);
 
-pred({
+
+o = pred({
   a: 'foo',
   b: 'xxx',
   x: 11,
   y: 19
 });
-console.dir(foo) //=> true;
-//pred({a: 'xxx', b: 'xxx', x: 11, y: 19});console.dir(foo) //=> false;
-//pred({a: 'foo', b: 'bar', x: 11, y: 19});console.dir(foo) //=> false;
-//pred({a: 'foo', b: 'xxx', x: 10, y: 19});console.dir(foo) //=> false;
-//pred({a: 'foo', b: 'xxx', x: 11, y: 20});console.dir(foo) //=> false;
+//=> true;
+//pred({a: 'xxx', b: 'xxx', x: 11, y: 19});//=> false;
+//pred({a: 'foo', b: 'bar', x: 11, y: 19});//=> false;
+//pred({a: 'foo', b: 'xxx', x: 10, y: 19});//=> false;
+//pred({a: 'foo', b: 'xxx', x: 11, y: 20});//=> false;
 //R.zipObj()
 
-//R.reduce(R.concat, [], [[1, 2], [3, 4], [5, 6]]);console.dir(foo);
+//R.reduce(R.concat, [], [[1, 2], [3, 4], [5, 6]]);
 
 
 let obj = {
@@ -159,24 +186,24 @@ let obj = {
   second: 'jake',
   third: 'alice',
 }
-foo = R.keys(R.invert(obj))
+p = R.keys(R.invert(obj))
 
-foo = R.omit(['a', 'c'], {
+q = R.omit(['a', 'c'], {
   a: 1,
   b: 2,
   c: 3
-})
+});
 //R.invertObj([1,2])
 
 const isNotNil = R.complement(R.isNil);
-console.dir(foo);
-foo = R.isNil(null);
-console.dir(foo) //=> true;
-isNotNil(null);
-console.dir(foo) //=> false;
+
+r = R.isNil(null);
+//=> true;
+s = isNotNil(null);
+//=> false;
 
 
-foo = R.where({
+t = R.where({
   a: R.equals('foo'),
   b: R.complement(R.equals('bar')),
   x: R.gt(R.__, 10),
@@ -189,33 +216,33 @@ foo = R.where({
 })
 
 const log = R.bind(console.log, console);
-console.dir(foo);
-foo = R.pipe(R.assoc('a', 2), R.tap(log), R.assoc('a', 3))({
-  a: 1
-});
-console.dir(foo);
+
+// R.pipe(R.assoc('a', 2), R.tap(log), R.assoc('a', 3))({
+//   a: 1
+// });
 
 
-foo = R.assoc('a', 3, {
+
+u = R.assoc('a', 3, {
   a: 1,
   b: 2
 });
-console.dir(foo) //=> {a: 1, b: 2, c: 3};
-foo = R.pick(['a', 'b', 'e', 'f'], {
+//=> {a: 1, b: 2, c: 3};
+v = R.pick(['a', 'b', 'e', 'f'], {
   a: 1,
   b: 2,
   c: 3,
   d: 4
 });
-console.dir(foo) //=> {"a": 1, "b": 2};
-foo = R.pluck('a', {
+//=> {"a": 1, "b": 2};
+w = R.pluck('a', {
   a: 1,
   b: 2,
   c: 3,
   d: 4
 });
-console.dir(foo) //=> {"a": 1, "b": 2};
-foo = R.pluck('val', {
+//=> {"a": 1, "b": 2};
+R.pluck('val', {
   a: {
     val: 3
   },
@@ -223,17 +250,17 @@ foo = R.pluck('val', {
     val: 5
   }
 });
-console.dir(foo);
-foo = R.pluck('name', [{
+
+R.pluck('name', [{
   name: 'fred',
   age: 29
 }, {
   name: 'wilma',
   age: 27
 }]);
-console.dir(foo);
+
 // alias R.pluck('',[]) is R.map(R.prop())([])
-foo = R.map(R.prop('name'))([{
+R.map(R.prop('name'))([{
   name: 'fred',
   age: 29,
   sex: 'male',
@@ -242,11 +269,11 @@ foo = R.map(R.prop('name'))([{
   age: 27,
   sex: 'female',
 }]);
-console.dir(foo);
+
 
 
 foo = R.map(((x) => x * 2))([1, 2]);
-console.dir(foo);
+
 
 
 foo = R.map(R.pick(['a', 'b', 'e']))([{
@@ -260,7 +287,7 @@ foo = R.map(R.pick(['a', 'b', 'e']))([{
   c: 5,
   d: 6
 }])
-console.dir(foo);
+foo;
 
 // map with reduce and map and map
 // ary = [
@@ -296,7 +323,7 @@ console.dir(foo);
 // console.log(mapWithMap);
 
 
-// foo = "map with reduce and map and map".split(" ").map(V => {
+// "map with reduce and map and map".split(" ").map(V => {
 //     let chars = V.split()
 //     let head = chars.splice(0, 1)[0]
 //     // head = head.toUpperCase();
@@ -482,11 +509,11 @@ console.dir(foo);
 // [1, 2, 3].forEach(v => { console.log(v) });
 
 
-// const request = require('request'); let foo = [];
+// const request = require('request'); let [];
 // const HTMLParser = require('fast-html-parser');
 // request('https://www.yahoo.co.jp/', (error, response, body) => {
 //     'body:',
-//     foo = HTMLParser.parse(body)
+//     HTMLParser.parse(body)
 //         .querySelectorAll('a')
 // });
 
@@ -526,7 +553,7 @@ console.dir(foo);
 //     return bar
 // }
 
-// function hoge(foo = "bar") {
+// function hoge("bar") {
 //     return foo
 // }
 
@@ -545,7 +572,7 @@ console.dir(foo);
 //  * // returns {string} 'a=content.html, b=200, c=false'
 //  */
 // function namedArgumentFunc({
-//     foo = 'bar',
+//     'bar',
 //     baz = 200,
 //     qux = false
 // } = {}) {
@@ -584,7 +611,7 @@ console.dir(foo);
 //     }), 'a=content.html, b=200, c=false'
 // )
 
-// const foo = (bar) => {
+// const (bar) => {
 //     return "bar"
 // }
 
@@ -672,14 +699,14 @@ console.dir(foo);
 //  *
 //  *
 //  * @param {*} [{
-//  *     foo = 'bar',
+//  *     'bar',
 //  *     baz = 200,
 //  *     qux = false
 //  * }={}]
 //  * @returns
 //  */
 // function namedArgumentFunc2({
-//     foo = 'bar',
+//     'bar',
 //     baz = 200,
 //     qux = false
 // } = {}) {
@@ -835,7 +862,7 @@ console.dir(foo);
 //     });
 // }
 
-// let foo = new XMLHttpRequest();
+// let new XMLHttpRequest();
 // foo.open('GET', 'https://ja.wikipedia.org/w/api.php?format=xml&action=query&prop=links&titles=%E3%82%A8%E3%83%9E%E3%83%BB%E3%83%AF%E3%83%88%E3%82%BD%E3%83%B3')
 // foo.send(null)
 // let bar = foo.responseXML
@@ -920,7 +947,7 @@ console.dir(foo);
 
 // //リクエスト送信
 // // const bar = options => {
-// const foo = new Promise(resolve =>{
+// const new Promise(resolve =>{
 //     request({ url: `https://www.yahoo.co.jp/` }, function (error, response, body) {
 //         resolve(body);
 //         // reject(error);
@@ -928,7 +955,7 @@ console.dir(foo);
 // })
 
 
-// let foo = new Promise(function (resolve, reject) {
+// let new Promise(function (resolve, reject) {
 //     resolve('foo');
 // });
 
@@ -991,3 +1018,35 @@ console.dir(foo);
 
 
 // const dom = new JSDOM(``, { resources: resourceLoader });
+
+
+
+
+
+
+console.dir(`a: ${a}`);
+console.dir(`b: ${b}`);
+console.dir(`c: ${c}`);
+console.dir(`d: ${d}`);
+console.dir(`e: ${e}`);
+console.dir(`f: ${f}`);
+console.dir(`g: ${g}`);
+console.dir(`h: ${h}`);
+console.dir(`i: ${i}`);
+console.dir(`j: ${j}`);
+console.dir(`k: ${k}`);
+console.dir(`l: ${l}`);
+console.dir(`m: ${m}`);
+console.dir(`n: ${n}`);
+console.dir(`o: ${o}`);
+console.dir(`p: ${p}`);
+console.dir(`q: ${q}`);
+console.dir(`r: ${r}`);
+console.dir(`s: ${s}`);
+console.dir(`t: ${t}`);
+console.dir(`u: ${u}`);
+console.dir(`v: ${v}`);
+console.dir(`w: ${w}`);
+console.dir(`x: ${x}`);
+console.dir(`y: ${y}`);
+console.dir(`z: ${z}`);
