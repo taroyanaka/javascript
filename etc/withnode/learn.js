@@ -242,7 +242,7 @@ w = R.pluck('a', {
   d: 4
 });
 //=> {"a": 1, "b": 2};
-R.pluck('val', {
+x = R.pluck('val', {
   a: {
     val: 3
   },
@@ -251,7 +251,7 @@ R.pluck('val', {
   }
 });
 
-R.pluck('name', [{
+y = R.pluck('name', [{
   name: 'fred',
   age: 29
 }, {
@@ -260,7 +260,7 @@ R.pluck('name', [{
 }]);
 
 // alias R.pluck('',[]) is R.map(R.prop())([])
-R.map(R.prop('name'))([{
+z = R.map(R.prop('name'))([{
   name: 'fred',
   age: 29,
   sex: 'male',
@@ -1024,29 +1024,55 @@ foo;
 
 
 
-console.dir(`a: ${a}`);
-console.dir(`b: ${b}`);
-console.dir(`c: ${c}`);
-console.dir(`d: ${d}`);
-console.dir(`e: ${e}`);
-console.dir(`f: ${f}`);
-console.dir(`g: ${g}`);
-console.dir(`h: ${h}`);
-console.dir(`i: ${i}`);
-console.dir(`j: ${j}`);
-console.dir(`k: ${k}`);
-console.dir(`l: ${l}`);
-console.dir(`m: ${m}`);
-console.dir(`n: ${n}`);
-console.dir(`o: ${o}`);
-console.dir(`p: ${p}`);
-console.dir(`q: ${q}`);
-console.dir(`r: ${r}`);
-console.dir(`s: ${s}`);
-console.dir(`t: ${t}`);
-console.dir(`u: ${u}`);
-console.dir(`v: ${v}`);
-console.dir(`w: ${w}`);
-console.dir(`x: ${x}`);
-console.dir(`y: ${y}`);
-console.dir(`z: ${z}`);
+console.log("a: ");
+console.dir(a);
+console.log("b: ");
+console.dir(b);
+console.log("c: ");
+console.dir(c);
+console.log("d: ");
+console.dir(d);
+console.log("e: ");
+console.dir(e);
+console.log("f: ");
+console.dir(f);
+console.log("g: ");
+console.dir(g);
+console.log("h: ");
+console.dir(h);
+console.log("i: ");
+console.dir(i);
+console.log("j: ");
+console.dir(j);
+console.log("k: ");
+console.dir(k);
+console.log("l: ");
+console.dir(l);
+console.log("m: ");
+console.dir(m);
+console.log("n: ");
+console.dir(n);
+console.log("o: ");
+console.dir(o);
+console.log("p: ");
+console.dir(p);
+console.log("q: ");
+console.dir(q);
+console.log("r: ");
+console.dir(r);
+console.log("s: ");
+console.dir(s);
+console.log("t: ");
+console.dir(t);
+console.log("u: ");
+console.dir(u);
+console.log("v: ");
+console.dir(v);
+console.log("w: ");
+console.dir(w);
+console.log("x: ");
+console.dir(x);
+console.log("y: ");
+console.dir(y);
+console.log("z: ");
+console.dir(z);
