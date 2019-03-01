@@ -1,5 +1,313 @@
 const R = require('ramda');
 
+// let chars = "abc";
+// const toUpperCaseFirstChar = str => {
+//   let remainChars = "";
+//   for (let i = 1; i < str.length; i++) {
+//     // remainChars = remainChars += str[i];
+//     remainChars += str[i];
+//   }
+//   return str[0].toUpperCase() + remainChars
+// }
+// console.log(toUpperCaseFirstChar(chars)); // => "Abc"
+
+
+// var foo = 123;
+// console.log(foo);
+
+// const sample = () => {
+//   foo = 100;
+//   console.log(foo);
+// }
+// sample();
+
+
+// let bar = 456;
+// const sample2 = () => {
+//   console.log(bar);
+//   bar = 789;
+// }
+// sample2();
+// console.log(bar);
+
+
+
+
+
+
+
+// ramda.js samples
+let foo;
+foo = R.sortBy(R.prop(1))([
+  [10, 1],
+  [5, 2],
+  [2.5, 3]
+]);
+console.dir(foo);
+foo = R.pipe(R.sortBy(R.prop(1)), R.reverse)([
+  [10, 1],
+  [5, 2],
+  [2.5, 3]
+]);
+console.dir(foo);
+
+foo = R.sortBy(R.prop('name'))([{
+  name: "Taro",
+  age: 28
+}, {
+  name: "Blue",
+  age: 30
+}, {
+  name: "Aka",
+  age: 24
+}]);
+console.dir(foo);
+foo = R.sortBy(R.prop('age'))([{
+  name: "Taro",
+  age: 28
+}, {
+  name: "Blue",
+  age: 30
+}, {
+  name: "Aka",
+  age: 24
+}]);
+console.dir(foo);
+
+var albums = [{
+    title: "Sabbath Bloody Sabbath",
+    genre: "Metal"
+  },
+  {
+    title: "Scientist",
+    genre: "Dub"
+  },
+  {
+    title: "Undertow",
+    genre: "Metal"
+  }
+];
+var dub = {
+  title: "Scientist",
+  genre: "Dub"
+}
+foo = R.groupBy(R.prop('genre'))(albums);
+console.dir(foo);
+foo = R.countBy(R.prop('genre'))(albums);
+console.dir(foo);
+var nums = [
+  [1, 2],
+  [3, 4],
+  [5, 6]
+];
+foo = R.reduce(R.concat, [], [
+  [1, 2],
+  [3, 4],
+  [5, 6]
+]);
+console.dir(foo);
+
+foo = R.pluck(0)([
+  [1, 2],
+  [3, 4]
+]);
+console.dir(foo);
+foo = R.pluck('title')(albums);
+console.dir(foo);
+foo = R.keys(dub);
+console.dir(foo);
+foo = R.values(dub);
+console.dir(foo);
+foo = R.map([
+  ['name', 'number'],
+  ['Taro', 32]
+]);
+console.dir(foo);
+foo = R.invert({
+  first: 'alice',
+  second: 'jake',
+  third: 'alice',
+});
+console.dir(foo);
+
+const pred = R.where({
+  a: R.equals('foo'),
+  b: R.complement(R.equals('bar')),
+  x: R.gt(R.__, 10),
+  y: R.lt(R.__, 20)
+});
+console.dir(foo);
+
+pred({
+  a: 'foo',
+  b: 'xxx',
+  x: 11,
+  y: 19
+});
+console.dir(foo) //=> true;
+//pred({a: 'xxx', b: 'xxx', x: 11, y: 19});console.dir(foo) //=> false;
+//pred({a: 'foo', b: 'bar', x: 11, y: 19});console.dir(foo) //=> false;
+//pred({a: 'foo', b: 'xxx', x: 10, y: 19});console.dir(foo) //=> false;
+//pred({a: 'foo', b: 'xxx', x: 11, y: 20});console.dir(foo) //=> false;
+//R.zipObj()
+
+//R.reduce(R.concat, [], [[1, 2], [3, 4], [5, 6]]);console.dir(foo);
+
+
+let obj = {
+  first: 'alice',
+  second: 'jake',
+  third: 'alice',
+}
+foo = R.keys(R.invert(obj))
+
+foo = R.omit(['a', 'c'], {
+  a: 1,
+  b: 2,
+  c: 3
+})
+//R.invertObj([1,2])
+
+const isNotNil = R.complement(R.isNil);
+console.dir(foo);
+foo = R.isNil(null);
+console.dir(foo) //=> true;
+isNotNil(null);
+console.dir(foo) //=> false;
+
+
+foo = R.where({
+  a: R.equals('foo'),
+  b: R.complement(R.equals('bar')),
+  x: R.gt(R.__, 10),
+  y: R.lt(R.__, 20)
+}, R.__)({
+  a: 'foo',
+  b: 'xxx',
+  x: 11,
+  y: 19
+})
+
+const log = R.bind(console.log, console);
+console.dir(foo);
+foo = R.pipe(R.assoc('a', 2), R.tap(log), R.assoc('a', 3))({
+  a: 1
+});
+console.dir(foo);
+
+
+foo = R.assoc('a', 3, {
+  a: 1,
+  b: 2
+});
+console.dir(foo) //=> {a: 1, b: 2, c: 3};
+foo = R.pick(['a', 'b', 'e', 'f'], {
+  a: 1,
+  b: 2,
+  c: 3,
+  d: 4
+});
+console.dir(foo) //=> {"a": 1, "b": 2};
+foo = R.pluck('a', {
+  a: 1,
+  b: 2,
+  c: 3,
+  d: 4
+});
+console.dir(foo) //=> {"a": 1, "b": 2};
+foo = R.pluck('val', {
+  a: {
+    val: 3
+  },
+  b: {
+    val: 5
+  }
+});
+console.dir(foo);
+foo = R.pluck('name', [{
+  name: 'fred',
+  age: 29
+}, {
+  name: 'wilma',
+  age: 27
+}]);
+console.dir(foo);
+// alias R.pluck('',[]) is R.map(R.prop())([])
+foo = R.map(R.prop('name'))([{
+  name: 'fred',
+  age: 29,
+  sex: 'male',
+}, {
+  name: 'wilma',
+  age: 27,
+  sex: 'female',
+}]);
+console.dir(foo);
+
+
+foo = R.map(((x) => x * 2))([1, 2]);
+console.dir(foo);
+
+
+foo = R.map(R.pick(['a', 'b', 'e']))([{
+  a: 1,
+  b: 2,
+  c: 3,
+  d: 4
+}, {
+  a: 3,
+  b: 4,
+  c: 5,
+  d: 6
+}])
+console.dir(foo);
+
+// map with reduce and map and map
+// ary = [
+//     ["foo", 1, ["bar", 2, 3]],
+//     ["foo2", 10, ["bar2", 20, 30]],
+// ]
+// let mapWithReduce = ary.map(V => {
+//     let V2 = V[2].reduce((all, one) => {
+//         return all + " and " + one.toString();
+//     })
+//     return `${V[0]} and ${V[1].toString()}, ${V2}`
+// })
+// console.log(mapWithReduce);
+
+// ary = [
+//     ["foo", 1, [
+//         [2, 3],
+//         [4, 5],
+//         [6, 7]
+//     ]],
+//     ["foo2", 10, [
+//         [2, 3],
+//         [4, 5],
+//         [6, 7]
+//     ]],
+// ]
+// let mapWithMap = ary.map(V => {
+//     let V2 = V[2].map(V2 => {
+//         return V2[0] + V2[1]
+//     })
+//     return `${V[0]} and ${V[1].toString()}, ${V2.join("-").toString()}`
+// })
+// console.log(mapWithMap);
+
+
+// foo = "map with reduce and map and map".split(" ").map(V => {
+//     let chars = V.split()
+//     let head = chars.splice(0, 1)[0]
+//     // head = head.toUpperCase();
+//     h = head.toUpperCase();
+//     chars.splice(0, 0, h);
+//     return chars.join(",")
+// }) //.join();
+// console.log(foo);
+
+
+
 // console.log([1, 2, 3].concat([4, 5, 6])); // => [ 1, 2, 3, 4, 5, 6 ]
 
 // ary1 = [1, 2, 3, 4, 5, 6];
