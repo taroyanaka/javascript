@@ -1217,12 +1217,7 @@ const multiplyXY = ary => {
   return x + y
 }
 
-R.groupBy(((num) => {
-  return num < 10 ? 'F' :
-    score < 20 ? 'D' :
-    score < 30 ? 'C' :
-    score < 40 ? 'B' : 'A';
-}));
+
 
 A = R.pipe(
   R.take(50),
@@ -1231,20 +1226,24 @@ A = R.pipe(
   R.toPairs(),
   R.sortBy(R.prop(0)),
   R.reverse(),
-  R.pluck(1), //  alias R.pluck('', []) is R.map(R.prop())([])
+  R.pluck(1), //  R.pluck('', []) is alias R.map(R.prop())([])
   R.zip((R.times(R.identity, 10))),
   R.map(multiplyXY),
   R.groupBy(num => {
-    return num < 10 ? 'F' :
-      num < 20 ? 'D' :
+    return num < 10 ? 'A' :
+      num < 20 ? 'B' :
       num < 30 ? 'C' :
-      num < 40 ? 'B' : 'A';
+      num < 40 ? 'D' : 'E';
   }),
   R.omit(['D', 'F']),
+  R.toPairs(),
+  R.sort(R.descend(R.prop(0))), //Z→A 10→1 is descend
+  // R.sort(R.ascend(R.prop(0))), //A→Z 1→10 is ascend
+
   // R.reduce(R.subtract, 0, [1, 2, 3, 4]),
   // R.all(R.test(/\d/), R.__),
 )(R.times(R.identity, 100));
-// B = R.range(1, 101);
+
 // let multiplyXY = (x, y) => x * y;
 
 // _.all(list, [iterator], [context])
