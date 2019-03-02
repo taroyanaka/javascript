@@ -25,7 +25,8 @@
     "puppeteer": "^1.12.2",
     "query-selector": "^1.0.9",
     "ramda": "^0.26.1",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "underscore": "^1.9.1"
   },
   "devDependencies": {
     "eslint-config-standard": "^12.0.0",

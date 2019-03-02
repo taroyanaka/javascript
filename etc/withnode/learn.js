@@ -1,5 +1,60 @@
 const R = require('ramda');
+const _ = require('underscore');
 
+function showAZ() {
+  console.log("a: ");
+  console.dir(a);
+  console.log("b: ");
+  console.dir(b);
+  console.log("c: ");
+  console.dir(c);
+  console.log("d: ");
+  console.dir(d);
+  console.log("e: ");
+  console.dir(e);
+  console.log("f: ");
+  console.dir(f);
+  console.log("g: ");
+  console.dir(g);
+  console.log("h: ");
+  console.dir(h);
+  console.log("i: ");
+  console.dir(i);
+  console.log("j: ");
+  console.dir(j);
+  console.log("k: ");
+  console.dir(k);
+  console.log("l: ");
+  console.dir(l);
+  console.log("m: ");
+  console.dir(m);
+  console.log("n: ");
+  console.dir(n);
+  console.log("o: ");
+  console.dir(o);
+  console.log("p: ");
+  console.dir(p);
+  console.log("q: ");
+  console.dir(q);
+  console.log("r: ");
+  console.dir(r);
+  console.log("s: ");
+  console.dir(s);
+  console.log("t: ");
+  console.dir(t);
+  console.log("u: ");
+  console.dir(u);
+  console.log("v: ");
+  console.dir(v);
+  console.log("w: ");
+  console.dir(w);
+  console.log("x: ");
+  console.dir(x);
+  console.log("y: ");
+  console.dir(y);
+  console.log("z: ");
+  console.dir(z);
+}
 // let chars = "abc";
 // const toUpperCaseFirstChar = str => {
 //   let remainChars = "";
@@ -30,33 +85,7 @@ const R = require('ramda');
 // sample2();
 // console.log(bar);
 
-
-let a;
-let b;
-let c;
-let d;
-let e;
-let f;
-let g;
-let h;
-let i;
-let j;
-let k;
-let l;
-let m;
-let n;
-let o;
-let p;
-let q;
-let r;
-let s;
-let t;
-let u;
-let v;
-let w;
-let x;
-let y;
-let z;
+let a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z;
 
 // ramda.js samples
 
@@ -89,7 +118,8 @@ d = R.sortBy(R.prop('name'))([{
   age: 24
 }]);
 
-e = R.sortBy(R.prop('age'))([{
+// e = R.sortBy(R.prop('age'))([{
+e = R.pipe(R.sortBy(R.prop('age'), R.__), R.reverse)([{
   name: "Taro",
   age: 28
 }, {
@@ -227,7 +257,7 @@ u = R.assoc('a', 3, {
   a: 1,
   b: 2
 });
-//=> {a: 1, b: 2, c: 3};
+//=> {a: 3, b: 2}
 v = R.pick(['a', 'b', 'e', 'f'], {
   a: 1,
   b: 2,
@@ -1024,55 +1054,292 @@ foo;
 
 
 
-console.log("a: ");
-console.dir(a);
-console.log("b: ");
-console.dir(b);
-console.log("c: ");
-console.dir(c);
-console.log("d: ");
-console.dir(d);
-console.log("e: ");
-console.dir(e);
-console.log("f: ");
-console.dir(f);
-console.log("g: ");
-console.dir(g);
-console.log("h: ");
-console.dir(h);
-console.log("i: ");
-console.dir(i);
-console.log("j: ");
-console.dir(j);
-console.log("k: ");
-console.dir(k);
-console.log("l: ");
-console.dir(l);
-console.log("m: ");
-console.dir(m);
-console.log("n: ");
-console.dir(n);
-console.log("o: ");
-console.dir(o);
-console.log("p: ");
-console.dir(p);
-console.log("q: ");
-console.dir(q);
-console.log("r: ");
-console.dir(r);
-console.log("s: ");
-console.dir(s);
-console.log("t: ");
-console.dir(t);
-console.log("u: ");
-console.dir(u);
-console.log("v: ");
-console.dir(v);
-console.log("w: ");
-console.dir(w);
-console.log("x: ");
-console.dir(x);
-console.log("y: ");
-console.dir(y);
-console.log("z: ");
-console.dir(z);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// _.all(list, [iterator], [context])
+// _.every のエイリアス。 list のすべての値が iterator 関数の真偽テストで true を返した場合に true を返す。 iterator が渡されない場合は要素の値自体で真偽 を 判 定 す る。(JavaScript は false、 undefined、 null、 NaN、 0、 - 0、 ''
+//   の 場 合 に false と判定し、 その他はすべて true と判定する。)
+// _.any(list, [iterator], [context])
+// _.some のエイリアス。 list のいずれかの値が iterator 関数の真偽テストで true を返した場合に true を返す。 iterator が渡されない場合は要素の値自体で真偽 を判定する(JavaScript は false、 undefined、 null、 NaN、 0、 - 0、 空の文字列('') の場合に false と判定し、 その他はすべて true と判定する。)
+// _.bind(function, object, [ * arguments])
+
+// function を object にバインドした関数を返す。 返された関数は、 どのコン
+// 説明付きの Underscore のソースコードは、 http: //underscorejs.org/docs/underscore.html で参照でき ます(説明は英語)。
+//   テクストで呼ばれても this の値として object を参照した状態で実行する。
+// _.bindAll(object, * methodNames)
+// methodNames で指定されたメソッドを、 常に object にバインドし、 どこで実行し てもそれを this として実行するようにする。
+// _.chain(obj)
+// _.chain(obj).sortBy(...).first().value() のようにチェーン記法で連続処理を行 う。 チェーン内のそれぞれの関数は obj を処理した結果をラッパーオブジェク トに格納して、 チェーン上の次のメソッドに渡す。 チェーン内のメソッドには ラッパーオブジェクトが渡され、 メソッドの 1 つ目のパラメータ(list、 array、 object) は省略される。 push や reverse など、 ネイティブ Array のプロトタイプ メソッドもチェーン可能。 最後に value() をチェーンすることで、 ラッパーオブ ジェクトから obj の処理結果を抽出して返す。
+// _.clone(object)
+// オブジェクト object を「 浅くコピー」 したものを返す。 入れ子になっているオ ブジェクトや配列は参照がコピーされ、 それらの実体は複製されない。
+// _.compose( * functions)
+// functions に渡された複数の関数を合成して返す。 右側の関数から順に処理を行 い、 次の関数は右側の関数の戻り値を引数として実行する。
+// _.contains(list, value)
+// value が list 内に存在する場合に true を返す。 list が配列の場合は、 内部的に indexOf で処理する。
+// _.countBy(list, iterator, [context])
+// iterator 関数の戻り値をキーとして list の要素をカウントし、 それぞれの要素 とその出現回数をキー値として格納したオブジェクトを返す。 元の list は変更 されない。
+// _.defaults(object, * defaults)
+// defaults オブジェクトに定義されているプロパティが object に存在しない場合、 もしくは値が undefined の場合、 defaults で与えられたプロパティを挿入する。
+// _.each(list, iterator, [context])
+// list を走査して、 それぞれの要素を iterator 関数に与えて実行する。 context を
+// 渡している場合には iterator は context にバインドされる。 list が配列の場合、 iterator には要素、 インデックス、 配列の 3 つの引数が渡される。 list がオブ ジェクトの場合には、 値、 キー、 オブジェクトの 3 つが渡される。
+// _.every(list, [iterator], [context])
+// list のすべての値が iterator の真偽テストで true を返した場合に true を返す。 iterator が渡されない場合は要素の値自体で真偽を判定する。(JavaScript は false、 undefined、 null、 NaN、 0、 - 0、 ''
+//   の場合に false と判定し、 その他はすべ て true と判定する。)
+// _.extend(destination, * sources)
+// sources に渡されたオブジェクトのプロパティを destination オブジェクトに追加 する。 その際、 destination オブジェクト自身が変更対象となり、 キーが重複す る場合は新しい値で上書きされる。 sources に渡した順番に上書きするため、 最 後に渡されたオブジェクトが優先される。
+// _.filter(list, iterator, [context])
+// list の要素をそれぞれ iterator 関数に渡して実行し、 true が返されるすべての 要素を配列に格納して返す。 true が返される要素がない場合は空の配列を返す。
+// _.find(list, iterator, [context])
+// list の要素をそれぞれ iterator 関数に渡して実行し、 true が返される最初の要 素を返す。 true が返される要素がない場合は undefined を返す。
+// _.findWhere(list, properties)
+// list のそれぞれの値を走査して、 properties に渡されたオブジェクトのすべての プロパティのキーと値の両方を持っている最初のオブジェクトを返す。
+// _.first(array, [n])
+// 配列 array の最初の要素を返します。 数値 n を指定すると、 最初の n 個の要素を 返す。
+// _.flatten(array, [shallow])
+// 配列 array にネストされている配列があれば、 ネストを解いて平坦な新しい配列 に変換して返す。 shallow に true を渡すと、 1 レベルだけ平坦にする。
+// _.groupBy(list, iterator, [context])
+// iterator 関数の戻り値をキーとして、 list 内の対応する要素の配列をそのフィー
+// _.has(object, key)
+// object に key というキーが存在する場合に true を返す(プロトタイプで定義 されているキーには false を返す)。 object.hasOwnProperty(key) と同じだが、 hasOwnProperty 関数への安全な参照を使うことによって、 object から参照する hasOwnProperty メソッドがオーバーライドされても問題なく動作させるようにし ている。
+// _.identity(value)
+// value をそのまま返す。
+// _.invert(object)
+// object のプロパティのキーと値が入れ替えられたオブジェクトを返す。 元の object は変更されない。 格納されている値は一意で、 文字列に変換できるもので ある必要がある。
+// _.isArguments(object)
+// object が引数オブジェクト(arguments) の場合に true を返し、 それ以外の場 合に false を返す。
+// _.isArray(object)
+// object が配列である場合に true を返し、 それ以外の場合に false を返す。
+// _.isBoolean(object)
+// object が true もしくは false である場合に true を返し、 それ以外の場合に false を返す。
+// _.isDate(object)
+// object が Date オブジェクトである場合に true を返し、 それ以外の場合に false を返す。
+// _.isEmpty(object)
+// object に何も格納されていない場合に true を返し、 何かが格納されている場合 は false を返す。
+// _.isEqual(object, other)
+// object と other の 2 つのオブジェクトの深い比較を行う。
+// _.isFinite(object)
+// object が有限数である場合に true を返し、 それ以外の場合に false を返す。
+// _.isFunction(object)
+// object が関数である場合に true を返し、 それ以外の場合に false を返す。
+// _.isNaN(object)
+// object が NaN の場合に true を返し、 それ以外の場合に false を返す。 object が undefined の場合、 JavaScript ネイティブの isNaN 関数は true を返すが、 この関 数は false を返す。
+// _.isNull(object)
+// object が null の場合に true を返し、 それ以外の場合に false を返す。
+// _.isNumber(object)
+// object が数値型(NaN を含む) の場合に true を返し、 それ以外の場合に false を 返す。
+// _.isObject(value)
+// value が object 型である場合に true を返し、 それ以外の場合に false を返す。
+// _.isRegExp(object)
+// object が RegExp オブジェクトである場合に true を返し、 それ以外の場合に false を返す。
+// _.isString(object)
+// object が文字列型である場合に true を返し、 それ以外の場合に false を返す。
+// _.isUndefined(value)
+// value が undefined である場合に true を返し、 それ以外の場合に false を返す。
+// _.keys(object)
+// object 自身が持つすべてのプロパティ名を配列に格納して返します。
+// _.last(array, [n])
+// 配列 array の最後の要素を返す。 数値 n を渡した場合は、 最後の n 個の要素を配 列に格納して返す。 文字列でも動作する。 要素を持たない配列や、 配列・ 文字列 以外が array に渡された場合は undefined を返す。
+// _.map(list, iterator, [context])
+// list に格納されているそれぞれの要素を iterator 関数に渡して実行した結果を 格納した新たな配列を生成する。 list がオブジェクト型であっても、 戻り値は配 列となる。 JavaScript ネイティブの map 関数が存在する場合はネイティブ関数が 優先される。
+// _.max(list, [iterator], [context])
+// list 内で一番大きな値を返す。 iterator 関数が引数に渡されている場合は、 各要 素においてこの関数が返す値により値の順序付けが行われる。
+// _.object(list, [values])[key, value] のような配列が格納された入れ子配列をlistに渡すか、 もしくは キーの配列を list に、 値の配列を values に渡すことによって、 それらをオブ ジェクトに変換する。
+// _.omit(object, * keys)
+// keys に与えられたプロパティを object から除去して新しいオブジェクトに格納 して返す。
+// _.pairs(object)
+// objectの各プロパティを[key, value] の配列に変換し、 それらを格納した配列を 返す。
+// _.partial(function, [ * arguments])[ * arguments] に与えられた任意の数の引数を
+
+// function に部分適用する。
+// _.pick(object, * keys)
+// keys に与えられたプロパティを object から抽出して新しいオブジェクトに格納 して返す。
+// _.pluck(list, propertyName)
+// _.map の一番一般的とおもわれるユースケースを実現するための便利関数。 オブ ジェクトの配列 list から、 propertyName のキーを持った値を抽出して、 配列に格 納して返す。
+// _.range([start], stop, [step])
+// 連続した数値を格納した配列を生成する。 start から stop までの間、 数値 step ごとの連続した数値を配列に格納して返す。 start と step が省略された場合はそ
+// れぞれが 0 と 1 とみなされ、 stop の個数分の自然数を格納した配列を返す。
+// _.reduce(list, iterator, [memo], [context])
+// list に格納されているそれぞれの要素を左から順番に iterator 関数に渡して実 行し、 その結果を結合することで単一の値まで「 煮詰める」。 memo(累積変数) は最終的に返す値の初期状態で、 省略された場合は list の最初の値が初期状態 となる。 list が配列の場合、 memo と配列の要素が iterator に引数として渡され る。 list がオブジェクトの場合の引数は memo、 値、 キーの順となる。
+// _.reduceRight(list, iterator, memo, [context]) _.reduce と同様の動作を右側から実行する。
+// _.reject(list, iterator, [context])
+// _.filter と逆の動作を行う。 つまり、 list の要素をそれぞれ iterator 関数に渡 して実行し、 true が返されないすべての要素を配列に格納して返す。 true が返さ れない要素がない場合は空の配列を返す。
+// _.rest(array, [index])
+// _.rest(array, [index\]) 配列 array から最初の要素を取り除いた配列を返す。 index を指定した場合は index とそれ以降の要素を含んだ配列を返す。
+// _.size(list)
+// list の要素の数を返す。 list が配列の場合は length、 オブジェクトの場合はキー の数を返す。
+// _.some(list, [iterator], [context])
+// list のいずれかの値が iterator の真偽テストで true を返した場合に true を返 す。 iterator が渡されない場合は要素の値自体で真偽を判定する(JavaScript は false、 undefined、 null、 NaN、 0、 - 0、 ''
+//   の場合に false と判定し、 その他はすべ て true と判定する。)
+// _.sortBy(list, iterator, [context])
+// list の要素を iterator 関数の結果によってソートした結果のリストを返す。 元 の list は変更されない。
+// _.tap(object, interceptor)
+// object をターゲットオブジェクトとして interceptor 関数を呼び出し、 そして、 object をそのまま返す。 このメソッドの主な利用方法は _.chain によるメソッド
+// _.take(array, [n])
+// _.first のエイリアス。 配列 array の最初の要素を返す。 数値 n を指定すると、 最初の n 個の要素を返す。
+// _.times(n, iterator, [context])
+// iterator に渡された関数を n 回実行する。 それぞれの iterator 関数の実行時には インデックス番号が引数として渡される。 実行結果が配列に格納されて返される。
+// _.toArray(list)
+// イテレート可能なデータ型 list を Array 型に変換する。 arguments オブジェクト を Array 型に変換する際に便利。 list がオブジェクトの場合は、 それぞれの値が 配列の要素となる。
+// _.uniq(array, [isSorted], [iterator])
+// 配列 array から重複要素を取り除いた新しい配列を返す。 重複要素の判定は同値 演算子( === ) で行われる。 配列がすでにソートされていることが判明している 場合は、 isSorted に true を渡すことで、 動作の早いアルゴリズムを使用できる。 iterator に関数を渡しておくと、 これを使って _.map であらかじめ処理を行っ てから重複要素を取り除く。 isSorted の位置に関数が渡された場合は、 それが iterator として認識される。
+// _.values(object)
+// object のすべてのプロパティの値だけを配列に格納して返す。
+// _.where(list, properties)
+// list のそれぞれの値を走査して、 properties に渡されたオブジェクトのすべての プロパティのキーと値の両方を持っているオブジェクトをすべて抽出し、 その配 列を返す。
+// _.without(array, [ * values])
+// array から values に渡された値を除いた新たな配列を生成して返す。
+// _.zip( * arrays)
+// 渡されたそれぞれの配列の同じインデックスにある要素を新たな配列の要素 としてまとめて、 それぞれの配列を要素に持った配列を返す。 _.zip([1, 2, 3\], ['a', 'b', 'c'\]) の実行結果は[[1, 'a'\], [2, 'b'\], [3, 'c'\]\] となる。
+
+
+
+let A, B, C, D; //, E, F, G, H, I, J, K, L, M, N, O, P, Q, S, T, U, V, W, X, Y, Z;
+// A = R.pipe(
+// R.all(R.match(/(\d)./g), )([3, 3, 3, 3]);
+// B = R.any(R.equals(2))([1, 2]);
+
+const multiplyXY = ary => {
+  let [x, y] = ary;
+  return x + y
+}
+
+R.groupBy(((num) => {
+  return num < 10 ? 'F' :
+    score < 20 ? 'D' :
+    score < 30 ? 'C' :
+    score < 40 ? 'B' : 'A';
+}));
+
+A = R.pipe(
+  R.take(50),
+  R.reject(((n) => n % 2 === 1)), // except odd
+  R.filter(((n) => n % 3 === 0)), // only 3 multiples
+  R.toPairs(),
+  R.sortBy(R.prop(0)),
+  R.reverse(),
+  R.pluck(1), //  alias R.pluck('', []) is R.map(R.prop())([])
+  R.zip((R.times(R.identity, 10))),
+  R.map(multiplyXY),
+  R.groupBy(num => {
+    return num < 10 ? 'F' :
+      num < 20 ? 'D' :
+      num < 30 ? 'C' :
+      num < 40 ? 'B' : 'A';
+  }),
+  R.omit(['D', 'F']),
+  // R.reduce(R.subtract, 0, [1, 2, 3, 4]),
+  // R.all(R.test(/\d/), R.__),
+)(R.times(R.identity, 100));
+// B = R.range(1, 101);
+// let multiplyXY = (x, y) => x * y;
+
+// _.all(list, [iterator], [context])
+// _.any(list, [iterator], [context])
+// _.bind(function, object, [ * arguments])
+// _.bindAll(object, * methodNames)
+// _.chain(obj)
+// _.clone(object)
+// _.compose( * functions)
+// _.contains(list, value)
+// _.countBy(list, iterator, [context])
+// _.defaults(object, * defaults)
+// _.each(list, iterator, [context])
+// _.every(list, [iterator], [context])
+// _.extend(destination, * sources)
+//  _.filter(list, iterator, [context])
+// _.find(list, iterator, [context])
+// _.findWhere(list, properties)
+// _.first(array, [n])
+// _.flatten(array, [shallow])
+//  _.groupBy(list, iterator, [context])
+// _.has(object, key)
+//  _.identity(value)
+// _.invert(object)
+// _.keys(object)
+// _.last(array, [n])
+// _.map(list, iterator, [context])
+// _.max(list, [iterator], [context])
+// _.object(list, [values])
+//  _.omit(object, * keys)
+//  _.pairs(object)
+// _.partial(function, [ * arguments])
+// _.pick(object, * keys)
+//  _.pluck(list, propertyName)
+//  _.range([start], stop, [step])
+// _.reduce(list, iterator, [memo], [context])
+// _.reduceRight(list, iterator, memo, [context])
+//  _.reject(list, iterator, [context])
+// _.rest(array, [index])
+// _.size(list)
+// _.some(list, [iterator], [context])
+//  _.sortBy(list, iterator, [context])
+// _.tap(object, interceptor)
+//  _.take(array, [n])
+//  _.times(n, iterator, [context])
+// _.toArray(list)
+// _.uniq(array, [isSorted], [iterator])
+// _.values(object)
+// _.where(list, properties)
+// _.without(array, [ * values])
+//  _.zip( * arrays)
+
+
+
+
+
+// _.isArguments(object)
+// _.isArray(object)
+// _.isBoolean(object)
+// _.isDate(object)
+// _.isEmpty(object)
+// _.isEqual(object, other)
+// _.isFinite(object)
+// _.isFunction(object)
+// _.isNaN(object)
+// _.isNull(object)
+// _.isNumber(object)
+// _.isObject(value)
+// _.isRegExp(object)
+// _.isString(object)
+// _.isUndefined(value)
+
+console.dir(A);
+console.dir(B);
+console.dir(C);
+console.dir(D);
+console.dir(E);
+console.dir(F);
+console.dir(G);
+console.dir(H);
+console.dir(I);
+console.dir(J);
+console.dir(K);
+console.dir(L);
+console.dir(M);
+console.dir(N);
+console.dir(O);
+console.dir(P);
+console.dir(Q);
+console.dir(R);
+console.dir(S);
+console.dir(T);
+console.dir(U);
+console.dir(V);
+console.dir(W);
+console.dir(X);
+console.dir(Y);
+console.dir(Z);
