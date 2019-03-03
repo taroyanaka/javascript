@@ -1217,8 +1217,13 @@ const addXY = ary => {
   return x + y
 }
 
+const show = arg => console.log(`show: ${arg}`);
+
 const add2 = (a, b) => a + b;
 
+const mergeTwo = (a, b) => [].concat(a, b);
+const tripleAdd = (x, y, z) => x + y + z;
+const doubleAdd = R.unary(tripleAdd);
 // console.log(R.map(R.product(R.__))([
 //   [1, 2],
 //   [3, 4]
@@ -1269,6 +1274,38 @@ A = R.pipe(
   R.uniq(),
   R.adjust(0, R.toString),
   R.addIndex(R.map)((val, idx) => idx + '-' + val), // ['f', 'o', 'o', 'b', 'a', 'r']);
+  R.concat([1, 2, 3]),
+  R.insert(3, 100),
+  R.prepend(10),
+  R.append('foo'),
+  R.update(-1, 'bar'),
+  R.update(0, 20),
+  R.set(R.lensIndex(-1), 'baz'),
+  R.over(R.lensIndex(-1), R.toUpper),
+  R.filter(R.is(Number)),
+  R.scan(R.multiply, 10),
+  R.remove(3, 3),
+  R.init(),
+  R.nth(-1),
+  R.flip(mergeTwo)(10),
+  R.apply(Math.max),
+  R.toString(),
+  R.splitEvery(1),
+  R.map((STR => (STR - 0))),
+  R.converge(tripleAdd, [R.sum, R.sum, R.sum]),
+  R.useWith(Math.pow, [R.dec, R.inc])(3), // 2^7 => 128
+  R.converge(R.add, [R.add(2), R.add(2)]), // 130+130 => 260
+  R.insert(0, R.__, [1, 2, 3]),
+  R.apply(R.juxt([Math.max, Math.min])),
+  R.insertAll(-1, [100]),
+  R.tap(show),
+
+  // R.max(),
+  // R.into([]),
+  // R.insertAll(0, [1, 2, 3], [R.__]),
+  // R.toPairs(),
+  // R.concat([1, 2]),
+  // R.none(R.is(String)),
   // R.map(R.toString),
   // R.addIndex(R.map((val, idx) => idx + '-' + val)),
 )(R.times(R.identity, 100));
@@ -1276,6 +1313,9 @@ A = R.pipe(
 const double = R.partial(add2, [2, 3, 10]);
 B = double(); //=> 4
 
+// C = R.converge(tripleAdd, [R.sum, R.sum, R.sum])([1, 2, 3]);
+// D = R.useWith(tripleAdd, [R.sum, R.sum, R.sum])([1, 2, 3]);
+C = Math.pow(2, 2);
 // let multiplyXY = (x, y) => x * y;
 
 // _.all(list, [iterator], [context])
