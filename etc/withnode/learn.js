@@ -1,5 +1,5 @@
 const R = require('ramda');
-const _ = require('underscore');
+// const _ = require('underscore');
 
 function showAZ() {
   console.log("a: ");
@@ -1212,13 +1212,17 @@ let A, B, C, D; //, E, F, G, H, I, J, K, L, M, N, O, P, Q, S, T, U, V, W, X, Y, 
 // R.all(R.match(/(\d)./g), )([3, 3, 3, 3]);
 // B = R.any(R.equals(2))([1, 2]);
 
-const multiplyXY = ary => {
+const addXY = ary => {
   let [x, y] = ary;
   return x + y
 }
 
+const add2 = (a, b) => a + b;
 
-
+// console.log(R.map(R.product(R.__))([
+//   [1, 2],
+//   [3, 4]
+// ]))
 A = R.pipe(
   R.take(50),
   R.reject(((n) => n % 2 === 1)), // except odd
@@ -1228,7 +1232,7 @@ A = R.pipe(
   R.reverse(),
   R.pluck(1), //  R.pluck('', []) is alias R.map(R.prop())([])
   R.zip((R.times(R.identity, 10))),
-  R.map(multiplyXY),
+  R.map(addXY),
   R.groupBy(num => {
     return num < 10 ? 'A' :
       num < 20 ? 'B' :
@@ -1238,11 +1242,47 @@ A = R.pipe(
   R.omit(['D', 'F']),
   R.toPairs(),
   R.sort(R.descend(R.prop(0))), //Z→A 10→1 is descend
+  R.sort(R.ascend(R.prop(0))), //Z→A 10→1 is descend
+  R.flatten(),
+  R.filter(R.is(Number)),
+  R.length(),
+  R.range(1),
+  R.without([3, 4, 5, 6]),
+  R.zipObj(['a', 'b', 'c']),
+  R.invertObj(),
+  R.invertObj(),
+  R.values(),
+  R.map((N => (N - 0))),
+  R.insertAll(0, ['y', 'z']),
+  R.partition(R.is(String)),
+  R.transpose(),
+  R.fromPairs(),
+  R.pick(['z']),
+  R.values(),
+  R.insertAll(10, R.repeat(2, 3)),
+  R.reduce(R.add, 0),
+
+
+  // R.flatten(),
+  // R.adjust(0, R.toString),
+
+  // R.map(((str) => (str - 0))),
+  // R.partial(add2),
+  // R.mean(),
+  // R.max(),
+  // R.last(),
+  // R.head(),
+
+
+
   // R.sort(R.ascend(R.prop(0))), //A→Z 1→10 is ascend
 
-  // R.reduce(R.subtract, 0, [1, 2, 3, 4]),
   // R.all(R.test(/\d/), R.__),
 )(R.times(R.identity, 100));
+
+const double = R.partial(add2, [2, 3, 10]);
+B = double(); //=> 4
+
 
 // let multiplyXY = (x, y) => x * y;
 
@@ -1262,28 +1302,28 @@ A = R.pipe(
 //  _.filter(list, iterator, [context])
 // _.find(list, iterator, [context])
 // _.findWhere(list, properties)
-// _.first(array, [n])
-// _.flatten(array, [shallow])
+//  _.first(array, [n])
+//  _.flatten(array, [shallow])
 //  _.groupBy(list, iterator, [context])
 // _.has(object, key)
 //  _.identity(value)
-// _.invert(object)
+//  _.invert(object)
 // _.keys(object)
 // _.last(array, [n])
-// _.map(list, iterator, [context])
+//  _.map(list, iterator, [context])
 // _.max(list, [iterator], [context])
 // _.object(list, [values])
 //  _.omit(object, * keys)
 //  _.pairs(object)
 // _.partial(function, [ * arguments])
-// _.pick(object, * keys)
+//  _.pick(object, * keys)
 //  _.pluck(list, propertyName)
 //  _.range([start], stop, [step])
-// _.reduce(list, iterator, [memo], [context])
+//  _.reduce(list, iterator, [memo], [context])
 // _.reduceRight(list, iterator, memo, [context])
 //  _.reject(list, iterator, [context])
 // _.rest(array, [index])
-// _.size(list)
+//  _.size(list)
 // _.some(list, [iterator], [context])
 //  _.sortBy(list, iterator, [context])
 // _.tap(object, interceptor)
@@ -1291,9 +1331,9 @@ A = R.pipe(
 //  _.times(n, iterator, [context])
 // _.toArray(list)
 // _.uniq(array, [isSorted], [iterator])
-// _.values(object)
+//  _.values(object)
 // _.where(list, properties)
-// _.without(array, [ * values])
+//  _.without(array, [ * values])
 //  _.zip( * arrays)
 
 
