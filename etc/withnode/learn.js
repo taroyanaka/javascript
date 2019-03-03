@@ -1256,6 +1256,7 @@ A = R.pipe(
   R.insertAll(0, ['y', 'z']),
   R.partition(R.is(String)),
   R.transpose(),
+  R.tail(),
   R.fromPairs(),
   R.merge({
     x: 0
@@ -1264,14 +1265,16 @@ A = R.pipe(
   R.values(),
   R.insertAll(0, R.repeat(2, 3)),
   R.reduce(R.add, 0),
-  R.insertAll(-1, R.repeat(8, 3)),
+  R.insertAll(-1, [7, 8, 9, 10]),
   R.uniq(),
   R.adjust(0, R.toString),
+  R.addIndex(R.map)((val, idx) => idx + '-' + val), // ['f', 'o', 'o', 'b', 'a', 'r']);
+  // R.map(R.toString),
+  // R.addIndex(R.map((val, idx) => idx + '-' + val)),
 )(R.times(R.identity, 100));
 
 const double = R.partial(add2, [2, 3, 10]);
 B = double(); //=> 4
-
 
 // let multiplyXY = (x, y) => x * y;
 
@@ -1287,7 +1290,7 @@ B = double(); //=> 4
 // _.defaults(object, * defaults)
 // _.each(list, iterator, [context])
 // _.every(list, [iterator], [context])
-// _.extend(destination, * sources)
+//  _.extend(destination, * sources)
 //  _.filter(list, iterator, [context])
 // _.find(list, iterator, [context])
 // _.findWhere(list, properties)
@@ -1301,17 +1304,17 @@ B = double(); //=> 4
 // _.last(array, [n])
 //  _.map(list, iterator, [context])
 // _.max(list, [iterator], [context])
-// _.object(list, [values])
+//  _.object(list, [values])
 //  _.omit(object, * keys)
 //  _.pairs(object)
-// _.partial(function, [ * arguments])
+//  _.partial(function, [ * arguments])
 //  _.pick(object, * keys)
 //  _.pluck(list, propertyName)
 //  _.range([start], stop, [step])
 //  _.reduce(list, iterator, [memo], [context])
 // _.reduceRight(list, iterator, memo, [context])
 //  _.reject(list, iterator, [context])
-// _.rest(array, [index])
+//  _.rest(array, [index])
 //  _.size(list)
 // _.some(list, [iterator], [context])
 //  _.sortBy(list, iterator, [context])
