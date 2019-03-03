@@ -1257,27 +1257,16 @@ A = R.pipe(
   R.partition(R.is(String)),
   R.transpose(),
   R.fromPairs(),
+  R.merge({
+    x: 0
+  }),
   R.pick(['z']),
   R.values(),
-  R.insertAll(10, R.repeat(2, 3)),
+  R.insertAll(0, R.repeat(2, 3)),
   R.reduce(R.add, 0),
-
-
-  // R.flatten(),
-  // R.adjust(0, R.toString),
-
-  // R.map(((str) => (str - 0))),
-  // R.partial(add2),
-  // R.mean(),
-  // R.max(),
-  // R.last(),
-  // R.head(),
-
-
-
-  // R.sort(R.ascend(R.prop(0))), //A→Z 1→10 is ascend
-
-  // R.all(R.test(/\d/), R.__),
+  R.insertAll(-1, R.repeat(8, 3)),
+  R.uniq(),
+  R.adjust(0, R.toString),
 )(R.times(R.identity, 100));
 
 const double = R.partial(add2, [2, 3, 10]);
@@ -1330,7 +1319,7 @@ B = double(); //=> 4
 //  _.take(array, [n])
 //  _.times(n, iterator, [context])
 // _.toArray(list)
-// _.uniq(array, [isSorted], [iterator])
+//  _.uniq(array, [isSorted], [iterator])
 //  _.values(object)
 // _.where(list, properties)
 //  _.without(array, [ * values])
