@@ -25,7 +25,10 @@
     "puppeteer": "^1.12.2",
     "query-selector": "^1.0.9",
     "ramda": "^0.26.1",
+    "ramda-adjunct": "^2.16.1",
+    "ramda-extension": "^0.7.2",
     "request": "^2.88.0",
+    "sequencematcher": "^1.0.11",
     "underscore": "^1.9.1"
   },
   "devDependencies": {
