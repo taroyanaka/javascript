@@ -2,6 +2,7 @@ const R = require('ramda');
 const RA = require('ramda-adjunct');
 const R_ = require('ramda-extension');
 
+
 // // const _ = require('underscore');
 
 // function showAZ() {
@@ -1327,69 +1328,92 @@ A = R.pipe(
 // var similarity = sm.sequenceMatcher(array1, array2);
 // console.log(similarity);
 
-let array_3 = [];
-sequenceMatcher = function (array_1, array_2) {
-  if (!isArray(array_1) || !isArray(array_2)) {
-    return -1;
-  }
-  var total_length = array_1.length + array_2.length;
-  if (!total_length) {
-    return -1;
-  }
-  var matched_times = 0;
-  for (var i in array_1) {
-    for (var j in array_2) {
-      if (array_1[i] === array_2[j]) {
-        matched_times++;
-        array_3 = R.insert(-1, array_1[i], array_3);
-        break;
-      } else {
-        array_3 = R.insert(-1, 0, array_3);
-        break;
-      }
-    }
-  }
-  return matched_times / (total_length / 2);
-}
+// let array_3 = [];
+// sequenceMatcher = function (array_1, array_2) {
+//   if (!isArray(array_1) || !isArray(array_2)) {
+//     return -1;
+//   }
+//   var total_length = array_1.length + array_2.length;
+//   if (!total_length) {
+//     return -1;
+//   }
+//   var matched_times = 0;
+//   for (var i in array_1) {
+//     for (var j in array_2) {
+//       if (array_1[i] === array_2[j]) {
+//         matched_times++;
+//         array_3 = R.insert(-1, array_1[i], array_3);
+//         break;
+//       } else {
+//         array_3 = R.insert(-1, 0, array_3);
+//         break;
+//       }
+//     }
+//   }
+//   return matched_times / (total_length / 2);
+// }
 
-function isArray(o) {
-  return Object.prototype.toString.call(o) === '[object Array]';
-}
+// function isArray(o) {
+//   return Object.prototype.toString.call(o) === '[object Array]';
+// }
 
-var array1 = [1, 2, 3];
-var array2 = [1, 10, 3];
-// var similarity = sm.sequenceMatcher(array1, array2);
-var similarity = sequenceMatcher(array1, array2);
-console.log(similarity);
-console.log(array_3);
+// var array1 = [1, 2, 3];
+// var array2 = [1, 10, 3];
+// // var similarity = sm.sequenceMatcher(array1, array2);
+// var similarity = sequenceMatcher(array1, array2);
+// console.log(similarity);
+// console.log(array_3);
 
 
-R.insert(-1, 'x', [1, 2, 3, 4]); //=> [1,2,'x',3,4]
+// R.insert(-1, 'x', [1, 2, 3, 4]);
+
+
+
+
 var array1 = [1, 2, 3, 4];
-var array2 = [1, 10, 3, 5];
+var array2 = [1, 2, 3, 4];
 
 const foo = a => a[0] === a[1] ? a[0] : 0
-
-
 const matcher = (array_1, array_2) => {
   return R.pipe(R.zip, R.map(foo))(array_1, array_2);
 }
-
-
 const unMatchedTimes = (array_1, array_2) => {
   return R.countBy(Math.abs)(matcher(array1, array2))["0"]
 }
-
-
-
-matcher(array1, array2)
-unMatchedTimes(array1, array2)
-
+// matcher(array1, array2)
+// unMatchedTimes(array1, array2)
 const similarity = (array_1, array_2) => {
   let total_length = array_1.length + array_2.length;
-  return total_length / 2 * (unMatchedTimes(array_1, array_2) / 10)
+  // return total_length / 2 * (unMatchedTimes(array_1, array_2) / 10)
+  // return total_length / 2 * (2 / 10)
+  // return unMatchedTimes(array_1, array_2)
+  return matcher(array_1, array_2)
 }
-similarity(array1, array2)
+console.log(similarity(array1, array2));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // const NJTEXTARRAY = [
@@ -1583,8 +1607,8 @@ similarity(array1, array2)
 // // _.isString(object)
 // // _.isUndefined(value)
 
-console.dir(A);
-console.dir(B);
+// console.dir(A);
+// console.dir(B);
 // console.dir(C);
 // console.dir(D);
 // console.dir(E);
