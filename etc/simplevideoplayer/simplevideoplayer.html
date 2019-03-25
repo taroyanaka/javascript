@@ -1,0 +1,55 @@
+<html>
+<head>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <img src="sizelogo.png" width="20" height="20" />
+        <input id="size" type="range" max="12" min="3" step="3">
+        <img src="playtimelogo.png" width="20" height="20" />
+        <input id="playtime" type="range" max="100" min="0" step="5">
+        <img src="looplogo.png" width="20" height="20"/>
+        <input id="loop" type="checkbox">
+    </div>
+    <div>
+        <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()">
+            <source src="4K_UHD_Drone_Portland_Oregon_Cherry_Blossoms_River_Bridge__Fernando.mp4"></video>
+        <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()">
+            <source src="Moving_Floor_V1_01.mp4"></video>
+        <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()">
+            <source src="CloseFallsTimelapse.mp4"></video>
+        <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()">
+            <source src="DockHdr.mp4"></video>
+    </div>
+
+    <script>
+        function resize() {
+            const num = document.querySelector("#size").value * 10
+            document.querySelectorAll("video").forEach(video => {
+                video.width = (num * 4).toString();
+                video.height = (num * 3).toString()
+            })
+        }
+        document.querySelector("#size").addEventListener("change", resize, false);
+
+        function playtime() {
+            document.querySelectorAll("video").forEach(video => {
+                video.currentTime = video.duration / 100 * document.querySelector("#playtime").value;
+            })
+        }
+        document.querySelector("#playtime").addEventListener("change", playtime, false);
+
+        function loop() {
+            document.querySelectorAll("video").forEach(video => {
+                video.loop = document.querySelector("#loop").checked;
+            })
+        }
+        document.querySelector("#loop").addEventListener("change", loop, false);
+    </script>
+</body>
+</html>
