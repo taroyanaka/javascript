@@ -1,19 +1,27 @@
 <html>
+
 <head>
     <style type="text/css">
         * {
             margin: 0;
             padding: 0;
         }
+
+        #drop_zone {
+            border: 5px solid blue;
+            width: 200px;
+            height: 100px;
+        }
     </style>
 </head>
+
 <body>
     <div>
         <img src="sizelogo.png" width="20" height="20" />
         <input id="size" type="range" max="12" min="3" step="3">
         <img src="playtimelogo.png" width="20" height="20" />
         <input id="playtime" type="range" max="100" min="0" step="5">
-        <img src="looplogo.png" width="20" height="20"/>
+        <img src="looplogo.png" width="20" height="20" />
         <input id="loop" type="checkbox">
     </div>
     <div>
@@ -27,6 +35,10 @@
             <source src="DockHdr.mp4"></video>
     </div>
 
+
+    <div id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+        <p>Drag one or more files to this Drop Zone ...</p>
+    </div>
     <script>
         function resize() {
             const num = document.querySelector("#size").value * 10
@@ -50,6 +62,54 @@
             })
         }
         document.querySelector("#loop").addEventListener("change", loop, false);
+
+
+
+        function appendVideo(filesName) {
+            for (let fileName of filesName) {
+                let video = document.createElement("video");
+                video.setAttribute("class", "video1");
+                video.setAttribute("controls", false);
+                video.setAttribute("width", "160");
+                video.setAttribute("height", "120");
+                video.setAttribute("onmouseover", "play()");
+                video.setAttribute("onmouseout", "pause()");
+                let source = document.createElement("source");
+                source.setAttribute("src", fileName);
+                video.appendChild(source);
+                document.querySelector("body").appendChild(video);
+            }
+        }
+
+
+        function dropHandler(ev) {
+            console.log('File(s) dropped');
+
+            ev.preventDefault();
+
+            let filesName = [];
+            if (ev.dataTransfer.items) {
+                for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+                    if (ev.dataTransfer.items[i].kind === 'file') {
+                        var file = ev.dataTransfer.items[i].getAsFile();
+                        console.log('...file[' + i + '].name = ' + file.name);
+                        filesName.push(file.name);
+                    }
+                }
+            } else {
+                for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+                    console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
+                }
+            }
+            appendVideo(filesName);
+            filesName = [];
+        }
+
+        function dragOverHandler(ev) {
+            console.log('File(s) in drop zone'); // Prevent default behavior (Prevent file from being opened)
+            ev.preventDefault();
+        }
     </script>
 </body>
+
 </html>
