@@ -13,22 +13,38 @@
             width: 200px;
             height: 100px;
         }
+
+        #controller {
+            background-color: white;
+            position: fixed;
+            z-index: 1;
+        }
     </style>
 </head>
 
 <body>
-    <div>
+    <div id="controller">
         <img src="sizelogo.png" width="20" height="20" />
         <input id="size" type="range" max="12" min="3" step="3">
         <img src="playtimelogo.png" width="20" height="20" />
         <input id="playtime" type="range" max="100" min="0" step="5">
         <img src="looplogo.png" width="20" height="20" />
         <input id="loop" type="checkbox">
+        hoverplay<input id="hoverplay" type="checkbox">
+        hoverpause<input id="hoverpause" type="checkbox">
+        <!-- <input id="allplay" type="button" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" value="allplay">
+        <input id="allpause" type="button" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" value="allpause"> -->
+        <input id="allplayorpause" type="button" value="allplayorpause"
+            style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        volume<input id="volume" type="range" max="1" min="0" step="0.01">
+        <input id="mute" type="button" value="mute" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
     </div>
     <div>
-        <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()">
-            <source src="4K_UHD_Drone_Portland_Oregon_Cherry_Blossoms_River_Bridge__Fernando.mp4"></video>
-        <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()">
+        <!-- <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()"> -->
+        <!-- <video class="video1" controls width="160" height="120">
+            <source src="4K_UHD_Drone_Portland_Oregon_Cherry_Blossoms_River_Bridge__Fernando.mp4"></video> -->
+        <!-- <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()"> -->
+        <video class="video1" controls width="160" height="120">
             <source src="Moving_Floor_V1_01.mp4"></video>
         <!-- <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()">
             <source src="CloseFallsTimelapse.mp4"></video>
@@ -64,16 +80,62 @@
         }
         document.querySelector("#loop").addEventListener("change", loop, false);
 
+        function hoverplay() {
+            document.querySelectorAll("video").forEach(video => {
+                document.querySelector("#hoverplay").checked ? video.setAttribute("onmouseover", "play()") :
+                    video.removeAttribute("onmouseover");
+            })
+        }
+        document.querySelector("#hoverplay").addEventListener("change", hoverplay, false);
+
+        function hoverpause() {
+            document.querySelectorAll("video").forEach(video => {
+                document.querySelector("#hoverpause").checked ? video.setAttribute("onmouseout", "pause()") :
+                    video.removeAttribute("onmouseout");
+            })
+        }
+        document.querySelector("#hoverpause").addEventListener("change", hoverpause, false);
+
+        // function allplay() {
+        //     document.querySelectorAll("video").forEach(video => video.play())
+        // }
+        // document.querySelector("#allplay").addEventListener("click", allplay, false);
+
+        // function allpause() {
+        //     document.querySelectorAll("video").forEach(video => video.pause())
+        // }
+        // document.querySelector("#allpause").addEventListener("click", allpause, false);
+
+        function allplayorpause() {
+            document.querySelectorAll("video").forEach(video => {
+                video.paused ? video.play() : video.pause();
+            })
+        }
+        document.querySelector("#allplayorpause").addEventListener("click", allplayorpause, false);
 
 
+        function volume() {
+            document.querySelectorAll("video").forEach(video => {
+                video.volume = document.querySelector("#volume").value;
+            })
+        }
+        document.querySelector("#volume").addEventListener("change", volume, false);
 
+        let temporaryVolume;
 
-
-
-
-
-
-
+        function mute() {
+            document.querySelectorAll("video").forEach(video => {
+                if (video.volume !== 0) {
+                    temporaryVolume = video.volume;
+                    video.volume = 0;
+                    document.querySelector("#volume").value = 0;
+                } else {
+                    video.volume = temporaryVolume;
+                    document.querySelector("#volume").value = temporaryVolume;
+                }
+            })
+        }
+        document.querySelector("#mute").addEventListener("click", mute, false);
 
 
 
@@ -90,8 +152,8 @@
                 video.setAttribute("controls", false);
                 video.setAttribute("width", "160");
                 video.setAttribute("height", "120");
-                video.setAttribute("onmouseover", "play()");
-                video.setAttribute("onmouseout", "pause()");
+                // video.setAttribute("onmouseover", "play()");
+                // video.setAttribute("onmouseout", "pause()");
                 let source = document.createElement("source");
                 source.setAttribute("src", fileName);
                 video.appendChild(source);
