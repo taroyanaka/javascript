@@ -26,8 +26,8 @@
     <div id="controller">
         <img src="sizelogo.png" width="20" height="20" />
         <input id="size" type="range" max="12" min="3" step="3">
-        <img src="playtimelogo.png" width="20" height="20" />
-        <input id="playtime" type="range" max="100" min="0" step="5">
+        <img src="positionlogo.png" width="20" height="20" />
+        <input id="position" type="range" max="100" min="0" step="5">
         <img src="looplogo.png" width="20" height="20" />
         <input id="loop" type="checkbox">
         hoverplay<input id="hoverplay" type="checkbox">
@@ -64,12 +64,12 @@
         }
         document.querySelector("#size").addEventListener("change", resize, false);
 
-        function playtime() {
+        function position() {
             document.querySelectorAll("video").forEach(video => {
-                video.currentTime = video.duration / 100 * document.querySelector("#playtime").value;
+                video.currentTime = video.duration / 100 * document.querySelector("#position").value;
             })
         }
-        document.querySelector("#playtime").addEventListener("change", playtime, false);
+        document.querySelector("#position").addEventListener("change", position, false);
 
         function loop() {
             document.querySelectorAll("video").forEach(video => {
