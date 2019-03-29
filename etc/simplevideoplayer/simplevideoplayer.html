@@ -32,8 +32,6 @@
         <input id="loop" type="checkbox">
         hoverplay<input id="hoverplay" type="checkbox">
         hoverpause<input id="hoverpause" type="checkbox">
-        <!-- <input id="allplay" type="button" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" value="allplay">
-        <input id="allpause" type="button" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" value="allpause"> -->
         <input id="allplayorpause" type="button" value="allplayorpause"
             style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         volume<input id="volume" type="range" max="1" min="0" step="0.01">
@@ -95,16 +93,6 @@
             })
         }
         document.querySelector("#hoverpause").addEventListener("change", hoverpause, false);
-
-        // function allplay() {
-        //     document.querySelectorAll("video").forEach(video => video.play())
-        // }
-        // document.querySelector("#allplay").addEventListener("click", allplay, false);
-
-        // function allpause() {
-        //     document.querySelectorAll("video").forEach(video => video.pause())
-        // }
-        // document.querySelector("#allpause").addEventListener("click", allpause, false);
 
         function allplayorpause() {
             document.querySelectorAll("video").forEach(video => {
