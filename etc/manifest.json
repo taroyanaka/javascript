@@ -1,0 +1,12 @@
+{
+    "short_name": "PWAサイト",
+
+
+    "name": "サンプルのPWAサイト",
+
+
+    "start_url": "https://taroyanaka.github.io/javascript/etc/pwa.html",
+
+
+    "display": "standalone",
+}
