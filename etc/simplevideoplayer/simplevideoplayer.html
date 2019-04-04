@@ -68,7 +68,7 @@
         let firstPlay = true;
 
         function previous() {
-            if (videoIndex >= 1) {
+            if (videoIndex >= 1 && firstPlay === false) {
                 videoAll[videoIndex].width /= 2;
                 videoAll[videoIndex].height /= 2;
                 videoAll[videoIndex].pause();
@@ -107,7 +107,7 @@
         document.querySelector("#pause").addEventListener("click", pause, false);
 
         function next() {
-            if (videoIndex < videoAll.length - 1) {
+            if (videoIndex < videoAll.length - 1 && firstPlay === false) {
                 videoAll[videoIndex].width /= 2;
                 videoAll[videoIndex].height /= 2;
                 videoAll[videoIndex].pause();
