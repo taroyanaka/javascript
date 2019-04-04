@@ -24,12 +24,13 @@
 
 <body>
     <div id="controller">
+        <img src="sizelogo.png" width="20" height="20" />
+        <input id="size" type="range" max="12" min="3" step="3">
+        viewSizeZoom<input id="viewSizeZoom" type="range" max="5" min="1" value="1">
         <input id="previous" type="button" value="<=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <input id="play" type="button" value=">" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <input id="pause" type="button" value="=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <input id="next" type="button" value="=>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <img src="sizelogo.png" width="20" height="20" />
-        <input id="size" type="range" max="12" min="3" step="3">
         <img src="positionlogo.png" width="20" height="20" />
         <input id="position" type="range" max="100" min="0" step="5">
         <img src="looplogo.png" width="20" height="20" />
@@ -45,57 +46,57 @@
     <div>
         <!-- <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()"> -->
 
-        <video class="video1" controls width="160" height="120" tabindex="4">
+        <video class="video1" controls width="160" height="120" tabindex="1">
             <source src="4K_UHD_Drone_Portland_Oregon_Cherry_Blossoms_River_Bridge__Fernando.mp4"></video>
         <video class="video1" controls width="160" height="120" tabindex="2">
             <source src="Moving_Floor_V1_01.mp4"></video>
         <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()" tabindex="3">
             <source src="CloseFallsTimelapse.mp4"></video>
-        <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()" tabindex="1">
+        <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()" tabindex="4">
             <source src="DockHdr.mp4"></video>
     </div>
+
+
 
     <div id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
         <p>Drag one or more video files to this Drop Zone</p>
     </div>
-    <!-- <a label="Button 1" tabindex="2" />abc</a>
-    <a label="Button 2" tabindex="1" />abc</a>
-    <a label="Button 3" tabindex="3" />abc</a> -->
 
     <script>
-        // let videoAll = document.querySelectorAll("video");
+        function resize() {
+            const num = document.querySelector("#size").value * 10
+            document.querySelectorAll("video").forEach(video => {
+                video.width = (num * 4).toString();
+                video.height = (num * 3).toString()
+            })
+        }
+        document.querySelector("#size").addEventListener("change", resize, false);
+
         let videoIndex = 0;
-        let firstPlay = true;
+
+        function viewSizeZoom() {
+            document.activeElement.width *= document.querySelector("#viewSizeZoom").value;
+            document.activeElement.height *= document.querySelector("#viewSizeZoom").value;
+        }
+        document.querySelector("#viewSizeZoom").addEventListener("change", viewSizeZoom, false);
 
         function previous() {
-            if (videoIndex >= 1 && firstPlay === false) {
-                videoAll[videoIndex].width /= 2;
-                videoAll[videoIndex].height /= 2;
-                videoAll[videoIndex].pause();
+            if (videoIndex > 0) {
+                resize();
+                pause();
                 videoIndex--;
-                videoAll[videoIndex].width *= 2;
-                videoAll[videoIndex].height *= 2;
-                videoAll[videoIndex].play();
-            }
+                document.querySelectorAll("video")[videoIndex].focus();
+                viewSizeZoom();
+                document.activeElement.play();
+            };
         }
         document.querySelector("#previous").addEventListener("click", previous, false);
 
         function play() {
-            if (firstPlay) {
-                videoAll = document.querySelectorAll("video");
-                document.querySelectorAll("video").forEach(video => {
-                    video.width = "160";
-                    video.height = "120";
-                    video.pause();
-                })
-                videoIndex = 0;
-                videoAll[videoIndex].width *= 2;
-                videoAll[videoIndex].height *= 2;
-                videoAll[videoIndex].play();
-            } else {
-                videoAll[videoIndex].play();
-            }
-            firstPlay = false;
+            resize();
+            document.querySelectorAll("video")[videoIndex].focus();
+            viewSizeZoom();
+            document.activeElement.play();
         }
         document.querySelector("#play").addEventListener("click", play, false);
 
@@ -107,14 +108,13 @@
         document.querySelector("#pause").addEventListener("click", pause, false);
 
         function next() {
-            if (videoIndex < videoAll.length - 1 && firstPlay === false) {
-                videoAll[videoIndex].width /= 2;
-                videoAll[videoIndex].height /= 2;
-                videoAll[videoIndex].pause();
+            if (videoIndex < document.querySelectorAll("video").length) {
+                resize();
+                pause();
                 videoIndex++;
-                videoAll[videoIndex].width *= 2;
-                videoAll[videoIndex].height *= 2;
-                videoAll[videoIndex].play();
+                document.querySelectorAll("video")[videoIndex].focus();
+                viewSizeZoom();
+                document.activeElement.play();
             }
         }
         document.querySelector("#next").addEventListener("click", next, false);
@@ -124,14 +124,6 @@
 
 
 
-        function resize() {
-            const num = document.querySelector("#size").value * 10
-            document.querySelectorAll("video").forEach(video => {
-                video.width = (num * 4).toString();
-                video.height = (num * 3).toString()
-            })
-        }
-        document.querySelector("#size").addEventListener("change", resize, false);
 
         function position() {
             document.querySelectorAll("video").forEach(video => {
@@ -149,7 +141,8 @@
 
         function hoverplay() {
             document.querySelectorAll("video").forEach(video => {
-                document.querySelector("#hoverplay").checked ? video.setAttribute("onmouseover", "play()") :
+                document.querySelector("#hoverplay").checked ? video.setAttribute("onmouseover",
+                        "play()") :
                     video.removeAttribute("onmouseover");
             })
         }
@@ -157,7 +150,8 @@
 
         function hoverpause() {
             document.querySelectorAll("video").forEach(video => {
-                document.querySelector("#hoverpause").checked ? video.setAttribute("onmouseout", "pause()") :
+                document.querySelector("#hoverpause").checked ? video.setAttribute("onmouseout",
+                        "pause()") :
                     video.removeAttribute("onmouseout");
             })
         }
