@@ -82,6 +82,7 @@
 
         function play() {
             if (firstPlay) {
+                videoAll = document.querySelectorAll("video");
                 document.querySelectorAll("video").forEach(video => {
                     video.width = "160";
                     video.height = "120";
