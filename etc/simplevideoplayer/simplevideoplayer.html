@@ -42,11 +42,6 @@
         <input id="mute" type="button" value="mute" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
     </div>
 
-
-    <div id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
-        <p>Drag one or more video files to this Drop Zone</p>
-    </div>
-
     <div>
         <!-- <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()"> -->
 
@@ -60,7 +55,9 @@
             <source src="DockHdr.mp4"></video>
     </div>
 
-
+    <div id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+        <p>Drag one or more video files to this Drop Zone</p>
+    </div>
     <!-- <a label="Button 1" tabindex="2" />abc</a>
     <a label="Button 2" tabindex="1" />abc</a>
     <a label="Button 3" tabindex="3" />abc</a> -->
