@@ -28,13 +28,13 @@
     <div id="controller">
         <img src="sizelogo.png" width="20" height="20" />
         <input id="size" type="range" max="5" min="1" value="1">
-        viewSizeZoom<input id="viewSizeZoom" type="range" max="5" min="1" value="1">
+        viewSizeZoom<input id="viewSizeZoom" type="range" max="10" min="1" value="1">
         <input id="previous" type="button" value="<=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <input id="start" type="button" value=">" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <input id="pause" type="button" value="=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <input id="next" type="button" value="=>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <img src="positionlogo.png" width="20" height="20" />
-        <input id="position" type="range" max="100" min="0" step="5">
+        <input id="position" type="range" max="100" min="0" step="1">
         <img src="looplogo.png" width="20" height="20" />
         <input id="loop" type="checkbox">
         hoverplay<input id="hoverplay" type="checkbox">
@@ -63,6 +63,16 @@
     </div>
 
     <script>
+        function debugMode(){
+            console.log(`videoIndex:${videoIndex}`);
+            console.log(`temporaryVolume:${temporaryVolume}`);
+            console.log(`document.activeElement.width:${document.activeElement.width}`);
+            console.log(`document.activeElement.height:${document.activeElement.height}`);
+            console.log(`document.activeElement.currentTime:${document.activeElement.currentTime}`);
+            // console.log(`A:${A}`);
+        }
+        setInterval(debugMode,10);
+
         function resize() {
             document.querySelectorAll("video").forEach(video => {
                 video.width = (document.querySelector("#size").value * 160).toString();
@@ -109,6 +119,7 @@
         function pause() {
             document.querySelectorAll("video").forEach(video => {
                 video.pause();
+                document.querySelectorAll("video")[videoIndex].focus();
             })
         }
         document.querySelector("#pause").addEventListener("click", pause, false);
@@ -117,7 +128,7 @@
             if (videoIndex < document.querySelectorAll("video").length) {
                 resize();
                 pause();
-                videoIndex++;
+                if(videoIndex !== document.querySelectorAll("video").length-1){videoIndex++};
                 document.querySelectorAll("video")[videoIndex].focus();
                 viewSizeZoom();
                 document.querySelectorAll("video")[videoIndex].scrollIntoView(true)
