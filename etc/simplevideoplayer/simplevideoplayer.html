@@ -30,7 +30,7 @@
         <input id="size" type="range" max="5" min="1" value="1">
         viewSizeZoom<input id="viewSizeZoom" type="range" max="5" min="1" value="1">
         <input id="previous" type="button" value="<=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="play" type="button" value=">" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        <input id="start" type="button" value=">" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <input id="pause" type="button" value="=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <input id="next" type="button" value="=>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <img src="positionlogo.png" width="20" height="20" />
@@ -48,17 +48,15 @@
     <div>
         <!-- <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()"> -->
 
-        <!-- <video class="video1" controls width="160" height="120" tabindex="1">
+        <!-- <video class="video1" controls width="160" height="120">
             <source src="4K_UHD_Drone_Portland_Oregon_Cherry_Blossoms_River_Bridge__Fernando.mp4"></video>
-        <video class="video1" controls width="160" height="120" tabindex="2">
+        <video class="video1" controls width="160" height="120">
             <source src="Moving_Floor_V1_01.mp4"></video>
-        <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()" tabindex="3">
+        <video class="video1" controls width="160" height="120">
             <source src="CloseFallsTimelapse.mp4"></video>
-        <video class="video1" controls width="160" height="120" onmouseover="play()" onmouseout="pause()" tabindex="4">
+        <video class="video1" controls width="160" height="120">
             <source src="DockHdr.mp4"></video> -->
     </div>
-
-
 
     <div id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
         <p>Drag one or more video files to this Drop Zone</p>
@@ -88,18 +86,25 @@
                 videoIndex--;
                 document.querySelectorAll("video")[videoIndex].focus();
                 viewSizeZoom();
+                document.querySelectorAll("video")[videoIndex].scrollIntoView(true)
                 document.activeElement.play();
             };
         }
         document.querySelector("#previous").addEventListener("click", previous, false);
 
-        function play() {
+        function start(event) {
             resize();
-            document.querySelectorAll("video")[videoIndex].focus();
+            if(videoIndex===0){
+                document.querySelectorAll("video")[videoIndex].focus();
+            }else{
+                videoIndex = event.target.id;
+                document.querySelectorAll("video")[videoIndex].focus();
+            }
             viewSizeZoom();
+            document.querySelectorAll("video")[videoIndex].scrollIntoView(true)
             document.activeElement.play();
         }
-        document.querySelector("#play").addEventListener("click", play, false);
+        document.querySelector("#start").addEventListener("click", start, false);
 
         function pause() {
             document.querySelectorAll("video").forEach(video => {
@@ -115,15 +120,14 @@
                 videoIndex++;
                 document.querySelectorAll("video")[videoIndex].focus();
                 viewSizeZoom();
+                document.querySelectorAll("video")[videoIndex].scrollIntoView(true)
                 document.activeElement.play();
             }
         }
         document.querySelector("#next").addEventListener("click", next, false);
 
-
-
-
-
+// function foo(e){console.log(e.target.width)}
+//     document.querySelectorAll("video").forEach(video => {video.addEventListener("mouseover",foo,false)})
 
 
         function position() {
@@ -143,7 +147,7 @@
         function hoverplay() {
             document.querySelectorAll("video").forEach(video => {
                 document.querySelector("#hoverplay").checked ? video.setAttribute("onmouseover",
-                        "play()") :
+                        "start(event)") :
                     video.removeAttribute("onmouseover");
             })
         }
@@ -198,14 +202,15 @@
 
 
         function appendVideo(filesName) {
+            let id = 0;
             for (let fileName of filesName) {
                 let video = document.createElement("video");
                 video.setAttribute("class", "video1");
                 video.setAttribute("controls", false);
                 video.setAttribute("width", "160");
                 video.setAttribute("height", "120");
-                // video.setAttribute("onmouseover", "play()");
-                // video.setAttribute("onmouseout", "pause()");
+                video.setAttribute("id", id);
+                id += 1;
                 let source = document.createElement("source");
                 source.setAttribute("src", fileName);
                 video.appendChild(source);
