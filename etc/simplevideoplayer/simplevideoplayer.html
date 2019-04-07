@@ -71,7 +71,7 @@
             console.log(`document.activeElement.currentTime:${document.activeElement.currentTime}`);
             // console.log(`A:${A}`);
         }
-        setInterval(debugMode,10);
+        // setInterval(debugMode,10);
 
         function resize() {
             document.querySelectorAll("video").forEach(video => {
@@ -104,12 +104,13 @@
 
         function start(event) {
             resize();
-            if(videoIndex===0){
-                document.querySelectorAll("video")[videoIndex].focus();
-            }else{
+            if(/[0-9]+/.test(event.target.id)){
                 videoIndex = event.target.id;
                 document.querySelectorAll("video")[videoIndex].focus();
+            }else{
+                document.querySelectorAll("video")[videoIndex].focus();
             }
+            console.log(event.target.id);
             viewSizeZoom();
             document.querySelectorAll("video")[videoIndex].scrollIntoView(true)
             document.activeElement.play();
