@@ -30,8 +30,16 @@
         <input id="size" type="range" max="5" min="1" value="1">
         viewSizeZoom<input id="viewSizeZoom" type="range" max="10" min="1" value="1">
         <input id="previous" type="button" value="<=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        <input id="manybackward" type="button" value="<<<" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        <input id="backward" type="button" value="<<" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        <input id="fewbackward" type="button" value="<|" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        <input id="minibackward" type="button" value="<||" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        <input id="stop" type="button" value="=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <input id="start" type="button" value=">" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="pause" type="button" value="=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        <input id="miniforward" type="button" value="||>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        <input id="fewforward" type="button" value="|>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        <input id="forward" type="button" value=">>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        <input id="manyforward" type="button" value=">>>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <input id="next" type="button" value="=>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
         <img src="positionlogo.png" width="20" height="20" />
         <input id="position" type="range" max="100" min="0" step="1">
@@ -92,7 +100,7 @@
         function previous() {
             if (videoIndex > 0) {
                 resize();
-                pause();
+                stop();
                 videoIndex--;
                 document.querySelectorAll("video")[videoIndex].focus();
                 viewSizeZoom();
@@ -102,6 +110,38 @@
         }
         document.querySelector("#previous").addEventListener("click", previous, false);
 
+        function manybackward() {
+            document.querySelectorAll("video")[videoIndex].focus();
+            document.activeElement.currentTime -= document.activeElement.duration / 5;
+        }
+        document.querySelector("#manybackward").addEventListener("click", manybackward, false);
+
+        function backward() {
+            document.querySelectorAll("video")[videoIndex].focus();
+            document.activeElement.currentTime -= document.activeElement.duration / 10;
+        }
+        document.querySelector("#backward").addEventListener("click", backward, false);
+
+        function fewbackward() {
+            document.querySelectorAll("video")[videoIndex].focus();
+            document.activeElement.currentTime -= document.activeElement.duration / 30;
+        }
+        document.querySelector("#fewbackward").addEventListener("click", fewbackward, false);
+
+        function minibackward() {
+            document.querySelectorAll("video")[videoIndex].focus();
+            document.activeElement.currentTime -= document.activeElement.duration / 100;
+        }
+        document.querySelector("#minibackward").addEventListener("click", minibackward, false);
+
+        function stop() {
+            document.querySelectorAll("video").forEach(video => {
+                video.pause();
+                document.querySelectorAll("video")[videoIndex].focus();
+            })
+        }
+        document.querySelector("#stop").addEventListener("click", stop, false);
+        
         function start(event) {
             resize();
             if(/[0-9]+/.test(event.target.id)){
@@ -116,18 +156,34 @@
         }
         document.querySelector("#start").addEventListener("click", start, false);
 
-        function pause() {
-            document.querySelectorAll("video").forEach(video => {
-                video.pause();
-                document.querySelectorAll("video")[videoIndex].focus();
-            })
+        function miniforward() {
+            document.querySelectorAll("video")[videoIndex].focus();
+            document.activeElement.currentTime += document.activeElement.duration / 100;
         }
-        document.querySelector("#pause").addEventListener("click", pause, false);
+        document.querySelector("#miniforward").addEventListener("click", miniforward, false);
+
+        function fewforward() {
+            document.querySelectorAll("video")[videoIndex].focus();
+            document.activeElement.currentTime += document.activeElement.duration / 30;
+        }
+        document.querySelector("#fewforward").addEventListener("click", fewforward, false);
+
+        function forward() {
+            document.querySelectorAll("video")[videoIndex].focus();
+            document.activeElement.currentTime += document.activeElement.duration / 10;
+        }
+        document.querySelector("#forward").addEventListener("click", forward, false);
+
+        function manyforward() {
+            document.querySelectorAll("video")[videoIndex].focus();
+            document.activeElement.currentTime += document.activeElement.duration / 5;
+        }
+        document.querySelector("#manyforward").addEventListener("click", manyforward, false);
 
         function next() {
             if (videoIndex < document.querySelectorAll("video").length) {
                 resize();
-                pause();
+                stop();
                 if(videoIndex !== document.querySelectorAll("video").length-1){videoIndex++};
                 document.querySelectorAll("video")[videoIndex].focus();
                 viewSizeZoom();
