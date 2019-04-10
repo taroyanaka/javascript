@@ -8,14 +8,6 @@
             padding: 0;
         }
 
-        #drop_zone {
-            border: 10px solid black;
-            font-size: 100px;
-            vertical-align: bottom;
-            width: 1000px;
-            height: 500px;
-        }
-
         #controller {
             background-color: white;
             position: fixed;
@@ -37,6 +29,14 @@
         #allplayorpause, 
         #mute{
             WIDTH:80px; HEIGHT:60px; border:3px solid gray;
+        }
+
+        #drop_zone {
+            border: 10px solid black;
+            font-size: 100px;
+            vertical-align: bottom;
+            width: 1000px;
+            height: 500px;
         }
     </style>
 </head>
@@ -62,7 +62,7 @@
         <input id="position" type="range" max="100" min="0" step="1" value="0" onchange="position()">
         <img src="looplogo.png" width="20" height="20" />
         <input id="loop" type="checkbox" onchange="loop()">
-        HoverPlayOrPause<input id="hoverplayorpause" type="checkbox" onchange="hoverplayorpause()">
+        HoverPlayOrPause<input id="hoverplayorpause" type="checkbox" onchange="hoverplayorpause()" checked>
         <input id="allplayorpause" type="button" value="allplayorpause" onclick="allplayorpause()">
         volume<input id="volume" type="range" max="1" min="0" step="0.01" onchange="volume()">
         <input id="mute" type="button" value="mute" onclick="mute()">
@@ -264,6 +264,7 @@
                 source.setAttribute("src", fileName);
                 video.appendChild(source);
                 document.querySelector("body").appendChild(video);
+                hoverplayorpause();
             }
         }
 
