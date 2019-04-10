@@ -31,15 +31,15 @@
         viewSizeZoom<input id="viewSizeZoom" type="range" max="10" min="1" value="1" onchange="viewSizeZoom()">
         <input id="previous" type="button" value="<=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="previous()">
         <input id="manybackward" type="button" value="<<<" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="manybackward()">
-        <input id="backward" type="button" value="<<" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="backward()">
-        <input id="fewbackward" type="button" value="<|" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="fewbackward()">
-        <input id="minibackward" type="button" value="<||" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="minibackward()">
+        <input id="backward" type="button" value="<<" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="backward()">
+        <input id="fewbackward" type="button" value="<|" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="fewbackward()">
+        <input id="minibackward" type="button" value="<||" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="minibackward()">
         <input id="stop" type="button" value="=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="stop()">
-        <input id="start" type="button" value=">" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"          >
-        <input id="miniforward" type="button" value="||>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="miniforward()">
-        <input id="fewforward" type="button" value="|>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="fewforward()">
-        <input id="forward" type="button" value=">>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="forward()">
-        <input id="manyforward" type="button" value=">>>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="manyforward()">
+        <input id="start" type="button" value=">" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        <input id="miniforward" type="button" value="||>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="miniforward()">
+        <input id="fewforward" type="button" value="|>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="fewforward()">
+        <input id="forward" type="button" value=">>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="forward()">
+        <input id="manyforward" type="button" value=">>>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="manyforward()">
         <input id="next" type="button" value="=>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="next()">
         <img src="positionlogo.png" width="20" height="20" />
         <input id="position" type="range" max="100" min="0" step="1" value="0" onchange="position()">
@@ -49,7 +49,7 @@
         <input id="allplayorpause" type="button" value="allplayorpause"
             style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="allplayorpause()">
         volume<input id="volume" type="range" max="1" min="0" step="0.01" onchange="volume()">
-        <input id="mute" type="button" value="mute" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="mute()">
+        <input id="mute" type="button" value="mute" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="mute()">
     </div>
 
     <div>
@@ -76,10 +76,10 @@
             console.log(`document.activeElement.width:${document.activeElement.width}`);
             console.log(`document.activeElement.height:${document.activeElement.height}`);
             console.log(`document.activeElement.currentTime:${document.activeElement.currentTime}`);
-            // console.log(`A:${A}`);
         }
         // setInterval(debugMode,10);
 
+//controller--------------------------------------------------------------------------------
         function resize() {
             document.querySelectorAll("video").forEach(video => {
                 video.width = (document.querySelector("#size").value * 160).toString();
@@ -225,6 +225,7 @@
                 }
             })
         }
+//controller--------------------------------------------------------------------------------
 
 
 
@@ -232,8 +233,7 @@
 
 
 
-
-
+//drop_zone---------------------------------------------------------------------------------
         function appendVideo(filesName) {
             let id = 0;
             for (let fileName of filesName) {
@@ -282,6 +282,8 @@
             document.querySelector("#drop_zone").style = "border:3px solid gray"
             ev.preventDefault();
         }
+//drop_zone---------------------------------------------------------------------------------
+
     </script>
 </body>
 
