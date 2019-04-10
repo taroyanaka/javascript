@@ -9,7 +9,7 @@
         }
 
         #drop_zone {
-            border: 5px solid gray;
+            border: 10px solid black;
             font-size: 100px;
             vertical-align: bottom;
             width: 1000px;
@@ -312,7 +312,8 @@
         }
 
         function dragOverHandler(ev) {
-            console.log('File(s) in drop zone'); // Prevent default behavior (Prevent file from being opened)
+            // console.log('File(s) in drop zone'); // Prevent default behavior (Prevent file from being opened)
+            document.querySelector("#drop_zone").style = "border:3px solid gray"
             ev.preventDefault();
         }
     </script>
