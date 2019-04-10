@@ -21,6 +21,23 @@
             position: fixed;
             z-index: 1;
         }
+
+        #previous, 
+        #manybackward, 
+        #backward, 
+        #fewbackward, 
+        #minibackward, 
+        #stop, 
+        #start, 
+        #miniforward, 
+        #fewforward, 
+        #forward, 
+        #manyforward, 
+        #next, 
+        #allplayorpause, 
+        #mute{
+            WIDTH:80px; HEIGHT:60px; border:3px solid gray;
+        }
     </style>
 </head>
 
@@ -29,27 +46,26 @@
         <img src="resizelogo.png" width="20" height="20" />
         <input id="resize" type="range" max="5" min="1" value="1" onchange="resize()">
         viewSizeZoom<input id="viewSizeZoom" type="range" max="10" min="1" value="1" onchange="viewSizeZoom()">
-        <input id="previous" type="button" value="<=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="previous()">
-        <input id="manybackward" type="button" value="<<<" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="manybackward()">
-        <input id="backward" type="button" value="<<" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="backward()">
-        <input id="fewbackward" type="button" value="<|" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="fewbackward()">
-        <input id="minibackward" type="button" value="<||" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="minibackward()">
-        <input id="stop" type="button" value="=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="stop()">
-        <input id="start" type="button" value=">" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="miniforward" type="button" value="||>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="miniforward()">
-        <input id="fewforward" type="button" value="|>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="fewforward()">
-        <input id="forward" type="button" value=">>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="forward()">
-        <input id="manyforward" type="button" value=">>>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="manyforward()">
-        <input id="next" type="button" value="=>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="next()">
+        <input id="previous" type="button" value="<=" onclick="previous()">
+        <input id="manybackward" type="button" value="<<<" onclick="manybackward()">
+        <input id="backward" type="button" value="<<" onclick="backward()">
+        <input id="fewbackward" type="button" value="<|" onclick="fewbackward()">
+        <input id="minibackward" type="button" value="<||" onclick="minibackward()">
+        <input id="stop" type="button" value="=" onclick="stop()">
+        <input id="start" type="button" value=">">
+        <input id="miniforward" type="button" value="||>" onclick="miniforward()">
+        <input id="fewforward" type="button" value="|>" onclick="fewforward()">
+        <input id="forward" type="button" value=">>" onclick="forward()">
+        <input id="manyforward" type="button" value=">>>" onclick="manyforward()">
+        <input id="next" type="button" value="=>" onclick="next()">
         <img src="positionlogo.png" width="20" height="20" />
         <input id="position" type="range" max="100" min="0" step="1" value="0" onchange="position()">
         <img src="looplogo.png" width="20" height="20" />
         <input id="loop" type="checkbox" onchange="loop()">
         HoverPlayOrPause<input id="hoverplayorpause" type="checkbox" onchange="hoverplayorpause()">
-        <input id="allplayorpause" type="button" value="allplayorpause"
-            style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="allplayorpause()">
+        <input id="allplayorpause" type="button" value="allplayorpause" onclick="allplayorpause()">
         volume<input id="volume" type="range" max="1" min="0" step="0.01" onchange="volume()">
-        <input id="mute" type="button" value="mute" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="mute()">
+        <input id="mute" type="button" value="mute" onclick="mute()">
     </div>
 
     <div>
