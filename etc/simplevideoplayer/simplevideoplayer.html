@@ -27,30 +27,29 @@
 <body>
     <div id="controller">
         <img src="sizelogo.png" width="20" height="20" />
-        <input id="size" type="range" max="5" min="1" value="1">
-        viewSizeZoom<input id="viewSizeZoom" type="range" max="10" min="1" value="1">
-        <input id="previous" type="button" value="<=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="manybackward" type="button" value="<<<" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="backward" type="button" value="<<" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="fewbackward" type="button" value="<|" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="minibackward" type="button" value="<||" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="stop" type="button" value="=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="start" type="button" value=">" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="miniforward" type="button" value="||>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="fewforward" type="button" value="|>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="forward" type="button" value=">>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="manyforward" type="button" value=">>>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        <input id="next" type="button" value="=>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+        <input id="size" type="range" max="5" min="1" value="1" onchange="resize()">
+        viewSizeZoom<input id="viewSizeZoom" type="range" max="10" min="1" value="1" onchange="viewSizeZoom()">
+        <input id="previous" type="button" value="<=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="previous()">
+        <input id="manybackward" type="button" value="<<<" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="manybackward()">
+        <input id="backward" type="button" value="<<" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="backward()">
+        <input id="fewbackward" type="button" value="<|" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="fewbackward()">
+        <input id="minibackward" type="button" value="<||" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="minibackward()">
+        <input id="stop" type="button" value="=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="stop()">
+        <input id="start" type="button" value=">" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"          >
+        <input id="miniforward" type="button" value="||>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="miniforward()">
+        <input id="fewforward" type="button" value="|>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="fewforward()">
+        <input id="forward" type="button" value=">>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="forward()">
+        <input id="manyforward" type="button" value=">>>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="manyforward()">
+        <input id="next" type="button" value="=>" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="next()">
         <img src="positionlogo.png" width="20" height="20" />
-        <input id="position" type="range" max="100" min="0" step="1" value="0">
+        <input id="position" type="range" max="100" min="0" step="1" value="0" onchange="position()">
         <img src="looplogo.png" width="20" height="20" />
-        <input id="loop" type="checkbox">
-        hoverplay<input id="hoverplay" type="checkbox">
-        hoverpause<input id="hoverpause" type="checkbox">
+        <input id="loop" type="checkbox" onchange="loop()">
+        HoverPlayOrPause<input id="hoverplayorpause" type="checkbox" onchange="hoverplayorpause()">
         <input id="allplayorpause" type="button" value="allplayorpause"
-            style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
-        volume<input id="volume" type="range" max="1" min="0" step="0.01">
-        <input id="mute" type="button" value="mute" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray">
+            style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="allplayorpause()">
+        volume<input id="volume" type="range" max="1" min="0" step="0.01" onchange="volume()">
+        <input id="mute" type="button" value="mute" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray"            onclick="mute()">
     </div>
 
     <div>
@@ -87,7 +86,6 @@
                 video.height = (document.querySelector("#size").value * 120).toString();
             })
         }
-        document.querySelector("#size").addEventListener("change", resize, false);
 
         let videoIndex = 0;
 
@@ -95,7 +93,6 @@
             document.activeElement.width *= document.querySelector("#viewSizeZoom").value;
             document.activeElement.height *= document.querySelector("#viewSizeZoom").value;
         }
-        document.querySelector("#viewSizeZoom").addEventListener("change", viewSizeZoom, false);
 
         function previous() {
             if (videoIndex > 0) {
@@ -108,31 +105,26 @@
                 document.activeElement.play();
             };
         }
-        document.querySelector("#previous").addEventListener("click", previous, false);
 
         function manybackward() {
             document.querySelectorAll("video")[videoIndex].focus();
             document.activeElement.currentTime -= document.activeElement.duration / 5;
         }
-        document.querySelector("#manybackward").addEventListener("click", manybackward, false);
 
         function backward() {
             document.querySelectorAll("video")[videoIndex].focus();
             document.activeElement.currentTime -= document.activeElement.duration / 10;
         }
-        document.querySelector("#backward").addEventListener("click", backward, false);
 
         function fewbackward() {
             document.querySelectorAll("video")[videoIndex].focus();
             document.activeElement.currentTime -= document.activeElement.duration / 30;
         }
-        document.querySelector("#fewbackward").addEventListener("click", fewbackward, false);
 
         function minibackward() {
             document.querySelectorAll("video")[videoIndex].focus();
             document.activeElement.currentTime -= document.activeElement.duration / 100;
         }
-        document.querySelector("#minibackward").addEventListener("click", minibackward, false);
 
         function stop() {
             document.querySelectorAll("video").forEach(video => {
@@ -140,7 +132,6 @@
                 document.querySelectorAll("video")[videoIndex].focus();
             })
         }
-        document.querySelector("#stop").addEventListener("click", stop, false);
         
         function start(event) {
             resize();
@@ -160,25 +151,21 @@
             document.querySelectorAll("video")[videoIndex].focus();
             document.activeElement.currentTime += document.activeElement.duration / 100;
         }
-        document.querySelector("#miniforward").addEventListener("click", miniforward, false);
 
         function fewforward() {
             document.querySelectorAll("video")[videoIndex].focus();
             document.activeElement.currentTime += document.activeElement.duration / 30;
         }
-        document.querySelector("#fewforward").addEventListener("click", fewforward, false);
 
         function forward() {
             document.querySelectorAll("video")[videoIndex].focus();
             document.activeElement.currentTime += document.activeElement.duration / 10;
         }
-        document.querySelector("#forward").addEventListener("click", forward, false);
 
         function manyforward() {
             document.querySelectorAll("video")[videoIndex].focus();
             document.activeElement.currentTime += document.activeElement.duration / 5;
         }
-        document.querySelector("#manyforward").addEventListener("click", manyforward, false);
 
         function next() {
             if (videoIndex < document.querySelectorAll("video").length) {
@@ -191,50 +178,31 @@
                 document.activeElement.play();
             }
         }
-        document.querySelector("#next").addEventListener("click", next, false);
-
-// function foo(e){console.log(e.target.width)}
-//     document.querySelectorAll("video").forEach(video => {video.addEventListener("mouseover",foo,false)})
-
 
         function position() {
             document.querySelectorAll("video").forEach(video => {
                 video.currentTime = video.duration / 100 * document.querySelector("#position").value;
             })
         }
-        document.querySelector("#position").addEventListener("change", position, false);
 
         function loop() {
             document.querySelectorAll("video").forEach(video => {
                 video.loop = document.querySelector("#loop").checked;
             })
         }
-        document.querySelector("#loop").addEventListener("change", loop, false);
 
-        function hoverplay() {
+        function hoverplayorpause() {
             document.querySelectorAll("video").forEach(video => {
-                document.querySelector("#hoverplay").checked ? video.setAttribute("onmouseover",
-                        "start(event)") :
-                    video.removeAttribute("onmouseover");
+                document.querySelector("#hoverplayorpause").checked ? video.setAttribute("onmouseover","start(event)") : video.removeAttribute("onmouseover");
+                document.querySelector("#hoverplayorpause").checked ? video.setAttribute("onmouseout","stop()") : video.removeAttribute("onmouseout");
             })
         }
-        document.querySelector("#hoverplay").addEventListener("change", hoverplay, false);
-
-        function hoverpause() {
-            document.querySelectorAll("video").forEach(video => {
-                document.querySelector("#hoverpause").checked ? video.setAttribute("onmouseout",
-                        "pause()") :
-                    video.removeAttribute("onmouseout");
-            })
-        }
-        document.querySelector("#hoverpause").addEventListener("change", hoverpause, false);
 
         function allplayorpause() {
             document.querySelectorAll("video").forEach(video => {
                 video.paused ? video.play() : video.pause();
             })
         }
-        document.querySelector("#allplayorpause").addEventListener("click", allplayorpause, false);
 
 
         function volume() {
@@ -242,7 +210,6 @@
                 video.volume = document.querySelector("#volume").value;
             })
         }
-        document.querySelector("#volume").addEventListener("change", volume, false);
 
         let temporaryVolume;
 
@@ -258,7 +225,6 @@
                 }
             })
         }
-        document.querySelector("#mute").addEventListener("click", mute, false);
 
 
 
