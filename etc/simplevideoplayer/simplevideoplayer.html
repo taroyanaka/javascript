@@ -26,8 +26,8 @@
 
 <body>
     <div id="controller">
-        <img src="sizelogo.png" width="20" height="20" />
-        <input id="size" type="range" max="5" min="1" value="1" onchange="resize()">
+        <img src="resizelogo.png" width="20" height="20" />
+        <input id="resize" type="range" max="5" min="1" value="1" onchange="resize()">
         viewSizeZoom<input id="viewSizeZoom" type="range" max="10" min="1" value="1" onchange="viewSizeZoom()">
         <input id="previous" type="button" value="<=" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="previous()">
         <input id="manybackward" type="button" value="<<<" style="WIDTH:80px; HEIGHT:60px; border:3px solid gray" onclick="manybackward()">
@@ -82,8 +82,8 @@
 //controller--------------------------------------------------------------------------------
         function resize() {
             document.querySelectorAll("video").forEach(video => {
-                video.width = (document.querySelector("#size").value * 160).toString();
-                video.height = (document.querySelector("#size").value * 120).toString();
+                video.width = (document.querySelector("#resize").value * 160).toString();
+                video.height = (document.querySelector("#resize").value * 120).toString();
             })
         }
 
