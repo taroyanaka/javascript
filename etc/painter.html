@@ -13,14 +13,16 @@
 
 <body>
     <canvas id="myCanvas" width="700" height="400"></canvas>
-    <input type="button" id="save" value="save" style="width:100px;height:50px" onclick="save()" />
-    <input type="button" id="removePaint" value="removePaint" style="width:100px;height:50px" onclick="removePaint()" />
+    <input type="button" id="save" value="save" style="width:200px;height:100px" onclick="save()" />
+    <input type="button" id="removePaint" value="removePaint" style="width:200px;height:100px"
+        onclick="removePaint()" />
 
-    <input type="button" id="showSaveData" value="showSaveData" style="width:100px;height:50px"
+    <input type="button" id="showSaveData" value="showSaveData" style="width:200px;height:100px"
         onclick="showSaveData();">
+    <input type="button" id="hidePaint" value="hidePaint" style="width:200px;height:100px" onclick="hidePaint();">
+
     <input type="button" id="removeSaveData" value="removeSaveData" style="width:100px;height:50px"
         onclick="removeSaveData();">
-    <input type="button" id="hidePaint" value="hidePaint" style="width:100px;height:50px" onclick="hidePaint();">
     <!-- <canvas id="cvs1" width="200" height="200"></canvas> -->
     <div></div>
 </body>
@@ -148,16 +150,16 @@
         })
     }
 
-    function removeSaveData() {
-        if (window.confirm('Do you remove saved pictures, Really??')) {
-            localStorage.removeItem('lkey')
-        }
-    }
-
     function hidePaint() {
         document.querySelectorAll(".pic").forEach(pic => {
             pic.remove()
         })
+    }
+
+    function removeSaveData() {
+        if (window.confirm('Do you remove saved pictures, Really??')) {
+            localStorage.removeItem('lkey')
+        }
     }
 </script>
 <script>
