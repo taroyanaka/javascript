@@ -112,10 +112,17 @@
     }
 
     let data;
+    let datas = [];
 
-    if (!localStorage.getItem('lkey')) {
+    if (localStorage.getItem('lkey')) {
+        ldatas = localStorage.getItem('lkey');
+        lArray = JSON.parse(ldatas);
+        datas = datas.concat(lArray);
+        console.log(datas);
+    } else {
         let datas = [];
     }
+
 
     function save() {
         data = canvas.toDataURL("image/png");
@@ -161,6 +168,7 @@
     function removeSaveData() {
         if (window.confirm('Do you remove saved pictures, Really??')) {
             localStorage.removeItem('lkey')
+            datas = [];
         }
     }
 </script>
