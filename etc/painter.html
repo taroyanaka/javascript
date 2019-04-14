@@ -149,7 +149,9 @@
     }
 
     function removeSaveData() {
-        localStorage.removeItem('lkey')
+        if (window.confirm('Do you remove saved pictures, Really??')) {
+            localStorage.removeItem('lkey')
+        }
     }
 
     function hidePaint() {
