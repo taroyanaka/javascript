@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>canvas painter</title>
+    <!-- Reference
+        https://q-az.net/canvas-drawing-pad/
+        https://javascript.programmer-reference.com/js-base64-canvas/
+        https://qiita.com/clockmaker/items/924b5b4228484e7a09f0
+    -->
+</head>
+
+<body>
+    <canvas id="myCanvas" width="700" height="400"></canvas>
+    <input type="button" id="save" value="save" style="width:100px;height:50px" onclick="save()" />
+    <input type="button" id="removePaint" value="removePaint" style="width:100px;height:50px" onclick="removePaint()" />
+
+    <input type="button" id="showSaveData" value="showSaveData" style="width:100px;height:50px"
+        onclick="showSaveData();">
+    <input type="button" id="removeSaveData" value="removeSaveData" style="width:100px;height:50px"
+        onclick="removeSaveData();">
+    <input type="button" id="hidePaint" value="hidePaint" style="width:100px;height:50px" onclick="hidePaint();">
+    <!-- <canvas id="cvs1" width="200" height="200"></canvas> -->
+    <div></div>
+</body>
+<script>
+    var canvas = document.getElementById('myCanvas');
+
+    var ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.fillStyle = "#f5f5f5";
+    ctx.fillRect(0, 0, 700, 400);
+
+    canvas.addEventListener('mousemove', onMove, false);
+    canvas.addEventListener('mousedown', onClick, false);
+
+    //マウス動いていて、かつ左クリック時に発火。
+    function onMove(e) {
+        if (e.buttons === 1 || e.witch === 1) {
+            var rect = e.target.getBoundingClientRect();
+            var X = ~~(e.clientX - rect.left);
+            var Y = ~~(e.clientY - rect.top);
+            //draw 関数にマウスの位置を渡す
+            draw(X, Y);
+        };
+    };
+
+    //マウスが左クリックされると発火。
+    function onClick(e) {
+        if (e.button === 0) {
+            var rect = e.target.getBoundingClientRect();
+            var X = ~~(e.clientX - rect.left);
+            var Y = ~~(e.clientY - rect.top);
+            //draw 関数にマウスの位置を渡す
+            draw(X, Y);
+        }
+    };
+
+    var defosize = 7;
+    var defocolor = "#555555";
+    var defoalpha = 1.0;
+
+    //マウス継続値の初期値、ここがポイント
+    var mouseX = "";
+    var mouseY = "";
+
+    //渡されたマウス位置を元に直線を描く関数
+    function draw(X, Y) {
+        ctx.beginPath();
+        ctx.globalAlpha = defoalpha;
+        //マウス継続値によって場合分け、直線の moveTo（スタート地点）を決定
+        if (mouseX === "") {
+            //継続値が初期値の場合は、現在のマウス位置をスタート位置とする
+            ctx.moveTo(X, Y);
+        } else {
+            //継続値が初期値ではない場合は、前回のゴール位置を次のスタート位置とする
+            ctx.moveTo(mouseX, mouseY);
+        }
+        //lineTo（ゴール地点）の決定、現在のマウス位置をゴール地点とする
+        ctx.lineTo(X, Y);
+        //直線の角を「丸」、サイズと色を決める
+        ctx.lineCap = "round";
+        ctx.lineWidth = defosize * 2;
+        ctx.strokeStyle = defocolor;
+        ctx.stroke();
+        //マウス継続値に現在のマウス位置、つまりゴール位置を代入
+        mouseX = X;
+        mouseY = Y;
+    };
+
+    //左クリック終了、またはマウスが領域から外れた際、継続値を初期値に戻す
+    function drawEnd() {
+        mouseX = "";
+        mouseY = "";
+    }
+
+    function removePaint() {
+        ctx.beginPath();
+        ctx.fillStyle = "#f5f5f5";
+        ctx.fillRect(0, 0, 700, 400);
+
+        defosize = 7;
+        defocolor = "#555555";
+        defoalpha = 1.0;
+
+        //マウス継続値の初期値、ここがポイント
+        mouseX = "";
+        mouseY = "";
+    }
+
+    let data;
+
+    let datas = [];
+
+    function save() {
+        data = canvas.toDataURL("image/png");
+        // sessionStorage.setItem('skey', data);
+        datas.push(data);
+        localStorage.setItem('lkey', JSON.stringify(datas));
+    }
+
+    // localStorage.setItem('lkey', 'lvalue');
+    // var ldata = localStorage.getItem('lkey');
+    // localStorage.removeItem('lkey')
+    function showSaveData() {
+        // var sdata = sessionStorage.getItem('skey');
+        var ldatas = localStorage.getItem('lkey'); // img.src = ldata;
+        let lArray = JSON.parse(ldatas);
+
+        lArray.forEach(V => {
+            //画像オブジェクトを生成
+
+            var img = new Image();
+            img.src = V;
+            //画像をcanvasに設定
+            img.onload = function () {
+                //2Dコンテキストのオブジェクトを生成する
+                // var cvs = document.getElementById('cvs1');
+                var cvs = document.createElement("canvas");
+                cvs.setAttribute("class", "pic");
+                cvs.setAttribute("width", "700");
+                cvs.setAttribute("height", "400");
+                document.querySelector("body").appendChild(cvs);
+                var ctx = cvs.getContext('2d');
+                ctx.drawImage(img, 0, 0, 700, 400);
+            }
+        })
+    }
+
+    function removeSaveData() {
+        localStorage.removeItem('lkey')
+    }
+
+    function hidePaint() {
+        document.querySelectorAll(".pic").forEach(pic => {
+            pic.remove()
+        })
+    }
+</script>
+<script>
+
+</script>
+
+</html>
