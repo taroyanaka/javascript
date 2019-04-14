@@ -113,7 +113,9 @@
 
     let data;
 
-    let datas = [];
+    if (!localStorage.getItem('lkey')) {
+        let datas = [];
+    }
 
     function save() {
         data = canvas.toDataURL("image/png");
