@@ -145,6 +145,7 @@
 
     function removePaint() {
         ctx.beginPath();
+        ctx.globalAlpha = 1.0;
         ctx.fillStyle = "#f5f5f5";
         ctx.fillRect(0, 0, 700, 400);
 
