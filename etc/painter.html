@@ -12,24 +12,41 @@
 </head>
 
 <body>
+    <!-- <div id="msg0"></div> -->
+    <!-- <div id="msg1"></div> -->
+    <!-- <div id="msg2"></div> -->
+    <!-- <div id="msg3"></div> -->
+    <!-- <div id="msg4"></div> -->
+    <!-- <div id="msg5"></div> -->
+    <!-- <div id="msg6"></div> -->
+    <!-- <div id="msg7"></div> -->
+
     <canvas id="myCanvas" width="700" height="400"></canvas>
-    <input type="button" id="save" value="save" style="width:200px;height:100px" onclick="save()" />
-    <input type="button" id="removePaint" value="removePaint" style="width:200px;height:100px"
-        onclick="removePaint()" />
+    <div>
+        <input type="color" id="color" style="width:200px;height:100px" value="#ffffff">
+        <input type="range" id="penSize" min="0" max="30" step="1" value="7">
+        <span id="penSizeText"></span>
+        <input type="range" id="penTransparency" min="0" max="1" step="0.1" value="1">
+        <span id="penTransparencyText"></span>
+    </div>
+    <div>
+        <input type="button" id="save" value="save" style="width:200px;height:100px" onclick="save()" />
+        <input type="button" id="removePaint" value="removePaint" style="width:200px;height:100px"
+            onclick="removePaint()" />
 
-    <input type="button" id="showSaveData" value="showSaveData" style="width:200px;height:100px"
-        onclick="showSaveData();">
-    <input type="button" id="hidePaint" value="hidePaint" style="width:200px;height:100px" onclick="hidePaint();">
+        <input type="button" id="showSaveData" value="showSaveData" style="width:200px;height:100px"
+            onclick="showSaveData();">
+        <input type="button" id="hidePaint" value="hidePaint" style="width:200px;height:100px" onclick="hidePaint();">
 
-    <input type="button" id="removeSaveData" value="removeSaveData" style="width:100px;height:50px"
-        onclick="removeSaveData();">
-    <!-- <canvas id="cvs1" width="200" height="200"></canvas> -->
+        <input type="button" id="removeSaveData" value="removeSaveData" style="width:100px;height:50px"
+            onclick="removeSaveData();">
+    </div>
     <div></div>
 </body>
 <script>
-    var canvas = document.getElementById('myCanvas');
+    let canvas = document.getElementById('myCanvas');
 
-    var ctx = canvas.getContext('2d');
+    let ctx = canvas.getContext('2d');
     ctx.beginPath();
     ctx.fillStyle = "#f5f5f5";
     ctx.fillRect(0, 0, 700, 400);
@@ -40,9 +57,9 @@
     //マウス動いていて、かつ左クリック時に発火。
     function onMove(e) {
         if (e.buttons === 1 || e.witch === 1) {
-            var rect = e.target.getBoundingClientRect();
-            var X = ~~(e.clientX - rect.left);
-            var Y = ~~(e.clientY - rect.top);
+            let rect = e.target.getBoundingClientRect();
+            let X = ~~(e.clientX - rect.left);
+            let Y = ~~(e.clientY - rect.top);
             //draw 関数にマウスの位置を渡す
             draw(X, Y);
         };
@@ -51,21 +68,42 @@
     //マウスが左クリックされると発火。
     function onClick(e) {
         if (e.button === 0) {
-            var rect = e.target.getBoundingClientRect();
-            var X = ~~(e.clientX - rect.left);
-            var Y = ~~(e.clientY - rect.top);
+            let rect = e.target.getBoundingClientRect();
+            let X = ~~(e.clientX - rect.left);
+            let Y = ~~(e.clientY - rect.top);
             //draw 関数にマウスの位置を渡す
             draw(X, Y);
         }
     };
 
-    var defosize = 7;
-    var defocolor = "#555555";
-    var defoalpha = 1.0;
+    let defocolor = "#555555";
+
+    function watchColorPicker(event) {
+        defocolor = event.target.value;
+    }
+    document.querySelector("#color").addEventListener("change", watchColorPicker, false);
+
+    let defosize = 7;
+
+    function penSize(event) {
+        defosize = event.target.value;
+        document.getElementById('penSizeText').textContent = 'defosize:' + defosize;
+    }
+    document.querySelector("#penSize").addEventListener("change", penSize, false);
+
+    let defoalpha = 1.0;
+
+    function penTransparency(event) {
+        defoalpha = event.target.value;
+        document.getElementById('penTransparencyText').textContent = 'defoalpha:' + defoalpha;
+    }
+    document.querySelector("#penTransparency").addEventListener("change", penTransparency, false);
+
+
 
     //マウス継続値の初期値、ここがポイント
-    var mouseX = "";
-    var mouseY = "";
+    let mouseX = "";
+    let mouseY = "";
 
     //渡されたマウス位置を元に直線を描く関数
     function draw(X, Y) {
@@ -89,6 +127,14 @@
         //マウス継続値に現在のマウス位置、つまりゴール位置を代入
         mouseX = X;
         mouseY = Y;
+
+
+        // document.getElementById('msg0').innerHTML = 'position X:' + mouseX + ' Y' + mouseY;
+        // document.getElementById('msg1').innerHTML = 'defosize:' + defosize;
+        // document.getElementById('msg2').innerHTML = 'defocolor:' + defocolor;
+        // document.getElementById('msg3').innerHTML = 'defoalpha:' + defoalpha;
+        // document.getElementById('msg5').innerHTML = 'datas:' + datas;
+
     };
 
     //左クリック終了、またはマウスが領域から外れた際、継続値を初期値に戻す
@@ -112,9 +158,11 @@
     }
 
     let data;
-    let datas = [];
+
 
     if (localStorage.getItem('lkey')) {
+        let datas = [];
+
         ldatas = localStorage.getItem('lkey');
         lArray = JSON.parse(ldatas);
         datas = datas.concat(lArray);
@@ -126,34 +174,39 @@
 
     function save() {
         data = canvas.toDataURL("image/png");
+        // document.getElementById('msg4').innerHTML = 'data:' + data;
         // sessionStorage.setItem('skey', data);
         datas.push(data);
         localStorage.setItem('lkey', JSON.stringify(datas));
     }
 
     // localStorage.setItem('lkey', 'lvalue');
-    // var ldata = localStorage.getItem('lkey');
+    // let ldata = localStorage.getItem('lkey');
     // localStorage.removeItem('lkey')
+
     function showSaveData() {
-        // var sdata = sessionStorage.getItem('skey');
-        var ldatas = localStorage.getItem('lkey'); // img.src = ldata;
+        // let sdata = sessionStorage.getItem('skey');
+        let ldatas = localStorage.getItem('lkey'); // img.src = ldata;
         let lArray = JSON.parse(ldatas);
+
+        // document.getElementById('msg6').innerHTML = 'ldatas:' + ldatas;
+        // document.getElementById('msg7').innerHTML = 'lArray:' + lArray;
 
         lArray.forEach(V => {
             //画像オブジェクトを生成
 
-            var img = new Image();
+            let img = new Image();
             img.src = V;
             //画像をcanvasに設定
             img.onload = function () {
                 //2Dコンテキストのオブジェクトを生成する
-                // var cvs = document.getElementById('cvs1');
-                var cvs = document.createElement("canvas");
+                // let cvs = document.getElementById('cvs1');
+                let cvs = document.createElement("canvas");
                 cvs.setAttribute("class", "pic");
                 cvs.setAttribute("width", "700");
                 cvs.setAttribute("height", "400");
                 document.querySelector("body").appendChild(cvs);
-                var ctx = cvs.getContext('2d');
+                let ctx = cvs.getContext('2d');
                 ctx.drawImage(img, 0, 0, 700, 400);
             }
         })
