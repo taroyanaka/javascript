@@ -23,6 +23,7 @@
 
     <canvas id="myCanvas" width="700" height="400"></canvas>
     <div>
+        <input type="button" id="rulerDraw" value="rulerDraw" style="width:200px;height:100px" onclick="rulerDraw()" />
         <input type="color" id="color" style="width:200px;height:100px" value="#ffffff">
         <!-- <input type="range" id="penSize" min="0" max="30" step="1" value="7" style="width:400px;height:200px"> -->
         <select id="penSize" size="1" style="width:200px;height:100px">
@@ -120,6 +121,12 @@
     let mouseX = "";
     let mouseY = "";
 
+    let ruler = false;
+
+    function rulerDraw() {
+        ruler = true;
+    }
+
     //渡されたマウス位置を元に直線を描く関数
     function draw(X, Y) {
         ctx.beginPath();
@@ -130,7 +137,7 @@
             ctx.moveTo(X, Y);
         } else {
             //継続値が初期値ではない場合は、前回のゴール位置を次のスタート位置とする
-            ctx.moveTo(mouseX, mouseY);
+            ruler === true ? ctx.moveTo(mouseX, mouseY) : true;
         }
         //lineTo（ゴール地点）の決定、現在のマウス位置をゴール地点とする
         ctx.lineTo(X, Y);
@@ -183,8 +190,6 @@
         lArray = JSON.parse(ldatas);
         datas = datas.concat(lArray);
         console.log(datas);
-    } else {
-        let datas = [];
     }
 
 
