@@ -24,8 +24,9 @@
     <canvas id="myCanvas" width="700" height="400"></canvas>
     <div>
         <input type="button" id="rulerDraw" value="rulerDraw" style="width:200px;height:100px" onclick="rulerDraw()" />
+        <input type="button" id="undo" value="undo" style="width:200px;height:100px" onclick="undo()" />
+        <input type="button" id="redo" value="redo" style="width:200px;height:100px" onclick="redo()" />
         <input type="color" id="color" style="width:200px;height:100px" value="#ffffff">
-        <!-- <input type="range" id="penSize" min="0" max="30" step="1" value="7" style="width:400px;height:200px"> -->
         <select id="penSize" size="1" style="width:200px;height:100px">
             <option value="2">2</option>
             <option value="4">4</option>
@@ -35,15 +36,12 @@
             <option value="50">50</option>
             <option value="80">80</option>
         </select>
-        <!-- <span id="penSizeText"></span> -->
 
-        <!-- <input type="range" id="penTransparency" min="0" max="1" step="0.1" value="1"                style="width:400px;height:200px"> -->
         <select id="penTransparency" size="1" style="width:200px;height:100px">
             <option value="0.1">0.1</option>
             <option value="0.5">0.5</option>
             <option value="1.0" selected>1.0</option>
         </select>
-        <!-- <span id="penTransparencyText"></span> -->
     </div>
     <div>
         <input type="button" id="save" value="save" style="width:200px;height:100px" onclick="save()" />
@@ -103,7 +101,6 @@
 
     function penSize(event) {
         defosize = event.target.value;
-        // document.getElementById('penSizeText').textContent = 'defosize:' + defosize;
     }
     document.querySelector("#penSize").addEventListener("change", penSize, false);
 
@@ -111,7 +108,6 @@
 
     function penTransparency(event) {
         defoalpha = event.target.value;
-        // document.getElementById('penTransparencyText').textContent = 'defoalpha:' + defoalpha;
     }
     document.querySelector("#penTransparency").addEventListener("change", penTransparency, false);
 
@@ -125,6 +121,54 @@
 
     function rulerDraw() {
         ruler === true ? ruler = false : ruler = true;
+    }
+
+    let undoRedo = [];
+    let redoArray = [];
+
+    function undo() {
+        //init(like a removePaint)
+        ctx.beginPath();
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = "#f5f5f5";
+        ctx.fillRect(0, 0, 700, 400);
+        defosize = 7;
+        defocolor = "#555555";
+        defoalpha = 1.0;
+
+        // undo
+        redoArray = [undoRedo.pop()];
+        undoRedo.forEach(UR => {
+            UR[0].moveTo(UR[1], UR[2]);
+            ruler === true ? UR[0].moveTo(mouseX, mouseY) : true;
+            UR[0].lineTo(UR[1], UR[2]);
+            UR[0].stroke()
+        })
+    }
+
+    function redo() {
+        //init(like a removePaint)
+        ctx.beginPath();
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = "#f5f5f5";
+        ctx.fillRect(0, 0, 700, 400);
+        defosize = 7;
+        defocolor = "#555555";
+        defoalpha = 1.0;
+
+        // redo
+        undoRedo.forEach(UR => {
+            UR[0].moveTo(UR[1], UR[2]);
+            ruler === true ? UR[0].moveTo(mouseX, mouseY) : true;
+            UR[0].lineTo(UR[1], UR[2]);
+            UR[0].stroke()
+        })
+        redoArray.forEach(UR => {
+            UR[0].moveTo(UR[1], UR[2]);
+            ruler === true ? UR[0].moveTo(mouseX, mouseY) : true;
+            UR[0].lineTo(UR[1], UR[2]);
+            UR[0].stroke()
+        })
     }
 
     //渡されたマウス位置を元に直線を描く関数
@@ -145,6 +189,9 @@
         ctx.lineCap = "round";
         ctx.lineWidth = defosize * 2;
         ctx.strokeStyle = defocolor;
+        let whatDo = [];
+        whatDo.push(ctx, X, Y);
+        undoRedo.push(whatDo);
         ctx.stroke();
         //マウス継続値に現在のマウス位置、つまりゴール位置を代入
         mouseX = X;
@@ -196,14 +243,9 @@
     function save() {
         data = canvas.toDataURL("image/png");
         // document.getElementById('msg4').innerHTML = 'data:' + data;
-        // sessionStorage.setItem('skey', data);
         datas.push(data);
         localStorage.setItem('lkey', JSON.stringify(datas));
     }
-
-    // localStorage.setItem('lkey', 'lvalue');
-    // let ldata = localStorage.getItem('lkey');
-    // localStorage.removeItem('lkey')
 
     function showSaveData() {
         // let sdata = sessionStorage.getItem('skey');
@@ -221,7 +263,6 @@
             //画像をcanvasに設定
             img.onload = function () {
                 //2Dコンテキストのオブジェクトを生成する
-                // let cvs = document.getElementById('cvs1');
                 let cvs = document.createElement("canvas");
                 cvs.setAttribute("class", "pic");
                 cvs.setAttribute("width", "700");
