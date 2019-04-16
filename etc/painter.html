@@ -213,6 +213,9 @@
     }
 
     function removePaint() {
+        undoRedo = [];
+        redoArray = [];
+
         ctx.beginPath();
         ctx.globalAlpha = 1.0;
         ctx.fillStyle = "#f5f5f5";
@@ -232,7 +235,6 @@
 
 
     if (localStorage.getItem('lkey')) {
-
         ldatas = localStorage.getItem('lkey');
         lArray = JSON.parse(ldatas);
         datas = datas.concat(lArray);
