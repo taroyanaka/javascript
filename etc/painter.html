@@ -124,7 +124,11 @@
     let ruler = false;
 
     function rulerDraw() {
-        ruler = true;
+        if (ruler === true) {
+            ruler = false;
+        } else {
+            ruler = true;
+        }
     }
 
     //渡されたマウス位置を元に直線を描く関数
