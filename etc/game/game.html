@@ -145,21 +145,21 @@
   );
 
   // for square moving↓
-  const incrementX = (array) => {
-    return [array[0] + 1, array[1]]
+  const incrementX = (XYarray) => {
+    return [XYarray[0] + 1, XYarray[1]]
   };
-  const incrementY = (array) => {
-    return [array[0], array[1] + 1]
+  const incrementY = (XYarray) => {
+    return [XYarray[0], XYarray[1] + 1]
   };
 
-  const squareS2 = R.map(incrementX, squareS1);
+  const squareS1IncrementedX = R.map(incrementX, squareS1);
   fillSquareS(
-    squareS2
+    squareS1IncrementedX
   );
 
-  const squareS3 = R.map(incrementY, squareS1);
+  const squareS1IncrementedY = R.map(incrementY, squareS1);
   fillSquareS(
-    squareS3
+    squareS1IncrementedY
   );
   // for square moving↑
 
