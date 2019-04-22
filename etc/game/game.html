@@ -88,47 +88,97 @@
   const ctx = canvas.getContext('2d');
   ctx.beginPath();
 
-
   // 100px * 100px // in 1000px * 1000px Canvas element // 100 * 100, 100 squares
-  let NByN = 10;
-  // Math.sqrt(canvas.width*canvas.height/NByN/NByN);
+  const NByN = 10;
   canvas.width = 1000;
   canvas.height = 1000;
-
-  // let pixelStep = 40;
-  const pixelStep = Math.sqrt(canvas.width * canvas.height / NByN / NByN);
+  const pixelStep = Math.sqrt(canvas.width * canvas.height / NByN / NByN); // => 100
 
   // init map
-  // Array.from(Array(3).keys()) // => [0,1,2] 
-  const strokeVerticalLine = x => {
-    ctx.moveTo((x * pixelStep), 0);
-    ctx.lineTo((x * pixelStep), canvas.height);
-  };
-  const strokeHorizontalLine = x => {
-    ctx.moveTo(0, (x * pixelStep));
-    ctx.lineTo(canvas.height, (x * pixelStep));
-  };
+  const initMap = () => {
+    const strokeVerticalLine = x => {
+      ctx.moveTo((x * pixelStep), 0);
+      ctx.lineTo((x * pixelStep), canvas.height);
+    };
+    const strokeHorizontalLine = x => {
+      ctx.moveTo(0, (x * pixelStep));
+      ctx.lineTo(canvas.height, (x * pixelStep));
+    };
 
-  R.forEach(strokeVerticalLine, Array.from(Array(canvas.width / pixelStep + 1)
-    .keys())); // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  R.forEach(strokeHorizontalLine, Array.from(Array(canvas.width / pixelStep + 1)
-    .keys())); // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  ctx.strokeStyle = "#000000";
-  ctx.lineWidth = 1;
-  ctx.stroke();
+    // Array.from(Array(3).keys()) // => [0,1,2]
+    R.forEach(strokeVerticalLine, Array.from(Array(canvas.width / pixelStep + 1)
+      .keys())); // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    R.forEach(strokeHorizontalLine, Array.from(Array(canvas.width / pixelStep + 1)
+      .keys())); // [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+  initMap();
 
   // zero origin:[0,0]to[n,n]; return [n,n,n,n]
   const chooseSquare = (x, y) => {
     return [x * pixelStep, y * pixelStep, pixelStep, pixelStep];
   }
 
-  // console.log(
-  //   chooseSquare(0, 0)
-  // );
-  ctx.fillRect(...chooseSquare(2, 3));
-  ctx.fillStyle = "#000000";
-  ctx.stroke();
+  // fillSquareS([
+  // [1, 2],
+  // [5, 5]
+  // ]);
+  const fillSquareS = (squareArray) => {
+    const fillRectS = (XYarray) => {
+      [x, y] = XYarray;
+      ctx.fillRect(...chooseSquare(x, y));
+      ctx.fillStyle = "#000000";
+      ctx.stroke();
+    }
+    R.forEach(fillRectS, squareArray)
+  }
+
+  const squareS1 = [
+    [1, 2],
+    [5, 5]
+  ];
+  fillSquareS(
+    squareS1
+  );
+
+  const incrementX = (array) => {
+    return [array[0] + 1, array[1]]
+  };
+  const incrementY = (array) => {
+    return [array[0], array[1] + 1]
+  };
+
+  const squareS2 = R.map(incrementX, squareS1);
+  fillSquareS(
+    squareS2
+  );
+
+  const squareS3 = R.map(incrementY, squareS1);
+  fillSquareS(
+    squareS3
+  );
+
+
+  // R.map(increment, {x: 1, y: 2, z: 3}); //=> {x: 2, y: 4, z: 6}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // chooseSquare(1, 2);
   // chooseSquare(9, 9);
