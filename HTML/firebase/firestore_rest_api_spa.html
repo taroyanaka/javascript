@@ -4,10 +4,12 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>foo</title>
-    <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase.js"></script>
     <script>
-        firebase.initializeApp({ projectId: "yanaka-7bb50" });
-        firebase.firestore().settings({ timestampsInSnapshots: true });
+        firebase.initializeApp({
+            projectId: "yanaka-7bb50"
+        });
     </script>
 </head>
 
@@ -18,10 +20,25 @@
 </body>
 
 <script type="text/javascript">
+    // firebase.firestore().settings({
+    //     timestampsInSnapshots: true
+    // });
+
+    // import firebase from 'firebase';
+    // import 'firebase/firestore';
+
+    // const config = {
+    //     /* firebase config */
+    // };
+    // firebase.initializeApp(config);
+
+    // const firestore = firebase.firestore();
+
     const db = () => {
+
         // console.dir(firebase.firestore());
 
-        // CREATE document
+        // // CREATE document
         // firebase.firestore().collection("users").add({
         //     foo: "bar",
         //     foo2: "bar2"
@@ -31,13 +48,13 @@
         //     console.error("Error adding document: ", error);
         // });
 
-        // READ collection, document, field
-        // firebase.firestore().collection("users").get().then(col => {
-        //     col.forEach(doc => {
-        //         console.log(`${doc.id} => ${doc.data().foo2}`);
-        //         console.dir(Object.keys(doc.data()));
-        //     });
-        // });
+        // // READ collection, document, field
+        firebase.firestore().collection("users").get().then(col => {
+            col.forEach(doc => {
+                console.log(`${doc.id} => ${doc.data().foo2}`);
+                // console.table(Object.keys(doc.data()));
+            });
+        });
 
         // UPDATE
         // firebase.firestore().collection("users").doc("2").update(
@@ -48,7 +65,7 @@
         // });
 
         // DELETE document
-        // firebase.firestore().collection("users").doc("1").delete().then((result) => {
+        // firebase.firestore().collection("users").doc("x1fNOtjiJ0qmYoTtYxrg").delete().then((result) => {
         //     console.dir("SUCCESS")
         // }).catch(function (error) {
         //     console.error("ERROR: ", error);
@@ -58,6 +75,19 @@
         // firebase.firestore().collection("users").doc("2").update(
         //     { foo: firebase.firestore.FieldValue.delete() }
         // );
+
+        // // DELETE all documents
+        firebase.firestore().collection("users").get().then(col => {
+            col.forEach(doc => {
+                firebase.firestore().collection("users").doc(
+                    `${doc.id}`
+                ).delete().then((result) => {
+                    console.dir("SUCCESS")
+                }).catch(function (error) {
+                    console.error("ERROR: ", error);
+                });
+            });
+        });
 
         // DELETE collection is no API, use DELETE each document
     }

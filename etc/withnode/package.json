@@ -21,6 +21,7 @@
     "global-tunnel-ng": "^2.7.1",
     "htmlparser2": "^3.10.0",
     "jsdom": "^13.1.0",
+    "jsdom-quokka-plugin": "^1.0.14",
     "mocha": "^5.2.0",
     "puppeteer": "^1.12.2",
     "query-selector": "^1.0.9",
