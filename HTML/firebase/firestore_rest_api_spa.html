@@ -55,14 +55,10 @@
     function append(text, id) {
         let div = document.createElement('div');
         div.textContent = text;
-        // div.setAttribute("type", "button");
         div.setAttribute("id", id);
-        // div.setAttribute("href", "#");
-        // a.setAttribute(onclick, "deleteDocument");
         document.querySelector('body').appendChild(div);
     }
 
-    // READ collection, document, field
     function read() {
         firebase.firestore().collection("users").get().then(col => {
             col.forEach(doc => {
@@ -77,9 +73,23 @@
                 e.addEventListener("click", deleteDocument, false)
             });
         })
-        // .then(() => {
-        // document.querySelectorAll("a").addEventListener("onclick", deleteDocument, false);
-        // });
+    }
+
+    // READ collection, document, field, append Delete function to div elements
+    function readAndAppendDelete() {
+        firebase.firestore().collection("users").get().then(col => {
+            col.forEach(doc => {
+                console.log(`${doc.id} => ${doc.data().foo2}`);
+                // append(`${doc.data().foo2}`);
+                append(`${doc.data().foo2}`, doc.id);
+                // console.table(Object.keys(doc.data()));
+            });
+        }).then(() => {
+            // append Delete function to div elements
+            document.querySelectorAll("div").forEach(e => {
+                e.addEventListener("click", deleteDocument, false)
+            });
+        })
     }
 
     function update() {
@@ -127,7 +137,8 @@
         // console.dir(firebase.firestore());
         // create();
         // update();
-        read();
+        // read();
+        readAndAppendDelete();
         // deleteDocument();
         // deleteField();
         // deleteAllDocuments();
