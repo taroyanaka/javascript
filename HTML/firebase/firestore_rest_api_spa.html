@@ -11,6 +11,11 @@
             projectId: "yanaka-7bb50"
         });
     </script>
+    <style>
+        div {
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -34,49 +39,76 @@
 
     // const firestore = firebase.firestore();
 
-    const db = () => {
 
-        // console.dir(firebase.firestore());
+    function create() {
+        firebase.firestore().collection("users").add({
+            foo: "bar",
+            foo2: "bar2"
+        }).then(docRef => {
+            console.log("Document written with ID: ", docRef.id);
+        }).catch(error => {
+            console.error("Error adding document: ", error);
+        });
+    }
 
-        // // CREATE document
-        // firebase.firestore().collection("users").add({
-        //     foo: "bar",
-        //     foo2: "bar2"
-        // }).then(docRef => {
-        //     console.log("Document written with ID: ", docRef.id);
-        // }).catch(error => {
-        //     console.error("Error adding document: ", error);
-        // });
+    // DOM append
+    function append(text, id) {
+        let div = document.createElement('div');
+        div.textContent = text;
+        // div.setAttribute("type", "button");
+        div.setAttribute("id", id);
+        // div.setAttribute("href", "#");
+        // a.setAttribute(onclick, "deleteDocument");
+        document.querySelector('body').appendChild(div);
+    }
 
-        // // READ collection, document, field
+    // READ collection, document, field
+    function read() {
         firebase.firestore().collection("users").get().then(col => {
             col.forEach(doc => {
                 console.log(`${doc.id} => ${doc.data().foo2}`);
+                // append(`${doc.data().foo2}`);
+                append(`${doc.data().foo2}`, doc.id);
                 // console.table(Object.keys(doc.data()));
             });
+        }).then(() => {
+            // append Delete function to div elements
+            document.querySelectorAll("div").forEach(e => {
+                e.addEventListener("click", deleteDocument, false)
+            });
+        })
+        // .then(() => {
+        // document.querySelectorAll("a").addEventListener("onclick", deleteDocument, false);
+        // });
+    }
+
+    function update() {
+        firebase.firestore().collection("users").doc("DYDZjsIUFYxPvi5QTARH").update(
+            // { foo2: "bar"} → { foo2: "hogehogehoge" }
+            {
+                foo2: "hogehoge"
+            }
+        ).then(() => {
+            console.dir("UPDATE SUCCESS");
         });
+    }
 
-        // UPDATE
-        // firebase.firestore().collection("users").doc("2").update(
-        //     // { foo2: "bar"} → { foo2: "hogehogehoge" }
-        //     { foo2: "hogehoge" }
-        // ).then(() => {
-        //     console.dir("UPDATE SUCCESS");
-        // });
-
-        // DELETE document
+    function deleteDocument(e) {
         // firebase.firestore().collection("users").doc("x1fNOtjiJ0qmYoTtYxrg").delete().then((result) => {
-        //     console.dir("SUCCESS")
-        // }).catch(function (error) {
-        //     console.error("ERROR: ", error);
-        // });
+        firebase.firestore().collection("users").doc(e.target.id).delete().then((result) => {
+            console.dir("SUCCESS")
+        }).catch(function (error) {
+            console.error("ERROR: ", error);
+        });
+    }
 
-        // DELETE field
-        // firebase.firestore().collection("users").doc("2").update(
-        //     { foo: firebase.firestore.FieldValue.delete() }
-        // );
+    function deleteField() {
+        firebase.firestore().collection("users").doc("2").update({
+            foo: firebase.firestore.FieldValue.delete()
+        });
+    }
 
-        // // DELETE all documents
+    function deleteAllDocuments() {
         firebase.firestore().collection("users").get().then(col => {
             col.forEach(doc => {
                 firebase.firestore().collection("users").doc(
@@ -88,8 +120,17 @@
                 });
             });
         });
-
         // DELETE collection is no API, use DELETE each document
+    }
+
+    function db() {
+        // console.dir(firebase.firestore());
+        // create();
+        // update();
+        read();
+        // deleteDocument();
+        // deleteField();
+        // deleteAllDocuments();
     }
     document.addEventListener('DOMContentLoaded', db, false);
 </script>
