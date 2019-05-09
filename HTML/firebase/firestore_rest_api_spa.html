@@ -67,11 +67,6 @@
                 append(`${doc.data().foo2}`, doc.id);
                 // console.table(Object.keys(doc.data()));
             });
-        }).then(() => {
-            // append Delete function to div elements
-            document.querySelectorAll("div").forEach(e => {
-                e.addEventListener("click", deleteDocument, false)
-            });
         })
     }
 
