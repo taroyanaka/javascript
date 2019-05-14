@@ -25,8 +25,12 @@
 
 <body>
 
-
+    <input type="button" value="DeleteAll" onclick="deleteAllDocuments()">
     <div id="foo">hoge</div>
+    <form name="form1" onsubmit="createText()">
+        <input type="text" name="text1" size="30" maxlength="4">
+        <input type="submit" value="GO!" />
+    </form>
 </body>
 
 <script type="text/javascript">
@@ -35,11 +39,8 @@
     // store resource from "chache"
     function cacheOn() {
         firebase.firestore().enablePersistence({
-            experimentalTabSynchronization: true
+            synchronizeTabs: true
         })
-        // .then(() => {
-        //     // console.log("マルチタブでオフラインデータが使えるよ！");
-        // });
         storeResource = {
             source: "cache"
         };
@@ -49,6 +50,20 @@
         firebase.firestore().collection("users").add({
             foo: "bar",
             foo2: "bar2"
+        }).then(docRef => {
+            location.reload();
+            console.log("Document written with ID: ", docRef.id);
+        }).catch(error => {
+            console.error("Error adding document: ", error);
+        });
+    }
+
+    function createText() {
+        document.form1.text1.value === "" ? text = "test" : text = document.form1.text1.value;
+        firebase.firestore().collection("users").add({
+            foo: "bar",
+            // foo2: `${document.form1.text1.value}`
+            foo2: `${text}`
         }).then(docRef => {
             console.log("Document written with ID: ", docRef.id);
         }).catch(error => {
@@ -70,9 +85,7 @@
         ).then(col => {
             col.forEach(doc => {
                 console.log(`${doc.id} => ${doc.data().foo2}`);
-                // append(`${doc.data().foo2}`);
                 append(`${doc.data().foo2}`, doc.id);
-                // console.table(Object.keys(doc.data()));
             });
         })
     }
@@ -84,9 +97,7 @@
         ).then(col => {
             col.forEach(doc => {
                 console.log(`${doc.id} => ${doc.data().foo2}`);
-                // append(`${doc.data().foo2}`);
                 append(`${doc.data().foo2}`, doc.id);
-                // console.table(Object.keys(doc.data()));
             });
         }).then(() => {
             // append Delete function to div elements
@@ -97,18 +108,14 @@
     }
 
     function update() {
-        firebase.firestore().collection("users").doc("DYDZjsIUFYxPvi5QTARH").update(
-            // { foo2: "bar"} → { foo2: "hogehogehoge" }
-            {
-                foo2: "hogehoge"
-            }
-        ).then(() => {
+        firebase.firestore().collection("users").doc("DYDZjsIUFYxPvi5QTARH").update({
+            foo2: "hogehoge"
+        }).then(() => {
             console.dir("UPDATE SUCCESS");
         });
     }
 
     function deleteDocument(e) {
-        // firebase.firestore().collection("users").doc("x1fNOtjiJ0qmYoTtYxrg").delete().then((result) => {
         firebase.firestore().collection("users").doc(e.target.id).delete().then((result) => {
             console.dir("SUCCESS")
         }).then(function () {
@@ -130,7 +137,8 @@
                 firebase.firestore().collection("users").doc(
                     `${doc.id}`
                 ).delete().then((result) => {
-                    console.dir("SUCCESS")
+                    console.dir("SUCCESS");
+                    location.reload();
                 }).catch(function (error) {
                     console.error("ERROR: ", error);
                 });
