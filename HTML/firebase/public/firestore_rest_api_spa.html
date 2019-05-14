@@ -39,13 +39,15 @@
         <!-- <input type="submit" value="GO!" /> -->
     </form>
     <input id="button1" value="write" type="button" onclick="createText()">
+    <div id="result"></div>
 </body>
 
 <script type="text/javascript">
     // https://qiita.com/Bosch_san/items/e3e06acdb3c7b53553f2
 
-    const test = false;
-    async function testExecute() {
+    let test = false;
+    async function testExe() {
+        test = await true;
         await document.querySelector("#button1").click();
         document.form1.text1.value = await "abc";
         await document.querySelector("#button1").click();
@@ -68,7 +70,7 @@
             foo2: "bar2"
         }).then(docRef => {
             if (test === false) {
-                location.reload();
+                db(); //
             }
             console.log("Document written with ID: ", docRef.id);
         }).catch(error => {
@@ -86,7 +88,7 @@
             console.log("Document written with ID: ", docRef.id);
         }).then(() => {
             if (test === false) {
-                location.reload();
+                db(); //
             }
         }).catch(error => {
             console.error("Error adding document: ", error);
@@ -98,7 +100,7 @@
         let div = document.createElement('div');
         div.textContent = text;
         div.setAttribute("id", id);
-        document.querySelector('body').appendChild(div);
+        document.querySelector('#result').appendChild(div);
     }
 
     function read() {
@@ -114,6 +116,10 @@
 
     // READ collection, document, field, append Delete function to div elements
     function readAndAppendDelete() {
+        // remove element before rendering
+        element = document.querySelector("#result");
+        while (element.firstChild) element.removeChild(element.firstChild);
+
         firebase.firestore().collection("users").get(
             storeResource
         ).then(col => {
@@ -142,7 +148,7 @@
             console.dir("SUCCESS")
         }).then(function () {
             if (test === false) {
-                location.reload();
+                db(); //
             }
         }).catch(function (error) {
             console.error("ERROR: ", error);
@@ -163,7 +169,7 @@
                 ).delete().then((result) => {
                     console.dir("SUCCESS");
                     if (test === false) {
-                        location.reload();
+                        db(); //
                     }
                 }).catch(function (error) {
                     console.error("ERROR: ", error);
