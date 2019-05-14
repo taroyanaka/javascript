@@ -20,19 +20,25 @@
         div {
             cursor: pointer;
         }
+
+        #deleteAll,
+        #button1 {
+            WIDTH: 80px;
+            HEIGHT: 60px;
+            border: 3px solid gray;
+        }
     </style>
 </head>
 
 <body>
-
-    <input type="button" value="DeleteAll" onclick="deleteAllDocuments()" window="_blank">
-    <div id="foo">hoge</div>
-    <form name="form1" onsubmit="createText()">
+    <input id="deleteAll" value="deleteAll" type="button" onclick="deleteAllDocuments()">
+    <form name="form1">
         <!-- <input type="text" name="text1" size="50" maxlength="50"> -->
         <textarea type="text" name="text1" rows="10" cols="40" maxlength="140"
             placeholder="only string/min length is 1 character/max length is 140 characters"></textarea>
-        <input type="submit" value="GO!" />
+        <!-- <input type="submit" value="GO!" /> -->
     </form>
+    <input id="button1" value="write" type="button" onclick="createText()">
 </body>
 
 <script type="text/javascript">
@@ -68,6 +74,8 @@
             foo2: `${text}`
         }).then(docRef => {
             console.log("Document written with ID: ", docRef.id);
+        }).then(() => {
+            location.reload();
         }).catch(error => {
             console.error("Error adding document: ", error);
         });
@@ -148,6 +156,7 @@
         });
         // DELETE collection is no API, use DELETE each document
     }
+
 
     async function db() {
         storeResource = await {
