@@ -44,6 +44,14 @@
 <script type="text/javascript">
     // https://qiita.com/Bosch_san/items/e3e06acdb3c7b53553f2
 
+    const test = false;
+    async function testExecute() {
+        await document.querySelector("#button1").click();
+        document.form1.text1.value = await "abc";
+        await document.querySelector("#button1").click();
+        await document.querySelector("#deleteAll").click();
+    }
+
     // store resource from "chache"
     function cacheOn() {
         firebase.firestore().enablePersistence({
@@ -59,7 +67,9 @@
             foo: "bar",
             foo2: "bar2"
         }).then(docRef => {
-            location.reload();
+            if (test === false) {
+                location.reload();
+            }
             console.log("Document written with ID: ", docRef.id);
         }).catch(error => {
             console.error("Error adding document: ", error);
@@ -75,7 +85,9 @@
         }).then(docRef => {
             console.log("Document written with ID: ", docRef.id);
         }).then(() => {
-            location.reload();
+            if (test === false) {
+                location.reload();
+            }
         }).catch(error => {
             console.error("Error adding document: ", error);
         });
@@ -129,7 +141,9 @@
         firebase.firestore().collection("users").doc(e.target.id).delete().then((result) => {
             console.dir("SUCCESS")
         }).then(function () {
-            location.reload();
+            if (test === false) {
+                location.reload();
+            }
         }).catch(function (error) {
             console.error("ERROR: ", error);
         });
@@ -148,7 +162,9 @@
                     `${doc.id}`
                 ).delete().then((result) => {
                     console.dir("SUCCESS");
-                    location.reload();
+                    if (test === false) {
+                        location.reload();
+                    }
                 }).catch(function (error) {
                     console.error("ERROR: ", error);
                 });
