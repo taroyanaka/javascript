@@ -5,7 +5,12 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>foo</title>
     <!-- <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script> -->
-    <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase.js"></script> -->
+
+    <!-- <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script> -->
+    <script src="firebase-app.js"></script>
+    <script src="firebase-firestore.js"></script>
+
     <script>
         firebase.initializeApp({
             projectId: "yanaka-7bb50"
@@ -27,27 +32,18 @@
 <script type="text/javascript">
     // https://qiita.com/Bosch_san/items/e3e06acdb3c7b53553f2
 
-
-
-    // firebase.firestore().settings({
-    //     timestampsInSnapshots: true
-    // });
-
-    // import firebase from 'firebase';
-    // import 'firebase/firestore';
-
-    // const config = {
-    //     /* firebase config */
-    // };
-    // firebase.initializeApp(config);
-
-    // const firestore = firebase.firestore();
-
-    // choose "chache" or "server"
-    const foo = {
-        source: "cache"
-        // source: "server"
-    };
+    // store resource from "chache"
+    function cacheOn() {
+        firebase.firestore().enablePersistence({
+            experimentalTabSynchronization: true
+        })
+        // .then(() => {
+        //     // console.log("マルチタブでオフラインデータが使えるよ！");
+        // });
+        storeResource = {
+            source: "cache"
+        };
+    }
 
     function create() {
         firebase.firestore().collection("users").add({
@@ -70,7 +66,7 @@
 
     function read() {
         firebase.firestore().collection("users").get(
-            foo
+            storeResource
         ).then(col => {
             col.forEach(doc => {
                 console.log(`${doc.id} => ${doc.data().foo2}`);
@@ -84,7 +80,7 @@
     // READ collection, document, field, append Delete function to div elements
     function readAndAppendDelete() {
         firebase.firestore().collection("users").get(
-            foo
+            storeResource
         ).then(col => {
             col.forEach(doc => {
                 console.log(`${doc.id} => ${doc.data().foo2}`);
@@ -115,6 +111,8 @@
         // firebase.firestore().collection("users").doc("x1fNOtjiJ0qmYoTtYxrg").delete().then((result) => {
         firebase.firestore().collection("users").doc(e.target.id).delete().then((result) => {
             console.dir("SUCCESS")
+        }).then(function () {
+            location.reload();
         }).catch(function (error) {
             console.error("ERROR: ", error);
         });
@@ -142,14 +140,13 @@
     }
 
     async function db() {
-        await firebase.firestore().enablePersistence({
-            experimentalTabSynchronization: true
-        }).then(() => {
-            console.log("マルチタブでオフラインデータが使えるよ！");
-        });
+        storeResource = await {
+            source: "server"
+        };
+        await cacheOn();
         // console.dir(firebase.firestore());
         // await create();
-        // update();
+        // await update();
         // await read();
         await readAndAppendDelete();
         // deleteDocument();
