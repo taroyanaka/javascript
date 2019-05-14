@@ -25,6 +25,10 @@
 </body>
 
 <script type="text/javascript">
+    // https://qiita.com/Bosch_san/items/e3e06acdb3c7b53553f2
+
+
+
     // firebase.firestore().settings({
     //     timestampsInSnapshots: true
     // });
@@ -38,6 +42,7 @@
     // firebase.initializeApp(config);
 
     // const firestore = firebase.firestore();
+
 
 
     function create() {
@@ -60,7 +65,9 @@
     }
 
     function read() {
-        firebase.firestore().collection("users").get().then(col => {
+        firebase.firestore().collection("users").get({
+            source: "cache"
+        }).then(col => {
             col.forEach(doc => {
                 console.log(`${doc.id} => ${doc.data().foo2}`);
                 // append(`${doc.data().foo2}`);
@@ -72,7 +79,9 @@
 
     // READ collection, document, field, append Delete function to div elements
     function readAndAppendDelete() {
-        firebase.firestore().collection("users").get().then(col => {
+        firebase.firestore().collection("users").get({
+            source: "cache"
+        }).then(col => {
             col.forEach(doc => {
                 console.log(`${doc.id} => ${doc.data().foo2}`);
                 // append(`${doc.data().foo2}`);
@@ -128,15 +137,20 @@
         // DELETE collection is no API, use DELETE each document
     }
 
-    function db() {
+    async function db() {
+        await firebase.firestore().enablePersistence({
+            experimentalTabSynchronization: true
+        }).then(() => {
+            console.log("マルチタブでオフラインデータが使えるよ！");
+        });
         // console.dir(firebase.firestore());
-        // create();
+        // await create();
         // update();
-        // read();
-        readAndAppendDelete();
+        // await read();
+        await readAndAppendDelete();
         // deleteDocument();
         // deleteField();
-        // deleteAllDocuments();
+        // await deleteAllDocuments();
     }
     document.addEventListener('DOMContentLoaded', db, false);
 </script>
