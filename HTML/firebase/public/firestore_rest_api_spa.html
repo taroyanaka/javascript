@@ -67,13 +67,13 @@
             width: 100px;
             height: 100px;
             /* margin: 100px; */
-            animation: bound 3s;
+            animation: bound 5s;
             /* animation-timing-function: ease-in-out; */
         }
 
         @keyframes bound {
             0% {
-                transform: translateX(200px)
+                transform: translateX(500px)
             }
 
             5% {
@@ -81,7 +81,7 @@
             }
 
             10% {
-                transform: translateX(100px)
+                transform: translateX(300px)
             }
 
             20% {
@@ -261,7 +261,7 @@
         storeResource = await {
             source: "server"
         };
-        await cacheOn();
+        // await cacheOn();
         // console.dir(firebase.firestore());
         // await create();
         // await update();
