@@ -19,6 +19,8 @@
 
     〜〜〜
     <script src="emojis.js" defer></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script> -->
+    <script src="clipboard.min.js"></script>
     <!-- bodyタグ内の下部に以下を入力する -->
     <script>
         function shuffleArray(array) {
@@ -48,15 +50,21 @@
             // コピー対象のテキストを選択する
             copyTarget.select();
             // 選択しているテキストをクリップボードにコピーする
-            // document.execCommand("Copy");
-            const range = document.createRange();
-            range.selectNode(copytext);
-            window.getSelection().addRange(range);
-            document.execCommand("copy");
+            document.execCommand("Copy");
             // コピーをお知らせする
             alert("コピーできました！ : " + copyTarget.value);
         }
+
+        new ClipboardJS('.btn');
     </script>
+
+    <!-- Target -->
+    <textarea id="bar">can I use iOS????</textarea>
+
+    <!-- Trigger -->
+    <button class="btn" data-clipboard-action="cut" data-clipboard-target="#bar">
+        Cut to clipboard
+    </button>
 </body>
 
 </html>
