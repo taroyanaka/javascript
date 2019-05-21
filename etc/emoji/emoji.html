@@ -7,19 +7,17 @@
     -->
 
     〜〜〜
-    <!-- https://www.marorika.com/entry/copy-to-clipboard -->
-
-    <!-- これでもいいかも？？
-        https://hacknote.jp/archives/14777/
-    -->
 
     <!-- コピー対象要素とコピーボタン -->
     <input id="copyTarget" type="text" size="100" readonly="true" contentEditable="false">
-    <button onclick="copyToClipboard()">Copy Emoji</button>
+    <!-- clipboard.js -->
+    <button class="btn" data-clipboard-action="copy" data-clipboard-target="#copyTarget">
+        Copy to clipboard
+    </button>
 
     〜〜〜
+
     <script src="emojis.js" defer></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script> -->
     <script src="clipboard.min.js"></script>
     <!-- bodyタグ内の下部に以下を入力する -->
     <script>
@@ -44,27 +42,9 @@
         }
         document.addEventListener('DOMContentLoaded', setEmoji, false);
 
-        function copyToClipboard() {
-            // コピー対象をJavaScript上で変数として定義する
-            var copyTarget = document.getElementById("copyTarget");
-            // コピー対象のテキストを選択する
-            copyTarget.select();
-            // 選択しているテキストをクリップボードにコピーする
-            document.execCommand("Copy");
-            // コピーをお知らせする
-            alert("コピーできました！ : " + copyTarget.value);
-        }
-
+        // clipboard.js
         new ClipboardJS('.btn');
     </script>
-
-    <!-- Target -->
-    <!-- <textarea id="bar">can I use iOS????</textarea> -->
-
-    <!-- Trigger -->
-    <button class="btn" data-clipboard-action="copy" data-clipboard-target="#copyTarget">
-        Copy to clipboard
-    </button>
 </body>
 
 </html>
