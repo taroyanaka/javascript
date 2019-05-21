@@ -48,7 +48,11 @@
             // コピー対象のテキストを選択する
             copyTarget.select();
             // 選択しているテキストをクリップボードにコピーする
-            document.execCommand("Copy");
+            // document.execCommand("Copy");
+            const range = document.createRange();
+            range.selectNode(copytext);
+            window.getSelection().addRange(range);
+            document.execCommand("copy");
             // コピーをお知らせする
             alert("コピーできました！ : " + copyTarget.value);
         }
