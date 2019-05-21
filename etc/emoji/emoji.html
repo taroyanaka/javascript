@@ -1,0 +1,47 @@
+<html>
+<title>Work in progress🐹</title>
+
+<body>
+    <!-- なんかemojiを良い感じに使いまわしたりemoji文字列を生成したりretweet的なことができたり
+        色々良い感じのことができるやつを作りたい的な🦁
+    -->
+
+    〜〜〜
+    <!-- https://www.marorika.com/entry/copy-to-clipboard -->
+    <!-- コピー対象要素とコピーボタン -->
+    <input id="copyTarget" type="text" readonly>
+    <button onclick="copyToClipboard()">Copy text</button>
+
+    〜〜〜
+    <script src="emojis.js" defer></script>
+    <!-- bodyタグ内の下部に以下を入力する -->
+    <script>
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                let r = Math.floor(Math.random() * (i + 1));
+                let tmp = array[i];
+                array[i] = array[r];
+                array[r] = tmp;
+            }
+            return array
+        }
+
+        function setEmoji() {
+            document.getElementById("copyTarget").value = shuffleArray(emojis)[0];
+        }
+        document.addEventListener('DOMContentLoaded', setEmoji, false);
+
+        function copyToClipboard() {
+            // コピー対象をJavaScript上で変数として定義する
+            var copyTarget = document.getElementById("copyTarget");
+            // コピー対象のテキストを選択する
+            copyTarget.select();
+            // 選択しているテキストをクリップボードにコピーする
+            document.execCommand("Copy");
+            // コピーをお知らせする
+            alert("コピーできました！ : " + copyTarget.value);
+        }
+    </script>
+</body>
+
+</html>
