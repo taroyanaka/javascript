@@ -8,13 +8,8 @@
 
     〜〜〜
     <!-- https://www.marorika.com/entry/copy-to-clipboard -->
-
-    <!-- これでもいいかも？？
-        https://hacknote.jp/archives/14777/
-    -->
-
     <!-- コピー対象要素とコピーボタン -->
-    <input id="copyTarget" type="text" size="100" readonly>
+    <input id="copyTarget" type="text" readonly>
     <button onclick="copyToClipboard()">Copy text</button>
 
     〜〜〜
@@ -32,13 +27,7 @@
         }
 
         function setEmoji() {
-            let nEmoji = '';
-            const sEmojis = shuffleArray(emojis);
-            [...Array(30).keys()].forEach(V => {
-                nEmoji += sEmojis[V]
-            })
-            console.log(nEmoji);
-            document.getElementById("copyTarget").value = nEmoji;
+            document.getElementById("copyTarget").value = shuffleArray(emojis)[0];
         }
         document.addEventListener('DOMContentLoaded', setEmoji, false);
 

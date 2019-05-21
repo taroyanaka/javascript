@@ -33,6 +33,7 @@
             background: var(--bg-gradation);
         }
 
+        /* https://creive.me/archives/17653/ */
         div {
             overflow-wrap: break-word;
             word-wrap: break-word;
@@ -43,7 +44,7 @@
             HEIGHT: 24px;
             border: 3px solid gray;
             color: gray;
-            font-size: 0.05px;
+            font-size: 5px;
             border-radius: 10px;
         }
 
@@ -67,13 +68,15 @@
             width: 100px;
             height: 100px;
             /* margin: 100px; */
-            animation: bound 5s;
+            animation: bound 3s;
             /* animation-timing-function: ease-in-out; */
+            animation-timing-function: ease-in;
+            /* animation-timing-function: ease; */
         }
 
         @keyframes bound {
             0% {
-                transform: translateX(500px)
+                transform: translateX(300px)
             }
 
             5% {
@@ -81,7 +84,7 @@
             }
 
             10% {
-                transform: translateX(300px)
+                transform: translateX(150px)
             }
 
             20% {
@@ -105,6 +108,9 @@
 </head>
 
 <body>
+
+
+    </header>
     <div class="bound">
         <input id="deleteAll" value="deleteAll" type="button" onclick="deleteAllDocuments()">
         <form name="form1">
@@ -261,7 +267,7 @@
         storeResource = await {
             source: "server"
         };
-        // await cacheOn();
+        await cacheOn();
         // console.dir(firebase.firestore());
         // await create();
         // await update();
