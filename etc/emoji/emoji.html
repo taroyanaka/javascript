@@ -4,6 +4,10 @@
     <!-- https://www.cssscript.com/easy-vanilla-javascript-emoji-picker/ -->
     <title>Work in progress🐹</title>
     <style>
+        body {
+            text-align: center;
+        }
+
         #copyTarget {
             width: 30%;
             height: 30%;
@@ -13,20 +17,27 @@
         .btn {
             width: 200px;
             height: 100px;
+            font-size: 50pt;
         }
 
-        .emoji-mart {
+        /* .emoji-mart {
             text-align: left;
             font-size: 1px;
-        }
+        } */
 
-        .emoji-mart-title-label {
+        /* .emoji-mart-title-label {
             font-size: 1px;
-        }
+        } */
 
         .container {
             width: 30%;
-            height: 30%;
+            height: 40%;
+            margin: 0 auto;
+        }
+
+        #form {
+            /* width: 200px; */
+            /* height: 100px; */
             font-size: 30pt;
         }
     </style>
@@ -34,6 +45,10 @@
     <!-- emoji-mart -->
     <!-- <link rel="stylesheet" href="./emoji-mart.css"> -->
     <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
+    <script src="emojis.js"></script>
+    <script src="clipboard.min.js"></script>
+    <script src="meteorEmoji.min.js"></script>
+
 
 
 </head>
@@ -50,58 +65,59 @@
     </div>
     <div>
         <!-- clipboard.js -->
-        <button class="btn" data-clipboard-action="copy" data-clipboard-target="#copyTarget">
-            Copy Emoji
-        </button>
+        <button class="btn" data-clipboard-action="copy" data-clipboard-target="#copyTarget">©</button>
+        <button class="btn" onclick="transfer()">⇩</button>
     </div>
-    <script src="emojis.js"></script>
-    <script src="clipboard.min.js"></script>
     <!-- <script type="module" src="node_modules/main.js"></script> -->
     <!-- bodyタグ内の下部に以下を入力する -->
-    <script>
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                let r = Math.floor(Math.random() * (i + 1));
-                let tmp = array[i];
-                array[i] = array[r];
-                array[r] = tmp;
-            }
-            return array
-        }
-
-        function setEmoji() {
-            let nEmoji = '';
-            const sEmojis = shuffleArray(emojis);
-            [...Array(30).keys()].forEach(V => {
-                nEmoji += sEmojis[V]
-            })
-            console.log(nEmoji);
-            document.getElementById("copyTarget").value = nEmoji;
-        }
-        document.addEventListener('DOMContentLoaded', setEmoji, false);
-
-        // clipboard.js
-        new ClipboardJS('.btn');
-    </script>
 
 
     <!-- emoji-mart -->
     <!-- <div class="row" id="picker"></div> -->
     <!-- <script src="./bundle.js"></script> -->
-
-
     <div class="container">
         <!-- <input data-meteor-emoji="true" type="text"> -->
         <!-- <input data-meteor-emoji-large="true" type="text"> -->
-        <textarea data-meteor-emoji="true"></textarea>
+        <textarea id="form" data-meteor-emoji="true"></textarea>
     </div>
+    <button class="btn" data-clipboard-action="copy" data-clipboard-target="#form">©</button>
 </body>
-<script src="meteorEmoji.min.js"></script>
+
 <script>
     (() => {
         new MeteorEmoji()
     })()
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            let r = Math.floor(Math.random() * (i + 1));
+            let tmp = array[i];
+            array[i] = array[r];
+            array[r] = tmp;
+        }
+        return array
+    }
+
+    function setEmoji() {
+        let nEmoji = '';
+        const sEmojis = shuffleArray(emojis);
+        [...Array(30).keys()].forEach(V => {
+            nEmoji += sEmojis[V]
+        })
+        console.log(nEmoji);
+        document.getElementById("copyTarget").value = nEmoji;
+    }
+    document.addEventListener('DOMContentLoaded', setEmoji, false);
+
+    function transfer() {
+        document.getElementById("form").value = document.getElementById("copyTarget").value;
+    }
+
+    // clipboard.js
+    new ClipboardJS('.btn');
 </script>
-</body>
+
+
+
 
 </html>
