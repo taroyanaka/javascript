@@ -1,24 +1,62 @@
 <html>
-<title>Work in progress🐹</title>
+
+<head>
+    <!-- https://www.cssscript.com/easy-vanilla-javascript-emoji-picker/ -->
+    <title>Work in progress🐹</title>
+    <style>
+        #copyTarget {
+            width: 30%;
+            height: 30%;
+            font-size: 30pt;
+        }
+
+        .btn {
+            width: 200px;
+            height: 100px;
+        }
+
+        .emoji-mart {
+            text-align: left;
+            font-size: 1px;
+        }
+
+        .emoji-mart-title-label {
+            font-size: 1px;
+        }
+
+        .container {
+            width: 30%;
+            height: 30%;
+            font-size: 30pt;
+        }
+    </style>
+
+    <!-- emoji-mart -->
+    <!-- <link rel="stylesheet" href="./emoji-mart.css"> -->
+    <!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
+
+
+</head>
 
 <body>
     <!-- なんかemojiを良い感じに使いまわしたりemoji文字列を生成したりretweet的なことができたり
         色々良い感じのことができるやつを作りたい的な🦁
     -->
 
-    〜〜〜
-
     <!-- コピー対象要素とコピーボタン -->
-    <input id="copyTarget" type="text" size="100" readonly="true" contentEditable="false">
-    <!-- clipboard.js -->
-    <button class="btn" data-clipboard-action="copy" data-clipboard-target="#copyTarget">
-        Copy Emoji
-    </button>
-
-    〜〜〜
-
+    <div>
+        <!-- <input id="copyTarget" type="textarea" cols="5"> -->
+        <textarea id="copyTarget"></textarea>
+    </div>
+    <div>
+        <!-- clipboard.js -->
+        <button class="btn" data-clipboard-action="copy" data-clipboard-target="#copyTarget">
+            Copy Emoji
+        </button>
+    </div>
     <script src="emojis.js"></script>
     <script src="clipboard.min.js"></script>
+    <!-- <script type="module" src="node_modules/main.js"></script> -->
     <!-- bodyタグ内の下部に以下を入力する -->
     <script>
         function shuffleArray(array) {
@@ -32,6 +70,8 @@
         }
 
         function setEmoji() {
+            window.EmojiPicker.init()
+
             let nEmoji = '';
             const sEmojis = shuffleArray(emojis);
             [...Array(30).keys()].forEach(V => {
@@ -45,6 +85,25 @@
         // clipboard.js
         new ClipboardJS('.btn');
     </script>
+
+
+    <!-- emoji-mart -->
+    <!-- <div class="row" id="picker"></div> -->
+    <!-- <script src="./bundle.js"></script> -->
+
+
+    <div class="container">
+        <!-- <input data-meteor-emoji="true" type="text"> -->
+        <!-- <input data-meteor-emoji-large="true" type="text"> -->
+        <textarea data-meteor-emoji="true"></textarea>
+    </div>
+</body>
+<script src="meteorEmoji.min.js"></script>
+<script>
+    (() => {
+        new MeteorEmoji()
+    })()
+</script>
 </body>
 
 </html>
