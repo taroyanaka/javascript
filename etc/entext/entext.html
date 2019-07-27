@@ -98,7 +98,7 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
 
     <input id='done' type="button" value="done" onclick="done()" />
 
-    <input id='button2' type="button" value="text fill and make QA" onclick="textFillAndMakeQA()" />
+    <!-- <input id='button2' type="button" value="text fill and make QA" onclick="textFillAndMakeQA()" /> -->
 
     <input type="text" id="search" oninput="search(event);" />
     <script>
@@ -121,11 +121,10 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
         }
     </script>
 
-
     <footer style="height: 1000px"></footer>
-
     <span id="question" style="color: gray"></span>
     <span id="answer" style="color: gray"></span>
+
 
     <!-- https://script.google.com/macros/s/AKfycbxa6rmGpDhLEMDC_Za2gGUI_QHRsH2aqYvVWTWDNksTl4wByi5U/exec?text=こんにちわ&source=ja&target=en -->
 
@@ -135,7 +134,7 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
 
         function init() {
             wrongAnswer = [];
-            document.querySelectorAll("span.word, span.space, input.answerButton").forEach(E => {
+            document.querySelectorAll("button.qustionButton, input.answerButton").forEach(E => {
                 E.parentNode.removeChild(E)
             });
             // dropWordcounter();
