@@ -94,6 +94,59 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
             required="required" maxlength="100000" autofocus="autofocus" wrap="hard">
 </textarea>
     </form>
+<script>
+    // https://github.com/codegrid/2016-web-speech-api/blob/gh-pages/speech_synthesis/demo_voices.html
+    var voices = speechSynthesis.getVoices();
+
+    function fetchVoices(cb) {
+        if (!voices || !voices.length) {
+            setTimeout(function () {
+                voices = speechSynthesis.getVoices();
+                fetchVoices(cb);
+            }, 0);
+        } else {
+            cb(voices);
+        }
+    }
+
+    function drawButtons(voices) {
+        voices
+        .forEach(function (voice) {
+            // console.log(voice.name);
+            var elBtn = document.createElement('button');
+            elBtn.textContent = voice.name;
+            elBtn.addEventListener('click', function () {
+            speak(this.textContent);
+            });
+            document.body.appendChild(elBtn);
+        })
+        // .filter(V=>{return V.name==="Google US English"
+        // }).forEach(function (voice) {
+        //     // console.log(voice.name);
+        //     var elBtn = document.createElement('button');
+        //     elBtn.textContent = voice.name;
+        //     elBtn.addEventListener('click', function () {
+        //     speak(this.textContent);
+        //     });
+        //     document.body.appendChild(elBtn);
+        // });
+    }
+
+    function speak(voiceName) {
+        var text = document.querySelector('#id_textBox1').value;
+        var uttr = new SpeechSynthesisUtterance(text);
+        // 音声データを取得できてない場合は再取得する
+        if (!voices || !voices.length) {
+            voices = speechSynthesis.getVoices();
+        }
+        voices.forEach(function (v, i) {
+            if (v.name == voiceName) uttr.voice = v;
+        });
+        speechSynthesis.cancel();
+        speechSynthesis.speak(uttr);
+    }
+    fetchVoices(drawButtons);
+</script>
 
 
     <input id='done' type="button" value="done" onclick="done()" />
@@ -121,9 +174,11 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
         }
     </script>
 
+        <span id="question" style="color: black"></span>
+        <span id="answer" style="color: black"></span>
+
+
     <footer style="height: 1000px"></footer>
-    <span id="question" style="color: gray"></span>
-    <span id="answer" style="color: gray"></span>
 
 
     <!-- https://script.google.com/macros/s/AKfycbxa6rmGpDhLEMDC_Za2gGUI_QHRsH2aqYvVWTWDNksTl4wByi5U/exec?text=こんにちわ&source=ja&target=en -->
@@ -137,7 +192,6 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
             document.querySelectorAll("button.qustionButton, input.answerButton").forEach(E => {
                 E.parentNode.removeChild(E)
             });
-            // dropWordcounter();
         }
 
 
@@ -158,6 +212,7 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
             }
         }
 
+
         function dropText() {
             const noNewLineSplitedTextReturn = () => R.split(' ', R.replace(/\n\r/g, '', document.getElementById(
                 'id_textBox1').value.trim()));
@@ -172,9 +227,30 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
                 noNewLineSplitedTextReturn()));
         };
 
+
+
+        let allAnsweredArray = [];
+        let remainingQuestion = [];
+        let remainingAnswer = [];
+
         // function textFillAndMakeQA() {
+
+
+        const allAnswer = () => Array.from(document.querySelectorAll("button.qustionButton")).map( ELEMENT => { return ELEMENT.textContent });
+        // const allAnswer = () => ["foo", "bar", "foo", "taro"];
+        const allAnsweredReturn = (answer, array) => R.insert(-1, answer, array);
+        const check = () => { if(document.querySelector("span#question").innerText === document.querySelector("span#answer").innerText){ return document.querySelector("span#answer").innerText} };
+        const diff = function (a, b) { return a - b };
+        const allAnswerReturn = () => R.sort(diff, R.uniq(allAnswer()));
+        const remainingQuestionReturn = (answerd, array) => R.without(answerd, array);
+
+        const exe = ()=> {
+            allAnsweredArray = allAnsweredReturn(check(), allAnsweredArray);
+            remainingAnswer = allAnswerReturn();
+            remainingQuestion = remainingQuestionReturn(allAnsweredArray, allAnswerReturn());
+        }
         async function textFillAndMakeQA() {
-            await dropText();
+            dropText();
             const setQustion = () => {
                 const setQustionValue = (e) => {
                     document.querySelector("span#question").innerText = e.target.innerText
@@ -185,61 +261,90 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
                     V.style.backgroundColor = "black"
                 });
             }
-            await setQustion();
+            setQustion();
 
-            const appendAnswerButton = (elm) => {
-                const input = document.createElement('input');
-                input.value = elm;
-                input.type = 'button';
-                input.classList.add("answerButton")
-
-                function retry() {
-                    if (document.querySelectorAll(".answerButton").length === 0) {
-                        R.forEach(appendAnswerButton, R.uniq(wrongAnswer));
-                        document.querySelectorAll(".qustionButton").forEach(V => {
-                            if (R.includes(V.innerText, R.uniq(wrongAnswer))) {
-                                V.style.backgroundColor = "black"
-                            }
-                        })
-                    }
+            const setAnswer = () => {
+                const makeHtmltext = noNewLineSplitedText => {
+                    const addSpanTagWithWordAttribute = x => `<button class='answerButton'>${x}</button>`;
+                    const addSpanTagWithWordAttributeArray = R.map(addSpanTagWithWordAttribute, noNewLineSplitedText);
+                    return R.join('', addSpanTagWithWordAttributeArray);
                 }
-
-                const setAnswerValueAndCheckQAAndColorChange = (elm) => {
-                    document.querySelector("span#answer").innerText = elm.target.value;
-                    displayVariableForDevelopment();
-                    if (document.querySelector("span#question").innerText === document.querySelector(
-                            "span#answer").innerText) {
-                        document.querySelector("input#search").value = "";
-                        console.log('ok');
-                        document.querySelectorAll(".qustionButton").forEach(qustionButton => {
-                            if (qustionButton.innerText === document.querySelector("span#answer")
-                                .innerText) {
-                                qustionButton.style.backgroundColor = "gray";
-                                document.querySelectorAll(".answerButton").forEach(answerButton => {
-                                    if (answerButton.value === document.querySelector(
-                                            "span#answer").innerText) {
-                                        answerButton.parentNode.removeChild(answerButton)
-                                    }
-                                });
-                            }
-                        })
-                        retry();
-                    }
-                    if (document.querySelector("span#question").innerText !== document.querySelector(
-                            "span#answer").innerText) {
-                        console.log('ng');
-                        wrongAnswer = R.insert(-1, elm.target.value, wrongAnswer);
-                    }
-                }
-                input.addEventListener("click", setAnswerValueAndCheckQAAndColorChange, false)
-                document.querySelector('body').insertBefore(input, document.querySelector('footer'));
+                document.querySelector('footer').insertAdjacentHTML('beforeBegin', makeHtmltext( allAnswerReturn() ));
+                const setAnswerValue = (e) => { document.querySelector("span#question").innerText = e.target.innerText };
+                document.querySelectorAll(".qustionButton").forEach(e => e.addEventListener("click",  setAnswerValue, false));
+                // document.querySelectorAll(".qustionButton").forEach(V => { V.style.backgroundColor = "black" });
             }
-            // appendAnswerButton from uniqqed each qustionButtons
-            const isNullString = (qustionButton) => qustionButton === "";
-            await R.forEach(appendAnswerButton, R.uniq(R.reject(isNullString, Array.from(document.querySelectorAll(
-                ".qustionButton")).map(V => {
-                return V.innerText
-            }))).sort());
+            setAnswer();
+
+            // function newFunc() {
+            // }
+            // newFunc();
+            //     await dropText();
+            //     const setQustion = () => {
+            //         const setQustionValue = (e) => {
+            //             document.querySelector("span#question").innerText = e.target.innerText
+            //         };
+            //         document.querySelectorAll(".qustionButton").forEach(e => e.addEventListener("click",
+            //             setQustionValue, false));
+            //         document.querySelectorAll(".qustionButton").forEach(V => {
+            //             V.style.backgroundColor = "black"
+            //         });
+            //     }
+            //     await setQustion();
+
+            //     const appendAnswerButton = (elm) => {
+            //         const input = document.createElement('input');
+            //         input.value = elm;
+            //         input.type = 'button';
+            //         input.classList.add("answerButton")
+
+            //         function retry() {
+            //             if (document.querySelectorAll(".answerButton").length === 0) {
+            //                 R.forEach(appendAnswerButton, R.uniq(wrongAnswer));
+            //                 document.querySelectorAll(".qustionButton").forEach(V => {
+            //                     if (R.includes(V.innerText, R.uniq(wrongAnswer))) {
+            //                         V.style.backgroundColor = "black"
+            //                     }
+            //                 })
+            //             }
+            //         }
+
+            //         const setAnswerValueAndCheckQAAndColorChange = (elm) => {
+            //             document.querySelector("span#answer").innerText = elm.target.value;
+            //             displayVariableForDevelopment();
+            //             if (document.querySelector("span#question").innerText === document.querySelector(
+            //                     "span#answer").innerText) {
+            //                 document.querySelector("input#search").value = "";
+            //                 console.log('ok');
+            //                 document.querySelectorAll(".qustionButton").forEach(qustionButton => {
+            //                     if (qustionButton.innerText === document.querySelector("span#answer")
+            //                         .innerText) {
+            //                         qustionButton.style.backgroundColor = "gray";
+            //                         document.querySelectorAll(".answerButton").forEach(answerButton => {
+            //                             if (answerButton.value === document.querySelector(
+            //                                     "span#answer").innerText) {
+            //                                 answerButton.parentNode.removeChild(answerButton)
+            //                             }
+            //                         });
+            //                     }
+            //                 })
+            //                 retry();
+            //             }
+            //             if (document.querySelector("span#question").innerText !== document.querySelector(
+            //                     "span#answer").innerText) {
+            //                 console.log('ng');
+            //                 wrongAnswer = R.insert(-1, elm.target.value, wrongAnswer);
+            //             }
+            //         }
+            //         input.addEventListener("click", setAnswerValueAndCheckQAAndColorChange, false)
+            //         document.querySelector('body').insertBefore(input, document.querySelector('footer'));
+            //     }
+            //     // appendAnswerButton from uniqqed each qustionButtons
+            //     const isNullString = (qustionButton) => qustionButton === "";
+            //     await R.forEach(appendAnswerButton, R.uniq(R.reject(isNullString, Array.from(document.querySelectorAll(
+            //         ".qustionButton")).map(V => {
+            //         return V.innerText
+            //     }))).sort());
         }
 
         function done() {
@@ -253,27 +358,21 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
         }
 
         async function test() {
-            document.querySelector("#id_textBox0").value = await `my younger and more `;
-            document.querySelectorAll("input#wordNumber0").item(0).value = await 2;
-            document.querySelectorAll("input#wordNumber0").item(0).click();
+            document.querySelector("#id_textBox0").value = await `my younger my father and more `;
+            document.querySelectorAll("input#wordNumber0").item(0).value = await 3;
+            await document.querySelectorAll("input#wordNumber0").item(0).click();
             await document.querySelectorAll("#drop_button0").item(0).click();
 
             await document.querySelectorAll("ul#chapter li").item(0).click();
-            // document.querySelectorAll("input#wordNumber").item(0).value = await 4;
-            // await document.querySelectorAll("input#wordNumber").item(0).click();
+            // document.querySelector("span#question").innerText = await document.querySelectorAll(
+            //     "button.qustionButton").item(0).innerText;
+            // await document.querySelectorAll("button.answerButton").item(0);
             // await document.querySelectorAll("#drop_button1").item(0).click();
 
-            await document.querySelectorAll("input#button2").item(0).click();
+            // await document.querySelectorAll("input#button2").item(0).click();
 
         }
         // test();
-
-        const allAnswer = () => Array.from(document.querySelectorAll("button.qustionButton")).map(ELEMENT => {
-            return ELEMENT.textContent
-        });
-        const allAnswered = (answer, array) => R.insert(-1, answer, array);
-        const allQuestion = (array) => array;
-        const remainingQuestion = (answerd, array) => R.without(answerd, array);
     </script>
 
 
