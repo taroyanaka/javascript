@@ -94,60 +94,6 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
             required="required" maxlength="100000" autofocus="autofocus" wrap="hard">
 </textarea>
     </form>
-<script>
-    // https://github.com/codegrid/2016-web-speech-api/blob/gh-pages/speech_synthesis/demo_voices.html
-    var voices = speechSynthesis.getVoices();
-
-    function fetchVoices(cb) {
-        if (!voices || !voices.length) {
-            setTimeout(function () {
-                voices = speechSynthesis.getVoices();
-                fetchVoices(cb);
-            }, 0);
-        } else {
-            cb(voices);
-        }
-    }
-
-    function drawButtons(voices) {
-        voices
-        .forEach(function (voice) {
-            // console.log(voice.name);
-            var elBtn = document.createElement('button');
-            elBtn.textContent = voice.name;
-            elBtn.addEventListener('click', function () {
-            speak(this.textContent);
-            });
-            document.body.appendChild(elBtn);
-        })
-        // .filter(V=>{return V.name==="Google US English"
-        // }).forEach(function (voice) {
-        //     // console.log(voice.name);
-        //     var elBtn = document.createElement('button');
-        //     elBtn.textContent = voice.name;
-        //     elBtn.addEventListener('click', function () {
-        //     speak(this.textContent);
-        //     });
-        //     document.body.appendChild(elBtn);
-        // });
-    }
-
-    function speak(voiceName) {
-        var text = document.querySelector('#id_textBox1').value;
-        var uttr = new SpeechSynthesisUtterance(text);
-        // 音声データを取得できてない場合は再取得する
-        if (!voices || !voices.length) {
-            voices = speechSynthesis.getVoices();
-        }
-        voices.forEach(function (v, i) {
-            if (v.name == voiceName) uttr.voice = v;
-        });
-        speechSynthesis.cancel();
-        speechSynthesis.speak(uttr);
-    }
-    fetchVoices(drawButtons);
-</script>
-
 
     <input id='done' type="button" value="done" onclick="done()" />
 
@@ -374,6 +320,60 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
         }
         // test();
     </script>
+
+<script>
+    // https://github.com/codegrid/2016-web-speech-api/blob/gh-pages/speech_synthesis/demo_voices.html
+    var voices = speechSynthesis.getVoices();
+
+    function fetchVoices(cb) {
+        if (!voices || !voices.length) {
+            setTimeout(function () {
+                voices = speechSynthesis.getVoices();
+                fetchVoices(cb);
+            }, 0);
+        } else {
+            cb(voices);
+        }
+    }
+
+    function drawButtons(voices) {
+        voices
+            .forEach(function (voice) {
+                // console.log(voice.name);
+                var elBtn = document.createElement('button');
+                elBtn.textContent = voice.name;
+                elBtn.addEventListener('click', function () {
+                    speak(this.textContent);
+                });
+                document.body.appendChild(elBtn);
+            })
+        // .filter(V=>{return V.name==="Google US English"
+        // }).forEach(function (voice) {
+        //     // console.log(voice.name);
+        //     var elBtn = document.createElement('button');
+        //     elBtn.textContent = voice.name;
+        //     elBtn.addEventListener('click', function () {
+        //     speak(this.textContent);
+        //     });
+        //     document.body.appendChild(elBtn);
+        // });
+    }
+
+    function speak(voiceName) {
+        var text = document.querySelector('#id_textBox1').value;
+        var uttr = new SpeechSynthesisUtterance(text);
+        // 音声データを取得できてない場合は再取得する
+        if (!voices || !voices.length) {
+            voices = speechSynthesis.getVoices();
+        }
+        voices.forEach(function (v, i) {
+            if (v.name == voiceName) uttr.voice = v;
+        });
+        speechSynthesis.cancel();
+        speechSynthesis.speak(uttr);
+    }
+    fetchVoices(drawButtons);
+</script>
 
 
 </body>
