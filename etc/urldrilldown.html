@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Site</title>
+</head>
+
+<body>
+
+    <h1>foobar</h1>
+
+<!-- <script src="http://cdn.date-fns.org/v1.2.0/date_fns.min.js"></script>
+<script>
+    console.log(dateFns.isToday(new Date()));
+    //=> true
+</script> -->
+
+    <div>
+        <textarea id="foo" cols="100" rows="30" placeholder="url" required="required" maxlength="1400"
+            autofocus="autofocus" wrap="hard">https://yanaka.dev/</textarea>
+        <input type="text" id="regexp" name="txt" size="50" minlength="1" maxlength="100"
+            value="https.*github\.io.+html">
+    </div>
+
+    <script>
+
+        // const getURLSParam = () => document.querySelector("textarea#foo").value.split("\n").filter(V => { return V !== "" }).map(V => { return encodeURIComponent(V) }).join(",");
+        // h1yousowoshutoku
+        // const h1 = document.querySelector('h1')
+        // h1.addEventListener('click', () => {            h1.textContent = encodeURIComponent(`https.*github\.io.+html`)        })
+        // const makeGetRequestParam = () => getURLSParam() + encodeURIComponent(document.querySelector("input#regexp").value);
+///////////////////////////////////// server Side(GAS)
+// // execute
+// // 
+
+// // reference
+// // https://qiita.com/tanabee/items/c79c5c28ba0537112922
+// // http://www.initialsite.com/g04/14311
+
+// // request URL
+// // https://script.google.com/macros/s/AKfycbzIS6-5cWqpm_TumVs1N1-4-fSNQVAhDXHkg1zYKnPYNTs4FSs/exec?urlstr=https%3A%2F%2Fyanaka.dev%2F&regexpstr=https.*github.io.%2Bhtml
+// function doGet(e) {
+//     e.parameter.urlstr = e.parameter.urlstr || "https%3A%2F%2Fyanaka.dev%2F";//: "https://foo.com/,https://bar.com/" || "https://foo.com/"
+//     e.parameter.regexpstr = e.parameter.regexpstr || "https.*github.io.%2Bhtml";
+
+//     var targetTxt = "";
+//     var targetURLS = e.parameter.urlstr.split(',');
+//     targetURLS.forEach(function (targetURL) {
+//         targetTxt += UrlFetchApp.fetch(decodeURIComponent(targetURL)).getContentText('UTF-8');
+//     });
+
+//     var allTxt = "";
+//     var URLS = targetTxt.match(RegExp(decodeURIComponent(e.parameter.regexpstr), 'g'));
+//     URLS.forEach(function (URL) {
+//         allTxt += UrlFetchApp.fetch(URL).getContentText('UTF-8');
+//     })
+//     return ContentService.createTextOutput(allTxt);
+// }
+/////////////////////////////////////
+
+
+
+    </script>
+</body>
+
+<!-- <script>
+// with quokka.js open in javascript/etc/withnode
+({
+    "plugins": ["jsdom-quokka-plugin"],
+    "jsdom": {
+        "file": "../urldrilldown.html"
+    }
+})
+
+
+// console.log(window.document.querySelector(`body > h1`).textContent)
+const getURLSParam = () => window.document.querySelector("textarea#foo").value.split("\n").filter(V => {return V !== ""}).map(V => { return encodeURIComponent(V)}).join(",");
+// h1.addEventListener('click', () => { h1.textContent = encodeURIComponent(`https.*github\.io.+html`) })
+const makeGetRequestParam = () => `?urlstr=` + getURLSParam() + `&regexpstr=` +	encodeURIComponent(window.document.querySelector("input#regexp").value);
+// console.log(makeGetRequestParam());
+hoge = makeGetRequestParam();
+hoge
+</script> -->
+
+</html>

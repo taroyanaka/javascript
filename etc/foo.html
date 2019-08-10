@@ -1,0 +1,774 @@
+<html>
+<head>
+<title>text IO</title>
+</head>
+<body>
+    <form>
+        <div>
+            <label for="txt">Tag:</label><br />
+            <input type="text" id="txt" name="txt" size="50" minlength="1" maxlength="100" value="Python">
+            <input type="button" id="list" name="list" value="list">
+        </div>
+    </form>
+    <div>Qiita tag count:<span id='qiitaTagCount'></span></div>
+    <div>Teratail tag count:<span id='teratailTagCount'></span></div>
+    <ul id='qiitaArticle'>
+    </ul>
+        <div id='listTable'>
+        </div>
+    <!-- <table id='qiitaArticle'>
+        <tr>
+            <td>愛美ちゃん</td>
+            <td>ピアノ</td>
+        </tr>
+        <tr>
+            <td>Tomoくん</td>
+            <td>ベース</td>
+        </tr>
+        <tr>
+            <td>さおりさん</td>
+            <td>ドラム</td>
+        </tr>
+    </table> -->
+</body>
+<script src="ramda.js" defer></script>
+<script src="qiitaTags.js" defer></script>
+<script src="teratailTags.js" defer></script>
+<script type="text/javascript">
+    const tagCount = () => {
+        document.getElementById('qiitaTagCount').textContent = R.view(R.lensProp(document.getElementById('txt').value), qiitaTags)
+        document.getElementById('teratailTagCount').textContent =　R.view(R.lensProp(document.getElementById('txt').value), teratailTags)
+    }
+    document.getElementById('txt').addEventListener('focus', tagCount, false);
+    document.getElementById('txt').addEventListener('input', tagCount, false);
+
+    const setTitleAndHref = (titleAndHref) => {
+        let a = document.createElement('a'); a.textContent = titleAndHref[0]; a.href = titleAndHref[1];
+        let li = document.createElement('li'); li.appendChild(a);
+        let ul = document.getElementById('qiitaArticle'); ul.appendChild(li);
+    }
+    const getTitleAndHref = () => {
+        fetch(`https://asia-northeast1-taro-fe94c.cloudfunctions.net/scrapingQiitaTagAndFeedJSONByJsdom?tag=${document.getElementById('txt').value}`).then(v => { return v.text() }).then(v => {
+            // R.forEach(setTitleAndHref, [['titleFoo','https://www.yahoo.co.jp/'],['titleBar','http://google.co.jp']]);
+            R.forEach(setTitleAndHref, JSON.parse(v));
+        })
+    }
+    document.getElementById('list').addEventListener('click', getTitleAndHref, false);
+</script>
+</html>
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>quiz maker</title>
+</head>
+
+<body>
+  <div>
+    <input id="btn" type="button" value="make" style="width:100px;height:50px" />
+  </div>
+  <div>
+    <textarea name="foo" id="foo" cols="20" rows="100" required="required" maxlength="100000"
+      autofocus="autofocus"></textarea>
+    <textarea name="bar" id="bar" cols="20" rows="100" required="required" maxlength="100000"></textarea>
+    <div id="description">You can use left,up,down,right key to choose the answer</div>
+  </div>
+  <script>
+    // 配列をシャッフルする関数
+    const shuffleArray = array => {
+      for (let i = array.length - 1; i > 0; i--) {
+        let r = Math.floor(Math.random() * (i + 1));
+        let tmp = array[i];
+        array[i] = array[r];
+        array[r] = tmp;
+      }
+      return array
+    }
+
+    // reference https://qiita.com/ttatsf/items/fdb9fc5dc12af7b6cb68
+    // zip関数
+    const zip = xs => ys =>
+      (xs.length < ys.length) ? xs.map((e, i) => [e, ys[i]])
+        : ys.map((e, i) => [xs[i], e]);
+
+    // document.getElementById('foo').value =
+    // "built\nbought\ncaught\ncut\nfelt\nfound";
+    // "built\nbought\ncaught\ncut\nfelt\nfound\nhad\nheard\nkept\nleft\nlent";
+    // "built\nbought\ncaught\ncut\nfelt\nfound\nhad\nheard\nkept\nleft\nlent\nlet\nlost\nmade\nmet\nput\nread\nsaid\nsold\nsent\nsat\nslept\nspent\nstood\ntaught\ntold\nthought\nunderstand";
+    // document.getElementById('bar').value =
+    // "建てた\n買った\n捕まった\nカット\nフェルト\n見つかった";
+    // "建てた\n買った\n捕まった\nカット\nフェルト\n見つかった\n持っていました\n聞いた\n守った\n左\n貸した";
+    // "建てた\n買った\n捕まった\nカット\nフェルト\n見つかった\n持っていました\n聞いた\n守った\n左\n貸した\nさせて\n迷った\n製\n会った\nプット\n読む\n前記\n売った\n送られた\n座っていた\n寝た\n費やした\n立っていた\n教えた\n言った\n思想\nわかる";
+
+    // allShutudai:全部の出題
+    let allShutudai = [];
+    const makeAllShutudai = () => new Promise((resolve, reject) => {
+      // 全問題から回答して減っていく問題の配列をコピー(参照渡しではないのでArray.from)
+      let question = document.getElementById('foo').value.split('\n');
+      let answer = document.getElementById('bar').value.split('\n');
+      // mondai:全部の問題。破壊的変更はしない
+      const mondai = zip(question)(answer);
+      // shuffuledNokoriMondai:シャッフルしたあとの残りの全ての問題
+      let shuffuledNokoriMondai = shuffleArray(Array.from(mondai))
+      // 問題数分の出題を繰り返す
+      const count = shuffuledNokoriMondai.length
+      for (let i = 0; i < count; i++) {
+        // seikai:正解の配列 1問分取り出す
+        seikai = Array.from(shuffuledNokoriMondai.splice(0, 1))
+        // shuffledMondai:全部の問題をシャッフルしたもの ランダムで正解とかぶってない配列だけを3つ取り出して不正解の配列を作る
+        shuffledMondai = Array.from(shuffleArray(mondai))
+        // fuseikai:不正解の配列
+        fuseikai = Array.from(shuffledMondai.filter(v => v !== seikai[0]))
+        // 全部の出題の配列にpushしていく
+        allShutudai.push([fuseikai.splice(0, 3), seikai[0]])
+      }
+      resolve(allShutudai);
+    })
+
+    document.getElementById('btn').addEventListener('click', function () {
+      makeAllShutudai().then(() => {
+        init();
+        keyConfig();
+      }).catch((error) => {
+        document.write(`失敗: ${error}`)
+      })
+    }, false);
+
+    const init = () => {
+      let score = document.createElement("a");
+      score.setAttribute("id", "score");
+      score.textContent = "0";
+      document.querySelector("body").appendChild(score)
+
+      let numberOfQuestions = document.createElement("a");
+      numberOfQuestions.setAttribute("id", "numberOfQuestions");
+      numberOfQuestions.textContent = `/${allShutudai.length}`;
+      document.querySelector("body").appendChild(numberOfQuestions)
+
+      for (let a of allShutudai) {
+        let block = document.createElement("div");
+        block.setAttribute("id", `mondaiBlock_${allShutudai.indexOf(a)}`);
+        document.querySelector("body").appendChild(block)
+
+        let text = document.createElement("text"); text.setAttribute("class", "question");
+        text.textContent = `${a[1][0]}`;
+        block.insertBefore(text, null)
+        oneShutudai = shuffleArray(a[0].concat([[[a[1], "seikai"]]]));
+
+        for (let i of oneShutudai) {
+          // let div = document.createElement("div"); div.setAttribute("class", "bar"); block.insertBefore(div, null)
+
+          let input = document.createElement("input");
+          input.setAttribute("class", "question");
+          input.setAttribute("type", "button");
+          input.setAttribute("style", "width:100px;height:50px");
+          if (i[0][1] === "seikai") {
+            input.setAttribute("value", i[0][0][1]);
+            input.setAttribute("name", i[0][1]);
+          } else {
+            input.setAttribute("value", i[1]);
+          }
+          block.appendChild(input);
+        }
+        let br = document.createElement("br"); block.insertBefore(br, null)
+      }
+
+      // let allButton = document.querySelectorAll('body > div > div > input');
+      let allButton = document.querySelectorAll('body > div > input');
+      allButton.forEach(button => {
+        button.addEventListener('click', function () {
+          if (button.name === "seikai") {
+            // let mondaiBlock_Num = button.parentElement.parentElement.id;
+            let mondaiBlock_Num = button.parentElement.id;
+            document.getElementById(`${mondaiBlock_Num}`).parentNode.removeChild(document.getElementById(`${mondaiBlock_Num}`))
+            score.textContent = (score.textContent - 0) + 1
+          } else {
+            console.log("fuseikai")
+          };
+        }, false);
+      })
+    }
+
+    const keyConfig = () => {
+      window.addEventListener("keydown", function (event) {
+        if (event.defaultPrevented) {
+          return; // Do nothing if the event was already processed
+        }
+
+        const choose = document.querySelector('body > div[id *= "mondaiBlock"]');
+
+        switch (event.key) {
+          case "Down": // IE/Edge specific value
+          case "ArrowDown":
+            // Do something for "down arrow" key press.
+            choose.querySelectorAll('input').item(2).click()
+            break;
+          case "Up": // IE/Edge specific value
+          case "ArrowUp":
+            // Do something for "up arrow" key press.
+            choose.querySelectorAll('input').item(1).click()
+            break;
+          case "Left": // IE/Edge specific value
+          case "ArrowLeft":
+            // Do something for "left arrow" key press.
+            choose.querySelectorAll('input').item(0).click()
+          // mondai.querySelectorAll('input').item(0).addEventListener("keydown", function (event) { console.log("hogehoge") })            break;
+          case "Right": // IE/Edge specific value
+          case "ArrowRight":
+            // Do something for "right arrow" key press.
+            choose.querySelectorAll('input').item(3).click()
+            break;
+          // case "Enter":
+          //   // Do something for "enter" or "return" key press.
+          //   break;
+          // case "Esc": // IE/Edge specific value
+          // case "Escape":
+          //   // Do something for "esc" key press.
+          //   break;
+          default:
+          // return; // Quit when this doesn't handle the key event.
+        }
+
+        // Cancel the default action to avoid it being handled twice
+        event.preventDefault();
+      }, true);
+    }
+
+  </script>
+</body>
+
+</html><!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>text splitter for tweet</title>
+</head>
+
+<body>
+  <form>
+    <div>
+      <textarea id="foo" name="foo" cols="150" rows="30" placeholder="ここに文章を入れて" required="required" maxlength="1400"
+        autofocus="autofocus" wrap="hard"></textarea>
+    </div>
+    <input id="btn" type="button" value="分割" />
+    <br />
+  </form>
+  <script>
+    let res = [];
+    let joinedRes = [];
+
+    document.getElementById('btn').addEventListener('click', function () {
+      let bar = document.getElementById('foo').value.split('');
+
+      while (bar.length !== 0) { if (bar.length === 0) { break } res.push(bar.splice(0, 110)) }
+      res.map(v => joinedRes.push(v.join('')))
+
+      for (let dataText of joinedRes) {
+        let a = document.createElement("a"); a.setAttribute("class", "twitter-share-button"); a.setAttribute("data-text", dataText);
+        let script = document.createElement("script"); script.setAttribute("src", "https://platform.twitter.com/widgets.js"); script.setAttribute("charset", "utf-8");
+        document.querySelector("body").insertBefore(a, null)
+        document.querySelector("body").insertBefore(script, null)
+      }
+    }, false);
+  </script>
+</body>
+
+</html>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>canvas painter</title>
+    <!-- Reference
+        https://q-az.net/canvas-drawing-pad/
+        https://javascript.programmer-reference.com/js-base64-canvas/
+        https://qiita.com/clockmaker/items/924b5b4228484e7a09f0
+    -->
+</head>
+
+<body>
+    <!-- <div id="msg0"></div> -->
+    <!-- <div id="msg1"></div> -->
+    <!-- <div id="msg2"></div> -->
+    <!-- <div id="msg3"></div> -->
+    <!-- <div id="msg4"></div> -->
+    <!-- <div id="msg5"></div> -->
+    <!-- <div id="msg6"></div> -->
+    <!-- <div id="msg7"></div> -->
+
+    <canvas id="myCanvas" width="700" height="400"></canvas>
+    <div>
+        <input type="button" id="rulerDraw" value="rulerDraw" style="width:200px;height:100px" onclick="rulerDraw()" />
+        <input type="button" id="undo" value="undo" style="width:200px;height:100px" onclick="undo()" />
+        <input type="button" id="redo" value="redo" style="width:200px;height:100px" onclick="redo()" />
+        <input type="color" id="color" style="width:200px;height:100px" value="#ffffff">
+        <select id="penSize" size="1" style="width:200px;height:100px">
+            <option value="2">2</option>
+            <option value="4">4</option>
+            <option value="7" selected>7</option>
+            <option value="15">15</option>
+            <option value="30">30</option>
+            <option value="50">50</option>
+            <option value="80">80</option>
+        </select>
+
+        <select id="penTransparency" size="1" style="width:200px;height:100px">
+            <option value="0.1">0.1</option>
+            <option value="0.5">0.5</option>
+            <option value="1.0" selected>1.0</option>
+        </select>
+    </div>
+    <div>
+        <input type="button" id="save" value="save" style="width:200px;height:100px" onclick="save()" />
+        <input type="button" id="removePaint" value="removePaint" style="width:200px;height:100px"
+            onclick="removePaint()" />
+
+        <input type="button" id="showSaveData" value="showSaveData" style="width:200px;height:100px"
+            onclick="showSaveData();">
+        <input type="button" id="hidePaint" value="hidePaint" style="width:200px;height:100px" onclick="hidePaint();">
+
+        <input type="button" id="removeSaveData" value="removeSaveData" style="width:100px;height:50px"
+            onclick="removeSaveData();">
+    </div>
+    <div></div>
+</body>
+<script>
+    let canvas = document.getElementById('myCanvas');
+
+    let ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.fillStyle = "#f5f5f5";
+    ctx.fillRect(0, 0, 700, 400);
+
+    canvas.addEventListener('mousemove', onMove, false);
+    canvas.addEventListener('mousedown', onClick, false);
+
+    //マウス動いていて、かつ左クリック時に発火。
+    function onMove(e) {
+        if (e.buttons === 1 || e.witch === 1) {
+            let rect = e.target.getBoundingClientRect();
+            let X = ~~(e.clientX - rect.left);
+            let Y = ~~(e.clientY - rect.top);
+            //draw 関数にマウスの位置を渡す
+            draw(X, Y);
+        };
+    };
+
+    //マウスが左クリックされると発火。
+    function onClick(e) {
+        if (e.button === 0) {
+            let rect = e.target.getBoundingClientRect();
+            let X = ~~(e.clientX - rect.left);
+            let Y = ~~(e.clientY - rect.top);
+            //draw 関数にマウスの位置を渡す
+            draw(X, Y);
+        }
+    };
+
+    let defocolor = "#555555";
+
+    function watchColorPicker(event) {
+        defocolor = event.target.value;
+    }
+    document.querySelector("#color").addEventListener("change", watchColorPicker, false);
+
+    let defosize = 7;
+
+    function penSize(event) {
+        defosize = event.target.value;
+    }
+    document.querySelector("#penSize").addEventListener("change", penSize, false);
+
+    let defoalpha = 1.0;
+
+    function penTransparency(event) {
+        defoalpha = event.target.value;
+    }
+    document.querySelector("#penTransparency").addEventListener("change", penTransparency, false);
+
+
+
+    //マウス継続値の初期値、ここがポイント
+    let mouseX = "";
+    let mouseY = "";
+
+    let ruler = false;
+
+    function rulerDraw() {
+        ruler === true ? ruler = false : ruler = true;
+    }
+
+    let undoRedo = [];
+    let redoArray = [];
+
+    function undo() {
+        //init(like a removePaint)
+        ctx.beginPath();
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = "#f5f5f5";
+        ctx.fillRect(0, 0, 700, 400);
+        defosize = 7;
+        defocolor = "#555555";
+        defoalpha = 1.0;
+
+        // undo
+        redoArray = [undoRedo.pop()];
+        undoRedo.forEach(UR => {
+            UR[0].moveTo(UR[1], UR[2]);
+            ruler === true ? UR[0].moveTo(mouseX, mouseY) : true;
+            UR[0].lineTo(UR[1], UR[2]);
+            UR[0].stroke()
+        })
+    }
+
+    function redo() {
+        //init(like a removePaint)
+        ctx.beginPath();
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = "#f5f5f5";
+        ctx.fillRect(0, 0, 700, 400);
+        defosize = 7;
+        defocolor = "#555555";
+        defoalpha = 1.0;
+
+        // redo
+        undoRedo.forEach(UR => {
+            UR[0].moveTo(UR[1], UR[2]);
+            ruler === true ? UR[0].moveTo(mouseX, mouseY) : true;
+            UR[0].lineTo(UR[1], UR[2]);
+            UR[0].stroke()
+        })
+        redoArray.forEach(UR => {
+            UR[0].moveTo(UR[1], UR[2]);
+            ruler === true ? UR[0].moveTo(mouseX, mouseY) : true;
+            UR[0].lineTo(UR[1], UR[2]);
+            UR[0].stroke()
+        })
+    }
+
+    //渡されたマウス位置を元に直線を描く関数
+    function draw(X, Y) {
+        ctx.beginPath();
+        ctx.globalAlpha = defoalpha;
+        //マウス継続値によって場合分け、直線の moveTo（スタート地点）を決定
+        if (mouseX === "") {
+            //継続値が初期値の場合は、現在のマウス位置をスタート位置とする
+            ctx.moveTo(X, Y);
+        } else {
+            //継続値が初期値ではない場合は、前回のゴール位置を次のスタート位置とする
+            ruler === true ? ctx.moveTo(mouseX, mouseY) : true;
+        }
+        //lineTo（ゴール地点）の決定、現在のマウス位置をゴール地点とする
+        ctx.lineTo(X, Y);
+        //直線の角を「丸」、サイズと色を決める
+        ctx.lineCap = "round";
+        ctx.lineWidth = defosize * 2;
+        ctx.strokeStyle = defocolor;
+        let whatDo = [];
+        whatDo.push(ctx, X, Y);
+        undoRedo.push(whatDo);
+        ctx.stroke();
+        //マウス継続値に現在のマウス位置、つまりゴール位置を代入
+        mouseX = X;
+        mouseY = Y;
+
+
+        // document.getElementById('msg0').innerHTML = 'position X:' + mouseX + ' Y' + mouseY;
+        // document.getElementById('msg1').innerHTML = 'defosize:' + defosize;
+        // document.getElementById('msg2').innerHTML = 'defocolor:' + defocolor;
+        // document.getElementById('msg3').innerHTML = 'defoalpha:' + defoalpha;
+        // document.getElementById('msg5').innerHTML = 'datas:' + datas;
+
+    };
+
+    //左クリック終了、またはマウスが領域から外れた際、継続値を初期値に戻す
+    function drawEnd() {
+        mouseX = "";
+        mouseY = "";
+    }
+
+    function removePaint() {
+        undoRedo = [];
+        redoArray = [];
+
+        ctx.beginPath();
+        ctx.globalAlpha = 1.0;
+        ctx.fillStyle = "#f5f5f5";
+        ctx.fillRect(0, 0, 700, 400);
+
+        defosize = 7;
+        defocolor = "#555555";
+        defoalpha = 1.0;
+
+        //マウス継続値の初期値、ここがポイント
+        mouseX = "";
+        mouseY = "";
+    }
+
+    let data;
+    let datas = [];
+
+
+    if (localStorage.getItem('lkey')) {
+        ldatas = localStorage.getItem('lkey');
+        lArray = JSON.parse(ldatas);
+        datas = datas.concat(lArray);
+        console.log(datas);
+    }
+
+
+    function save() {
+        data = canvas.toDataURL("image/png");
+        // document.getElementById('msg4').innerHTML = 'data:' + data;
+        datas.push(data);
+        localStorage.setItem('lkey', JSON.stringify(datas));
+    }
+
+    function showSaveData() {
+        // let sdata = sessionStorage.getItem('skey');
+        let ldatas = localStorage.getItem('lkey'); // img.src = ldata;
+        let lArray = JSON.parse(ldatas);
+
+        // document.getElementById('msg6').innerHTML = 'ldatas:' + ldatas;
+        // document.getElementById('msg7').innerHTML = 'lArray:' + lArray;
+
+        lArray.forEach(V => {
+            //画像オブジェクトを生成
+
+            let img = new Image();
+            img.src = V;
+            //画像をcanvasに設定
+            img.onload = function () {
+                //2Dコンテキストのオブジェクトを生成する
+                let cvs = document.createElement("canvas");
+                cvs.setAttribute("class", "pic");
+                cvs.setAttribute("width", "700");
+                cvs.setAttribute("height", "400");
+                document.querySelector("body").appendChild(cvs);
+                let ctx = cvs.getContext('2d');
+                ctx.drawImage(img, 0, 0, 700, 400);
+            }
+        })
+    }
+
+    function hidePaint() {
+        document.querySelectorAll(".pic").forEach(pic => {
+            pic.remove()
+        })
+    }
+
+    function removeSaveData() {
+        if (window.confirm('Do you remove saved pictures, Really??')) {
+            localStorage.removeItem('lkey')
+            datas = [];
+            hidePaint();
+        }
+    }
+</script>
+<script>
+
+</script>
+
+</html><!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>twilike</title>
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase.js"></script> -->
+
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+    <!-- <script src="firebase-app.js"></script> -->
+    <!-- <script src="firebase-firestore.js"></script> -->
+
+    <script>
+        firebase.initializeApp({
+            projectId: "twilike-a3abb"
+        });
+    </script>
+    <style>
+        div {
+            cursor: pointer;
+        }
+
+        #deleteAll,
+        #button1 {
+            WIDTH: 80px;
+            HEIGHT: 60px;
+            border: 3px solid gray;
+        }
+    </style>
+</head>
+
+<body>
+    <input id="deleteAll" value="deleteAll" type="button" onclick="deleteAllDocuments()">
+    <form name="form1">
+        <!-- <input type="text" name="text1" size="50" maxlength="50"> -->
+        <textarea type="text" name="text1" rows="10" cols="40" maxlength="140"
+            placeholder="only string/min length is 1 character/max length is 140 characters"></textarea>
+        <!-- <input type="submit" value="GO!" /> -->
+    </form>
+    <input id="button1" value="write" type="button" onclick="createText()">
+    <div id="result"></div>
+</body>
+
+<script type="text/javascript">
+    // https://qiita.com/Bosch_san/items/e3e06acdb3c7b53553f2
+
+    let test = false;
+    async function testExe() {
+        test = await true;
+        await document.querySelector("#button1").click();
+        document.form1.text1.value = await "abc";
+        await document.querySelector("#button1").click();
+        await document.querySelector("#deleteAll").click();
+    }
+
+    // store resource from "chache"
+    function cacheOn() {
+        firebase.firestore().enablePersistence({
+            synchronizeTabs: true
+        })
+        storeResource = {
+            source: "cache"
+        };
+    }
+
+    function create() {
+        firebase.firestore().collection("users").add({
+            foo: "bar",
+            foo2: "bar2"
+        }).then(docRef => {
+            if (test === false) {
+                db(); //
+            }
+            console.log("Document written with ID: ", docRef.id);
+        }).catch(error => {
+            console.error("Error adding document: ", error);
+        });
+    }
+
+    function createText() {
+        document.form1.text1.value === "" ? text = "test" : text = document.form1.text1.value;
+        firebase.firestore().collection("users").add({
+            foo: "bar",
+            // foo2: `${document.form1.text1.value}`
+            foo2: `${text}`
+        }).then(docRef => {
+            console.log("Document written with ID: ", docRef.id);
+        }).then(() => {
+            if (test === false) {
+                db(); //
+            }
+        }).catch(error => {
+            console.error("Error adding document: ", error);
+        });
+    }
+
+    // DOM append
+    function append(text, id) {
+        let div = document.createElement('div');
+        div.textContent = text;
+        div.setAttribute("id", id);
+        document.querySelector('#result').appendChild(div);
+    }
+
+    function read() {
+        firebase.firestore().collection("users").get(
+            storeResource
+        ).then(col => {
+            col.forEach(doc => {
+                console.log(`${doc.id} => ${doc.data().foo2}`);
+                append(`${doc.data().foo2}`, doc.id);
+            });
+        })
+    }
+
+    // READ collection, document, field, append Delete function to div elements
+    function readAndAppendDelete() {
+        // remove element before rendering
+        let element = document.querySelector("#result");
+        while (element.firstChild) element.removeChild(element.firstChild);
+
+        firebase.firestore().collection("users").get(
+            storeResource
+        ).then(col => {
+            col.forEach(doc => {
+                console.log(`${doc.id} => ${doc.data().foo2}`);
+                append(`${doc.data().foo2}`, doc.id);
+            });
+        }).then(() => {
+            // append Delete function to div elements
+            document.querySelectorAll("div").forEach(e => {
+                e.addEventListener("click", deleteDocument, false)
+            });
+        })
+    }
+
+    function update() {
+        firebase.firestore().collection("users").doc("DYDZjsIUFYxPvi5QTARH").update({
+            foo2: "hogehoge"
+        }).then(() => {
+            console.dir("UPDATE SUCCESS");
+        });
+    }
+
+    function deleteDocument(e) {
+        firebase.firestore().collection("users").doc(e.target.id).delete().then((result) => {
+            console.dir("SUCCESS")
+        }).then(function () {
+            if (test === false) {
+                db(); //
+            }
+        }).catch(function (error) {
+            console.error("ERROR: ", error);
+        });
+    }
+
+    function deleteField() {
+        firebase.firestore().collection("users").doc("2").update({
+            foo: firebase.firestore.FieldValue.delete()
+        });
+    }
+
+    function deleteAllDocuments() {
+        firebase.firestore().collection("users").get().then(col => {
+            col.forEach(doc => {
+                firebase.firestore().collection("users").doc(
+                    `${doc.id}`
+                ).delete().then((result) => {
+                    console.dir("SUCCESS");
+                    if (test === false) {
+                        db(); //
+                    }
+                }).catch(function (error) {
+                    console.error("ERROR: ", error);
+                });
+            });
+        });
+        // DELETE collection is no API, use DELETE each document
+    }
+
+
+    async function db() {
+        storeResource = await {
+            source: "server"
+        };
+        // await cacheOn();
+        // console.dir(firebase.firestore());
+        // await create();
+        // await update();
+        // await read();
+        await readAndAppendDelete();
+        // deleteDocument();
+        // deleteField();
+        // await deleteAllDocuments();
+    }
+    document.addEventListener('DOMContentLoaded', db, false);
+</script>
+
+</html>

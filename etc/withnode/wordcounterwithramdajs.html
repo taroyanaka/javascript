@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>word counter</title>
+
+<meta name="viewport" content="width=device-width">
+<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
+<script src="themoonandsixpence.js"></script>
+<!-- https://ramdajs.com -->
+<!-- https://www.ipentec.com/document/javascript-get-textbox-value -->
+</head>
+
+<body style="background-color: gray">
+
+<script>
+FN4 = () =>{
+	document.getElementById("output").innerText = 
+	R.pipe(
+		R.split(' '),
+		R.countBy(R.toLower),
+		R.toPairs,
+		R.sortBy(R.prop(1)),
+		R.reverse,
+		R.toString
+	)
+	(document.querySelector('#id_textBox1').value);
+}
+</script>
+<input type="button" id="wordCounter" value="wordCounter" onclick="FN4();" style="background-color: rgb(179, 175, 170)"/>
+
+
+<form name="form1" id="id_form1" action="">
+<textarea name="textBox1" id="id_textBox1" cols="150" rows="30" placeholder="any words foo bar foo" required="required" maxlength="1400"
+autofocus="autofocus" wrap="hard"></textarea>
+
+
+
+<input type="number" id="wordNumber" value="10" min="1" max="10">
+<input type="button" id="exec" value="exec" onclick="appendDOM();" style="background-color: rgb(179, 175, 170)"/>
+</form>
+
+<div id="output" style="color: white"></div>
+<script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ({
+// 	// "plugins": ["jsdom-quokka-plugin"],
+// 	"jsdom": {
+// 		"file": "./wordcounterwithramdajs.html"
+// 	}
+// })
+
+// const R = require(`ramda`);
+let text, V1, V2, V3, V4, V5, V6, V7, V8;
+async function appendDOM() {
+
+
+text = await `The Moon and Sixpence
+
+
+Chapter I
+I confess that when first I made acquaintance with Charles Strickland I never for a moment discerned that there was in him anything out of the ordinary. Yet now few will be found to deny his greatness. I do not speak of that greatness which is achieved by the fortunate politician or the successful soldier; that is a quality which belongs to the place he occupies rather than to the man; and a change of circumstances reduces it to very discreet proportions. The Prime Minister out of office is seen, too often, to have been but a pompous rhetorician, and the General without an army is but the tame hero of a market town. The greatness of Charles Strickland was authentic. It may be that you do not like his art, but at all events you can hardly refuse it the tribute of your interest. He disturbs and arrests. The time has passed when he was an object of ridicule, and it is no longer a mark of eccentricity to defend or of perversity to extol him. His faults are accepted as the necessary complement to his merits. It is still possible to discuss his place in art, and the adulation of his admirers is perhaps no less capricious than the disparagement of his detractors; but one thing can never be doubtful, and that is that he had genius. To my mind the most interesting thing in art is the personality of the artist; and if that is singular, I am willing to excuse a thousand faults. I suppose Velasquez was a better painter than El Greco, but custom stales one's admiration for him: the Cretan, sensual and tragic, proffers the mystery of his soul like a standing sacrifice. The artist, painter, poet, or musician, by his decoration, sublime or beautiful, satisfies the aesthetic sense; but that is akin to the sexual instinct, and shares its barbarity: he lays before you also the greater gift of himself. To pursue his secret has something of the fascination of a detective story. It is a riddle which shares with the universe the merit of having no answer. The most insignificant of Strickland's works suggests a personality which is strange, tormented, and complex; and it is this surely which prevents even those who do not like his pictures from being indifferent to them; it is this which has excited so curious an interest in his life and character.`;
+
+// window.document.querySelector("#id_textBox1").value = await fullText;
+// window.document.querySelector("#id_textBox1").value = await text;
+
+// V1 = await R.pipe(R.split(' '),R.countBy(R.toLower),R.toPairs,R.sortBy(R.prop(1)),R.reverse)(window.document.getElementById('id_textBox1').value);
+V1 = await R.pipe(R.split(' '),R.countBy(R.toLower),R.toPairs,R.sortBy(R.prop(1)),R.reverse)(window.document.getElementById('id_textBox1').value);
+
+
+// V2 = await R.splitEvery(Math.floor(R.length(V1) / 10), V1);
+V2 = await R.splitEvery(parseInt(document.querySelector("input#wordNumber").value, 10), V1);
+// V2 = await R.splitEvery(10, V1);
+// V2 = await R.splitEvery(parseInt(document.querySelector("input#wordNumber").value, 10), R.pipe(R.split(' '),R.countBy(R.toLower),R.toPairs,R.sortBy(R.prop(1)),R.reverse)(window.document.getElementById('id_textBox1').value) );
+// console.table(V2);
+
+// console.log(V2[0]);
+// FN1 = x => `<li>${x}</li>`;
+FN1 = x => `${x}`;
+
+// FN2 = (ARG1) => R.pipe(R.map(R.toString), R.map(FN1), R.take(3), R.join(''))(ARG1);
+FN2_1 = (ARG1) => R.pipe(R.map(R.toString), R.map(FN1), R.take(3) ,R.join(''))(ARG1);
+FN2_2 = (ARG1) => R.pipe(R.map(R.toString), R.map(FN1), R.take(3) ,R.join(''))(ARG1);
+FN2_3 = (ARG1) => R.pipe(R.map(R.toString), R.map(FN1), R.join(''))(ARG1);
+// V3 = await `<div id=result>${FN2_1(V2[0])}~${FN2_2(V2[0])}</div>`;
+// V3 = await `<div id=result style="visibility:hidden">${FN2_3(V2[0])}</div>`;
+// V3_1 = await `<div id=result onclick="FN2_4();">${FN2_3(V2[0])}</div>`;
+// V3_1 = await `<div id=result data-id="0" onclick="FN2_5(event);">-</div>`;
+// FN2_4 = (VAL,INDEX,OBJ) => `<div id=result data-id="${INDEX}" onclick="FN2_5(event);">FOO</div>`
+// let V3_2 = R.mapObjIndexed(FN2_4, V2);
+// let V3_2 = V2.map((VAL,KEY)=>{return `<div id=result data-id="${KEY}" onclick="FN2_5(event);">${R.toString(VAL)}</div>`})
+
+// let V3_2 = V2.map((VAL,KEY)=>{return `<div id=result data-id="${KEY}" onclick="FN2_5(event);">${KEY}</div>`})//.filter(VAL=>{VAL===","})
+
+// const FN2_4 = (VAL, KEY, OBJ) => `<div id="result" data-id="${KEY}" onclick="FN2_5(event);FN2_6(event);" ondblclick="FN2_7(event);" >${KEY}</div>`;
+
+// const FN2_4 = (VAL, KEY, OBJ) => `<input type="button" value="${KEY}" id="result" data-id="${KEY}" onclick="FN2_5(event);FN2_6(event);FN2_7(event);" >`;
+const FN2_4 = (VAL, KEY, OBJ) => `<div value="${KEY}" id="result" data-id="${KEY}" onclick="FN2_5(event);FN2_6(event);FN2_7(event);" >${KEY}</div>`;
+// const FN2_4 = (VAL, KEY, OBJ) => `<div id=result data-id="${KEY}" onclick="FN2_6(event);">${KEY}</div>`;
+
+let V3_2 = R.pipe(R.mapObjIndexed(FN2_4),R.toPairs,R.pluck(1),R.join(''))(V2);
+
+// FN2_5 = (event) => document.querySelector(`div#result "[data-id='${event.target.dataset.id}']"`).textContent === "-" ? document.querySelector('div#result').textContent = FN2_3(V2[event.target.dataset.id]) : document.querySelector("div#result").textContent = "-";
+// FN2_5 = (event) => event.target.textContent === event.target.dataset.id ? event.target.textContent = FN2_3(V2[event.target.dataset.id]) : event.target.textContent = event.target.dataset.id ;
+// FN2_5 = (event) => FN2_3(V2[event.target.dataset.id]);
+
+FN2_5 = (event) => {if(document.querySelector("#id_textBox2")){document.querySelector("#id_textBox2").outerHTML = ''}};
+// FN2_6 = (event) => document.querySelector("#id_textBox2") ? document.querySelector("#id_textBox2").outerHTML = '' : FN3(event.target.dataset.id);
+FN2_6 = (event) => FN3(event.target.dataset.id);
+// FN2_7 = () => setTimeout(()=>{ FN2_3(V2[event.target.dataset.id]) } ,1000)
+FN2_7 = () => { if(document.querySelectorAll("#tmp1")){ document.querySelectorAll("#tmp1").forEach(E=>{ E.parentNode.removeChild(E) }) } }
+// await document.querySelector('#id_form1').insertAdjacentHTML(`afterend`, `<div id="tmp1">${FN2_3(V2[event.target.dataset.id])}</div>` );
+
+
+// FN2_8 = () => document.querySelector('div#tmp1').textContent === "-" ? 
+	// setTimeout(()=>{  } ,1000)
+
+
+
+
+FN3 = (KEY) => document.querySelector('#id_form1').insertAdjacentHTML(`afterend`, `<textarea name="textBox1" id="id_textBox2" cols="30" rows="30">${R.pipe(R.pluck(0), R.map(R.toString), R.join('\n'), R.replace(/"/g, ''))(V2[KEY])}</textarea>`);
+
+// V4 = await `<textarea name="textBox1" id="id_textBox2" cols="30" rows="30">${FN3()}</textarea>`;
+
+
+// await document.querySelector('#id_form1').insertAdjacentHTML(`afterend`, V4);
+await document.querySelector('#id_form1').insertAdjacentHTML(`afterend`, V3_2);
+}
+
+
+// const FN5 = (ARG1) => R.pipe(R.split('\n'), R.join(','), R.toString)(ARG1);
+const FN5 = (ARG1) => R.pipe(R.split('\n'), R.join(','), R.toString, R.replace(/"/g, ''))(ARG1);
+
+
+async function test() {
+	// document.querySelector("#id_textBox1").value = await `baz foo baz bar foo baz`;
+	document.querySelector("#id_textBox1").value = await fullText;
+	document.querySelector("input#wordNumber").value = await 30;
+	await document.querySelectorAll("#exec").item(0).click();
+	await setTimeout(()=>{ document.querySelectorAll('#result').item(0).click() }, 1000);
+	// await setTimeout(()=>{ FN6() }, 5000);
+	// await console.log(V4);
+}
+test();
+
+</script>
+</body>
+</html>

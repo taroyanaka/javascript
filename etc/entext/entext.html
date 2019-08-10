@@ -319,6 +319,42 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
 
         }
         // test();
+
+
+
+        // const R = require('./etc/withnode/node_modules/ramda');
+
+            let allQuestion = []; //全部の問題(固定)
+            const allQuestionReturn = () => ["foo", "bar", "foo", "taro"]; //全部の回答
+            allQuestion = allQuestionReturn();
+
+            let allAnswer = []; //重複なしソート済みの全部の回答(固定)
+            const diff = function (a, b) { return a - b };
+            const allAnswerReturn = () => R.sort(diff, R.uniq(allQuestion));
+            allAnswer = allAnswerReturn();
+
+            let question = "foo";
+            let answer = "foo";
+            // let answer = "bar";
+            const allAnsweredReturn = (question, answer, allAnswered) => question === answer ? R.insert(-1, answer, allAnswered) : allAnswered;
+            let allAnswered = []; //全部の正解済みの回答
+            allAnswered = allAnsweredReturn(question, answer, allAnswered)
+            console.log(allAnswered);
+            question = "foo";
+            // answer = "foo";
+            answer = "bar";
+            allAnswered = allAnsweredReturn(question, answer, allAnswered)
+            console.log(allAnswered);
+
+            let remainingQuestion = []; //全部の残り問題
+            const remainingQuestionReturn = (allAnswered, remainingQuestion) => R.without(allAnswered, remainingQuestion);
+            remainingQuestion = remainingQuestionReturn(allAnswered, allQuestion);
+            console.log(remainingQuestion);
+
+
+            let allIncorrectAnswer = []; //全部の不正解の回答
+            const allIncorrectAnswerReturn = (question, answer, allIncorrectAnswer) => question !== answer ? R.insert(-1, answer, allIncorrectAnswer) : allIncorrectAnswer;
+            console.log(allIncorrectAnswer = allIncorrectAnswerReturn(question, answer, allIncorrectAnswer));
     </script>
 
 <script>
