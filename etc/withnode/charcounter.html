@@ -14,13 +14,13 @@
   </form>
   <script>
 	const addHTML = (array) =>{
-		const innerArraySet = (innerArray,KEY) => {
+		const innerArraySetForMakeHTML = (innerArray,KEY) => {
 			return `<div class="result" data-id="${KEY}">
 						<span>${innerArray[0]}</span>
 						<span>${innerArray[1]}</span>
 				</div>`;
 		}
-		document.querySelector(`form`).insertAdjacentHTML(`afterBegin`,  array.map(innerArraySet).join('') );
+		document.querySelector(`form`).insertAdjacentHTML(`afterBegin`,  array.map(innerArraySetForMakeHTML).join('') );
 	};
 
 	const count = (event) =>{
