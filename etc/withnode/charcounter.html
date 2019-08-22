@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +5,6 @@
   <title>char counter</title>
 	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
 </head>
-
 <body>
   <form>
     <div>
@@ -15,7 +13,7 @@
     </div>
   </form>
   <script>
-	const makeQAHTML = (array) =>{
+	const addHTML = (array) =>{
 		const innerArraySet = (innerArray,KEY) => {
 			return `<div class="result" data-id="${KEY}">
 						<span>${innerArray[0]}</span>
@@ -27,7 +25,7 @@
 
 	const count = (event) =>{
 		document.querySelectorAll(".result").forEach(E=>{E.parentNode.removeChild(E)});
-		const ARRAY =
+		const array =
 			R.pipe(
 			R.split(''),
 			R.countBy(R.toLower),
@@ -35,10 +33,9 @@
 			R.sortBy(R.prop(1)),
 			R.reverse,
 			)
-			(event.target.value)
-		makeQAHTML(ARRAY);
-	}
+			(event.target.value);
+		addHTML(array);
+	};
   </script>
 </body>
-
 </html>
