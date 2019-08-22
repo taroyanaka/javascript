@@ -26,3 +26,5 @@ const fourColorsStr = R.join(',', fourColors);
 fourColorsStr
 
 
+let foo = R.transpose([[1, 2, 3], [3, 4, 5]]);
+foo

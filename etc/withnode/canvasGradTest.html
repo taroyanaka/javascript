@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>canvas grad</title>
+	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="1000" height="1000"></canvas>
+
+</body>
+<script>
+    let canvas = document.getElementById('myCanvas');
+
+
+    let ctx = canvas.getContext('2d');
+
+
+ctx.beginPath();
+ctx.moveTo(480,100);
+ctx.lineTo(330,330);
+ctx.lineTo(630,330);
+ctx.closePath();
+varradialGrad=ctx.createRadialGradient(480,260,50,480,260,140);
+varradialGrad.addColorStop(0,'yellow');
+varradialGrad.addColorStop(0.25,'red');
+varradialGrad.addColorStop(0.5,'green');
+varradialGrad.addColorStop(1,'blue');
+ctx.fillStyle=varradialGrad;
+ctx.fill();
+
+
+
+
+
+</script>
+
+</html>

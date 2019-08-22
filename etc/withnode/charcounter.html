@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>char counter</title>
+	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
+</head>
+
+<body>
+  <form>
+    <div>
+      <textarea id="foo" name="foo" cols="150" rows="30" placeholder="ここに文章を入れて" required="required" maxlength="1400"
+        autofocus="autofocus" wrap="hard" oninput="count(event);"></textarea>
+    </div>
+  </form>
+  <script>
+	const makeQAHTML = (array) =>{
+		const innerArraySet = (innerArray,KEY) => {
+			return `<div class="result" data-id="${KEY}">
+						<span>${innerArray[0]}</span>
+						<span>${innerArray[1]}</span>
+				</div>`;
+		}
+		document.querySelector(`form`).insertAdjacentHTML(`afterBegin`,  array.map(innerArraySet).join(',') );
+	};
+
+	const count = (event) =>{
+		document.querySelectorAll(".result").forEach(E=>{E.parentNode.removeChild(E)});
+		const ARRAY =
+			R.pipe(
+			R.split(''),
+			R.countBy(R.toLower),
+			R.toPairs,
+			R.sortBy(R.prop(1)),
+			R.reverse,
+			)
+			(event.target.value)
+		makeQAHTML(ARRAY);
+	}
+  </script>
+</body>
+
+</html>
