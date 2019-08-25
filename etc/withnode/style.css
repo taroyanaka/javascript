@@ -25,8 +25,14 @@ body {
 		[foot] auto;
 	grid-row-gap: 10px;
 	row-gap: 10px;
+    -webkit-text-size-adjust: 100%;
 }
-
+ 
+input,
+textarea,
+select {
+    font-size: 16px;
+}
 
 /* パーツの配置*/
 body > * {
@@ -45,5 +51,5 @@ textarea {
 #bar {
 	grid-column: 2/-2;
 	grid-row: main;
-	background-color: black;
+	/* background-color: black; */
 }
