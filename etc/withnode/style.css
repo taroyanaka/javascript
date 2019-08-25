@@ -16,7 +16,7 @@ img {
 body {
 	display: grid;
 	/* grid-template-columns: 10px 1fr 10px; */
-	grid-template-columns: 50px 1fr 50px;
+	grid-template-columns: 100px 1fr 100px;
 	grid-template-rows: 
 		[head] auto
 		[title] auto
