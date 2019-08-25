@@ -11,13 +11,13 @@
 </head>
 <body>
   <div id="bar"></div>
-  <ul>
+  <!-- <ul>
 	<li>a</li>
 	<li>b</li>
 	<li>c</li>
-  </ul>
+  </ul> -->
   <form>
-      <textarea id="foo" name="foo"  placeholder="type text here" required="required" autofocus="autofocus" wrap="hard" oninput="count(event);"></textarea>
+      <textarea id="foo" name="foo"  placeholder="type text here" required="required" autofocus="autofocus" wrap="hard" oninput="count(event);" onkeyup="adjustHeight(this);"></textarea>
   </form>
   <script>
 	const addHTML = (array) =>{
@@ -43,6 +43,10 @@
 			(event.target.value);
 		addHTML(array);
 	};
+
+	function adjustHeight(el){
+	    el.style.height = (el.scrollHeight > el.clientHeight) ? (el.scrollHeight)+"px" : "60px";
+	}
   </script>
 </body>
 </html>
