@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <title>char counter</title>
 	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
+	<link rel="stylesheet" href="style.css">
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0" >
 </head>
 <body>
+	<div id="bar"></div>
   <form>
-    <div>
-      <textarea id="foo" name="foo" cols="150" rows="30" placeholder="type text here" required="required" maxlength="1400"
-        autofocus="autofocus" wrap="hard" oninput="count(event);"></textarea>
-    </div>
+      <textarea id="foo" name="foo"  placeholder="type text here" required="required" autofocus="autofocus" wrap="hard" oninput="count(event);"></textarea>
   </form>
   <script>
 	const addHTML = (array) =>{
@@ -20,7 +20,7 @@
 						<span>${innerArray[1]}</span>
 				</div>`;
 		}
-		document.querySelector(`form`).insertAdjacentHTML(`afterBegin`,  array.map(innerArraySetForMakeHTML).join('') );
+		document.querySelector(`#bar`).insertAdjacentHTML(`afterBegin`,  array.map(innerArraySetForMakeHTML).join('') );
 	};
 
 	const count = (event) =>{

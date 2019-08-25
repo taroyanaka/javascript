@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+/* 基本設定 */
+
+* {
+	margin: 0;
+}
+
+img {
+	width: 100%;
+	height: auto;
+}
+
+
+/* ページ全体の設定 */
+body {
+	display: grid;
+	/* grid-template-columns: 10px 1fr 10px; */
+	grid-template-columns: 50px 1fr 50px;
+	grid-template-rows: 
+		[head] auto
+		[title] auto
+		[main] auto
+		[form] auto
+		[foot] auto;
+	grid-row-gap: 10px;
+	row-gap: 10px;
+}
+
+
+/* パーツの配置*/
+body > * {
+	grid-column: 2 / -2;
+}
+
+form {
+	grid-column: 2/-2;
+	grid-row: form;
+}
+
+textarea {
+	width: 100%;
+}
+
+#bar {
+	grid-column: 2/-2;
+	grid-row: main;
+	background-color: black;
+}
