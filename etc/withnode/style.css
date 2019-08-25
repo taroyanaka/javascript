@@ -15,9 +15,9 @@ img {
 /* ページ全体の設定 */
 body {
 	display: grid;
-	/* grid-template-columns: 10px 1fr 10px; */
+	grid-template-columns: 10px 1fr 10px;
 	/* grid-template-columns: 100px 1fr 100px; */
-	grid-template-columns: 1fr 1fr 1fr;
+	/* grid-template-columns: 1fr 1fr 1fr; */
 	grid-template-rows: 
 		[head] auto
 		[title] auto
