@@ -52,9 +52,3 @@ form {
 	grid-row: form;
 	/* background-color: black; */
 }
-
-ul {
-	grid-column: 2/-4;
-	grid-row: form;
-	width: 100%;
-}

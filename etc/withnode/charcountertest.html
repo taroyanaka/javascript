@@ -6,8 +6,6 @@
 	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
 	<link rel="stylesheet" href="style.css">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-	 <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" > -->
-	 <!-- <meta name="viewport" content="width=initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" /> -->
 </head>
 <body>
   <div id="bar"></div>
@@ -45,7 +43,6 @@
 	};
 
 	function adjustHeight(el){
-	    // el.style.height = (el.scrollHeight > el.clientHeight) ? (el.scrollHeight)+"px" : "60px";
 	    el.style.height = (el.scrollHeight > el.clientHeight) ? (el.scrollHeight)+"px" : el.style.height;
 	}
   </script>
