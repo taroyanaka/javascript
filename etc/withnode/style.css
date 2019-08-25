@@ -51,3 +51,8 @@ form {
 	grid-row: main;
 	/* background-color: black; */
 }
+
+ul {
+	grid-column: 2/-4;
+	grid-row: form;
+}
