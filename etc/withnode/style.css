@@ -47,8 +47,8 @@ form {
 }
 
 #bar {
-	grid-column: 2/-2;
-	grid-row: main;
+	grid-column: 1/-3;
+	grid-row: form;
 	/* background-color: black; */
 }
 
