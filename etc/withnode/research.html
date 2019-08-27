@@ -4,32 +4,50 @@
   <meta charset="UTF-8" />
   <title>Video</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+  <link rel="stylesheet" href="index.css" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 </head>
 <body>
-  <video id="video" autoplay playsinline></video>
+  <canvas id="canvas"></canvas>
+  <div id="videobox">
+    <video id="video" autoplay playsinline></video>
+  </div>
+  <script src="index.js"></script>
 </body>
 <script>
 const medias = {
-  audio : false,
-//   video : true
-	//使うカメラをインカメラか背面カメラかを指定する場合には
-	video: { facingMode: "environment" }//背面カメラ
-	//video: { facingMode: "user" },//インカメラ
+  audio: false,
+  video: {
+    facingMode: {
+      exact: "environment"
+    }
+  }
 };
 const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 const promise = navigator.mediaDevices.getUserMedia(medias);
 
 promise.then(successCallback)
-    //    .then(errorCallback);
+       .catch(errorCallback);
 
 function successCallback(stream) {
   video.srcObject = stream;
-};
+  requestAnimationFrame(draw);
+}
 
-// function errorCallback(err) {
-//   alert(err);
-// };
+function errorCallback(err) {
+  console.log(err);
+  alert(err);
+}
+
+function draw() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.drawImage(video, 0, 0);
+
+  requestAnimationFrame(draw);
+}
 </script>
 <style>
 body {
@@ -37,9 +55,23 @@ body {
   background: #000;
 }
 
+#videobox {
+  position: absolute;
+  top: 10px; left: 10px;
+  transform-origin: left top;
+  transform: scale(.1);
+}
+
 #video {
   display: block;
-  width: 100%;
+  transform: rotateZ(180deg); /* なぜか天地反転するので天地反転し返す */
+}
+
+#canvas {
+  display: block;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
 }
 </style>
 </html>
