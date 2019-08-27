@@ -12,7 +12,10 @@
 <script>
 const medias = {
   audio : false,
-  video : true
+//   video : true
+	//使うカメラをインカメラか背面カメラかを指定する場合には
+	video: { facingMode: "environment" }//背面カメラ
+	//video: { facingMode: "user" },//インカメラ
 };
 const video = document.getElementById("video");
 const promise = navigator.mediaDevices.getUserMedia(medias);
