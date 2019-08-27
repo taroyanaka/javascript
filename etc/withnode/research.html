@@ -6,55 +6,8 @@
 	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
 </head>
 <body>
-  <form>
-    <div>
-      <textarea id="foo" name="foo" cols="150" rows="30" placeholder="type text here" required="required" maxlength="1400"
-        autofocus="autofocus" wrap="hard" oninput="count(event);"></textarea>
-    </div>
-  </form>
   <script>
-	//   9e0fd0d80ff1ed594e5865d293219d94811b5b94
-
-	// local : 9e0fd0d80ff1ed594e5865d293219d94811b5b94
-	
-// const URL = `https://ci.nii.ac.jp/books/opensearch/search?format=json&q=tokyo`;
-// const URL = `https://api.e-stat.go.jp/rest/3.0/app/json/getStatsList?appId=6689a9916474bce7030177f4f645ee2dff76baaf&statsDataId=0003105586&cdArea=20202&cdCat01=07301`;
-const keyword = "東京";
-var apiEndpoint = "https://commons.wikimedia.org/w/api.php";
-const title = encodeURIComponent(keyword)
-// var params = "action=query&list=allimages&ailimit=3&format=json";
-var params = `action=query&prop=revisions&rvprop=content&titles=${title}&format=json`;
-// var params = "&action=query&prop=info&titles=%E3%82%A8%E3%83%9E%E3%83%BB%E3%83%AF%E3%83%88%E3%82%BD%E3%83%B3&format=json";
-
-/**
- * Send the request to get the images
- */
-let foo;
-fetch(apiEndpoint + "?" + params + "&origin=*")
-    .then(function(response){return response.json();})
-    .then(function(response) {
-		foo = response;
-		console.log(response.query.pages);
-		// console.log(response.query.pages);
-        //   var allimages = response.query.allimages; // Process the output to get the image names
-        //   Object.keys(allimages).forEach(function(key) {
-        //     //    console.log(allimages[key].name);
-        //        console.log(allimages);
-        //   });
-     });
-
-    const exec = () => {
-        // fetch(`https://api.e-stat.go.jp/rest/3.0/app/getStatsList?appId=6689a9916474bce7030177f4f645ee2dff76baaf&statsCode=00200571`).then(v => { return v.text() }).then(v => {
-        fetch(URL, { mode: 'cors'}).then(v => { return v.text() }).then(v => {
-            // R.forEach(setTitleAndHref, JSON.parse(v));
-            console.log( JSON.parse(v) )
-			// console.log(  JSON.parse(v)['@graph'][0]['items']  );
-        })
-    }
-	// exec();
-    // document.getElementById('list').addEventListener('click', getTitleAndHref, false);
-
-
+window.navigator.vibrate([200, 100, 200]);
   </script>
 </body>
 </html>
