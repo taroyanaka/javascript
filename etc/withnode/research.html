@@ -2,27 +2,41 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>research</title>
-	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
+  <title>Video</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 </head>
 <body>
-<video id="video" width="640" height="480" autoplay></video>
-
-<script>
-//動画流す準備
-var video = document.getElementById("video");
-// getUserMedia によるカメラ映像の取得
-var media = navigator.mediaDevices.getUserMedia({
-    video: true,//ビデオを取得する
-    //使うカメラをインカメラか背面カメラかを指定する場合には
-    video: { facingMode: "environment" },//背面カメラ
-    //video: { facingMode: "user" },//インカメラ
-    audio: false,//音声が必要な場合はture
-});
-//リアルタイムに再生（ストリーミング）させるためにビデオタグに流し込む
-media.then((stream) => {
-    video.srcObject = stream;
-});
-</script>
+  <video id="video" autoplay playsinline></video>
 </body>
+<script>
+const medias = {
+  audio : false,
+  video : true
+};
+const video = document.getElementById("video");
+const promise = navigator.mediaDevices.getUserMedia(medias);
+
+promise.then(successCallback)
+       .then(errorCallback);
+
+function successCallback(stream) {
+  video.srcObject = stream;
+};
+
+function errorCallback(err) {
+  alert(err);
+};
+</script>
+<style>
+body {
+  margin: 0;
+  background: #000;
+}
+
+#video {
+  display: block;
+  width: 100%;
+}
+</style>
 </html>
