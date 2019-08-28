@@ -45,24 +45,24 @@
     <div id="controller">
         <img src="resizelogo.png" width="20" height="20" />
         <input id="resize" type="range" max="5" min="1" value="1" onchange="resize()">
-        viewSizeZoom<input id="viewSizeZoom" type="range" max="10" min="1" value="1" onchange="viewSizeZoom()">
-        <input id="previous" type="button" value="<=" onclick="previous()">
+        viewSizeZoom<input id="viewSizeZoom" type="range" max="10" min="1" value="100" onchange="viewSizeZoom()">
+        <input id="previous" type="button" value="<=(1)" onclick="previous()">
         <input id="manybackward" type="button" value="<<<" onclick="manybackward()">
         <input id="backward" type="button" value="<<" onclick="backward()">
         <input id="fewbackward" type="button" value="<|" onclick="fewbackward()">
-        <input id="minibackward" type="button" value="<||" onclick="minibackward()">
-        <input id="stop" type="button" value="=" onclick="stop()">
-        <input id="start" type="button" value=">">
-        <input id="miniforward" type="button" value="||>" onclick="miniforward()">
+        <input id="minibackward" type="button" value="<||(2)" onclick="minibackward()">
+        <input id="stop" type="button" value="=(space)" onclick="stop()">
+        <input id="start" type="button" value=">(5)">
+        <input id="miniforward" type="button" value="||>(3)" onclick="miniforward()">
         <input id="fewforward" type="button" value="|>" onclick="fewforward()">
         <input id="forward" type="button" value=">>" onclick="forward()">
         <input id="manyforward" type="button" value=">>>" onclick="manyforward()">
-        <input id="next" type="button" value="=>" onclick="next()">
+        <input id="next" type="button" value="=>(4)" onclick="next()">
         <img src="positionlogo.png" width="20" height="20" />
         <input id="position" type="range" max="100" min="0" step="1" value="0" onchange="position()">
         <img src="looplogo.png" width="20" height="20" />
         <input id="loop" type="checkbox" onchange="loop()">
-        HoverPlayOrPause<input id="hoverplayorpause" type="checkbox" onchange="hoverplayorpause()" checked>
+        HoverPlayOrPause<input id="hoverplayorpause" type="checkbox" onchange="hoverplayorpause()">
         <input id="allplayorpause" type="button" value="allplayorpause" onclick="allplayorpause()">
         volume<input id="volume" type="range" max="1" min="0" step="0.01" onchange="volume()">
         <input id="mute" type="button" value="mute" onclick="mute()">
@@ -81,11 +81,40 @@
             <source src="DockHdr.mp4"></video> -->
     </div>
 
-    <div id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+    <div id="drop_zone" ondrop="dropHandler(event);keyConfig();" ondragover="dragOverHandler(event);">
         <p>Drag one or more video files to this Drop Zone</p>
     </div>
 
     <script>
+		const keyConfig = () => {
+			window.addEventListener("keydown", function (event) {
+			if (event.defaultPrevented) {
+				return; // Do nothing if the event was already processed
+			}
+				switch (event.key) {
+				case "5":
+					document.querySelector('#start').click()
+				break;
+				case "1":
+					document.querySelector('#previous').click()
+				break;
+				case "2":
+					document.querySelector('#minibackward').click()
+				break;
+				case "3":
+					document.querySelector('#miniforward').click()
+				break;
+				case "4":
+					document.querySelector('#next').click()
+				break;
+				case "Enter":
+				default:
+				}
+			// Cancel the default action to avoid it being handled twice
+			event.preventDefault();
+			}, true);
+		};
+
         function debugMode(){
             console.log(`videoIndex:${videoIndex}`);
             console.log(`temporaryVolume:${temporaryVolume}`);
