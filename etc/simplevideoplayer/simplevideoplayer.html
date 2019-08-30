@@ -59,6 +59,7 @@
         <input id="manyforward" type="button" value=">>>" onclick="manyforward()">
         <input id="next" type="button" value="=>(4)" onclick="next()">
         <img src="positionlogo.png" width="20" height="20" />
+		<span>(h)</span>
         <input id="position" type="range" max="100" min="0" step="1" value="0" onchange="position()">
         <img src="looplogo.png" width="20" height="20" />
         <input id="loop" type="checkbox" onchange="loop()">
@@ -106,6 +107,10 @@
 				break;
 				case "4":
 					document.querySelector('#next').click()
+				break;
+				case "h":
+					document.querySelector('#position').value = 50;
+					position();
 				break;
 				case "Enter":
 				default:
@@ -297,20 +302,20 @@
             }
         }
 
-
+		let filesName = [];
         function dropHandler(ev) {
             console.log('File(s) dropped');
 
             ev.preventDefault();
 
-            let filesName = [];
+            // let filesName = [];
             if (ev.dataTransfer.items) {
                 for (var i = 0; i < ev.dataTransfer.items.length; i++) {
                     if (ev.dataTransfer.items[i].kind === 'file') {
                         var file = ev.dataTransfer.items[i].getAsFile();
                         // console.log(let hoge = window.URL.createObjectURL(file));
                         // console.log('...file[' + i + '].name = ' + file.name);
-                        // filesName.push(file.name);
+                        console.log(file.name);
                         filesName.push(window.URL.createObjectURL(file));
                     }
                 }
