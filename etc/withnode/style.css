@@ -23,7 +23,7 @@ body {
 		[title] auto
 		[main] auto
 		[form] auto
-		[foot] auto;
+		[foot] 30px;
 	grid-row-gap: 10px;
 	row-gap: 10px;
     -webkit-text-size-adjust: 100%;
@@ -33,8 +33,8 @@ input,
 textarea,
 select {
     font-size: 16px;
-	width: 100%;
-	height: 100%;
+	width: 90%;
+	height: 90%;
 }
 
 /* パーツの配置*/
@@ -51,4 +51,17 @@ form {
 	grid-column: 2/-4;
 	grid-row: form;
 	/* background-color: black; */
+}
+
+#baz {
+	grid-column: 4/-2;
+	grid-row: form;
+	/* background-color: black; */
+}
+
+button{
+		grid-column: 3/-3;
+		grid-row: foot;
+			width: 90%;
+			height: 90%;
 }

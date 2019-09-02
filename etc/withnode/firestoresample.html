@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>twilike</title>
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase.js"></script> -->
+
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+    <!-- <script src="firebase-app.js"></script> -->
+    <!-- <script src="firebase-firestore.js"></script> -->
+
+    <script>
+        firebase.initializeApp({
+            projectId: "twilike-a3abb"
+        });
+    </script>
+    <style>
+        div {
+            cursor: pointer;
+        }
+
+        #deleteAll,
+        #button1 {
+            WIDTH: 80px;
+            HEIGHT: 60px;
+            border: 3px solid gray;
+        }
+    </style>
+</head>
+
+<body>
+    <input id="deleteAll" value="deleteAll" type="button" onclick="deleteAllDocuments()">
+    <form name="form1">
+        <!-- <input type="text" name="text1" size="50" maxlength="50"> -->
+        <textarea type="text" name="text1" rows="10" cols="40" maxlength="140"
+            placeholder="only string/min length is 1 character/max length is 140 characters"></textarea>
+        <!-- <input type="submit" value="GO!" /> -->
+    </form>
+    <input id="button1" value="write" type="button" onclick="createText()">
+    <div id="result"></div>
+</body>
+
+<script type="text/javascript">
+    // https://qiita.com/Bosch_san/items/e3e06acdb3c7b53553f2
+
+    let test = false;
+    async function testExe() {
+        test = await true;
+        await document.querySelector("#button1").click();
+        document.form1.text1.value = await "abc";
+        await document.querySelector("#button1").click();
+        await document.querySelector("#deleteAll").click();
+    }
+
+    // store resource from "chache"
+    function cacheOn() {
+        firebase.firestore().enablePersistence({
+            synchronizeTabs: true
+        })
+        storeResource = {
+            source: "cache"
+        };
+    }
+
+    function create() {
+        firebase.firestore().collection("users").add({
+            foo: "bar",
+            foo2: "bar2"
+        }).then(docRef => {
+            if (test === false) {
+                db(); //
+            }
+            console.log("Document written with ID: ", docRef.id);
+        }).catch(error => {
+            console.error("Error adding document: ", error);
+        });
+    }
+
+    function createText() {
+        document.form1.text1.value === "" ? text = "test" : text = document.form1.text1.value;
+        firebase.firestore().collection("users").add({
+            foo: "bar",
+            // foo2: `${document.form1.text1.value}`
+            foo2: `${text}`
+        }).then(docRef => {
+            console.log("Document written with ID: ", docRef.id);
+        }).then(() => {
+            if (test === false) {
+                db(); //
+            }
+        }).catch(error => {
+            console.error("Error adding document: ", error);
+        });
+    }
+
+    // DOM append
+    function append(text, id) {
+        let div = document.createElement('div');
+        div.textContent = text;
+        div.setAttribute("id", id);
+        document.querySelector('#result').appendChild(div);
+    }
+
+    function read() {
+        firebase.firestore().collection("users").get(
+            storeResource
+        ).then(col => {
+            col.forEach(doc => {
+                console.log(`${doc.id} => ${doc.data().foo2}`);
+                append(`${doc.data().foo2}`, doc.id);
+            });
+        })
+    }
+
+    // READ collection, document, field, append Delete function to div elements
+    function readAndAppendDelete() {
+        // remove element before rendering
+        let element = document.querySelector("#result");
+        // while (element.firstChild) element.removeChild(element.firstChild);
+
+        firebase.firestore().collection("users").get(
+            storeResource
+        ).then(col => {
+            col.forEach(doc => {
+                console.log(`${doc.id} => ${doc.data().foo2}`);
+                append(`${doc.data().foo2}`, doc.id);
+            });
+        }).then(() => {
+            // append Delete function to div elements
+            document.querySelectorAll("div").forEach(e => {
+                e.addEventListener("click", deleteDocument, false)
+            });
+        })
+    }
+
+    function update() {
+        firebase.firestore().collection("users").doc("DYDZjsIUFYxPvi5QTARH").update({
+            foo2: "hogehoge"
+        }).then(() => {
+            console.dir("UPDATE SUCCESS");
+        });
+    }
+
+    function deleteDocument(e) {
+        firebase.firestore().collection("users").doc(e.target.id).delete().then((result) => {
+            console.dir("SUCCESS")
+        }).then(function () {
+            if (test === false) {
+                db(); //
+            }
+        }).catch(function (error) {
+            console.error("ERROR: ", error);
+        });
+    }
+
+    function deleteField() {
+        firebase.firestore().collection("users").doc("2").update({
+            foo: firebase.firestore.FieldValue.delete()
+        });
+    }
+
+    function deleteAllDocuments() {
+        firebase.firestore().collection("users").get().then(col => {
+            col.forEach(doc => {
+                firebase.firestore().collection("users").doc(
+                    `${doc.id}`
+                ).delete().then((result) => {
+                    console.dir("SUCCESS");
+                    if (test === false) {
+                        db(); //
+                    }
+                }).catch(function (error) {
+                    console.error("ERROR: ", error);
+                });
+            });
+        });
+        // DELETE collection is no API, use DELETE each document
+    }
+
+
+    async function db() {
+        storeResource = await {
+            source: "server"
+        };
+        // await cacheOn();
+        // console.dir(firebase.firestore());
+        // await create();
+        // await update();
+        // await read();
+        await readAndAppendDelete();
+        // deleteDocument();
+        // deleteField();
+        // await deleteAllDocuments();
+    }
+    document.addEventListener('DOMContentLoaded', db, false);
+</script>
+
+</html>

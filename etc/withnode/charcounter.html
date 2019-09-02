@@ -4,20 +4,144 @@
   <meta charset="UTF-8" />
   <title>char counter</title>
 	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
 	<link rel="stylesheet" href="style.css">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 </head>
 <body>
   <div id="bar"></div>
-  <!-- <ul>
-	<li>a</li>
-	<li>b</li>
-	<li>c</li>
-  </ul> -->
   <form>
       <textarea id="foo" name="foo"  placeholder="type text here" required="required" autofocus="autofocus" wrap="hard" oninput="count(event);adjustHeight(this);"></textarea>
   </form>
+  <button onclick="social()">social!!</button>
+    <div id="baz"></div>
   <script>
+        firebase.initializeApp({
+            projectId: "charcounter-cb0f7"
+        });
+
+    // function create() {
+    //     firebase.firestore().collection("users").add({
+    //         foo: "bar",
+    //         foo2: "bar2"
+    //     }).then(docRef => {
+    //         if (test === false) {
+    //             db(); //
+    //         }
+    //         console.log("Document written with ID: ", docRef.id);
+    //     }).catch(error => {
+    //         console.error("Error adding document: ", error);
+    //     });
+    // }
+
+    function createText() {
+		let text;
+        document.querySelector("#foo").value === "" ? text = "test" : text = document.querySelector("#foo").value;
+        firebase.firestore().collection("users").add({
+            foo2: `${text}`
+        }).then(docRef => {
+            console.log("Document written with ID: ", docRef.id);
+        }).then(() => {
+        }).catch(error => {
+            console.error("Error adding document: ", error);
+        });
+    }
+
+    // DOM append
+    function append(array) {
+		const setText = (doc) => {
+			return `<div class="store"><span class="data">${doc.data().foo2}</span><span id=${doc.id} onclick="deleteDocument(event)"> [x]</span><div>`;
+		}
+		document.querySelector(`#baz`).insertAdjacentHTML(`afterBegin`,  array.map(setText).join("") );
+
+    };
+
+    function read() {
+        firebase.firestore().collection("users").get(
+            // storeResource
+        ).then(col => {
+            col.forEach(doc => {
+                console.log(`${doc.id} => ${doc.data().foo2}`);
+                append(`${doc.data().foo2}`, doc.id);
+            });
+        })
+    };
+
+
+	const fetchAndSet = (event) =>{
+		document.querySelector("#foo").value = event.target.textContent;
+		count();
+	};
+    // READ collection, document, field, append Delete function to div elements
+    function readAndAppendDelete() {
+        firebase.firestore().collection("users").get(
+            // storeResource
+        ).then(col => {
+			append(col.docs);
+        }).then(() => {
+            document.querySelectorAll(".data").forEach(e => {
+                e.addEventListener("click", fetchAndSet, false)
+            });
+        })
+    };
+
+    // function update() {
+    //     firebase.firestore().collection("users").doc("DYDZjsIUFYxPvi5QTARH").update({
+    //         foo2: "hogehoge"
+    //     }).then(() => {
+    //         console.dir("UPDATE SUCCESS");
+    //     });
+    // };
+
+    function deleteDocument(event) {
+			firebase.firestore().collection("users").doc(event.target.id).delete().then((result) => {
+			console.dir("SUCCESS")
+			document.querySelectorAll(".store").forEach(E=>{E.parentNode.removeChild(E)});
+			readAndAppendDelete();
+        }).catch(function (error) {
+            console.error("ERROR: ", error);
+        });
+    };
+
+    // function deleteField() {
+    //     firebase.firestore().collection("users").doc("2").update({
+    //         foo: firebase.firestore.FieldValue.delete()
+    //     });
+    // };
+
+    // function deleteAllDocuments() {
+    //     firebase.firestore().collection("users").get().then(col => {
+    //         col.forEach(doc => {
+    //             firebase.firestore().collection("users").doc(
+    //                 `${doc.id}`
+    //             ).delete().then((result) => {
+    //                 console.dir("SUCCESS");
+    //                 if (test === false) {
+    //                     db(); //
+    //                 }
+    //             }).catch(function (error) {
+    //                 console.error("ERROR: ", error);
+    //             });
+    //         });
+    //     });
+    //     // DELETE collection is no API, use DELETE each document
+    // };
+
+    // async function db() {
+    //     storeResource = await {
+    //         source: "server"
+    //     };
+    //     // console.dir(firebase.firestore());
+    //     // await create();
+    //     // await update();
+    //     // await read();
+    //     await readAndAppendDelete();
+    //     // deleteDocument();
+    //     // deleteField();
+    //     // await deleteAllDocuments();
+    // };
+    // document.addEventListener('DOMContentLoaded', db, false);
+
 	const addHTML = (array) =>{
 		const innerArraySetForMakeHTML = (innerArray,KEY) => {
 			return `<div class="result" data-id="${KEY}">
@@ -30,7 +154,7 @@
 
 	const localStorageWrite = (stringAndArrayArray) => localStorage.stringAndArrayArray = JSON.stringify(stringAndArrayArray);
 
-	const count = (event) =>{
+	const count = () =>{
 		document.querySelectorAll(".result").forEach(E=>{E.parentNode.removeChild(E)});
 		const array =
 			R.pipe(
@@ -40,9 +164,9 @@
 			R.sortBy(R.prop(1)),
 			R.reverse,
 			)
-			(event.target.value);
+			(document.querySelector("#foo").value);
 		addHTML(array);
-		localStorageWrite( [event.target.value, array] );
+		localStorageWrite( [document.querySelector("#foo").value, array] );
 	};
 
 	const localStorageRead = () => {
@@ -50,6 +174,12 @@
 		addHTML(JSON.parse(localStorage.stringAndArrayArray)[1]);
 	};
 	localStorage.stringAndArrayArray ? localStorageRead() : null;
+
+	const social = () =>{
+		document.querySelectorAll(".store").forEach(E=>{E.parentNode.removeChild(E)});
+		createText();
+		readAndAppendDelete();
+	};
 
 	const adjustHeight = (el) => {
 	    el.style.height = (el.scrollHeight > el.clientHeight) ? (el.scrollHeight)+"px" : el.style.height;
