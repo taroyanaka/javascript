@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>lunr.js sample</title>
+<script src="lunr.js"></script> <!-- lunr.js library -->
+<script src="lunr.stemmer.support.js"></script>
+<script src="lunr.multi.js"></script>
+<script src="tinyseg.js"></script>
+<script src="lunr.ja.js"></script> <!-- or any other language you want -->
+<!-- https://github.com/olivernn/lunr.js -->
+<!-- https://github.com/MihaiValentin/lunr-languages -->
+<!-- https://github.com/MihaiValentin/lunr-languages/issues/42 -->
+<!-- https://blog.kozakana.net/2019/03/lunr-node/ -->
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+</head>
+<body>
+  <script>
+	const idx = lunr(function () {
+		this.use(lunr.ja)
+		this.field('title')
+		this.field('body')
+		this.ref('author')
+
+		this.add(
+		{
+			"title": "Twelfth-Night",
+			"body": "If music be the food of love, play on: Give me excess of it…",
+			"author": "William Shakespeare",
+			"id": "100"
+		})
+		this.add({
+			"title": "ジャパン",
+			"body": "あいう時点えloveお自転車　辞典",
+			"author": "日本　太郎",
+			"id": "101"
+		})
+	})
+
+	console.table(idx.search('自転車'))
+	console.table(idx.search('give'))
+	console.table(idx.search('love'))
+  </script>
+</body>
+</html>
