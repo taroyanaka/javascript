@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8" />
-  <title>lunr.js sample</title>
+  <title>lunr.js and tiny_segmenter.js sample</title>
 <script src="lunr.js"></script> <!-- lunr.js library -->
 <script src="lunr.stemmer.support.js"></script>
 <script src="lunr.multi.js"></script>
@@ -12,7 +12,11 @@
 <!-- https://github.com/MihaiValentin/lunr-languages -->
 <!-- https://github.com/MihaiValentin/lunr-languages/issues/42 -->
 <!-- https://blog.kozakana.net/2019/03/lunr-node/ -->
-	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+
+<script type="text/javascript" src="tiny_segmenter.js" charset="UTF-8"></script>
+<!-- http://chasen.org/~taku/software/TinySegmenter/ -->
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 </head>
 <body>
   <script>
@@ -40,6 +44,12 @@
 	console.table(idx.search('自転車'))
 	console.table(idx.search('give'))
 	console.table(idx.search('love'))
+
+
+	var segmenter = new TinySegmenter();
+	var segs = segmenter.segment("私の名前は中野です");
+	console.table(segs.join(" | "));
   </script>
+
 </body>
 </html>
