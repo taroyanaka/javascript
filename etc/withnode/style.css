@@ -24,7 +24,7 @@ body {
 		[main] auto
 		[search] auto
 		[form] auto
-		[social] 30px;
+		[social] 30px
 		[result] 30px;
 	grid-row-gap: 10px;
 	row-gap: 10px;
