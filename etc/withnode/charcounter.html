@@ -5,6 +5,7 @@
   <title>char counter</title>
 	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/6.5.0/firebase.js"></script>
+	<!-- https://freshman.tech/wikipedia-javascript/ -->
 	<link rel="stylesheet" href="style.css">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 </head>
@@ -13,9 +14,66 @@
   <form>
       <textarea id="foo" name="foo"  placeholder="type text here" required="required" autofocus="autofocus" wrap="hard" oninput="count(event);adjustHeight(this);"></textarea>
   </form>
-  <button onclick="social()">social!!</button>
-    <div id="baz"></div>
+  <button onclick="social()" id="social">social!!(altKey or optionKey)</button>
+
+    <div id="result"></div>
+
+	<div id="baz"></div>
+
+      <form id="searchForm">
+      	<input type="search" id="searchInput">
+      </form>
+
+
   <script>
+	const addWikiHTML = (array) =>{
+		const innerArraySetForMakeHTML = (innerArray,KEY) => {
+			return `<div class="searchResult" data-id="${KEY}">${innerArray.snippet}</div>`;
+		}
+		document.querySelector(`#result`).insertAdjacentHTML(`afterBegin`,  array.map(innerArraySetForMakeHTML).join('') );
+	};
+	const getWikiText = (endpoint) =>{
+		// fetch(`https://ja.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=3&srsearch=tokyo`).then(
+		fetch(endpoint).then(v=>{
+			return v.text()
+		}).then(v => { 
+			addWikiHTML(JSON.parse(v).query.search);
+		}).then(v=>{
+			document.querySelector("textarea").value = document.querySelector("#result").textContent;
+			count();
+		});
+	}
+	function handleSubmit(event) {
+		event.preventDefault();
+		const input = document.querySelector('#searchInput').value;
+		const searchQuery = input.trim();
+		fetchResults(searchQuery);
+	}
+	function fetchResults(searchQuery) {
+		const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=3&srsearch=${searchQuery}`;
+		getWikiText(endpoint);
+	}
+	const form = document.querySelector('#searchForm');
+	form.addEventListener('submit', handleSubmit);
+
+
+	const keyConfig = () => {
+		window.addEventListener("keydown", function (event) {
+		if (event.defaultPrevented) {
+			return; // Do nothing if the event was already processed
+		}
+			switch (event.key) {
+			case "Alt":
+				document.querySelector('#social').click()
+			break;
+			case "Enter":
+			default:
+			}
+		// Cancel the default action to avoid it being handled twice
+		}, true);
+	};
+	keyConfig();
+
         firebase.initializeApp({
             projectId: "charcounter-cb0f7"
         });
@@ -50,7 +108,9 @@
     // DOM append
     function append(array) {
 		const setText = (doc) => {
-			return `<div class="store"><span class="data">${doc.data().foo2}</span><span id=${doc.id} onclick="deleteDocument(event)"> [x]</span><div>`;
+			return `<div class="store"><span class="data" data-text=${ encodeURIComponent(doc.data().foo2) }>${R.take(10,
+					doc.data().foo2)}</span><span id=${doc.id} onclick="deleteDocument(event)"> [x]</span>
+				<div>`;
 		}
 		document.querySelector(`#baz`).insertAdjacentHTML(`afterBegin`,  array.map(setText).join("") );
 
@@ -69,7 +129,8 @@
 
 
 	const fetchAndSet = (event) =>{
-		document.querySelector("#foo").value = event.target.textContent;
+		// document.querySelector("#foo").value = event.target.textContent;
+		document.querySelector("#foo").value = decodeURIComponent(event.target.dataset.text);
 		count();
 	};
     // READ collection, document, field, append Delete function to div elements

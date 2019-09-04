@@ -22,8 +22,10 @@ body {
 		[head] auto
 		[title] auto
 		[main] auto
+		[search] auto
 		[form] auto
-		[foot] 30px;
+		[social] 30px;
+		[result] 30px;
 	grid-row-gap: 10px;
 	row-gap: 10px;
     -webkit-text-size-adjust: 100%;
@@ -61,7 +63,22 @@ form {
 
 button{
 		grid-column: 3/-3;
-		grid-row: foot;
+		grid-row: social;
 			width: 90%;
 			height: 90%;
+}
+
+#result {
+	grid-column: 3/-3;
+	grid-row: result;
+	width: 90%;
+	height: 90%;
+}
+
+
+#searchForm {
+		grid-column: 3/-3;
+		grid-row: search;
+		width: 90%;
+		height: 90%;
 }
