@@ -21,10 +21,10 @@ function handleOrientation(event) {
 //   alpha    = event.alpha;
 //   beta     = event.beta;
 //   gamma    = event.gamma;
-  document.querySelector("#absolute").textContent = event.absolute;
-  document.querySelector("#alpha").textContent = event.alpha;
-  document.querySelector("#beta").textContent = event.beta;
-  document.querySelector("#gamma").textContent = event.gamma;
+  document.querySelector("#absolute").textContent = event.absolute.toString();
+  document.querySelector("#alpha").textContent = event.alpha.toString();
+  document.querySelector("#beta").textContent = event.beta.toString();
+  document.querySelector("#gamma").textContent = event.gamma.toString();
 }
 
 </script>
