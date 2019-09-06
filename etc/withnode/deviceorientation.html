@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>deviceorientation.js sample</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+<!-- https://github.com/pixijs/pixi.js -->
+<!-- https://pixijs.io/examples/?v=v5.0.3#/interaction/click.js -->
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+</head>
+<body>
+<script>
+  var absolute;
+  var alpha;
+  var beta;
+  var gamma;
+window.addEventListener("deviceorientation", handleOrientation, true);
+function handleOrientation(event) {
+  absolute = event.absolute;
+  alpha    = event.alpha;
+  beta     = event.beta;
+  gamma    = event.gamma;
+
+  // 新たな方向データに基づいて処理を行う
+}
+document.write([absolute,
+  alpha,
+  beta,
+  gamma]);
+</script>
+
+</body>
+</html>
