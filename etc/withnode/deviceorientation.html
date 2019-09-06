@@ -9,6 +9,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 </head>
 <body>
+<div id="alpha"></div><div id="beta"></div><div id="gamma"></div>
 <script>
   var absolute;
   var alpha;
@@ -20,11 +21,10 @@ function handleOrientation(event) {
   alpha    = event.alpha;
   beta     = event.beta;
   gamma    = event.gamma;
-document.write([absolute,
-  alpha,
-  beta,
-  gamma]);
-  // 新たな方向データに基づいて処理を行う
+  document.querySelector("#absolute").textContent = absolute;
+  document.querySelector("#alpha").textContent = alpha;
+  document.querySelector("#beta").textContent = beta;
+  document.querySelector("#gamma").textContent = gamma;
 }
 
 </script>
