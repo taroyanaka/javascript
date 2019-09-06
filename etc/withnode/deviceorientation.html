@@ -3,41 +3,84 @@
 <head>
 <meta charset="UTF-8" />
 <title>deviceorientation.js sample</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
-<!-- https://github.com/pixijs/pixi.js -->
-<!-- https://pixijs.io/examples/?v=v5.0.3#/interaction/click.js -->
+<!-- https://www.audero.it/demo/device-orientation-api-demo.html -->
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 </head>
 <body>
-<div id="alpha"></div><div id="beta"></div><div id="gamma"></div>
+<span id=do-unsupported class="api-support hidden">deviceorientation event not supported</span> <span id=dm-unsupported class="api-support hidden">devicemotion event not supported</span> 
+<span id=cnc-unsupported class="api-support hidden">compassneedscalibration efvent not supported</span> 
+<div id=do-results>
+   <div id=cube class=cube>
+      <div class="face one">1</div>
+      <div class="face two">2</div>
+      <div class="face three">3</div>
+      <div class="face four">4</div>
+      <div class="face five">5</div>
+      <div class="face six">6</div>
+   </div>
+   <div id=do-info class=hidden>
+      <p> Coordinates: (<span id=beta class=value>null</span>, <span id=gamma class=value>null</span>, <span id=alpha class=value>null</span>) <br> Position absolute? <span id=is-absolute class=value>unavailable</span> </p>
+   </div>
+   <div id=dm-info class=hidden>
+      <p> Acceleration: (<span id=acceleration-x class=value>null</span>, <span id=acceleration-y class=value>null</span>, <span id=acceleration-z class=value>null</span>) m/s<sup>2</sup> </p>
+      <p> Acceleration including gravity: (<span id=acceleration-including-gravity-x class=value>null</span>, <span id=acceleration-including-gravity-y class=value>null</span>, <span id=acceleration-including-gravity-z class=value>null</span>) m/s<sup>2</sup> </p>
+      <p> Rotation rate: (<span id=rotation-rate-beta class=value>null</span>, <span id=rotation-rate-gamma class=value>null</span>, <span id=rotation-rate-alpha class=value>null</span>) </p>
+      <p> Interval: <span id=interval class=value>0</span> milliseconds </p>
+   </div>
+</div>
 <script>
-//   var absolute;
-//   var alpha;
-//   var beta;
-//   var gamma;
-// window.addEventListener("deviceorientation", handleOrientation, true);
-// function handleOrientation(event) {
-// //   absolute = event.absolute;
-// //   alpha    = event.alpha;
-// //   beta     = event.beta;
-// //   gamma    = event.gamma;
-//   document.querySelector("#absolute").innerHTML = Math.round(event.absolute);
-//   document.querySelector("#alpha").innerHTML = Math.round(event.alpha);
-//   document.querySelector("#beta").innerHTML = Math.round(event.beta);
-//   document.querySelector("#gamma").innerHTML = Math.round(event.gamma);
-// }
+
+if (!('ondeviceorientation' in window)) {
+            document.getElementById('do-unsupported').classList.remove('hidden');
+         } else {
+            document.getElementById('do-info').classList.remove('hidden');
+
             window.addEventListener('deviceorientation', function(event) {
-            //    document.getElementById('cube').style.webkitTransform =
-            //    document.getElementById('cube').style.transform =
-            //            'rotateX(' + event.beta + 'deg) ' +
-            //            'rotateY(' + event.gamma + 'deg) ' +
-            //            'rotateZ(' + event.alpha + 'deg)';
+               document.getElementById('cube').style.webkitTransform =
+               document.getElementById('cube').style.transform =
+                       'rotateX(' + event.beta + 'deg) ' +
+                       'rotateY(' + event.gamma + 'deg) ' +
+                       'rotateZ(' + event.alpha + 'deg)';
 
                document.getElementById('beta').innerHTML = Math.round(event.beta);
                document.getElementById('gamma').innerHTML = Math.round(event.gamma);
                document.getElementById('alpha').innerHTML = Math.round(event.alpha);
-            //    document.getElementById('is-absolute').innerHTML = event.absolute ? "true" : "false";
+               document.getElementById('is-absolute').innerHTML = event.absolute ? "true" : "false";
             });
+         }
+
+         if (!('ondevicemotion' in window)) {
+            document.getElementById('dm-unsupported').classList.remove('hidden');
+         } else {
+            document.getElementById('dm-info').classList.remove('hidden');
+
+            window.addEventListener('devicemotion', function(event) {
+               document.getElementById('acceleration-x').innerHTML = Math.round(event.acceleration.x);
+               document.getElementById('acceleration-y').innerHTML = Math.round(event.acceleration.y);
+               document.getElementById('acceleration-z').innerHTML = Math.round(event.acceleration.z);
+
+               document.getElementById('acceleration-including-gravity-x').innerHTML =
+                       Math.round(event.accelerationIncludingGravity.x);
+               document.getElementById('acceleration-including-gravity-y').innerHTML =
+                       Math.round(event.accelerationIncludingGravity.y);
+               document.getElementById('acceleration-including-gravity-z').innerHTML =
+                       Math.round(event.accelerationIncludingGravity.z);
+
+               document.getElementById('rotation-rate-beta').innerHTML = Math.round(event.rotationRate.beta);
+               document.getElementById('rotation-rate-gamma').innerHTML = Math.round(event.rotationRate.gamma);
+               document.getElementById('rotation-rate-alpha').innerHTML = Math.round(event.rotationRate.alpha);
+
+               document.getElementById('interval').innerHTML = event.interval;
+            });
+         }
+
+         if (!('oncompassneedscalibration' in window)) {
+            document.getElementById('cnc-unsupported').classList.remove('hidden');
+         } else {
+            window.addEventListener('compassneedscalibration', function(event) {
+               alert('Compass needs calibrating! Wave your device in a figure-eight motion');
+            });
+         }
 </script>
 
 </body>
