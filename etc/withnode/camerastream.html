@@ -9,10 +9,10 @@
   <!-- https://techblog.kayac.com/webcamera-preview-for-ios11 -->
 </head>
 <body>
-  <!-- <canvas id="canvas"></canvas>
+  <canvas id="canvas"></canvas>
   <div id="videobox">
     <video id="video" autoplay playsinline></video>
-  </div> -->
+  </div>
 </body>
 <script>
 const medias = {
@@ -56,6 +56,7 @@ body {
 }
 
 #videobox {
+  visibility:hidden;
   position: absolute;
   top: 10px; left: 10px;
   transform-origin: left top;
@@ -63,11 +64,13 @@ body {
 }
 
 #video {
+	visibility:hidden;
   display: block;
   /* transform: rotateZ(180deg); なぜか天地反転するので天地反転し返す */
 }
 
 #canvas {
+	visibility:hidden;
   display: block;
   position: absolute;
   top: 0; left: 0;
