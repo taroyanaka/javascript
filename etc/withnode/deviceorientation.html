@@ -17,14 +17,14 @@
   var gamma;
 window.addEventListener("deviceorientation", handleOrientation, true);
 function handleOrientation(event) {
-  absolute = event.absolute;
-  alpha    = event.alpha;
-  beta     = event.beta;
-  gamma    = event.gamma;
-  document.querySelector("#absolute").textContent = absolute;
-  document.querySelector("#alpha").textContent = alpha;
-  document.querySelector("#beta").textContent = beta;
-  document.querySelector("#gamma").textContent = gamma;
+//   absolute = event.absolute;
+//   alpha    = event.alpha;
+//   beta     = event.beta;
+//   gamma    = event.gamma;
+  document.querySelector("#absolute").textContent = event.absolute;
+  document.querySelector("#alpha").textContent = event.alpha;
+  document.querySelector("#beta").textContent = event.beta;
+  document.querySelector("#gamma").textContent = event.gamma;
 }
 
 </script>
