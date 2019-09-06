@@ -44,8 +44,8 @@ function errorCallback(err) {
 function draw() {
   canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
-//   ctx.drawImage(video, 0, 0);
-  document.write(ctx.toDataURL("image/png"));
+  ctx.drawImage(video, 0, 0);
+  document.write(canvas.toDataURL("image/png"));
 //   requestAnimationFrame(draw);
 }
 </script>
