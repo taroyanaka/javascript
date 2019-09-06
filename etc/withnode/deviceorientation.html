@@ -9,24 +9,35 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 </head>
 <body>
-<div id="alpha">alpha</div><div id="beta">beta</div><div id="gamma">gamma</div>
+<div id="alpha"></div><div id="beta"></div><div id="gamma"></div>
 <script>
-  var absolute;
-  var alpha;
-  var beta;
-  var gamma;
-window.addEventListener("deviceorientation", handleOrientation, true);
-function handleOrientation(event) {
-//   absolute = event.absolute;
-//   alpha    = event.alpha;
-//   beta     = event.beta;
-//   gamma    = event.gamma;
-  document.querySelector("#absolute").innerHTML = Math.round(event.absolute);
-  document.querySelector("#alpha").innerHTML = Math.round(event.alpha);
-  document.querySelector("#beta").innerHTML = Math.round(event.beta);
-  document.querySelector("#gamma").innerHTML = Math.round(event.gamma);
-}
+//   var absolute;
+//   var alpha;
+//   var beta;
+//   var gamma;
+// window.addEventListener("deviceorientation", handleOrientation, true);
+// function handleOrientation(event) {
+// //   absolute = event.absolute;
+// //   alpha    = event.alpha;
+// //   beta     = event.beta;
+// //   gamma    = event.gamma;
+//   document.querySelector("#absolute").innerHTML = Math.round(event.absolute);
+//   document.querySelector("#alpha").innerHTML = Math.round(event.alpha);
+//   document.querySelector("#beta").innerHTML = Math.round(event.beta);
+//   document.querySelector("#gamma").innerHTML = Math.round(event.gamma);
+// }
+            window.addEventListener('deviceorientation', function(event) {
+               document.getElementById('cube').style.webkitTransform =
+               document.getElementById('cube').style.transform =
+                       'rotateX(' + event.beta + 'deg) ' +
+                       'rotateY(' + event.gamma + 'deg) ' +
+                       'rotateZ(' + event.alpha + 'deg)';
 
+               document.getElementById('beta').innerHTML = Math.round(event.beta);
+               document.getElementById('gamma').innerHTML = Math.round(event.gamma);
+               document.getElementById('alpha').innerHTML = Math.round(event.alpha);
+               document.getElementById('is-absolute').innerHTML = event.absolute ? "true" : "false";
+            });
 </script>
 
 </body>
