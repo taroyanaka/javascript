@@ -15,8 +15,10 @@
         　　　　<button id="recorder">Record</button>
         　　　　<audio id="player" controls></audio>
         　　　　</div>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/4T0wzvu0gbQ" frameborder="0"
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/4T0wzvu0gbQ" frameborder="0"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+		//allowfullscreen
+		></iframe> -->
     <h1>Web Audio APIのサンプル</h1>
     <p>実行と同時に録音がはじまり、10秒後に音声データを生成します</p>
     <a id="dl">ダウンロード</a>
@@ -116,8 +118,8 @@
 
 
     navigator.mediaDevices.getDisplayMedia({
-        audio: false,
-        video: true
+        audio: true,
+        video: false
     }).then(stream => {
         const tracks = [...stream.getTracks()]
         const mediaStream = new MediaStream(tracks)

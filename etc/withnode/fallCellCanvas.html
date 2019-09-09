@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>canvas</title>
+</head>
+
+<body>
+  <canvas id='c1'></canvas>
+</body>
+<script>
+  y = 1;
+  (function timer() {
+    setTimeout(function () {
+      canvas = document.getElementById('c1');
+      ctx = canvas.getContext('2d');
+      ctx.beginPath();
+      ctx.clearRect(10, y, 10, 10);
+      y = y + 10;
+      ctx.fillRect(10, y, 10, 10);
+      if (y === 100) { exit; }
+      timer();
+    }, 1000);
+  })();
+  </script>
+</html>
