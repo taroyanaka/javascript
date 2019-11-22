@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+	    <title>APARDAS</title>
+	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+</head>
+<body>
+<div id="result"></div>
+  <script>
+	const localStorageWrite = (stringAndArrayArray) => localStorage.stringAndArrayArray = JSON.stringify(stringAndArrayArray);
+
+	const localStorageRead = () => {
+		document.querySelector("#foo").value = JSON.parse(localStorage.stringAndArrayArray)[0];
+		addHTML(JSON.parse(localStorage.stringAndArrayArray)[1]);
+	};
+	localStorage.stringAndArrayArray ? localStorageRead() : null;
+
+	const addWikiHTML = (array) =>{
+		const innerArraySetForMakeHTML = (innerArray,KEY) => {
+			return `<div class="searchResult" data-id="${KEY}">${innerArray}</div>`;
+		}
+		document.querySelector(`#result`).insertAdjacentHTML(`afterBegin`,  array.map(innerArraySetForMakeHTML).join('') );
+	};
+
+
+  </script>
+</body>
+</html>

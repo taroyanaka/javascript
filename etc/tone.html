@@ -117,34 +117,34 @@
     // }
 
 
-    navigator.mediaDevices.getDisplayMedia({
-        audio: true,
-        video: false
-    }).then(stream => {
-        const tracks = [...stream.getTracks()]
-        const mediaStream = new MediaStream(tracks)
-        const rec = new MediaRecorder(mediaStream, {
-            mimeType: 'video/webm; codecs=vp9'
-        })
-        const chunks = []
+    // navigator.mediaDevices.getDisplayMedia({
+    //     audio: true,
+    //     video: false
+    // }).then(stream => {
+    //     const tracks = [...stream.getTracks()]
+    //     const mediaStream = new MediaStream(tracks)
+    //     const rec = new MediaRecorder(mediaStream, {
+    //         mimeType: 'video/webm; codecs=vp9'
+    //     })
+    //     const chunks = []
 
-        rec.ondataavailable = ev => chunks.push(ev.data)
-        rec.start()
-        rec.onstop = () => {
-            const webm = new Blob(chunks, {
-                'type': 'video/webm'
-            });
-            const url = window.URL.createObjectURL(webm)
-            const a = document.createElement('a')
-            a.setAttribute('href', url)
-            a.setAttribute('download', 'rec.webm')
-            a.click()
-        }
+    //     rec.ondataavailable = ev => chunks.push(ev.data)
+    //     rec.start()
+    //     rec.onstop = () => {
+    //         const webm = new Blob(chunks, {
+    //             'type': 'video/webm'
+    //         });
+    //         const url = window.URL.createObjectURL(webm)
+    //         const a = document.createElement('a')
+    //         a.setAttribute('href', url)
+    //         a.setAttribute('download', 'rec.webm')
+    //         a.click()
+    //     }
 
-        setTimeout(() => {
-            rec.stop();
-        }, 3000);
-    })
+    //     setTimeout(() => {
+    //         rec.stop();
+    //     }, 3000);
+    // })
 
 
     // 配列シャッフル
@@ -195,8 +195,29 @@
 
 
 
-    Tone.Transport.bpm.value = 90; // BPMを90に設定
+    Tone.Transport.bpm.value = 300; // BPMを90に設定
     Tone.Transport.start(); // 1小節分の時間をおいてから発音
+    Tone.Transport.start(); // 1小節分の時間をおいてから発音
+
+
+var synth = new Tone.MetalSynth().toMaster()
+
+function triggerSynth(time){
+	synth.triggerAttackRelease('16n', time)
+}
+
+Tone.Transport.schedule(triggerSynth, 0)
+Tone.Transport.schedule(triggerSynth, 2 * Tone.Time('8t'))
+Tone.Transport.schedule(triggerSynth, 4 * Tone.Time('8t'))
+Tone.Transport.schedule(triggerSynth, 6 * Tone.Time('8t'))
+// Tone.Transport.schedule(triggerSynth, Tone.Time('4n') + Tone.Time('8t'))
+// Tone.Transport.schedule(triggerSynth, Tone.Time('4n') + 2 * Tone.Time('8t'))
+// Tone.Transport.schedule(triggerSynth, Tone.Time('0:2') + Tone.Time('8t'))
+// Tone.Transport.schedule(triggerSynth, Tone.Time('0:3') + Tone.Time('8t'))
+
+Tone.Transport.loopEnd = '1m'
+// Tone.Transport.loop = true
+Tone.Transport.start(); // 1小節分の時間をおいてから発音
 </script>
 
 
