@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.26.1/ramda.min.js"></script>
+		<script src="googleImageListTemplateGenerator.js"></script>
+		<title>google image list generator</title>
+		<script>
+
+		// wikipedia painter copy&paste bookmarklet
+		// https://closure-compiler.appspot.com/home
+		// http://var.blog.jp/archives/68915772.html
+
+		///////////// original ///////////////
+		let ar=[];
+		Array.from(document.querySelectorAll("#mw-pages > div > div > div > ul > li > a")).forEach(V=>{ar.push(V.innerText)});
+		let text = ar.join("\n");
+		// http://var.blog.jp/archives/68915772.html
+		function copyText(text){
+			var ta = document.createElement("textarea")
+			ta.value = text
+			document.body.appendChild(ta)
+			ta.select()
+			document.execCommand("copy")
+			ta.parentElement.removeChild(ta)
+		}
+		copyText(text);
+		///////////// compiled ///////////////
+		javascript:var ar=[];Array.from(document.querySelectorAll("#mw-pages > div > div > div > ul > li > a")).forEach(function(b){ar.push(b.innerText)});var text=ar.join("\n");function copyText(b){var a=document.createElement("textarea");a.value=b;document.body.appendChild(a);a.select();document.execCommand("copy");a.parentElement.removeChild(a)}copyText(text);
+
+		</script>
+	</head>
+<body>
+    <textarea name="foo" id="foo" cols="20" rows="20" required="required" maxlength="1000000"  autofocus="autofocus" oninput="getLines(event);"></textarea>
+    <textarea name="bar" id="bar" cols="20" rows="20" required="required" maxlength="1000000"  autofocus="autofocus"></textarea>
+</body>
+</html>

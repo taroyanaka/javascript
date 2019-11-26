@@ -2,17 +2,15 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.26.1/ramda.min.js"></script>
-		<title>LOMAGIL</title>
+		<title></title>
 	</head>
 <body>
 	<button onclick="openTab();">If you allow pop-ups, you can open all tabs with this button</button>
 	<script type="text/javascript">
 	function openTab(){
-let NAMES = `Nadir Afonso
-Yaacov Agam
-Larry Zox
-Jan Zrzavý`
-
+	const NAMES = `abc
+def hoge
+foo bar`
 	const HEADER = `https://www.google.com/search?q=`
 	const FOOTER = `&tbm=isch`
 	const URLS = R.pipe(R.split('\n'), R.map(R.replace(/ /g, '+')), R.map(R.replace(/^/g, HEADER)), R.map(R.replace(/$/g, FOOTER)))(NAMES);
@@ -22,11 +20,38 @@ Jan Zrzavý`
 	};
 	R.forEach(allTabOpen,  URLS );
 }
+
+function copy() {
+  var copyText = document.querySelector("#input");
+  copyText.select();
+  document.execCommand("copy");
+}
+
+// document.querySelector("#copy").addEventListener("click", copy);
+
+
+let ar=[];
+Array.from(document.querySelectorAll("#mw-pages > div > div > div > ul > li > a")).forEach(V=>{ar.push(V.innerText)});
+let text = ar.join("\n");
+// http://var.blog.jp/archives/68915772.html
+function copyText(text){
+	var ta = document.createElement("textarea")
+	ta.value = text
+	document.body.appendChild(ta)
+	ta.select()
+	document.execCommand("copy")
+	ta.parentElement.removeChild(ta)
+}
+copyText(text);
+
 </script>
-<div><a href="https://www.google.com/search?q=Nadir+Afonso&tbm=isch">Nadir Afonso</a></div>
-<div><a href="https://www.google.com/search?q=Yaacov+Agam&tbm=isch">Yaacov Agam</a></div>
-<div><a href="https://www.google.com/search?q=Larry+Zox&tbm=isch">Larry Zox</a></div>
-<div><a href="https://www.google.com/search?q=Jan+Zrzavý&tbm=isch">Jan Zrzavý</a></div>
+<div><a href="https://www.google.com/search?q=abc&tbm=isch">abc</a></div>
+<div><a href="https://www.google.com/search?q=def+hoge&tbm=isch">def hoge</a></div>
+<div><a href="https://www.google.com/search?q=foo+bar&tbm=isch">foo bar</a></div>
+
+
+
 
 </body>
 </html>
+
