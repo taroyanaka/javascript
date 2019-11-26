@@ -6,26 +6,27 @@
 		<title>google image list generator</title>
 		<script>
 
-		// wikipedia painter copy&paste bookmarklet
-		// https://closure-compiler.appspot.com/home
-		// http://var.blog.jp/archives/68915772.html
+		// // wikipedia painter copy&paste bookmarklet
+		// // in https://en.wikipedia.org/wiki/Category:20th-century_painters subcategories
+		// // https://closure-compiler.appspot.com/home
+		// // http://var.blog.jp/archives/68915772.html
 
-		///////////// original ///////////////
-		let ar=[];
-		Array.from(document.querySelectorAll("#mw-pages > div > div > div > ul > li > a")).forEach(V=>{ar.push(V.innerText)});
-		let text = ar.join("\n");
-		// http://var.blog.jp/archives/68915772.html
-		function copyText(text){
-			var ta = document.createElement("textarea")
-			ta.value = text
-			document.body.appendChild(ta)
-			ta.select()
-			document.execCommand("copy")
-			ta.parentElement.removeChild(ta)
-		}
-		copyText(text);
-		///////////// compiled ///////////////
-		javascript:var ar=[];Array.from(document.querySelectorAll("#mw-pages > div > div > div > ul > li > a")).forEach(function(b){ar.push(b.innerText)});var text=ar.join("\n");function copyText(b){var a=document.createElement("textarea");a.value=b;document.body.appendChild(a);a.select();document.execCommand("copy");a.parentElement.removeChild(a)}copyText(text);
+		// ///////////// original ///////////////
+		// let ar=[];
+		// Array.from(document.querySelectorAll("#mw-pages > div > div > div > ul > li > a")).forEach(V=>{ar.push(V.innerText)});
+		// let text = ar.join("\n");
+		// // http://var.blog.jp/archives/68915772.html
+		// function copyText(text){
+		// 	var ta = document.createElement("textarea")
+		// 	ta.value = text
+		// 	document.body.appendChild(ta)
+		// 	ta.select()
+		// 	document.execCommand("copy")
+		// 	ta.parentElement.removeChild(ta)
+		// }
+		// copyText(text);
+		// ///////////// compiled ///////////////
+		// javascript:var ar=[];Array.from(document.querySelectorAll("#mw-pages > div > div > div > ul > li > a")).forEach(function(b){ar.push(b.innerText)});var text=ar.join("\n");function copyText(b){var a=document.createElement("textarea");a.value=b;document.body.appendChild(a);a.select();document.execCommand("copy");a.parentElement.removeChild(a)}copyText(text);
 
 		</script>
 	</head>

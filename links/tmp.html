@@ -2,15 +2,25 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.26.1/ramda.min.js"></script>
-		<title></title>
+		<title>20th-century_Ecuadorian_painters</title>
 	</head>
 <body>
 	<button onclick="openTab();">If you allow pop-ups, you can open all tabs with this button</button>
 	<script type="text/javascript">
 	function openTab(){
-	const NAMES = `abc
-def hoge
-foo bar`
+	const NAMES = `Demetrio Aguilera Malta
+Gilberto Almeida
+Elysa Ayala
+Gonzalo Endara Crow
+Galo Galecio
+Enrique Gomezjurado
+Oswaldo Moncayo
+Humberto Moré
+Alfredo Palacio Moreno
+Oswaldo Moreno
+Trude Sojka
+Leonardo Tejada
+Marcelo Tejada`
 	const HEADER = `https://www.google.com/search?q=`
 	const FOOTER = `&tbm=isch`
 	const URLS = R.pipe(R.split('\n'), R.map(R.replace(/ /g, '+')), R.map(R.replace(/^/g, HEADER)), R.map(R.replace(/$/g, FOOTER)))(NAMES);
@@ -20,38 +30,20 @@ foo bar`
 	};
 	R.forEach(allTabOpen,  URLS );
 }
-
-function copy() {
-  var copyText = document.querySelector("#input");
-  copyText.select();
-  document.execCommand("copy");
-}
-
-// document.querySelector("#copy").addEventListener("click", copy);
-
-
-let ar=[];
-Array.from(document.querySelectorAll("#mw-pages > div > div > div > ul > li > a")).forEach(V=>{ar.push(V.innerText)});
-let text = ar.join("\n");
-// http://var.blog.jp/archives/68915772.html
-function copyText(text){
-	var ta = document.createElement("textarea")
-	ta.value = text
-	document.body.appendChild(ta)
-	ta.select()
-	document.execCommand("copy")
-	ta.parentElement.removeChild(ta)
-}
-copyText(text);
-
 </script>
-<div><a href="https://www.google.com/search?q=abc&tbm=isch">abc</a></div>
-<div><a href="https://www.google.com/search?q=def+hoge&tbm=isch">def hoge</a></div>
-<div><a href="https://www.google.com/search?q=foo+bar&tbm=isch">foo bar</a></div>
-
-
-
+<div><a href="https://www.google.com/search?q=Demetrio+Aguilera+Malta&tbm=isch">Demetrio Aguilera Malta</a></div>
+<div><a href="https://www.google.com/search?q=Gilberto+Almeida&tbm=isch">Gilberto Almeida</a></div>
+<div><a href="https://www.google.com/search?q=Elysa+Ayala&tbm=isch">Elysa Ayala</a></div>
+<div><a href="https://www.google.com/search?q=Gonzalo+Endara+Crow&tbm=isch">Gonzalo Endara Crow</a></div>
+<div><a href="https://www.google.com/search?q=Galo+Galecio&tbm=isch">Galo Galecio</a></div>
+<div><a href="https://www.google.com/search?q=Enrique+Gomezjurado&tbm=isch">Enrique Gomezjurado</a></div>
+<div><a href="https://www.google.com/search?q=Oswaldo+Moncayo&tbm=isch">Oswaldo Moncayo</a></div>
+<div><a href="https://www.google.com/search?q=Humberto+Moré&tbm=isch">Humberto Moré</a></div>
+<div><a href="https://www.google.com/search?q=Alfredo+Palacio+Moreno&tbm=isch">Alfredo Palacio Moreno</a></div>
+<div><a href="https://www.google.com/search?q=Oswaldo+Moreno&tbm=isch">Oswaldo Moreno</a></div>
+<div><a href="https://www.google.com/search?q=Trude+Sojka&tbm=isch">Trude Sojka</a></div>
+<div><a href="https://www.google.com/search?q=Leonardo+Tejada&tbm=isch">Leonardo Tejada</a></div>
+<div><a href="https://www.google.com/search?q=Marcelo+Tejada&tbm=isch">Marcelo Tejada</a></div>
 
 </body>
 </html>
-
