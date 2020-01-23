@@ -1,0 +1,50 @@
+body{
+	width: 960px;
+	font-size: 16px;
+	margin: 0px;
+	padding: 0px;
+	line-height: 120%;
+	background-image: url(./image/matsu_hp8.jpg);
+	text-align: left;
+}
+
+div#puyo{
+	width: 960px;
+	margin: 30px;
+	padding: 0;
+}
+
+div#puyo div#left{
+	float: left;
+	width: 480px;
+	text-align: left;
+}
+
+div#puyo div#right{
+	float: right;
+	width: 480px;
+	text-align: left;
+}
+
+dd{
+	margin-left: 1em;
+}
+
+dt{
+	border-left: 10px solid gray;
+	border-bottom: 1px solid gray;
+	padding-left: 0.5em;
+	font-weight: bold;
+}
+
+div#rireki{
+	text-align: left;
+	font-size: 12px;
+	border: 1px solid gray;
+	width: 320px; height: 115px;
+	overflow: auto;
+}
+
+br.clear{
+	clear: both;
+}
