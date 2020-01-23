@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>quiz maker</title>
+  	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
+</head>
+
+<body>
+<script>
+const testText = `I confess that when first I made acquaintance with Charles
+Strickland I never for a moment discerned that there was in
+him anything out of the ordinary. Yet now few will be found
+to deny his greatness. I do not speak of that greatness which
+is achieved by the fortunate politician or the successful
+soldier; that is a quality which belongs to the place he
+occupies rather than to the man; and a change of circumstances
+reduces it to very discreet proportions. The Prime Minister
+out of office is seen, too often, to have been but a pompous
+rhetorician, and the General without an army is but the tame
+hero of a market town. The greatness of Charles Strickland
+was authentic. It may be that you do not like his art, but at
+all events you can hardly refuse it the tribute of your
+interest. He disturbs and arrests. The time has passed when
+he was an object of ridicule, and it is no longer a mark of
+eccentricity to defend or of perversity to extol him.
+His faults are accepted as the necessary complement to his merits.
+It is still possible to discuss his place in art, and the
+adulation of his admirers is perhaps no less capricious than
+the disparagement of his detractors; but one thing can never
+be doubtful, and that is that he had genius. To my mind the
+most interesting thing in art is the personality of the
+artist; and if that is singular, I am willing to excuse a
+thousand faults. I suppose Velasquez was a better painter
+than El Greco, but custom stales one's admiration for him:
+the Cretan, sensual and tragic, proffers the mystery of his
+soul like a standing sacrifice. The artist, painter, poet, or
+musician, by his decoration, sublime or beautiful, satisfies
+the aesthetic sense; but that is akin to the sexual instinct,
+and shares its barbarity: he lays before you also the greater
+gift of himself. To pursue his secret has something of the
+fascination of a detective story. It is a riddle which shares
+with the universe the merit of having no answer. The most
+insignificant of Strickland's works suggests a personality
+which is strange, tormented, and complex; and it is this
+surely which prevents even those who do not like his pictures
+from being indifferent to them; it is this which has excited
+so curious an interest in his life and character.`;
+
+const englishText = `私
+告白する
+それ
+いつ
+最初
+私
+製
+知り合い
+と
+チャールズ
+ストリックランド
+私
+決して
+にとって
+a
+一瞬
+識別された
+それ
+そこ
+だった
+に
+彼
+何でも
+でる
+の
+その
+普通。
+まだ
+今
+少ない
+意志
+なる
+見つけた
+に
+否定する
+彼の
+偉大。
+私
+行う
+じゃない
+話す
+の
+それ
+偉大
+どれ
+は
+達成した
+によって
+その
+幸運な
+政治家
+または
+その
+成功した
+兵士;
+それ
+は
+a
+品質
+どれ
+属する
+に
+その
+場所
+彼
+占める
+むしろ
+より
+に
+その
+おとこ;
+そして
+a
+変化する
+の
+状況
+減らす
+それ
+に
+非常に
+控えめな
+プロポーション。
+の
+プライム
+大臣
+でる
+の
+事務所
+は
+見た、
+も
+しばしば、
+に
+持ってる
+されている
+しかし
+a
+華々しい
+修辞学者、
+そして
+その
+全般
+なしで
+と
+軍
+は
+しかし
+その
+飼いならす
+勇者
+の
+a
+市場
+タウン。
+の
+偉大
+の
+チャールズ
+ストリックランド
+だった
+本物。
+それ
+5月
+なる
+それ
+君は
+行う
+じゃない
+のような
+彼の
+アート、
+しかし
+で
+すべて
+イベント
+君は
+できる
+ほとんどない
+ごみ
+それ
+その
+賛辞
+の
+きみの
+興味。
+彼
+邪魔する
+そして
+逮捕。
+の
+時間
+持っている
+合格した
+いつ
+彼
+だった
+と
+対象
+の
+笑
+そして
+それ
+は
+いや
+より長いです
+a
+マーク
+の
+偏心
+に
+守る
+または
+の
+倒錯
+に
+める
+彼。
+彼の
+欠点
+は
+受け入れた
+として
+その
+必要
+補体
+に
+彼の
+メリット。
+それ
+は
+まだ
+可能
+に
+話し合います
+彼の
+場所
+に
+アート、
+そして
+その
+称賛
+の
+彼の
+崇拝者
+は
+たぶん
+いや
+もっと少なく
+気まぐれな
+より
+その
+軽par
+の
+彼の
+批判者;
+しかし
+1
+事
+できる
+決して
+なる
+疑わしい、
+そして
+それ
+は
+それ
+彼
+持っていました
+天才。
+に
+俺の
+マインド
+その
+最も
+面白い
+事
+に
+アート
+は
+その
+人
+の
+その
+アーティスト;
+そして
+もし
+それ
+は
+特異な、
+私
+午前
+喜んで
+に
+言い訳
+a
+千
+障害。
+私
+仮定する
+ベラスケス
+だった
+a
+より良い
+画家
+より
+エル
+グレコ、
+しかし
+カスタム
+失速
+自分の
+感嘆
+にとって
+彼：
+その
+クレタン、
+官能的な
+そして
+悲劇的な
+プロファー
+その
+神秘
+の
+彼の
+魂
+のような
+a
+立っている
+犠牲。
+の
+アーティスト、
+画家、
+詩人、
+または
+ミュージシャン、
+によって
+彼の
+装飾、
+崇高な
+または
+綺麗な、
+満足する
+その
+美的
+センス;
+しかし
+それ
+は
+同族の
+に
+その
+性的
+本能、
+そして
+シェア
+その
+野barさ：
+彼
+産む
+前
+君は
+また
+その
+大きい
+贈り物
+の
+彼自身。
+に
+追う
+彼の
+秘密の
+持っている
+何か
+の
+その
+魅力
+の
+a
+探偵
+ストーリー。
+それ
+は
+a
+謎
+どれ
+シェア
+と
+その
+宇宙
+その
+値する
+の
+持っている
+いや
+回答。
+の
+最も
+取るに足らない
+の
+ストリックランドの
+働く
+提案する
+a
+人
+どれ
+は
+奇妙な、
+苦しみ、
+そして
+複雑な;
+そして
+それ
+は
+この
+きっと
+どれ
+防ぐ
+でも
+それら
+誰
+行う
+じゃない
+のような
+彼の
+ピクチャー
+から
+であること
+無関心
+に
+それら;
+それ
+は
+この
+どれ
+持っている
+興奮した
+そう
+好奇心が強い
+と
+興味
+に
+彼の
+生活
+そして
+キャラクター。`;</script>
+
+  <div>
+    <input id="btn" type="button" value="make" style="width:100px;height:50px" />
+  </div>
+  <div>
+    <textarea name="foo" id="foo" cols="20" rows="100" required="required" maxlength="100000"
+      autofocus="autofocus"></textarea>
+    <textarea name="bar" id="bar" cols="20" rows="100" required="required" maxlength="100000"></textarea>
+    <div id="description">If you use PC, You can use 1,2,3,4 key to choose the answer</div>
+  </div>
+
+  <div id="QASet">
+  </div>
+
+
+  <script>
+
+
+    // 配列をシャッフルする関数
+    const shuffleArray = array => {
+      for (let i = array.length - 1; i > 0; i--) {
+        let r = Math.floor(Math.random() * (i + 1));
+        let tmp = array[i];
+        array[i] = array[r];
+        array[r] = tmp;
+      }
+      return array
+    }
+
+// const insertTestData = () =>{
+// 	document.querySelector(`#foo`).value = R.flatten(testText.split("\n").map(V=>{return V.split(" ")})).join("\n");
+// 	document.querySelector(`#bar`).value = englishText;
+// };
+
+// let QApair;
+// const makeQApair = () => {
+// 	let foo = document.querySelector(`#foo`).value.split(`\n`);
+// 	let bar = document.querySelector(`#bar`).value.split(`\n`);
+// 	QApair = R.transpose([foo,bar])
+// }
+
+// let QAAAAarray;
+// const getQAAAAarray = () => {
+// 	const makeQAAAAarray = x => R.insertAll(-1,R.take(3,shuffleArray(R.without(x[1],R.pluck(1, QApair)))),x);
+// 	QAAAAarray = R.map(makeQAAAAarray, QApair);
+// 	const makeNoDoubleFourLengthArray = (array) => R.uniq(array).length === 4;
+// 	QAAAAarray = R.reject( makeNoDoubleFourLengthArray ,  QAAAAarray  );
+// }
+
+// let wrongQApair = [];
+// const makeQAHTML = () =>{
+// 	const checkQA = (event) =>{ if(event.target.value === event.target.dataset.answer){
+// 								document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
+// 								}else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) } };
+// 	const makeQASet = (QAAAA,KEY) => {
+// 		const shuffledAAAA = shuffleArray(R.without([QAAAA[0]],QAAAA));
+// 		return `<div class="QA" data-id="${KEY}">
+// 		<span>${QAAAA[0]}</span>
+// 		<input type="button" value="${shuffledAAAA[0]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+// 		<input type="button" value="${shuffledAAAA[1]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+// 		<input type="button" value="${shuffledAAAA[2]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+// 		<input type="button" value="${shuffledAAAA[3]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+// 		</div>`;
+// 	}
+// 	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet)  );
+// }
+// insertTestData();
+// makeQApair();
+// getQAAAAarray();
+// makeQAHTML();
+
+
+
+const keyConfig = () => {
+	window.addEventListener("keydown", function (event) {
+	if (event.defaultPrevented) {
+		return; // Do nothing if the event was already processed
+	}
+		switch (event.key) {
+		case "1":
+			document.querySelectorAll('div.QA > input').item(0).click()
+		break;
+		case "2":
+			document.querySelectorAll('div.QA > input').item(1).click()
+		break;
+		case "3":
+			document.querySelectorAll('div.QA > input').item(2).click()
+		break;
+		case "4":
+			document.querySelectorAll('div.QA > input').item(3).click()
+		break;
+		case "Enter":
+		default:
+		}
+	// Cancel the default action to avoid it being handled twice
+	event.preventDefault();
+	}, true);
+}
+
+const insertTestData = () =>{
+	// document.querySelector(`#foo`).value = R.flatten(testText.split("\n").map(V=>{return V.split(" ")})).join("\n");
+	document.querySelector(`#foo`).value = R.pipe( R.replace(/\n/g, ' '), R.split(" "), R.join("\n") )(testText);
+
+	document.querySelector(`#bar`).value = englishText;
+};
+
+const makeQApair = () => R.transpose([ document.querySelector(`#foo`).value.split(`\n`) , document.querySelector(`#bar`).value.split(`\n`) ]) ;
+
+const getQAAAAarray = (QApair) => {
+	const makeQAAAAarray = (x) => R.insertAll(-1,R.take(3,shuffleArray(R.without(x[1],R.pluck(1, QApair)))),x);
+	const fourLengthArrayCheck = (array) => R.uniq(array).length === 4;
+	return R.reject( fourLengthArrayCheck ,  R.map(makeQAAAAarray, QApair)  );
+};
+
+const makeQAHTML = (QAAAAarray) =>{
+	const makeQASet = (QAAAA,KEY) => {
+		const shuffledAAAA = shuffleArray(R.without([QAAAA[0]],QAAAA));
+		return `<div class="QA" data-id="${KEY}">
+					<span>${QAAAA[0]}</span>
+					<input type="button" value="${shuffledAAAA[0]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+					<input type="button" value="${shuffledAAAA[1]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+					<input type="button" value="${shuffledAAAA[2]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+					<input type="button" value="${shuffledAAAA[3]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+			   </div>`;
+	}
+	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet)  );
+};
+let wrongQApair = [];
+const checkQA = (event) =>{ if(event.target.value === event.target.dataset.answer){
+							document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
+							}else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) } };
+
+insertTestData();
+makeQAHTML(getQAAAAarray(makeQApair()));
+keyConfig();
+
+
+  </script>
+</body>
+
+</html>
