@@ -844,3 +844,8 @@ console.log(
 // const double = x => x * 2;
 // R.map(double, [1, 2, 3]); //=> [2, 4, 6]
 // R.map(double, {x: 1, y: 2, z: 3}); //=> {x: 2, y: 4, z: 6}
+
+// const objects = [{}, {}, {}];
+// const objectsClone = R.clone(objects);
+// objects === objectsClone; //=> false
+// objects[0] === objectsClone[0]; //=> false
