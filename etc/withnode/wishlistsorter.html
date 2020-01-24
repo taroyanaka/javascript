@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>wishlist sorter</title>
+
+<meta name="viewport" content="width=device-width">
+<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
+<!-- https://ramdajs.com -->
+</head>
+<body style="background-color: gray">
+
+<script>
+	insertSourceHTML = () =>{
+		document.querySelector(`body`).insertAdjacentHTML(`beforeend`,  document.querySelector('#id_textBox1').value);
+	}
+
+	// window.onload = () =>{
+	// 	document.querySelector('#id_textBox1').innerText =
+	// `<!DOCTYPE html><title>a</title></html>`
+	// 	insertSourceHTML();
+	// }
+	let data;
+	
+	makeList = () =>{
+		const desc = [];Array.from(document.querySelectorAll("div.a-row.a-spacing-small.a-size-small")).forEach(V=>{ desc.push(V.innerText) })
+		const title = [];Array.from(document.querySelectorAll("h3")).forEach(V=>{ title.push(V.innerText) })
+		const descTitle = R.transpose([desc, title])
+		const isNouchiOnFirstElementString = E => R.contains('のうち', E[0]);
+		const onlyThereIsNumberOfStars　= R.filter(isNouchiOnFirstElementString, descTitle)
+		const withStarAndReviewNumber = x => {
+			return [Number(R.match(/[0-5]\.[0-9]/g, x[0])[0]), Number(R.match(/^ ([0-9]+)$/gm, x[0])[0]), x[1]]
+		};
+		const starAndReviewNumberAndTitle = R.map(withStarAndReviewNumber, onlyThereIsNumberOfStars);
+		data = R.clone(starAndReviewNumberAndTitle);
+		const sortByFirstItem = R.sortBy(R.prop(0));
+		const sortBySecondItem = R.sortBy(R.prop(1));
+		const sortByFirstItemStarAndReviewNumberAndTitle = sortByFirstItem(starAndReviewNumberAndTitle)
+		const innerArraySetForMakeHTML = (innerArray,KEY) => {
+			return `<div class="searchResult" data-id="${KEY}">${innerArray[0]} ${innerArray[1]} ${innerArray[2]}</div>`;
+		}
+		document.querySelector(`body`).insertAdjacentHTML(`afterbegin`,  sortByFirstItemStarAndReviewNumberAndTitle.map(innerArraySetForMakeHTML).join('') );
+	}
+</script>
+<input type="button" id="make list" value="make list" onclick="makeList();" style="background-color: rgb(179, 175, 170)"/>
+
+
+<form name="form1" id="id_form1" action="">
+<textarea name="textBox1" id="id_textBox1" cols="150" rows="30" placeholder="copy paste from amazon wishlist page source HTML and please wait few time and push make list button" required="required" maxlength="1000000"
+autofocus="autofocus" wrap="hard" onchange="insertSourceHTML();"></textarea>
+
+</body>
+</html>
