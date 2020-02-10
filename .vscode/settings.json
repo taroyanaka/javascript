@@ -2,5 +2,6 @@
     "files.autoSave": "onFocusChange",
     "editor.formatOnPaste": true,
     "editor.formatOnType": true,
-    "editor.autoIndent": false
+	"editor.autoIndent": false,
+	"liveServer.settings.port": 5501
 }
