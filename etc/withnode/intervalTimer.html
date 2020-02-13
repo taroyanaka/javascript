@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>interval timer</title>
+
+<meta name="viewport" content="width=device-width">
+<!-- <script src="https://cdn.jsdelivr.net/npm/easytimer@1.1.1/src/easytimer.min.js"></script> -->
+<script src="./easytimer.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/easytimer/src/easytimer.min.js"></script> -->
+<!-- https://ramdajs.com -->
+<!-- http://albert-gonzalez.github.io/easytimer.js/ -->
+<!-- https://iwb.jp/input-type-time-seconds-javascript/ -->
+</head>
+<body style="background-color: gray">
+
+
+<div class="text-center card-body" id="chronoExample">
+	<div class="values">0</div>
+	<div>
+		<button class="startButton btn btn-success btn-lg mb-1" onclick="useTimer();">Start</button>
+		<button class="pauseButton btn btn-primary btn-lg mb-1">Pause</button>
+		<button class="stopButton btn btn-danger btn-lg mb-1">Stop</button>
+	</div>
+</div>
+<input id="t" type="time" value="00:00:00" step="1">
+<p id="r"></p>
+<!-- <input type="button" id="make list" value="make list" onclick="makeList();" style="background-color: rgb(179, 175, 170)"/>
+
+
+<form name="form1" id="id_form1" action="">
+<textarea name="textBox1" id="id_textBox1" cols="150" rows="30"
+	placeholder="copy(document.querySelector('html').innerHTML)   on google Chrome console and paste here OR copy paste from amazon wishlist page source HTML and please wait few time and push make list button"
+	required="required" maxlength="1000000"
+autofocus="autofocus" wrap="hard" onchange="insertSourceHTML();"></textarea> -->
+<script>
+	// insertSourceHTML = () =>{
+	// 	document.querySelector(`body`).insertAdjacentHTML(`beforeend`,  document.querySelector('#id_textBox1').value);
+	// }
+	// // window.onload = () =>{
+	// // 	document.querySelector('#id_textBox1').innerText =
+	// // `<!DOCTYPE html><title>a</title></html>`
+	// // 	insertSourceHTML();
+	// // }
+	// let data;
+	// makeList = () =>{
+	// 	const desc = [];Array.from(document.querySelectorAll("div.a-row.a-spacing-small.a-size-small")).forEach(V=>{ desc.push(V.innerText) })
+	// 	const title = [];Array.from(document.querySelectorAll("h3")).forEach(V=>{ title.push(V.innerText) })
+	// 	const descTitle = R.transpose([desc, title])
+	// 	const isNouchiOnFirstElementString = E => R.contains('のうち', E[0]);
+	// 	const onlyThereIsNumberOfStars　= R.filter(isNouchiOnFirstElementString, descTitle)
+	// 	const withStarAndReviewNumber = x => {
+	// 		return [Number(R.match(/[0-5]\.[0-9]/g, x[0])[0]), Number(R.match(/^ ([0-9]+)$/gm, x[0])[0]), x[1]]
+	// 	};
+	// 	const starAndReviewNumberAndTitle = R.map(withStarAndReviewNumber, onlyThereIsNumberOfStars);
+	// 	data = R.clone(starAndReviewNumberAndTitle);
+	// 	const sortByFirstItem = R.sortBy(R.prop(0));
+	// 	const sortBySecondItem = R.sortBy(R.prop(1));
+	// 	const sortByFirstItemStarAndReviewNumberAndTitle = sortByFirstItem(starAndReviewNumberAndTitle)
+	// 	const innerArraySetForMakeHTML = (innerArray,KEY) => {
+	// 		return `<div class="searchResult" data-id="${KEY}">${innerArray[0]} ${innerArray[1]} ${innerArray[2]}</div>`;
+	// 	}
+	// 	document.querySelector(`body`).insertAdjacentHTML(`afterbegin`,  sortByFirstItemStarAndReviewNumberAndTitle.map(innerArraySetForMakeHTML).join('') );
+	// }
+
+
+	// var timer = new Timer();
+	// document.querySelector('#chronoExample .startButton').addEventListener('click', function (e) {
+	// 	timer.start();
+	// });
+	// document.querySelector('#chronoExample .pauseButton').addEventListener('click', function (e) {
+	// 	timer.pause();
+	// });
+	// document.querySelector('#chronoExample .stopButton').addEventListener('click', function (e) {
+	// 	timer.stop();
+	// });
+
+	// timer.addEventListener('secondsUpdated', function (e) {
+	// 	document.querySelector('#chronoExample .values').innerText = timer.getTimeValues().toString();
+	// });
+	// timer.addEventListener('started', function (e) {
+	// 	document.querySelector('#chronoExample .values').innerText = timer.getTimeValues().toString();
+	// });
+
+const t = document.getElementById('t')
+const r = document.getElementById('r')
+let [h, m, s] = ["","",""];
+t.addEventListener('input', () => {
+  [h, m, s] = (t.value).split(':')
+  if (s === undefined) s = '00'
+  r.textContent = `${h}時${m}分${s}秒`
+})
+
+// var timer = new Timer();
+var timer = new easytimer.Timer();
+useTimer = () =>{
+	// timer.start({ countdown: true, startValues: {seconds: 30}, target: { seconds: Number(s) } });
+	timer.start({ countdown: true, startValues: {seconds: Number(s)}, target: { seconds: 0 } });
+	document.querySelector('#chronoExample .values').innerText = timer.getTimeValues().toString();
+
+	timer.addEventListener('secondsUpdated', function (e) {
+		document.querySelector('#chronoExample .values').innerText = timer.getTimeValues().toString();
+	});
+	timer.addEventListener('targetAchieved', function (e) {
+		document.querySelector('#chronoExample .values').innerText = "fooooooo";
+		if(loop){useTimer()};
+	});
+}
+let loop = null;
+loopOn = () =>{
+	useTimer()
+	loop = "on";
+}
+
+	// var timer = new Timer();
+	document.querySelector('#chronoExample .startButton').addEventListener('click', function (e) {
+		timer.start();
+	});
+	document.querySelector('#chronoExample .pauseButton').addEventListener('click', function (e) {
+		timer.pause();
+	});
+	document.querySelector('#chronoExample .stopButton').addEventListener('click', function (e) {
+		timer.stop();
+	});
+
+
+</script>
+</body>
+</html>
