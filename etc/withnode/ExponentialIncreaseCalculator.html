@@ -15,6 +15,8 @@
 </head>
 <body style="background-color: gray">
 
+<canvas id="myChart" width="400" height="400"></canvas>
+
 <div class="text-center card-body" id="chronoExample">
 Initial: <input type="number" name="number1" id="number1" value="1" min="0" max="1000" onChange="calc()">
 Rate: <input type="number" name="number2" id="number2" value="1.2" min="0" max="1000" onChange="calc()">
@@ -26,7 +28,6 @@ Times: <input type="number" name="number3" id="number3" value="10" min="0" max="
 Or less: <input type="number" name="number6" id="number6" min="0" max="1000" onChange="orLessTaking='1';calc();">
 Result: <div id="result"></div>
 </div>
-<canvas id="myChart" width="400" height="400"></canvas>
 <script>
 
 	const addHTML = (array) =>{
@@ -71,13 +72,14 @@ Result: <div id="result"></div>
 
 	const randomRgba = () =>{
 		const o = Math.round, r = Math.random, s = 255;
-		return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+		// return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+		return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + 1 + ')';
 	}
 
-
+	let colors=[];
 	const makeChart = () =>{
 		const ctx = document.getElementById('myChart').getContext('2d');
-		const colors = R.repeat(null, timesArrayAndCICResultArray.length).map(V=>{return randomRgba()});
+		colors = R.repeat(null, timesArrayAndCICResultArray.length).map(V=>{return randomRgba()});
 		const myChart = new Chart(ctx, {
 			type: 'bar',
 			data: {
