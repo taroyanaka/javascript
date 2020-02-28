@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Compound Interest Calculator</title>
+
+<meta name="viewport" content="width=device-width">
+<!-- https://stackoverflow.com/questions/23095637/how-do-you-get-random-rgb-in-javascript -->
+
+<!-- https://ramdajs.com -->
+<!-- <script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script> -->
+<script src="ramda.min.js "></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.30.1/date_fns.min.js"></script> -->
+</head>
+<body style="background-color: gray">
+
+<div class="text-center card-body" id="chronoExample">
+Initial: <input type="number" name="number1" id="number1" value="1" min="0" max="1000" onChange="calc()">
+Rate: <input type="number" name="number2" id="number2" value="1.2" min="0" max="1000" onChange="calc()">
+Times: <input type="number" name="number3" id="number3" value="10" min="0" max="1000" onChange="calc()">
+<!-- <input type="button" name="number4" id="number4" value="reverse" onclick="if(reverse){reverse=0}else{reverse=1};calc();" style="width: 100px;height: 100px;"> -->
+<a name="number4"  id="number4" value="reverse" onclick="if(reverse){reverse=0}else{reverse=1};calc();" style="padding: 5px 10px;background: #5876a3;">Reverse</a>
+<a name="number5"  id="number5" value="decimalPointTruncation" onclick="if(decimalPointTruncation){decimalPointTruncation=0}else{decimalPointTruncation=1};calc();" style="padding: 5px 10px;background: #5876a3;"> Decimal point truncation</a>
+<!-- Or less: <input type="number" name="number6" id="number6" value="0" min="0" max="1000" onChange="orLessTaking='1';calc();"> -->
+Or less: <input type="number" name="number6" id="number6" min="0" max="1000" onChange="orLessTaking='1';calc();">
+Result: <div id="result"></div>
+</div>
+<canvas id="myChart" width="400" height="400"></canvas>
+<script>
+
+	const addHTML = (array) =>{
+		const innerArraySetForMakeHTML = (innerArray,KEY) => {
+			return `<div class="result"	data-id="${KEY}">
+				<span>${innerArray[0]}</span>
+				<span>${innerArray[1]}</span>
+			</div>`;
+		}
+		document.querySelector(`#result`).insertAdjacentHTML(`afterBegin`, array.map(innerArraySetForMakeHTML).join(''));
+	};
+
+	const deleteHTML = () =>{
+		document.querySelectorAll(".result").forEach(E=>{E.parentNode.removeChild(E)});
+	}
+
+	// CIC stands for Compound Interest Calculator
+	const CIC = (initial,rate,times) =>{
+		let resultArray = [];
+		let result = initial;
+		R.forEach(V=>{
+				resultArray.push(result*=rate);
+		},R.times(R.identity, times));
+		return resultArray
+	}
+	// CIC(1,1.2,3);// =>[1.2, 1.44, 1.728]
+
+	const orLessTake = (timesArray, CICResultArray) =>{
+		// or less 以下
+		const orLess = n => n <= parseFloat(document.querySelector("#number6").value);
+		// less Than 未満
+		// const lessThan = n => n < inputNum;
+		CICResultArray = R.takeWhile(orLess, CICResultArray);
+		timesArray = R.take(CICResultArray.length , timesArray);
+		return [timesArray, CICResultArray];
+	}
+
+	let reverse=0;
+	let decimalPointTruncation=0;
+	let timesArrayAndCICResultArray;
+	let orLessTaking;
+
+	const randomRgba = () =>{
+		const o = Math.round, r = Math.random, s = 255;
+		return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
+	}
+
+
+	const makeChart = () =>{
+		const ctx = document.getElementById('myChart').getContext('2d');
+		const colors = R.repeat(null, timesArrayAndCICResultArray.length).map(V=>{return randomRgba()});
+		const myChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: R.times(R.identity,timesArrayAndCICResultArray.length),
+				datasets: [{
+					label: 'numbers',
+					// data: [12, 19, 3, 5, 2, 3],
+					data: R.pluck(1, timesArrayAndCICResultArray),
+					// backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)',
+					// 	'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)',
+					// 	'rgba(255, 159, 64, 0.2)'
+					// ],
+					backgroundColor: colors,
+					borderColor: colors,
+					borderWidth: 1
+				}]
+			},
+			options: {
+				scales: {
+					yAxes: [{
+						ticks: {
+							beginAtZero: true
+						}
+					}]
+				}
+			}
+		});
+	}
+
+	calc = () =>{
+		deleteHTML();
+		let times = document.querySelector("#number3").value;
+		// R.map(n => n + 1, R.times(R.identity, 5)) //=> [1, 2, 3, 4, 5]
+		let timesArray = R.map(n => n + 1, R.times(R.identity, times));
+		let CICResultArray = CIC(
+			document.querySelector("#number1").value,
+			document.querySelector("#number2").value,
+			document.querySelector("#number3").value
+		);
+
+		if(decimalPointTruncation){ CICResultArray = R.map(((E)=>{return [ Math.trunc(E) ]}) , CICResultArray) };
+		if(document.querySelector("#number6").value==="0"){orLessTaking=undefined};
+		if(orLessTaking){ [timesArray, CICResultArray] = orLessTake(timesArray, CICResultArray) };
+		timesArrayAndCICResultArray = R.transpose(
+			[
+				timesArray, CICResultArray
+			]
+		)
+
+		if(reverse){timesArrayAndCICResultArray = R.reverse(timesArrayAndCICResultArray)};
+		addHTML(timesArrayAndCICResultArray);
+		makeChart();
+	}
+
+
+	calc();
+
+</script>
+
+
+</body>
+</html>

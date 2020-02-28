@@ -4,6 +4,7 @@
 
 const R = require(`ramda`);
 
+
 // https://www.amazon.co.jp/gp/registry/wishlist?ie=UTF8&ref_=nav_youraccount_wl&requiresSignIn=1
 // on Chrome console
 // let desc = [];Array.from(document.querySelectorAll("div.a-row.a-spacing-small.a-size-small")).forEach(V=>{ desc.push(V.innerText) })
