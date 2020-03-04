@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="./style.css">
 			<script src="./ramdajshtml.js"></script>
 			<script src="./ramdajshtmlresources.js"></script>
+			<script src="//cdn.jsdelivr.net/npm/ramda@0.27/dist/ramda.min.js"></script>
 </head>
 <body>
 </body>
@@ -33,7 +34,7 @@ const addHTML1 = (array) => {
 	const innerArraySetForMakeHTML = (innerArray) => {
 		return `<li class="func">
 				<span onclick="show('${innerArray[0]}')"><a>${innerArray[0]}</a></span>
-				${ innerArray[1].map(V => { return `<span onclick="show('${innerArray[0]}')"><a>${V}</a></span>` }) }
+				${ innerArray[1].map(V => { return `<span onclick="show('${V}')"><a>${V}</a></span>` }).join("") }
 				</li>`;
 	}
 	// document.querySelector(`html`).insertAdjacentHTML(`beforeend`, array.map(innerArraySetForMakeHTML).join(''));
@@ -51,8 +52,13 @@ document.querySelector(`body`).style =`display:none;`
 
 document.querySelector(`html`).insertAdjacentHTML(`afterbegin`, ramdajshtml);
 
-addHTML1(AllOfFunctionAndRelatedFunctions);
+// addHTML1(AllOfFunctionAndRelatedFunctions);
 
+let ar = AllOfFunctionAndRelatedFunctions.map(V=>{return [V[0], V[1], V[1].length]});
+let ar2 = R.sortBy(R.prop(2), ar);
+let ar2_1 = ar2.map(V=>{return [V[0],V[1]]})
+
+addHTML1(ar2_1);
 
 const show = (functionName) =>{
 	document.querySelectorAll("html > main > div").forEach(E=>{E.parentNode.removeChild(E)});
@@ -63,8 +69,16 @@ const show = (functionName) =>{
 show("add");
 
 
-					// <span><a href="./#${innerArray[0]}">${innerArray[0]}</a></span>
-					// ${	innerArray[1].map(V => { return `<span><a href="./#${V}">${V}</a> </span>` }) }
+// wanna uniq from ar2_1 pair
+const sortByStrLength = (arr) =>{
+	arr.sort(function(a, b){ return a.length - b.length})
+	return arr
+}
+let res = AllOfFunctionAndRelatedFunctions.filter(V=>{return V[1].length===1}).map(V=>{return [V[0],V[1][0]]})
+let res1 = res.map(V=>{return sortByStrLength(V)});
+let res2 = R.uniq(res1);
+
+
 </script>
 
 
