@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html class="docs-page">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ramda Documentation</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+			<script src="./ramdajshtml.js"></script>
+			<script src="./ramdajshtmlresources.js"></script>
+</head>
+<body>
+</body>
+<script>
+	const addHTML = (htmlstring) =>{
+		document.querySelector(`body`).insertAdjacentHTML(`afterbegin`, htmlstring);
+	};
+	addHTML(ramdajshtmlresources);
+	// document.querySelector(`body`).style =`visibility:hidden;`
+	// document.querySelector(`body`).style =`display:none;`
+	// addHTML(ramdajshtmlresources);
+
+
+
+let AllOfFunctionAndRelatedFunctions = [];
+// document.querySelectorAll(`body > main > section`).forEach(V => {
+document.querySelectorAll(`html > body > main > section`).forEach(V => {
+	const functionName = V.querySelector("h2").innerText.split("\n")[0];
+	const relatedFunctionNameArray = V.querySelector("div.see") ? V.querySelector("div.see").innerText.replace("See also ", "").replace(".", "").split(", ") : [];
+	AllOfFunctionAndRelatedFunctions.push([functionName, relatedFunctionNameArray]);
+})
+
+const addHTML1 = (array) => {
+	const innerArraySetForMakeHTML = (innerArray) => {
+		return `<li class="func">
+					<span><a href="./#${innerArray[0]}">${innerArray[0]}</a></span>
+					${	innerArray[1].map(V => { return `<span><a href="./#${V}">${V}</a> </span>` }) }
+				</li>`;
+	}
+	// document.querySelector(`html`).insertAdjacentHTML(`beforeend`, array.map(innerArraySetForMakeHTML).join(''));
+	// document.querySelectorAll(`html > aside > ul`).insertAdjacentHTML(`beforeend`,	array.map(innerArraySetForMakeHTML).join(''));
+	document.querySelector(`html > aside > ul`).insertAdjacentHTML(`beforeend`,	array.map(innerArraySetForMakeHTML).join(''));
+};
+
+const noRelatedFuntionReject = (array) => {
+	return array.filter(V=>{return V[1].length>0})
+}
+
+AllOfFunctionAndRelatedFunctions = noRelatedFuntionReject(AllOfFunctionAndRelatedFunctions);
+
+document.querySelector(`body`).style =`display:none;`
+
+document.querySelector(`html`).insertAdjacentHTML(`afterbegin`, ramdajshtml);
+
+addHTML1(AllOfFunctionAndRelatedFunctions);
+</script>
+
+
+</html>
