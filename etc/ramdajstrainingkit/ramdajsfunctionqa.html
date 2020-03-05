@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
-
+<aside><ul></ul></aside>
 <head>
   <meta charset="UTF-8" />
   <title>ramda.js function qa</title>
+	<!-- <link rel="stylesheet" type="text/css" href="./style.css"> -->
   	<!-- <script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script> -->
   	<script src="ramda.js"></script>
   	<script src="allfunctions.js"></script>
+	<script src="./ramdajshtmlresources.js"></script>
 </head>
 <body>
   <div>
@@ -89,7 +91,7 @@ const makeQAHTML = (QAAAAarray) =>{
 	const makeQASet = (QAAAA,KEY) => {
 		const shuffledAAAA = shuffleArray(R.without([QAAAA[0]],QAAAA));
 		return `<div class="QA" data-id="${KEY}">
-					<span>${QAAAA[0]}</span>
+					<span onclick="show('${QAAAA[0]}')">${QAAAA[0]}</span>
 					<input type="button" value="${shuffledAAAA[0]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
 					<input type="button" value="${shuffledAAAA[1]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
 					<input type="button" value="${shuffledAAAA[2]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
@@ -106,6 +108,17 @@ const checkQA = (event) =>{ if(event.target.value === event.target.dataset.answe
 insertTestData();
 makeQAHTML(getQAAAAarray(makeQApair()));
 keyConfig();
+
+
+const addHTML = (htmlstring) =>{
+	document.querySelector(`body`).insertAdjacentHTML(`beforeend`, htmlstring);
+};
+addHTML(ramdajshtmlresources);
+const show = (functionName) =>{
+	document.querySelectorAll("div#QASet div.section-id").forEach(E=>{E.parentNode.removeChild(E)});
+	document.querySelectorAll("div#QASet section.card").forEach(E=>{E.parentNode.removeChild(E)});
+	document.querySelector(`body div.QA`).insertAdjacentHTML(`beforebegin`, document.querySelector(`#${functionName}`).outerHTML + document.querySelector(`#${functionName} + section`).outerHTML);
+};
 </script>
 </body>
 

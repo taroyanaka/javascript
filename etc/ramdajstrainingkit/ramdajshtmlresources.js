@@ -1,5 +1,5 @@
 const ramdajshtmlresources = 
-`    <input type="checkbox" id="open-nav">
+`<input type="checkbox" id="open-nav">
     <header class="navbar navbar-fixed-top navbar-inverse container-fluid">
         <div class="container-fluid">
             <div class="navbar-header">
