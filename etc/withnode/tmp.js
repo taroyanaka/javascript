@@ -2917,3 +2917,78 @@ allSet
 	// R.test(/検証】/, "【検証】１ヶ月間、プルリクだけでホームページ作ったらどうなるの？") ? "hoge---" : "no"
 
 
+document.querySelectorAll(`body > main > section`)[4].querySelector("h2").innerText.split("\n")[0]
+document.querySelectorAll(`body > main > section`)[4].querySelector("div.see").innerText.replace("See also ", "").replace(".", "").split(", ")
+
+let AllOfFunctionAndRelatedFunctions = [];
+document.querySelectorAll(`body > main > section`).forEach(V => {
+	const functionName = V.querySelector("h2").innerText.split("\n")[0];
+	const relatedFunctionNameArray = V.querySelector("div.see") ? V.querySelector("div.see").innerText.replace("See also ", "").replace(".", "").split(", ") : [];
+	AllOfFunctionAndRelatedFunctions.push([functionName, relatedFunctionNameArray]);
+})
+
+
+
+
+
+let AllOfFunctionAndRelatedFunctions = [];
+document.querySelectorAll(`body > main > section`).forEach(V => {
+	// const functionName = `https://ramdajs.com/docs/#` + V.querySelector("h2").innerText.split("\n")[0];
+	const functionName = V.querySelector("h2").innerText.split("\n")[0];
+	// const relatedFunctionNameArray = V.querySelector("div.see") ? V.querySelector("div.see").innerText.replace("See also ", "").replace(".", "").split(", ").map(Str=>{return `https://ramdajs.com/docs/#`+Str }) : [];
+	const relatedFunctionNameArray = V.querySelector("div.see") ? V.querySelector("div.see").innerText.replace("See also ", "").replace(".", "").split(", ") : [];
+	AllOfFunctionAndRelatedFunctions.push([functionName, relatedFunctionNameArray]);
+})
+
+const addHTML = (array) => {
+	const innerArraySetForMakeHTML = (innerArray) => {
+		return `<div class="func">
+				<span><a href="https://ramdajs.com/docs/#${innerArray[0]}">${innerArray[0]}</a></span>
+				<span>:${
+					innerArray[1].map(V => { 
+						return `<a href="https://ramdajs.com/docs/#${V}">${V}</a>`
+					})
+				}
+				</span>
+			</div>`;
+	}
+	document.querySelector(`body > aside > ul > li:nth-child(1)`).insertAdjacentHTML(`beforebegin`, array.map(innerArraySetForMakeHTML).join(''));
+};
+
+addHTML(AllOfFunctionAndRelatedFunctions);
+
+
+
+
+
+
+
+
+
+
+let AllOfFunctionAndRelatedFunctions = [];
+document.querySelectorAll(`body > main > section`).forEach(V => {
+	const functionName = V.querySelector("h2").innerText.split("\n")[0];
+	const relatedFunctionNameArray = V.querySelector("div.see") ? V.querySelector("div.see").innerText.replace("See also ", "").replace(".", "").split(", ") : [];
+	AllOfFunctionAndRelatedFunctions.push([functionName, relatedFunctionNameArray]);
+})
+
+const addHTML1 = (array) => {
+	const innerArraySetForMakeHTML = (innerArray) => {
+		return `<li class="func">
+					<span><a href="https://ramdajs.com/docs/#${innerArray[0]}">${innerArray[0]}</a></span>
+					${	innerArray[1].map(V => { return `<span><a href="https://ramdajs.com/docs/#${V}">${V}</a> </span>` }) }
+				</li>`;
+	}
+	document.querySelector(`html`).insertAdjacentHTML(`beforeend`, array.map(innerArraySetForMakeHTML).join(''));
+};
+
+const noRelatedFuntionReject = (array) => {
+	return array.filter(V=>{return V[1].length>0})
+}
+
+AllOfFunctionAndRelatedFunctions = noRelatedFuntionReject(AllOfFunctionAndRelatedFunctions);
+addHTML1(AllOfFunctionAndRelatedFunctions);
+
+
+

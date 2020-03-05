@@ -30,6 +30,20 @@ document.querySelectorAll(`html > body > main > section`).forEach(V => {
 	AllOfFunctionAndRelatedFunctions.push([functionName, relatedFunctionNameArray]);
 })
 
+
+let AllOfFunctionAndRelatedFunctions1 = [];
+document.querySelectorAll(`body > main > section`).forEach(V => {
+// document.querySelectorAll(`html > body > main > section`).forEach(V => {
+	const functionName = V.querySelector("h2").innerText.split("\n")[0];
+	const relatedFunctionNameArray = V.querySelector("div.see") ? V.querySelector("div.see").innerText.replace("See also ", "").replace(".", "").split(", ") : [];
+	// AllOfFunctionAndRelatedFunctions1 = R.concat(functionName)
+	AllOfFunctionAndRelatedFunctions1.push(
+		R.concat([functionName],relatedFunctionNameArray)
+	);
+})
+// copy(AllOfFunctionAndRelatedFunctions1)
+
+
 const addHTML1 = (array) => {
 	const innerArraySetForMakeHTML = (innerArray) => {
 		return `<li class="func">
@@ -48,9 +62,6 @@ const noRelatedFuntionReject = (array) => {
 
 AllOfFunctionAndRelatedFunctions = noRelatedFuntionReject(AllOfFunctionAndRelatedFunctions);
 
-document.querySelector(`body`).style =`display:none;`
-
-document.querySelector(`html`).insertAdjacentHTML(`afterbegin`, ramdajshtml);
 
 // addHTML1(AllOfFunctionAndRelatedFunctions);
 
@@ -58,7 +69,7 @@ let ar = AllOfFunctionAndRelatedFunctions.map(V=>{return [V[0], V[1], V[1].lengt
 let ar2 = R.sortBy(R.prop(2), ar);
 let ar2_1 = ar2.map(V=>{return [V[0],V[1]]})
 
-addHTML1(ar2_1);
+
 
 const show = (functionName) =>{
 	document.querySelectorAll("html > main > div").forEach(E=>{E.parentNode.removeChild(E)});
@@ -66,7 +77,14 @@ const show = (functionName) =>{
 	document.querySelector(`html > main`).insertAdjacentHTML(`afterbegin`, document.querySelector(`#${functionName}`).outerHTML + document.querySelector(`#${functionName} + section`).outerHTML);
 }
 
-show("add");
+
+document.querySelector(`body`).style =`display:none;`
+// document.querySelector(`html`).insertAdjacentHTML(`afterbegin`, ramdajshtml);
+
+// addHTML1(ar2_1);
+
+// show("add");	
+
 
 
 // wanna uniq from ar2_1 pair
