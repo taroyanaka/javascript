@@ -105,7 +105,7 @@ const checkQA = (event) =>{ if(event.target.value === event.target.dataset.answe
 							document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
 							}else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) } };
 
-insertTestData();
+// insertTestData();
 makeQAHTML(getQAAAAarray(makeQApair()));
 keyConfig();
 
