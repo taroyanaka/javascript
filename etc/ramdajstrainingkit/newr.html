@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html class="docs-page">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ramda Documentation</title>
+    <link rel="stylesheet" type="text/css" href="./style.css">
+			<script src="./ramdajshtml.js"></script>
+			<script src="./ramdajshtmlresources.js"></script>
+			<script src="//cdn.jsdelivr.net/npm/ramda@0.27/dist/ramda.min.js"></script>
+</head>
+<body>
+</body>
+<script>
+	const addHTML = (htmlstring) =>{
+		document.querySelector(`body`).insertAdjacentHTML(`afterbegin`, htmlstring);
+	};
+	addHTML(ramdajshtmlresources);
+	// document.querySelector(`body`).style =`visibility:hidden;`
+	// document.querySelector(`body`).style =`display:none;`
+	// addHTML(ramdajshtmlresources);
+
+
+
+let AllOfFunctionAndRelatedFunctions = [];
+// document.querySelectorAll(`body > main > section`).forEach(V => {
+document.querySelectorAll(`html > body > main > section`).forEach(V => {
+	const functionName = V.querySelector("h2").innerText.split("\n")[0];
+	const relatedFunctionNameArray = V.querySelector("div.see") ? V.querySelector("div.see").innerText.replace("See also ", "").replace(".", "").split(", ") : [];
+	AllOfFunctionAndRelatedFunctions.push([functionName, relatedFunctionNameArray]);
+})
+
+
+let AllOfFunctionAndRelatedFunctions1 = [];
+document.querySelectorAll(`body > main > section`).forEach(V => {
+// document.querySelectorAll(`html > body > main > section`).forEach(V => {
+	const functionName = V.querySelector("h2").innerText.split("\n")[0];
+	const relatedFunctionNameArray = V.querySelector("div.see") ? V.querySelector("div.see").innerText.replace("See also ", "").replace(".", "").split(", ") : [];
+	// AllOfFunctionAndRelatedFunctions1 = R.concat(functionName)
+	AllOfFunctionAndRelatedFunctions1.push(
+		R.concat([functionName],relatedFunctionNameArray)
+	);
+})
+// copy(AllOfFunctionAndRelatedFunctions1)
+
+
+const addHTML1 = (array) => {
+	const innerArraySetForMakeHTML = (innerArray) => {
+		return `<li class="func">
+				<span onclick="show('${innerArray[0]}')"><a>${innerArray[0]}</a></span>
+				${ innerArray[1].map(V => { return `<span onclick="show('${V}')"><a>${V}</a></span>` }).join("") }
+				</li>`;
+	}
+	// document.querySelector(`html`).insertAdjacentHTML(`beforeend`, array.map(innerArraySetForMakeHTML).join(''));
+	// document.querySelectorAll(`html > aside > ul`).insertAdjacentHTML(`beforeend`,	array.map(innerArraySetForMakeHTML).join(''));
+	document.querySelector(`html > aside > ul`).insertAdjacentHTML(`beforeend`,	array.map(innerArraySetForMakeHTML).join(''));
+};
+
+const noRelatedFuntionReject = (array) => {
+	return array.filter(V=>{return V[1].length>0})
+}
+
+AllOfFunctionAndRelatedFunctions = noRelatedFuntionReject(AllOfFunctionAndRelatedFunctions);
+
+
+// addHTML1(AllOfFunctionAndRelatedFunctions);
+
+let ar = AllOfFunctionAndRelatedFunctions.map(V=>{return [V[0], V[1], V[1].length]});
+let ar2 = R.sortBy(R.prop(2), ar);
+let ar2_1 = ar2.map(V=>{return [V[0],V[1]]})
+
+
+
+const show = (functionName) =>{
+	document.querySelectorAll("html > main > div").forEach(E=>{E.parentNode.removeChild(E)});
+	document.querySelectorAll("html > main > section").forEach(E=>{E.parentNode.removeChild(E)});
+	document.querySelector(`html > main`).insertAdjacentHTML(`afterbegin`, document.querySelector(`#${functionName}`).outerHTML + document.querySelector(`#${functionName} + section`).outerHTML);
+}
+
+
+document.querySelector(`body`).style =`display:none;`
+document.querySelector(`html`).insertAdjacentHTML(`afterbegin`, ramdajshtml);
+
+addHTML1(ar2_1);
+
+show("add");	
+
+
+
+// wanna uniq from ar2_1 pair
+const sortByStrLength = (arr) =>{
+	arr.sort(function(a, b){ return a.length - b.length})
+	return arr
+}
+let res = AllOfFunctionAndRelatedFunctions.filter(V=>{return V[1].length===1}).map(V=>{return [V[0],V[1][0]]})
+let res1 = res.map(V=>{return sortByStrLength(V)});
+let res2 = R.uniq(res1);
+
+
+</script>
+
+
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>ramda.js function qa</title>
+  	<!-- <script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script> -->
+  	<script src="ramda.js"></script>
+  	<script src="allfunctions.js"></script>
+</head>
+<body>
+  <div>
+    <input id="btn" type="button" value="make" style="width:100px;height:50px" />
+  </div>
+  <div>
+    <textarea name="foo" id="foo" cols="20" rows="100" required="required" maxlength="100000" autofocus="autofocus"></textarea>
+    <textarea name="bar" id="bar" cols="20" rows="100" required="required" maxlength="100000"></textarea>
+    <div id="description">If you use PC, You can use 1,2,3,4 key to choose the answer</div>
+  </div>
+  <div id="QASet"></div>
+<script>
+const shuffleArray = array => {
+	for (let i = array.length - 1; i > 0; i--) {
+	let r = Math.floor(Math.random() * (i + 1));
+	let tmp = array[i];
+	array[i] = array[r];
+	array[r] = tmp;
+	}
+	return array
+}
+
+const keyConfig = () => {
+	window.addEventListener("keydown", function (event) {
+	if (event.defaultPrevented) {
+		return; // Do nothing if the event was already processed
+	}
+		switch (event.key) {
+		case "1":
+			document.querySelectorAll('div.QA > input').item(0).click()
+		break;
+		case "2":
+			document.querySelectorAll('div.QA > input').item(1).click()
+		break;
+		case "3":
+			document.querySelectorAll('div.QA > input').item(2).click()
+		break;
+		case "4":
+			document.querySelectorAll('div.QA > input').item(3).click()
+		break;
+		case "Enter":
+		default:
+		}
+	// Cancel the default action to avoid it being handled twice
+	event.preventDefault();
+	}, true);
+}
+
+const insertTestData = () =>{
+	const overTwoElementArray = R.filter(n => n.length > 1, allfunctions)
+	const withoutZeroElmArray = R.map(R.drop(1), overTwoElementArray);
+	const onlyZeroElmArray = R.pipe(R.map(R.take(1)), R.unnest)(overTwoElementArray);
+	const withoutZeroElmArrayJoined = R.map(V => R.join(" ")(V), withoutZeroElmArray)
+
+	// when reverse
+	// const onlyZeroElmArrayAndWithoutZeroElmArrayJoined = R.pipe(
+	// 	R.transpose,
+	// 	R.reverse,
+	// )([	onlyZeroElmArray, withoutZeroElmArrayJoined ]);
+
+	const onlyZeroElmArrayAndWithoutZeroElmArrayJoined = R.pipe(
+		R.transpose,
+		// R.reverse,
+	)([	onlyZeroElmArray, withoutZeroElmArrayJoined ]);
+
+	const [foo, bar] = [R.pluck(0, onlyZeroElmArrayAndWithoutZeroElmArrayJoined).join("\n"), R.pluck(1, onlyZeroElmArrayAndWithoutZeroElmArrayJoined).join("\n") ];
+	document.querySelector(`#foo`).value = foo;
+	document.querySelector(`#bar`).value = bar;
+};
+
+const makeQApair = () => R.transpose([ document.querySelector(`#foo`).value.split(`\n`) , document.querySelector(`#bar`).value.split(`\n`) ]) ;
+
+const getQAAAAarray = (QApair) => {
+	const makeQAAAAarray = (x) => R.insertAll(-1,R.take(3,shuffleArray(R.without(x[1],R.pluck(1, QApair)))),x);
+	const fourLengthArrayCheck = (array) => R.uniq(array).length === 4;
+	return R.reject( fourLengthArrayCheck ,  R.map(makeQAAAAarray, QApair)  );
+};
+
+const makeQAHTML = (QAAAAarray) =>{
+	const makeQASet = (QAAAA,KEY) => {
+		const shuffledAAAA = shuffleArray(R.without([QAAAA[0]],QAAAA));
+		return `<div class="QA" data-id="${KEY}">
+					<span>${QAAAA[0]}</span>
+					<input type="button" value="${shuffledAAAA[0]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+					<input type="button" value="${shuffledAAAA[1]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+					<input type="button" value="${shuffledAAAA[2]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+					<input type="button" value="${shuffledAAAA[3]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+			   </div>`;
+	}
+	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet)  );
+};
+let wrongQApair = [];
+const checkQA = (event) =>{ if(event.target.value === event.target.dataset.answer){
+							document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
+							}else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) } };
+
+insertTestData();
+makeQAHTML(getQAAAAarray(makeQApair()));
+keyConfig();
+</script>
+</body>
+
+</html>
