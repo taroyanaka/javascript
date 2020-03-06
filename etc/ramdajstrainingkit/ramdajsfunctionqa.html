@@ -19,8 +19,10 @@
     <textarea name="bar" id="bar" cols="20" rows="100" required="required" maxlength="100000"></textarea>
     <div id="description">If you use PC, You can use 1,2,3,4 key to choose the answer</div>
   </div>
-  <a name="reverse"  id="reverse" value="reverse" onclick="if(reverse){reverse=0}else{reverse=1};insertData();makeQAHTML(getQAAAAarray(makeQApair()));" style="padding: 5px 10px;background: #5876a3;">reverse</a>
-  <a name="shuffle"  id="shuffle" value="shuffle" onclick="if(shuffle){shuffle=0}else{shuffle=1};insertData();makeQAHTML(getQAAAAarray(makeQApair()));" style="padding: 5px 10px;background: #5876a3;">shuffle</a>
+  <!-- <a name="reverse"  id="reverse" value="reverse" onclick="if(reverse){reverse=0}else{reverse=1};insertData();makeQAHTML(getQAAAAarray(makeQApair()));" style="padding: 5px 10px;background: #5876a3;">reverse</a>
+  <a name="shuffle"  id="shuffle" value="shuffle" onclick="if(shuffle){shuffle=0}else{shuffle=1};insertData();makeQAHTML(getQAAAAarray(makeQApair()));" style="padding: 5px 10px;background: #5876a3;">shuffle</a> -->
+  <a name="reverse"  id="reverse" value="reverse" onclick="if(reverse){reverse=0}else{reverse=1};init();" style="padding: 5px 10px;background: #5876a3;">reverse</a>
+  <a name="shuffle"  id="shuffle" value="shuffle" onclick="if(shuffle){shuffle=0}else{shuffle=1};init();" style="padding: 5px 10px;background: #5876a3;">shuffle</a>
   <div id="QASet"></div>
 <script>
 const shuffleArray = array => {
@@ -62,6 +64,7 @@ const keyConfig = () => {
 let reverse;
 let shuffle;
 const insertData = () =>{
+	document.querySelectorAll("#QASet > div").forEach(E=>{E.parentNode.removeChild(E)});
 	const overTwoElementArray = R.filter(n => n.length > 1, allfunctions);
 	const withoutZeroElmArray = R.map(R.drop(1), overTwoElementArray);
 	const onlyZeroElmArray = R.pipe(R.map(R.take(1)), R.unnest)(overTwoElementArray);
@@ -113,9 +116,6 @@ const checkQA = (event) =>{ if(event.target.value === event.target.dataset.answe
 							document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
 							}else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) } };
 
-insertData();
-makeQAHTML(getQAAAAarray(makeQApair()));
-keyConfig();
 
 const addHTML = (htmlstring) =>{
 	document.querySelector(`body`).insertAdjacentHTML(`beforeend`, htmlstring);
@@ -127,6 +127,16 @@ const show = (functionName) =>{
 	document.querySelectorAll("div#QASet section.card").forEach(E=>{E.parentNode.removeChild(E)});
 	document.querySelector(`body div.QA`).insertAdjacentHTML(`beforebegin`, document.querySelector(`#${functionName}`).outerHTML + document.querySelector(`#${functionName} + section`).outerHTML);
 }
+
+
+const init = () =>{
+	// document.querySelectorAll("").forEach(E=>{E.parentNode.removeChild(E)});
+	insertData();
+	makeQAHTML(getQAAAAarray(makeQApair()));
+	keyConfig();
+}
+init();
+
 
 </script>
 </body>
