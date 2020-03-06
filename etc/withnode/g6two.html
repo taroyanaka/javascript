@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html class="docs-page">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>G6 ramda.js functions relation</title>
+			<script src="//cdn.jsdelivr.net/npm/ramda@0.27/dist/ramda.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/@antv/g6@3.3.6/dist/g6.min.js"></script>
+			<script src="./g6ramdajsfunctionsresources.js"></script>
+</head>
+<body>
+<div id="container" style="width: 300px;height: 300px;">
+</body>
+<script>
+
+const makeData = (resource) =>{
+	const res0 =resource.map(V => {
+		return {
+			id: V,
+			label: V
+		}
+	})
+	const res1 = resource.map(V => {
+		return {
+			source: V,
+			// target: V
+			target: resource[0]
+		}
+	})
+	const data2 = {
+		nodes: res0,
+		edges: res1
+	}
+	const data3 = R.mergeAll(data2);
+	return data3
+}
+const data4 = g6ramdajsfunctionsresources.map(V=>{return makeData(V)});
+
+// data4.forEach(V=>{
+// data5.forEach(V=>{
+	const graph = new G6.Graph({
+		container: "container",
+		fitView: true,
+		fitViewPadding: 300,
+		width: 1000,
+		height: 1000,
+		minZoom: 1,
+		maxZoom: 1,
+		layout: "dagre",
+	});
+	// graph.data(V);
+	graph.data(data5);
+	graph.render();
+// })
+
+
+</script>
+
+
+</html>

@@ -74,7 +74,7 @@ let data2 = {
 }
 
 let data3=R.mergeAll(data2);
-data3
+// data3
 
 
 
@@ -108,4 +108,60 @@ let finalres = {
 }
 
 let finalres1 = R.mergeAll(finalres);
-finalres1
+// finalres1
+
+const g6ramdajsfunctionsresources = [
+		[
+			"__"
+		],
+		[
+			"add",
+			"subtract"
+		],
+		[
+			"addIndex"
+		],
+		[
+			"adjust",
+			"update"
+		],
+		[
+			"all",
+			"any",
+			"none",
+			"transduce"
+		],
+		[
+			"allPass",
+			"anyPass"
+		],
+]
+
+const makeData = (resource) => {
+	const res0 = resource.map(V => {
+		return {
+			id: V,
+			label: V
+		}
+	})
+	const res1 = resource.map(V => {
+		return {
+			source: V,
+			// target: V
+			target: resource[0]
+		}
+	})
+	const data2 = {
+		nodes: res0,
+		edges: res1
+	}
+	const data3 = R.mergeAll(data2);
+	return data3
+}
+const data4 = g6ramdajsfunctionsresources.map(V => {
+	return makeData(V)
+});
+const data5 = R.mergeAll(data4)
+data5
+
+

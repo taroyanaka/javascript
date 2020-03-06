@@ -19,6 +19,8 @@
     <textarea name="bar" id="bar" cols="20" rows="100" required="required" maxlength="100000"></textarea>
     <div id="description">If you use PC, You can use 1,2,3,4 key to choose the answer</div>
   </div>
+  <a name="reverse"  id="reverse" value="reverse" onclick="if(reverse){reverse=0}else{reverse=1};insertData();makeQAHTML(getQAAAAarray(makeQApair()));" style="padding: 5px 10px;background: #5876a3;">reverse</a>
+  <a name="shuffle"  id="shuffle" value="shuffle" onclick="if(shuffle){shuffle=0}else{shuffle=1};insertData();makeQAHTML(getQAAAAarray(makeQApair()));" style="padding: 5px 10px;background: #5876a3;">shuffle</a>
   <div id="QASet"></div>
 <script>
 const shuffleArray = array => {
@@ -57,22 +59,21 @@ const keyConfig = () => {
 	}, true);
 }
 
-const insertTestData = () =>{
+let reverse;
+let shuffle;
+const insertData = () =>{
 	const overTwoElementArray = R.filter(n => n.length > 1, allfunctions);
 	const withoutZeroElmArray = R.map(R.drop(1), overTwoElementArray);
 	const onlyZeroElmArray = R.pipe(R.map(R.take(1)), R.unnest)(overTwoElementArray);
 	const withoutZeroElmArrayJoined = R.map(V => R.join(" ")(V), withoutZeroElmArray)
 
-	// when reverse
-	// const onlyZeroElmArrayAndWithoutZeroElmArrayJoined = R.pipe(
-	// 	R.transpose,
-	// 	R.reverse,
-	// )([	onlyZeroElmArray, withoutZeroElmArrayJoined ]);
-
-	const onlyZeroElmArrayAndWithoutZeroElmArrayJoined = R.pipe(
+	let onlyZeroElmArrayAndWithoutZeroElmArrayJoined = R.pipe(
 		R.transpose,
-		// R.reverse,
 	)([	onlyZeroElmArray, withoutZeroElmArrayJoined ]);
+
+
+	onlyZeroElmArrayAndWithoutZeroElmArrayJoined = reverse === 1 ? R.reverse(onlyZeroElmArrayAndWithoutZeroElmArrayJoined) : onlyZeroElmArrayAndWithoutZeroElmArrayJoined;
+	onlyZeroElmArrayAndWithoutZeroElmArrayJoined = shuffle === 1 ? shuffleArray(onlyZeroElmArrayAndWithoutZeroElmArrayJoined) : onlyZeroElmArrayAndWithoutZeroElmArrayJoined;
 
 	const [foo, bar] = [R.pluck(0, onlyZeroElmArrayAndWithoutZeroElmArrayJoined).join("\n"), R.pluck(1, onlyZeroElmArrayAndWithoutZeroElmArrayJoined).join("\n") ];
 	document.querySelector(`#foo`).value = foo;
@@ -95,22 +96,24 @@ const getQAAAAarray = (QApair) => {
 const makeQAHTML = (QAAAAarray) =>{
 	const makeQASet = (QAAAA,KEY) => {
 		const shuffledAAAA = shuffleArray(R.without([QAAAA[0]],QAAAA));
+		const referenceFunction = R.pipe(R.split(" "),R.map(V=>{return `<span onclick="show('${V}')">${V} </span>`}))(shuffledAAAA[0]+` `+shuffledAAAA[1]+` `+shuffledAAAA[2]+` `+shuffledAAAA[3]);
 		return `<div class="QA" data-id="${KEY}">
 					<span onclick="show('${QAAAA[0]}')">${QAAAA[0]}</span>
 					<input type="button" value="${shuffledAAAA[0]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
 					<input type="button" value="${shuffledAAAA[1]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
 					<input type="button" value="${shuffledAAAA[2]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
 					<input type="button" value="${shuffledAAAA[3]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+					${referenceFunction}
 			   </div>`;
 	}
-	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet)  );
+	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet) );
 };
 let wrongQApair = [];
 const checkQA = (event) =>{ if(event.target.value === event.target.dataset.answer){
 							document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
 							}else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) } };
 
-insertTestData();
+insertData();
 makeQAHTML(getQAAAAarray(makeQApair()));
 keyConfig();
 

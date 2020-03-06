@@ -22,7 +22,7 @@ const ramdajshtmlresources =
     </header>
     <aside class="sidebar container-fluid">
         <div class="form-group has-feedback filter">
-            <input class="form-control" tabindex="1" id="name-filter" placeholder="Filter" type="text" data-bind="textInput: filter" autocomplete="false" autofocus="">
+            <input class="form-control" id="name-filter" placeholder="Filter" type="text" data-bind="textInput: filter" autocomplete="false" autofocus="">
             <span class="form-control-feedback">
                 <span class="glyphicon glyphicon-search"></span>
             </span>
