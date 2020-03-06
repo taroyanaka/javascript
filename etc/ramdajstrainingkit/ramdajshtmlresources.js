@@ -21,12 +21,6 @@ const ramdajshtmlresources =
         </div>
     </header>
     <aside class="sidebar container-fluid">
-        <div class="form-group has-feedback filter">
-            <input class="form-control" id="name-filter" placeholder="Filter" type="text" data-bind="textInput: filter" autocomplete="false" autofocus="">
-            <span class="form-control-feedback">
-                <span class="glyphicon glyphicon-search"></span>
-            </span>
-        </div>
         <ul class="nav nav-pills nav-stacked toc">
             <li class="func" data-name="__" data-category="Function">
                 <a href="#__">
