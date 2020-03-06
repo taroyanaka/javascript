@@ -23,7 +23,9 @@
   <a name="shuffle"  id="shuffle" value="shuffle" onclick="if(shuffle){shuffle=0}else{shuffle=1};insertData();makeQAHTML(getQAAAAarray(makeQApair()));" style="padding: 5px 10px;background: #5876a3;">shuffle</a> -->
   <a name="reverse"  id="reverse" value="reverse" onclick="if(reverse){reverse=0}else{reverse=1};init();" style="padding: 5px 10px;background: #5876a3;">reverse</a>
   <a name="shuffle"  id="shuffle" value="shuffle" onclick="if(shuffle){shuffle=0}else{shuffle=1};init();" style="padding: 5px 10px;background: #5876a3;">shuffle</a>
+<span>point: </span><span id="point">0</span><span>/</span><span id="allPoint">0</span>
   <div id="QASet"></div>
+
 <script>
 const shuffleArray = array => {
 	for (let i = array.length - 1; i > 0; i--) {
@@ -112,9 +114,12 @@ const makeQAHTML = (QAAAAarray) =>{
 	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet) );
 };
 let wrongQApair = [];
-const checkQA = (event) =>{ if(event.target.value === event.target.dataset.answer){
+const checkQA = (event) =>{
+							if(event.target.value === event.target.dataset.answer){
 							document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
-							}else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) } };
+							}else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) };
+							countPoint();
+						  };
 
 
 const addHTML = (htmlstring) =>{
@@ -128,12 +133,20 @@ const show = (functionName) =>{
 	document.querySelector(`body div.QA`).insertAdjacentHTML(`beforebegin`, document.querySelector(`#${functionName}`).outerHTML + document.querySelector(`#${functionName} + section`).outerHTML);
 }
 
+const countAllPoint = ()=>{
+	document.querySelector(`#allPoint`).innerText = document.querySelectorAll(`#QASet > div`).length;
+}
+
+const countPoint = ()=>{
+	document.querySelector(`#point`).innerText = Number(document.querySelector(`#allPoint`).innerText) - document.querySelectorAll(`#QASet > div`).length;
+}
 
 const init = () =>{
 	// document.querySelectorAll("").forEach(E=>{E.parentNode.removeChild(E)});
 	insertData();
 	makeQAHTML(getQAAAAarray(makeQApair()));
 	keyConfig();
+	countAllPoint();
 }
 init();
 
