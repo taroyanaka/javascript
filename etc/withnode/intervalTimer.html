@@ -5,11 +5,11 @@
 <title>interval timer</title>
 
 <meta name="viewport" content="width=device-width">
-<!-- <script src="https://cdn.jsdelivr.net/npm/easytimer@1.1.1/src/easytimer.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/@1.1.1/src/.min.js"></script> -->
 <script src="./easytimer.min.js"></script>
-<!-- <script src="https://cdn.jsdelivr.net/npm/easytimer/src/easytimer.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm//src/.min.js"></script> -->
 <!-- https://ramdajs.com -->
-<!-- http://albert-gonzalez.github.io/easytimer.js/ -->
+<!-- http://albert-gonzalez.github.io/.js/ -->
 <!-- https://iwb.jp/input-type-time-seconds-javascript/ -->
 </head>
 <body style="background-color: gray">
@@ -64,7 +64,7 @@ autofocus="autofocus" wrap="hard" onchange="insertSourceHTML();"></textarea> -->
 	// }
 
 
-	// var timer = new Timer();
+// var timer = new easytimer.Timer();
 	// document.querySelector('#chronoExample .startButton').addEventListener('click', function (e) {
 	// 	timer.start();
 	// });
@@ -91,9 +91,9 @@ t.addEventListener('input', () => {
   r.textContent = `${h}時${m}分${s}秒`
 })
 
-// var timer = new Timer();
+// var timer = new easytimer.Timer();
 var timer = new easytimer.Timer();
-useTimer = () =>{
+const useTimer = () =>{
 	// timer.start({ countdown: true, startValues: {seconds: 30}, target: { seconds: Number(s) } });
 	timer.start({ countdown: true, startValues: {seconds: Number(s)}, target: { seconds: 0 } });
 	document.querySelector('#chronoExample .values').innerText = timer.getTimeValues().toString();
@@ -106,22 +106,22 @@ useTimer = () =>{
 		if(loop){useTimer()};
 	});
 }
-let loop = null;
-loopOn = () =>{
-	useTimer()
-	loop = "on";
-}
+// let loop = null;
+// const loopOn = () =>{
+// 	useTimer()
+// 	loop = "on";
+// }
 
-	// var timer = new Timer();
-	document.querySelector('#chronoExample .startButton').addEventListener('click', function (e) {
-		timer.start();
-	});
-	document.querySelector('#chronoExample .pauseButton').addEventListener('click', function (e) {
-		timer.pause();
-	});
-	document.querySelector('#chronoExample .stopButton').addEventListener('click', function (e) {
-		timer.stop();
-	});
+	// var timer = new easytimer.Timer();
+	// document.querySelector('#chronoExample .startButton').addEventListener('click', function (e) {
+	// 	timer.start();
+	// });
+	// document.querySelector('#chronoExample .pauseButton').addEventListener('click', function (e) {
+	// 	timer.pause();
+	// });
+	// document.querySelector('#chronoExample .stopButton').addEventListener('click', function (e) {
+	// 	timer.stop();
+	// });
 
 
 </script>
