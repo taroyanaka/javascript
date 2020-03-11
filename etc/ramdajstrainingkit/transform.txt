@@ -1,0 +1,258 @@
+let autobots = ['Optimus Prime','Bumblebee','Ironhide','Sunstreaker','Ratchet']
+ 
+let transform = R.compose(
+  R.tap(x => console.log('--------TOP---------')),
+  R.tap(x => console.log('FILTER:',x)),
+  R.filter(x => /r/i.test(x)),
+  R.tap(x => console.log('UPPER:',x)),
+  R.map(R.toUpper),
+  R.tap(x => console.log('REVERSE:',x)),
+  R.map(R.reverse),
+  R.tap(x => console.log('-------BOTTOM-------'))
+)
+
+//R.transduce(transform, R.flip(R.append), [], autobots)
+transform(autobots)
+--------TOP---------
+FILTER:
+Optimus Prime
+UPPER:
+Optimus Prime
+REVERSE:
+OPTIMUS PRIME
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Bumblebee
+--------TOP---------
+FILTER:
+Ironhide
+UPPER:
+Ironhide
+REVERSE:
+IRONHIDE
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Sunstreaker
+UPPER:
+Sunstreaker
+REVERSE:
+SUNSTREAKER
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Ratchet
+UPPER:
+Ratchet
+REVERSE:
+RATCHET
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Optimus Prime
+UPPER:
+Optimus Prime
+REVERSE:
+OPTIMUS PRIME
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Bumblebee
+--------TOP---------
+FILTER:
+Ironhide
+UPPER:
+Ironhide
+REVERSE:
+IRONHIDE
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Sunstreaker
+UPPER:
+Sunstreaker
+REVERSE:
+SUNSTREAKER
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Ratchet
+UPPER:
+Ratchet
+REVERSE:
+RATCHET
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Optimus Prime
+UPPER:
+Optimus Prime
+REVERSE:
+OPTIMUS PRIME
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Bumblebee
+--------TOP---------
+FILTER:
+Ironhide
+UPPER:
+Ironhide
+REVERSE:
+IRONHIDE
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Sunstreaker
+UPPER:
+Sunstreaker
+REVERSE:
+SUNSTREAKER
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Ratchet
+UPPER:
+Ratchet
+REVERSE:
+RATCHET
+-------BOTTOM-------
+-------BOTTOM-------
+REVERSE:
+["emirP sumitpO","eebelbmuB","edihnorI","rekaertsnuS","tehctaR"]
+UPPER:
+["EMIRP SUMITPO","EEBELBMUB","EDIHNORI","REKAERTSNUS","TEHCTAR"]
+FILTER:
+["EMIRP SUMITPO","EDIHNORI","REKAERTSNUS","TEHCTAR"]
+--------TOP---------
+-------BOTTOM-------
+REVERSE:
+["emirP sumitpO","eebelbmuB","edihnorI","rekaertsnuS","tehctaR"]
+UPPER:
+["EMIRP SUMITPO","EEBELBMUB","EDIHNORI","REKAERTSNUS","TEHCTAR"]
+FILTER:
+["EMIRP SUMITPO","EDIHNORI","REKAERTSNUS","TEHCTAR"]
+--------TOP---------
+--------TOP---------
+FILTER:
+Optimus Prime
+UPPER:
+Optimus Prime
+REVERSE:
+OPTIMUS PRIME
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Bumblebee
+--------TOP---------
+FILTER:
+Ironhide
+UPPER:
+Ironhide
+REVERSE:
+IRONHIDE
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Sunstreaker
+UPPER:
+Sunstreaker
+REVERSE:
+SUNSTREAKER
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Ratchet
+UPPER:
+Ratchet
+REVERSE:
+RATCHET
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Optimus Prime
+UPPER:
+Optimus Prime
+REVERSE:
+OPTIMUS PRIME
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Bumblebee
+--------TOP---------
+FILTER:
+Ironhide
+UPPER:
+Ironhide
+REVERSE:
+IRONHIDE
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Sunstreaker
+UPPER:
+Sunstreaker
+REVERSE:
+SUNSTREAKER
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Ratchet
+UPPER:
+Ratchet
+REVERSE:
+RATCHET
+-------BOTTOM-------
+-------BOTTOM-------
+REVERSE:
+["emirP sumitpO","eebelbmuB","edihnorI","rekaertsnuS","tehctaR"]
+UPPER:
+["EMIRP SUMITPO","EEBELBMUB","EDIHNORI","REKAERTSNUS","TEHCTAR"]
+FILTER:
+["EMIRP SUMITPO","EDIHNORI","REKAERTSNUS","TEHCTAR"]
+--------TOP---------
+--------TOP---------
+FILTER:
+Optimus Prime
+UPPER:
+Optimus Prime
+REVERSE:
+OPTIMUS PRIME
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Bumblebee
+--------TOP---------
+FILTER:
+Ironhide
+UPPER:
+Ironhide
+REVERSE:
+IRONHIDE
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Sunstreaker
+UPPER:
+Sunstreaker
+REVERSE:
+SUNSTREAKER
+-------BOTTOM-------
+--------TOP---------
+FILTER:
+Ratchet
+UPPER:
+Ratchet
+REVERSE:
+RATCHET
+-------BOTTOM-------
+-------BOTTOM-------
+REVERSE:
+["emirP sumitpO","eebelbmuB","edihnorI","rekaertsnuS","tehctaR"]
+UPPER:
+["EMIRP SUMITPO","EEBELBMUB","EDIHNORI","REKAERTSNUS","TEHCTAR"]
+FILTER:
+["EMIRP SUMITPO","EDIHNORI","REKAERTSNUS","TEHCTAR"]
+--------TOP---------
+["EMIRP SUMITPO", "EDIHNORI", "REKAERTSNUS", "TEHCTAR"]
