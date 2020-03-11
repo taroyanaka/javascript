@@ -21,7 +21,7 @@
     <textarea name="bar" id="bar" cols="20" rows="100" required="required" maxlength="100000" style="display:none;"></textarea>
     <div id="description">If you use PC, You can use 1,2,3,4 key to choose the answer</div>
   </div>
-  <div class="RESULT">00:00:00</div>
+  <div id="TIME">00:00:00</div>
   <button id="TIMERPAUSE" onclick="TIMER.pause();">Timer pause</button>
   <button id="TIMERSTART" onclick="TIMER.start();">Timer start</button>
   <a name="reverse"  id="reverse" value="reverse" onclick="if(reverse){reverse=0}else{reverse=1};init();" style="padding: 5px 10px;background: #5876a3;">reverse</a>
@@ -143,7 +143,7 @@ const countAllPoint = () =>	document.querySelector(`#allPoint`).innerText = docu
 const countPoint = () => document.querySelector(`#point`).innerText = Number(document.querySelector(`#allPoint`).innerText) - document.querySelectorAll(`#QASet > div`).length;
 
 const TIMER = new easytimer.Timer();
-TIMER.addEventListener('secondsUpdated', () => document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString() );
+TIMER.addEventListener('secondsUpdated', () => document.querySelector('#TIME').innerText = TIMER.getTimeValues().toString() );
 const init = () =>{
 	insertData();
 	makeQAHTML(getQAAAAarray(makeQApair()));
