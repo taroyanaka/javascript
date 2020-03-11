@@ -74,14 +74,11 @@ const insertData = () =>{
 	const withoutZeroElmArray = R.map(R.drop(1), overTwoElementArray);
 	const onlyZeroElmArray = R.pipe(R.map(R.take(1)), R.unnest)(overTwoElementArray);
 	const withoutZeroElmArrayJoined = R.map(V => R.join(" ")(V), withoutZeroElmArray)
-
 	let onlyZeroElmArrayAndWithoutZeroElmArrayJoined = R.pipe(
 		R.transpose,
 	)([	onlyZeroElmArray, withoutZeroElmArrayJoined ]);
-
 	onlyZeroElmArrayAndWithoutZeroElmArrayJoined = reverse === 1 ? R.reverse(onlyZeroElmArrayAndWithoutZeroElmArrayJoined) : onlyZeroElmArrayAndWithoutZeroElmArrayJoined;
 	onlyZeroElmArrayAndWithoutZeroElmArrayJoined = shuffle === 1 ? shuffleArray(onlyZeroElmArrayAndWithoutZeroElmArrayJoined) : onlyZeroElmArrayAndWithoutZeroElmArrayJoined;
-
 	const [foo, bar] = [R.pluck(0, onlyZeroElmArrayAndWithoutZeroElmArrayJoined).join("\n"), R.pluck(1, onlyZeroElmArrayAndWithoutZeroElmArrayJoined).join("\n") ];
 	document.querySelector(`#foo`).value = foo;
 	document.querySelector(`#bar`).value = bar;
@@ -115,6 +112,7 @@ const makeQAHTML = (QAAAAarray) =>{
 	}
 	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet) );
 };
+
 let wrongQApair = [];
 const checkWorkOut = () =>{ if(document.querySelector(`#point`).innerText === document.querySelector(`#allPoint`).innerText){ TIMER.stop() } };
 const checkQA = (event) =>{
@@ -122,10 +120,8 @@ const checkQA = (event) =>{
 							document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
 							}else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) };
 							countPoint();
-
 							checkWorkOut();
 						  };
-
 
 const addHTML = (htmlstring) =>{
 	document.querySelector(`body`).insertAdjacentHTML(`beforeend`, htmlstring);
@@ -139,7 +135,6 @@ const show = (functionName) =>{
 }
 
 const countAllPoint = () =>	document.querySelector(`#allPoint`).innerText = document.querySelectorAll(`#QASet > div`).length;
-
 const countPoint = () => document.querySelector(`#point`).innerText = Number(document.querySelector(`#allPoint`).innerText) - document.querySelectorAll(`#QASet > div`).length;
 
 const TIMER = new easytimer.Timer();
@@ -149,12 +144,8 @@ const init = () =>{
 	makeQAHTML(getQAAAAarray(makeQApair()));
 	keyConfig();
 	countAllPoint();
-	// TIMER.start();
 }
 init();
-
-
 </script>
 </body>
-
 </html>
