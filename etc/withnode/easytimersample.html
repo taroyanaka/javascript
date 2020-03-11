@@ -42,7 +42,7 @@ const TIMEINPUT=()=>{
 const USETIMER=()=>{
 	STARTED=true;
 	SS = Number(SS) + Number(MM)*60 + Number(HH)*3600;
-	// TIMER.start({ countdown: true, startValues: {seconds: Number(SS)}, target: { seconds: 0 } });
+a	// TIMER.start({ countdown: true, startValues: {seconds: Number(SS)}, target: { seconds: 0 } });
 	TIMER.start({ countdown: true, startValues: {seconds: Number(SS)}, target: { seconds: 0 }, precision: 'secondTenths' });
 	// document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString();
 	document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']);
