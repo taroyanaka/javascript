@@ -27,6 +27,7 @@ const TIMER = new easytimer.Timer();
 TIMER.addEventListener('targetAchieved', () => document.querySelector('.RESULT').innerText = "TIME IS COMING!!" );
 // TIMER.addEventListener('secondsUpdated', () => document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString() );
 TIMER.addEventListener('secondTenthsUpdated', () => document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']) );
+// TIMER.addEventListener('secondTenthsUpdated', () => document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString(['minutes']) );
 let [HH, MM, SS] = ["","",""];
 let STARTED;
 
@@ -51,6 +52,17 @@ const TIMERSTOP=()=>TIMER.stop();
 const TIMERRESET=()=>TIMER.reset();
 // const RESUME=()=>TIMER.start({ countdown: true, startValues: {seconds: SS}, target: { seconds: 0 } });
 const RESUME=()=>TIMER.start({ countdown: true, startValues: {seconds: SS}, target: { seconds: 0 }, precision: 'secondTenths' });
+
+
+
+
+
+
+
+
+
+
+
 
 // OTHER~~~~~
 const SHOWALLVALUES=()=>console.table([HH,MM,SS,STARTEDdocument.querySelector(`#TIMEINPUT`).value]);
