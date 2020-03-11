@@ -143,7 +143,6 @@ const countAllPoint = () =>	document.querySelector(`#allPoint`).innerText = docu
 const countPoint = () => document.querySelector(`#point`).innerText = Number(document.querySelector(`#allPoint`).innerText) - document.querySelectorAll(`#QASet > div`).length;
 
 const TIMER = new easytimer.Timer();
-TIMER.addEventListener('targetAchieved', () => document.querySelector('.RESULT').innerText = "TIME IS COMING!!" );
 TIMER.addEventListener('secondsUpdated', () => document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString() );
 const init = () =>{
 	insertData();
