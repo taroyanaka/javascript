@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<aside><ul></ul></aside>
+<head>
+  <meta charset="UTF-8" />
+  <title>mini editor</title>
+  	<!-- <script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script> -->
+  	<script src="ramda.js"></script>
+	<!-- <script src="./easytimer.min.js"></script> -->
+  	<!-- <script src="allfunctions.js"></script> -->
+  	<script src="testfunctions.js"></script>
+	<!-- <script src="./ramdajshtmlresources.js"></script> -->
+
+	<!-- https://stackoverflow.com/questions/4364881/inserting-string-at-position-x-of-another-string -->
+</head>
+<body>
+
+<div id="result"></div>
+<textarea name="textField" id="textField" cols="30" rows="10" required="required" maxlength="100000" autofocus="autofocus"></textarea>
+<span><button id="makeAButtonFromTextField" onclick="makeAButtonFromTextField()">make A Button From Text Field</button></span>
+<span><button id="clearTextField" onclick="clearTextField();">clear Text Field</button></span>
+<div id="buttonlist">
+	<button id="brackets" data-str="[]" onclick="insertAndExeAndOutPut(event);">[]</button>
+	<button id="Parentheses" data-str="()" onclick="insertAndExeAndOutPut(event);">()</button>
+	<button id="comma" data-str="," onclick="insertAndExeAndOutPut(event);">,</button>
+	<button id="add" data-str="R.add(1,2)" onclick="insertAndExeAndOutPut(event)">add</button>
+	<button onclick="movePositionLeft(howLongMovePosition)"><</button>
+	<button onclick="movePositionRight(howLongMovePosition)">></button>
+	<button onclick="movePositionMaxLeft()"> << </button>
+	<button onclick="movePositionMaxRight()"> >> </button>
+</div>
+
+<script>
+let textPosition=0;
+let howLongMovePosition=1;
+const movePositionLeft = (howLongMovePosition) => {
+	try{if(0 > textPosition){throw new Error()}
+		document.querySelector('#textField').focus();
+		textPosition<0 ? textPosition=0 : textPosition-=howLongMovePosition;
+		document.querySelector('#textField').setSelectionRange(textPosition,textPosition);
+	}catch(e){}
+}
+const movePositionRight = (howLongMovePosition) => {
+	try{if(document.querySelector('#textField').value.length < textPosition){throw new Error()}
+		document.querySelector('#textField').focus();
+		textPosition<0 ? textPosition=0 : textPosition+=howLongMovePosition;
+		document.querySelector('#textField').setSelectionRange(textPosition,textPosition);
+	}catch(e){}
+}
+
+const len = ()=> document.querySelector('#textField').value.length;
+const movePositionMaxLeft = () => textPosition=0; document.querySelector('#textField').focus(); document.querySelector('#textField').setSelectionRange(0,0);
+const movePositionMaxRight = () => textPosition=len(); document.querySelector('#textField').focus(); document.querySelector('#textField').setSelectionRange(len(),len()) ;
+
+const codeExe = (sourceCode) => Function('"use strict";return (' + sourceCode + ')')();
+const codeExeFromTextFieldOutPutToResult = () => document.querySelector(`#result`).innerText = codeExe(document.querySelector("#textField").value)
+const insert0 = (event) => document.querySelector("#textField").value += event.target.dataset.str
+
+// const insert1 = (event) => {
+//  const a = document.querySelector("#textField").value;
+// 	const b = event.target.dataset.str;
+// 	document.querySelector("#textField").value = [a.slice(0, textPosition), b, a.slice(textPosition)].join('');
+// }
+const insert1 = (event) => document.querySelector("#textField").value = [document.querySelector("#textField").value.slice(0, textPosition), event.target.dataset.str, document.querySelector("#textField").value.slice(textPosition)].join('');
+const insertAndExeAndOutPut = (event) => { insert1(event); codeExeFromTextFieldOutPutToResult() };
+const makeButton = (fooArray) => {
+	const makeButtonHTMLStr = (ELEMENT,KEY) => `<button class="savedStr" data-str="${ELEMENT}" onclick="insertAndExeAndOutPut(event);">${ELEMENT}</button>`;
+	document.querySelector(`#buttonlist`).insertAdjacentHTML(`beforeend`,  fooArray.map(makeButtonHTMLStr).join("")  );
+};
+makeButton([`R.subtract(10, 8)`,`R.sum([2,4,6,8,100,1])`]);
+const makeAButtonFromTextField = () => document.querySelector('#textField').value === "" ? null : makeButton([document.querySelector('#textField').value]);
+const clearTextField = () => document.querySelector('#textField').value = "";
+
+document.querySelector(`#textField`).addEventListener('input', () => {	codeExeFromTextFieldOutPutToResult() })
+
+</script>
+</body>
+</html>
