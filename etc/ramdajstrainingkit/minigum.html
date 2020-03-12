@@ -20,15 +20,19 @@
 <textarea name="textField" id="textField" cols="30" rows="10" required="required" maxlength="100000" autofocus="autofocus"></textarea>
 <span><button id="makeAButtonFromTextField" onclick="makeAButtonFromTextField()">make A Button From Text Field</button></span>
 <span><button id="clearTextField" onclick="clearTextField();">clear Text Field</button></span>
-<div id="buttonlist">
-	<button id="brackets" data-str="[]" onclick="insertAndExeAndOutPut(event);">[]</button>
-	<button id="Parentheses" data-str="()" onclick="insertAndExeAndOutPut(event);">()</button>
-	<button id="comma" data-str="," onclick="insertAndExeAndOutPut(event);">,</button>
-	<button id="add" data-str="R.add(1,2)" onclick="insertAndExeAndOutPut(event)">add</button>
-	<button onclick="movePositionLeft(howLongMovePosition)"><</button>
-	<button onclick="movePositionRight(howLongMovePosition)">></button>
-	<button onclick="movePositionMaxLeft()"> << </button>
-	<button onclick="movePositionMaxRight()"> >> </button>
+<span><button id="saveTextField" onclick="saveTextField();">save Text Field</button></span>
+<span><button id="loadTextFieldAndCodeExeFromTextFieldOutPutToResult" onclick="loadTextField();codeExeFromTextFieldOutPutToResult();">load Text Field</button></span>
+<span><button id="saveButtonList" onclick="saveButtonList();">save Button List</button></span>
+<span><button id="loadButtonListAndDeleteAndInsert" onclick="loadButtonListAndDeleteAndInsert();">load Button List</button></span>
+<div id="buttonList">
+	<button class="buttonListItem" id="brackets" data-str="[]" onclick="insertAndExeAndOutPut(event);">[]</button>
+	<button class="buttonListItem" id="Parentheses" data-str="()" onclick="insertAndExeAndOutPut(event);">()</button>
+	<button class="buttonListItem" id="comma" data-str="," onclick="insertAndExeAndOutPut(event);">,</button>
+	<button class="buttonListItem" id="add" data-str="R.add(1,2)" onclick="insertAndExeAndOutPut(event)">add</button>
+	<button class="buttonListItem" onclick="movePositionLeft(howLongMovePosition)"><</button>
+	<button class="buttonListItem" onclick="movePositionRight(howLongMovePosition)">></button>
+	<button class="buttonListItem" onclick="movePositionMaxLeft()"> << </button>
+	<button class="buttonListItem" onclick="movePositionMaxRight()"> >> </button>
 </div>
 
 <script>
@@ -54,8 +58,8 @@ const movePositionMaxLeft = () => textPosition=0; document.querySelector('#textF
 const movePositionMaxRight = () => textPosition=len(); document.querySelector('#textField').focus(); document.querySelector('#textField').setSelectionRange(len(),len()) ;
 
 const codeExe = (sourceCode) => Function('"use strict";return (' + sourceCode + ')')();
-const codeExeFromTextFieldOutPutToResult = () => document.querySelector(`#result`).innerText = codeExe(document.querySelector("#textField").value)
-const insert0 = (event) => document.querySelector("#textField").value += event.target.dataset.str
+const codeExeFromTextFieldOutPutToResult = () => document.querySelector(`#result`).innerText = codeExe(document.querySelector("#textField").value);
+const insert0 = (event) => document.querySelector("#textField").value += event.target.dataset.str;
 
 // const insert1 = (event) => {
 //  const a = document.querySelector("#textField").value;
@@ -65,12 +69,20 @@ const insert0 = (event) => document.querySelector("#textField").value += event.t
 const insert1 = (event) => document.querySelector("#textField").value = [document.querySelector("#textField").value.slice(0, textPosition), event.target.dataset.str, document.querySelector("#textField").value.slice(textPosition)].join('');
 const insertAndExeAndOutPut = (event) => { insert1(event); codeExeFromTextFieldOutPutToResult() };
 const makeButton = (fooArray) => {
-	const makeButtonHTMLStr = (ELEMENT,KEY) => `<button class="savedStr" data-str="${ELEMENT}" onclick="insertAndExeAndOutPut(event);">${ELEMENT}</button>`;
-	document.querySelector(`#buttonlist`).insertAdjacentHTML(`beforeend`,  fooArray.map(makeButtonHTMLStr).join("")  );
+	const makeButtonHTMLStr = (ELEMENT,KEY) => `<button class="buttonListItem" data-str="${ELEMENT}" onclick="insertAndExeAndOutPut(event);">${ELEMENT}</button>`;
+	document.querySelector(`#buttonList`).insertAdjacentHTML(`beforeEnd`,  fooArray.map(makeButtonHTMLStr).join("")  );
 };
 makeButton([`R.subtract(10, 8)`,`R.sum([2,4,6,8,100,1])`]);
 const makeAButtonFromTextField = () => document.querySelector('#textField').value === "" ? null : makeButton([document.querySelector('#textField').value]);
 const clearTextField = () => document.querySelector('#textField').value = "";
+const saveTextField = () => localStorage.textField = JSON.stringify(document.querySelector('#textField').value);
+const loadTextField = () => document.querySelector('#textField').value = JSON.parse(localStorage.textField);
+
+const saveButtonList = () => localStorage.buttonListItem = JSON.stringify( document.querySelector("#buttonList").innerHTML );
+const loadButtonList = () => document.querySelector(`#buttonList`).insertAdjacentHTML(`beforeEnd`, JSON.parse(localStorage.buttonListItem) );
+const loadButtonListAndDeleteAndInsert = () => {	document.querySelectorAll(".buttonListItem").forEach(E=>{E.parentNode.removeChild(E)});	loadButtonList();}
+
+
 
 document.querySelector(`#textField`).addEventListener('input', () => {	codeExeFromTextFieldOutPutToResult() })
 
