@@ -10,11 +10,15 @@
 	<!-- <script src="./easytimer.min.js"></script> -->
   	<!-- <script src="allfunctions.js"></script> -->
   	<script src="testfunctions.js"></script>
+  	<script src="RExtensionText.js"></script>
 	<!-- <script src="./ramdajshtmlresources.js"></script> -->
 
 	<!-- https://stackoverflow.com/questions/4364881/inserting-string-at-position-x-of-another-string -->
 </head>
 <body>
+<div>
+	<span><button id="rextensiontextinsert" onclick="RExtensionExe()">RExtension</button></span>
+</div>
 <div>
 	<span><button id="saveTextField" onclick="saveTextField();">save Text Field</button></span>
 	<span><button id="loadTextFieldAndCodeExeFromTextFieldOutPutToResult" onclick="loadTextField();codeExeFromTextFieldOutPutToResult();">load Text Field</button></span>
@@ -76,16 +80,10 @@ const movePositionMaxRight = () => textPosition=len(); document.querySelector('#
 const codeExe = (sourceCode) => Function('"use strict";return (' + sourceCode + ')')();
 const codeExeFromTextFieldOutPutToResult = () => document.querySelector(`#result`).innerText = codeExe(document.querySelector("#textField").value);
 
-// const insert0 = (event) => document.querySelector("#textField").value += event.target.dataset.str;
-// const insert1 = (event) => {
-//  const a = document.querySelector("#textField").value;
-// 	const b = event.target.dataset.str;
-// 	document.querySelector("#textField").value = [a.slice(0, textPosition), b, a.slice(textPosition)].join('');
-// }
-const insert1 = (event) => document.querySelector("#textField").value = [document.querySelector("#textField").value.slice(0, textPosition), event.target.dataset.str, document.querySelector("#textField").value.slice(textPosition)].join('');
+const insertStr = (event) => document.querySelector("#textField").value = [document.querySelector("#textField").value.slice(0, textPosition), event.target.dataset.str, document.querySelector("#textField").value.slice(textPosition)].join('');
 const insertReturn = () => document.querySelector("#textField").value += "\n";
 
-const insertAndExeAndOutPut = (event) => { insert1(event); codeExeFromTextFieldOutPutToResult() };
+const insertAndExeAndOutPut = (event) => { insertStr(event); codeExeFromTextFieldOutPutToResult() };
 const makeButton = (fooArray) => {
 	const makeButtonHTMLStr = (ELEMENT,KEY) => `<button class="editableButtonListItem" data-str="${ELEMENT}" onclick="insertAndExeAndOutPut(event);">${ELEMENT}</button>`;
 	document.querySelector(`#editableButtonList`).insertAdjacentHTML(`beforeEnd`,  fooArray.map(makeButtonHTMLStr).join("")  );
@@ -120,6 +118,16 @@ const loadEditableButtonListArray = () =>{
 	document.querySelector(`#editableButtonListArray`).insertAdjacentHTML(`beforeEnd`, JSON.parse(localStorage.editableButtonListArray)[1] );
 }
 const loadEditableButtonListAndDeleteAndInsert = () =>{removeEditableButtonListArrayItem();removeButtonList();loadEditableButtonListArray();}
+
+const RExtensionExe = async () =>{
+	await removeButtonList();
+	document.querySelector('#textField').value = await RExtensionText;makeButtonListFromTextField();
+	await insertEditableButtonListArray();
+	await makeButtonListFromTextField();
+	await clearTextField();
+	await removeButtonList();
+	await makeButtonListFromTextField();
+}
 
 document.querySelector(`#textField`).addEventListener('input', () => {	codeExeFromTextFieldOutPutToResult() })
 </script>
