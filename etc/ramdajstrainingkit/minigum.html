@@ -9,7 +9,7 @@
   	<script src="ramda.js"></script>
 	<!-- <script src="./easytimer.min.js"></script> -->
   	<!-- <script src="allfunctions.js"></script> -->
-  	<script src="testfunctions.js"></script>
+  	<!-- <script src="testfunctions.js"></script> -->
   	<script src="RExtensionText.js"></script>
 	<!-- <script src="./ramdajshtmlresources.js"></script> -->
 
@@ -111,8 +111,8 @@ const saveEditableButtonListArray = () =>{
 	[
 		editableButtonListArray,
 		document.querySelector("#editableButtonListArray").innerHTML
-	]
-)}
+	])
+}
 const loadEditableButtonListArray = () =>{
 	editableButtonListArray = JSON.parse(localStorage.editableButtonListArray)[0];
 	document.querySelector(`#editableButtonListArray`).insertAdjacentHTML(`beforeEnd`, JSON.parse(localStorage.editableButtonListArray)[1] );
