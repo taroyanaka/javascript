@@ -15,25 +15,41 @@
 	<!-- https://stackoverflow.com/questions/4364881/inserting-string-at-position-x-of-another-string -->
 </head>
 <body>
-
+<div>
+	<span><button id="saveTextField" onclick="saveTextField();">save Text Field</button></span>
+	<span><button id="loadTextFieldAndCodeExeFromTextFieldOutPutToResult" onclick="loadTextField();codeExeFromTextFieldOutPutToResult();">load Text Field</button></span>
+</div>
 <div id="result"></div>
 <textarea name="textField" id="textField" cols="30" rows="10" required="required" maxlength="100000" autofocus="autofocus"></textarea>
-<span><button id="makeAButtonFromTextField" onclick="makeAButtonFromTextField()">make A Button From Text Field</button></span>
-<span><button id="clearTextField" onclick="clearTextField();">clear Text Field</button></span>
-<span><button id="saveTextField" onclick="saveTextField();">save Text Field</button></span>
-<span><button id="loadTextFieldAndCodeExeFromTextFieldOutPutToResult" onclick="loadTextField();codeExeFromTextFieldOutPutToResult();">load Text Field</button></span>
-<span><button id="saveButtonList" onclick="saveButtonList();">save Button List</button></span>
-<span><button id="loadButtonListAndDeleteAndInsert" onclick="loadButtonListAndDeleteAndInsert();">load Button List</button></span>
-<div id="buttonList">
-	<button class="buttonListItem" id="brackets" data-str="[]" onclick="insertAndExeAndOutPut(event);">[]</button>
-	<button class="buttonListItem" id="Parentheses" data-str="()" onclick="insertAndExeAndOutPut(event);">()</button>
-	<button class="buttonListItem" id="comma" data-str="," onclick="insertAndExeAndOutPut(event);">,</button>
-	<button class="buttonListItem" id="add" data-str="R.add(1,2)" onclick="insertAndExeAndOutPut(event)">add</button>
-	<button class="buttonListItem" onclick="movePositionLeft(howLongMovePosition)"><</button>
-	<button class="buttonListItem" onclick="movePositionRight(howLongMovePosition)">></button>
-	<button class="buttonListItem" onclick="movePositionMaxLeft()"> << </button>
-	<button class="buttonListItem" onclick="movePositionMaxRight()"> >> </button>
+<div id="operationButtonList">
+	<button class="operationButtonListItem" id="brackets" data-str="[]" onclick="insertAndExeAndOutPut(event);">[]</button>
+	<button class="operationButtonListItem" id="Parentheses" data-str="()" onclick="insertAndExeAndOutPut(event);">()</button>
+	<button class="operationButtonListItem" id="comma" data-str="," onclick="insertAndExeAndOutPut(event);">,</button>
+	<!-- <button class="operationButtonListItem" id="add" data-str="R.add(1,2)" onclick="insertAndExeAndOutPut(event)">add</button> -->
+	<button class="operationButtonListItem" onclick="movePositionLeft(howLongMovePosition)"><</button>
+	<button class="operationButtonListItem" onclick="movePositionRight(howLongMovePosition)">></button>
+	<button class="operationButtonListItem" onclick="movePositionMaxLeft()"> << </button>
+	<button class="operationButtonListItem" onclick="movePositionMaxRight()"> >> </button>
+	<button class="operationButtonListItem" id="return" onclick="insertReturn();movePositionMaxRight();"> ⏎ </button>
 </div>
+<div>
+	<span><button id="makeAButtonFromTextField" onclick="makeAButtonFromTextField()">make A Button From Text Field</button></span>
+	<span><button id="makeButtonListFromTextField" onclick="makeButtonListFromTextField()">makeButtonListFromTextField</button></span>
+	<span><button id="clearTextField" onclick="clearTextField();">clear Text Field</button></span>
+</div>
+<div>
+	<span><button id="insertEditableButtonListArray" onclick="insertEditableButtonListArray();">insertEditableButtonListArray</button></span>
+	<span><button id="makeEditableButtonListArrayIndexList" onclick="makeEditableButtonListArrayIndexList(editableButtonListArray);">makeEditableButtonListArrayIndexList</button></span>
+</div>
+<div>
+	<span><button id="saveEditableButtonListArray" onclick="saveEditableButtonListArray();">saveEditableButtonListArray</button></span>
+	<span><button id="loadEditableButtonListAndDeleteAndInsert" onclick="loadEditableButtonListAndDeleteAndInsert();">loadEditableButtonListAndDeleteAndInsert</button></span>
+</div>
+<div id="editableButtonListArray"></div>
+<div>
+	<span><button id="removeButtonList" onclick="removeButtonList();">removeButtonList</button></span>
+</div>
+<div id="editableButtonList"></div>
 
 <script>
 let textPosition=0;
@@ -59,33 +75,53 @@ const movePositionMaxRight = () => textPosition=len(); document.querySelector('#
 
 const codeExe = (sourceCode) => Function('"use strict";return (' + sourceCode + ')')();
 const codeExeFromTextFieldOutPutToResult = () => document.querySelector(`#result`).innerText = codeExe(document.querySelector("#textField").value);
-const insert0 = (event) => document.querySelector("#textField").value += event.target.dataset.str;
 
+// const insert0 = (event) => document.querySelector("#textField").value += event.target.dataset.str;
 // const insert1 = (event) => {
 //  const a = document.querySelector("#textField").value;
 // 	const b = event.target.dataset.str;
 // 	document.querySelector("#textField").value = [a.slice(0, textPosition), b, a.slice(textPosition)].join('');
 // }
 const insert1 = (event) => document.querySelector("#textField").value = [document.querySelector("#textField").value.slice(0, textPosition), event.target.dataset.str, document.querySelector("#textField").value.slice(textPosition)].join('');
+const insertReturn = () => document.querySelector("#textField").value += "\n";
+
 const insertAndExeAndOutPut = (event) => { insert1(event); codeExeFromTextFieldOutPutToResult() };
 const makeButton = (fooArray) => {
-	const makeButtonHTMLStr = (ELEMENT,KEY) => `<button class="buttonListItem" data-str="${ELEMENT}" onclick="insertAndExeAndOutPut(event);">${ELEMENT}</button>`;
-	document.querySelector(`#buttonList`).insertAdjacentHTML(`beforeEnd`,  fooArray.map(makeButtonHTMLStr).join("")  );
+	const makeButtonHTMLStr = (ELEMENT,KEY) => `<button class="editableButtonListItem" data-str="${ELEMENT}" onclick="insertAndExeAndOutPut(event);">${ELEMENT}</button>`;
+	document.querySelector(`#editableButtonList`).insertAdjacentHTML(`beforeEnd`,  fooArray.map(makeButtonHTMLStr).join("")  );
 };
-makeButton([`R.subtract(10, 8)`,`R.sum([2,4,6,8,100,1])`]);
+makeButton([`R.add(1, 2)`,`R.subtract(10, 8)`,`R.sum([2,4,6,8,100,1])`]);
 const makeAButtonFromTextField = () => document.querySelector('#textField').value === "" ? null : makeButton([document.querySelector('#textField').value]);
+const makeButtonListFromTextField = () => document.querySelector('#textField').value === "" ? null : makeButton(document.querySelector('#textField').value.split("\n"));
 const clearTextField = () => document.querySelector('#textField').value = "";
 const saveTextField = () => localStorage.textField = JSON.stringify(document.querySelector('#textField').value);
 const loadTextField = () => document.querySelector('#textField').value = JSON.parse(localStorage.textField);
 
-const saveButtonList = () => localStorage.buttonListItem = JSON.stringify( document.querySelector("#buttonList").innerHTML );
-const loadButtonList = () => document.querySelector(`#buttonList`).insertAdjacentHTML(`beforeEnd`, JSON.parse(localStorage.buttonListItem) );
-const loadButtonListAndDeleteAndInsert = () => {	document.querySelectorAll(".buttonListItem").forEach(E=>{E.parentNode.removeChild(E)});	loadButtonList();}
+let editableButtonListArray=[];
+const insertEditableButtonListArray = () => editableButtonListArray.push( Array.from(document.querySelectorAll(".editableButtonListItem")).map(V=>{return V.innerHTML}) );
+const makeEditableButtonListArrayIndexList = (fooArray) => {
+	document.querySelectorAll(".editableButtonListArrayItem").forEach(E=>{E.parentNode.removeChild(E)});
+	const makeEditableButtonListArrayIndexListHTMLStr = (ELEMENT,KEY) => `<button class="editableButtonListArrayItem" data-idx="${KEY}" onclick="addEditableButtonList(event);">${KEY}</button>`;
+	document.querySelector(`#editableButtonListArray`).insertAdjacentHTML(`beforeEnd`,  fooArray.map(makeEditableButtonListArrayIndexListHTMLStr).join("")  );
+};
+const addEditableButtonList = () => makeButton(editableButtonListArray[Number(event.target.dataset.idx)]);
 
-
+const removeButtonList = () => {	document.querySelectorAll(".editableButtonListItem").forEach(E=>{E.parentNode.removeChild(E)}); }
+const removeEditableButtonListArrayItem = () => {	document.querySelectorAll(".editableButtonListArrayItem").forEach(E=>{E.parentNode.removeChild(E)}); }
+const saveEditableButtonListArray = () =>{
+	localStorage.editableButtonListArray = JSON.stringify( 
+	[
+		editableButtonListArray,
+		document.querySelector("#editableButtonListArray").innerHTML
+	]
+)}
+const loadEditableButtonListArray = () =>{
+	editableButtonListArray = JSON.parse(localStorage.editableButtonListArray)[0];
+	document.querySelector(`#editableButtonListArray`).insertAdjacentHTML(`beforeEnd`, JSON.parse(localStorage.editableButtonListArray)[1] );
+}
+const loadEditableButtonListAndDeleteAndInsert = () =>{removeEditableButtonListArrayItem();removeButtonList();loadEditableButtonListArray();}
 
 document.querySelector(`#textField`).addEventListener('input', () => {	codeExeFromTextFieldOutPutToResult() })
-
 </script>
 </body>
 </html>
