@@ -32,13 +32,13 @@
 	<span><button id="showKeyboard" onclick="showKeyboard();">showKeyboard</button></span>
 </div>
 <div id="result"></div>
-<!-- <textarea name="textField" id="textField" cols="30" rows="10" required="required" maxlength="100000" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);"></textarea> -->
 <textarea name="textField" id="textField" cols="50" rows="1" required="required" maxlength="100000" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);"></textarea>
 <div id="operationButtonList">
-	<button class="operationButtonListItem" id="brackets" data-str="[]" onclick="insertAndExeAndOutPut(event);">[]</button>
-	<button class="operationButtonListItem" id="Parentheses" data-str="()" onclick="insertAndExeAndOutPut(event);">()</button>
+	<button class="operationButtonListItem" id="leftBrackets" data-str="[" onclick="insertAndExeAndOutPut(event);">[</button>
+	<button class="operationButtonListItem" id="rightBrackets" data-str="]" onclick="insertAndExeAndOutPut(event);">]</button>
+	<button class="operationButtonListItem" id="leftParentheses" data-str="(" onclick="insertAndExeAndOutPut(event);">(</button>
+	<button class="operationButtonListItem" id="rightParentheses" data-str=")" onclick="insertAndExeAndOutPut(event);">)</button>
 	<button class="operationButtonListItem" id="comma" data-str="," onclick="insertAndExeAndOutPut(event);">,</button>
-	<!-- <button class="operationButtonListItem" id="add" data-str="R.add(1,2)" onclick="insertAndExeAndOutPut(event)">add</button> -->
 	<button class="operationButtonListItem" onclick="movePositionLeft(howLongMovePosition)"><</button>
 	<button class="operationButtonListItem" onclick="movePositionRight(howLongMovePosition)">></button>
 	<button class="operationButtonListItem" onclick="movePositionMaxLeft()"> << </button>
