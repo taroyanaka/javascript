@@ -28,6 +28,8 @@
 	<span><button id="loadTextFieldAndCodeExeFromTextFieldOutPutToResult" onclick="loadTextField();codeExeFromTextFieldOutPutToResult();">load Text Field</button></span>
 	<span><button id="rowSizeUp" onclick="rowSizeUp();">rowSizeUp</button></span>
 	<span><button id="rowSizeDown" onclick="rowSizeDown();">rowSizeDown</button></span>
+	<span><button id="dontShowKeyboard" onclick="dontShowKeyboard();">dontShowKeyboard</button></span>
+	<span><button id="showKeyboard" onclick="showKeyboard();">showKeyboard</button></span>
 </div>
 <div id="result"></div>
 <!-- <textarea name="textField" id="textField" cols="30" rows="10" required="required" maxlength="100000" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);"></textarea> -->
@@ -59,8 +61,11 @@
 <div id="editableButtonList"></div>
 
 <script>
-	const rowSizeUp = ()=> document.querySelector(`#textField`).rows="10";
-	const rowSizeDown = ()=> document.querySelector(`#textField`).rows="1";
+const rowSizeUp = ()=> document.querySelector(`#textField`).rows="10";
+const rowSizeDown = ()=> document.querySelector(`#textField`).rows="1";
+const dontShowKeyboard = ()=> document.querySelector(`#textField`).setAttribute("readonly","readonly");
+const showKeyboard = ()=> document.querySelector(`#textField`).removeAttribute("readonly");
+
 let textPosition=0;
 let howLongMovePosition=1;
 const movePositionLeft = (howLongMovePosition) => {
