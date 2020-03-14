@@ -26,9 +26,12 @@
 <div>
 	<span><button id="saveTextField" onclick="saveTextField();">save Text Field</button></span>
 	<span><button id="loadTextFieldAndCodeExeFromTextFieldOutPutToResult" onclick="loadTextField();codeExeFromTextFieldOutPutToResult();">load Text Field</button></span>
+	<span><button id="rowSizeUp" onclick="rowSizeUp();">rowSizeUp</button></span>
+	<span><button id="rowSizeDown" onclick="rowSizeDown();">rowSizeDown</button></span>
 </div>
 <div id="result"></div>
-<textarea name="textField" id="textField" cols="30" rows="10" required="required" maxlength="100000" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);"></textarea>
+<!-- <textarea name="textField" id="textField" cols="30" rows="10" required="required" maxlength="100000" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);"></textarea> -->
+<textarea name="textField" id="textField" cols="50" rows="1" required="required" maxlength="100000" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);"></textarea>
 <div id="operationButtonList">
 	<button class="operationButtonListItem" id="brackets" data-str="[]" onclick="insertAndExeAndOutPut(event);">[]</button>
 	<button class="operationButtonListItem" id="Parentheses" data-str="()" onclick="insertAndExeAndOutPut(event);">()</button>
@@ -56,6 +59,8 @@
 <div id="editableButtonList"></div>
 
 <script>
+	const rowSizeUp = ()=> document.querySelector(`#textField`).rows="10";
+	const rowSizeDown = ()=> document.querySelector(`#textField`).rows="1";
 let textPosition=0;
 let howLongMovePosition=1;
 const movePositionLeft = (howLongMovePosition) => {
@@ -83,7 +88,7 @@ const codeExeFromTextFieldOutPutToResult = () => document.querySelector(`#result
 const insertStr = (event) => document.querySelector("#textField").value = [document.querySelector("#textField").value.slice(0, textPosition), event.target.dataset.str, document.querySelector("#textField").value.slice(textPosition)].join('');
 const insertReturn = () => document.querySelector("#textField").value += "\n";
 
-const insertAndExeAndOutPut = (event) => { insertStr(event); codeExeFromTextFieldOutPutToResult() };
+const insertAndExeAndOutPut = (event) => { insertStr(event); movePositionMaxRight(); codeExeFromTextFieldOutPutToResult() };
 const makeButton = (fooArray) => {
 	const makeButtonHTMLStr = (ELEMENT,KEY) => `<button class="editableButtonListItem" data-str="${ELEMENT}" onclick="insertAndExeAndOutPut(event);">${ELEMENT}</button>`;
 	document.querySelector(`#editableButtonList`).insertAdjacentHTML(`beforeEnd`,  fooArray.map(makeButtonHTMLStr).join("")  );
