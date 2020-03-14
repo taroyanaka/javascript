@@ -62,7 +62,7 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
             const makeLiTag = (value,index) => chapter += `<li data-id="${index}">${value}</li>`;
             R.forEachObjIndexed(makeLiTag, R.map(R.toString,dropWordSet0) );
         document.querySelector('ul#chapter').insertAdjacentHTML('afterBegin', chapter);
-        async function getStr(e){
+         function getStr(e){
             document.querySelector("#id_textBox1").value = await R.join(' ', dropWordSet0[parseInt(e.target.dataset.id,10)]);
             await init();
         }
@@ -199,7 +199,7 @@ suggested, and I snobbishly repeat, a sense of the fundamental decencies is parc
             document.querySelectorAll(".qustionButton").forEach(V => { V.style.backgroundColor = "gray" });
             // wrongAnswer = [];
         }
-        async function test() {
+         function test() {
             document.querySelector("#id_textBox0").value = await `my younger and more `;
 			document.querySelectorAll("input#wordNumber0").item(0).value = await 2;
 			document.querySelectorAll("input#wordNumber0").item(0).click();

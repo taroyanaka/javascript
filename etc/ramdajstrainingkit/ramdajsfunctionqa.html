@@ -107,10 +107,10 @@ const makeQAHTML = (QAAAAarray) =>{
 					<input type="button" value="${shuffledAAAA[1]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
 					<input type="button" value="${shuffledAAAA[2]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
 					<input type="button" value="${shuffledAAAA[3]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
-					${referenceFunction}
+					${referenceFunction.join("")}
 			   </div>`;
 	}
-	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet) );
+	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet).join("") );
 };
 
 let wrongQApair = [];
