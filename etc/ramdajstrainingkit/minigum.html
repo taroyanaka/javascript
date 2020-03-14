@@ -15,6 +15,7 @@
 
 	<!-- https://stackoverflow.com/questions/4364881/inserting-string-at-position-x-of-another-string -->
 	<!-- https://stackoverflow.com/questions/37379694/javascript-how-to-stop-pinch-zoom-multi-touch-input-attacks -->
+	<!-- https://stackoverflow.com/questions/56024398/disable-double-tap-zoom-resize-on-safari-ios12 -->
 </head>
 <body>
 <div>
@@ -78,7 +79,16 @@ const rowSizeDown = ()=> document.querySelector(`#textField`).rows=1;
 const dontShowKeyboard = ()=> document.querySelector(`#textField`).setAttribute("readonly","readonly");
 const showKeyboard = ()=> document.querySelector(`#textField`).removeAttribute("readonly");
 
-const stopPinchZoom = ()=>  {   if(event.touches.length > 1){       event.preventDefault()    } };
+// const stopPinchZoom = ()=>  {   if(event.touches.length > 1){       event.preventDefault()    } };
+const stopPinchZoom = ()=>  {   
+	document.addEventListener("touchstart", event => {
+    if(event.touches.length > 1) {
+        console.log("zoom plz stahp");
+        event.preventDefault();
+        event.stopPropagation(); // maybe useless
+    }
+}, {passive: false});
+}
 
 
 const movePositionLeft = (howLongMovePosition) => {
