@@ -32,7 +32,9 @@
 	<span><button id="showKeyboard" onclick="showKeyboard();">showKeyboard</button></span>
 </div>
 <div id="result"></div>
+<span><button id="undo" onclick="undo();">undo</button></span>
 <textarea name="textField" id="textField" cols="50" rows="1" required="required" maxlength="100000" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);"></textarea>
+<span><button id="redo" onclick="redo();">redo</button></span>
 <div id="operationButtonList">
 	<button class="operationButtonListItem" id="leftBrackets" data-str="[" onclick="insertAndExeAndOutPut(event);">[</button>
 	<button class="operationButtonListItem" id="rightBrackets" data-str="]" onclick="insertAndExeAndOutPut(event);">]</button>
@@ -44,6 +46,7 @@
 	<button class="operationButtonListItem" onclick="movePositionMaxLeft()"> << </button>
 	<button class="operationButtonListItem" onclick="movePositionMaxRight()"> >> </button>
 	<button class="operationButtonListItem" id="return" onclick="insertReturn();movePositionMaxRight();"> ⏎ </button>
+	<button class="operationButtonListItem" id="deleteStrNlength" onclick="deleteStrNlength(1);"> del </button>
 </div>
 <div>
 	<span><button id="makeAButtonFromTextField" onclick="makeAButtonFromTextField()">make A Button From Text Field</button></span>
@@ -61,13 +64,18 @@
 <div id="editableButtonList"></div>
 
 <script>
-const rowSizeUp = ()=> document.querySelector(`#textField`).rows="10";
-const rowSizeDown = ()=> document.querySelector(`#textField`).rows="1";
+let textPosition=0;
+let howLongMovePosition=1;
+let editableButtonListArray=[];
+// historyOfTextPositionAndTextFieldValueArray is [[textPosition, document.querySelector('#textField').value],...]
+let historyOfTextPositionAndTextFieldValueArray = [];
+let historyOfTextPositionAndTextFieldValueArrayIdx;
+
+const rowSizeUp = ()=> document.querySelector(`#textField`).rows+=1;
+const rowSizeDown = ()=> document.querySelector(`#textField`).rows=1;
 const dontShowKeyboard = ()=> document.querySelector(`#textField`).setAttribute("readonly","readonly");
 const showKeyboard = ()=> document.querySelector(`#textField`).removeAttribute("readonly");
 
-let textPosition=0;
-let howLongMovePosition=1;
 const movePositionLeft = (howLongMovePosition) => {
 	try{if(0 > textPosition){throw new Error()}
 		document.querySelector('#textField').focus();
@@ -92,8 +100,14 @@ const codeExeFromTextFieldOutPutToResult = () => document.querySelector(`#result
 
 const insertStr = (event) => document.querySelector("#textField").value = [document.querySelector("#textField").value.slice(0, textPosition), event.target.dataset.str, document.querySelector("#textField").value.slice(textPosition)].join('');
 const insertReturn = () => document.querySelector("#textField").value += "\n";
+const deleteStrNlength =(nLength) => {document.querySelector('#textField').value = R.remove(textPosition-nLength, nLength, document.querySelector('#textField').value).join("");textPosition-=nLength;}
 
-const insertAndExeAndOutPut = (event) => { insertStr(event); movePositionMaxRight(); codeExeFromTextFieldOutPutToResult() };
+const pushHistoryOfTextPositionAndTextFieldValueArray = () => {
+	document.querySelector('#textField').value !== "" ? historyOfTextPositionAndTextFieldValueArray.push([textPosition, document.querySelector('#textField').value]) : null;
+	historyOfTextPositionAndTextFieldValueArrayIdx = historyOfTextPositionAndTextFieldValueArray.length-1;
+}
+const insertAndExeAndOutPut = (event) => { insertStr(event); movePositionMaxRight(); pushHistoryOfTextPositionAndTextFieldValueArray(); codeExeFromTextFieldOutPutToResult(); };
+// const insertAndExeAndOutPut = (event) => { insertStr(event); movePositionMaxRight(); codeExeFromTextFieldOutPutToResult(); };
 const makeButton = (fooArray) => {
 	const makeButtonHTMLStr = (ELEMENT,KEY) => `<button class="editableButtonListItem" data-str="${ELEMENT}" onclick="insertAndExeAndOutPut(event);">${ELEMENT}</button>`;
 	document.querySelector(`#editableButtonList`).insertAdjacentHTML(`beforeEnd`,  fooArray.map(makeButtonHTMLStr).join("")  );
@@ -102,10 +116,29 @@ makeButton([`R.add(1, 2)`,`R.subtract(10, 8)`,`R.sum([2,4,6,8,100,1])`]);
 const makeAButtonFromTextField = () => document.querySelector('#textField').value === "" ? null : makeButton([document.querySelector('#textField').value]);
 const makeButtonListFromTextField = () => document.querySelector('#textField').value === "" ? null : makeButton(document.querySelector('#textField').value.split("\n"));
 const clearTextField = () => document.querySelector('#textField').value = "";
+
+
+const undo = () => {
+	if(historyOfTextPositionAndTextFieldValueArrayIdx !== 0){
+		historyOfTextPositionAndTextFieldValueArrayIdx -= 1;
+		textPosition = historyOfTextPositionAndTextFieldValueArray[historyOfTextPositionAndTextFieldValueArrayIdx][0];
+		document.querySelector('#textField').value = historyOfTextPositionAndTextFieldValueArray[historyOfTextPositionAndTextFieldValueArrayIdx][1];
+		console.table(historyOfTextPositionAndTextFieldValueArrayIdx,historyOfTextPositionAndTextFieldValueArray);
+	}
+}
+const redo = () => {
+	if(historyOfTextPositionAndTextFieldValueArrayIdx < historyOfTextPositionAndTextFieldValueArray.length){
+		historyOfTextPositionAndTextFieldValueArrayIdx += 1;
+		textPosition = historyOfTextPositionAndTextFieldValueArray[historyOfTextPositionAndTextFieldValueArrayIdx][0];
+		document.querySelector('#textField').value = historyOfTextPositionAndTextFieldValueArray[historyOfTextPositionAndTextFieldValueArrayIdx][1];
+		console.table(historyOfTextPositionAndTextFieldValueArrayIdx,historyOfTextPositionAndTextFieldValueArray);
+	}
+}
+
+
 const saveTextField = () => localStorage.textField = JSON.stringify(document.querySelector('#textField').value);
 const loadTextField = () => document.querySelector('#textField').value = JSON.parse(localStorage.textField);
 
-let editableButtonListArray=[];
 const insertEditableButtonListArray = () => editableButtonListArray.push( Array.from(document.querySelectorAll(".editableButtonListItem")).map(V=>{return V.innerHTML}) );
 const makeEditableButtonListArrayIndexList = (fooArray) => {
 	document.querySelectorAll(".editableButtonListArrayItem").forEach(E=>{E.parentNode.removeChild(E)});
