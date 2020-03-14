@@ -14,6 +14,7 @@
 	<!-- <script src="./ramdajshtmlresources.js"></script> -->
 
 	<!-- https://stackoverflow.com/questions/4364881/inserting-string-at-position-x-of-another-string -->
+	<!-- https://stackoverflow.com/questions/37379694/javascript-how-to-stop-pinch-zoom-multi-touch-input-attacks -->
 </head>
 <body>
 <div>
@@ -30,6 +31,7 @@
 	<span><button id="rowSizeDown" onclick="rowSizeDown();">rowSizeDown</button></span>
 	<span><button id="dontShowKeyboard" onclick="dontShowKeyboard();">dontShowKeyboard</button></span>
 	<span><button id="showKeyboard" onclick="showKeyboard();">showKeyboard</button></span>
+	<span><button id="stopPinchZoom" onclick="stopPinchZoom();">stopPinchZoom</button></span>
 </div>
 <div id="result"></div>
 <span><button id="undo" onclick="undo();">undo</button></span>
@@ -75,6 +77,9 @@ const rowSizeUp = ()=> document.querySelector(`#textField`).rows+=1;
 const rowSizeDown = ()=> document.querySelector(`#textField`).rows=1;
 const dontShowKeyboard = ()=> document.querySelector(`#textField`).setAttribute("readonly","readonly");
 const showKeyboard = ()=> document.querySelector(`#textField`).removeAttribute("readonly");
+
+const stopPinchZoom = ()=>  {   if(event.touches.length > 1){       event.preventDefault()    } };
+
 
 const movePositionLeft = (howLongMovePosition) => {
 	try{if(0 > textPosition){throw new Error()}
