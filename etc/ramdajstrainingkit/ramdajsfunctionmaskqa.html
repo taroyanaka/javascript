@@ -84,20 +84,18 @@ const makeRamdajsfunctionmaskqa = ()=>{
 
 const makeQAHTML = (QAAAAarray) =>{
 	const makeQASet = (QAAAA,KEY) => {
-		// console.log(QAAAA);
 		const AAAA = R.takeLast(4,QAAAA);
 		const referenceFunction = R.pipe(R.split(" "),R.map(V=>{return `<span onclick="show('${V}')">${V} </span>`}))(AAAA[0]+` `+AAAA[1]+` `+AAAA[2]+` `+AAAA[3]);
-					// <span onclick="show('${QAAAA[0]}')">${QAAAA[0]}</span>
-					const answerText = document.querySelector(`#${QAAAA[0]} + section`).querySelector(".javascript").innerText
-					const maskAnswerText = answerText.replace(new RegExp(QAAAA[0], 'g'), "~");
-					return `<div class="QA" data-id="${KEY}">
-					<span onclick="show('${QAAAA[0]}')">${maskAnswerText}</span>
-					<input type="button" value="${AAAA[0]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
-					<input type="button" value="${AAAA[1]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
-					<input type="button" value="${AAAA[2]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
-					<input type="button" value="${AAAA[3]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
-					${referenceFunction.join("")}
-			   </div>`;
+				const answerText = document.querySelector(`#${QAAAA[0]} + section`).querySelector(".javascript").innerText;
+				const maskAnswerText = answerText.replace(new RegExp(QAAAA[0], 'g'), "~");
+				return `<div class="QA" data-id="${KEY}">
+								<span onclick="show('${QAAAA[0]}')">${maskAnswerText}</span>
+								<input type="button" value="${AAAA[0]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+								<input type="button" value="${AAAA[1]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+								<input type="button" value="${AAAA[2]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+								<input type="button" value="${AAAA[3]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+								${referenceFunction.join("")}
+						</div>`;
 	}
 	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet).join("") );
 };
@@ -109,7 +107,6 @@ const checkQA = (event) =>{
 							document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
 							// }else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) };
 							}
-							// else{};
 							countPoint();
 							checkWorkOut();
 						  };
