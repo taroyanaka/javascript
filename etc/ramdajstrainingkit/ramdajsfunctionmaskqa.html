@@ -70,15 +70,6 @@ let ramdajsfunctionmaskqa;
 // const functionNameAndSampleCode from ./functionNameAndSampleCode.js
 const makeRamdajsfunctionmaskqa = ()=>{
 	return functionNameAndSampleCode.map(VAL => {
-		// const res = R.pipe(
-		// 	R.pluck(0),
-		// 	R.without([VAL[0]]),
-		// 	// shuffleArray,
-		// 	R.take(4),
-		// 	R.prepend(VAL[0]),
-		// 	// shuffleArray,
-		// )(functionNameAndSampleCode)
-		VAL[0]
 		const functionName = R.pluck(0,functionNameAndSampleCode);
 		const otherFunctionName = R.without(VAL[0], functionName);
 		const shuffleOtherFunctionName = shuffleArray(otherFunctionName);
@@ -86,18 +77,10 @@ const makeRamdajsfunctionmaskqa = ()=>{
 		const AAAA = R.prepend(VAL[0], shuffleOtherFunctionNameThree);
 		const shuffledAAAA = shuffleArray(AAAA);
 		const QshuffledAAAA = R.prepend(VAL[0], shuffledAAAA);
-		
-		// return [VAL[0], VAL[1], VAL[1].replace(new RegExp(VAL[0], 'g'), "~"), QAAAA]
 		return QshuffledAAAA
 	})
 }
-// ramdajsfunctionmaskqa[0]
-// =>
-// ['__',
-// 	'const greet = R.replace(\'{name}\', R.__, \'Hello, {name}!\');\ngreet(\'Alice\'); //=> \'Hello, Alice!\'',
-// 	'const greet = R.replace(\'{name}\', R.~, \'Hello, {name}!\');\ngreet(\'Alice\'); //=> \'Hello, Alice!\'',
-// 	['__', 'minBy', 'head', 'partial', 'difference']
-// ] 
+
 
 const makeQAHTML = (QAAAAarray) =>{
 	const makeQASet = (QAAAA,KEY) => {
@@ -152,7 +135,6 @@ const init = () =>{
 	ramdajsfunctionmaskqa = makeRamdajsfunctionmaskqa();
 	ramdajsfunctionmaskqa = reverse === 1 ? R.reverse(ramdajsfunctionmaskqa) : ramdajsfunctionmaskqa;
 	ramdajsfunctionmaskqa = shuffle === 1 ? shuffleArray(ramdajsfunctionmaskqa) : ramdajsfunctionmaskqa;
-	// makeQAHTML( ramdajsfunctionmaskqa.map(V=>{return R.prepend(V[2], V[3] )}) );
 	makeQAHTML( ramdajsfunctionmaskqa );
 	keyConfig();
 	countAllPoint();
