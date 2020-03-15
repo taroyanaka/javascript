@@ -64,6 +64,7 @@ const keyConfig = () => {
 	event.preventDefault();
 	}, true);
 }
+
 let reverse;
 let shuffle;
 let ramdajsfunctionmaskqa;
@@ -80,7 +81,6 @@ const makeRamdajsfunctionmaskqa = ()=>{
 		return QshuffledAAAA
 	})
 }
-
 
 const makeQAHTML = (QAAAAarray) =>{
 	const makeQASet = (QAAAA,KEY) => {
@@ -130,6 +130,7 @@ const countPoint = () => document.querySelector(`#point`).innerText = Number(doc
 
 const TIMER = new easytimer.Timer();
 TIMER.addEventListener('secondsUpdated', () => document.querySelector('#TIME').innerText = TIMER.getTimeValues().toString() );
+
 const init = () =>{
 	document.querySelectorAll(".QA").forEach(E=>{E.parentNode.removeChild(E)});
 	ramdajsfunctionmaskqa = makeRamdajsfunctionmaskqa();
