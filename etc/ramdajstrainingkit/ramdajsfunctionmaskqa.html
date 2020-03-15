@@ -104,7 +104,7 @@ let wrongQApair = [];
 const checkWorkOut = () =>{ if(document.querySelector(`#point`).innerText === document.querySelector(`#allPoint`).innerText){ TIMER.stop() } };
 const checkQA = (event) =>{
 							if(event.target.value === event.target.dataset.answer){
-							document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
+								document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
 							// }else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) };
 							}
 							countPoint();
@@ -114,7 +114,6 @@ const checkQA = (event) =>{
 const addHTML = (htmlstring) =>{
 	document.querySelector(`body`).insertAdjacentHTML(`beforeend`, htmlstring);
 };
-addHTML(ramdajshtmlresources);
 
 const show = (functionName) =>{
 	document.querySelectorAll("body div#QASet code").forEach(E=>{E.parentNode.removeChild(E)});
@@ -136,7 +135,9 @@ const init = () =>{
 	makeQAHTML( ramdajsfunctionmaskqa );
 	keyConfig();
 	countAllPoint();
-}
+};
+
+addHTML(ramdajshtmlresources);
 init();
 </script>
 </body>
