@@ -88,9 +88,9 @@ const makeRamdajsfunctionmaskqa = ()=>{
 const makeQAHTML = (filteredQAWithshuffledAAAAarray) =>{
 	const makeQASet = (QAWithAAAA,KEY) => {
 		const AAAA = R.takeLast(4,QAWithAAAA);
-		console.log(AAAA);
+						// <span onclick="show('${QAWithAAAA[0]}')">${QAWithAAAA[0]}</span>
 		return `<div class="QA" data-id="${KEY}">
-						<span onclick="show('${QAWithAAAA[0]}')">${QAWithAAAA[0]}</span>
+						<span>${QAWithAAAA[0]}</span>
 						<input type="button" value='${AAAA[0]}' data-answer="${QAWithAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
 						<input type="button" value='${AAAA[1]}' data-answer="${QAWithAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
 						<input type="button" value='${AAAA[2]}' data-answer="${QAWithAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
@@ -113,11 +113,11 @@ const checkQA = (event) =>{
 
 const addHTML = (htmlstring) =>	document.querySelector(`body`).insertAdjacentHTML(`beforeend`, htmlstring);
 
-const show = (functionName) =>{
-	document.querySelectorAll("body div#QASet code").forEach(E=>{E.parentNode.removeChild(E)});
-	document.querySelector(`body div#QASet`).insertAdjacentHTML(`afterbegin`, document.querySelector(`#${functionName} + section`).querySelector(".javascript").outerHTML);
-	document.querySelector(`body div#QASet code`).addEventListener("click", () => document.querySelectorAll("body div#QASet code").forEach(E=>{E.parentNode.removeChild(E)}));
-}
+// const show = (functionName) =>{
+// 	document.querySelectorAll("body div#QASet code").forEach(E=>{E.parentNode.removeChild(E)});
+// 	document.querySelector(`body div#QASet`).insertAdjacentHTML(`afterbegin`, document.querySelector(`#${functionName} + section`).querySelector(".javascript").outerHTML);
+// 	document.querySelector(`body div#QASet code`).addEventListener("click", () => document.querySelectorAll("body div#QASet code").forEach(E=>{E.parentNode.removeChild(E)}));
+// }
 
 const countAllPoint = () =>	document.querySelector(`#allPoint`).innerText = document.querySelectorAll(`#QASet > div`).length;
 const countPoint = () => document.querySelector(`#point`).innerText = Number(document.querySelector(`#allPoint`).innerText) - document.querySelectorAll(`#QASet > div`).length;
