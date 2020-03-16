@@ -112,9 +112,7 @@ const checkQA = (event) =>{
 							checkWorkOut();
 						  };
 
-const addHTML = (htmlstring) =>{
-	document.querySelector(`body`).insertAdjacentHTML(`beforeend`, htmlstring);
-};
+const addHTML = (htmlstring) =>	document.querySelector(`body`).insertAdjacentHTML(`beforeend`, htmlstring);
 
 const show = (functionName) =>{
 	document.querySelectorAll("body div#QASet code").forEach(E=>{E.parentNode.removeChild(E)});
