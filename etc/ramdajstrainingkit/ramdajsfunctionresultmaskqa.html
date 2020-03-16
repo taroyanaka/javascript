@@ -72,7 +72,6 @@ let ramdajsfunctionmaskqa;
 const makeRamdajsfunctionmaskqa = ()=>{
 	const question = Array.from(document.querySelectorAll(`.javascript`)).map(V=>R.replace(/\/\/=>.*/gi,"~",  V.innerText ));
 	const answer = Array.from(document.querySelectorAll(`.javascript`)).map(V=>R.replace(/["'`]/g,"",R.join("")(R.match(/\/\/=>.*/gi, V.innerText))));
-	console.log(answer);
 	const AWithshuffledAAAAarray = answer.map(V=>{
 		const shuffledOtherAnswer = shuffleArray(R.without([V], answer));
 		const shuffledOtherAnswerThree = R.take(3,shuffledOtherAnswer);
