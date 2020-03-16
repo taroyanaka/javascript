@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<aside><ul></ul></aside>
+<head>
+  <meta charset="UTF-8" />
+  <title>ramda.js function result mask qa</title>
+  	<script src="ramda.js"></script>
+	<script src="./easytimer.min.js"></script>
+  	<script src="functionNameAndSampleCode.js"></script>
+	<script src="./ramdajshtmlresources.js"></script>
+	<!-- https://ramdajs.com/docs/ -->
+	<!-- https://taroyanaka.github.io/javascript/etc/ramdajstrainingkit/ramdajsfunctionqa.html -->
+</head>
+<body>
+  <div>
+    <input id="btn" type="button" value="make" style="width:100px;height:50px;display:none;">
+  </div>
+  <div>
+    <textarea name="foo" id="foo" cols="20" rows="100" required="required" maxlength="100000" autofocus="autofocus" style="display:none;"></textarea>
+    <textarea name="bar" id="bar" cols="20" rows="100" required="required" maxlength="100000" style="display:none;"></textarea>
+    <div id="description">If you use PC, You can use 1,2,3,4 key to choose the answer</div>
+  </div>
+  <div id="TIME">00:00:00</div>
+  <button id="TIMERPAUSE" onclick="TIMER.pause();">Timer pause</button>
+  <button id="TIMERSTART" onclick="TIMER.start();">Timer start</button>
+  <a name="reverse"  id="reverse" value="reverse" onclick="if(reverse){reverse=0}else{reverse=1};init();" style="padding: 5px 10px;background: #5876a3;">reverse</a>
+  <a name="shuffle"  id="shuffle" value="shuffle" onclick="if(shuffle){shuffle=0}else{shuffle=1};init();" style="padding: 5px 10px;background: #5876a3;">shuffle</a>
+  <span id="point">0</span><span>/</span><span id="allPoint">0</span>
+  <div id="QASet"></div>
+
+<script>
+const shuffleArray = array => {
+	for (let i = array.length - 1; i > 0; i--) {
+	let r = Math.floor(Math.random() * (i + 1));
+	let tmp = array[i];
+	array[i] = array[r];
+	array[r] = tmp;
+	}
+	return array
+}
+
+const keyConfig = () => {
+	window.addEventListener("keydown", function (event) {
+	if (event.defaultPrevented) {
+		return; // Do nothing if the event was already processed
+	}
+		switch (event.key) {
+		case "1":
+			document.querySelectorAll('div.QA > input').item(0).click()
+		break;
+		case "2":
+			document.querySelectorAll('div.QA > input').item(1).click()
+		break;
+		case "3":
+			document.querySelectorAll('div.QA > input').item(2).click()
+		break;
+		case "4":
+			document.querySelectorAll('div.QA > input').item(3).click()
+		break;
+		case "Enter":
+		default:
+		}
+	// Cancel the default action to avoid it being handled twice
+	event.preventDefault();
+	}, true);
+}
+
+let reverse;
+let shuffle;
+let ramdajsfunctionmaskqa;
+
+const makeRamdajsfunctionmaskqa = ()=>{
+	const question = Array.from(document.querySelectorAll(`.javascript`)).map(V=>R.replace(/\/\/=>.*/gi,"~",  V.innerText ));
+	const answer = Array.from(document.querySelectorAll(`.javascript`)).map(V=>R.replace(/["'`]/g,"",R.join("")(R.match(/\/\/=>.*/gi, V.innerText))));
+	console.log(answer);
+	const AWithshuffledAAAAarray = answer.map(V=>{
+		const shuffledOtherAnswer = shuffleArray(R.without([V], answer));
+		const shuffledOtherAnswerThree = R.take(3,shuffledOtherAnswer);
+		const shuffledAAAAarray = shuffleArray(R.prepend(V, shuffledOtherAnswerThree));
+		const AWithshuffledAAAAarray = R.prepend(V, shuffledAAAAarray);
+		return	AWithshuffledAAAAarray;
+	})
+	const QAWithshuffledAAAAarray = R.transpose([question,AWithshuffledAAAAarray]);
+	const QAWithshuffledFlattedAAAAarray = R.map(R.flatten)(QAWithshuffledAAAAarray);
+	const filteredQAWithshuffledAAAAarray = R.filter(V => { if( R.not( R.isEmpty(V[1])) ){ return V } }, QAWithshuffledFlattedAAAAarray);
+	console.log(filteredQAWithshuffledAAAAarray);
+	return filteredQAWithshuffledAAAAarray;
+}
+
+const makeQAHTML = (filteredQAWithshuffledAAAAarray) =>{
+	const makeQASet = (QAWithAAAA,KEY) => {
+		const AAAA = R.takeLast(4,QAWithAAAA);
+		console.log(AAAA);
+		return `<div class="QA" data-id="${KEY}">
+						<span onclick="show('${QAWithAAAA[0]}')">${QAWithAAAA[0]}</span>
+						<input type="button" value='${AAAA[0]}' data-answer="${QAWithAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+						<input type="button" value='${AAAA[1]}' data-answer="${QAWithAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+						<input type="button" value='${AAAA[2]}' data-answer="${QAWithAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+						<input type="button" value='${AAAA[3]}' data-answer="${QAWithAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+				</div>`;
+	}
+	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  filteredQAWithshuffledAAAAarray.map(makeQASet).join("") );
+};
+
+let wrongQApair = [];
+const checkWorkOut = () =>{ if(document.querySelector(`#point`).innerText === document.querySelector(`#allPoint`).innerText){ TIMER.stop() } };
+const checkQA = (event) =>{
+							if(event.target.value === event.target.dataset.answer){
+								document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
+							// }else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) };
+							}
+							countPoint();
+							checkWorkOut();
+						  };
+
+const addHTML = (htmlstring) =>{
+	document.querySelector(`body`).insertAdjacentHTML(`beforeend`, htmlstring);
+};
+
+const show = (functionName) =>{
+	document.querySelectorAll("body div#QASet code").forEach(E=>{E.parentNode.removeChild(E)});
+	document.querySelector(`body div#QASet`).insertAdjacentHTML(`afterbegin`, document.querySelector(`#${functionName} + section`).querySelector(".javascript").outerHTML);
+	document.querySelector(`body div#QASet code`).addEventListener("click", () => document.querySelectorAll("body div#QASet code").forEach(E=>{E.parentNode.removeChild(E)}));
+}
+
+const countAllPoint = () =>	document.querySelector(`#allPoint`).innerText = document.querySelectorAll(`#QASet > div`).length;
+const countPoint = () => document.querySelector(`#point`).innerText = Number(document.querySelector(`#allPoint`).innerText) - document.querySelectorAll(`#QASet > div`).length;
+
+const TIMER = new easytimer.Timer();
+TIMER.addEventListener('secondsUpdated', () => document.querySelector('#TIME').innerText = TIMER.getTimeValues().toString() );
+
+const init = () =>{
+	document.querySelectorAll(".QA").forEach(E=>{E.parentNode.removeChild(E)});
+	ramdajsfunctionmaskqa = makeRamdajsfunctionmaskqa();
+	ramdajsfunctionmaskqa = reverse === 1 ? R.reverse(ramdajsfunctionmaskqa) : ramdajsfunctionmaskqa;
+	ramdajsfunctionmaskqa = shuffle === 1 ? shuffleArray(ramdajsfunctionmaskqa) : ramdajsfunctionmaskqa;
+	makeQAHTML( ramdajsfunctionmaskqa );
+	keyConfig();
+	countAllPoint();
+};
+addHTML(ramdajshtmlresources);
+init();
+</script>
+</body>
+</html>

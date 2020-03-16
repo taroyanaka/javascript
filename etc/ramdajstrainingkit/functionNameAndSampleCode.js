@@ -1034,6 +1034,61 @@ const functionNameAndSampleCode = [
 
 // const R = require(`ramda`);
 
+// const res0 = R.match(/R\..+\(/g, Array.from(document.querySelectorAll(`.javascript`)).filter(V => { return R.test(/\/\/ /, V.innerText) }).filter(V => { return R.not(R.test(/\/\/=> /, V.innerText)) }).map(V => { return V.innerText }).join("")).map(V => { return R.takeWhile(x => x !== "(", V.split("")) }).map(V => { return V.join("") });
+// let res1 = R.uniq(res0);
+// // let res1 = [
+// // 	"R.applySpec",
+// // 	"R.clamp",
+// // 	"R.composeP",
+// // 	"R.map",
+// // 	"R.join",
+// // 	"R.constructN",
+// // 	"R.groupBy",
+// // 	"R.hasPath",
+// // 	"R.partition",
+// // 	"R.pipe",
+// // 	"R.pipeP",
+// // 	"R.reduce",
+// // 	"R.reduced",
+// // 	"R.reduceRight",
+// // 	"R.until"
+// // ]
+
+// res1 = R.map(V => R.replace('R.', '', V), res1);
+// // =>
+// // res1 = [
+// // 	"applySpec",
+// // 	"clamp",
+// // 	"composeP",
+// // 	"map",
+// // 	"join",
+// // 	"constructN",
+// // 	"groupBy",
+// // 	"hasPath",
+// // 	"partition",
+// // 	"pipe",
+// // 	"pipeP",
+// // 	"reduce",
+// // 	"reduced",
+// // 	"reduceRight",
+// // 	"until"
+// // ]
+
+
+
+
+// // const isOdd = (n) => n % 2 === 1;
+// const fn0 = (V) => R.includes(V[0], res1);
+
+// const res2 = R.reject(fn0, functionNameAndSampleCode);
+
+// res1.length;
+// functionNameAndSampleCode.length;
+// res2.length;
+
+// R.reject(isOdd, { a: 1, b: 2, c: 3, d: 4 }); //=> {b: 2, d: 4}
+
+
 
 // const shuffleArray = array => {
 // 	for (let i = array.length - 1; i > 0; i--) {
