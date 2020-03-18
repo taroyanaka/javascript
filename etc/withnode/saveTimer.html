@@ -60,6 +60,16 @@ const TIMERRESET=()=>TIMER.reset();
 const RESUME=()=>TIMER.start({ countdown: true, startValues: {seconds: SS}, target: { seconds: 0 }, precision: 'secondTenths' });
 
 
+const makeEditableButtonListArrayIndexList = (fooArray) => {
+	document.querySelectorAll(".timerArrayItem").forEach(E=>{E.parentNode.removeChild(E)});
+	const makeEditableButtonListArrayIndexListHTMLStr = (ELEMENT,KEY) => `<button class="timerArrayItem" data-idx="${KEY}" onclick="insertTimer(event);">${KEY}</button>`;
+	document.querySelector(`#timerArray`).insertAdjacentHTML(`beforeEnd`,  fooArray.map(makeEditableButtonListArrayIndexListHTMLStr).join("")  );
+};
+const insertTimer = (idx) =>{
+	document.querySelector(`#TIMEINPUT`).value = JSON.parse(localStorage.saveData)[Number(event.target.dataset.idx)];
+	TIMEINPUT();
+};
+
 let timerArray=[];
 const saveTimerArray = () =>{
 	timerArray.push(document.querySelector(`#TIMEINPUT`).value);
@@ -74,15 +84,6 @@ const clearTimerSaveData = () =>{
 	localStorage.clear();
 	timerArray=[];
 	document.querySelectorAll(".timerArrayItem").forEach(E=>{E.parentNode.removeChild(E)});
-};
-const makeEditableButtonListArrayIndexList = (fooArray) => {
-	document.querySelectorAll(".timerArrayItem").forEach(E=>{E.parentNode.removeChild(E)});
-	const makeEditableButtonListArrayIndexListHTMLStr = (ELEMENT,KEY) => `<button class="timerArrayItem" data-idx="${KEY}" onclick="insertTimer(event);">${KEY}</button>`;
-	document.querySelector(`#timerArray`).insertAdjacentHTML(`beforeEnd`,  fooArray.map(makeEditableButtonListArrayIndexListHTMLStr).join("")  );
-};
-const insertTimer = (idx) =>{
-	document.querySelector(`#TIMEINPUT`).value = JSON.parse(localStorage.saveData)[Number(event.target.dataset.idx)];
-	TIMEINPUT();
 };
 
 // OTHER~~~~~
