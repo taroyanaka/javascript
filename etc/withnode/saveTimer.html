@@ -10,10 +10,10 @@
 <!-- https://iwb.jp/input-type-time-seconds-javascript/ -->
 </head>
 <body style="background-color: gray">
-<span><button id="loadtimerArray" onclick="loadtimerArray();">loadtimerArray</button></span>
-<span><button id="savetimerArray" onclick="savetimerArray();">savetimerArray</button></span>
+<span><button id="loadTimerArray" onclick="loadTimerArray();">loadTimerArray</button></span>
+<span><button id="saveTimerArray" onclick="saveTimerArray();">saveTimerArray</button></span>
 <!-- <span><button id="cleartimerArray" onclick="cleartimerArray();">cleartimerArray</button></span> -->
-<span><button id="cleartimerSaveData" onclick="cleartimerSaveData();">cleartimerSaveData</button></span>
+<span><button id="clearTimerSaveData" onclick="clearTimerSaveData();">clearTimerSaveData</button></span>
 <div>
 	<!-- <div class="RESULT">00:00:00</div> -->
 	<div class="RESULT">00:00:00:0</div>
@@ -62,12 +62,12 @@ const RESUME=()=>TIMER.start({ countdown: true, startValues: {seconds: SS}, targ
 
 
 let timerArray=[];
-const savetimerArray = () =>{
+const saveTimerArray = () =>{
 	timerArray.push(document.querySelector(`#TIMEINPUT`).value);
 	localStorage.saveData = JSON.stringify( timerArray  );
 	makeEditableButtonListArrayIndexList(timerArray);
 };
-const loadtimerArray = () =>{
+const loadTimerArray = () =>{
 	timerArray = JSON.parse(localStorage.saveData);
 	makeEditableButtonListArrayIndexList(timerArray);
 };
@@ -75,8 +75,9 @@ const loadtimerArray = () =>{
 // 	timerArray=[];
 // 	document.querySelectorAll(".timerArrayItem").forEach(E=>{E.parentNode.removeChild(E)});
 // };
-const cleartimerSaveData = () =>{
-	localStorage.clear();timerArray=[];
+const clearTimerSaveData = () =>{
+	localStorage.clear();
+	timerArray=[];
 	document.querySelectorAll(".timerArrayItem").forEach(E=>{E.parentNode.removeChild(E)});
 };
 const makeEditableButtonListArrayIndexList = (fooArray) => {
