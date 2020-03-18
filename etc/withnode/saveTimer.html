@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>save timer</title>
+<meta name="viewport" content="width=device-width">
+<!-- https://albert-gonzalez.github.io/easytimer.js/ -->
+<script src="./easytimer.min.js"></script>
+<!-- http://albert-gonzalez.github.io/.js/ -->
+<!-- https://iwb.jp/input-type-time-seconds-javascript/ -->
+</head>
+<body style="background-color: gray">
+<span><button id="loadtimerArray" onclick="loadtimerArray();">loadtimerArray</button></span>
+<span><button id="savetimerArray" onclick="savetimerArray();">savetimerArray</button></span>
+<!-- <span><button id="cleartimerArray" onclick="cleartimerArray();">cleartimerArray</button></span> -->
+<span><button id="cleartimerSaveData" onclick="cleartimerSaveData();">cleartimerSaveData</button></span>
+<div>
+	<!-- <div class="RESULT">00:00:00</div> -->
+	<div class="RESULT">00:00:00:0</div>
+	<div>
+		<button id="TIMERSTART" onclick="if(STARTED){RESUME()}else{USETIMER()}">Start</button>
+		<button id="TIMERPAUSE" onclick="TIMERPAUSE();">Pause</button>
+		<button id="TIMERSTOP" onclick="TIMERSTOP();">Stop</button>
+		<button id="TIMERRESET" onclick="TIMERRESET();">Reset</button>
+	</div>
+</div>
+<input id="TIMEINPUT" type="time" value="00:00:00" step="1" oninput="TIMEINPUT();">
+<p id="INJAPANESE"></p>
+<div id="timerArray"></div>
+<script>
+const TIMER = new easytimer.Timer();
+TIMER.addEventListener('targetAchieved', () => document.querySelector('.RESULT').innerText = "TIME IS COMING!!" );
+// TIMER.addEventListener('secondsUpdated', () => document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString() );
+TIMER.addEventListener('secondTenthsUpdated', () => document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']) );
+// TIMER.addEventListener('secondTenthsUpdated', () => document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString(['minutes']) );
+let [HH, MM, SS] = ["","",""];
+let STARTED;
+
+//   if(localStorage.saveData){document.querySelector(`#TIMEINPUT`).value = JSON.parse(localStorage.saveData)};
+const TIMEINPUT=()=>{
+  [HH, MM, SS] = (document.querySelector(`#TIMEINPUT`).value).split(':');
+  if(!HH)HH='00';if(!MM)MM='00';if(!SS)SS='00';
+  if(document.querySelector(`#TIMEINPUT`).value === "" || document.querySelector(`#TIMEINPUT`).value === "00:00"){ document.querySelector(`#TIMEINPUT`).value = "00:00:00" };
+  document.querySelector('#INJAPANESE').innerText = `${HH}時${MM}分${SS}秒`;
+  if(STARTED){TIMER.stop();STARTED=false};
+//   localStorage.saveData = JSON.stringify(document.querySelector(`#TIMEINPUT`).value);
+}
+
+const USETIMER=()=>{
+	STARTED=true;
+	SS = Number(SS) + Number(MM)*60 + Number(HH)*3600;
+	// TIMER.start({ countdown: true, startValues: {seconds: Number(SS)}, target: { seconds: 0 } });
+	TIMER.start({ countdown: true, startValues: {seconds: Number(SS)}, target: { seconds: 0 }, precision: 'secondTenths' });
+	// document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString();
+	document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']);
+}
+const TIMERPAUSE=()=>TIMER.pause();
+const TIMERSTOP=()=>TIMER.stop();
+const TIMERRESET=()=>TIMER.reset();
+// const RESUME=()=>TIMER.start({ countdown: true, startValues: {seconds: SS}, target: { seconds: 0 } });
+const RESUME=()=>TIMER.start({ countdown: true, startValues: {seconds: SS}, target: { seconds: 0 }, precision: 'secondTenths' });
+
+
+let timerArray=[];
+const savetimerArray = () =>{
+	timerArray.push(document.querySelector(`#TIMEINPUT`).value);
+	localStorage.saveData = JSON.stringify( timerArray  );
+	makeEditableButtonListArrayIndexList(timerArray);
+};
+const loadtimerArray = () =>{
+	timerArray = JSON.parse(localStorage.saveData);
+	makeEditableButtonListArrayIndexList(timerArray);
+};
+// const cleartimerArray = () =>{
+// 	timerArray=[];
+// 	document.querySelectorAll(".timerArrayItem").forEach(E=>{E.parentNode.removeChild(E)});
+// };
+const cleartimerSaveData = () =>{
+	localStorage.clear();timerArray=[];
+	document.querySelectorAll(".timerArrayItem").forEach(E=>{E.parentNode.removeChild(E)});
+};
+const makeEditableButtonListArrayIndexList = (fooArray) => {
+	document.querySelectorAll(".timerArrayItem").forEach(E=>{E.parentNode.removeChild(E)});
+	const makeEditableButtonListArrayIndexListHTMLStr = (ELEMENT,KEY) => `<button class="timerArrayItem" data-idx="${KEY}" onclick="insertTimer(event);">${KEY}</button>`;
+	document.querySelector(`#timerArray`).insertAdjacentHTML(`beforeEnd`,  fooArray.map(makeEditableButtonListArrayIndexListHTMLStr).join("")  );
+	// cleartimerArray();
+};
+const insertTimer = (idx) =>{
+	document.querySelector(`#TIMEINPUT`).value = JSON.parse(localStorage.saveData)[Number(event.target.dataset.idx)];
+	TIMEINPUT();
+};
+
+// OTHER~~~~~
+const SHOWALLVALUES=()=>console.table([HH,MM,SS,STARTEDdocument.querySelector(`#TIMEINPUT`).value]);
+const TEST=()=>{
+	[SS,MM,HH] = ["1","1","1"];
+	// [SS,MM,HH] = ["5","0","0"];
+	document.querySelector("#TIMEINPUT").value = "01:01:01";
+	document.querySelector("#TIMERSTART").click();
+}
+// TEST();
+// ~~~~~OTHER
+</script>
+</body>
+</html>
