@@ -24,7 +24,7 @@
 	</div>
 </div>
 <input id="TIMEINPUT" type="time" value="00:00:00" step="1" oninput="TIMEINPUT();">
-<p id="INJAPANESE"></p>
+<!-- <p id="INJAPANESE"></p> -->
 <div id="timerArray"></div>
 <script>
 const TIMER = new easytimer.Timer();
@@ -40,7 +40,7 @@ const TIMEINPUT=()=>{
   [HH, MM, SS] = (document.querySelector(`#TIMEINPUT`).value).split(':');
   if(!HH)HH='00';if(!MM)MM='00';if(!SS)SS='00';
   if(document.querySelector(`#TIMEINPUT`).value === "" || document.querySelector(`#TIMEINPUT`).value === "00:00"){ document.querySelector(`#TIMEINPUT`).value = "00:00:00" };
-  document.querySelector('#INJAPANESE').innerText = `${HH}時${MM}分${SS}秒`;
+//   document.querySelector('#INJAPANESE').innerText = `${HH}時${MM}分${SS}秒`;
   if(STARTED){TIMER.stop();STARTED=false};
 //   localStorage.saveData = JSON.stringify(document.querySelector(`#TIMEINPUT`).value);
 }
