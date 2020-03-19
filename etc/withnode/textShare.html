@@ -7,12 +7,15 @@
 <!-- https://qiita.com/maruyam-a/items/96c8ad733c770a44117e -->
 <!-- https://github.com/davidshimjs/qrcodejs -->
 <script src="qrcode.js"></script>
+<!-- https://clipboardjs.com/ -->
+<script src="clipboard.js"></script>
 <meta name="viewport" content="width=device-width">
 </head>
 <body style="background-color: gray">
 <textarea name="textField" id="textField" cols="50" rows="10" required="required" maxlength="2000" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);"></textarea>
 <a target="_blank" rel="noopener noreferrer" href="https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=foo" onclick="textShare()">Share</a>
 <div id="qrcode" style="width:200px; height:200px; margin-top:15px;"></div>
+<div id="bitlyurl"></div>
 <script>
 const textShare = () =>{
 	const query = encodeURIComponent(document.querySelector(`#textField`).value);
@@ -31,6 +34,10 @@ const textShare = () =>{
 	.then((json) => {
 		// console.log(json.data.url);
 		new QRCode(document.querySelector("#qrcode"), json.data.url);
+		document.querySelector(`body`).insertAdjacentHTML(`afterBegin`, 
+			`<textarea name="url" id="url" cols="20" rows="1">${json.data.url}</textarea>
+			<button class="btn" data-clipboard-action="copy" data-clipboard-target="#id">COPY URL</button>` 
+		);
 	});
 }
 //// google apps script side source code　////
