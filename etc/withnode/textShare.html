@@ -3,17 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <title>textShare</title>
+<!-- https://github.com/davidshimjs/qrcodejs -->
+<script src="qrcode.js"></script>
 <meta name="viewport" content="width=device-width">
 </head>
 <body style="background-color: gray">
 <textarea name="textField" id="textField" cols="50" rows="10" required="required" maxlength="2000" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);"></textarea>
-<a href="https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=foo" onclick="textShare()">Share</a>
+<a target="_blank" rel="noopener noreferrer" href="https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=foo" onclick="textShare()">Share</a>
+<div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
 <script>
 const textShare = () =>{
 	const query = encodeURIComponent(document.querySelector(`#textField`).value);
-	document.querySelector("a").href = "https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=" + query;
+	const URL = document.querySelector("a").href = "https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=" + query;
+	new QRCode(document.querySelector("#qrcode"), URL);
 }
-
 //// google apps script side source code　////
 // 	function doGet(e) {
 //   const HTML = `<textarea name="textField" id="textField" cols="50" rows="10" required="required" maxlength="1900" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);">${e.parameter.value}</textarea>`

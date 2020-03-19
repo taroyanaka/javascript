@@ -33,6 +33,7 @@
     "mocha": "^5.2.0",
     "moment": "^2.24.0",
     "puppeteer": "^1.12.2",
+    "qrcodejs": "^1.0.0",
     "query-selector": "^1.0.9",
     "ramda": "^0.26.1",
     "ramda-adjunct": "^2.16.1",
