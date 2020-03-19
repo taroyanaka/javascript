@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>textShare</title>
+<meta name="viewport" content="width=device-width">
+</head>
+<body style="background-color: gray">
+<textarea name="textField" id="textField" cols="50" rows="10" required="required" maxlength="1900" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);"></textarea>
+<a href="https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=foo" onclick="textShare()">Share</a>
+<!-- <a href="">Share</a> -->
+<script>
+	const textShare = () =>{
+		const query = encodeURIComponent(document.querySelector(`#textField`).value);
+		document.querySelector("a").href = "https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=" + query;
+	}
+</script>
+</body>
+</html>
