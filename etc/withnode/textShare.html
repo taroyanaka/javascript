@@ -18,7 +18,7 @@ const textShare = () =>{
 	const query = encodeURIComponent(document.querySelector(`#textField`).value);
 	const URL = document.querySelector("a").href = "https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=" + query;
 	// console.log(URL);
-	
+
 	// long URL, it cant make unreadable QRCode by phone camera
 	// new QRCode(document.querySelector("#qrcode"), URL);
 
@@ -28,9 +28,9 @@ const textShare = () =>{
 	.then((response) => {
 		return response.json();
 	})
-	.then((data) => {
-		// console.log(data.data.url);
-		new QRCode(document.querySelector("#qrcode"), data.data.url);
+	.then((json) => {
+		// console.log(json.data.url);
+		new QRCode(document.querySelector("#qrcode"), json.data.url);
 	});
 }
 //// google apps script side source code　////
