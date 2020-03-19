@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>textShare</title>
+<!-- https://bitly.com/ -->
+<!-- https://qiita.com/maruyam-a/items/96c8ad733c770a44117e -->
 <!-- https://github.com/davidshimjs/qrcodejs -->
 <script src="qrcode.js"></script>
 <meta name="viewport" content="width=device-width">
@@ -15,33 +17,21 @@
 const textShare = () =>{
 	const query = encodeURIComponent(document.querySelector(`#textField`).value);
 	const URL = document.querySelector("a").href = "https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=" + query;
-	console.log(URL);
+	// console.log(URL);
+	
+	// long URL, it cant make unreadable QRCode by phone camera
+	// new QRCode(document.querySelector("#qrcode"), URL);
 
-	// "https://api-ssl.bitly.com/v3/shorten?access_token=68c5b0fd0c41d25ab07ee7d7945242daf0fd5091&longUrl=https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=const%20takesThreeArgs%20%3D%20function(a%2C%20b%2C%20c)%20%7B%0A%20%20return%20%5Ba%2C%20b%2C%20c%5D%3B%0A%7D%3B%0AtakesThreeArgs.length%3B%20%2F%2F%3D%3E%203%0AtakesThreeArgs(1%2C%202%2C%203)%3B%20%2F%2F%3D%3E%20%5B1%2C%202%2C%203%5D%0A"
+	// make bitly URL, that response JSON with shorter URL and make QRCode by shorter URL
 	// fetch('http://example.com/movies.json')
 	fetch(`https://api-ssl.bitly.com/v3/shorten?access_token=68c5b0fd0c41d25ab07ee7d7945242daf0fd5091&longUrl=${encodeURIComponent(URL)}`)
 	.then((response) => {
 		return response.json();
 	})
 	.then((data) => {
-		console.log(data);
-		console.log(data.data.url);
-
-		// new QRCode(document.getElementById("qrcode"), {
-		// 	// text: `https://api-ssl.bitly.com/v3/shorten?access_token=68c5b0fd0c41d25ab07ee7d7945242daf0fd5091longUrl=${URL}`,
-		// 	text: data.data.url,
-		// 	width: 200,
-		// 	height: 200,
-		// 	colorDark : "#000000",
-		// 	colorLight : "#ffffff",
-		// 	correctLevel : QRCode.CorrectLevel.H
-		// });
-
+		// console.log(data.data.url);
 		new QRCode(document.querySelector("#qrcode"), data.data.url);
-		// new QRCode(document.querySelector("#qrcode"), URL);
 	});
-
-
 }
 //// google apps script side source code　////
 // 	function doGet(e) {
