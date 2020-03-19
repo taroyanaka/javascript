@@ -17,6 +17,8 @@
 <div id="qrcode" style="width:200px; height:200px; margin-top:15px;"></div>
 <div id="bitlyurl"></div>
 <script>
+new ClipboardJS('.btn');
+
 const textShare = () =>{
 	const query = encodeURIComponent(document.querySelector(`#textField`).value);
 	const URL = document.querySelector("a").href = "https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=" + query;
@@ -36,7 +38,7 @@ const textShare = () =>{
 		new QRCode(document.querySelector("#qrcode"), json.data.url);
 		document.querySelector(`body`).insertAdjacentHTML(`afterBegin`, 
 			`<textarea name="url" id="url" cols="20" rows="1">${json.data.url}</textarea>
-			<button class="btn" data-clipboard-action="copy" data-clipboard-target="#id">COPY URL</button>` 
+			<button class="btn" data-clipboard-target="#url">COPY URL</button>` 
 		);
 	});
 }
