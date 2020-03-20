@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>get Gist test</title>
+<body style="background-color: gray"></body>
+
+<textarea name="ID" id="ID" cols="50" rows="1" required="required" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);" placeholder="github id"  onchange="changeQuery()"></textarea>
+<textarea name="gistCount" id="gistCount" cols="15" rows="1" required="required" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);" placeholder="All gists Number" onchange="changeQuery()"></textarea>
+<textarea name="textField1" id="textField1" cols="50" rows="10" required="required" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);" placeholder="use this command on terminal" ></textarea>
+<div>open html file</div>
+<textarea name="textField2" id="textField2" cols="50" rows="10" required="required" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);">open ./allgist.html</textarea>
+<div>make tmp.txt from this command in google chrome console</div>
+<textarea name="textField" id="textField" cols="50" rows="10" required="required" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);"></textarea>
+<textarea name="textField3" id="textField3" cols="50" rows="10" required="required" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);">
+cat tmp.txt|xargs -P3 -n1 -INUM curl
+</textarea>
+
+<!-- <a target="_blank" rel="noopener noreferrer" href="https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=foo" onclick="textShare()">Share</a> -->
+
+<!-- <div id="result"></div> -->
+<!-- <div id="allPageResult"></div> -->
+<script>
+// document.querySelector("a").addEventListener("click",exe)
+function exe(){
+	// const HTML = document.querySelector("#textField").value;
+	// document.querySelector(`body`).insertAdjacentHTML(`afterBegin`, 		HTML			);
+	// const RES = Array.from(document.querySelectorAll(`#gist-pjax-container > div > div > div.col-9 > div > div.gist-snippet-meta.d-inline-block.width-full > div > div:nth-child(2) > span:nth-child(1) > a:nth-child(2)`)).map(V=>{		return V.href	})
+	// console.log(RES);
+
+
+}
+// document.querySelector("a").addEventListener("click",exe);
+
+document.querySelector("#textField").value = `copy(Array.from(document.querySelectorAll('#gist-pjax-container > div > div > div.col-9 > div > div.gist-snippet-meta.d-inline-block.width-full > div > div:nth-child(2) > span:nth-child(1) > a:nth-child(2)')).map(V=>{		return V.href.replace("file\:\/\/\/", "https://gist.github.com/" )	}).join("\n"))`;
+let ID;
+
+const getGistMaxPageNum = () =>{
+  const gistCountNumber = Number( document.querySelector("#gistCount").value );
+  const maxPageNum = gistCountNumber<10 ? 1 : Math.floor(gistCountNumber /10) + 1;
+  return maxPageNum;
+// test return is 3
+	// return 3;
+}
+
+
+const changeQuery = () =>{
+	ID = document.querySelector("#ID").value;
+	document.querySelector("#textField1").value = `seq ${getGistMaxPageNum()}|xargs -P3 -n1 -INUM curl "https://gist.github.com/${ID}?page="NUM >> ./allgist.html`
+}
+
+
+
+
+</script>
+</body>
+</html>
