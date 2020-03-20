@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>get Gist test</title>
+<body style="background-color: gray"></body>
+<!-- <textarea name="textField" id="textField" cols="50" rows="10" required="required" maxlength="2000" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);"></textarea> -->
+<!-- <a target="_blank" rel="noopener noreferrer" href="https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=foo" onclick="textShare()">Share</a> -->
+<a onclick="textShare()">get Gist test</a>
+<script>
+const textShare = () =>{
+	// const query = encodeURIComponent(document.querySelector(`#textField`).value);
+//	const URL = document.querySelector("a").href = "https://script.google.com/macros/s/AKfycbyhMMEzWxNMmxZzyn8f9ot2YdROT9UThZeba_an3YDun2F0hot2/exec?value=" + query;
+	// console.log(URL);
+
+	// long URL, it cant make unreadable QRCode by phone camera
+	// new QRCode(document.querySelector("#qrcode"), URL);
+
+	// make bitly URL, that response JSON with shorter URL and make QRCode by shorter URL
+	// fetch('http://example.com/movies.json')
+const	getURL = "https://script.google.com/macros/s/AKfycbzXaAig58BuJr9BzWPpxLQ-bD7WCQBVT04-IVCTrzhs5pU5lSRg/exec?id=taroyanaka";
+	fetch(getURL)
+	.then((response) => {
+		return response.text();
+	})
+	.then((HTML) => {
+		// console.log(json.data.url);
+		document.querySelector(`body`).insertAdjacentHTML(`afterBegin`, 			HTML		);
+	});
+}
+//// google apps script side source code　////
+// 	function doGet(e) {
+//   const HTML = `<textarea name="textField" id="textField" cols="50" rows="10" required="required" maxlength="1900" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);">${e.parameter.value}</textarea>`
+//   return HtmlService.createHtmlOutput(HTML);
+// }
+</script>
+</body>
+</html>
