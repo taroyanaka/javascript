@@ -52,8 +52,9 @@ const getGistMaxPageNum = () =>{
 }
 
 const makePageURLSArray = (pageNumberArray) =>{
-  pageNumberArray.map(val=>{
-    return "https://gist.github.com/" + ID + "?pagenum=" + val.toString();
+  pageNumberArray.map(NUM=>{
+    // return "https://gist.github.com/" + ID + "?pagenum=" + NUM.toString();
+    return "https://script.google.com/macros/s/AKfycbzXaAig58BuJr9BzWPpxLQ-bD7WCQBVT04-IVCTrzhs5pU5lSRg/exec?id="+ID+"&pagenum="+NUM.toString();
     // allTxt += UrlFetchApp.fetch(URL).getContentText('UTF-8')
   })
 };
