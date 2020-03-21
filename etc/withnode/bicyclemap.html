@@ -1580,14 +1580,14 @@ function initMap(){
 
             infoWindow.setPosition(pos);
             infoWindow.setContent('Location found.');
-            infoWindow.open(map);
-            map.setCenter(pos);
+            infoWindow.open(data);
+            data.setCenter(pos);
           }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
+            handleLocationError(true, infoWindow, data.getCenter());
           });
         } else {
           // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
+          handleLocationError(false, infoWindow, data.getCenter());
         }
 
 	let marker = [];
