@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>relay timer</title>
+<meta name="viewport" content="width=device-width">
+<!-- https://albert-gonzalez.github.io/easytimer.js/ -->
+<script src="./easytimer.min.js"></script>
+<!-- http://albert-gonzalez.github.io/.js/ -->
+<!-- https://iwb.jp/input-type-time-seconds-javascript/ -->
+<!-- https://ramdajs.com/ -->
+<script src="ramda.min.js"></script>
+</head>
+<body style="background-color: gray">
+<span><button id="LOADSAVETIMERARRAY" onclick="LOADSAVETIMERARRAY();">LOADSAVETIMERARRAY</button></span>
+<span><button id="SAVESAVETIMERARRAY" onclick="SAVESAVETIMERARRAY();">SAVESAVETIMERARRAY</button></span>
+<span><button id="CLEARTIMERSAVEDATA" onclick="CLEARTIMERSAVEDATA();">CLEARTIMERSAVEDATA</button></span>
+<div>
+	<!-- <div class="RESULT">00:00:00</div> -->
+	<div class="RESULT">00:00:00:0</div>
+	<div>
+		<button id="TIMERSTART" onclick="TIMEINPUT();USETIMER();">Start</button>
+		<button id="TIMERPAUSE" onclick="TIMERPAUSE();">Pause</button>
+		<button id="TIMERSTOP" onclick="TIMERSTOP();">Stop</button>
+		<button id="TIMERRESET" onclick="TIMERRESET();">Reset</button>
+	</div>
+</div>
+<div id="ALLTIMER">
+	<input class="TIMEINPUTS" type="time" value="00:00:03" step="1" oninput="TIMEINPUT();">
+</div>
+<button id="NEWTIMER" onclick="NEWTIMER();">NEWTIMER</button>
+
+<script>
+let NEWTIMERARRAY=[];
+const NEWTIMER = ()=>{
+	NEWTIMERARRAY = R.range(0, document.querySelectorAll(".TIMEINPUTS").length + 1);
+	document.querySelectorAll(".TIMEINPUTS").forEach(E=>{E.parentNode.removeChild(E)});
+	const makeEditableButtonListArrayIndexListHTMLStr = (ELEMENT,KEY) => `<input class="TIMEINPUTS" type="time" value="00:00:00" data-timeridx=${KEY} step="1" oninput="TIMEINPUT();">`;
+	document.querySelector(`#ALLTIMER`).insertAdjacentHTML(`beforeEnd`,  NEWTIMERARRAY.map(makeEditableButtonListArrayIndexListHTMLStr).join("")  );
+}
+
+let TIMER = new easytimer.Timer();
+TIMER.addEventListener('secondTenthsUpdated', () => document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']) );
+document.querySelector('.RESULT').innerText = TIMER.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']);
+
+let ALLTIMER = [];
+let CURRENTTIMER;
+TIMER.addEventListener('targetAchieved', () => {
+	if(R.isEmpty(ALLTIMER)){
+		document.querySelector('.RESULT').innerText = "TIME IS COMING!!"}
+	else{
+		CURRENTTIMER = R.head(ALLTIMER);
+		ALLTIMER = R.remove(0, 1, ALLTIMER);
+		TIMER.start({ countdown: true, startValues: {seconds: Number(CURRENTTIMER)}, target: { seconds: 0 }, precision: 'secondTenths' });
+	}
+});
+
+let [HH, MM, SS] = ["","",""];
+
+const TIMEINPUT=()=>{
+	ALLTIMER=[];
+	document.querySelectorAll(".TIMEINPUTS").forEach(V=>{
+		[HH, MM, SS] = (V.value).split(':');
+		if(!HH)HH='00';if(!MM)MM='00';if(!SS)SS='00';
+		if(V.value === "" || V.value === "00:00"){ V.value = "00:00:00" };
+		ALLTIMER.push(Number(SS) + Number(MM)*60 + Number(HH)*3600);
+	})
+}
+
+const USETIMER=()=>{
+	CURRENTTIMER = R.head(ALLTIMER);
+	ALLTIMER = R.remove(0, 1, ALLTIMER);
+	TIMER.start({ countdown: true, startValues: {seconds: Number(CURRENTTIMER)}, target: { seconds: 0 }, precision: 'secondTenths' });
+}
+const TIMERPAUSE=()=>TIMER.pause();
+const TIMERSTOP=()=>TIMER.stop();
+const TIMERRESET=()=>TIMER.reset();
+const RESUME=()=>TIMER.start({ countdown: true, startValues: {seconds: SS}, target: { seconds: 0 }, precision: 'secondTenths' });
+
+let SAVETIMERARRAY=[];
+const SAVESAVETIMERARRAY = () =>{
+	document.querySelectorAll(`.TIMEINPUTS`).forEach(V=>{SAVETIMERARRAY.push(V.value)});
+	localStorage.saveData = JSON.stringify( SAVETIMERARRAY );
+};
+const LOADSAVETIMERARRAY = () =>{
+	document.querySelectorAll(".TIMEINPUTS").forEach(E=>{E.parentNode.removeChild(E)});
+	SAVETIMERARRAY = JSON.parse(localStorage.saveData);
+	const MAKETIMER = (VAL,KEY) => `<input class="TIMEINPUTS" type="time" value=${VAL} data-timeridx=${KEY} step="1" oninput="TIMEINPUT();">`;
+	document.querySelector(`#ALLTIMER`).insertAdjacentHTML(`beforeEnd`,  SAVETIMERARRAY.map(MAKETIMER).join("")  );
+};
+const CLEARTIMERSAVEDATA = () =>{
+	localStorage.clear();
+	document.querySelectorAll(".TIMEINPUTS").forEach(E=>{E.parentNode.removeChild(E)});
+	ALLSAVETIMERARRAY=[0];
+};
+</script>
+</body>
+</html>
