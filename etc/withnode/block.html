@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>blocks</title>
+<meta name="viewport" content="width=device-width">
+	<!-- https://gist.github.com/taroyanaka/68dae9a18df5af50bfb51d90e92f77ea -->
+	<!-- https://ramdajs.com -->
+	<!-- <script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script> -->
+	<script src="//cdn.jsdelivr.net/npm/ramda@0.27.0/dist/ramda.min.js"></script>
+	<!-- https://momentjs.com/ -->
+	<script src="https://cdn.jsdelivr.net/npm/moment@2.24.0/moment.min.js"></script>
+	<!-- <script src="ramda.min.js "></script> -->
+	<link rel="stylesheet" type="text/css" href="block.css">
+</head>
+<body style="background-color: gray">
+<div id="data">
+	<ul id="savedatas"></ul>
+</div>
+
+blocks: <input type="number" name="number1" id="number1" value="1" min="1" max="100" onchange="ifEdit();">
+<a name="add" id="add" value="add block" onclick="addBlock();" style="padding: 1px 10px;background: #5876a3;">add</a>
+<a name="reduce" id="reduce" value="reduce block" onclick="reduceBlock();" style="padding: 1px 10px;background: #5876a3;">reduce</a>
+<a name="deleteAllBlock" id="deleteAllBlock" value="delete all block" onclick="deleteAllBlock();" style="padding: 1px 10px;background: #5876a3;">deleteAllBlock</a>
+
+<a name="addSaveData" id="addSaveData" value="addSaveData block" onclick="addSaveDataFunc();"
+	style="padding: 1px 10px;background: #5876a3;">addSaveData</a>
+
+<div id="blocks">
+	<ul id="htmlblocks"></ul>
+</div>
+<div id="allBlockNum">0</div>
+<script>
+	// all of global values
+	// saveDataArray is	[allBlockNum, blockVolume, madeDate, editedDate] => [allBlockNum, Number(document.querySelector("#number1").value), moment().format(), moment().format()]
+	let saveDataArray=[];
+	let allBlockNum=0;
+	let editElmNum;
+	
+	// utility functions
+	const debug = () =>{
+		console.table(
+			localStorage.saveData
+		);
+	}
+
+	const test = () =>{
+		localStorage.clear();
+		document.querySelector("#number1").value = 1;
+		document.querySelector(`#add`).click();
+		document.querySelector(`#add`).click();
+		document.querySelector(`#add`).click();
+		document.querySelector(`#reduce`).click();
+		document.querySelector(`#addSaveData`).click();
+
+		document.querySelector("#number1").value = 3;
+		document.querySelector(`#add`).click();
+		document.querySelector(`#add`).click();
+		document.querySelector(`#add`).click();
+		document.querySelector(`#reduce`).click();
+		document.querySelector(`#addSaveData`).click();
+		document.querySelector(`#deleteAllBlock`).click();
+	}
+
+	// make block functions
+	const addHTML = (array) =>{
+		const innerArraySetForMakeHTML = (innerArray,KEY) => {
+			return `<li class="block" data-id="${KEY}">${innerArray[1]}</li>`;
+		}
+		document.querySelector(`#htmlblocks`).insertAdjacentHTML(`afterBegin`, array.map(innerArraySetForMakeHTML).join(''));
+		debug();
+	};
+
+	const ifEdit = () =>{
+		if(editElmNum){
+			saveDataArray[editElmNum][0] = allBlockNum;
+			saveDataArray[editElmNum][1] = Number(document.querySelector("#number1").value);
+			// saveDataArray[editElmNum][2] is madeDate
+			saveDataArray[editElmNum][3] = moment().format();
+			localStorage.saveData = JSON.stringify(saveDataArray);
+			deleteAllSaveDataHTML();
+			addSaveDataHTML( saveDataArray );
+		}
+	}
+
+	const makeBlock = () =>{
+		document.querySelectorAll("li.block").forEach(E=>{E.parentNode.removeChild(E)});
+		addHTML(R.transpose( [ R.times(R.identity, allBlockNum), R.repeat('▨', allBlockNum) ] ));
+	}
+
+	const addBlock = () =>{
+		document.querySelector("#allBlockNum").innerText = allBlockNum +=
+		Number(document.querySelector("#number1").value);
+		ifEdit();
+		makeBlock();
+	}
+
+	const reduceBlock = () =>{
+		document.querySelector("#allBlockNum").innerText = allBlockNum -=
+		Number(document.querySelector("#number1").value);
+		ifEdit();
+		makeBlock();
+	};
+
+	const deleteAllBlock = () =>{
+		document.querySelector("#allBlockNum").innerText = allBlockNum = 0;
+		ifEdit();
+		makeBlock();
+	}
+
+	// save/load functions	
+	const addSaveDataHTML = (array) =>{
+		const innerArraySetForMakeHTML = (innerArray,KEY) => {
+			return `<li onclick="setSaveDataFunc(event)" class="savedata" data-save-id="${KEY}" data-all-block-num-list="${innerArray[0]}"
+					data-blocks-num-list="${innerArray[1]}" style="padding: 1px 10px;background: #5876a3; pointer-events: auto;">
+					<span class="allBlockNumList" style="pointer-events: none;">${innerArray[0]}</span>
+					<span class="blocksNumList" style="pointer-events: none;">${innerArray[1]}</span>
+					</li><li class="list2" data-foo="${KEY}" style="padding: 1px 10px;background: purple;" onclick="deleteSaveDataFunc(event)">delete button</li>`;
+		}
+		document.querySelector(`#savedatas`).insertAdjacentHTML(`afterBegin`, array.map(innerArraySetForMakeHTML).join(''));
+	};
+
+	const deleteAllSaveDataHTML = () =>{
+		document.querySelectorAll("li.savedata").forEach(E=>{E.parentNode.removeChild(E)});
+		document.querySelectorAll("li.list2").forEach(E=>{E.parentNode.removeChild(E)});
+	}
+
+	const loadSaveDataFunc = () => {
+		saveDataArray = JSON.parse(localStorage.saveData);
+		deleteAllSaveDataHTML();
+		addSaveDataHTML(saveDataArray);
+	}
+
+	const addSaveDataFunc = () => {
+		saveDataArray.push( [allBlockNum, Number(document.querySelector("#number1").value), moment().format(), moment().format()] );
+		// saveDataArray.push( [allBlockNum, Number(document.querySelector("#number1").value)] );
+		localStorage.saveData = JSON.stringify(saveDataArray);
+		loadSaveDataFunc();
+	};
+
+	const setSaveDataFunc = (event) => {
+		editElmNum = event.target.dataset.saveId;
+		// Implicit conversion Number to String
+		document.querySelector("#allBlockNum").innerText = allBlockNum = Number(event.target.dataset.allBlockNumList);
+		document.querySelector("#number1").value = event.target.dataset.blocksNumList;
+		makeBlock();
+		debug();
+	}
+
+	const deleteSaveDataFunc = (event) => {
+		// destructive function: splice()
+		saveDataArray.splice(Number(event.target.dataset.foo), 1);
+		localStorage.saveData = JSON.stringify(saveDataArray);
+		deleteAllSaveDataHTML();
+		addSaveDataHTML( saveDataArray );
+	}
+
+	test();
+	loadSaveDataFunc();
+
+	const earlyVal = moment();
+	console.log(earlyVal);
+	const lateVal = moment();
+	console.log(lateVal);
+	console.log(`lateVal defined late ${lateVal.diff(earlyVal)} milliseconds from earlyVal`);
+	if(lateVal>earlyVal){console.log(`lateVal is bigger than earlyVal`)};
+	if(earlyVal>lateVal){console.log(`earlyVal is bigger than lateVal`)};
+
+	// debug();
+
+
+
+</script>
+<!-- <script src="setValueToSpreadsheet.js"></script> -->
+</body>
+</html>
