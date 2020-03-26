@@ -9,6 +9,7 @@
 </head>
 <body style="background-color: gray">
 	<div><a href="https://anond.hatelabo.jp/20200319181920">cat ./omega.txt|xargs -P3 -n1 -IURL youtube-dl -f mp4 URL</a></div>
+	<div><a href="https://twitter.com/wayaqu/status/1243127827135750144">for f in *.mp4 ; do ffmpeg -i $f -ab 512k $f.mp3; done</a></div>
 	<input type="button" id="make list" value="make list" onclick="exe();" style="background-color: rgb(179, 175, 170)"/>
 	<textarea name="key" id="key" cols="100" rows="1" required="required" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);" placeholder="https://www.youtube.com/channel/****PASTE HERE THIS UNIQUE KEY******"></textarea>
 	<textarea name="textBox1" id="id_textBox1" cols="150" rows="30"	required="required" maxlength="1000000"	autofocus="autofocus" wrap="hard"></textarea>
