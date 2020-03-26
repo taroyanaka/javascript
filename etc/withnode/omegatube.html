@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>OmegaTube</title>
+<meta name="viewport" content="width=device-width">
+<!-- https://ramdajs.com -->
+<script src="ramda.min.js"></script>
+</head>
+<body style="background-color: gray">
+	<div><a href="https://anond.hatelabo.jp/20200319181920">cat ./omega.txt|xargs -P3 -n1 -IURL youtube-dl -f mp4 URL</a></div>
+	<input type="button" id="make list" value="make list" onclick="exe();" style="background-color: rgb(179, 175, 170)"/>
+	<textarea name="key" id="key" cols="100" rows="1" required="required" autofocus="autofocus" style="font-size: 16px;transform: scale(0.9);" placeholder="https://www.youtube.com/channel/****PASTE HERE THIS UNIQUE KEY******"></textarea>
+	<textarea name="textBox1" id="id_textBox1" cols="150" rows="30"	required="required" maxlength="1000000"	autofocus="autofocus" wrap="hard"></textarea>
+<script>
+let urls;
+let key;
+const exe = ()=>{
+	key = document.querySelector("#key").value || "UCNjTjd2-PMC8Oo_-dCEss7A"; 	// default key is Ω Sisters key
+	// https://gist.github.com/taroyanaka/101f09135e1bc9306cf82f184d899c32
+	fetch(`https://script.google.com/macros/s/AKfycbwYzaAY9-CH8re2BM-FK8eaKYEF6To1sEysYBot1odXQe9Ckxo/exec?key=${key}`)
+	.then((response) => {
+		return response.json();
+	})
+	.then((json) => {
+		console.log(json.data);
+		document.querySelector(`body`).insertAdjacentHTML(`beforeEnd`,  json.data  );
+	})
+	.then((resonse) => {
+		urls = Array.from(document.querySelectorAll("img")).filter(V=>{ return (/ytimg/g).test( V.src ) }).map(V=>{return V.src}).map(V=>{return R.match(/[0-9a-zA-Z_-]{11}/gi,V) }).map(V=>{return "https://www.youtube.com/watch?v="+V[0]});
+		document.querySelector("#id_textBox1").value = urls.join("\n");
+	});
+}
+console.log(urls);
+</script>
+</body>
+</html>
