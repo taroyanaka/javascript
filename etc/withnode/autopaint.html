@@ -5,12 +5,11 @@
     <title>auto paint</title>
 	<meta name="viewport" content="width=device-width">
 	<script src="ramda.min.js"></script>
-	<!-- https://jsfiddle.net/user2314737/28wqq1gu/ -->
+	<!-- https://stackoverflow.com/questions/10673122/how-to-save-canvas-as-an-image-with-canvas-todataurl -->
 </head>
 <body>
 <header>
 	<button onclick="draw();">draw</button>
-	<!-- <a id="download" download="autopaint.jpg" href="" onclick="downloadImg(this);">Download</a> -->
 	<a id="link" onclick="getPic()">DLDLDLDLDLDL</a>
 </header>
 <div>
@@ -75,14 +74,11 @@
 		randomDraw( Math.floor(Math.random() * (50 + 1)));
 	 }
 
-	const downloadImg = () =>	e.href = canvas.toDataURL("image/jpeg");
-
 	const getPic = () =>{
 		var link = document.getElementById('link');
 		link.setAttribute('download', 'foo');
 		link.setAttribute('href', canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream"));
 		link.click();
 	}
-
 </script>
 </html>
