@@ -79,8 +79,8 @@
 
 	const getPic = () =>{
 		var link = document.getElementById('link');
-		link.setAttribute('download', 'MintyPaper.png');
-		link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+		link.setAttribute('download', 'foo');
+		link.setAttribute('href', canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream"));
 		link.click();
 	}
 
