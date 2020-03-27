@@ -76,7 +76,7 @@
 
 	const getPic = () =>{
 		var link = document.getElementById('link');
-		link.setAttribute('download', 'foo');
+		link.setAttribute('download', 'foo.jpg');
 		link.setAttribute('href', canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream"));
 		link.click();
 	}
