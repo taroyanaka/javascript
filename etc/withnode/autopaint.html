@@ -5,10 +5,12 @@
     <title>auto paint</title>
 	<meta name="viewport" content="width=device-width">
 	<script src="ramda.min.js"></script>
+	<!-- https://jsfiddle.net/user2314737/28wqq1gu/ -->
 </head>
 <body>
 <header>
 	<button onclick="draw();">draw</button>
+	<a id="download" download="autopaint.jpg" href="" onclick="downloadImg(this);">Download</a>
 </header>
 <div>
 	<canvas id="myCanvas" width="1200" height="600"></canvas>
@@ -71,5 +73,7 @@
 		randomDraw( Math.floor(Math.random() * (50 + 1)));
 		randomDraw( Math.floor(Math.random() * (50 + 1)));
 	 }
+
+	const downloadImg = () =>	e.href = canvas.toDataURL("image/jpeg");
 </script>
 </html>
