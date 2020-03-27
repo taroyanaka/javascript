@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>auto paint</title>
+	<meta name="viewport" content="width=device-width">
+	<script src="ramda.min.js"></script>
+</head>
+<body>
+<header>
+	<button onclick="draw();">draw</button>
+</header>
+<div>
+	<canvas id="myCanvas" width="1200" height="600"></canvas>
+</div>
+</body>
+<script>
+    let canvas = document.getElementById('myCanvas');
+    let ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, 1200, 600);
+
+    const shuffleArray = array => {
+      for (let i = array.length - 1; i > 0; i--) {
+        let r = Math.floor(Math.random() * (i + 1));
+        let tmp = array[i];
+        array[i] = array[r];
+        array[r] = tmp;
+      }
+      return array
+    }
+
+	const randomRange = (from, to) => { return shuffleArray(R.range(from, to)) };
+
+	let V1_0_700_x = randomRange(0, 1200);
+	let V1_0_400_y = randomRange(0, 600);
+	const fromTo = (fromX,fromY,toX,toY) => {
+		ctx.strokeStyle = `rgba( ${Math.floor(Math.random() * (255 + 1))}, ${Math.floor(Math.random() * (255 + 1))} , ${Math.floor(Math.random() * (255 + 1))}, ${Math.floor(Math.random() * (255 + 1))} )`;
+		ctx.createLinearGradient(fromX,fromY,toX,toY);
+		ctx.lineWidth =  200;
+		ctx.globalAlpha = 0.9;
+		ctx.lineCap = "round";
+		ctx.moveTo(fromX,fromY);
+		ctx.lineTo(toX,toY);
+		ctx.moveTo(toX,toY);
+	}
+	fromTo(V1_0_700_x[0],V1_0_400_y[0],V1_0_700_x[1],V1_0_400_y[1]);
+
+	const randomPaint = NUM => fromTo(V1_0_700_x[NUM],V1_0_400_y[NUM],V1_0_700_x[NUM+1],V1_0_400_y[NUM+1]);
+	const numberOfLines = (NUM) => { return R.range(1, NUM) };
+
+	const randomDraw = (time) => {
+		V1_0_700_x = randomRange(-100, 1200);
+		V1_0_400_y = randomRange(-100, 800);
+		ctx.beginPath();
+		R.forEach(randomPaint, numberOfLines(time) );
+		ctx.stroke();
+	}
+
+	const draw = () =>{ 
+		randomDraw( Math.floor(Math.random() * (50 + 1)));
+		randomDraw( Math.floor(Math.random() * (50 + 1)));
+		randomDraw( Math.floor(Math.random() * (50 + 1)));
+		randomDraw( Math.floor(Math.random() * (50 + 1)));
+		randomDraw( Math.floor(Math.random() * (50 + 1)));
+		randomDraw( Math.floor(Math.random() * (50 + 1)));
+		randomDraw( Math.floor(Math.random() * (50 + 1)));
+		randomDraw( Math.floor(Math.random() * (50 + 1)));
+		randomDraw( Math.floor(Math.random() * (50 + 1)));
+		randomDraw( Math.floor(Math.random() * (50 + 1)));
+		randomDraw( Math.floor(Math.random() * (50 + 1)));
+	 }
+</script>
+</html>
