@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8" />
+<title>word counter</title>
+<script src="ramda.min.js"></script>
+<script src="clipboard.js"></script>
+<script src="./WethePeopleoftheUnitedStates.js"></script>
+</head>
+<body>
+	<div>
+		under <input type="number" name="number1" id="number1" value="1" min="1" onChange="count();">
+	</div>
+	<div>
+		over <input type="number" name="number0" id="number0" value="1" min="1" onChange="count();">
+	</div>
+	<div>
+		<textarea name="foo" id="foo" cols="50" rows="10" required="required" autofocus="autofocus" placeholder="foo bar foo baz" onchange="count();"></textarea>
+		<button class="btn" data-clipboard-target="#bar">COPY</button>
+		<button class="btn" data-clipboard-target="#baz">COPY</button>
+	</div>
+	<div>
+		<textarea name="bar" id="bar" cols="20" rows="100" required="required"></textarea>
+		<textarea name="baz" id="baz" cols="20" rows="100" required="required"></textarea>
+	</div>
+<script>
+	new ClipboardJS('.btn');
+	let sample;
+	const count = ()=>{
+		const val0 = R.split(" ")(document.querySelector(`#foo`).value);
+		const val1 = R.countBy(R.identity)(val0);
+		const val2 = R.toPairs(val1);
+		const by1AryDescend = R.descend(R.prop(1));
+		const val3 = R.sort(by1AryDescend, val2);
+		const UNDER = N => N[1] <= Number(document.querySelector(`#number1`).value);
+		const val4 = R.filter(UNDER, val3);
+		const OVER = N => N[1] >= Number(document.querySelector(`#number0`).value);
+		const val5 = R.filter(OVER, val4);
+		document.querySelector(`#bar`).value = R.join("\n")(R.pluck(0)(val5));
+		document.querySelector(`#baz`).value = R.join("\n")(R.pluck(1)(val5));
+		sample = R.clone(val5);
+	}
+
+     async function test() {
+        document.querySelector(`#foo`).value = await WethePeopleoftheUnitedStates;
+		count();
+		console.table(sample);
+    }
+	// test();
+</script>
+</body>
+</html>
