@@ -25,6 +25,7 @@
   <button id="TIMERSTART" onclick="TIMER.start();">Timer start</button>
   <a name="reverse"  id="reverse" value="reverse" onclick="if(reverse){reverse=0}else{reverse=1};init();" style="padding: 5px 10px;background: #5876a3;">reverse</a>
   <a name="shuffle"  id="shuffle" value="shuffle" onclick="if(shuffle){shuffle=0}else{shuffle=1};init();" style="padding: 5px 10px;background: #5876a3;">shuffle</a>
+  <a name="saveclear"  id="saveclear" value="saveclear" onclick="localStorage.clear();" style="padding: 5px 10px;background: #5876a3;">saveclear</a>
   <span id="point">0</span><span>/</span><span id="allPoint">0</span>
   <div id="QASet"></div>
 
@@ -109,6 +110,7 @@ const checkQA = (event) =>{
 							}
 							countPoint();
 							checkWorkOut();
+							localStorage.saveData = document.querySelector("body").outerHTML;
 						  };
 
 const addHTML = (htmlstring) =>{
@@ -139,6 +141,10 @@ const init = () =>{
 
 addHTML(ramdajshtmlresources);
 init();
+if(localStorage.saveData){
+	document.querySelector(`body`).parentNode.removeChild( document.querySelector(`body`) );
+	document.querySelector(`html`).insertAdjacentHTML(`beforeend`, localStorage.saveData);
+}
 </script>
 </body>
 </html>
