@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8" />
+<title>memo group</title>
+<script src="ramda.min.js"></script>
+</head>
+<body>
+	<div>
+		<textarea name="foo" id="foo" cols="50" rows="10" required="required" autofocus="autofocus" placeholder="foo bar foo baz" onchange="group();"></textarea>
+	</div>
+	<div>
+		<textarea name="bar" id="bar" cols="20" rows="10" required="required"></textarea>
+	</div>
+<script>
+	let sample;
+	const group = ()=>{
+		const val0 = R.split("\n")(document.querySelector(`#foo`).value);
+		const val1 = R.map(V=>{return R.split(" ",V)},val0);
+		const val2 = R.invert(R.fromPairs(val1));
+		document.querySelector(`#bar`).value = R.toString(val2);
+		sample = R.clone(val2);
+	}
+
+     async function test() {
+        document.querySelector(`#foo`).value = await
+`one foo
+two bar
+three bar
+four foo`
+		group();
+		console.table(sample);
+    }
+	test();
+</script>
+</body>
+</html>
