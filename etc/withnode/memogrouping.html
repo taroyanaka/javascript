@@ -10,6 +10,12 @@
 		<ul id="tag"></ul>
 	</div>
 	<div>
+		<select name="separator" id="separator" onInput="makeList();">
+			<option value="return">return</option>
+			<option value="dot">dot</option>
+			<option value="comma">comma</option>
+			<option value="tab">tab</option>
+		</select>
 		<textarea name="foo" id="foo" cols="50" rows="10" required="required" autofocus="autofocus" placeholder="foo bar foo baz" onInput="makeList();"></textarea>
 		<textarea name="foo1" id="foo1" cols="50" rows="10"></textarea>
 	</div>
@@ -21,7 +27,23 @@ let forConsoleDisplay;
 let allText,allEachTag,allTextAndAllEachTag,allTag=[];
 
 const exe = ()=>{
-	allText = R.split("\n")(document.querySelector(`#foo`).value);
+	const separator = document.querySelector("#separator").value;
+	switch (separator) {
+	case 'return':
+		allText = R.split("\n")(document.querySelector(`#foo`).value);
+		break;
+	case 'dot':
+		allText = R.split(".")(document.querySelector(`#foo`).value);
+		break;
+	case 'comma':
+		allText = R.split(",")(document.querySelector(`#foo`).value);
+		break;
+	case 'tab':
+		allText = R.split("\t")(document.querySelector(`#foo`).value);
+		break;
+	default:
+		allText = R.split("\n")(document.querySelector(`#foo`).value);
+	};
 	allEachTag = R.map(V=>{return R.split(" ",V)},allText);
 	allTextAndAllEachTag = R.zip(allText,allEachTag);
 	allTag = R.pipe(R.flatten,R.uniq)(allEachTag);
@@ -36,7 +58,7 @@ const insertText=(event)=>{
 }
 const makeLiTag = (array) => R.pipe(R.map(V=>{return `<li class="taglist" type="button" value='${V}' data-text='${V}' onclick="insertText(event)">${V}</li>`}), R.join(""))(array);
 const addHTML = (htmlstring) =>	document.querySelector(`#tag`).insertAdjacentHTML(`beforeend`, htmlstring);
-const makeList = ()=>{
+const makeList = () =>{
 		exe();
 		console.table(forConsoleDisplay);
 		document.querySelectorAll(".taglist").forEach(E=>{E.parentNode.removeChild(E)});
@@ -49,17 +71,17 @@ const test = () =>{
 	test=true;
 	if(onlyExeTime&&test){
 		document.querySelector(`#foo`).value =
-`one foo
-two bar
-three bar
-four foo baz
-five baz
-six bar baz`
+`one foo.
+two. bar
+three, bar hoge.
+four foo, baz
+five baz,
+six, bar baz.`
 		onlyExeTime=false;
 	}
 	makeList();
 }
-// document.querySelector("#test").click();
+document.querySelector("#test").click();
 // when use develop for test--------------
 
 makeList();
