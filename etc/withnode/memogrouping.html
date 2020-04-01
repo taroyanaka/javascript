@@ -5,6 +5,7 @@
 <script src="ramda.min.js"></script>
 </head>
 <body>
+	<input type="button" value="test" id="test" onclick="test()"></input>
 	<div>
 		<ul id="tag"></ul>
 	</div>
@@ -17,24 +18,38 @@
 	</div>
 <script>
 let forConsoleDisplay;
-let allText,allTag,allTextAndTag=[];
+let allText,allEachTag,allTextAndAllEachTag,allTag=[];
 
 const exe = ()=>{
-	const val0 = R.split("\n")(document.querySelector(`#foo`).value);
-	const val1 = R.map(V=>{return R.split(" ",V)},val0);
-	const val2 = [R.pluck(0,val1),R.map(V=>{return R.tail(V)},val1)];
-	allTextAndTag = R.zip(val2[0],val2[1]);
-	allText = R.pluck(0)(allTextAndTag);
-	allTag = R.pipe(R.pluck(1),R.flatten,R.uniq)(allTextAndTag);
-	document.querySelector(`#bar`).value = R.toString(allTextAndTag);
-	forConsoleDisplay = R.clone(allTextAndTag);
+	allText = R.split("\n")(document.querySelector(`#foo`).value);
+	allEachTag = R.map(V=>{return R.split(" ",V)},allText);
+	allTextAndAllEachTag = R.zip(allText,allEachTag);
+	allTag = R.pipe(R.flatten,R.uniq)(allEachTag);
+	document.querySelector(`#bar`).value = R.toString(allTextAndAllEachTag);
+	forConsoleDisplay = R.clone(allTextAndAllEachTag);
 }
+// const exe = ()=>{
+// 	const val0 = R.split("\n")(document.querySelector(`#foo`).value);
+// 	const val1 = R.map(V=>{return R.split(" ",V)},val0);
+// 	const val2 = [R.pluck(0,val1),R.map(V=>{return R.tail(V)},val1)];
+// 	allTextAndTag = R.zip(val2[0],val2[1]);
+// 	allText = R.pluck(0)(allTextAndTag);
+// 	allTag = R.pipe(R.pluck(1),R.flatten,R.uniq)(allTextAndTag);
+// 	document.querySelector(`#bar`).value = R.toString(allTextAndTag);
+// 	forConsoleDisplay = R.clone(allTextAndTag);
+// }
 const insertText=(event)=>{
-	const val0 = R.filter(V=>R.includes(event.target.dataset.text,V[1]))(allTextAndTag);
-	const val1 = R.map(V=>R.join(" ",R.flatten(V)))(val0);
+	const val0 = R.filter(V=>R.includes(event.target.dataset.text,V[1]))(allTextAndAllEachTag);
+	const val1 = R.pluck(0,val0);
 	const val2 = R.join("\n")(val1);
 	document.querySelector(`#foo1`).value = val2;
 }
+// const insertText=(event)=>{
+// 	const val0 = R.filter(V=>R.includes(event.target.dataset.text,V[1]))(allTextAndTag);
+// 	const val1 = R.map(V=>R.join(" ",R.flatten(V)))(val0);
+// 	const val2 = R.join("\n")(val1);
+// 	document.querySelector(`#foo1`).value = val2;
+// }
 const makeLiTag = (array) => R.pipe(R.map(V=>{return `<li class="taglist" type="button" value='${V}' data-text='${V}' onclick="insertText(event)">${V}</li>`}), R.join(""))(array);
 const addHTML = (htmlstring) =>	document.querySelector(`#tag`).insertAdjacentHTML(`beforeend`, htmlstring);
 const makeList = ()=>{
@@ -45,19 +60,23 @@ const makeList = ()=>{
 }
 
 // when use develop for test--------------
-let test;
-let onlyExeTime=true;
-test=true;
-if(onlyExeTime&&test){
-	document.querySelector(`#foo`).value =
+const test = () =>{
+	let test;
+	let onlyExeTime=true;
+	test=true;
+	if(onlyExeTime&&test){
+		document.querySelector(`#foo`).value =
 `one foo
 two bar
 three bar
 four foo baz
 five baz
 six bar baz`
-	onlyExeTime=false;
+		onlyExeTime=false;
+	}
+	makeList();
 }
+// document.querySelector("#test").click();
 // when use develop for test--------------
 
 makeList();
