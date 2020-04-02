@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>jpeg camera</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+<!-- https://github.com/kimizuka/webcamera-preview-for-ios11 -->
+</head>
+<body>
+<canvas id="canvas" onclick="saveCanvas();"></canvas>
+<div id="videobox">
+	<video id="video" autoplay playsinline></video>
+</div>
+<script>
+const saveCanvas = () =>{
+	let a = document.createElement('a');
+	a.href = document.getElementById("canvas").toDataURL('image/jpeg');
+	a.download = 'download.jpg';
+	a.click();
+}
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+const draw = () =>{
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.drawImage(video, 0, 0);
+  requestAnimationFrame(draw);
+}
+navigator.mediaDevices.getUserMedia({audio:false, video:{facingMode:{exact:"environment"}}}).then((stream)=>{
+  video.srcObject = stream;
+  requestAnimationFrame(draw);
+})
+</script>
+<style>
+body {
+  margin: 0;
+  background: #000;
+}
+
+#videobox {
+  position: absolute;
+  top: 0px; left: 0px;
+  transform-origin: left top;
+  transform: scale(.1);
+}
+
+#video {
+  display: block;
+}
+
+#canvas {
+  display: block;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+</style>
+</body>
+</html>
