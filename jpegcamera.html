@@ -7,12 +7,12 @@
 <!-- https://github.com/kimizuka/webcamera-preview-for-ios11 -->
 </head>
 <body>
-<canvas id="canvas" onclick="saveCanvas();"></canvas>
+<canvas id="canvas" onclick="shutter();"></canvas>
 <div id="videobox">
 	<video id="video" autoplay playsinline></video>
 </div>
 <script>
-const saveCanvas = () =>{
+const shutter = () =>{
 	let a = document.createElement('a');
 	a.href = document.getElementById("canvas").toDataURL('image/jpeg');
 	a.download = 'download.jpg';
