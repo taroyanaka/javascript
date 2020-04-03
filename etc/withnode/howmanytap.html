@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>How Many Tap</title>
+<meta name="viewport" content="width=device-width">
+<!-- https://albert-gonzalez.github.io/easytimer.js/ -->
+<script src="./easytimer.min.js"></script>
+
+<!-- https://ramdajs.com/ -->
+<script src="ramda.min.js"></script>
+
+<!-- https://codepen.io/FelipeMarcos/pen/tfhEg -->
+</head>
+<body>
+<style>
+.btn {
+	position: relative;
+	border: 0;
+	padding: 15px 25px;
+	display: inline-block;
+	text-align: center;
+	color: white;
+}
+.btn:active {
+	top: 4px;	
+}
+.btn, .btn-two {
+	margin: 9px;
+}
+.btn-gradient {
+	margin: 5px;
+}
+a[class*="btn"] {text-decoration: none;}
+input[class*="btn"], 
+button[class*="btn"] {border: 0;}
+
+.btn.large, 
+.btn-two.large, 
+.btn-effect.large {
+  padding: 20px 40px; 
+  font-size: 22px;
+}
+.rounded {  border-radius: 10px;}
+
+.btn-3d.jade:hover  {background-color: #38b48b;}
+.btn.jade, .btn-two.jade   {background-color: #38b48b;}
+
+.btn-3d.redAndPlum:hover  {background-color: #f2a0a1;}
+.btn.redAndPlum, .btn-two.redAndPlum   {background-color: #f2a0a1;}
+</style>
+<div id="playParent"><a href="" id="play" class="btn redAndPlum large" onclick="play();return false;">play</a></div>
+<select name="time" id="time" onInput="timeSet();">
+	<option value="1">1</option>
+	<option value="3">3</option>
+	<option value="5">5</option>
+	<option value="10">10</option>
+	<option value="30">30</option>
+	<option value="60">60</option>
+</select>
+<div id="remainingTime"></div>
+<div id="counterParent"><a href="" class="btn jade large" id="counter" onclick="counter();return false;">counter</a></div>
+<div>
+<span id="score"></span><span id="count"></span>
+<script>
+let count=0;
+let time;
+const remainingTimeSet = () =>{
+	time < 10 ? document.querySelector('#remainingTime').innerText = `00:00:0${time}` : document.querySelector('#remainingTime').innerText = `00:00:${time}`;
+	if(time===60){document.querySelector('#remainingTime').innerText = `00:01:00`};
+}
+const timeSet = () =>{
+	time = Number(document.querySelector("#time").value);
+	remainingTimeSet();
+}
+const counter = () => document.querySelector("#count").textContent = R.toString(count+=1);
+
+const retry = () =>{
+	if(document.querySelector("#play").innerText === "retry"){
+		document.querySelector("#count").textContent = count = 0;
+		document.querySelector('#score').innerText = "";
+		document.querySelector("#counterParent").insertAdjacentHTML('afterbegin', `<a href="" class="btn jade large" id="counter" onclick="counter();return false;">counter</a>`);
+	}
+}
+// const stopWhenStarting = ()=> {	if(document.querySelector("#play").textContent===""){ Location.reload()	} };
+
+let TIMER;
+const useTimer = ()=> {
+	document.querySelector("#play").parentNode.removeChild( document.querySelector("#play") );
+	TIMER = new easytimer.Timer();
+	TIMER.addEventListener('secondsUpdated', () => document.querySelector('#remainingTime').innerText = TIMER.getTimeValues().toString(['hours', 'minutes', 'seconds']) );
+	TIMER.addEventListener('targetAchieved', () => {
+		// document.querySelector("#play").textContent = "retry";
+		document.querySelector('#score').innerText = "Score ";
+		remainingTimeSet();
+		document.querySelector("#counter").parentNode.removeChild( document.querySelector("#counter") );
+		document.querySelector("#playParent").insertAdjacentHTML('afterbegin', `<a href="" id="play" class="btn redAndPlum large" onclick="play();return false;">retry</a>`);
+	});
+	TIMER.start({countdown: true, startValues: {seconds: time}});
+ };
+const play = ()=>{
+	retry();
+	// stopWhenStarting();
+	useTimer();
+}
+
+timeSet();
+</script>
+</body>
+</html>
