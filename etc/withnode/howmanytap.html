@@ -75,22 +75,17 @@ const timeSet = () =>{
 }
 const counter = () => document.querySelector("#count").textContent = R.toString(count+=1);
 
-const retry = () =>{
-	if(document.querySelector("#play").innerText === "retry"){
-		document.querySelector("#count").textContent = count = 0;
-		document.querySelector('#score').innerText = "";
-		document.querySelector("#counterParent").insertAdjacentHTML('afterbegin', `<a href="" class="btn jade large" id="counter" onclick="counter();return false;">counter</a>`);
-	}
+const retry = () => {
+	document.querySelector("#count").textContent = count = 0;
+	document.querySelector('#score').innerText = "";
+	document.querySelector("#counterParent").insertAdjacentHTML('afterbegin', `<a href="" class="btn jade large" id="counter" onclick="counter();return false;">counter</a>`);
 }
-// const stopWhenStarting = ()=> {	if(document.querySelector("#play").textContent===""){ Location.reload()	} };
-
 let TIMER;
-const useTimer = ()=> {
+const useTimer = () => {
 	document.querySelector("#play").parentNode.removeChild( document.querySelector("#play") );
 	TIMER = new easytimer.Timer();
 	TIMER.addEventListener('secondsUpdated', () => document.querySelector('#remainingTime').innerText = TIMER.getTimeValues().toString(['hours', 'minutes', 'seconds']) );
 	TIMER.addEventListener('targetAchieved', () => {
-		// document.querySelector("#play").textContent = "retry";
 		document.querySelector('#score').innerText = "Score ";
 		remainingTimeSet();
 		document.querySelector("#counter").parentNode.removeChild( document.querySelector("#counter") );
@@ -98,9 +93,8 @@ const useTimer = ()=> {
 	});
 	TIMER.start({countdown: true, startValues: {seconds: time}});
  };
-const play = ()=>{
-	retry();
-	// stopWhenStarting();
+const play = () =>{
+	document.querySelector("#play").innerText === "retry" ? retry() : false;
 	useTimer();
 }
 
