@@ -6,20 +6,27 @@
 <meta name="viewport" content="width=device-width">
 <!-- https://ramdajs.com/ -->
 <script src="ramda.min.js"></script>
+<script src="clipboard.js"></script>
 </head>
 <body id="allContents">
-
 <style>
 ul {
   list-style: none;
 }
 </style>
+<div>from <input type="number" name="from" id="from" value="0" min="0"></div>
+<div>to <input type="number" name="to" id="to" value="0" min="0"></div>
+<button id="fromToPaint" onclick="fromToPaint('paint','notPickText');">from to paint</button>
+<button id="fromToPaint" onclick="fromToPaint('paint','pickText');">from to paint and pick text</button>
+<button id="fromToPaint" onclick="fromToPaint('white','notPickText');">from to paint it white</button>
+<button id="fromToPaint" onclick="fromToPaint('white','pickText');">from to paint it white and pick text</button>
 <select name="color" id="color" onInput="chooseColor();"></select>
 <div><input id="openFile" type='file' accept='text/plain' onchange="openFile(event);"></div>
 <a name="save" id="save" value="save" onclick="save();" style="padding: 5px 10px;background: #5876a3;">save</a>
 <a name="load" id="load" value="load" onclick="load();" style="padding: 5px 10px;background: #5876a3;">load</a>
 <a name="saveClear" id="saveClear" value="saveClear" onclick="saveClear();" style="padding: 5px 10px;background: #5876a3;">saveClear</a>
 <textarea name="foo" id="foo" cols="50" rows="10" onInput="splitTextAndMakeList();"></textarea>
+<button class="btn" data-clipboard-target="#bar">COPY Pick text</button>
 <textarea name="bar" id="bar" cols="50" rows="10"></textarea>
 <a name="splitTextAndMakeList" id="splitTextAndMakeList" value="splitTextAndMakeList" onclick="splitTextAndMakeList();" style="padding: 5px 10px;background: #5876a3;">splitTextAndMakeList</a>
 <div>
@@ -28,16 +35,32 @@ ul {
 <a id="thereissavedata"></a>
 
 <script>
+new ClipboardJS('.btn');
+
+const fromToPaint =(white,copy)=> {
+	document.querySelectorAll("ul#list > li")
+	.forEach(V=>{
+		if(
+			Number(V.dataset.idx)>=Number(document.querySelector("#from").value)
+			&&
+		  	Number(V.dataset.idx)<=Number(document.querySelector("#to").value)
+		  )
+		white==="white" ? V.style.background = "white" : V.style.background = chooseColor();
+		copy==="pickText" ? document.querySelector("#bar").value += V.dataset.text+"\n" : false;
+	});
+}
+
 const allColor = ["lightsalmon","salmon","darksalmon","lightcoral","indianred","crimson","firebrick","red","darkred","coral","tomato","orangered","gold","orange","darkorange","lightyellow","lemonchiffon","lightgoldenrodyellow","papayawhip","moccasin","peachpuff","palegoldenrod","khaki","darkkhaki","yellow","lawngreen","chartreuse","limegreen","lime","forestgreen","green","darkgreen","greenyellow","yellowgreen","springgreen","mediumspringgreen","lightgreen","palegreen","darkseagreen","mediumseagreen","seagreen","olive","darkolivegreen","olivedrab","lightcyan","cyan","aqua","aquamarine","mediumaquamarine","paleturquoise","turquoise","mediumturquoise","darkturquoise","lightseagreen","cadetblue","darkcyan","teal","powderblue","lightblue","lightskyblue","skyblue","deepskyblue","lightsteelblue","dodgerblue","cornflowerblue","steelblue","royalblue","blue","mediumblue","darkblue","navy","midnightblue","mediumslateblue","slateblue","darkslateblue","lavender","thistle","plum","violet","orchid","fuchsia","magenta","mediumorchid","mediumpurple","blueviolet","darkviolet","darkorchid","darkmagenta","purple","indigo","pink","lightpink","hotpink","deeppink","palevioletred","mediumvioletred","white","snow","honeydew","mintcream","azure","aliceblue","ghostwhite","whitesmoke","seashell","beige","oldlace","floralwhite","ivory","antiquewhite","linen","lavenderblush","mistyrose","gainsboro","lightgray","silver","darkgray","gray","dimgray","lightslategray","slategray","darkslategray","black","cornsilk","blanchedalmond","bisque","navajowhite","wheat","burlywood","tan","rosybrown","sandybrown","goldenrod","peru","chocolate","saddlebrown","sienna","brown","maroon",]
 const makeColorOption =(E)=> `<option value="${E}">${E}<option>`
 document.querySelector(`#color`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeColorOption)(allColor)) );
+
 const chooseColor = () => document.querySelector("#color").value;
 const textPickAndPaint = (event)=> {
 	document.querySelector("#bar").value += event.target.dataset.text+"\n";
 	event.target.style.background === "white" ? event.target.style.background = chooseColor() : event.target.style.background = "white";
 }
 const makeList = (array) =>	{
-	document.querySelector(`#list`).insertAdjacentHTML(`afterBegin`, array.map(E=>`<li style="background:white" data-text="" onclick="textPickAndPaint(event);save();"></li>`).join(''));
+	document.querySelector(`#list`).insertAdjacentHTML(`afterBegin`, array.map((E,IDX)=>`<li style="background:white" data-text="" data-idx="${IDX}" onclick="textPickAndPaint(event);save();"></li>`).join(''));
 	let splitedTextArray = R.split("\n")(document.querySelector("#foo").value);
 	document.querySelectorAll("li").forEach(V=>{V.textContent = V.dataset.text = splitedTextArray.shift()});
 }
@@ -63,10 +86,16 @@ if(localStorage.allContentsHTML){ document.querySelector("#thereissavedata").tex
 // 	document.querySelector("#foo").value = 
 // `foo
 // bar
-// baz`;
+// baz
+// hoge
+// fuga
+// qux
+// quxx
+// `;
+// document.querySelector("#from").value = 2;
+// document.querySelector("#to").value = 5;
 // }
 // test0();
 </script>
-
 </body>
 </html>
