@@ -37,7 +37,7 @@ ul {
 <script>
 new ClipboardJS('.btn');
 
-const fromToPaint =(white,copy)=> {
+const fromToPaint =(white,picktext)=> {
 	document.querySelectorAll("ul#list > li")
 	.forEach(V=>{
 		if(
@@ -46,7 +46,7 @@ const fromToPaint =(white,copy)=> {
 		  	Number(V.dataset.idx)<=Number(document.querySelector("#to").value)
 		  )
 		white==="white" ? V.style.background = "white" : V.style.background = chooseColor();
-		copy==="pickText" ? document.querySelector("#bar").value += V.dataset.text+"\n" : false;
+		picktext==="pickText" ? document.querySelector("#bar").value += V.dataset.text+"\n" : false;
 	});
 }
 
