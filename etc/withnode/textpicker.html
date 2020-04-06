@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>color text</title>
+<meta name="viewport" content="width=device-width">
+<!-- https://ramdajs.com/ -->
+<script src="ramda.min.js"></script>
+</head>
+<body id="allContents">
+
+<style>
+ul {
+  list-style: none;
+}
+</style>
+<select name="color" id="color" onInput="chooseColor();"></select>
+
+
+<div><input id="openFile" type='file' accept='text/plain' onchange="openFile(event);"></div>
+<a name="save" id="save" value="save" onclick="save();" style="padding: 5px 10px;background: #5876a3;">save</a>
+<a name="load" id="load" value="load" onclick="load();" style="padding: 5px 10px;background: #5876a3;">load</a>
+<a name="saveClear" id="saveClear" value="saveClear" onclick="saveClear();" style="padding: 5px 10px;background: #5876a3;">saveClear</a>
+<textarea name="foo" id="foo" cols="50" rows="10" onInput="splitTextAndMakeList();"></textarea>
+<textarea name="bar" id="bar" cols="50" rows="10"></textarea>
+<a name="splitTextAndMakeList" id="splitTextAndMakeList" value="splitTextAndMakeList" onclick="splitTextAndMakeList();" style="padding: 5px 10px;background: #5876a3;">splitTextAndMakeList</a>
+<div>
+<ul id="list"></ul>
+</div>
+<a id="thereissavedata"></a>
+
+<script>
+const allColor = ["lightsalmon","salmon","darksalmon","lightcoral","indianred","crimson","firebrick","red","darkred","coral","tomato","orangered","gold","orange","darkorange","lightyellow","lemonchiffon","lightgoldenrodyellow","papayawhip","moccasin","peachpuff","palegoldenrod","khaki","darkkhaki","yellow","lawngreen","chartreuse","limegreen","lime","forestgreen","green","darkgreen","greenyellow","yellowgreen","springgreen","mediumspringgreen","lightgreen","palegreen","darkseagreen","mediumseagreen","seagreen","olive","darkolivegreen","olivedrab","lightcyan","cyan","aqua","aquamarine","mediumaquamarine","paleturquoise","turquoise","mediumturquoise","darkturquoise","lightseagreen","cadetblue","darkcyan","teal","powderblue","lightblue","lightskyblue","skyblue","deepskyblue","lightsteelblue","dodgerblue","cornflowerblue","steelblue","royalblue","blue","mediumblue","darkblue","navy","midnightblue","mediumslateblue","slateblue","darkslateblue","lavender","thistle","plum","violet","orchid","fuchsia","magenta","mediumorchid","mediumpurple","blueviolet","darkviolet","darkorchid","darkmagenta","purple","indigo","pink","lightpink","hotpink","deeppink","palevioletred","mediumvioletred","white","snow","honeydew","mintcream","azure","aliceblue","ghostwhite","whitesmoke","seashell","beige","oldlace","floralwhite","ivory","antiquewhite","linen","lavenderblush","mistyrose","gainsboro","lightgray","silver","darkgray","gray","dimgray","lightslategray","slategray","darkslategray","black","cornsilk","blanchedalmond","bisque","navajowhite","wheat","burlywood","tan","rosybrown","sandybrown","goldenrod","peru","chocolate","saddlebrown","sienna","brown","maroon",]
+const makeColorOption =(E)=> `<option value="${E}">${E}<option>`
+document.querySelector(`#color`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeColorOption)(allColor)) );
+const paint = (event)=> document.querySelector("#bar").value += event.target.dataset.text+"\n";
+const makeList = (array) =>	{
+	document.querySelector(`#list`).insertAdjacentHTML(`afterBegin`, array.map(E=>`<li style="background:white" data-text="" onclick="paint(event);save();"></li>`).join(''));
+	let splitedTextArray = R.split("\n")(document.querySelector("#foo").value);
+	document.querySelectorAll("li").forEach(V=>{V.textContent = V.dataset.text = splitedTextArray.shift()});
+}
+// const openFile = (event) => {
+// 	const reader =  new FileReader();
+// 	reader.onload = () => document.querySelector('#foo').value = res = reader.result;
+// 	reader.readAsText(event.target.files[0]);
+// };
+const splitTextAndMakeList = ()=> makeList( R.split("\n")(document.querySelector("#foo").value) );
+const save = () => localStorage.allContentsHTML = document.querySelector("#allContents").outerHTML;
+const saveClear = () => { localStorage.clear();location.reload(); };
+const load = () => {
+	document.querySelectorAll("body").forEach(E=>{E.parentNode.removeChild(E)});
+	const body = document.createElement("body");
+	body.setAttribute("id", "allContents");
+	document.querySelector("html").appendChild(body);
+	document.querySelector(`body`).insertAdjacentHTML(`beforeend`, localStorage.allContentsHTML );
+};
+
+if(localStorage.allContentsHTML){ document.querySelector("#thereissavedata").textContent = "save data exists" };
+
+const test0 = () =>{
+	document.querySelector("#foo").value = 
+`foo
+bar
+baz`;
+}
+test0();
+</script>
+
+</body>
+</html>
