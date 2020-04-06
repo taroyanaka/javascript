@@ -53,10 +53,7 @@ const fromToPaint =(white,copy)=> {
 const allColor = ["lightsalmon","salmon","darksalmon","lightcoral","indianred","crimson","firebrick","red","darkred","coral","tomato","orangered","gold","orange","darkorange","lightyellow","lemonchiffon","lightgoldenrodyellow","papayawhip","moccasin","peachpuff","palegoldenrod","khaki","darkkhaki","yellow","lawngreen","chartreuse","limegreen","lime","forestgreen","green","darkgreen","greenyellow","yellowgreen","springgreen","mediumspringgreen","lightgreen","palegreen","darkseagreen","mediumseagreen","seagreen","olive","darkolivegreen","olivedrab","lightcyan","cyan","aqua","aquamarine","mediumaquamarine","paleturquoise","turquoise","mediumturquoise","darkturquoise","lightseagreen","cadetblue","darkcyan","teal","powderblue","lightblue","lightskyblue","skyblue","deepskyblue","lightsteelblue","dodgerblue","cornflowerblue","steelblue","royalblue","blue","mediumblue","darkblue","navy","midnightblue","mediumslateblue","slateblue","darkslateblue","lavender","thistle","plum","violet","orchid","fuchsia","magenta","mediumorchid","mediumpurple","blueviolet","darkviolet","darkorchid","darkmagenta","purple","indigo","pink","lightpink","hotpink","deeppink","palevioletred","mediumvioletred","white","snow","honeydew","mintcream","azure","aliceblue","ghostwhite","whitesmoke","seashell","beige","oldlace","floralwhite","ivory","antiquewhite","linen","lavenderblush","mistyrose","gainsboro","lightgray","silver","darkgray","gray","dimgray","lightslategray","slategray","darkslategray","black","cornsilk","blanchedalmond","bisque","navajowhite","wheat","burlywood","tan","rosybrown","sandybrown","goldenrod","peru","chocolate","saddlebrown","sienna","brown","maroon",]
 const makeColorOption =(E)=> `<option value="${E}">${E}</option>`
 const testArray = R.join("",R.map(makeColorOption)(allColor));
-console.log(testArray);
-// document.querySelector(`#color`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeColorOption)(allColor)) );
-document.querySelector(`#color`).insertAdjacentHTML(`afterBegin`, testArray );
-
+document.querySelector(`#color`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeColorOption)(allColor)) );
 const chooseColor = () => document.querySelector("#color").value;
 const textPickAndPaint = (event)=> {
 	document.querySelector("#bar").value += event.target.dataset.text+"\n";
