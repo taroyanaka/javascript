@@ -25,5 +25,34 @@ const makeDescendList = (array) => {
 }
 
 const list = ["hospital", "chairperson", "table", "agenda", ""]
-const res = makeDescendList(list);
-console.log(res);
+const res0 = makeDescendList(list);
+// console.log(res);
+
+// const res1 = [...Array(10000000).keys()].map(function (value) {
+// 	return String.fromCharCode(value)
+// }).filter(function (value) {
+// 	return /\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|\p{Emoji_Presentation}|\p{Emoji}\uFE0F/gu.test(value);
+// })
+// res1
+
+
+// // （1）ワーカーの実装チェック
+// if (window.Worker) {
+// 	// Web Workersに関する処理を記述
+// 	document.getElementById("button").addEventListener("click", send, false);
+// 	var worker = new Worker("multiple.js");
+// } else {
+// 	window.alert("このブラウザではWeb Workersは利用できません");
+// }
+
+// function send() {
+// 	var total = document.getElementById("inputtotalnum").value;
+// 	var num = document.getElementById("num").value;
+// 	// （2）ワーカーに入力値を送る
+// 	worker.postMessage({ "total": total, "num": num });
+// }
+
+// // （3）ワーカーからのメッセージ取得時の処理
+// worker.onmessage = function (event) {
+// 	document.getElementById("disp").innerHTML = event.data;
+// }
