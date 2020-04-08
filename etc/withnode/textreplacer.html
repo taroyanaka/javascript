@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>color text</title>
+<meta name="viewport" content="width=device-width">
+<!-- https://ramdajs.com/ -->
+<script src="ramda.min.js"></script>
+</head>
+<body id="allContents">
+
+<style>
+ul {
+  list-style: none;
+}
+</style>
+
+<textarea name="originalText" id="originalText" cols="50" rows="10" onInput="textReplace();"></textarea>
+<div>
+	<ul id="beforeAfterSet"></ul>
+</div>
+<textarea name="result" id="result" cols="50" rows="10"></textarea>
+
+<script>
+const DQS = R.bind(document.querySelector,document);
+const DQSA = R.bind(document.querySelectorAll,document);
+
+let tmpResultText;
+let tmpOriginalText;
+const textReplace = (V) => {
+	tmpResultText = tmpResultText ? R.replace( new RegExp(V[0].value,"g"), V[1].value, tmpResultText ) : R.replace( new RegExp(V[0].value,"g"), V[1].value, DQS("#originalText").value );
+};
+
+const exe = () =>{
+	tmpOriginalText = DQS("#originalText").value;
+	R.pipe(
+		R.splitEvery(2)
+		,R.forEach( textReplace)
+	)(Array.from( DQSA("li > textarea") ) );
+	DQS("#result").value = tmpResultText;
+	tmpResultText="";
+}
+
+const addHTML = (array) =>	document.querySelector(`#beforeAfterSet`).insertAdjacentHTML(`beforeEnd`,  `<li><textarea class="before" cols="50" rows="1" oninput="exe()"></textarea><textarea class="after" cols="50" rows="1" oninput="exe()"></textarea></li>` );
+
+const init = ()=>{
+	addHTML();
+};
+
+const test0 = () =>{
+	// DQS("#originalText").value = `12345678901234567890`;
+	DQS("#originalText").value = `cat dog cow duck`;
+}
+
+
+
+// ~~~~~~~~~~in Test
+const test1 = () =>{
+	// const ar = [0,1,2,3,4,5,6,7];
+	const ar = ["cat","mew","dog","bark","cow", "moo", "duck", "quack"];
+	DQSA("li > textarea").forEach(V=>{V.value = ar.shift()});
+	DQSA("li > textarea").forEach(V=>{  V.value === "undefined" ? V.value = "" : false; });
+}
+const testInit = ()=>{
+	addHTML();
+	addHTML();
+	addHTML();
+	addHTML();
+};
+testInit();
+test0();
+test1();
+// ~~~~~~~~~~in Test
+
+
+init();
+exe();
+</script>
+
+</body>
+</html>

@@ -4,10 +4,6 @@
 
 const R = require(`ramda`);
 
-console.log(1);
-const foo = `a
-b
-c
-`;
+R.replace(/a/g, "b", "abc");
 
-R.split("\n")(foo)
+
