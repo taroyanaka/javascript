@@ -9,8 +9,6 @@
 <script src="clipboard.js"></script>
 <!-- https://stackoverflow.com/questions/39871916/is-it-possible-to-generate-all-the-emojis-and-append-to-the-select-dropdown -->
 <script src="https://rawgit.com/theraot/emoji/master/emoji.js" charset="utf-8"></script>
-
-
 <!-- https://www.atmarkit.co.jp/ait/articles/1201/13/news138.html -->
 </head>
 <body>
@@ -19,37 +17,50 @@ ul {
   list-style: none;
 }
 </style>
-
-
 <select name="emoji" id="emoji" onInput="chooseEmoji();"></select>
-
-<!-- <input type="button" id="foo" value="送信" onClick="send()"> -->
 <textarea name="res" id="res" cols="50" rows="10"></textarea>
-
+<select name="number" id="number" onInput="choosenumber();"></select>
 <ul id="beforeAfterSet"></ul>
 <button id="add" onclick="addHTML()">+</button>
 <button id="copy" onclick="copyHTML()">|</button>
 </div>
-
-
-
-<!-- <button class="btn" data-clipboard-target="#result">COPY</button> -->
+<a name="same" id="same" value="same" onclick="mode='same'" style="padding: 5px 10px;background: #f2a0a1;">same</a>
+<a name="shuffle" id="shuffle" value="shuffle" onclick="mode='shuffle'" style="padding: 5px 10px;background: #38b48b;">shuffle</a>
 
 <script>
+var worker = new Worker("multiple.js");
+const send = () => worker.postMessage(emoji);
+worker.onmessage = (event) => document.querySelector("#res").value = event.data;
+send();
+	
+let mode="same";
 new ClipboardJS('.btn');
 
+const shuffleArray = array => {
+	for (let i = array.length - 1; i > 0; i--) {
+	let r = Math.floor(Math.random() * (i + 1));
+	let tmp = array[i];
+	array[i] = array[r];
+	array[r] = tmp;
+	}
+	return array
+}
 const allemoji = emoji;
 const makeemojiOption =(E)=> `<option value="${E}">${E}</option>`;
 document.querySelector(`#emoji`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeemojiOption)(allemoji)) );
 const chooseEmoji = () => document.querySelector("#emoji").value;
 
-
+const allnumber = R.range(1, 100);
+const makenumberOption =(E)=> `<option value="${E}">${E}</option>`;
+document.querySelector(`#number`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makenumberOption)(allnumber)) );
+const choosenumber = () => document.querySelector("#number").value;
 
 const LiTextareaTextareaButtonButtonLi = `<li><button class="btn" data-clipboard-target>COPY</button><textarea class="before" cols="50" rows="1" id=""></textarea><button onclick="removeHTML(event);">-</button></li>`;
 const addHTML = () => {
 	document.querySelector(`#beforeAfterSet`).insertAdjacentHTML(`beforeEnd`, LiTextareaTextareaButtonButtonLi  );
 	document.querySelectorAll("li > textarea").forEach((V,IDX)=>{V.setAttribute("id","text"+IDX)});
 	document.querySelectorAll("li > button.btn").forEach((V,IDX)=>{V.setAttribute("data-clipboard-target", "#text"+IDX )});
+	document.querySelector("li:last-child > textarea").value = mode==="same" ? R.repeat(chooseEmoji(), choosenumber()).join("") :  R.take(choosenumber(), shuffleArray(emoji)).join("");
 }
 const removeHTML = () => event.target.parentNode.parentNode.removeChild(event.target.parentNode)
 const copyHTML = () =>{
@@ -57,76 +68,8 @@ const copyHTML = () =>{
 	document.querySelector(`#beforeAfterSet`).insertAdjacentHTML(`beforeEnd`,  LiTextareaTextareaButtonButtonLi );
 	document.querySelector("ul#beforeAfterSet").lastElementChild.querySelectorAll("textarea")[0].value = val0;
 	document.querySelectorAll("li > textarea").forEach((V,IDX)=>{V.setAttribute("id","text"+IDX)});
-	document.querySelectorAll("li > button").forEach((V,IDX)=>{V.setAttribute("data-clipboard-target", "#text"+IDX )});
+	document.querySelectorAll("li > button.btn").forEach((V,IDX)=>{V.setAttribute("data-clipboard-target", "#text"+IDX )});
 }
-
-
-
-var worker = new Worker("multiple.js");
-const send = () => worker.postMessage(emoji);
-worker.onmessage = (event) => document.querySelector("#res").value = event.data;
-send();
-
-document.querySelector("#add").click();
-
-
-
-
-
-// let val0;
-
-// const intoResultWithNewLine=()=>document.querySelector("#result").value += val0[0]+"\n";
-// const intoResultWithSpace=()=>document.querySelector("#result").value += val0[0]+" ";
-// const toHistory=()=>document.querySelector("#history").value = val0[0]+"\n"+document.querySelector("#history").value;
-// const intoResultAll=()=>document.querySelector("#result").value = val0.join("\n");
-// const chooseList = () => document.querySelector("#searcher").value = document.querySelector("#list").value;
-// const clearSearcher = () => document.querySelector("#searcher").value = "";
-// const makeDescendList = (array) => {
-// 	return R.pipe(
-// 		R.countBy(R.identity),
-// 		R.toPairs,
-// 		R.sort(R.descend(R.prop(1))),
-// 		R.pluck(0),
-// 		R.reject(R.isEmpty),
-// 		R.reject(R.isNil)
-// 	)(array);
-// }
-// const listPicker = () =>{
-// 	const list = makeDescendList( document.querySelector("#history").value.split("\n") );
-// 	const makeOption =(E)=> `<option value="${E}">${E}</option>`;
-// 	document.querySelectorAll(`option`).forEach(E=>{E.parentNode.removeChild(E)});
-// 	document.querySelector(`#list`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeOption)(list)) );
-// }
-// const saveEachText = () => {
-// 	localStorage.eachText = JSON.stringify(
-// 	[
-// 		document.querySelector("#from").value,
-// 		document.querySelector("#history").value,
-// 		document.querySelector("#result").value
-// 	]);
-// }
-// const loadEachText = () => {
-// 	[
-// 		document.querySelector("#from").value,
-// 		document.querySelector("#history").value,
-// 		document.querySelector("#result").value
-// 	]
-// 	= JSON.parse(localStorage.eachText);
-// 	listPicker();
-// }
-// const searcher=(event)=>{
-// 	const option = document.querySelector("#lowerCaseUpperCaseBoth").checked === true ? "gi" : "g";
-// 	const fromArray = document.querySelector("#from").value.split("\n");
-// 	val0 = R.filter(R.test( new RegExp(event.target.value, option) ))( fromArray  ); 
-// 	document.querySelector(`#searchResult`).textContent = val0.join("\n");
-// 	listPicker();
-// }
-
-// // ~~~~~~~~~~in Test
-// const test = () =>document.querySelector("#from").value= wordsForSuggester.join("\n");
-// document.querySelector(`body`).insertAdjacentHTML(`afterBegin`,  `<button id="sample" onclick="test()">sample</button><div></div>` );
-// // document.querySelector(`#sample`).click();
-// // ~~~~~~~~~~in Test
 </script>
 </body>
 </html>
