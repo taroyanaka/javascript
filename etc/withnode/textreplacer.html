@@ -25,16 +25,6 @@ ul {
 const DQS = R.bind(document.querySelector,document);
 const DQSA = R.bind(document.querySelectorAll,document);
 
-// https://s8a.jp/javascript-escape-regexp#%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE%E6%96%87%E5%AD%97%E5%88%97%E3%82%92%E3%82%A8%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%97%E3%81%99%E3%82%8B
-    // var reRegExp = /[\\^$.*+?()[\]{}|]/g,
-    //     reHasRegExp = new RegExp(reRegExp.source);
-
-    // function escapeRegExp(string) {
-    //     return (string && reHasRegExp.test(string))
-    //         ? string.replace(reRegExp, '\\$&')
-    //         : string;
-    // }
-
 let tmpResultText;
 const textReplace = (V) => 	tmpResultText = tmpResultText ? R.replace( new RegExp(V[0].value,"g"), V[1].value, tmpResultText ) : R.replace( new RegExp(V[0].value,"g"), V[1].value, DQS("#originalText").value );
 
@@ -63,22 +53,26 @@ const test0 = () =>{
 
 
 // ~~~~~~~~~~in Test
-const test1 = () =>{
-	// const ar = [0,1,2,3,4,5,6,7];
-	const ar = ["cat","meww","mew","bark","cow", "moo", "[\\(\\)]", "BRACKETS", "\\.", "DOT"];
-	DQSA("li > textarea").forEach(V=>{V.value = ar.shift()});
-	DQSA("li > textarea").forEach(V=>{  V.value === "undefined" ? V.value = "" : false; });
+const test = () =>{
+	const test1 = () =>{
+		// const ar = [0,1,2,3,4,5,6,7];
+		const ar = ["cat","meww","mew","bark","cow", "moo", "[\\(\\)]", "BRACKETS", "\\.", "DOT"];
+		DQSA("li > textarea").forEach(V=>{V.value = ar.shift()});
+		DQSA("li > textarea").forEach(V=>{  V.value === "undefined" ? V.value = "" : false; });
+	}
+	const testInit = ()=>{
+		addHTML();
+		addHTML();
+		addHTML();
+		addHTML();
+		addHTML();
+	};
+	testInit();
+	test0();
+	test1();
 }
-const testInit = ()=>{
-	addHTML();
-	addHTML();
-	addHTML();
-	addHTML();
-	addHTML();
-};
-testInit();
-test0();
-test1();
+document.querySelector(`body`).insertAdjacentHTML(`afterBegin`,  `<button id="test" onclick="test()">TEST</button><div></div>` );
+document.querySelector(`#test`).click();
 // ~~~~~~~~~~in Test
 
 
