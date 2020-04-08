@@ -56,16 +56,12 @@ const makeDescendList = (array) => {
 		R.reject(R.isNil)
 	)(array);
 }
-
 const listPicker = () =>{
 	const list = makeDescendList( document.querySelector("#history").value.split("\n") );
-	// const list = ["table", "agenda"];
-	console.log(list);
 	const makeOption =(E)=> `<option value="${E}">${E}</option>`;
 	document.querySelectorAll(`option`).forEach(E=>{E.parentNode.removeChild(E)});
 	document.querySelector(`#list`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeOption)(list)) );
 }
-
 const saveEachText = () => {
 	localStorage.eachText = JSON.stringify(
 	[
@@ -83,24 +79,19 @@ const loadEachText = () => {
 	= JSON.parse(localStorage.eachText);
 	listPicker();
 }
-
 const searcher=(event)=>{
 	const option = document.querySelector("#lowerCaseUpperCaseBoth").checked === true ? "gi" : "g";
-	// const fromArray = Array.from( document.querySelector("#from") );
 	const fromArray = document.querySelector("#from").value.split("\n");
 	val0 = R.filter(R.test( new RegExp(event.target.value, option) ))( fromArray  ); 
-	// console.log(val0);
 	document.querySelector(`#searchResult`).textContent = val0.join("\n");
 	listPicker();
 }
 
+// ~~~~~~~~~~in Test
 const test = () =>document.querySelector("#from").value= wordsForSuggester.join("\n");
 document.querySelector(`body`).insertAdjacentHTML(`afterBegin`,  `<button id="sample" onclick="test()">sample</button><div></div>` );
 // document.querySelector(`#sample`).click();
 // ~~~~~~~~~~in Test
-
-
-
 </script>
 </body>
 </html>
