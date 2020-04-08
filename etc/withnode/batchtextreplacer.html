@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>text replacer</title>
+<title>batch text replacer</title>
 <meta name="viewport" content="width=device-width">
 <!-- https://ramdajs.com/ -->
 <script src="ramda.min.js"></script>
@@ -78,29 +78,29 @@ const init = ()=>{
 };
 
 // ~~~~~~~~~~in Test
-const test = () =>{
-	const test0 = () =>{
-		// DQS("#originalText").value = `12345678901234567890`;
-		DQS("#originalText").value = `cat dog cow duck\ndocument.querySelector("#foo").value`;
-	}
-	const test1 = () =>{
-		// const ar = [0,1,2,3,4,5,6,7];
-		const ar = ["cat","meww","mew","bark","cow", "moo", "[\\(\\)]", "BRACKETS", "\\.", "DOT"];
-		DQSA("li > textarea").forEach(V=>{V.value = ar.shift()});
-		DQSA("li > textarea").forEach(V=>{  V.value === "undefined" ? V.value = "" : false; });
-	}
-	const testInit = ()=>{
-		addHTML();
-		addHTML();
-		addHTML();
-		addHTML();
-		addHTML();
-	};
-	testInit();
-	test0();
-	test1();
-}
-DQS(`body`).insertAdjacentHTML(`afterBegin`,  `<button id="sample" onclick="test()">sample</button><div></div>` );
+// const test = () =>{
+// 	const test0 = () =>{
+// 		// DQS("#originalText").value = `12345678901234567890`;
+// 		DQS("#originalText").value = `cat dog cow duck\ndocument.querySelector("#foo").value`;
+// 	}
+// 	const test1 = () =>{
+// 		// const ar = [0,1,2,3,4,5,6,7];
+// 		const ar = ["cat","meww","mew","bark","cow", "moo", "[\\(\\)]", "BRACKETS", "\\.", "DOT"];
+// 		DQSA("li > textarea").forEach(V=>{V.value = ar.shift()});
+// 		DQSA("li > textarea").forEach(V=>{  V.value === "undefined" ? V.value = "" : false; });
+// 	}
+// 	const testInit = ()=>{
+// 		addHTML();
+// 		addHTML();
+// 		addHTML();
+// 		addHTML();
+// 		addHTML();
+// 	};
+// 	testInit();
+// 	test0();
+// 	test1();
+// }
+// DQS(`body`).insertAdjacentHTML(`afterBegin`,  `<button id="sample" onclick="test()">sample</button><div></div>` );
 // DQS(`#sample`).click();
 // DQS(`#copy`).click();
 // ~~~~~~~~~~in Test
