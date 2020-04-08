@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>suggester</title>
+<meta name="viewport" content="width=device-width">
+<!-- https://ramdajs.com/ -->
+<script src="ramda.min.js"></script>
+<script src="wordsForSuggester.js"></script>
+<script src="clipboard.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.3.1/fuse.min.js"></script> -->
+</head>
+<body id="allContents">
+
+<div>
+<button id="saveEachText" onclick="saveEachText()">saveEachText</button>
+<button id="loadEachText" onclick="loadEachText()">loadEachText</button>
+<a>lowerCase upperCase Both</a>
+<input type="checkbox" checked id="lowerCaseUpperCaseBoth">
+</div>
+<div><button class="btn" data-clipboard-target="#from">COPY</button>from<textarea name="from" id="from" cols="50" rows="10"></textarea></div>
+<div><button class="btn" data-clipboard-target="#searchResult">COPY</button>searchResult<textarea name="searchResult" id="searchResult" cols="50" rows="10"></textarea></div>
+<select name="list" id="list" onInput="chooseList();"></select>
+<div>
+	searcher<textarea name="searcher" id="searcher" cols="50" rows="10" onInput="searcher(event);"></textarea>
+	<button class="btn" data-clipboard-target="#searchResult">COPY</button>
+	history<textarea name="history" id="history" cols="50" rows="10"></textarea>
+</div>
+<div>
+	<button id="intoResultWithNewLine" onclick="intoResultWithNewLine();toHistory();">intoResultWithNewLine</button>
+	<button id="intoResultWithSpace" onclick="intoResultWithSpace();toHistory();">intoResultWithSpace</button>
+	<button id="intoResultAll" onclick="intoResultAll()">intoResultAll</button>
+</div>
+<div>
+	<button class="btn" data-clipboard-target="#result">COPY</button>
+	result<textarea name="result" id="result" cols="50" rows="10"></textarea>
+</div>
+<div>
+
+<script>
+new ClipboardJS('.btn');
+let val0;
+
+const intoResultWithNewLine=()=>document.querySelector("#result").value += val0[0]+"\n";
+const intoResultWithSpace=()=>document.querySelector("#result").value += val0[0]+" ";
+const toHistory=()=>document.querySelector("#history").value = val0[0]+"\n"+document.querySelector("#history").value;
+const intoResultAll=()=>document.querySelector("#result").value = val0.join("\n");
+const chooseList = () => document.querySelector("#searcher").value = document.querySelector("#list").value;
+const makeDescendList = (array) => {
+	return R.pipe(
+		R.countBy(R.identity),
+		R.toPairs,
+		R.sort(R.descend(R.prop(1))),
+		R.pluck(0),
+		R.reject(R.isEmpty),
+		R.reject(R.isNil)
+	)(array);
+}
+
+const listPicker = () =>{
+	const list = makeDescendList( document.querySelector("#history").value.split("\n") );
+	// const list = ["table", "agenda"];
+	console.log(list);
+	const makeOption =(E)=> `<option value="${E}">${E}</option>`;
+	document.querySelectorAll(`option`).forEach(E=>{E.parentNode.removeChild(E)});
+	document.querySelector(`#list`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeOption)(list)) );
+}
+
+const saveEachText = () => {
+	localStorage.eachText = JSON.stringify(
+	[
+		document.querySelector("#from").value,
+		document.querySelector("#history").value,
+		document.querySelector("#result").value
+	]);
+}
+const loadEachText = () => {
+	[
+		document.querySelector("#from").value,
+		document.querySelector("#history").value,
+		document.querySelector("#result").value
+	]
+	= JSON.parse(localStorage.eachText);
+	listPicker();
+}
+
+const searcher=(event)=>{
+	const option = document.querySelector("#lowerCaseUpperCaseBoth").checked === true ? "gi" : "g";
+	// const fromArray = Array.from( document.querySelector("#from") );
+	const fromArray = document.querySelector("#from").value.split("\n");
+	val0 = R.filter(R.test( new RegExp(event.target.value, option) ))( fromArray  ); 
+	// console.log(val0);
+	document.querySelector(`#searchResult`).textContent = val0.join("\n");
+	listPicker();
+}
+
+const test = () =>document.querySelector("#from").value= wordsForSuggester.join("\n");
+document.querySelector(`body`).insertAdjacentHTML(`afterBegin`,  `<button id="sample" onclick="test()">sample</button><div></div>` );
+// document.querySelector(`#sample`).click();
+// ~~~~~~~~~~in Test
+
+
+
+</script>
+</body>
+</html>
