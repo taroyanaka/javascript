@@ -22,6 +22,7 @@
 <div><button class="btn" data-clipboard-target="#searchResult">COPY</button>searchResult<textarea name="searchResult" id="searchResult" cols="50" rows="10"></textarea></div>
 <select name="list" id="list" onInput="chooseList();"></select>
 <div>
+	<button class="btn" onclick="clearSearcher();">CLEAR</button>
 	searcher<textarea name="searcher" id="searcher" cols="50" rows="10" onInput="searcher(event);"></textarea>
 	<button class="btn" data-clipboard-target="#searchResult">COPY</button>
 	history<textarea name="history" id="history" cols="50" rows="10"></textarea>
@@ -46,6 +47,7 @@ const intoResultWithSpace=()=>document.querySelector("#result").value += val0[0]
 const toHistory=()=>document.querySelector("#history").value = val0[0]+"\n"+document.querySelector("#history").value;
 const intoResultAll=()=>document.querySelector("#result").value = val0.join("\n");
 const chooseList = () => document.querySelector("#searcher").value = document.querySelector("#list").value;
+const clearSearcher = () => document.querySelector("#searcher").value = "";
 const makeDescendList = (array) => {
 	return R.pipe(
 		R.countBy(R.identity),
