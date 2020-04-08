@@ -25,17 +25,25 @@ ul {
 const DQS = R.bind(document.querySelector,document);
 const DQSA = R.bind(document.querySelectorAll,document);
 
-let tmpResultText;
-let tmpOriginalText;
-const textReplace = (V) => {
-	tmpResultText = tmpResultText ? R.replace( new RegExp(V[0].value,"g"), V[1].value, tmpResultText ) : R.replace( new RegExp(V[0].value,"g"), V[1].value, DQS("#originalText").value );
-};
+// https://s8a.jp/javascript-escape-regexp#%E6%AD%A3%E8%A6%8F%E8%A1%A8%E7%8F%BE%E6%96%87%E5%AD%97%E5%88%97%E3%82%92%E3%82%A8%E3%82%B9%E3%82%B1%E3%83%BC%E3%83%97%E3%81%99%E3%82%8B
+    // var reRegExp = /[\\^$.*+?()[\]{}|]/g,
+    //     reHasRegExp = new RegExp(reRegExp.source);
 
+    // function escapeRegExp(string) {
+    //     return (string && reHasRegExp.test(string))
+    //         ? string.replace(reRegExp, '\\$&')
+    //         : string;
+    // }
+
+let tmpResultText;
+const textReplace = (V) => 	tmpResultText = tmpResultText ? R.replace( new RegExp(V[0].value,"g"), V[1].value, tmpResultText ) : R.replace( new RegExp(V[0].value,"g"), V[1].value, DQS("#originalText").value );
+
+const sayX = x => console.log('x is ' + x);
 const exe = () =>{
-	tmpOriginalText = DQS("#originalText").value;
 	R.pipe(
-		R.splitEvery(2)
-		,R.forEach( textReplace)
+		// R.tap(sayX),
+		R.splitEvery(2),
+		R.forEach( textReplace)
 	)(Array.from( DQSA("li > textarea") ) );
 	DQS("#result").value = tmpResultText;
 	tmpResultText="";
@@ -49,7 +57,7 @@ const init = ()=>{
 
 const test0 = () =>{
 	// DQS("#originalText").value = `12345678901234567890`;
-	DQS("#originalText").value = `cat dog cow duck`;
+	DQS("#originalText").value = `cat dog cow duck\ndocument.querySelector("#foo").value`;
 }
 
 
@@ -57,11 +65,12 @@ const test0 = () =>{
 // ~~~~~~~~~~in Test
 const test1 = () =>{
 	// const ar = [0,1,2,3,4,5,6,7];
-	const ar = ["cat","mew","dog","bark","cow", "moo", "duck", "quack"];
+	const ar = ["cat","meww","mew","bark","cow", "moo", "[\\(\\)]", "BRACKETS", "\\.", "DOT"];
 	DQSA("li > textarea").forEach(V=>{V.value = ar.shift()});
 	DQSA("li > textarea").forEach(V=>{  V.value === "undefined" ? V.value = "" : false; });
 }
 const testInit = ()=>{
+	addHTML();
 	addHTML();
 	addHTML();
 	addHTML();
