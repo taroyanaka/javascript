@@ -6,24 +6,41 @@
 <meta name="viewport" content="width=device-width">
 <!-- https://ramdajs.com/ -->
 <script src="ramda.min.js"></script>
+<script src="clipboard.js"></script>
 </head>
 <body id="allContents">
+<!-- <button id="allContentsSave" onclick="allContentsSave()">+</button>
+<div><ul id="allContentsList"></ul></div>
+<div><a id="pageIdx" onload="showPageIndex(event);"></a></div> -->
+
 
 <style>
 ul {
   list-style: none;
 }
 </style>
-
+<div>
+<button id="saveOriginalText" onclick="saveOriginalText()">saveOriginalText</button>
+<button id="loadOriginalText" onclick="loadOriginalText()">loadOriginalText</button>
+</div>
 <textarea name="originalText" id="originalText" cols="50" rows="10" onInput="textReplace();"></textarea>
 <div>
-	<ul id="beforeAfterSet"></ul>
+<ul id="beforeAfterSet"></ul>
+<button id="add" onclick="addHTML()">+</button>
+<button id="copy" onclick="copyHTML()">|</button>
+<button id="saveReplacer" onclick="saveReplacer()">saveReplacer</button>
+<button id="loadReplacer" onclick="loadReplacer()">loadReplacer</button>
 </div>
+<button class="btn" data-clipboard-target="#result">COPY</button>
 <textarea name="result" id="result" cols="50" rows="10"></textarea>
 
 <script>
+new ClipboardJS('.btn');
 const DQS = R.bind(document.querySelector,document);
 const DQSA = R.bind(document.querySelectorAll,document);
+
+const saveOriginalText = () => localStorage.originalText = JSON.stringify(DQS("#originalText").value);
+const loadOriginalText = () => DQS("#originalText").value = JSON.parse(localStorage.originalText);
 
 let tmpResultText;
 const textReplace = (V) => 	tmpResultText = tmpResultText ? R.replace( new RegExp(V[0].value,"g"), V[1].value, tmpResultText ) : R.replace( new RegExp(V[0].value,"g"), V[1].value, DQS("#originalText").value );
@@ -39,42 +56,57 @@ const exe = () =>{
 	tmpResultText="";
 }
 
-const addHTML = (array) =>	document.querySelector(`#beforeAfterSet`).insertAdjacentHTML(`beforeEnd`,  `<li><textarea class="before" cols="50" rows="1" oninput="exe()"></textarea><textarea class="after" cols="50" rows="1" oninput="exe()"></textarea></li>` );
+const LiTextareaTextareaButtonButtonLi = `<li><textarea class="before" cols="50" rows="1" oninput="exe()"></textarea><textarea class="after" cols="50" rows="1" oninput="exe()"></textarea><button onclick="removeHTML(event);exe();";>-</button></li>`;
+const addHTML = () => DQS(`#beforeAfterSet`).insertAdjacentHTML(`beforeEnd`, LiTextareaTextareaButtonButtonLi  );exe();
+const removeHTML = () => event.target.parentNode.parentNode.removeChild(event.target.parentNode);exe();
+const copyHTML = () =>{
+	const [val0,val1] = [DQS("ul#beforeAfterSet").lastElementChild.querySelectorAll("textarea")[0].value, DQS("ul#beforeAfterSet").lastElementChild.querySelectorAll("textarea")[1].value];
+	DQS(`#beforeAfterSet`).insertAdjacentHTML(`beforeEnd`,  LiTextareaTextareaButtonButtonLi );
+	[DQS("ul#beforeAfterSet").lastElementChild.querySelectorAll("textarea")[0].value, DQS("ul#beforeAfterSet").lastElementChild.querySelectorAll("textarea")[1].value] = [val0, val1];
+}
+
+const saveReplacer = () =>{
+	let ar = [];
+	DQSA("li > textarea").forEach(V=>{ar.push(V.value)});
+	localStorage.replacer = JSON.stringify(ar);
+}
+
+const loadReplacer = () =>{
+	let ar = JSON.parse( localStorage.replacer );
+	DQSA("li > textarea").forEach(V=>{V.value = ar.shift()});
+}
 
 const init = ()=>{
 	addHTML();
 };
 
-const test0 = () =>{
-	// DQS("#originalText").value = `12345678901234567890`;
-	DQS("#originalText").value = `cat dog cow duck\ndocument.querySelector("#foo").value`;
-}
-
-
-
 // ~~~~~~~~~~in Test
-const test = () =>{
-	const test1 = () =>{
-		// const ar = [0,1,2,3,4,5,6,7];
-		const ar = ["cat","meww","mew","bark","cow", "moo", "[\\(\\)]", "BRACKETS", "\\.", "DOT"];
-		DQSA("li > textarea").forEach(V=>{V.value = ar.shift()});
-		DQSA("li > textarea").forEach(V=>{  V.value === "undefined" ? V.value = "" : false; });
-	}
-	const testInit = ()=>{
-		addHTML();
-		addHTML();
-		addHTML();
-		addHTML();
-		addHTML();
-	};
-	testInit();
-	test0();
-	test1();
-}
-document.querySelector(`body`).insertAdjacentHTML(`afterBegin`,  `<button id="sample" onclick="test()">sample</button><div></div>` );
-// document.querySelector(`#sample`).click();
+// const test = () =>{
+// 	const test0 = () =>{
+// 		// DQS("#originalText").value = `12345678901234567890`;
+// 		DQS("#originalText").value = `cat dog cow duck\ndocument.querySelector("#foo").value`;
+// 	}
+// 	const test1 = () =>{
+// 		// const ar = [0,1,2,3,4,5,6,7];
+// 		const ar = ["cat","meww","mew","bark","cow", "moo", "[\\(\\)]", "BRACKETS", "\\.", "DOT"];
+// 		DQSA("li > textarea").forEach(V=>{V.value = ar.shift()});
+// 		DQSA("li > textarea").forEach(V=>{  V.value === "undefined" ? V.value = "" : false; });
+// 	}
+// 	const testInit = ()=>{
+// 		addHTML();
+// 		addHTML();
+// 		addHTML();
+// 		addHTML();
+// 		addHTML();
+// 	};
+// 	testInit();
+// 	test0();
+// 	test1();
+// }
+// DQS(`body`).insertAdjacentHTML(`afterBegin`,  `<button id="sample" onclick="test()">sample</button><div></div>` );
+// DQS(`#sample`).click();
+// DQS(`#copy`).click();
 // ~~~~~~~~~~in Test
-
 
 init();
 exe();
