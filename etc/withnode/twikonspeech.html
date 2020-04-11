@@ -128,8 +128,8 @@ let allarray=[];
 			// R.takeWhile( x => x !== "#Twitter婚活")(document.querySelectorAll("li.stream-item")[0].innerText.split("\n"))
 
 document.querySelectorAll("li.stream-item").forEach(V=>{
-	let tmparray =[];
-		R.takeWhile( x => x !== "#Twitter婚活")( tmparray.push( V.innerText.split("\n") ) );
+	// let tmparray =[];
+	let tmparray =	R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n")  );
 	tmparray = R.reject(V=>RegExp('[a-zA-Z0-9]','g').test(V))(tmparray);
 	allarray.push(
 		// R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
