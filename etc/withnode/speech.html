@@ -113,8 +113,18 @@ inputForm.onsubmit = function(event) {
 		}).then(v=>{
 			document.querySelectorAll("html > body > textarea ~*").forEach(V=>{V.style.display = "none"});
 			// document.querySelectorAll("li.stream-item")
-			document.querySelector(".txt").value = 
-			R.takeWhile( x => x !== "#Twitter婚活")(document.querySelectorAll("li.stream-item")[0].innerText.split("\n")).join("");
+
+			// R.takeWhile( x => x !== "#Twitter婚活")(document.querySelectorAll("li.stream-item")[0].innerText.split("\n"))
+let allarray=[];
+document.querySelectorAll("li.stream-item").forEach(V=>{
+	allarray.push(
+		R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
+	)
+})
+// R.takeWhile( x => x !== "#Twitter婚活")()
+
+			// let alltext = R.flatten(allarray).join("");
+						document.querySelector(".txt").value = R.flatten(allarray).join("");
 			// document.querySelector("#foo").value = document.querySelector("#result").textContent;
 			// count();
 		});
