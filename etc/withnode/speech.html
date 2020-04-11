@@ -103,7 +103,7 @@ inputForm.onsubmit = function(event) {
 		}).then(v => { 
 			// addWikiHTML(JSON.parse(v).query.search);
 				// document.querySelector("#foo").value = v;
-				document.querySelector(`body`).insertAdjacentHTML(`beforeBegin`,  v );
+				document.querySelector(`body`).insertAdjacentHTML(`beforeend`,  v );
 		}).then(v=>{
 			// document.querySelector("#foo").value = document.querySelector("#result").textContent;
 			// count();
