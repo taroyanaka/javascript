@@ -6,59 +6,245 @@
 	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/6.5.0/firebase.js"></script>
 	<!-- https://freshman.tech/wikipedia-javascript/ -->
-	<!-- <link rel="stylesheet" href="style.css"> -->
+	<link rel="stylesheet" href="style.css">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
 </head>
 <body>
-  <!-- <div id="bar"></div>
+  <div id="bar"></div>
   <form>
       <textarea id="foo" name="foo"  placeholder="type text here" required="required" autofocus="autofocus" wrap="hard" oninput="count(event);adjustHeight(this);"></textarea>
-  </form> -->
-  <!-- <button onclick="social()" id="social">social!!(altKey or optionKey)</button> -->
+  </form>
+  <button onclick="social()" id="social">social!!(altKey or optionKey)</button>
 
-    <!-- <div id="result"></div> -->
+    <div id="result"></div>
 
 	<div id="baz"></div>
 
       <form id="searchForm">
       	<input type="search" id="searchInput">
-		    <button>foo</button>
       </form>
-<textarea id="foo" name="foo"  placeholder="type text here" required="required" autofocus="autofocus" wrap="hard"></textarea>
 
 
   <script>
-	          
-	// const getWikiText = (endpoint) =>{
-	const getWikiText = () =>{
+	const addWikiHTML = (array) =>{
+		const innerArraySetForMakeHTML = (innerArray,KEY) => {
+			return `<div class="searchResult" data-id="${KEY}">${innerArray.snippet}</div>`;
+		}
+		document.querySelector(`#result`).insertAdjacentHTML(`afterBegin`,  array.map(innerArraySetForMakeHTML).join('') );
+	};
+	const getWikiText = (endpoint) =>{
 		// fetch(`https://ja.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=3&srsearch=tokyo`).then(
-		// fetch(endpoint).then(v=>{
-		fetch(`https://ja.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&titles=%E6%9D%B1%E4%BA%AC`).then(v=>{
+		fetch(endpoint).then(v=>{
 			return v.text()
 		}).then(v => { 
-			// addWikiHTML(JSON.parse(v).query.search);
-			console.log(JSON.parse(v));
-		// }).then(v=>{
-		// 	// document.querySelector("textarea").value = document.querySelector("#result").textContent;
-		// 	// count();
+			addWikiHTML(JSON.parse(v).query.search);
+		}).then(v=>{
+			document.querySelector("textarea").value = document.querySelector("#result").textContent;
+			count();
 		});
 	}
-getWikiText();
-	// function handleSubmit(event) {
-	// 	event.preventDefault();
-	// 	// const input = document.querySelector('#searchInput').value;
-	// 	// const searchQuery = input.trim();
-	// 	// fetchResults(searchQuery);
-	// }
-	// function fetchResults(searchQuery) {
-	// 	// const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=3&srsearch=${searchQuery}`;
-	// 	const endpoint = `https://ja.wikipedia.org/w/api.php?format=xml&action=query&prop=extracts&titles=%E6%9D%B1%E4%BA%AC`;
-	// 	getWikiText(endpoint);
-	// }
-	// const form = document.querySelector('#searchForm');
-	// form.addEventListener('submit', handleSubmit);
+	function handleSubmit(event) {
+		event.preventDefault();
+		const input = document.querySelector('#searchInput').value;
+		const searchQuery = input.trim();
+		fetchResults(searchQuery);
+	}
+	function fetchResults(searchQuery) {
+		const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=3&srsearch=${searchQuery}`;
+		getWikiText(endpoint);
+	}
+	const form = document.querySelector('#searchForm');
+	form.addEventListener('submit', handleSubmit);
 
 
+	const keyConfig = () => {
+		window.addEventListener("keydown", function (event) {
+		if (event.defaultPrevented) {
+			return; // Do nothing if the event was already processed
+		}
+			switch (event.key) {
+			case "Alt":
+				document.querySelector('#social').click()
+			break;
+			case "Enter":
+			default:
+			}
+		// Cancel the default action to avoid it being handled twice
+		}, true);
+	};
+	keyConfig();
+
+        firebase.initializeApp({
+            projectId: "charcounter-cb0f7"
+        });
+
+    // function create() {
+    //     firebase.firestore().collection("users").add({
+    //         foo: "bar",
+    //         foo2: "bar2"
+    //     }).then(docRef => {
+    //         if (test === false) {
+    //             db(); //
+    //         }
+    //         console.log("Document written with ID: ", docRef.id);
+    //     }).catch(error => {
+    //         console.error("Error adding document: ", error);
+    //     });
+    // }
+
+    function createText() {
+		let text;
+        document.querySelector("#foo").value === "" ? text = "test" : text = document.querySelector("#foo").value;
+        firebase.firestore().collection("users").add({
+            foo2: `${text}`
+        }).then(docRef => {
+            console.log("Document written with ID: ", docRef.id);
+        }).then(() => {
+        }).catch(error => {
+            console.error("Error adding document: ", error);
+        });
+    }
+
+    // DOM append
+    function append(array) {
+		const setText = (doc) => {
+			return `<div class="store"><span class="data" data-text=${ encodeURIComponent(doc.data().foo2) }>${R.take(10,
+					doc.data().foo2)}</span><span id=${doc.id} onclick="deleteDocument(event)"> [x]</span>
+				<div>`;
+		}
+		document.querySelector(`#baz`).insertAdjacentHTML(`afterBegin`,  array.map(setText).join("") );
+
+    };
+
+    function read() {
+        firebase.firestore().collection("users").get(
+            // storeResource
+        ).then(col => {
+            col.forEach(doc => {
+                console.log(`${doc.id} => ${doc.data().foo2}`);
+                append(`${doc.data().foo2}`, doc.id);
+            });
+        })
+    };
+
+
+	const fetchAndSet = (event) =>{
+		// document.querySelector("#foo").value = event.target.textContent;
+		document.querySelector("#foo").value = decodeURIComponent(event.target.dataset.text);
+		count();
+	};
+    // READ collection, document, field, append Delete function to div elements
+    function readAndAppendDelete() {
+        firebase.firestore().collection("users").get(
+            // storeResource
+        ).then(col => {
+			append(col.docs);
+        }).then(() => {
+            document.querySelectorAll(".data").forEach(e => {
+                e.addEventListener("click", fetchAndSet, false)
+            });
+        })
+    };
+
+    // function update() {
+    //     firebase.firestore().collection("users").doc("DYDZjsIUFYxPvi5QTARH").update({
+    //         foo2: "hogehoge"
+    //     }).then(() => {
+    //         console.dir("UPDATE SUCCESS");
+    //     });
+    // };
+
+    function deleteDocument(event) {
+			firebase.firestore().collection("users").doc(event.target.id).delete().then((result) => {
+			console.dir("SUCCESS")
+			document.querySelectorAll(".store").forEach(E=>{E.parentNode.removeChild(E)});
+			readAndAppendDelete();
+        }).catch(function (error) {
+            console.error("ERROR: ", error);
+        });
+    };
+
+    // function deleteField() {
+    //     firebase.firestore().collection("users").doc("2").update({
+    //         foo: firebase.firestore.FieldValue.delete()
+    //     });
+    // };
+
+    // function deleteAllDocuments() {
+    //     firebase.firestore().collection("users").get().then(col => {
+    //         col.forEach(doc => {
+    //             firebase.firestore().collection("users").doc(
+    //                 `${doc.id}`
+    //             ).delete().then((result) => {
+    //                 console.dir("SUCCESS");
+    //                 if (test === false) {
+    //                     db(); //
+    //                 }
+    //             }).catch(function (error) {
+    //                 console.error("ERROR: ", error);
+    //             });
+    //         });
+    //     });
+    //     // DELETE collection is no API, use DELETE each document
+    // };
+
+    // async function db() {
+    //     storeResource = await {
+    //         source: "server"
+    //     };
+    //     // console.dir(firebase.firestore());
+    //     // await create();
+    //     // await update();
+    //     // await read();
+    //     await readAndAppendDelete();
+    //     // deleteDocument();
+    //     // deleteField();
+    //     // await deleteAllDocuments();
+    // };
+    // document.addEventListener('DOMContentLoaded', db, false);
+
+	const addHTML = (array) =>{
+		const innerArraySetForMakeHTML = (innerArray,KEY) => {
+			return `<div class="result" data-id="${KEY}">
+						<span>${innerArray[0]}</span>
+						<span>${innerArray[1]}</span>
+				</div>`;
+		}
+		document.querySelector(`#bar`).insertAdjacentHTML(`afterBegin`,  array.map(innerArraySetForMakeHTML).join('') );
+	};
+
+	const localStorageWrite = (stringAndArrayArray) => localStorage.stringAndArrayArray = JSON.stringify(stringAndArrayArray);
+
+	const count = () =>{
+		document.querySelectorAll(".result").forEach(E=>{E.parentNode.removeChild(E)});
+		const array =
+			R.pipe(
+			R.split(''),
+			R.countBy(R.toLower),
+			R.toPairs,
+			R.sortBy(R.prop(1)),
+			R.reverse,
+			)
+			(document.querySelector("#foo").value);
+		addHTML(array);
+		localStorageWrite( [document.querySelector("#foo").value, array] );
+	};
+
+	const localStorageRead = () => {
+		document.querySelector("#foo").value = JSON.parse(localStorage.stringAndArrayArray)[0];
+		addHTML(JSON.parse(localStorage.stringAndArrayArray)[1]);
+	};
+	localStorage.stringAndArrayArray ? localStorageRead() : null;
+
+	const social = () =>{
+		document.querySelectorAll(".store").forEach(E=>{E.parentNode.removeChild(E)});
+		createText();
+		readAndAppendDelete();
+	};
+
+	const adjustHeight = (el) => {
+	    el.style.height = (el.scrollHeight > el.clientHeight) ? (el.scrollHeight)+"px" : el.style.height;
+	};
   </script>
 </body>
 </html>
