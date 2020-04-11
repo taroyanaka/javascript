@@ -111,6 +111,10 @@ let allarray=[];
 //   return ( str.match(/^[\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]+$/) )? true : false
 // }
 
+// /(\p{sc=Hiragana}|\p{sc=Katakana}|\p{sc=Han})/u.test('あいうえおアイウエオ𠮷野家'); // true
+// /(\p{sc=Hiragana}|\p{sc=Katakana}|\p{sc=Han})/u.test('abc'); //false
+
+
 		fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec`).then(v=>{
 			return v.text()
 		}).then(v => { 
@@ -128,10 +132,13 @@ document.querySelectorAll("li.stream-item").forEach(V=>{
 		R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
 	)
 })
+
+// allarray = R.reject(R.test(/(\p{sc=Hiragana}|\p{sc=Katakana}|\p{sc=Han})/ug))(R.flatten(allarray)).join("")
 // R.takeWhile( x => x !== "#Twitter婚活")()
 
 			// let alltext = R.flatten(allarray).join("");
-						document.querySelector(".txt").value = R.flatten(allarray).join("");
+		// document.querySelector(".txt").value = allarray.join("");
+document.querySelector(".txt").value = R.reject(R.test(/(\p{sc=Hiragana}|\p{sc=Katakana}|\p{sc=Han})/ug))(R.flatten(allarray)).join("");
 			// document.querySelector("#foo").value = document.querySelector("#result").textContent;
 			// count();
 		}).then(V=>{
