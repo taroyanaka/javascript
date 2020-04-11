@@ -130,7 +130,9 @@ let allarray=[];
 document.querySelectorAll("li.stream-item").forEach(V=>{
 	allarray.push(
 		// R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
-		R.takeWhile( x => x !== "#Twitter婚活")( if(V.match)V.innerText.split("\n") )
+		R.takeWhile( x => x !== "#Twitter婚活")( 
+			if( RegExp('[a-zA-Z0-9]','g').test(V) ){ V.innerText.split("\n") }
+		)
 	)
 })
 
