@@ -34,17 +34,18 @@
 		fetch(endpoint).then(v=>{
 			return v.text()
 		}).then(v => { 
-			addWikiHTML(JSON.parse(v).query.search);
+			// addWikiHTML(JSON.parse(v).query.search);
+			console.log(v);
 		}).then(v=>{
-			document.querySelector("textarea").value = document.querySelector("#result").textContent;
-			count();
+			// document.querySelector("textarea").value = document.querySelector("#result").textContent;
+			// count();
 		});
 	}
 	function handleSubmit(event) {
 		event.preventDefault();
-		const input = document.querySelector('#searchInput').value;
-		const searchQuery = input.trim();
-		fetchResults(searchQuery);
+		// const input = document.querySelector('#searchInput').value;
+		// const searchQuery = input.trim();
+		// fetchResults(searchQuery);
 	}
 	function fetchResults(searchQuery) {
 		// const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=3&srsearch=${searchQuery}`;
