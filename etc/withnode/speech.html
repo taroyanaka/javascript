@@ -94,6 +94,18 @@ inputForm.onsubmit = function(event) {
 
   inputTxt.blur();
 }
+
+
+		fetch(endpoint).then(v=>{
+			return v.text()
+		}).then(v => { 
+			addWikiHTML(JSON.parse(v).query.search);
+		}).then(v=>{
+			document.querySelector("textarea").value = document.querySelector("#result").textContent;
+			count();
+		});
+
+
 </script>
 <style>
 	body, html {
