@@ -108,48 +108,35 @@ inputForm.onsubmit = function(event) {
 }
 
 
+// GAS
+// function doGet(e) {
+//     var URL = 'https://twitter.com/hashtag/Twitter%E5%A9%9A%E6%B4%BB?f=live';
+//   //var allTxt="";
+//   //var URL = 'https://www.yahoo.co.jp/';
+//   //allTxt += UrlFetchApp.fetch(URL).getContentText('UTF-8');
+//   //  })
+//   //Logger.log(allTxt);
+//   return ContentService.createTextOutput(UrlFetchApp.fetch(URL).getContentText('UTF-8'));
+// }
+
 let allarray=[];
+fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec`).then(v=>{
+	return v.text()
+}).then(v => { 
 
-// function ja2Bit ( str ) {
-//   return ( str.match(/^[\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]+$/) )? true : false
-// }
+		document.querySelector(`body`).insertAdjacentHTML(`beforeend`,  v );
+}).then(v=>{
+	document.querySelectorAll("html > body > textarea ~*").forEach(V=>{V.style.display = "none"});
+	document.querySelectorAll("li.stream-item").forEach(V=>{
+		allarray.push(
+			R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
+		)
+	})
+	document.querySelector(".txt").value = R.flatten(allarray).join("");
+}).then(V=>{
+	document.querySelectorAll("html > body > form ~*").forEach(V=>{V.style.display = "none"});
+});
 
-		fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec`).then(v=>{
-			return v.text()
-		}).then(v => { 
-			// addWikiHTML(JSON.parse(v).query.search);
-				// document.querySelector("#foo").value = v;
-				document.querySelector(`body`).insertAdjacentHTML(`beforeend`,  v );
-		}).then(v=>{
-			document.querySelectorAll("html > body > textarea ~*").forEach(V=>{V.style.display = "none"});
-			// document.querySelectorAll("li.stream-item")
-
-			// R.takeWhile( x => x !== "#Twitter婚活")(document.querySelectorAll("li.stream-item")[0].innerText.split("\n"))
-
-document.querySelectorAll("li.stream-item").forEach(V=>{
-	allarray.push(
-		R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
-	)
-})
-
-
-
-// R.takeWhile( x => x !== "#Twitter婚活")()
-
-			// let alltext = R.flatten(allarray).join("");
-						document.querySelector(".txt").value = R.flatten(allarray).join("");
-			// document.querySelector("#foo").value = document.querySelector("#result").textContent;
-			// count();
-		}).then(V=>{
-			
-
-			document.querySelectorAll("html > body > form ~*").forEach(V=>{V.style.display = "none"});
-		});
-
-
-// const play = () => {
-// 	document.querySelector(".txt").value = R.reject(V=>RegExp('[a-zA-Z]','g').test(V))(document.querySelector(".txt").value.split(" ")).join("");
-// }
 
 
 </script>
