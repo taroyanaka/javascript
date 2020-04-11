@@ -129,16 +129,17 @@ let allarray=[];
 
 document.querySelectorAll("li.stream-item").forEach(V=>{
 	allarray.push(
-		R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
+		// R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
+		R.takeWhile( x => x !== "#Twitter婚活")( if(V.match)V.innerText.split("\n") )
 	)
 })
 
 // allarray = R.reject(R.test(/(\p{sc=Hiragana}|\p{sc=Katakana}|\p{sc=Han})/ug))(R.flatten(allarray)).join("")
 // R.takeWhile( x => x !== "#Twitter婚活")()
 
-			// let alltext = R.flatten(allarray).join("");
+			let alltext = R.flatten(allarray).join("");
 		// document.querySelector(".txt").value = allarray.join("");
-document.querySelector(".txt").value = R.filter(R.test(/(\p{sc=Hiragana}|\p{sc=Katakana}|\p{sc=Han})/ug))(R.flatten(allarray)).join("");
+// document.querySelector(".txt").value = R(R.test(/(\p{sc=Hiragana}|\p{sc=Katakana}|\p{sc=Han})/ug))(R.flatten(allarray)).join("");
 			// document.querySelector("#foo").value = document.querySelector("#result").textContent;
 			// count();
 		}).then(V=>{
