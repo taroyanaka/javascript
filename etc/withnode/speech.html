@@ -106,6 +106,7 @@ inputForm.onsubmit = function(event) {
 				document.querySelector(`body`).insertAdjacentHTML(`beforeend`,  v );
 		}).then(v=>{
 			document.querySelectorAll("html > body > textarea ~*").forEach(V=>{V.style.display = "none"});
+			
 			// document.querySelector("#foo").value = document.querySelector("#result").textContent;
 			// count();
 		});
