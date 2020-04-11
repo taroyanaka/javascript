@@ -33,7 +33,7 @@
 	const getWikiText = () =>{
 		// fetch(`https://ja.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=3&srsearch=tokyo`).then(
 		// fetch(endpoint).then(v=>{
-		fetch(`https://ja.wikipedia.org/w/api.php?format=xml&action=query&prop=extracts&titles=%E6%9D%B1%E4%BA%AC`).then(v=>{
+		fetch(`https://ja.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&titles=%E6%9D%B1%E4%BA%AC`).then(v=>{
 			return v.text()
 		}).then(v => { 
 			// addWikiHTML(JSON.parse(v).query.search);
