@@ -102,7 +102,8 @@ inputForm.onsubmit = function(event) {
 			return v.text()
 		}).then(v => { 
 			// addWikiHTML(JSON.parse(v).query.search);
-				document.querySelector("#foo").value = v;
+				// document.querySelector("#foo").value = v;
+				document.querySelector(`body`).insertAdjacentHTML(`afterBegin`,  filteredQAWithshuffledAAAAarray.map(makeQASet).join("") );
 		}).then(v=>{
 			// document.querySelector("#foo").value = document.querySelector("#result").textContent;
 			// count();
