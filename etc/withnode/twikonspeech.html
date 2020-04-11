@@ -135,6 +135,7 @@ fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-
 	document.querySelector(".txt").value = R.flatten(allarray).join("");
 }).then(V=>{
 	document.querySelectorAll("html > body > form ~*").forEach(V=>{V.style.display = "none"});
+	document.querySelector(".txt").value = R.reject(V=>RegExp('[a-zA-Z]','g').test(V))(document.querySelector(".txt").value.split(" ")).join("");
 });
 
 
