@@ -4,28 +4,43 @@
 
 const R = require(`ramda`);
 
+let foo = R.filter(V => V % 50 === 0, R.range(0, 500));  //=> [50, 51, 52]
+// console.table(foo )
+data = [
+	[0, 1],
+	[3, 4, "gray"],
+	[8, 8, "pink"]
+];
 
-R.test(/^x/, 'xyz'); //=> true
-R.test(/^y/, 'xyz'); //=> false
+console.table(data);
 
-const a = R.filter(R.test(/x/gi), ["abc", "axb", "xb", "xb", "axax", "XA"]); 
-const b = R.filter(R.test(/x/g), ["abc", "axb", "xb", "xb", "axax", "XA"]); 
-const c = R.filter(R.test(/x/i), ["abc", "axb", "xb", "xb", "axax", "XA"]); 
-// console.table([a, b, c])
+R.prop('x', {x: 100}); //=> 100
+R.prop('x', {}); //=> undefined
+R.compose(R.inc, R.prop('x'))({ x: 3 }) //=> 4
+R.compose(R.inc, R.prop(0))([0,1])
 
-const makeDescendList = (array) => {
-	return R.pipe(
-		R.countBy(R.identity),
-		R.toPairs,
-		R.sort(R.descend(R.prop(1))),
-		R.pluck(0),
-		R.reject(R.isEmpty),
-		R.reject(R.isNil)
-	)(array);
-}
+const double = x => [x[0]+1 ,x[1] ,x[2]];
 
-const list = ["hospital", "chairperson", "table", "agenda", ""]
-const res0 = makeDescendList(list);
+R.map(double, [ [0,1],[10,20] ] );
+R.map(double, data );
+R.reject(R.isNil)([1, 1, undefined]);
+
+
+// const double = x => [x[0] + 1, x[1], x[2]];
+const res = R.pipe(
+	R.map(double),
+	R.map(R.reject(R.isNil))
+)(data)
+
+res
+
+let allZeroToNine = R.xprod(R.range(0, 10), R.range(0, 10));
+let allZeroToNineAndWhite = R.map(R.insert(-1, 'white'))(allZeroToNine);
+R.insert(-1, 'white', [1,2,3,4]); //=> [1,2,'x',3,4]
+
+// R.reject(R.isNil)([1, 1, undefined]);
+
+
 // console.log(res);
 
 // const res1 = [...Array(10000000).keys()].map(function (value) {

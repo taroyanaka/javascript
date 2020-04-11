@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>tmp canvas</title>
+	<meta name="viewport" content="width=device-width">
+	<!-- https://ramdajs.com/ -->
+	<script src="ramda.min.js"></script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script>
+const START = 0;
+const MAX = 500;
+const INTERVAL = 50;
+const [MAXWIDTH, MAXHEIGHT] = [document.querySelector("#canvas").width, document.querySelector("#canvas").height] =  [500, 500];
+const CTX = document.querySelector("#canvas").getContext('2d');
+// const EACHINTERVAL = R.filter(V => V % INTERVAL === 0, R.range(INTERVAL, MAX+1));
+const EACHINTERVAL = R.filter(V => V % INTERVAL === 0, R.range(START, MAX));
+// EACHINTERVAL
+// ┌─────────┬────────┐ 
+// │ (index) │ Values │ 
+// ├─────────┼────────┤ 
+// │    0    │   50   │ 
+// │    1    │  100   │ 
+// │    2    │  150   │ 
+// │    3    │  200   │ 
+// │    4    │  250   │ 
+// │    5    │  300   │ 
+// │    6    │  350   │ 
+// │    7    │  400   │ 
+// │    8    │  450   │ 
+// └─────────┴────────┘ 
+
+const INIT = () => {
+	CTX.fillStyle = "rgb(0,0,0)";
+	CTX.fillRect(START, START, MAXWIDTH, MAXHEIGHT);
+	CTX.strokeStyle = "white"
+	CTX.lineWidth = 1;
+	CTX.beginPath();
+}
+const VERTICALLINE = x => {CTX.moveTo(x, START); CTX.lineTo(x, MAXWIDTH);};
+const HORIZONTALLINE = x => {CTX.moveTo(START, x); CTX.lineTo(MAXHEIGHT, x);};
+
+INIT();
+R.forEach(VERTICALLINE, EACHINTERVAL);
+R.forEach(HORIZONTALLINE, EACHINTERVAL);
+CTX.stroke();
+</script>
+</body>
+</html>
