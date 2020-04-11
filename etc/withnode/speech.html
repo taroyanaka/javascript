@@ -96,13 +96,14 @@ inputForm.onsubmit = function(event) {
 }
 
 
-		fetch(endpoint).then(v=>{
+		fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec`).then(v=>{
 			return v.text()
 		}).then(v => { 
-			addWikiHTML(JSON.parse(v).query.search);
+			// addWikiHTML(JSON.parse(v).query.search);
+				document.querySelector("#foo").value = v;
 		}).then(v=>{
-			document.querySelector("textarea").value = document.querySelector("#result").textContent;
-			count();
+			// document.querySelector("#foo").value = document.querySelector("#result").textContent;
+			// count();
 		});
 
 
