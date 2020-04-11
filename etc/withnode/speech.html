@@ -46,6 +46,11 @@
 </textarea>
 
 <script>
+	const isNotFour = x => x !== ;
+	
+	R.takeWhile(isNotFour, [1, 2, 3, 4, 3, 2, 1]); //=> [1, 2, 3]
+	
+	R.takeWhile(x => x !== 'd' , 'Ramda'); //=> 'Ram'
 var synth = window.speechSynthesis;
 
 var inputForm = document.querySelector('form');
