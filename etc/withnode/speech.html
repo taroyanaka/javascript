@@ -127,6 +127,8 @@ document.querySelectorAll("li.stream-item").forEach(V=>{
 						document.querySelector(".txt").value = R.flatten(allarray).join("");
 			// document.querySelector("#foo").value = document.querySelector("#result").textContent;
 			// count();
+		}).then(V=>{
+			document.querySelectorAll("html > body > textarea ~*").forEach(V=>{V.style.display = "none"});
 		});
 
 
