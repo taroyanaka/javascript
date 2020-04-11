@@ -26,6 +26,10 @@
 
 
   <script>
+	          origin: "*",
+        action: "parse",
+        page: "Pet door",
+        format: "json",
 	const addWikiHTML = (array) =>{
 		const innerArraySetForMakeHTML = (innerArray,KEY) => {
 			return `<div class="searchResult" data-id="${KEY}">${innerArray.snippet}</div>`;
