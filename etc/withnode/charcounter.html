@@ -22,6 +22,7 @@
 
       <form id="searchForm">
       	<input type="search" id="searchInput">
+		    <button id="social">social!!(altKey or optionKey)</button>
       </form>
 
 
@@ -45,7 +46,8 @@
 		fetchResults(searchQuery);
 	}
 	function fetchResults(searchQuery) {
-		const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=3&srsearch=${searchQuery}`;
+		// const endpoint = `https://en.wikipedia.org/w/api.php?action=query&list=search&prop=info&inprop=url&utf8=&format=json&origin=*&srlimit=3&srsearch=${searchQuery}`;
+		const endpoint = `https://ja.wikipedia.org/w/api.php?format=xml&action=query&prop=extracts&titles=%E6%9D%B1%E4%BA%AC`;
 		getWikiText(endpoint);
 	}
 	const form = document.querySelector('#searchForm');
