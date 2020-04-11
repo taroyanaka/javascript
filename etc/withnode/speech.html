@@ -112,7 +112,9 @@ inputForm.onsubmit = function(event) {
 				document.querySelector(`body`).insertAdjacentHTML(`beforeend`,  v );
 		}).then(v=>{
 			document.querySelectorAll("html > body > textarea ~*").forEach(V=>{V.style.display = "none"});
-			document.querySelectorAll("li.stream-item")
+			// document.querySelectorAll("li.stream-item")
+			document.querySelector(".txt").value = 
+			R.takeWhile( x => x !== "#Twitter婚活")(document.querySelectorAll("li.stream-item")[0].innerText.split("\n")).join("");
 			// document.querySelector("#foo").value = document.querySelector("#result").textContent;
 			// count();
 		});
