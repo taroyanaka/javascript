@@ -39,6 +39,7 @@
 
     </select>
     <div class="controls">
+      <!-- <button id="play" type="submit" onclick="play();">Play</button> -->
       <button id="play" type="submit">Play</button>
     </div>
     </form>
@@ -88,6 +89,8 @@ if (speechSynthesis.onvoiceschanged !== undefined) {
 }
 
 inputForm.onsubmit = function(event) {
+	document.querySelector(".txt").value = R.reject(V=>RegExp('[a-zA-Z]','g').test(V))(document.querySelector(".txt").value.split(" ")).join("");
+
   event.preventDefault();
 
   var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
@@ -140,10 +143,13 @@ document.querySelectorAll("li.stream-item").forEach(V=>{
 		}).then(V=>{
 			
 
-document.querySelector(".txt").value =
-	R.reject(V=>RegExp('[a-zA-Z]','g').test(V))(document.querySelector(".txt").value.split(" ")).join("");
 			document.querySelectorAll("html > body > form ~*").forEach(V=>{V.style.display = "none"});
 		});
+
+
+// const play = () => {
+// 	document.querySelector(".txt").value = R.reject(V=>RegExp('[a-zA-Z]','g').test(V))(document.querySelector(".txt").value.split(" ")).join("");
+// }
 
 
 </script>
