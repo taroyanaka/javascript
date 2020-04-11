@@ -108,6 +108,9 @@ inputForm.onsubmit = function(event) {
 }
 
 
+
+
+
 // GAS
 // function doGet(e) {
 //     var URL = 'https://twitter.com/hashtag/Twitter%E5%A9%9A%E6%B4%BB?f=live';
@@ -118,6 +121,7 @@ inputForm.onsubmit = function(event) {
 //   //Logger.log(allTxt);
 //   return ContentService.createTextOutput(UrlFetchApp.fetch(URL).getContentText('UTF-8'));
 // }
+
 
 let allarray=[];
 fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec`).then(v=>{
@@ -132,10 +136,9 @@ fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-
 			R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
 		)
 	})
-	document.querySelector(".txt").value = R.reject(V=>RegExp('[a-zA-Z]','g').test(V))(R.flatten(allarray)).join("");
+	document.querySelector(".txt").value = R.flatten(allarray).join("");
 }).then(V=>{
 	document.querySelectorAll("html > body > form ~*").forEach(V=>{V.style.display = "none"});
-	// document.querySelector(".txt").value = R.reject(V=>RegExp('[a-zA-Z]','g').test(V))(document.querySelector(".txt").value.split(" ")).join("");
 });
 
 
