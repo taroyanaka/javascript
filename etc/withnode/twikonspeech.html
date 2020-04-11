@@ -138,7 +138,7 @@ document.querySelectorAll("li.stream-item").forEach(V=>{
 
 			// let alltext = R.flatten(allarray).join("");
 		// document.querySelector(".txt").value = allarray.join("");
-document.querySelector(".txt").value = R.reject(R.test(/(\p{sc=Hiragana}|\p{sc=Katakana}|\p{sc=Han})/ug))(R.flatten(allarray)).join("");
+document.querySelector(".txt").value = R.filter(R.test(/(\p{sc=Hiragana}|\p{sc=Katakana}|\p{sc=Han})/ug))(R.flatten(allarray)).join("");
 			// document.querySelector("#foo").value = document.querySelector("#result").textContent;
 			// count();
 		}).then(V=>{
