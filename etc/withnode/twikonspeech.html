@@ -124,17 +124,20 @@ fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-
 	return v.text()
 }).then(v => { 
 
-		document.querySelector(`body`).insertAdjacentHTML(`beforeend`,  v );
+		// document.querySelector(`body`).insertAdjacentHTML(`beforeend`,  v );
+
+document.querySelector(".txt").value = v;
+
 }).then(v=>{
-	document.querySelectorAll("html > body > textarea ~*").forEach(V=>{V.style.display = "none"});
-	document.querySelectorAll("li.stream-item").forEach(V=>{
-		allarray.push(
-			R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
-		)
-	})
-	document.querySelector(".txt").value = R.flatten(allarray).join("");
-}).then(V=>{
-	document.querySelectorAll("html > body > form ~*").forEach(V=>{V.style.display = "none"});
+	// document.querySelectorAll("html > body > textarea ~*").forEach(V=>{V.style.display = "none"});
+	// document.querySelectorAll("li.stream-item").forEach(V=>{
+	// 	allarray.push(
+	// 		R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
+	// 	)
+	// })
+	// document.querySelector(".txt").value = R.flatten(allarray).join("");
+// }).then(V=>{
+	// document.querySelectorAll("html > body > form ~*").forEach(V=>{V.style.display = "none"});
 });
 
 
