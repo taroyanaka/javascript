@@ -23,9 +23,9 @@
 
     <p>Enter some text in the input below and press return  or the "play" button to hear it. change voices using the dropdown menu.</p>
     <p>from 2015-09-11</p>
-	<select name="year" id="year" onInput="chooseyear();exe();"></select>
-	<select name="month" id="month" onInput="choosemonth();exe();"></select>
-	<select name="day" id="day" onInput="chooseday();exe();"></select>
+	<select name="year" id="year" onInput="chooseyear();requestNJAndInsertText();"></select>
+	<select name="month" id="month" onInput="choosemonth();requestNJAndInsertText();"></select>
+	<select name="day" id="day" onInput="chooseday();requestNJAndInsertText();"></select>
     
     <form>
     <input type="text" class="txt">
@@ -165,12 +165,6 @@ const chooseyear = () => document.querySelector("#year").value;
 const choosemonth = () => document.querySelector("#month").value;
 const chooseday = () => document.querySelector("#day").value;
 const initFromMonthDay = () => [document.querySelector("#month").value, document.querySelector("#day").value] = ["09","11"];
-
-
-// let URLWithQuery;
-
-initFromMonthDay();
-
 const returnURLWithQuery = () =>{
 	return (
 		"https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec"
@@ -178,8 +172,8 @@ const returnURLWithQuery = () =>{
 	)
 }
 
-let allarray=[];
-const requestNJ = () => {
+// let allarray=[];
+const requestNJAndInsertText = () => {
 	// fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec`).then(v=>{
 	fetch(returnURLWithQuery()).then(v=>{
 		return v.text()
@@ -202,11 +196,8 @@ const requestNJ = () => {
 	});
 }
 
-const exe = () =>{
-	// initFromMonthDay();
-	requestNJ();
-}
-exe();
+initFromMonthDay();
+requestNJAndInsertText();
 </script>
 <style>
 	body, html {
