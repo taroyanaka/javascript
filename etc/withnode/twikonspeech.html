@@ -166,16 +166,17 @@ const choosemonth = () => document.querySelector("#month").value;
 const chooseday = () => document.querySelector("#day").value;
 
 
-let URLWithQuery;
+// let URLWithQuery;
 
 const returnURLWithQuery = () =>{
 	return ("https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec"
-	 + "?=" +
+	 + "?year=" + chooseyear() + "&month=" + choosemonth() + "&day=" + chooseday()
 	)
 }
 
 let allarray=[];
-fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec`).then(v=>{
+// fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec`).then(v=>{
+fetch(returnURLWithQuery()).then(v=>{
 	return v.text()
 }).then(v => { 
 
