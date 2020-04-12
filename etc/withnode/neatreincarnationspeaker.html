@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<script src="ramda.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <!-- <title>Speech synthesiser</title> -->
+    <title>neat reincarnation speaker</title>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	<!-- https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis -->
+	<!-- https://github.com/mdn/web-speech-api -->
+
+	<!-- https://ncode.syosetu.com/n9669bk/ -->
+	<!-- https://ncode.syosetu.com/ -->
+  </head>
+  <body>
+	<p><a href="https://ncode.syosetu.com/n9669bk/">引用元: <cite>無職転生　- 異世界行ったら本気だす - 作者：理不尽な孫の手</cite></a></p>
+	<select name="urlandtitle" id="urlandtitle" onInput="requestNEATAndInsertText();"></select>
+    <form>
+    <input type="text" class="txt">
+    <div>
+      <label for="rate">Rate</label><input type="range" min="0.5" max="2" value="1" step="0.1" id="rate">
+      <div class="rate-value">1</div>
+      <div class="clearfix"></div>
+    </div>
+    <div>
+      <label for="pitch">Pitch</label><input type="range" min="0" max="2" value="1" step="0.1" id="pitch">
+      <div class="pitch-value">1</div>
+      <div class="clearfix"></div>
+    </div>
+    <select id="choosevoice"></select>
+    <div class="controls">
+      <button id="play" type="submit">NEAT!</button>
+    </div>
+    </form>
+	<div id="resource"></div>
+<script>
+const allURL = [
+  "https://ncode.syosetu.com/n9669bk/1/",
+  "https://ncode.syosetu.com/n9669bk/2/",
+  "https://ncode.syosetu.com/n9669bk/3/",
+  "https://ncode.syosetu.com/n9669bk/4/",
+  "https://ncode.syosetu.com/n9669bk/5/",
+  "https://ncode.syosetu.com/n9669bk/6/",
+  "https://ncode.syosetu.com/n9669bk/7/",
+  "https://ncode.syosetu.com/n9669bk/8/",
+  "https://ncode.syosetu.com/n9669bk/9/",
+  "https://ncode.syosetu.com/n9669bk/10/",
+  "https://ncode.syosetu.com/n9669bk/11/",
+  "https://ncode.syosetu.com/n9669bk/12/",
+  "https://ncode.syosetu.com/n9669bk/13/",
+  "https://ncode.syosetu.com/n9669bk/14/",
+  "https://ncode.syosetu.com/n9669bk/15/",
+  "https://ncode.syosetu.com/n9669bk/16/",
+  "https://ncode.syosetu.com/n9669bk/17/",
+  "https://ncode.syosetu.com/n9669bk/18/",
+  "https://ncode.syosetu.com/n9669bk/19/",
+  "https://ncode.syosetu.com/n9669bk/20/",
+  "https://ncode.syosetu.com/n9669bk/21/",
+  "https://ncode.syosetu.com/n9669bk/22/",
+  "https://ncode.syosetu.com/n9669bk/23/",
+  "https://ncode.syosetu.com/n9669bk/24/",
+  "https://ncode.syosetu.com/n9669bk/25/",
+  "https://ncode.syosetu.com/n9669bk/26/",
+  "https://ncode.syosetu.com/n9669bk/27/",
+  "https://ncode.syosetu.com/n9669bk/28/",
+  "https://ncode.syosetu.com/n9669bk/29/",
+  "https://ncode.syosetu.com/n9669bk/30/",
+  "https://ncode.syosetu.com/n9669bk/31/",
+  "https://ncode.syosetu.com/n9669bk/32/",
+  "https://ncode.syosetu.com/n9669bk/33/",
+  "https://ncode.syosetu.com/n9669bk/34/",
+  "https://ncode.syosetu.com/n9669bk/35/",
+  "https://ncode.syosetu.com/n9669bk/36/",
+  "https://ncode.syosetu.com/n9669bk/37/",
+  "https://ncode.syosetu.com/n9669bk/38/",
+  "https://ncode.syosetu.com/n9669bk/39/",
+  "https://ncode.syosetu.com/n9669bk/40/",
+  "https://ncode.syosetu.com/n9669bk/41/",
+  "https://ncode.syosetu.com/n9669bk/42/",
+  "https://ncode.syosetu.com/n9669bk/43/",
+  "https://ncode.syosetu.com/n9669bk/44/",
+  "https://ncode.syosetu.com/n9669bk/45/",
+  "https://ncode.syosetu.com/n9669bk/46/",
+  "https://ncode.syosetu.com/n9669bk/47/",
+  "https://ncode.syosetu.com/n9669bk/48/",
+  "https://ncode.syosetu.com/n9669bk/49/",
+  "https://ncode.syosetu.com/n9669bk/50/",
+  "https://ncode.syosetu.com/n9669bk/51/",
+  "https://ncode.syosetu.com/n9669bk/52/",
+  "https://ncode.syosetu.com/n9669bk/53/",
+  "https://ncode.syosetu.com/n9669bk/54/",
+  "https://ncode.syosetu.com/n9669bk/55/",
+  "https://ncode.syosetu.com/n9669bk/56/",
+  "https://ncode.syosetu.com/n9669bk/57/",
+  "https://ncode.syosetu.com/n9669bk/58/",
+  "https://ncode.syosetu.com/n9669bk/59/",
+  "https://ncode.syosetu.com/n9669bk/60/",
+  "https://ncode.syosetu.com/n9669bk/61/",
+  "https://ncode.syosetu.com/n9669bk/62/",
+  "https://ncode.syosetu.com/n9669bk/63/",
+  "https://ncode.syosetu.com/n9669bk/64/",
+  "https://ncode.syosetu.com/n9669bk/65/",
+  "https://ncode.syosetu.com/n9669bk/66/",
+  "https://ncode.syosetu.com/n9669bk/67/",
+  "https://ncode.syosetu.com/n9669bk/68/",
+  "https://ncode.syosetu.com/n9669bk/69/",
+  "https://ncode.syosetu.com/n9669bk/70/",
+  "https://ncode.syosetu.com/n9669bk/71/",
+  "https://ncode.syosetu.com/n9669bk/72/",
+  "https://ncode.syosetu.com/n9669bk/73/",
+  "https://ncode.syosetu.com/n9669bk/74/",
+  "https://ncode.syosetu.com/n9669bk/75/",
+  "https://ncode.syosetu.com/n9669bk/76/",
+  "https://ncode.syosetu.com/n9669bk/77/",
+  "https://ncode.syosetu.com/n9669bk/78/",
+  "https://ncode.syosetu.com/n9669bk/79/",
+  "https://ncode.syosetu.com/n9669bk/80/",
+  "https://ncode.syosetu.com/n9669bk/81/",
+  "https://ncode.syosetu.com/n9669bk/82/",
+  "https://ncode.syosetu.com/n9669bk/83/",
+  "https://ncode.syosetu.com/n9669bk/84/",
+  "https://ncode.syosetu.com/n9669bk/85/",
+  "https://ncode.syosetu.com/n9669bk/86/",
+  "https://ncode.syosetu.com/n9669bk/87/",
+  "https://ncode.syosetu.com/n9669bk/88/",
+  "https://ncode.syosetu.com/n9669bk/89/",
+  "https://ncode.syosetu.com/n9669bk/90/",
+  "https://ncode.syosetu.com/n9669bk/91/",
+  "https://ncode.syosetu.com/n9669bk/92/",
+  "https://ncode.syosetu.com/n9669bk/93/",
+  "https://ncode.syosetu.com/n9669bk/94/",
+  "https://ncode.syosetu.com/n9669bk/95/",
+  "https://ncode.syosetu.com/n9669bk/96/",
+  "https://ncode.syosetu.com/n9669bk/97/",
+  "https://ncode.syosetu.com/n9669bk/98/",
+  "https://ncode.syosetu.com/n9669bk/99/",
+  "https://ncode.syosetu.com/n9669bk/100/",
+  "https://ncode.syosetu.com/n9669bk/101/",
+  "https://ncode.syosetu.com/n9669bk/102/",
+  "https://ncode.syosetu.com/n9669bk/103/",
+  "https://ncode.syosetu.com/n9669bk/104/",
+  "https://ncode.syosetu.com/n9669bk/105/",
+  "https://ncode.syosetu.com/n9669bk/106/",
+  "https://ncode.syosetu.com/n9669bk/107/",
+  "https://ncode.syosetu.com/n9669bk/108/",
+  "https://ncode.syosetu.com/n9669bk/109/",
+  "https://ncode.syosetu.com/n9669bk/110/",
+  "https://ncode.syosetu.com/n9669bk/111/",
+  "https://ncode.syosetu.com/n9669bk/112/",
+  "https://ncode.syosetu.com/n9669bk/113/",
+  "https://ncode.syosetu.com/n9669bk/114/",
+  "https://ncode.syosetu.com/n9669bk/115/",
+  "https://ncode.syosetu.com/n9669bk/116/",
+  "https://ncode.syosetu.com/n9669bk/117/",
+  "https://ncode.syosetu.com/n9669bk/118/",
+  "https://ncode.syosetu.com/n9669bk/119/",
+  "https://ncode.syosetu.com/n9669bk/120/",
+  "https://ncode.syosetu.com/n9669bk/121/",
+  "https://ncode.syosetu.com/n9669bk/122/",
+  "https://ncode.syosetu.com/n9669bk/123/",
+  "https://ncode.syosetu.com/n9669bk/124/",
+  "https://ncode.syosetu.com/n9669bk/125/",
+  "https://ncode.syosetu.com/n9669bk/126/",
+  "https://ncode.syosetu.com/n9669bk/127/",
+  "https://ncode.syosetu.com/n9669bk/128/",
+  "https://ncode.syosetu.com/n9669bk/129/",
+  "https://ncode.syosetu.com/n9669bk/130/",
+  "https://ncode.syosetu.com/n9669bk/131/",
+  "https://ncode.syosetu.com/n9669bk/132/",
+  "https://ncode.syosetu.com/n9669bk/133/",
+  "https://ncode.syosetu.com/n9669bk/134/",
+  "https://ncode.syosetu.com/n9669bk/135/",
+  "https://ncode.syosetu.com/n9669bk/136/",
+  "https://ncode.syosetu.com/n9669bk/137/",
+  "https://ncode.syosetu.com/n9669bk/138/",
+  "https://ncode.syosetu.com/n9669bk/139/",
+  "https://ncode.syosetu.com/n9669bk/140/",
+  "https://ncode.syosetu.com/n9669bk/141/",
+  "https://ncode.syosetu.com/n9669bk/142/",
+  "https://ncode.syosetu.com/n9669bk/143/",
+  "https://ncode.syosetu.com/n9669bk/144/",
+  "https://ncode.syosetu.com/n9669bk/145/",
+  "https://ncode.syosetu.com/n9669bk/146/",
+  "https://ncode.syosetu.com/n9669bk/147/",
+  "https://ncode.syosetu.com/n9669bk/148/",
+  "https://ncode.syosetu.com/n9669bk/149/",
+  "https://ncode.syosetu.com/n9669bk/150/",
+  "https://ncode.syosetu.com/n9669bk/151/",
+  "https://ncode.syosetu.com/n9669bk/152/",
+  "https://ncode.syosetu.com/n9669bk/153/",
+  "https://ncode.syosetu.com/n9669bk/154/",
+  "https://ncode.syosetu.com/n9669bk/155/",
+  "https://ncode.syosetu.com/n9669bk/156/",
+  "https://ncode.syosetu.com/n9669bk/157/",
+  "https://ncode.syosetu.com/n9669bk/158/",
+  "https://ncode.syosetu.com/n9669bk/159/",
+  "https://ncode.syosetu.com/n9669bk/160/",
+  "https://ncode.syosetu.com/n9669bk/161/",
+  "https://ncode.syosetu.com/n9669bk/162/",
+  "https://ncode.syosetu.com/n9669bk/163/",
+  "https://ncode.syosetu.com/n9669bk/164/",
+  "https://ncode.syosetu.com/n9669bk/165/",
+  "https://ncode.syosetu.com/n9669bk/166/",
+  "https://ncode.syosetu.com/n9669bk/167/",
+  "https://ncode.syosetu.com/n9669bk/168/",
+  "https://ncode.syosetu.com/n9669bk/169/",
+  "https://ncode.syosetu.com/n9669bk/170/",
+  "https://ncode.syosetu.com/n9669bk/171/",
+  "https://ncode.syosetu.com/n9669bk/172/",
+  "https://ncode.syosetu.com/n9669bk/173/",
+  "https://ncode.syosetu.com/n9669bk/174/",
+  "https://ncode.syosetu.com/n9669bk/175/",
+  "https://ncode.syosetu.com/n9669bk/176/",
+  "https://ncode.syosetu.com/n9669bk/177/",
+  "https://ncode.syosetu.com/n9669bk/178/",
+  "https://ncode.syosetu.com/n9669bk/179/",
+  "https://ncode.syosetu.com/n9669bk/180/",
+  "https://ncode.syosetu.com/n9669bk/181/",
+  "https://ncode.syosetu.com/n9669bk/182/",
+  "https://ncode.syosetu.com/n9669bk/183/",
+  "https://ncode.syosetu.com/n9669bk/184/",
+  "https://ncode.syosetu.com/n9669bk/185/",
+  "https://ncode.syosetu.com/n9669bk/186/",
+  "https://ncode.syosetu.com/n9669bk/187/",
+  "https://ncode.syosetu.com/n9669bk/188/",
+  "https://ncode.syosetu.com/n9669bk/189/",
+  "https://ncode.syosetu.com/n9669bk/190/",
+  "https://ncode.syosetu.com/n9669bk/191/",
+  "https://ncode.syosetu.com/n9669bk/192/",
+  "https://ncode.syosetu.com/n9669bk/193/",
+  "https://ncode.syosetu.com/n9669bk/194/",
+  "https://ncode.syosetu.com/n9669bk/195/",
+  "https://ncode.syosetu.com/n9669bk/196/",
+  "https://ncode.syosetu.com/n9669bk/197/",
+  "https://ncode.syosetu.com/n9669bk/198/",
+  "https://ncode.syosetu.com/n9669bk/199/",
+  "https://ncode.syosetu.com/n9669bk/200/",
+  "https://ncode.syosetu.com/n9669bk/201/",
+  "https://ncode.syosetu.com/n9669bk/202/",
+  "https://ncode.syosetu.com/n9669bk/203/",
+  "https://ncode.syosetu.com/n9669bk/204/",
+  "https://ncode.syosetu.com/n9669bk/205/",
+  "https://ncode.syosetu.com/n9669bk/206/",
+  "https://ncode.syosetu.com/n9669bk/207/",
+  "https://ncode.syosetu.com/n9669bk/208/",
+  "https://ncode.syosetu.com/n9669bk/209/",
+  "https://ncode.syosetu.com/n9669bk/210/",
+  "https://ncode.syosetu.com/n9669bk/211/",
+  "https://ncode.syosetu.com/n9669bk/212/",
+  "https://ncode.syosetu.com/n9669bk/213/",
+  "https://ncode.syosetu.com/n9669bk/214/",
+  "https://ncode.syosetu.com/n9669bk/215/",
+  "https://ncode.syosetu.com/n9669bk/216/",
+  "https://ncode.syosetu.com/n9669bk/217/",
+  "https://ncode.syosetu.com/n9669bk/218/",
+  "https://ncode.syosetu.com/n9669bk/219/",
+  "https://ncode.syosetu.com/n9669bk/220/",
+  "https://ncode.syosetu.com/n9669bk/221/",
+  "https://ncode.syosetu.com/n9669bk/222/",
+  "https://ncode.syosetu.com/n9669bk/223/",
+  "https://ncode.syosetu.com/n9669bk/224/",
+  "https://ncode.syosetu.com/n9669bk/225/",
+  "https://ncode.syosetu.com/n9669bk/226/",
+  "https://ncode.syosetu.com/n9669bk/227/",
+  "https://ncode.syosetu.com/n9669bk/228/",
+  "https://ncode.syosetu.com/n9669bk/229/",
+  "https://ncode.syosetu.com/n9669bk/230/",
+  "https://ncode.syosetu.com/n9669bk/231/",
+  "https://ncode.syosetu.com/n9669bk/232/",
+  "https://ncode.syosetu.com/n9669bk/233/",
+  "https://ncode.syosetu.com/n9669bk/234/",
+  "https://ncode.syosetu.com/n9669bk/235/",
+  "https://ncode.syosetu.com/n9669bk/236/",
+  "https://ncode.syosetu.com/n9669bk/237/",
+  "https://ncode.syosetu.com/n9669bk/238/",
+  "https://ncode.syosetu.com/n9669bk/239/",
+  "https://ncode.syosetu.com/n9669bk/240/",
+  "https://ncode.syosetu.com/n9669bk/241/",
+  "https://ncode.syosetu.com/n9669bk/242/",
+  "https://ncode.syosetu.com/n9669bk/243/",
+  "https://ncode.syosetu.com/n9669bk/244/",
+  "https://ncode.syosetu.com/n9669bk/245/",
+  "https://ncode.syosetu.com/n9669bk/246/",
+  "https://ncode.syosetu.com/n9669bk/247/",
+  "https://ncode.syosetu.com/n9669bk/248/",
+  "https://ncode.syosetu.com/n9669bk/249/",
+  "https://ncode.syosetu.com/n9669bk/250/",
+  "https://ncode.syosetu.com/n9669bk/251/",
+  "https://ncode.syosetu.com/n9669bk/252/",
+  "https://ncode.syosetu.com/n9669bk/253/",
+  "https://ncode.syosetu.com/n9669bk/254/",
+  "https://ncode.syosetu.com/n9669bk/255/",
+  "https://ncode.syosetu.com/n9669bk/256/",
+  "https://ncode.syosetu.com/n9669bk/257/",
+  "https://ncode.syosetu.com/n9669bk/258/",
+  "https://ncode.syosetu.com/n9669bk/259/",
+  "https://ncode.syosetu.com/n9669bk/260/",
+  "https://ncode.syosetu.com/n9669bk/261/",
+  "https://ncode.syosetu.com/n9669bk/262/",
+  "https://ncode.syosetu.com/n9669bk/263/",
+  "https://ncode.syosetu.com/n9669bk/264/",
+  "https://ncode.syosetu.com/n9669bk/265/",
+  "https://ncode.syosetu.com/n9669bk/266/",
+  "https://ncode.syosetu.com/n9669bk/267/",
+  "https://ncode.syosetu.com/n9669bk/268/",
+  "https://ncode.syosetu.com/n9669bk/269/",
+  "https://ncode.syosetu.com/n9669bk/270/",
+  "https://ncode.syosetu.com/n9669bk/271/",
+  "https://ncode.syosetu.com/n9669bk/272/",
+  "https://ncode.syosetu.com/n9669bk/273/",
+  "https://ncode.syosetu.com/n9669bk/274/",
+  "https://ncode.syosetu.com/n9669bk/275/",
+  "https://ncode.syosetu.com/n9669bk/276/",
+  "https://ncode.syosetu.com/n9669bk/277/",
+  "https://ncode.syosetu.com/n9669bk/278/",
+  "https://ncode.syosetu.com/n9669bk/279/",
+  "https://ncode.syosetu.com/n9669bk/280/",
+  "https://ncode.syosetu.com/n9669bk/281/",
+  "https://ncode.syosetu.com/n9669bk/282/",
+  "https://ncode.syosetu.com/n9669bk/283/",
+  "https://ncode.syosetu.com/n9669bk/284/",
+  "https://ncode.syosetu.com/n9669bk/285/",
+  "https://ncode.syosetu.com/n9669bk/286/"
+]
+
+const allTitle = [
+  "プロローグ",
+  "第一話「もしかして：異世界」",
+  "第二話「ドン引きのメイドさん」",
+  "第三話「魔術教本」",
+  "第四話「師匠」",
+  "第五話「剣術と魔術」",
+  "第六話「尊敬の理由」",
+  "第七話「友達」",
+  "第八話「鈍感」",
+  "第九話「緊急家族会議」",
+  "第十話「伸び悩み」",
+  "第十一話「離別」",
+  "第十二話「お嬢様の暴力」",
+  "第十三話「自作自演？」",
+  "　間話「後日談とボレアス流挨拶」",
+  "第十四話「凶暴性、いまだ衰えず」",
+  "第十五話「職員会議と日曜日」",
+  "第十六話「お嬢様は十歳」",
+  "第十七話「言語学習」",
+  "第十八話「確約」",
+  "第十九話「ターニングポイント」",
+  "　間話「フィットア領消滅より半年後」",
+  "第二十話「神を名乗る詐欺師」",
+  "第二十一話「スペルド族」",
+  "第二十二話「師匠の秘密」",
+  "第二十三話「信用の理由」",
+  "第二十四話「最寄りの町まで三日間」",
+  "第二十五話「侵入と変装」",
+  "第二十六話「冒険者ギルド」",
+  "第二十七話「冒険者の宿」",
+  "第二十八話「人の命と初仕事」",
+  "第二十九話「初仕事終了」",
+  "第三十話「順調な滑り出し」",
+  "第三十一話「子供と戦士」",
+  "第三十二話「失敗と混乱と決意」",
+  "第三十三話「旅の始まり」",
+  "　　世界地図",
+  "第三十四話「ウェンポート」",
+  "第三十五話「すれ違い・前編」",
+  "第三十六話「すれ違い・後編」",
+  "　間話「すれ違い・番外編」",
+  "第三十七話「船の中の賢者」",
+  "第三十八話「倉庫の中の悪魔」",
+  "第三十九話「獣族の子供たち」",
+  "第四十話「無料アパート」",
+  "第四十一話「ドルディアの村のスローライフ・前編」",
+  "第四十二話「ドルディアの村のスローライフ・後編」",
+  "第四十三話「聖剣街道」",
+  "第四十四話「ミリス神聖国」",
+  "第四十五話「一年半のパウロ」",
+  "第四十六話「親子喧嘩」",
+  "第四十七話「パウロとの再会」",
+  "第四十八話「方針の再確認」",
+  "第四十九話「ミリシオンでの一週間」",
+  "　間話「エリスのゴブリン討伐」",
+  "第五十話「中央大陸へ」",
+  "　間話「ロキシーの帰還」",
+  "第五十一話「ルート選択」",
+  "第五十二話「米」",
+  "第五十三話「シーローン王国」",
+  "第五十四話「神の不在」",
+  "第五十五話「第三王子」",
+  "第五十六話「スピード解決」",
+  "第五十七話「妹侍女の生まれた日」",
+  "第五十八話「一人前」",
+  "第五十九話「ターニングポイント２」",
+  "第六十話「胸にぽっかり開いた穴」",
+  "第六十一話「旅の終わり」",
+  "第六十二話「災害の現実」",
+  "第六十三話「お嬢様の決意」",
+  "　間話「出会ってしまった二人」",
+  "　世界地図２",
+  "第六十四話「泥沼の冒険者」",
+  "第六十五話「推薦状」",
+  "第六十六話「入試」",
+  "第六十七話「入学初日・前編」",
+  "第六十八話「入学初日・後編」",
+  "第六十九話「フィッツ先輩」",
+  "第七十話「及ばぬ力　前編」",
+  "第七十一話「及ばぬ力　後編」",
+  "第七十二話「獣族令嬢拉致監禁事件　前編」",
+  "第七十三話「獣族令嬢拉致監禁事件　後編」",
+  "第七十四話「天才少年の秘め事　前編」",
+  "第七十五話「天才少年の秘め事　後編」",
+  "第七十六話「絶壁の婚約者　前編」",
+  "第七十七話「絶壁の婚約者　後編」",
+  "第七十八話「白い仮面　前編」",
+  "第七十九話「白い仮面　後編」",
+  "第八十話「魔法大学での一日」",
+  "　間話「燃えよ狂犬」",
+  "第八十一話「シルフィの過去」",
+  "第八十二話「守護術師フィッツ登場」",
+  "第八十三話「王女と騎士と術師」",
+  "第八十四話「入学初日・番外編」",
+  "第八十五話「察しのいい鈍感」",
+  "第八十六話「行き過ぎた配慮」",
+  "第八十七話「守られた秘密」",
+  "第八十八話「森の雨・前編」",
+  "第八十九話「森の雨・後編」",
+  "第九十話「最後の一押し」",
+  "第九十一話「後ろ盾」",
+  "第九十二話「結婚の前に用意するモノ　前編」",
+  "第九十三話「結婚の前に用意するモノ　後編」",
+  "第九十四話「劇的」",
+  "第九十五話「披露宴・準備」",
+  "第九十六話「披露宴・開催」",
+  "第九十七話「披露宴・終了」",
+  "第九十八話「家のある生活」",
+  "第九十九話「手紙」",
+  "第百話「決壊」",
+  "第百一話「文殊の知恵」",
+  "第百二話「懐かしさと歯がゆさ」",
+  "第百三話「姉妹の処遇」",
+  "第百四話「メイドと寮生」",
+  "　間話「人形の研究と主従関係」",
+  "第百五話「番長とその仲間達」",
+  "第百六話「兄貴の気持ち」",
+  "第百七話「ノルン・グレイラット」",
+  "第百八話「妹のいる生活」",
+  "第百九話「ターニングポイント３」",
+  "　間話「牙を砥ぐ」",
+  "第百十話「別れの挨拶」",
+  "第百十一話「ベガリット大陸へ」",
+  "第百十二話「天敵との遭遇」",
+  "第百十三話「砂漠の生態」",
+  "第百十四話「砂漠の旅」",
+  "第百十五話「バザール」",
+  "第百十六話「砂漠の戦士たち」",
+  "第百十七話「到着」",
+  "第百十八話「状況確認」",
+  "第百十九話「迷宮入り」",
+  "第百二十話「あの時の彼女の気持ち」",
+  "第百二十一話「不屈の魔法使い」",
+  "第百二十二話「トントン拍子」",
+  "第百二十三話「第六階層の魔法陣」",
+  "第百二十四話「転移迷宮の守護者」",
+  "第百二十五話「死闘」",
+  "第百二十六話「親」",
+  "第百二十七話「前を向いて」",
+  "第百二十八話「帰ろう」",
+  "第百二十九話「帰還」",
+  "第百三十話「報告」",
+  "第百三十一話「修羅場」",
+  "第百三十二話「墓標の前で」",
+  "　間話「狂犬の、剣は重いか鋭いか」",
+  "第百三十三話「ロキシー教師になる」",
+  "第百三十四話「三年生」",
+  "第百三十五話「トレーニング・ウィズ・ノルン」",
+  "第百三十六話「あたしが育てた」",
+  "第百三十七話「威厳のある父親」",
+  "第百三十八話「水王級」",
+  "第百三十九話「結婚式」",
+  "第百四十話「両手に花」",
+  "第百四十一話「誕生会」",
+  "第百四十二話「卒業式」",
+  "第百四十三話「第四段階」",
+  "　間話「新たなる剣王の誕生」",
+  "第百四十四話「空中城塞」",
+  "第百四十五話「ペルギウスとの謁見」",
+  "第百四十六話「過去と呪いと召喚と嫉妬」",
+  "第百四十七話「慟哭」",
+  "第百四十八話「再び魔大陸へ」",
+  "第百四十九話「キシリカを探して」",
+  "第百五十話「不死魔王との謁見」",
+  "第百五十一話「不死魔王との決闘」",
+  "第百五十二話「空中城塞での一日」",
+  "第百五十三話「ターニングポイント４」",
+  "第百五十四話「終わりと始まり」",
+  "第百五十五話「日記　前編」",
+  "第百五十六話「日記　後編」",
+  "第百五十七話「覚悟」",
+  "第百五十八話「ナナホシの仮説」",
+  "第百五十九話「手紙、届く」",
+  "第百六十話「準備」",
+  "第百六十一話「準備完了」",
+  "第百六十二話「泥沼対龍神」",
+  "第百六十三話「狂剣王対龍神」",
+  "第百六十四話「エリス・グレイラット　前編」",
+  "第百六十五話「エリス・グレイラット　後編」",
+  "第百六十六話「呼び出し」",
+  "第百六十七話「説明」",
+  "第百六十八話「初任務へ」",
+  "第百六十九話「守護魔獣」",
+  "第百七十話「男子会」",
+  "　間話「女子会」",
+  "第百七十一話「ルーク」",
+  "第百七十二話「腹を決める」",
+  "第百七十三話「協力体制」",
+  "第百七十四話「甲龍王と第二王女」",
+  "第百七十五話「アスラ王国にいく前に」",
+  "　間話「黒狼の剣王」",
+  "　　世界地図　３",
+  "第百七十六話「アスラ王国へ出発」",
+  "第百七十七話「赤竜の上顎」",
+  "第百七十八話「推察」",
+  "第百七十九話「アリエルの選択」",
+  "第百八十話「トリスティーナ」",
+  "第百八十一話「道中」",
+  "第百八十二話「王都アルス」",
+  "第百八十三話「宵闇の死闘」",
+  "第百八十四話「アリエルの戦場」",
+  "第百八十五話「ルーデウスの戦場」",
+  "第百八十六話「ルークの暴走」",
+  "第百八十七話「オルステッドの真実と王都の十日間」",
+  "第百八十八話「別れの稽古とシルフィの変化」",
+  "第百八十九話「帰還と決意」",
+  "第百九十話「近況」",
+  "　間話「お仕事の一例」",
+  "第百九十一話「借りてきた猫」",
+  "第百九十二話「入学式と生徒会長」",
+  "第百九十三話「研究進捗」",
+  "第百九十四話「家庭崩壊の兆し」",
+  "第百九十五話「起業」",
+  "第百九十六話「社内ベンチャー」",
+  "第百九十七話「ドルディアの村再び」",
+  "第百九十八話「干し肉殺人事件」",
+  "第百九十九話「次の戦い」",
+  "第二百話「ザノバの決意」",
+  "第二百一話「虫の知らせ」",
+  "第二百二話「シーローン再び」",
+  "第二百三話「パックス王」",
+  "第二百四話「カロン砦」",
+  "第二百五話「戦争の準備」",
+  "第二百六話「戦争」",
+  "第二百七話「火急の知らせとザノバの真意」",
+  "第二百八話「パックスの元へ」",
+  "第二百九話「誰もがみんな空回り」",
+  "第二百十話「戦後」",
+  "第二百十一話「ザノバの選んだ道」",
+  "第二百十二話「喜んでいいんだ」",
+  "第二百十三話「今後の方向性とクリフの悩み」",
+  "第二百十四話「クリフとザノバの卒業式」",
+  "　間話　「田舎者、都会へ行く」",
+  "　間話「成人式」",
+  "第二百十五話「成果とこれから」",
+  "第二百十六話「そしてミリシオンへ……」",
+  "第二百十七話「クリフ、故郷に帰る」",
+  "第二百十八話「ラトレイア家」",
+  "第二百十九話「ミリス教団本部」",
+  "第二百二十話「教皇と、そして……」",
+  "第二百二十一話「しらばっくれる」",
+  "第二百二十二話「詰め将棋」",
+  "第二百二十三話「ひっくり返して玉を拾う」",
+  "第二百二十四話「強気交渉」",
+  "第二百二十五話「何を迷う事があるのか」",
+  "第二百二十六話「家のため、娘のため」",
+  "第二百二十七話「恩のため」",
+  "第二百二十八話「裏切り者に逃げられて」",
+  "　間話「狂犬と神の子」",
+  "第二百二十九話「帰還、報告、そして次の舞台へ」",
+  "第二百三十話「死神の悩み」",
+  "第二百三十一話「王竜王国王」",
+  "第二百三十二話「潜入、ネクロス要塞」",
+  "第二百三十三話「激闘、魔王アトーフェ」",
+  "　間話「私達、結婚しました」",
+  "第二百三十四話「４人目」",
+  "第二百三十五話「命名」",
+  "第二百三十六話「異世界転移魔法装置」",
+  "第二百三十七話「ナナホシの行末」",
+  "第二百三十八話「二つ目」",
+  "第二百三十九話「作戦会議」",
+  "第二百四十話「探し求めていた物」",
+  "第二百四十一話「探し求めていた者」",
+  "第二百四十二話「スペルド族の村」",
+  "第二百四十三話「冥王ビタ」",
+  "第二百四十四話「疫病」",
+  "第二百四十五話「天才」",
+  "第二百四十六話「首都」",
+  "第二百四十七話「三泊四日　スペルド族見学ツアー」",
+  "第二百四十八話「消失」",
+  "第二百四十九話「地竜谷の底」",
+  "第二百五十話「勝機を見る」",
+  "第二百五十一話「狂剣王vs元剣神」",
+  "第二百五十二話「三世vs二世+α」",
+  "第二百五十三話「北神三世vsデッドエンド+α」",
+  "第二百五十四話「アレクサンダーvsルーデウス」",
+  "第二百五十五話「鬼神の手打ち」",
+  "第二百五十六話「闘神の脅威」",
+  "第二百五十七話「切り札」",
+  "第二百五十八話「ターニングポイント５」",
+  "第二百五十九話「戦いの終わり」",
+  "第二百六十話「最後の夢」",
+  "第二百六十一話「３４歳」",
+  "　間話「アスラ王国人物録　『ルーデウス・グレイラット』」",
+  "最終話「死後の世界」",
+  "エピローグ「プロローグ・ゼロ」"
+]
+
+var synth = window.speechSynthesis;
+
+var inputForm = document.querySelector('form');
+var inputTxt = document.querySelector('.txt');
+var voiceSelect = document.querySelector('select#choosevoice');
+
+var pitch = document.querySelector('#pitch');
+var pitchValue = document.querySelector('.pitch-value');
+var rate = document.querySelector('#rate');
+var rateValue = document.querySelector('.rate-value');
+
+var voices = [];
+
+function populateVoiceList() {
+  voices = synth.getVoices();
+
+  for(i = 0; i < voices.length ; i++) {
+    var option = document.createElement('option');
+    option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
+    
+    if(voices[i].default) {
+      option.textContent += ' -- DEFAULT';
+    }
+
+    option.setAttribute('data-lang', voices[i].lang);
+    option.setAttribute('data-name', voices[i].name);
+    voiceSelect.appendChild(option);
+  }
+}
+
+populateVoiceList();
+if (speechSynthesis.onvoiceschanged !== undefined) {
+  speechSynthesis.onvoiceschanged = populateVoiceList;
+}
+
+inputForm.onsubmit = function(event) {
+	document.querySelector(".txt").value = R.reject(V=>RegExp('[a-zA-Z]','g').test(V))(document.querySelector(".txt").value.split(" ")).join("");
+
+  event.preventDefault();
+
+  var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
+  var selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
+  for(i = 0; i < voices.length ; i++) {
+    if(voices[i].name === selectedOption) {
+      utterThis.voice = voices[i];
+    }
+  }
+  utterThis.pitch = pitch.value;
+  utterThis.rate = rate.value;
+  synth.speak(utterThis);
+
+  inputTxt.blur();
+}
+
+const allURLAndallTitle = R.zip(allURL,allTitle);
+const makeOption =(E)=> `<option value="${E[0]}">${E[1]}</option>`;
+document.querySelector(`#urlandtitle`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeOption)(allURLAndallTitle)) );
+const chooseTitleAndTheURL = () => document.querySelector("#urlandtitle").value;
+chooseTitleAndTheURL();
+
+// const encodedURL = encodeURIComponent("https://ncode.syosetu.com/n9669bk/286/");
+// const decodedURL = decodeURIComponent("https%3A%2F%2Fncode.syosetu.com%2Fn9669bk%2F286%2F");
+
+const returnURLWithQuery = () =>{
+	return (
+		"https://script.google.com/macros/s/AKfycbzbxLa2hfsBsFyvHxB4Q6RnLUHvpK8BvXIfU84f3hWGJXmN8PR4/exec"
+		+ "?URL=" + encodeURIComponent(chooseTitleAndTheURL())
+	)
+}
+
+const requestNEATAndInsertText = () => {
+	if( document.querySelector(`body > form > input`).value ){
+			document.querySelector("html > body > div#resource").parentNode.removeChild( document.querySelector("html > body > div#resource") );
+			document.querySelector(`html > body`).insertAdjacentHTML(`beforeend`,  `<div id="resource"></div>` );
+	}
+
+	fetch(returnURLWithQuery()).then(v=>{
+		return v.text()
+	}).then(v => { 
+		 document.querySelector(`html > body > div#resource`).insertAdjacentHTML(`beforeend`,  v );
+	}).then(v => { 
+		document.querySelectorAll("html > body > div#resource").forEach(V=>{V.style="display:none"});
+	}).then(v => { 
+		document.querySelector(`body > form > input`).value = document.querySelector(`#novel_honbun`).textContent;
+	});
+}
+
+document.querySelector("#choosevoice").value = "Kyoko (ja-JP) -- DEFAULT";
+requestNEATAndInsertText();
+</script>
+<style>
+	body, html {
+  margin: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1, p {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.txt, select, form > div {
+  display: block;
+  margin: 0 auto;
+  font-family: sans-serif;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.txt {
+  width: 80%;
+}
+
+select {
+  width: 83%;
+}
+
+form > div {
+  width: 81%;
+}
+
+.txt, form > div {
+  margin-bottom: 10px;
+  overflow: auto;
+}
+
+.clearfix {
+  clear: both;
+}
+
+label {
+  float: left;
+  width: 10%;
+  line-height: 1.5;
+}
+
+.rate-value, .pitch-value {
+  float: right;
+  width: 5%;
+  line-height: 1.5;
+}
+
+#rate, #pitch {
+  float: right;
+  width: 81%;
+}
+
+.controls {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.controls button {
+  padding: 10px;
+}
+</style>
+</body>
+</html>
