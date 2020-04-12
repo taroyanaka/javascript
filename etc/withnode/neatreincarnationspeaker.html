@@ -38,7 +38,7 @@
     <!-- </form> -->
 	<div id="resource"></div>
 <script>
-const allURLAndallTitle =
+const allURLAndallTitle = 
 [
   ["https://ncode.syosetu.com/n9669bk/1/", "プロローグ"],
   ["https://ncode.syosetu.com/n9669bk/2/", "第一話「もしかして：異世界」"],
@@ -328,7 +328,6 @@ const allURLAndallTitle =
   ["https://ncode.syosetu.com/n9669bk/286/", "エピローグ「プロローグ・ゼロ」"]
 ]
 
-
 var synth = window.speechSynthesis;
 
 var inputForm = document.querySelector('form');
@@ -425,5 +424,81 @@ const requestNEATAndInsertText = () => {
 document.querySelector("#choosevoice").value = "Kyoko (ja-JP) -- DEFAULT";
 requestNEATAndInsertText();
 </script>
+<style>
+	body, html {
+  margin: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1, p {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.txt, select, form > div {
+  display: block;
+  margin: 0 auto;
+  font-family: sans-serif;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.txt {
+  width: 80%;
+}
+
+select {
+  width: 83%;
+}
+
+form > div {
+  width: 81%;
+}
+
+.txt, form > div {
+  margin-bottom: 10px;
+  overflow: auto;
+}
+
+.clearfix {
+  clear: both;
+}
+
+label {
+  float: left;
+  width: 10%;
+  line-height: 1.5;
+}
+
+.rate-value, .pitch-value {
+  float: right;
+  width: 5%;
+  line-height: 1.5;
+}
+
+#rate, #pitch {
+  float: right;
+  width: 81%;
+}
+
+.controls {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.controls button {
+  padding: 10px;
+}
+</style>
 </body>
 </html>
