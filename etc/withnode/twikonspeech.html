@@ -23,7 +23,9 @@
 
     <p>Enter some text in the input below and press return  or the "play" button to hear it. change voices using the dropdown menu.</p>
     <p>from 2015-09-11</p>
-	<select name="color" id="color" onInput="chooseColor();"></select>
+	<select name="year" id="year" onInput="chooseyear();"></select>
+	<select name="month" id="month" onInput="choosemonth();"></select>
+	<select name="day" id="day" onInput="chooseday();"></select>
     
     <form>
     <input type="text" class="txt">
@@ -155,9 +157,13 @@ const day = R.concat(
 	]
 )( R.map(R.toString)(R.range(11, 31)) )
 // const day = ["lightsalmon","salmon","darksalmon","lightcoral","indianred","crimson","firebrick","red","darkred","coral","tomato","orangered","gold","orange","darkorange","lightyellow","lemonchiffon","lightgoldenrodyellow","papayawhip","moccasin","peachpuff","palegoldenrod","khaki","darkkhaki","yellow","lawngreen","chartreuse","limegreen","lime","forestgreen","green","darkgreen","greenyellow","yellowgreen","springgreen","mediumspringgreen","lightgreen","palegreen","darkseagreen","mediumseagreen","seagreen","olive","darkolivegreen","olivedrab","lightcyan","cyan","aqua","aquamarine","mediumaquamarine","paleturquoise","turquoise","mediumturquoise","darkturquoise","lightseagreen","cadetblue","darkcyan","teal","powderblue","lightblue","lightskyblue","skyblue","deepskyblue","lightsteelblue","dodgerblue","cornflowerblue","steelblue","royalblue","blue","mediumblue","darkblue","navy","midnightblue","mediumslateblue","slateblue","darkslateblue","lavender","thistle","plum","violet","orchid","fuchsia","magenta","mediumorchid","mediumpurple","blueviolet","darkviolet","darkorchid","darkmagenta","purple","indigo","pink","lightpink","hotpink","deeppink","palevioletred","mediumvioletred","white","snow","honeydew","mintcream","azure","aliceblue","ghostwhite","whitesmoke","seashell","beige","oldlace","floralwhite","ivory","antiquewhite","linen","lavenderblush","mistyrose","gainsboro","lightgray","silver","darkgray","gray","dimgray","lightslategray","slategray","darkslategray","black","cornsilk","blanchedalmond","bisque","navajowhite","wheat","burlywood","tan","rosybrown","sandybrown","goldenrod","peru","chocolate","saddlebrown","sienna","brown","maroon",];
-const makeColorOption =(E)=> `<option value="${E}">${E}</option>`;
-document.querySelector(`#color`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeColorOption)(allColor)) );
-const chooseColor = () => document.querySelector("#color").value;
+const makeOption =(E)=> `<option value="${E}">${E}</option>`;
+document.querySelector(`#year`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeOption)(year)) );
+document.querySelector(`#month`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeOption)(month)) );
+document.querySelector(`#day`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeOption)(day)) );
+const chooseyear = () => document.querySelector("#year").value;
+const choosemonth = () => document.querySelector("#month").value;
+const chooseday = () => document.querySelector("#day").value;
 
 let allarray=[];
 fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec`).then(v=>{
