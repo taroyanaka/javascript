@@ -174,13 +174,14 @@ const requestNJAndInsertText = () => {
 
 const getToday = () => {
 	const today=new Date(); 
-	// const year = today.getFullYear();
-	// const month = today.getMonth()+1;
-	// const week = today.getDay();
-	// const day = today.getDate();
-	document.querySelector(`#year`).value = today.getFullYear();
-	document.querySelector(`#month`).value = R.toString(today.getMonth()+1);
-	document.querySelector(`#day`).value = today.getDate();
+	const year = today.getFullYear();
+	let month = today.getMonth()+1;
+	let day = today.getDate();
+	document.querySelector(`#year`).value = year;
+	if(month<10){month = "0"+month};
+	document.querySelector(`#month`).value = month;
+	if(day<10){day = "0"+day};
+	document.querySelector(`#day`).value = day;
 }
 
 initFromMonthDay();
