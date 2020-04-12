@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8" />
+<title>html css sample lister</title>
+<script src="ramda.min.js"></script>
+<script src="clipboard.js"></script>
+</head>
+<body>
+<button id="test" onclick="test();">test</button>
+<div>
+	<textarea name="tag" id="tag" cols="20" rows="10" required="required" oninput="exe()"></textarea>
+	<textarea name="css" id="css" cols="20" rows="10" required="required" oninput="exe()"></textarea>
+</div>
+<script>
+new ClipboardJS('.btn');
+
+const beforeExe = () =>{
+	document.querySelector("html > body > style") ? document.querySelector("html > body > style").parentNode.removeChild( document.querySelector("html > body > style") ) : false;
+	document.querySelector("html > body > div#box") ? document.querySelector("html > body > div#box").parentNode.removeChild( document.querySelector("html > body > div#box") ) : false;
+}
+const tagInsert = () => document.querySelector("#tag").value;
+const style = () => `<style type="text/css">${document.querySelector("#css").value}</style>`;
+const exe = () =>{
+	beforeExe()
+	document.querySelector(`body`).insertAdjacentHTML(`beforeEnd`, `<div id="box"></div>` );
+	document.querySelector(`#box`).insertAdjacentHTML(`beforeend`, tagInsert() );
+	document.querySelector(`body`).insertAdjacentHTML(`beforeEnd`, style() );
+}
+const test = () =>{
+	document.querySelector("#tag").value = `<p><a>hello world</a></p>`;
+	document.querySelector("#css").value = `p {font-size: 50px;}`;
+	exe();
+}
+// document.querySelector("#test").onclick();
+
+// add IndexedDB code later
+// https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
+
+</script>
+</body>
+</html>
