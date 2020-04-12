@@ -165,6 +165,15 @@ const chooseyear = () => document.querySelector("#year").value;
 const choosemonth = () => document.querySelector("#month").value;
 const chooseday = () => document.querySelector("#day").value;
 
+
+let URLWithQuery;
+
+const returnURLWithQuery = () =>{
+	return ("https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec"
+	 + "?=" +
+	)
+}
+
 let allarray=[];
 fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec`).then(v=>{
 	return v.text()
