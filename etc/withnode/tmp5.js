@@ -38,6 +38,8 @@ let allZeroToNine = R.xprod(R.range(0, 10), R.range(0, 10));
 let allZeroToNineAndWhite = R.map(R.insert(-1, 'white'))(allZeroToNine);
 R.insert(-1, 'white', [1,2,3,4]); //=> [1,2,'x',3,4]
 
+
+R.zip([1, 2, 3], ['a', 'b', 'c']); //=> [[1, 'a'], [2, 'b'], [3, 'c']]
 // R.reject(R.isNil)([1, 1, undefined]);
 
 
