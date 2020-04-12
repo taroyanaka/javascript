@@ -19,7 +19,7 @@
   <body>
 	<p><a href="https://ncode.syosetu.com/n9669bk/">引用元: <cite>無職転生　- 異世界行ったら本気だす - 作者：理不尽な孫の手</cite></a></p>
 	<select name="urlandtitle" id="urlandtitle" onInput="requestNEATAndInsertText();"></select>
-    <form>
+    <!-- <form> -->
     <input type="text" class="txt">
     <div>
       <label for="rate">Rate</label><input type="range" min="0.5" max="2" value="1" step="0.1" id="rate">
@@ -33,9 +33,9 @@
     </div>
     <select id="choosevoice"></select>
     <div class="controls">
-      <button id="play" type="submit">NEAT REINCARNATION!</button>
+      <button id="play" type="submit" onclick="play(event);">NEAT REINCARNATION!</button>
     </div>
-    </form>
+    <!-- </form> -->
 	<div id="resource"></div>
 <script>
 const allURL = [
@@ -651,10 +651,16 @@ if (speechSynthesis.onvoiceschanged !== undefined) {
   speechSynthesis.onvoiceschanged = populateVoiceList;
 }
 
-inputForm.onsubmit = function(event) {
-	document.querySelector(".txt").value = R.reject(V=>RegExp('[a-zA-Z]','g').test(V))(document.querySelector(".txt").value.split(" ")).join("");
-
+// inputForm.onsubmit = function(event) {
+const play = (event) =>{
   event.preventDefault();
+	inputForm = document.querySelector('form');
+	inputTxt = document.querySelector('.txt');
+	voiceSelect = document.querySelector('select#choosevoice');
+	pitch = document.querySelector('#pitch');
+	pitchValue = document.querySelector('.pitch-value');
+	rate = document.querySelector('#rate');
+	rateValue = document.querySelector('.rate-value');
 
   var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
   var selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
@@ -687,7 +693,7 @@ const returnURLWithQuery = () =>{
 }
 
 const requestNEATAndInsertText = () => {
-	if( document.querySelector(`body > form > input`).value ){
+	if( document.querySelector(`input.txt`).value ){
 			document.querySelector("html > body > div#resource").parentNode.removeChild( document.querySelector("html > body > div#resource") );
 			document.querySelector(`html > body`).insertAdjacentHTML(`beforeend`,  `<div id="resource"></div>` );
 	}
@@ -699,7 +705,7 @@ const requestNEATAndInsertText = () => {
 	}).then(v => { 
 		document.querySelectorAll("html > body > div#resource").forEach(V=>{V.style="display:none"});
 	}).then(v => { 
-		document.querySelector(`body > form > input`).value = document.querySelector(`#novel_honbun`).textContent;
+		document.querySelector(`input.txt`).value = document.querySelector(`#novel_honbun`).textContent;
 	});
 }
 
