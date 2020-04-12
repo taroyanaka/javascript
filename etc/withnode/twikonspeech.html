@@ -164,7 +164,7 @@ document.querySelector(`#day`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(
 const chooseyear = () => document.querySelector("#year").value;
 const choosemonth = () => document.querySelector("#month").value;
 const chooseday = () => document.querySelector("#day").value;
-const initFromMonthDay = () => [document.querySelector("#month").value] = ["09"]
+const initFromMonthDay = () => [document.querySelector("#month").value, document.querySelector("#day").value] = ["09","11"];
 
 
 // let URLWithQuery;
@@ -198,7 +198,7 @@ document.querySelector(".txt").value = v;
 	// document.querySelectorAll("html > body > form ~*").forEach(V=>{V.style.display = "none"});
 });
 
-
+initFromMonthDay();
 
 </script>
 <style>
