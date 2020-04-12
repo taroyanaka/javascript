@@ -23,9 +23,9 @@
 
     <p>Enter some text in the input below and press return  or the "play" button to hear it. change voices using the dropdown menu.</p>
     <p>from 2015-09-11</p>
-	<select name="year" id="year" onInput="chooseyear();"></select>
-	<select name="month" id="month" onInput="choosemonth();"></select>
-	<select name="day" id="day" onInput="chooseday();"></select>
+	<select name="year" id="year" onInput="chooseyear();exe();"></select>
+	<select name="month" id="month" onInput="choosemonth();exe();"></select>
+	<select name="day" id="day" onInput="chooseday();exe();"></select>
     
     <form>
     <input type="text" class="txt">
@@ -179,29 +179,34 @@ const returnURLWithQuery = () =>{
 }
 
 let allarray=[];
-// fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec`).then(v=>{
-fetch(returnURLWithQuery()).then(v=>{
-	return v.text()
-}).then(v => { 
+const requestNJ = () => {
+	// fetch(`https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec`).then(v=>{
+	fetch(returnURLWithQuery()).then(v=>{
+		return v.text()
+	}).then(v => { 
 
-		// document.querySelector(`body`).insertAdjacentHTML(`beforeend`,  v );
+			// document.querySelector(`body`).insertAdjacentHTML(`beforeend`,  v );
 
-document.querySelector(".txt").value = v;
+	document.querySelector(".txt").value = v;
 
-}).then(v=>{
-	// document.querySelectorAll("html > body > textarea ~*").forEach(V=>{V.style.display = "none"});
-	// document.querySelectorAll("li.stream-item").forEach(V=>{
-	// 	allarray.push(
-	// 		R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
-	// 	)
-	// })
-	// document.querySelector(".txt").value = R.flatten(allarray).join("");
-// }).then(V=>{
-	// document.querySelectorAll("html > body > form ~*").forEach(V=>{V.style.display = "none"});
-});
+	}).then(v=>{
+		// document.querySelectorAll("html > body > textarea ~*").forEach(V=>{V.style.display = "none"});
+		// document.querySelectorAll("li.stream-item").forEach(V=>{
+		// 	allarray.push(
+		// 		R.takeWhile( x => x !== "#Twitter婚活")( V.innerText.split("\n") )
+		// 	)
+		// })
+		// document.querySelector(".txt").value = R.flatten(allarray).join("");
+	// }).then(V=>{
+		// document.querySelectorAll("html > body > form ~*").forEach(V=>{V.style.display = "none"});
+	});
+}
 
-
-
+const exe = () =>{
+	initFromMonthDay();
+	requestNJ();
+}
+exe();
 </script>
 <style>
 	body, html {
