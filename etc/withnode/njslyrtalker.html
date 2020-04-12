@@ -132,24 +132,8 @@ const month = [
 '10',
 '11',
 '12',
-]
-const day = R.concat(
-	// [
-	// '01',
-	// '02',
-	// '03',
-	// '04',
-	// '05',
-	// '06',
-	// '07',
-	// '08',
-	// '09',
-	// '10',
-	// '11',
-	// '12',
-	// ]
-	month
-)( R.map(R.toString)(R.range(11, 32)) )
+];
+const day = R.concat( month )( R.map(R.toString)(R.range(11, 32)) );
 const makeOption =(E)=> `<option value="${E}">${E}</option>`;
 document.querySelector(`#year`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeOption)(year)) );
 document.querySelector(`#month`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeOption)(month)) );
