@@ -169,8 +169,9 @@ const chooseday = () => document.querySelector("#day").value;
 // let URLWithQuery;
 
 const returnURLWithQuery = () =>{
-	return ("https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec"
-	 + "?year=" + chooseyear() + "&month=" + choosemonth() + "&day=" + chooseday()
+	return (
+		"https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec"
+		+ "?year=" + chooseyear() + "&month=" + choosemonth() + "&day=" + chooseday()
 	)
 }
 
