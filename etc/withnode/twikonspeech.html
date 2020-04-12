@@ -39,7 +39,7 @@
       <div class="pitch-value">1</div>
       <div class="clearfix"></div>
     </div>
-    <select>
+    <select id="choosevoice">
 
     </select>
     <div class="controls">
@@ -61,7 +61,7 @@ var synth = window.speechSynthesis;
 
 var inputForm = document.querySelector('form');
 var inputTxt = document.querySelector('.txt');
-var voiceSelect = document.querySelector('select');
+var voiceSelect = document.querySelector('select#choosevoice');
 
 var pitch = document.querySelector('#pitch');
 var pitchValue = document.querySelector('.pitch-value');
