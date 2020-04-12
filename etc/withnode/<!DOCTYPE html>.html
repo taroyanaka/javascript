@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<script src="ramda.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <!-- <title>Speech synthesiser</title> -->
+    <title>njslyr talker</title>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	<!-- https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis -->
+	<!-- https://github.com/mdn/web-speech-api -->
+  </head>
+  <body>
+    <!-- <h1>Speech synthesiser</h1> -->
+
+    <p>Enter some text in the input below and press return  or the "play" button to hear it. change voices using the dropdown menu.</p>
+    <p>from 2015-09-11</p>
+	<select name="year" id="year" onInput="chooseyear();requestNJAndInsertText();"></select>
+	<select name="month" id="month" onInput="choosemonth();requestNJAndInsertText();"></select>
+	<select name="day" id="day" onInput="chooseday();requestNJAndInsertText();"></select>
+    
+    <form>
+    <input type="text" class="txt">
+    <div>
+      <label for="rate">Rate</label><input type="range" min="0.5" max="2" value="1" step="0.1" id="rate">
+      <div class="rate-value">1</div>
+      <div class="clearfix"></div>
+    </div>
+    <div>
+      <label for="pitch">Pitch</label><input type="range" min="0" max="2" value="1" step="0.1" id="pitch">
+      <div class="pitch-value">1</div>
+      <div class="clearfix"></div>
+    </div>
+    <select id="choosevoice">
+
+    </select>
+    <div class="controls">
+      <button id="play" type="submit">Play</button>
+    </div>
+    </form>
+<script>
+var synth = window.speechSynthesis;
+
+var inputForm = document.querySelector('form');
+var inputTxt = document.querySelector('.txt');
+var voiceSelect = document.querySelector('select#choosevoice');
+
+var pitch = document.querySelector('#pitch');
+var pitchValue = document.querySelector('.pitch-value');
+var rate = document.querySelector('#rate');
+var rateValue = document.querySelector('.rate-value');
+
+var voices = [];
+
+function populateVoiceList() {
+  voices = synth.getVoices();
+
+  for(i = 0; i < voices.length ; i++) {
+    var option = document.createElement('option');
+    option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
+    
+    if(voices[i].default) {
+      option.textContent += ' -- DEFAULT';
+    }
+
+    option.setAttribute('data-lang', voices[i].lang);
+    option.setAttribute('data-name', voices[i].name);
+    voiceSelect.appendChild(option);
+  }
+}
+
+populateVoiceList();
+if (speechSynthesis.onvoiceschanged !== undefined) {
+  speechSynthesis.onvoiceschanged = populateVoiceList;
+}
+
+inputForm.onsubmit = function(event) {
+	document.querySelector(".txt").value = R.reject(V=>RegExp('[a-zA-Z]','g').test(V))(document.querySelector(".txt").value.split(" ")).join("");
+
+  event.preventDefault();
+
+  var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
+  var selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
+  for(i = 0; i < voices.length ; i++) {
+    if(voices[i].name === selectedOption) {
+      utterThis.voice = voices[i];
+    }
+  }
+  utterThis.pitch = pitch.value;
+  utterThis.rate = rate.value;
+  synth.speak(utterThis);
+
+  inputTxt.blur();
+}
+
+
+// GAS
+// function doGet(e) {
+//   //  var URL = 'http://rtclog.wikiwiki.jp/log/njslyr/%E2%97%86%E9%9B%91%E8%AB%87%E3%83%BB%E5%AE%9F%E6%B3%81%E3%83%BB%E4%BD%9C%E5%93%81%E8%AD%B0%E8%AB%96%E2%97%86/2016/01/2016-01-01.txt';
+
+// var URL = "http://rtclog.wikiwiki.jp/log/njslyr/%E2%97%86%E9%9B%91%E8%AB%87%E3%83%BB%E5%AE%9F%E6%B3%81%E3%83%BB%E4%BD%9C%E5%93%81%E8%AD%B0%E8%AB%96%E2%97%86/" + e.parameter.year + "/" + e.parameter.month + "/" + e.parameter.year + "-" + e.parameter.month + "-" + e.parameter.day + ".txt";
+// //  http://rtclog.wikiwiki.jp/log/njslyr/%E2%97%86%E9%9B%91%E8%AB%87%E3%83%BB%E5%AE%9F%E6%B3%81%E3%83%BB%E4%BD%9C%E5%93%81%E8%AD%B0%E8%AB%96%E2%97%86/2016/01/2016-01-01.txt
+
+// //  var allTxt="";
+// //allTxt += UrlFetchApp.fetch(URL).getContentText('UTF-8');
+//   //  })
+// //  Logger.log(allTxt);
+//   Logger.log(URL);
+
+//   return ContentService.createTextOutput(UrlFetchApp.fetch(URL).getContentText('UTF-8'));
+// }
+
+const year = R.range(2015, 2041);
+const month = [
+'01',
+'02',
+'03',
+'04',
+'05',
+'06',
+'07',
+'08',
+'09',
+'10',
+'11',
+'12',
+]
+const day = R.concat(
+	[
+	'01',
+	'02',
+	'03',
+	'04',
+	'05',
+	'06',
+	'07',
+	'08',
+	'09',
+	'10',
+	'11',
+	'12',
+	]
+)( R.map(R.toString)(R.range(11, 32)) )
+const makeOption =(E)=> `<option value="${E}">${E}</option>`;
+document.querySelector(`#year`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeOption)(year)) );
+document.querySelector(`#month`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeOption)(month)) );
+document.querySelector(`#day`).insertAdjacentHTML(`afterBegin`, R.join("",R.map(makeOption)(day)) );
+const chooseyear = () => document.querySelector("#year").value;
+const choosemonth = () => document.querySelector("#month").value;
+const chooseday = () => document.querySelector("#day").value;
+const initFromMonthDay = () => [document.querySelector("#month").value, document.querySelector("#day").value] = ["09","11"];
+const returnURLWithQuery = () =>{
+	return (
+		"https://script.google.com/macros/s/AKfycbyxbOmsjfy1IuaO8-TA7ac9-IKFIEzTF-zRpvCjWFHj8z9eYzo/exec"
+		+ "?year=" + chooseyear() + "&month=" + choosemonth() + "&day=" + chooseday()
+	)
+}
+
+const requestNJAndInsertText = () => {
+	fetch(returnURLWithQuery()).then(v=>{
+		return v.text()
+	}).then(v => { 
+		document.querySelector(".txt").value = v;
+	});
+}
+
+initFromMonthDay();
+requestNJAndInsertText();
+</script>
+<style>
+	body, html {
+  margin: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1, p {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.txt, select, form > div {
+  display: block;
+  margin: 0 auto;
+  font-family: sans-serif;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.txt {
+  width: 80%;
+}
+
+select {
+  width: 83%;
+}
+
+form > div {
+  width: 81%;
+}
+
+.txt, form > div {
+  margin-bottom: 10px;
+  overflow: auto;
+}
+
+.clearfix {
+  clear: both;
+}
+
+label {
+  float: left;
+  width: 10%;
+  line-height: 1.5;
+}
+
+.rate-value, .pitch-value {
+  float: right;
+  width: 5%;
+  line-height: 1.5;
+}
+
+#rate, #pitch {
+  float: right;
+  width: 81%;
+}
+
+.controls {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.controls button {
+  padding: 10px;
+}
+</style>
+</body>
+</html>
