@@ -179,7 +179,7 @@ const getToday = () => {
 	// const week = today.getDay();
 	// const day = today.getDate();
 	document.querySelector(`#year`).value = today.getFullYear();
-	document.querySelector(`#month`).value = today.getMonth()+1;
+	document.querySelector(`#month`).value = R.toString(today.getMonth()+1);
 	document.querySelector(`#day`).value = today.getDate();
 }
 
