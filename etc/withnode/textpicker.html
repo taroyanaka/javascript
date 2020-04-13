@@ -69,17 +69,17 @@ const openFile = (event) => {
 	reader.readAsText(event.target.files[0]);
 };
 const splitTextAndMakeList = ()=> makeList( R.split("\n")(document.querySelector("#foo").value) );
-const save = () => localStorage.allContentsHTML = document.querySelector("#allContents").outerHTML;
+const save = () => localStorage.textpickerallContentsHTML = document.querySelector("#allContents").outerHTML;
 const saveClear = () => { localStorage.clear();location.reload(); };
 const load = () => {
 	document.querySelectorAll("body").forEach(E=>{E.parentNode.removeChild(E)});
 	const body = document.createElement("body");
 	body.setAttribute("id", "allContents");
 	document.querySelector("html").appendChild(body);
-	document.querySelector(`body`).insertAdjacentHTML(`beforeend`, localStorage.allContentsHTML );
+	document.querySelector(`body`).insertAdjacentHTML(`beforeend`, localStorage.textpickerallContentsHTML );
 };
 
-if(localStorage.allContentsHTML){ document.querySelector("#thereissavedata").textContent = "save data exists" };
+if(localStorage.textpickerallContentsHTML){ document.querySelector("#thereissavedata").textContent = "save data exists" };
 
 // const test0 = () =>{
 // 	document.querySelector("#foo").value = 

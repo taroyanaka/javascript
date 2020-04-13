@@ -17,6 +17,85 @@
 	<!-- https://ncode.syosetu.com/ -->
   </head>
   <body>
+
+<style>
+	body, html {
+  margin: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1, p {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.txt, select, form > div {
+  display: block;
+  margin: 0 auto;
+  font-family: sans-serif;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.txt {
+  width: 80%;
+}
+
+select {
+  width: 83%;
+}
+
+form > div {
+  width: 81%;
+}
+
+.txt, form > div {
+  margin-bottom: 10px;
+  overflow: auto;
+}
+
+.clearfix {
+  clear: both;
+}
+
+label {
+  float: left;
+  width: 10%;
+  line-height: 1.5;
+}
+
+.rate-value, .pitch-value {
+  float: right;
+  width: 5%;
+  line-height: 1.5;
+}
+
+#rate, #pitch {
+  float: right;
+  width: 81%;
+}
+
+.controls {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.controls button {
+  padding: 10px;
+}
+</style>
+
+
 	<p><a href="https://ncode.syosetu.com/n9669bk/">引用元: <cite>無職転生　- 異世界行ったら本気だす - 作者：理不尽な孫の手</cite></a></p>
 	<select name="urlandtitle" id="urlandtitle" onInput="requestNEATAndInsertText();"></select>
     <!-- <form> -->
@@ -417,101 +496,47 @@ const returnURLWithQuery = () =>{
 	)
 }
 
+
+
+
+
+
+
+
+
+
 const requestNEATAndInsertText = () => {
+	console.log("before");
 	if( document.querySelector(`input.txt`).value ){
 			document.querySelector("html > body > div#resource").parentNode.removeChild( document.querySelector("html > body > div#resource") );
 			document.querySelector(`html > body`).insertAdjacentHTML(`beforeend`,  `<div id="resource"></div>` );
 	}
 
+	console.log("zero");
 	fetch(returnURLWithQuery()).then(v=>{
-		return v.text()
-	}).then(v => { 
-		 document.querySelector(`html > body > div#resource`).insertAdjacentHTML(`beforeend`,  v );
-	}).then(v => { 
+		console.log("one");
+		// return v.text();
+
+		// new Promise((resolve~ is same return v.text()
+		return new Promise((resolve) => { resolve(  v.text() )});
+	}).then(text => { 
+		console.log("after");
+		document.querySelector(`html > body > div#resource`).insertAdjacentHTML(`beforeend`,  text );
 		document.querySelectorAll("html > body > div#resource").forEach(V=>{V.style="display:none"});
-	}).then(v => { 
 		document.querySelector(`input.txt`).value = document.querySelector(`#novel_honbun`).textContent;
 	});
 }
 
+
+
+
+
+
+
+
+
 document.querySelector("#choosevoice").value = "Kyoko (ja-JP) -- DEFAULT";
 requestNEATAndInsertText();
 </script>
-<style>
-	body, html {
-  margin: 0;
-}
-
-html {
-  height: 100%;
-}
-
-body {
-  height: 90%;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-h1, p {
-  font-family: sans-serif;
-  text-align: center;
-  padding: 20px;
-}
-
-.txt, select, form > div {
-  display: block;
-  margin: 0 auto;
-  font-family: sans-serif;
-  font-size: 16px;
-  padding: 5px;
-}
-
-.txt {
-  width: 80%;
-}
-
-select {
-  width: 83%;
-}
-
-form > div {
-  width: 81%;
-}
-
-.txt, form > div {
-  margin-bottom: 10px;
-  overflow: auto;
-}
-
-.clearfix {
-  clear: both;
-}
-
-label {
-  float: left;
-  width: 10%;
-  line-height: 1.5;
-}
-
-.rate-value, .pitch-value {
-  float: right;
-  width: 5%;
-  line-height: 1.5;
-}
-
-#rate, #pitch {
-  float: right;
-  width: 81%;
-}
-
-.controls {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.controls button {
-  padding: 10px;
-}
-</style>
 </body>
 </html>
