@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+<script>
+var db = new Dexie("friend_database");
+db.version(1).stores({
+	friends: 'name,shoeSize'
+});
+
+//   db.friends.put({name: "Nicolas", shoeSize: 8}).then (function(){
+//       return db.friends.get('Nicolas');
+//   }).then(function (friend) {
+//       alert ("Nicolas has shoe size " + friend.shoeSize);
+//   }).catch(function(error) {
+//      alert ("Ooops: " + error);
+//   });
+
+const show = async () =>{
+	// let foo = await db.friends.get('Nicolas');
+
+	await db.friends.put({name: "Taro", shoeSize: 10});
+	foo = await db.friends.get('Taro');
+	foo = await foo.shoeSize;
+
+	return console.log(foo);
+}
+show();
+</script>
+</head>
+</html>
