@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<title>dexie js sample simply</title>
+<!-- https://dexie.org/ -->
+<!-- https://dexie.org/docs/ -->
+<!-- dexie.js need dexie.js.map -->
+<script src="dexie.js"></script>
+</head>
+<body>
+<input type="text0" name="text0" id="text0" cols="50" rows="10" onInput="tableUpdate();tableDataInsert();"></input>
+<input type="text1" name="text1" id="text1" cols="50" rows="10"></input>
+<div>
+<button onclick="indexeddbDeleteAndTableInitialize();">indexeddbDeleteAndTableInitialize</button>
+<button onclick="indexeddbDelete();">indexeddbDelete</button>
+</body>
+<script>
+const titleTagStr = document.querySelector("title").textContent.split(" ").join("");
+let db;
+const dbstart = () =>{
+	db = new Dexie(titleTagStr);
+	db.version(1).stores({
+		table0: "primary,foo"
+	});
+}
+const indexeddbDeleteAndTableInitialize = () =>{
+	Dexie.delete(titleTagStr);
+	dbstart();
+	db.table0.put({primary: "data",foo: ""});
+}
+const indexeddbDelete = () => Dexie.delete(titleTagStr);
+const tableUpdate = () => db.table0.put({primary: "data",foo: document.querySelector("#text0").value});
+const tableDataInsert = () => db.table0.get('data').then((V)=>{document.querySelector("#text1").value=V.foo});
+dbstart();
+tableDataInsert();
+</script>
+</html>
