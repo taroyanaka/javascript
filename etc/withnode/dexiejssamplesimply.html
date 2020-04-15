@@ -11,26 +11,14 @@
 <input type="text0" name="text0" id="text0" cols="50" rows="10" onInput="tableUpdate();tableDataInsert();"></input>
 <input type="text1" name="text1" id="text1" cols="50" rows="10"></input>
 <div>
-<button onclick="indexeddbDeleteAndTableInitialize();">indexeddbDeleteAndTableInitialize</button>
 <button onclick="indexeddbDelete();">indexeddbDelete</button>
 </body>
 <script>
-const titleTagStr = document.querySelector("title").textContent.split(" ").join("");
 let db;
-const dbstart = () =>{
-	db = new Dexie(titleTagStr);
-	db.version(1).stores({
-		table0: "primary,foo"
-	});
-}
-const indexeddbDeleteAndTableInitialize = () =>{
-	Dexie.delete(titleTagStr);
-	dbstart();
-	db.table0.put({primary: "data",foo: ""});
-}
-const indexeddbDelete = () => Dexie.delete(titleTagStr);
-const tableUpdate = () => db.table0.put({primary: "data",foo: document.querySelector("#text0").value});
-const tableDataInsert = () => db.table0.get('data').then((V)=>{document.querySelector("#text1").value=V.foo});
+const dbstart = () =>{db = new Dexie("data");db.version(1).stores({table0:"id,data"});}
+const indexeddbDelete = () =>{Dexie.delete("data");location.reload()}
+const tableUpdate = () =>db.table0.put({id:0,data:document.querySelector("#text0").value});
+const tableDataInsert = () =>db.table0.get(0).then((RECORD)=>{document.querySelector("#text1").value=RECORD.data});
 dbstart();
 tableDataInsert();
 </script>
