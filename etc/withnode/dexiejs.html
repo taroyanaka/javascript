@@ -4,6 +4,7 @@
 <title>dexie js sample</title>
 <!-- https://dexie.org/ -->
 <!-- https://dexie.org/docs/ -->
+<!-- https://dexie.org/docs/Version/Version.stores()#schema-syntax -->
 <!-- dexie.js need dexie.js.map -->
 <script src="dexie.js"></script>
 </head>
@@ -20,18 +21,19 @@ let db;
 const dbstart = () =>{
 	db = new Dexie(titleTagStr);
 	db.version(1).stores({
-		table0: "key,foo"
+		// ++ is autoincrement prefix
+		table0: "++id,foo"
 		// table0: "primaryKey,foo"		
 	});
 }
 const indexeddbDeleteAndTableInitialize = () =>{
 	Dexie.delete(titleTagStr);
 	dbstart();
-	db.table0.put({key:0,foo: ""});
+	db.table0.put({foo: ""}); // if use ++prefix, id:0 is auto putted into table
 	// db.table0.put({primaryKey: "data",foo: ""});
 }
 const indexeddbDelete = () => Dexie.delete(titleTagStr);
-const tableUpdate = () => db.table0.put({key:0,foo: document.querySelector("#text0").value});
+const tableUpdate = () => db.table0.put({id:0, foo: document.querySelector("#text0").value});
 // const tableUpdate = () => db.table0.put({primaryKey: "data",foo: document.querySelector("#text0").value});
 const tableDataInsert = () => db.table0.get(0).then((V)=>{document.querySelector("#text1").value=V.foo});
 // const tableDataInsert = () => db.table0.get('data').then((V)=>{document.querySelector("#text1").value=V.foo});
