@@ -31,6 +31,7 @@ const exe = () =>{
 	document.querySelector(`body`).insertAdjacentHTML(`beforeEnd`, `<div id="box"></div>` );
 	document.querySelector(`#box`).insertAdjacentHTML(`beforeend`, tagInsert() );
 	document.querySelector(`body`).insertAdjacentHTML(`beforeEnd`, style() );
+	save();
 }
 const test = () =>{
 	document.querySelector("#tag").value = `<p><a>hello world</a></p>`;
@@ -53,6 +54,7 @@ const dataInsertToTextarea = (key) =>{
 		dataArray[Number(event.target.dataset.key)][0],
 		dataArray[Number(event.target.dataset.key)][1]
 	]
+	exe();
 }
 
 
