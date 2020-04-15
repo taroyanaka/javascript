@@ -63,8 +63,8 @@ const dataInsertToTextarea = (key) =>{
 const titleTagStr = document.querySelector("title").textContent.split(" ").join("");
 let DB;
 const CREATE = () =>{DB = new Dexie(titleTagStr);DB.version(1).stores({table0:"id,data"});};
-const READ = () =>DB.table0.get(0).then((RECORD)=>{dataArray=RECORD.data});
-const load = () => {READ();showArrayList();}
+const READ = () =>DB.table0.get(0).then((RECORD)=>{dataArray=RECORD.data;showArrayList()});
+const load = () => {READ();} // alias from READ()
 const UPDATE = () =>DB.table0.put({id:0,data:document.querySelector("#text0").value});
 const DELETE = () =>Dexie.delete(titleTagStr);
 
