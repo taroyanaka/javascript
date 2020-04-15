@@ -10,6 +10,7 @@
 <input type="text1" name="text1" id="text1" cols="50" rows="10"></input>
 <div>
 <button onclick="indexeddbDeleteAndTableInitialize();">indexeddbDeleteAndTableInitialize</button>
+<button onclick="indexeddbDelete();">indexeddbDelete</button>
 </body>
 <script>
 const titleTagStr = document.querySelector("title").textContent.split(" ").join("");
@@ -25,6 +26,7 @@ const indexeddbDeleteAndTableInitialize = () =>{
 	dbstart();
 	db.table0.put({primary: "data",foo: ""});
 }
+const indexeddbDelete = () => Dexie.delete(titleTagStr);
 const tableUpdate = () => db.table0.put({primary: "data",foo: document.querySelector("#text0").value});
 const tableDataInsert = () => db.table0.get('data').then((V)=>{document.querySelector("#text1").value=V.foo});
 dbstart();
