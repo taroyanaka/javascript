@@ -4,9 +4,15 @@
 <title>html css sample lister</title>
 <script src="ramda.min.js"></script>
 <script src="clipboard.js"></script>
+<script src="dexie.js"></script>
 </head>
 <body>
+<button id="showArrayList" onclick="showArrayList();">showArrayList</button>
+<button id="newData" onclick="newData();">newData</button>
 <button id="test" onclick="test();">test</button>
+<button id="save" onclick="save();">save</button>
+<button id="load" onclick="load();">load</button>
+<button id="DELETE" onclick="DELETE();location.reload();">DELETE</button>
 <div>
 	<textarea name="tag" id="tag" cols="20" rows="10" required="required" oninput="exe()"></textarea>
 	<textarea name="css" id="css" cols="20" rows="10" required="required" oninput="exe()"></textarea>
@@ -31,11 +37,43 @@ const test = () =>{
 	document.querySelector("#css").value = `p {font-size: 50px;}`;
 	exe();
 }
+
+let dataArray=[];
+const showArrayList = () => {
+	document.querySelectorAll(".list").forEach(E=>{E.parentNode.removeChild(E)});
+	document.querySelector(`body`).insertAdjacentHTML(`afterbegin`, dataArray.map((V,KEY)=>{return `<div class="list" data-key="${KEY}" onclick="dataInsertToTextarea(event);">${KEY}</div>`}).join("") );
+}
+const newData = () =>{
+	dataArray.push( [document.querySelector("#tag").value,document.querySelector("#css").value] );
+	showArrayList();
+}
+const dataInsertToTextarea = (key) =>{
+	[document.querySelector("#tag").value,document.querySelector("#css").value] = 
+	[
+		dataArray[Number(event.target.dataset.key)][0],
+		dataArray[Number(event.target.dataset.key)][1]
+	]
+}
+
+
+
+const titleTagStr = document.querySelector("title").textContent.split(" ").join("");
+let DB;
+const CREATE = () =>{DB = new Dexie(titleTagStr);DB.version(1).stores({table0:"id,data"});};
+const READ = () =>DB.table0.get(0).then((RECORD)=>{dataArray=RECORD.data});
+const load = () => {READ();showArrayList();}
+const UPDATE = () =>DB.table0.put({id:0,data:document.querySelector("#text0").value});
+const DELETE = () =>Dexie.delete(titleTagStr);
+
+
+const save = () => {
+	DB.table0.put({id:0,data:dataArray})
+};
+
+CREATE();
+load();
+
 // document.querySelector("#test").onclick();
-
-// add IndexedDB code later
-// https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API/Using_IndexedDB
-
 </script>
 </body>
 </html>
