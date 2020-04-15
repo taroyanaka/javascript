@@ -47,6 +47,7 @@ const showArrayList = () => {
 const newData = () =>{
 	dataArray.push( [document.querySelector("#tag").value,document.querySelector("#css").value] );
 	showArrayList();
+	save();
 }
 const dataInsertToTextarea = (key) =>{
 	[document.querySelector("#tag").value,document.querySelector("#css").value] = 
