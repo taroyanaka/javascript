@@ -12,13 +12,14 @@
 <input type="text1" name="text1" id="text1" cols="50" rows="10"></input>
 <div>
 <button onclick="DELETE();">DELETE</button>
+<button onclick="location.reload();">PAGERELOAD</button>
 </body>
 <script>
 let DB;
 const CREATE = () =>{DB = new Dexie("data");DB.version(1).stores({table0:"id,data"});};
 const READ = () =>DB.table0.get(0).then((RECORD)=>{document.querySelector("#text1").value=RECORD.data});
 const UPDATE = () =>DB.table0.put({id:0,data:document.querySelector("#text0").value});
-const DELETE = () =>{Dexie.delete("data");location.reload()};
+const DELETE = () =>Dexie.delete("data");
 CREATE();
 READ();
 </script>
