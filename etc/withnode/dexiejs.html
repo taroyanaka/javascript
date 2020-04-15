@@ -21,7 +21,8 @@ let db;
 const dbstart = () =>{
 	db = new Dexie(titleTagStr);
 	db.version(1).stores({
-		table0: "++id,foo" 		// ++ is autoincrement prefix
+		// table0: "++id,foo" 		// ++ is autoincrement prefix
+		table0: "id,foo"
 		// table0: "primaryKey,foo"		
 	});
 }
