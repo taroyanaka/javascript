@@ -18,7 +18,9 @@
 <button id="DELETEDB" onclick="DELETEDB();location.reload();">DELETEDB</button>
 <div>
 	<textarea name="tag" id="tag" cols="20" rows="10" required="required" oninput="exe()"></textarea>
+	<button class="btn" data-clipboard-target="#tag">TagCOPY</button>
 	<textarea name="css" id="css" cols="20" rows="10" required="required" oninput="exe()"></textarea>
+	<button class="btn" data-clipboard-target="#css">CSSCOPY</button>
 </div>
 <script>
 new ClipboardJS('.btn');
