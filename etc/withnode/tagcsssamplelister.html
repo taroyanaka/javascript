@@ -12,7 +12,7 @@
 <button id="addBlank" onclick="addBlank();">addBlank</button>
 <button id="test" onclick="test();">test</button>
 <button id="deleteThis" onclick="deleteThis();">deleteThis</button>
-<button id="DELETEALL" onclick="DELETEALL();location.reload();">DELETEALL</button>
+<button id="DELETEALL" onclick="REALLYDELETEALL();location.reload();">DELETEALL</button>
 <div>
 	<textarea name="tag" id="tag" cols="20" rows="10" required="required" oninput="exe()"></textarea>
 	<button class="btn" data-clipboard-target="#tag">TagCOPY</button>
@@ -33,6 +33,9 @@ const READ = () =>DB.table0.get(0).then((RECORD)=>{dataArray=RECORD.data;showArr
 const load = () => {READ();} // alias from READ()
 // const UPDATE = () =>DB.table0.put({id:0,data:document.querySelector("#text0").value});
 const DELETEALL = () =>Dexie.delete(titleTagStr);
+const REALLYDELETEALL = () =>{
+	if(window.confirm("Do you really remove all data??")){DELETEALL()}
+};
 const save = () => {
 	DB.table0.put({id:0,data:dataArray})
 };
