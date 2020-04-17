@@ -15,7 +15,7 @@
 <!-- <button id="save" onclick="save();">save</button> -->
 <!-- <button id="load" onclick="load();">load</button> -->
 <button id="deleteThis" onclick="deleteThis();">deleteThis</button>
-<button id="DELETEDB" onclick="DELETEDB();location.reload();">DELETEDB</button>
+<button id="DELETEALL" onclick="DELETEALL();location.reload();">DELETEALL</button>
 <div>
 	<textarea name="tag" id="tag" cols="20" rows="10" required="required" oninput="exe()"></textarea>
 	<button class="btn" data-clipboard-target="#tag">TagCOPY</button>
@@ -96,7 +96,7 @@ const CREATE = () =>{DB = new Dexie(titleTagStr);DB.version(1).stores({table0:"i
 const READ = () =>DB.table0.get(0).then((RECORD)=>{dataArray=RECORD.data;showArrayList()});
 const load = () => {READ();} // alias from READ()
 // const UPDATE = () =>DB.table0.put({id:0,data:document.querySelector("#text0").value});
-const DELETEDB = () =>Dexie.delete(titleTagStr);
+const DELETEALL = () =>Dexie.delete(titleTagStr);
 
 
 const save = () => {
