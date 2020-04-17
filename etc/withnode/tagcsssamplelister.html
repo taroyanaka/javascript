@@ -36,7 +36,7 @@ const exe = () =>{
 	dataArray = R.remove(currentIDXofdataArray, 1, dataArray);
 	dataArray = R.insert(currentIDXofdataArray, [document.querySelector("#tag").value, document.querySelector("#css").value], dataArray); 
 	save();
-	console.log(currentIDXofdataArray);
+	// console.log(currentIDXofdataArray);
 	beforeExe()
 	document.querySelector(`body`).insertAdjacentHTML(`beforeEnd`, `<div id="box"></div>` );
 	document.querySelector(`#box`).insertAdjacentHTML(`beforeend`, tagInsert() );
@@ -58,7 +58,7 @@ const copyThis = () =>{
 	showArrayList();
 	save();
 	document.querySelector("ul#lists").lastElementChild.click();
-	console.log(currentIDXofdataArray);
+	// console.log(currentIDXofdataArray);
 }
 
 const dataInsertToTextarea = (event) =>{
@@ -105,8 +105,7 @@ const addBlank = async () =>{
 	showArrayList();
 	document.querySelector("ul#lists").lastElementChild.click();
 	save();
-	console.log(currentIDXofdataArray);
-	// setCurrentColor();
+	// console.log(currentIDXofdataArray);
 }
 
 
