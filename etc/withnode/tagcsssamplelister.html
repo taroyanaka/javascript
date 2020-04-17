@@ -7,13 +7,10 @@
 <script src="dexie.js"></script>
 </head>
 <body>
-	<ul id="lists"></ul>
-<!-- <button id="showArrayList" onclick="showArrayList();">showArrayList</button> -->
+<ul id="lists"></ul>
 <button id="copyThis" onclick="copyThis();">copyThis</button>
 <button id="addBlank" onclick="addBlank();">addBlank</button>
 <button id="test" onclick="test();">test</button>
-<!-- <button id="save" onclick="save();">save</button> -->
-<!-- <button id="load" onclick="load();">load</button> -->
 <button id="deleteThis" onclick="deleteThis();">deleteThis</button>
 <button id="DELETEALL" onclick="DELETEALL();location.reload();">DELETEALL</button>
 <div>
@@ -27,6 +24,17 @@ new ClipboardJS('.btn');
 
 let dataArray=[];
 let currentIDXofdataArray;
+
+const titleTagStr = document.querySelector("title").textContent.split(" ").join("");
+let DB;
+const CREATE = () =>{DB = new Dexie(titleTagStr);DB.version(1).stores({table0:"id,data"});};
+const READ = () =>DB.table0.get(0).then((RECORD)=>{dataArray=RECORD.data;showArrayList()});
+const load = () => {READ();} // alias from READ()
+// const UPDATE = () =>DB.table0.put({id:0,data:document.querySelector("#text0").value});
+const DELETEALL = () =>Dexie.delete(titleTagStr);
+const save = () => {
+	DB.table0.put({id:0,data:dataArray})
+};
 
 const beforeExe = () =>{
 	document.querySelector("html > body > style") ? document.querySelector("html > body > style").parentNode.removeChild( document.querySelector("html > body > style") ) : false;
@@ -49,8 +57,6 @@ const test = () =>{
 	document.querySelector("#css").value = `p {font-size: 50px;}`;
 	save();
 }
-
-
 const showArrayList = () => {
 	document.querySelectorAll(".list").forEach(E=>{E.parentNode.removeChild(E)});
 	document.querySelector(`body > ul#lists`).insertAdjacentHTML(`afterbegin`, dataArray.map((V,KEY)=>{return `<div class="list" data-key="${KEY}" onclick="dataInsertToTextarea(event);setCurrentColor(event);">${KEY}</div>`}).join("") );
@@ -62,7 +68,6 @@ const copyThis = () =>{
 	document.querySelector("ul#lists").lastElementChild.click();
 	// console.log(currentIDXofdataArray);
 }
-
 const dataInsertToTextarea = (event) =>{
 	currentIDXofdataArray = Number(event.target.dataset.key);
 	[document.querySelector("#tag").value,document.querySelector("#css").value] = 
@@ -72,36 +77,17 @@ const dataInsertToTextarea = (event) =>{
 	]
 	exe();
 }
-
-
 const deleteThis = () =>{
 	dataArray = R.remove(currentIDXofdataArray, 1, dataArray);
 	save();
 	location.reload();
 }
-
 const setCurrentColor = (event) =>{
 	document.querySelectorAll("div.list").forEach(V=>V.style.backgroundColor = "white");
 	document.querySelectorAll("div.list").forEach(V=>V.style.color = "black");
 	document.querySelectorAll("div.list")[event.target.dataset.key].style.backgroundColor = "black";
 	document.querySelectorAll("div.list")[event.target.dataset.key].style.color = "white";
 }
-
-
-
-
-const titleTagStr = document.querySelector("title").textContent.split(" ").join("");
-let DB;
-const CREATE = () =>{DB = new Dexie(titleTagStr);DB.version(1).stores({table0:"id,data"});};
-const READ = () =>DB.table0.get(0).then((RECORD)=>{dataArray=RECORD.data;showArrayList()});
-const load = () => {READ();} // alias from READ()
-// const UPDATE = () =>DB.table0.put({id:0,data:document.querySelector("#text0").value});
-const DELETEALL = () =>Dexie.delete(titleTagStr);
-
-
-const save = () => {
-	DB.table0.put({id:0,data:dataArray})
-};
 const addBlank = async () =>{
 	dataArray.push( ["",""] );
 	showArrayList();
@@ -110,11 +96,8 @@ const addBlank = async () =>{
 	// console.log(currentIDXofdataArray);
 }
 
-
 CREATE();
 load();
-
-// document.querySelector("#test").onclick();
 </script>
 </body>
 </html>
