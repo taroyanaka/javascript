@@ -25,6 +25,18 @@ new ClipboardJS('.btn');
 let dataArray=[];
 let currentIDXofdataArray;
 
+
+const titleTagStr = document.querySelector("title").textContent.split(" ").join("");
+let DB;
+const CREATE = () =>{DB = new Dexie(titleTagStr);DB.version(1).stores({table0:"id,data"});};
+const READ = () =>DB.table0.get(0).then((RECORD)=>{dataArray=RECORD.data;showArrayList()});
+const load = () => {READ();} // alias from READ()
+// const UPDATE = () =>DB.table0.put({id:0,data:document.querySelector("#text0").value});
+const DELETEALL = () =>Dexie.delete(titleTagStr);
+const save = () => {
+	DB.table0.put({id:0,data:dataArray})
+};
+
 const beforeExe = () =>{
 	document.querySelector("html > body > style") ? document.querySelector("html > body > style").parentNode.removeChild( document.querySelector("html > body > style") ) : false;
 	document.querySelector("html > body > div#box") ? document.querySelector("html > body > div#box").parentNode.removeChild( document.querySelector("html > body > div#box") ) : false;
@@ -77,26 +89,13 @@ const setCurrentColor = (event) =>{
 	document.querySelectorAll("div.list")[event.target.dataset.key].style.backgroundColor = "black";
 	document.querySelectorAll("div.list")[event.target.dataset.key].style.color = "white";
 }
-const addBlank = async () =>{
+const addBlank = () =>{
 	dataArray.push( ["",""] );
 	showArrayList();
 	document.querySelector("ul#lists").lastElementChild.click();
 	save();
 	// console.log(currentIDXofdataArray);
 }
-
-
-const titleTagStr = document.querySelector("title").textContent.split(" ").join("");
-let DB;
-const CREATE = () =>{DB = new Dexie(titleTagStr);DB.version(1).stores({table0:"id,data"});};
-const READ = () =>DB.table0.get(0).then((RECORD)=>{dataArray=RECORD.data;showArrayList()});
-const load = () => {READ();} // alias from READ()
-// const UPDATE = () =>DB.table0.put({id:0,data:document.querySelector("#text0").value});
-const DELETEALL = () =>Dexie.delete(titleTagStr);
-const save = () => {
-	DB.table0.put({id:0,data:dataArray})
-};
-
 
 CREATE();
 load();
