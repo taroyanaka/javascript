@@ -1,0 +1,242 @@
+@charset "UTF-8";
+
+/* 基本設定 */
+
+* {
+	margin: 0;
+}
+
+img {
+	width: 100%;
+	height: auto;
+}
+
+
+/* ページ全体の設定 */
+body {
+	display: grid;
+	grid-template-columns: 20px 1fr 20px;
+	grid-template-rows: 
+		[head] 100px
+		[title] auto
+		[sub] auto
+		[recent] auto
+		[foot] 100px;
+	grid-row-gap: 20px;
+	row-gap: 20px;
+	font-family: sans-serif;
+}
+
+
+/* パーツの配置*/
+body > * {
+	grid-column: 2 / -2;
+}
+
+
+/* ヘッダー */
+header {
+	grid-row: head;
+	justify-self: center;
+	align-self: center;
+	font-size: 40px;
+	color: #555d6b;
+	font-family: 'Raleway', sans-serif;
+}
+
+/* ナビゲーションメニュー */
+nav {
+	grid-row: head;
+	justify-self: center;
+	align-self: end;
+}
+
+nav ul {
+	list-style-type: none;
+	padding: 0;
+	display: grid;
+	grid-auto-flow: column;
+	grid-column-gap: 20px;
+	column-gap: 20px;
+}
+
+nav a {
+	color: #666666;
+	text-decoration: none;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+nav a:hover {
+	color: #ef9504;
+}
+
+
+/* ヒーローイメージ */
+figure.hero {
+	grid-column: 1 / -1;
+	grid-row: title / span 2;
+}
+
+figure.hero img {
+	height: 547px;
+	object-fit: cover;
+	vertical-align: bottom;
+	filter: brightness(70%);
+	z-index: -1;
+	position: relative; /* Edge用の設定 */
+}
+
+
+
+/* タイトル */
+h1 {
+	grid-row: title;
+	justify-self: center;
+	align-self: center;
+	color: #ffffff;
+	font-size: 50px;
+	font-weight: normal;
+	line-height: 1.2;
+	text-shadow: 0 0 5px #444444;
+	text-align: center;
+	font-family: 'Raleway', sans-serif;
+}
+
+/* サブタイトル */
+p {
+	grid-row: sub;
+	text-align: center;
+}
+
+p a {
+	color: #ffffff;
+	text-decoration: none;
+	border: solid 1px #ffffff;
+	padding: 10px 40px;
+	display: inline-block;
+	margin-top: 10px;
+	border-radius: 10px;
+	background-color: rgba(85, 93, 107, 0.5);
+}
+
+p a:hover {
+	background-color: #ef9504;
+}
+
+p img {
+	width: 250px;
+}
+
+
+/* 記事一覧 */
+section {
+	grid-row: recent;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 20px 10px;
+	gap: 20px 10px;
+}
+
+section a {
+	color: #000000;
+	text-decoration: none;
+}
+
+section a:hover {
+	text-decoration: underline;
+}
+
+section h3 {
+	font-size: 14px;
+}
+
+section h2 {
+	grid-column: 1 / -1;
+	font-family: 'Raleway', sans-serif;
+	font-size: 20px;
+	font-weight: normal;
+	text-align: center;
+}
+
+
+/* フッター */
+footer {
+	grid-row: foot;
+	justify-self: center;
+	align-self: center;
+	font-size: 13px;
+	font-family: 'Raleway', sans-serif;
+}
+
+/* フッターのバー */
+body::after {
+	content: "";
+	background-color: #eeeeee;
+	grid-column: 1 / -1;
+	grid-row: foot;
+	z-index: -1;
+}
+
+
+
+/* ===== PC版の設定 ===== */
+@media (min-width: 768px) {
+
+/* PC版：ページ全体の設定 */
+body {
+	grid-template-columns: 0.2fr repeat(6,1fr) 0.2fr;
+	grid-column-gap: 5%;
+	column-gap: 5%;
+	grid-template-rows: 
+		[head] 100px
+		[title sub] auto
+		[recent] auto
+		[foot] 100px;
+}
+
+/* PC版：ヒーローイメージ */
+figure.hero {
+	grid-row: title;
+	margin-top: -20px;
+}
+
+/* PC版：タイトル */
+h1 {
+	grid-column: 2 / span 3;
+	max-width: 460px;
+}
+
+/* PC版：サブタイトル */
+p {
+	grid-column: 5 / span 3;
+	align-self: center;
+}
+
+p img {
+	width: 80%;
+	max-width: 460px;
+}
+
+/* PC版：ヘッダー */
+header {
+	justify-self: start;
+}
+
+/* PC版：ナビゲーションメニュー */
+nav {
+	justify-self: end;
+	align-self: center;
+}
+
+/* PC版：記事一覧 */
+section {
+	grid-template-columns: repeat(4, 1fr);
+	grid-column-gap: 20px;
+	column-gap: 20px;
+}
+
+}
+/* ===== PC版の設定ここまで ===== */
+
+
