@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <head>
 <meta charset="UTF-8" />
-<title>runkit sample</title>
+<title>embed runkit sample</title>
 <!-- https://runkit.com/home -->
-<script src="ramda.min.js"></script>
+<!-- https://embed.runkit.com/ -->
+<!-- https://runkit.com/docs/embed -->
+
+<!-- <script src="ramda.min.js"></script> -->
 <!-- <script src="clipboard.js"></script> -->
 <!-- <script src="dexie.js"></script> -->
 </head>
 <body>
 <script src="https://embed.runkit.com"></script>
+<!-- <script src="embedrunkitcom"></script> -->
 <style>.embed { overflow: visible; }</style>
+<pre class="embed" data-gutter="inside">
+const R = require("ramda");
+R.add(1,2);
+</pre>
 <pre class="embed" data-gutter="inside">console.log("hello inside");
 1 + 1</pre>
 <pre class="embed" data-gutter="outside">console.log("hello outside");
@@ -34,6 +42,7 @@ const notebooks = elements.reduce((notebooks, element) => {
 <h3 style="text-align: center;">Welcome to my website</h3>
 
 <script src="https://embed.runkit.com"></script>
+<!-- <script src="embedrunkitcom"></script> -->
 <div id="my-element"></div>
 <script>var notebook = RunKit.createNotebook({
     // the parent element for the new notebook
