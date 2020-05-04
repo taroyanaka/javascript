@@ -41,8 +41,14 @@ const makeList = (ELM) => {
 
 let result = val0.map(V => { return makeList(V) });
 console.log(
-	result[5]
+	
 )
+
+var filesys = require('fs');
+filesys.writeFile('test.txt', 
+	result.toString()
+, 'utf8', function (err) { });
+
 
 // const makeAVTList = (VTArray) =>{
 	// let val1 = R.split('\n')(val0[0]);

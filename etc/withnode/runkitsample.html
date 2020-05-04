@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8" />
+<title>runkit sample</title>
+<!-- https://runkit.com/home -->
+<script src="ramda.min.js"></script>
+<!-- <script src="clipboard.js"></script> -->
+<!-- <script src="dexie.js"></script> -->
+</head>
+<body>
+<script src="https://embed.runkit.com"></script>
+<style>.embed { overflow: visible; }</style>
+<pre class="embed" data-gutter="inside">console.log("hello inside");
+1 + 1</pre>
+<pre class="embed" data-gutter="outside">console.log("hello outside");
+1 + 1</pre>
+<pre class="embed" data-gutter="none">console.log("hello none");
+1 + 1</pre>
+<script>
+const elements = [...document.getElementsByClassName('embed')]
+const notebooks = elements.reduce((notebooks, element) => {
+    const innerText = element.firstChild
+    const currentCell = window.RunKit.createNotebook({
+        element,
+        gutterStyle: element.getAttribute("data-gutter"),
+        source: innerText.textContent,
+        // Remove the text content of the pre tag after the embed has loaded
+        onLoad: () => innerText.remove()
+    })
+  return notebooks
+}, [])
+</script>
+
+<h3 style="text-align: center;">Welcome to my website</h3>
+
+<script src="https://embed.runkit.com"></script>
+<div id="my-element"></div>
+<script>var notebook = RunKit.createNotebook({
+    // the parent element for the new notebook
+    element: document.getElementById("my-element"),
+    // specify the source of the notebook
+    source: "// GeoJSON!\nvar getJSON = require(\"async-get-json\");\n\nawait getJSON(\"https://storage.googleapis.com/maps-devrel/google.json\");"
+})</script>
+
+</body>
+</html>
