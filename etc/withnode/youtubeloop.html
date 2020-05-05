@@ -9,7 +9,7 @@
 <script src="./easytimer.min.js"></script>
 </head>
 <body>
-<!-- <iframe id="ytplayer" type="text/html" width="320" height="180"  src="https://www.youtube.com/embed/oGTVoX7AaRc?autoplay=1&start=865&vq=small" allow="autoplay"></iframe> -->
+<iframe id="ytplayer" type="text/html" width="320" height="180"  src="https://www.youtube.com/embed/oGTVoX7AaRc?autoplay=1&start=865&vq=small" allow="autoplay"></iframe>
 <div>
 ID<input type="text0_0" name="text0_0" id="text0_0" cols="50" rows="10" onInput="UPDATE();" placeholder="oGTVoX7AaRc"></input>
 start seconds<input type="text0_1" name="text0_1" id="text0_1" cols="50" rows="10" onInput="UPDATE();" placeholder="865"></input>
@@ -20,7 +20,7 @@ duration seconds<input type="text0_2" name="text0_2" id="text0_2" cols="50" rows
 <!-- <button onclick="location.reload();">PAGERELOAD</button> -->
 </body>
 <script>
-// https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=oGTVoX7AaRc&start=875&duration=70
+// https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=qcQTKG-nrvM&start=1441&duration=95
 if(		(new URL(document.location)).searchParams	){
 	document.querySelector("#text0_0").value =	(new URL(document.location)).searchParams.get('id');
 	document.querySelector("#text0_1").value =	(new URL(document.location)).searchParams.get('start');
@@ -40,7 +40,7 @@ const READ = () =>DB.table0.get(0).then((RECORD)=>{
 		] = res;
 	document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${res[0]}?autoplay=1&start=${res[1]}&vq=small`;
 	const TIMER = new easytimer.Timer();
-	// TIMER.addEventListener('targetAchieved', () => 	location.reload() );
+	TIMER.addEventListener('targetAchieved', () => 	location.reload() );
 	TIMER.start({ countdown: true, startValues: {seconds: Number(res[2]) }, target: { seconds: 0 }, precision: 'secondTenths' });
 });
 const UPDATE = () =>{
