@@ -26,13 +26,6 @@ start = 865;
 duration = 70;
 
 const init = () =>{
-	if(document.querySelector("#text0_0").value !== "" &&
-	   document.querySelector("#text0_1").value !== "" &&
-       document.querySelector("#text0_2").value !== "" &&
-	   Number(document.querySelector("#text0_2").value) > 10){
-			[id,start,duration] = [document.querySelector("#text0_0").value,document.querySelector("#text0_1").value,document.querySelector("#text0_2").value];
-	}
-
 	if(	(new URL(document.location)).searchParams.get('id') && (new URL(document.location)).searchParams.get('start') &&  (new URL(document.location)).searchParams.get('duration') ){
 		[document.querySelector("#text0_0").value, document.querySelector("#text0_1").value, document.querySelector("#text0_2").value] =
 		[id,start,duration] =
@@ -40,7 +33,6 @@ const init = () =>{
 	}
 }
 init();
-
 
 TIMER.addEventListener('targetAchieved', () => 	location.reload() );
 if(	(new URL(document.location)).searchParams.get('id') && (new URL(document.location)).searchParams.get('start') &&  (new URL(document.location)).searchParams.get('duration') ){
@@ -59,8 +51,8 @@ const UPDATE = () => {
 	   Number(document.querySelector("#text0_2").value) > 10){
 			[id,start,duration] = [document.querySelector("#text0_0").value,document.querySelector("#text0_1").value,document.querySelector("#text0_2").value];
 			location.replace(`https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`);
+			// location.replace(`http://localhost:5501/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`)
 	}
-	// location.replace(`http://localhost:5501/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`)
 }
 
 document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${id}?autoplay=1&start=${start}&vq=small`;
