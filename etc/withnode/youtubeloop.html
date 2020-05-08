@@ -40,12 +40,15 @@ const UPDATE = () => {
 			// location.replace(`http://localhost:5501/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`)
 	}
 }
+const TIMERSET = () =>{
+	TIMER.addEventListener('targetAchieved', () => 	location.reload() );
+	TIMER.start({ countdown: true, startValues: {seconds: Number(duration) }, target: { seconds: 0 }, precision: 'secondTenths' });
+}
 const YOUTUBEPLAYERSRCUPDATE = () => document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${id}?autoplay=1&start=${start}&vq=small`;
 const SHAREURLUPDATE = () => document.querySelector("#text0_3").value = `https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`;
 
 INIT();
-TIMER.addEventListener('targetAchieved', () => 	location.reload() );
-TIMER.start({ countdown: true, startValues: {seconds: Number(duration) }, target: { seconds: 0 }, precision: 'secondTenths' });
+TIMERSET();
 YOUTUBEPLAYERSRCUPDATE();
 SHAREURLUPDATE();
 </script>
