@@ -19,31 +19,17 @@ duration seconds(over 10 seconds)<input type="text" name="text0_2" id="text0_2" 
 <script>
 new ClipboardJS('.btn');
 const TIMER = new easytimer.Timer();
-
 let id,start,duration;
 id = "oGTVoX7AaRc";
 start = 865;
 duration = 70;
 
-const init = () =>{
+const INIT = () =>{
 	if(	(new URL(document.location)).searchParams.get('id') && (new URL(document.location)).searchParams.get('start') &&  (new URL(document.location)).searchParams.get('duration') ){
-		[document.querySelector("#text0_0").value, document.querySelector("#text0_1").value, document.querySelector("#text0_2").value] =
-		[id,start,duration] =
-		[ (new URL(document.location)).searchParams.get('id'), (new URL(document.location)).searchParams.get('start'), (new URL(document.location)).searchParams.get('duration') ]
+		[id,start,duration] = [ (new URL(document.location)).searchParams.get('id'), (new URL(document.location)).searchParams.get('start'), (new URL(document.location)).searchParams.get('duration') ];
+		[document.querySelector("#text0_0").value, document.querySelector("#text0_1").value, document.querySelector("#text0_2").value] = [id,start,duration];
 	}
 }
-init();
-
-TIMER.addEventListener('targetAchieved', () => 	location.reload() );
-if(	(new URL(document.location)).searchParams.get('id') && (new URL(document.location)).searchParams.get('start') &&  (new URL(document.location)).searchParams.get('duration') ){
-	TIMER.start({ countdown: true, startValues: {seconds: Number((new URL(document.location)).searchParams.get('duration')) }, target: { seconds: 0 }, precision: 'secondTenths' });
-}
-else{
-	TIMER.start({ countdown: true, startValues: {seconds: Number(duration) }, target: { seconds: 0 }, precision: 'secondTenths' });
-}
-
-const shareURLupdate = () => document.querySelector("#text0_3").value = `https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`;
-
 const UPDATE = () => {
 	if(document.querySelector("#text0_0").value !== "" &&
 	   document.querySelector("#text0_1").value !== "" &&
@@ -54,9 +40,14 @@ const UPDATE = () => {
 			// location.replace(`http://localhost:5501/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`)
 	}
 }
+const YOUTUBEPLAYERSRCUPDATE = () => document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${id}?autoplay=1&start=${start}&vq=small`;
+const SHAREURLUPDATE = () => document.querySelector("#text0_3").value = `https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`;
 
-document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${id}?autoplay=1&start=${start}&vq=small`;
-document.querySelector("#text0_3").value = `https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`;
-shareURLupdate();
+
+INIT();
+TIMER.addEventListener('targetAchieved', () => 	location.reload() );
+TIMER.start({ countdown: true, startValues: {seconds: Number(duration) }, target: { seconds: 0 }, precision: 'secondTenths' });
+YOUTUBEPLAYERSRCUPDATE();
+SHAREURLUPDATE();
 </script>
 </html>
