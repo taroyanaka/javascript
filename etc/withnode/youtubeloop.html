@@ -21,29 +21,27 @@ duration seconds(over 10 seconds)<input type="number" name="duration" id="durati
 <script>
 new ClipboardJS('.btn');
 const TIMER = new easytimer.Timer();
-let id,start,duration;
 
 const INIT = () =>{
-	id = document.querySelector("#id").value = (new URL(document.location)).searchParams.get('id') || "oGTVoX7AaRc";
-	start = document.querySelector("#start").value = (new URL(document.location)).searchParams.get('start') || "865";
-	duration = document.querySelector("#duration").value = (new URL(document.location)).searchParams.get('duration') || "70";
+	document.querySelector("#id").value = (new URL(document.location)).searchParams.get('id') || "oGTVoX7AaRc";
+	document.querySelector("#start").value = (new URL(document.location)).searchParams.get('start') || "865";
+	document.querySelector("#duration").value = (new URL(document.location)).searchParams.get('duration') || "70";
 }
 const UPDATEANDREPLAYSTART = () => {
 	if(document.querySelector("#id").value !== "" &&
 	   document.querySelector("#start").value !== "" &&
        document.querySelector("#duration").value !== "" &&
 	   Number(document.querySelector("#duration").value) > 10){
-			[id,start,duration] = [document.querySelector("#id").value,document.querySelector("#start").value,document.querySelector("#duration").value];
-			location.replace(`https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`);
-			// location.replace(`http://localhost:5501/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`);
+			location.replace(`https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${document.querySelector("#id").value}&start=${document.querySelector("#start").value}&duration=${document.querySelector("#duration").value}`);
+			// location.replace(`http://localhost:5501/etc/withnode/youtubeloop.html?id=${document.querySelector("#id").value}&start=${document.querySelector("#start").value}&duration=${document.querySelector("#duration").value}`);
 	}
 }
 const TIMERSET = () =>{
 	TIMER.addEventListener('targetAchieved', () => 	location.reload() );
 	TIMER.start({ countdown: true, startValues: {seconds: Number(duration) }, target: { seconds: 0 }, precision: 'secondTenths' });
 }
-const YOUTUBEPLAYERSRCUPDATE = () => document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${id}?autoplay=1&start=${start}&vq=small`;
-const SHAREURLUPDATE = () => document.querySelector("#shareURL").value = `https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`;
+const YOUTUBEPLAYERSRCUPDATE = () => document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${document.querySelector("#id").value}?autoplay=1&start=${document.querySelector("#start").value}&vq=small`;
+const SHAREURLUPDATE = () => document.querySelector("#shareURL").value = `https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${document.querySelector("#id").value}&start=${document.querySelector("#start").value}&duration=${document.querySelector("#duration").value}`;
 
 INIT();
 TIMERSET();
