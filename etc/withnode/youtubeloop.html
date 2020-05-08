@@ -8,38 +8,38 @@
 <body>
 <iframe id="ytplayer" type="text/html" width="320" height="180"  src="https://www.youtube.com/embed/oGTVoX7AaRc?autoplay=1&start=865&vq=small" allow="autoplay"></iframe>
 <div>
-ID<input type="text" name="text0_0" id="text0_0" size="15" placeholder="oGTVoX7AaRc"></input>
-start seconds<input type="number" name="text0_1" id="text0_1" value="1" min="1" placeholder="865" required></input>
-duration seconds(over 10 seconds)<input type="number" name="text0_2" id="text0_2" value="11" min="11" placeholder="70" required></input>
+ID<input type="text" name="id" id="id" size="15" placeholder="oGTVoX7AaRc"></input>
+start seconds<input type="number" name="start" id="start" value="1" min="1" placeholder="865" required></input>
+duration seconds(over 10 seconds)<input type="number" name="duration" id="duration" value="11" min="11" placeholder="70" required></input>
 </div>
 <button onclick="UPDATEANDREPLAYSTART();">REPLAY and UPDATE NOW</button>
-<div>share URL<input type="text" name="text0_3" id="text0_3" size="100"></input></div>
-<div><button class="btn" data-clipboard-target="#text0_3">COPY URL</button></div>
+<div>share URL<input type="text" name="shareURL" id="shareURL" size="100"></input></div>
+<div><button class="btn" data-clipboard-target="#shareURL">COPY URL</button></div>
 <div></div>
 <div><a>This app work only Google Chrome on PC</a></div>
 </body>
 <script>
 new ClipboardJS('.btn');
 const TIMER = new easytimer.Timer();
-let id,start,duration;
-id = "oGTVoX7AaRc";
-start = 865;
-duration = 70;
+let id = document.querySelector("#id").value = "qcQTKG-nrvM";
+let start = document.querySelector("#start").value = "1460";
+let duration = document.querySelector("#duration").value = "60";
 
 const INIT = () =>{
 	if(	(new URL(document.location)).searchParams.get('id') && (new URL(document.location)).searchParams.get('start') &&  (new URL(document.location)).searchParams.get('duration') ){
-		[id,start,duration] = [ (new URL(document.location)).searchParams.get('id'), (new URL(document.location)).searchParams.get('start'), (new URL(document.location)).searchParams.get('duration') ];
-		[document.querySelector("#text0_0").value, document.querySelector("#text0_1").value, document.querySelector("#text0_2").value] = [id,start,duration];
+		id = document.querySelector("#id").value = (new URL(document.location)).searchParams.get('id');
+		start = document.querySelector("#start").value = (new URL(document.location)).searchParams.get('start');
+		duration = document.querySelector("#duration").value = (new URL(document.location)).searchParams.get('duration');
 	}
 }
 const UPDATEANDREPLAYSTART = () => {
-	if(document.querySelector("#text0_0").value !== "" &&
-	   document.querySelector("#text0_1").value !== "" &&
-       document.querySelector("#text0_2").value !== "" &&
-	   Number(document.querySelector("#text0_2").value) > 10){
-			[id,start,duration] = [document.querySelector("#text0_0").value,document.querySelector("#text0_1").value,document.querySelector("#text0_2").value];
+	if(document.querySelector("#id").value !== "" &&
+	   document.querySelector("#start").value !== "" &&
+       document.querySelector("#duration").value !== "" &&
+	   Number(document.querySelector("#duration").value) > 10){
+			[id,start,duration] = [document.querySelector("#id").value,document.querySelector("#start").value,document.querySelector("#duration").value];
 			location.replace(`https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`);
-			// location.replace(`http://localhost:5501/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`)
+			// location.replace(`http://localhost:5501/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`);
 	}
 }
 const TIMERSET = () =>{
@@ -47,7 +47,7 @@ const TIMERSET = () =>{
 	TIMER.start({ countdown: true, startValues: {seconds: Number(duration) }, target: { seconds: 0 }, precision: 'secondTenths' });
 }
 const YOUTUBEPLAYERSRCUPDATE = () => document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${id}?autoplay=1&start=${start}&vq=small`;
-const SHAREURLUPDATE = () => document.querySelector("#text0_3").value = `https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`;
+const SHAREURLUPDATE = () => document.querySelector("#shareURL").value = `https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`;
 
 INIT();
 TIMERSET();
