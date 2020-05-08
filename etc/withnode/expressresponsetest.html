@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>express response test</title>
+<meta name="viewport" content="width=device-width">
+</head>
+<body>
+	<a>text</a>
+<script>
+const expressResponseTest = () =>{
+	fetch(`http://localhost:5555`)
+	.then((response) => {
+		return response.json();
+	})
+	.then((text) => {
+		console.log(text.message);
+		document.querySelector("a").innerText = text.message;
+	});
+}
+expressResponseTest();
+</script>
+</body>
+</html>

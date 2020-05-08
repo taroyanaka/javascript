@@ -2,75 +2,66 @@
 <html>
 <head>
 <title>loop youtube</title>
-<!-- https://dexie.org/ -->
-<!-- https://dexie.org/docs/ -->
-<!-- dexie.js need dexie.js.map -->
-<script src="dexie.js"></script>
 <script src="./easytimer.min.js"></script>
 </head>
 <body>
 <iframe id="ytplayer" type="text/html" width="320" height="180"  src="https://www.youtube.com/embed/oGTVoX7AaRc?autoplay=1&start=865&vq=small" allow="autoplay"></iframe>
 <div>
-ID<input type="text0_0" name="text0_0" id="text0_0" cols="50" rows="10" onInput="UPDATE();" placeholder="oGTVoX7AaRc"></input>
-start seconds<input type="text0_1" name="text0_1" id="text0_1" cols="50" rows="10" onInput="UPDATE();" placeholder="865"></input>
-duration seconds<input type="text0_2" name="text0_2" id="text0_2" cols="50" rows="10" onInput="UPDATE();" placeholder="70"></input>
+ID<input type="text" name="text0_0" id="text0_0" size="15" placeholder="oGTVoX7AaRc"></input>
+start seconds<input type="text" name="text0_1" id="text0_1" size="4" placeholder="865"></input>
+duration seconds(over 10 seconds)<input type="text" name="text0_2" id="text0_2" size="4" placeholder="70"></input>
 </div>
-<button onclick="location.reload();">REPLAY NOW</button>
-<!-- <button onclick="DELETE();">DELETE</button> -->
-<!-- <button onclick="location.reload();">PAGERELOAD</button> -->
+<button onclick="UPDATE();">REPLAY and UPDATE NOW</button>
+<div></div>
+share URL<input type="text" name="text0_3" id="text0_3" size="100"></input>
+</div>
 </body>
 <script>
-let res;
+let id,start,duration;
+id = "oGTVoX7AaRc";
+start = 865;
+duration = 70;
 
-const titleTagStr = document.querySelector("title").textContent.split(" ").join("");
-let DB;
-const CREATE = () =>{DB = new Dexie(titleTagStr);DB.version(1).stores({table0:"id,data"});};
-const READ = () =>DB.table0.get(0).then((RECORD)=>{
-	res=RECORD.data;
-		 [document.querySelector("#text0_0").value,
-			document.querySelector("#text0_1").value,
-			document.querySelector("#text0_2").value,
-		] = res;
-
-	if(		(new URL(document.location)).searchParams	){
-		res[0] = document.querySelector("#text0_0").value =	(new URL(document.location)).searchParams.get('id');
-		res[1] = document.querySelector("#text0_1").value =	(new URL(document.location)).searchParams.get('start');
-		res[2] = document.querySelector("#text0_2").value =	(new URL(document.location)).searchParams.get('duration');
+const init = () =>{
+	if(document.querySelector("#text0_0").value !== "" &&
+	   document.querySelector("#text0_1").value !== "" &&
+       document.querySelector("#text0_2").value !== "" &&
+	   Number(document.querySelector("#text0_2").value) > 10){
+			[id,start,duration] = [document.querySelector("#text0_0").value,document.querySelector("#text0_1").value,document.querySelector("#text0_2").value];
 	}
 
-	document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${res[0]}?autoplay=1&start=${res[1]}&vq=small`;
-	const TIMER = new easytimer.Timer();
-	TIMER.addEventListener('targetAchieved', () => 	location.reload() );
-	if(		(new URL(document.location)).searchParams	){
-		TIMER.start({ countdown: true, startValues: {seconds: Number((new URL(document.location)).searchParams.get('duration')) }, target: { seconds: 0 }, precision: 'secondTenths' });
-	}else{
-		TIMER.start({ countdown: true, startValues: {seconds: Number(res[2]) }, target: { seconds: 0 }, precision: 'secondTenths' });
+	if(	(new URL(document.location)).searchParams.get('id') && (new URL(document.location)).searchParams.get('start') &&  (new URL(document.location)).searchParams.get('duration') ){
+		[document.querySelector("#text0_0").value, document.querySelector("#text0_1").value, document.querySelector("#text0_2").value] =
+		[id,start,duration] =
+		[ (new URL(document.location)).searchParams.get('id'), (new URL(document.location)).searchParams.get('start'), (new URL(document.location)).searchParams.get('duration') ]
 	}
-});
-const UPDATE = () =>{
-	if(		(new URL(document.location)).searchParams	){
-		document.querySelector("#text0_0").value =	(new URL(document.location)).searchParams.get('id');
-		document.querySelector("#text0_1").value =	(new URL(document.location)).searchParams.get('start');
-		document.querySelector("#text0_2").value =	(new URL(document.location)).searchParams.get('duration');
-	}
-	 res = [document.querySelector("#text0_0").value,
-			document.querySelector("#text0_1").value,
-			document.querySelector("#text0_2").value,
-	    	 ]
-	document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${res[0]}?autoplay=1&start=${res[1]}&vq=small`;
-	if(		(new URL(document.location)).searchParams	){		document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${(new URL(document.location)).searchParams.get('id')}?autoplay=1&start=${(new URL(document.location)).searchParams.get('start')}&vq=small`	};
-	DB.table0.put({id:0,data:res})
 }
-const DELETE = () =>Dexie.delete(titleTagStr);
-CREATE();
-READ();
+init();
 
-// https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=qcQTKG-nrvM&start=1441&duration=95
-if(		(new URL(document.location)).searchParams	){
-	// document.querySelector("#text0_0").value =	(new URL(document.location)).searchParams.get('id');
-	// document.querySelector("#text0_1").value =	(new URL(document.location)).searchParams.get('start');
-	// document.querySelector("#text0_2").value =	(new URL(document.location)).searchParams.get('duration');
-	document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${(new URL(document.location)).searchParams.get('id')}?autoplay=1&start=${(new URL(document.location)).searchParams.get('start')}&vq=small`;
+const TIMER = new easytimer.Timer();
+TIMER.addEventListener('targetAchieved', () => 	location.reload() );
+if(	(new URL(document.location)).searchParams.get('id') && (new URL(document.location)).searchParams.get('start') &&  (new URL(document.location)).searchParams.get('duration') ){
+	TIMER.start({ countdown: true, startValues: {seconds: Number((new URL(document.location)).searchParams.get('duration')) }, target: { seconds: 0 }, precision: 'secondTenths' });
 }
+else{
+	TIMER.start({ countdown: true, startValues: {seconds: Number(duration) }, target: { seconds: 0 }, precision: 'secondTenths' });
+}
+
+const shareURLupdate = () => document.querySelector("#text0_3").value = `https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`;
+
+const UPDATE = () => {
+	if(document.querySelector("#text0_0").value !== "" &&
+	   document.querySelector("#text0_1").value !== "" &&
+       document.querySelector("#text0_2").value !== "" &&
+	   Number(document.querySelector("#text0_2").value) > 10){
+			[id,start,duration] = [document.querySelector("#text0_0").value,document.querySelector("#text0_1").value,document.querySelector("#text0_2").value];
+			location.replace(`https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`);
+	}
+	// location.replace(`http://localhost:5501/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`)
+}
+
+document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${id}?autoplay=1&start=${start}&vq=small`;
+document.querySelector("#text0_3").value = `https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${id}&start=${start}&duration=${duration}`;
+shareURLupdate();
 </script>
 </html>
