@@ -3,6 +3,7 @@
 <head>
 <title>loop youtube</title>
 <script src="./easytimer.min.js"></script>
+<script src="clipboard.js"></script>
 </head>
 <body>
 <iframe id="ytplayer" type="text/html" width="320" height="180"  src="https://www.youtube.com/embed/oGTVoX7AaRc?autoplay=1&start=865&vq=small" allow="autoplay"></iframe>
@@ -12,11 +13,13 @@ start seconds<input type="text" name="text0_1" id="text0_1" size="4" placeholder
 duration seconds(over 10 seconds)<input type="text" name="text0_2" id="text0_2" size="4" placeholder="70"></input>
 </div>
 <button onclick="UPDATE();">REPLAY and UPDATE NOW</button>
-<div></div>
-share URL<input type="text" name="text0_3" id="text0_3" size="100"></input>
-</div>
+<div>share URL<input type="text" name="text0_3" id="text0_3" size="100"></input></div>
+<div><button class="btn" data-clipboard-target="#text0_3">COPY URL</button></div>
 </body>
 <script>
+new ClipboardJS('.btn');
+const TIMER = new easytimer.Timer();
+
 let id,start,duration;
 id = "oGTVoX7AaRc";
 start = 865;
@@ -38,7 +41,7 @@ const init = () =>{
 }
 init();
 
-const TIMER = new easytimer.Timer();
+
 TIMER.addEventListener('targetAchieved', () => 	location.reload() );
 if(	(new URL(document.location)).searchParams.get('id') && (new URL(document.location)).searchParams.get('start') &&  (new URL(document.location)).searchParams.get('duration') ){
 	TIMER.start({ countdown: true, startValues: {seconds: Number((new URL(document.location)).searchParams.get('duration')) }, target: { seconds: 0 }, precision: 'secondTenths' });
