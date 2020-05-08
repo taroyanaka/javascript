@@ -37,7 +37,7 @@ const UPDATEANDREPLAYSTART = () => {
 }
 const TIMERSET = () =>{
 	TIMER.addEventListener('targetAchieved', () => 	location.reload() );
-	TIMER.start({ countdown: true, startValues: {seconds: Number(duration) }, target: { seconds: 0 }, precision: 'secondTenths' });
+	TIMER.start({ countdown: true, startValues: {seconds: Number(document.querySelector("#duration").value) }, target: { seconds: 0 }, precision: 'secondTenths' });
 }
 const YOUTUBEPLAYERSRCUPDATE = () => document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${document.querySelector("#id").value}?autoplay=1&start=${document.querySelector("#start").value}&vq=small`;
 const SHAREURLUPDATE = () => document.querySelector("#shareURL").value = `https://taroyanaka.github.io/javascript/etc/withnode/youtubeloop.html?id=${document.querySelector("#id").value}&start=${document.querySelector("#start").value}&duration=${document.querySelector("#duration").value}`;
