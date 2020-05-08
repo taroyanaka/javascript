@@ -21,16 +21,12 @@ duration seconds(over 10 seconds)<input type="number" name="duration" id="durati
 <script>
 new ClipboardJS('.btn');
 const TIMER = new easytimer.Timer();
-let id = document.querySelector("#id").value = "qcQTKG-nrvM";
-let start = document.querySelector("#start").value = "1460";
-let duration = document.querySelector("#duration").value = "60";
+let id,start,duration;
 
 const INIT = () =>{
-	if(	(new URL(document.location)).searchParams.get('id') && (new URL(document.location)).searchParams.get('start') &&  (new URL(document.location)).searchParams.get('duration') ){
-		id = document.querySelector("#id").value = (new URL(document.location)).searchParams.get('id');
-		start = document.querySelector("#start").value = (new URL(document.location)).searchParams.get('start');
-		duration = document.querySelector("#duration").value = (new URL(document.location)).searchParams.get('duration');
-	}
+	id = document.querySelector("#id").value = (new URL(document.location)).searchParams.get('id') || "oGTVoX7AaRc";
+	start = document.querySelector("#start").value = (new URL(document.location)).searchParams.get('start') || "865";
+	duration = document.querySelector("#duration").value = (new URL(document.location)).searchParams.get('duration') || "70";
 }
 const UPDATEANDREPLAYSTART = () => {
 	if(document.querySelector("#id").value !== "" &&
