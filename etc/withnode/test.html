@@ -1,0 +1,17 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<title>test</title>
+<meta name="viewport" content="width=device-width">
+</head>
+<body style="background-color: gray">
+<script>
+fetch('https://example-node-api-yanaka.herokuapp.com').then(v => {
+	// return v.json()
+	return v.json()
+}).then(v => {
+	console.log(v)
+})
+</script>
+</body>
+</html>
