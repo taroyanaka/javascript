@@ -7,10 +7,11 @@
 <body style="background-color: gray">
 <script>
 // fetch('http://localhost:3000/').then(v => {
-fetch('https://example-node-api-yanaka.herokuapp.com:3000/').then(v => {
-// fetch('https://example-node-api-yanaka.herokuapp.com/').then(v => {
-	// return v.json()
+// fetch('https://example-node-api-yanaka.herokuapp.com:3000/').then(v => {
+fetch('https://example-node-api-yanaka.herokuapp.com/').then(v => {
+	// return v.text()
 	return v.json()
+	// return v//.json()
 }).then(v => {
 	console.log(v)
 })
