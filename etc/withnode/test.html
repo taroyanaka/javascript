@@ -6,7 +6,9 @@
 </head>
 <body style="background-color: gray">
 <script>
-fetch('https://example-node-api-yanaka.herokuapp.com').then(v => {
+// fetch('http://localhost:3000/').then(v => {
+fetch('https://example-node-api-yanaka.herokuapp.com:3000/').then(v => {
+// fetch('https://example-node-api-yanaka.herokuapp.com/').then(v => {
 	// return v.json()
 	return v.json()
 }).then(v => {
