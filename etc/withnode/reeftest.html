@@ -1,0 +1,107 @@
+
+<!doctype html>
+<html>
+<head>
+<title>reef test</title>
+<!-- <script src="./easytimer.min.js"></script> -->
+<script src="reef_v7_3_0.js"></script>
+<!-- <script src="dabijs_custom.js"></script> -->
+<script src="dabi.js"></script>
+<!-- Use the latest major version -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/reefjs@7/dist/reef.min.js"></script> -->
+</head>
+<body>
+<!-- <div id="app"></div> -->
+<input class="app" type="number">
+<input class="app" type="number">
+<!-- <input id="app" type="number" value="1000"> -->
+<a>a</a>
+<select>
+	<option>0</option>
+	<option>1</option>
+	<option>2</option>
+	<option>3</option>
+</select>
+<script>
+// https://gist.github.com/plugnburn/f9d3acf33bee8f3f7e2d
+// !function(){function e(b,a,c,d){c=document.querySelectorAll(b);for(d=0;el=c[d++];){if(null==a)return"value"in el?el.value:el.innerHTML;"value"in el?(el.value=a,"select"===el.tagName.toLowerCase()&&Array.prototype.forEach.call(el.querySelectorAll("option"),function(b){b.selected=b.value==a})):el.innerHTML=a}}window.DaBi=function(b,a,c,d){Object.defineProperty(a,c,{get:function(){return e(b)},set:function(a){e(b,a)},configurable:!0,enumerable:!!d})}}()
+
+var data = {foo:[],bar:"",baz:"2"};
+// DaBi('input#app', data, 'foo')
+// data.foo=100;
+DaBi('input.app', data, 'foo',true)
+data.foo=5;
+DaBi('a', data, 'bar')
+data.bar=200;
+DaBi('select', data, 'baz')
+data.baz=500;
+// Reef.debug(true);
+
+
+
+// var app = new Reef('#app', {
+//     data: {
+//         greeting: 'Hello',
+//         name: 'world',
+//         emoji: '👋'
+//     },
+//     template: function (props) {
+//         return `<h1>${props.greeting}, ${props.name}!</h1>`;
+//     }
+// });
+
+// app.render();
+
+
+// new CustomEvent('eventname');
+// document.querySelector("#app").addEventListener('eventname', function(e) {  console.log(e.detail) });
+// Reef.emit( document.querySelector("#app") , 'eventname', {	detail: 'foooo' });
+
+// // The Data Store
+// var store = new Reef.Store({
+// 	data: {
+// 		heading: 'My Todos',
+// 		todos: ['Swim', 'Climb', 'Jump', 'Play']
+// 	},
+// 	setters: {
+// 		// Add a new todo item to the component
+// 		addTodo: function (data, bar) {
+// 			data.todos.push(bar);
+// 		}
+// 	},
+// 	getters: {
+// 		total: function (foo) {
+// 			return foo.todos.length;
+// 		}
+// 	}
+// });
+
+// // The component
+// var app = new Reef('#app', {
+// 	store: store,
+// 	template: function (props) {
+// 		return `
+// 			<h1>${props.heading}</h1>
+// 			<ul>
+// 				${props.todos.map(function (todo) {
+// 					return `<li>${todo}</li>`;
+// 				}).join('')}
+// 			</ul>`;
+
+// 	}
+// });
+
+// app.render();
+// //   store.data.todos.push('Take a nap... zzzz');
+//   		// console.trace();
+// // After 3 seconds, add a todo item
+// setTimeout(function () {
+// //   store.data.todos.push('Take a nap... zzzz');
+// 	store.do('addTodo', 'Take a nap... zzzz');
+// 	// console.log(store.get('total'));
+// }, 3000);
+
+</script>
+</body>
+
+</html>
