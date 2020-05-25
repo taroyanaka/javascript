@@ -11,14 +11,14 @@
 <!-- <script src="clipboard.js"></script> -->
 </head>
 <body>
-<textarea name="foo" id="foo" cols="50" rows="10" onInput="exe();"></textarea>
+<textarea name="foo" id="foo" cols="50" rows="10" onInput="countAndImportAndExe();"></textarea>
 <textarea name="bar" id="bar" cols="50" rows="10" onInput="exe();"></textarea>
 <a id="result"></a>
 	<div>
-		under <input type="number" name="number1" id="number1" value="1" min="1" onChange="exe();">
+		under <input type="number" name="number1" id="number1" value="1" min="1" onChange="countAndImportAndExe();">
 	</div>
 	<div>
-		over <input type="number" name="number0" id="number0" value="1" min="1" onChange="exe();">
+		over <input type="number" name="number0" id="number0" value="1" min="1" onChange="countAndImportAndExe();">
 	</div>
 	<div>
 		<textarea name="qux" id="qux" cols="20" rows="100" required="required"></textarea>
@@ -62,15 +62,17 @@ const fillInTheBlank = (targetList,originalList) => {
 				})(originalList)
 }
 const exe = () =>{
-	count();
-	data.bar = data.qux;
 	document.querySelector("#result").textContent = fillInTheBlank(
 																	data.bar.split("\n")
 																	,data.foo.split(" ")
 																	);
 }
-count();
-exe();
+const countAndImportAndExe = () =>{
+	count();
+	data.bar = data.qux;
+	exe();
+}
+countAndImportAndExe();
 </script>
 </body>
 </html>
