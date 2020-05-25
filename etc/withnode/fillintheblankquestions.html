@@ -15,7 +15,6 @@
 <a id="result"></a>
 <script>
 // new ClipboardJS('.btn');
-
 const test0 = () =>{
 	document.querySelector("#foo").value = 
 `Education is the process of facilitating learning, or the acquisition of knowledge, skills, values, beliefs, and habits. Educational methods include teaching, training, storytelling, discussion and directed research. Education frequently takes place under the guidance of educators, however learners can also educate themselves.[1] Education can take place in formal or informal settings and any experience that has a formative effect on the way one thinks, feels, or acts may be considered educational. The methodology of teaching is called pedagogy.education in zambia
@@ -33,10 +32,7 @@ const fillInTheBlank = (targetList,originalList) => {
 	return R.map(X => { 
 					return R.any(R.equals(X))(targetList) ? "************" : X
 				})(originalList)
-	
 }
-
-
 const exe = () =>{
 	document.querySelector("#result").textContent = fillInTheBlank(
 																	[document.querySelector("#bar").value, document.querySelector("#baz").value]
