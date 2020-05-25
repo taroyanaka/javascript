@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width">
 <!-- https://ramdajs.com/ -->
 <script src="ramda.min.js"></script>
+<script src="dabi.js"></script>
 <!-- <script src="clipboard.js"></script> -->
 </head>
 <body>
@@ -13,16 +14,21 @@
 <textarea name="bar" id="bar" cols="50" rows="10" onInput="exe();"></textarea>
 <a id="result"></a>
 	<div>
-		under <input type="number" name="number1" id="number1" value="1" min="1" onChange="count();">
+		under <input type="number" name="number1" id="number1" value="1" min="1" onChange="exe();">
 	</div>
 	<div>
-		over <input type="number" name="number0" id="number0" value="1" min="1" onChange="count();">
+		over <input type="number" name="number0" id="number0" value="1" min="1" onChange="exe();">
 	</div>
 	<div>
 		<textarea name="qux" id="qux" cols="20" rows="100" required="required"></textarea>
 		<textarea name="quux" id="quux" cols="20" rows="100" required="required"></textarea>
 	</div>
 <script>
+let data = {foo:"",bar:"",baz:"",qux:"",quux:"",number1:"",number0:""};
+// DaBi('#foo', data, 'foo');
+const eachDataBind = (value, key) => DaBi(`#${key}`, data, `${key}`);
+R.forEachObjIndexed(eachDataBind, data);
+
 const test0 = () =>{
 	document.querySelector("#foo").value = 
 `Education is the process of facilitating learning, or the acquisition of knowledge, skills, values, beliefs, and habits. Educational methods include teaching, training, storytelling, discussion and directed research. Education frequently takes place under the guidance of educators, however learners can also educate themselves.[1] Education can take place in formal or informal settings and any experience that has a formative effect on the way one thinks, feels, or acts may be considered educational. The methodology of teaching is called pedagogy.education in zambia
@@ -30,22 +36,22 @@ const test0 = () =>{
 Formal education is commonly divided formally into such stages as preschool or kindergarten, primary school, secondary school and then college, university, or apprenticeship.
 
 A right to education has been recognized by some governments and the United Nations.[2] In most regions, education is compulsory up to a certain age. There is a movement for education reform, and in particular for evidence-based education.`;
-	[document.querySelector("#number1").value, document.querySelector("#number0").value] = ["4","2"];
+	[data.number1, data.number0] = ["4","2"];
 }
 test0();
 
 const count = ()=>{
-	const val0 = R.split(" ")(document.querySelector(`#foo`).value);
+	const val0 = R.split(" ")(data.foo);
 	const val1 = R.countBy(R.identity)(val0);
 	const val2 = R.toPairs(val1);
 	const by1AryDescend = R.descend(R.prop(1));
 	const val3 = R.sort(by1AryDescend, val2);
-	const UNDER = N => N[1] <= Number(document.querySelector(`#number1`).value);
+	const UNDER = N => N[1] <= Number(data.number1);
 	const val4 = R.filter(UNDER, val3);
-	const OVER = N => N[1] >= Number(document.querySelector(`#number0`).value);
+	const OVER = N => N[1] >= Number(data.number0);
 	const val5 = R.filter(OVER, val4);
-	document.querySelector(`#qux`).value = R.join("\n")(R.pluck(0)(val5));
-	document.querySelector(`#quux`).value = R.join("\n")(R.pluck(1)(val5));
+	data.qux = R.join("\n")(R.pluck(0)(val5));
+	data.quux = R.join("\n")(R.pluck(1)(val5));
 }
 // fillInTheBlank([2,4],[1,2,3,4]) // => [ 1, '************', 3, '************' ] 
 const fillInTheBlank = (targetList,originalList) => {
@@ -54,10 +60,11 @@ const fillInTheBlank = (targetList,originalList) => {
 				})(originalList)
 }
 const exe = () =>{
-	document.querySelector("#bar").value = document.querySelector("#qux").value;
+	count();
+	data.bar = data.qux;
 	document.querySelector("#result").textContent = fillInTheBlank(
-																	document.querySelector("#bar").value.split("\n")
-																	,document.querySelector("#foo").value.split(" ")
+																	data.bar.split("\n")
+																	,data.foo.split(" ")
 																	);
 }
 count();
