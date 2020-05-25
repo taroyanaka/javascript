@@ -42,6 +42,7 @@ A right to education has been recognized by some governments and the United Nati
 test0();
 
 const count = ()=>{
+	data.foo = data.foo.replace(/\r?\n/g,"");
 	const val0 = R.split(" ")(data.foo);
 	const val1 = R.countBy(R.identity)(val0);
 	const val2 = R.toPairs(val1);
