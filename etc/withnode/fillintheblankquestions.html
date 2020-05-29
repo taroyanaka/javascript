@@ -93,9 +93,9 @@ const shuffleArray = array => {
 }
 
 const makeRamdajsfunctionmaskqa = ()=>{
-	const functionName = data.bar.split("\n");
-	return functionName.map(VAL => {
-		const otherFunctionName = R.without(VAL, functionName);
+	const dataBarArray = data.bar.split("\n");
+	return dataBarArray.map(VAL => {
+		const otherFunctionName = R.without(VAL, dataBarArray);
 		const shuffleOtherFunctionName = shuffleArray(otherFunctionName);
 		const shuffleOtherFunctionNameThree = R.take(3,shuffleOtherFunctionName);
 		const AAAA = R.prepend(VAL, shuffleOtherFunctionNameThree);
@@ -125,7 +125,7 @@ const checkQA = (event) =>{
 const makeQAHTML = (QAAAAarray) =>{
 	const makeQASet = (QAAAA,KEY) => {
 		const AAAA = R.takeLast(4,QAAAA);
-		const referenceFunction = R.pipe(R.split(" "),R.map(V=>{return `<span onclick="show('${V}')">${V} </span>`}))(AAAA[0]+` `+AAAA[1]+` `+AAAA[2]+` `+AAAA[3]);
+		// const referenceFunction = R.pipe(R.split(" "),R.map(V=>{return `<span onclick="show('${V}')">${V} </span>`}))(AAAA[0]+` `+AAAA[1]+` `+AAAA[2]+` `+AAAA[3]);
 		// const answerText = document.querySelector(`#${QAAAA[0]} + section`).querySelector(".javascript").innerText;
 		const answerText = QAAAA[0];
 		// const maskAnswerText = answerText.replace(new RegExp(QAAAA[0], 'g'), "~");
@@ -135,8 +135,8 @@ const makeQAHTML = (QAAAAarray) =>{
 						<input type="button" value="${AAAA[1]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
 						<input type="button" value="${AAAA[2]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
 						<input type="button" value="${AAAA[3]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
-						${referenceFunction.join("")}
 				</div>`;
+										// ${referenceFunction.join("")}
 	}
 	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet).join("") );
 	countAllPoint();
