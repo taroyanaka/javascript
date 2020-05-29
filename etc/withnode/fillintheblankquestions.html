@@ -9,8 +9,16 @@
 <!-- https://gist.github.com/plugnburn/f9d3acf33bee8f3f7e2d -->
 <script src="dabijs_custom.js"></script>
 <!-- <script src="clipboard.js"></script> -->
+<script src="./easytimer.min.js"></script>
 </head>
 <body>
+  <div id="TIME">00:00:00</div>
+  <button id="TIMERPAUSE" onclick="TIMER.pause();">Timer pause</button>
+  <button id="TIMERSTART" onclick="TIMER.start();">Timer start</button>
+
+<span id="point">0</span><span>/</span><span id="allPoint">0</span>
+<div id="QASet"></div>
+
 <textarea name="foo" id="foo" cols="50" rows="10" onInput="countAndImportAndExe();"></textarea>
 <textarea name="bar" id="bar" cols="50" rows="10" onInput="exe();"></textarea>
 <a id="result"></a>
@@ -72,7 +80,70 @@ const countAndImportAndExe = () =>{
 	data.bar = data.qux;
 	exe();
 }
+
+
+const shuffleArray = array => {
+	for (let i = array.length - 1; i > 0; i--) {
+	let r = Math.floor(Math.random() * (i + 1));
+	let tmp = array[i];
+	array[i] = array[r];
+	array[r] = tmp;
+	}
+	return array
+}
+
+const makeRamdajsfunctionmaskqa = ()=>{
+	const functionName = data.bar.split("\n");
+	return functionName.map(VAL => {
+		const otherFunctionName = R.without(VAL, functionName);
+		const shuffleOtherFunctionName = shuffleArray(otherFunctionName);
+		const shuffleOtherFunctionNameThree = R.take(3,shuffleOtherFunctionName);
+		const AAAA = R.prepend(VAL, shuffleOtherFunctionNameThree);
+		const shuffledAAAA = shuffleArray(AAAA);
+		const QshuffledAAAA = R.prepend(VAL, shuffledAAAA);
+		return QshuffledAAAA
+	})
+	
+}
+
+
+const TIMER = new easytimer.Timer();
+TIMER.addEventListener('secondsUpdated', () => document.querySelector('#TIME').innerText = TIMER.getTimeValues().toString() );
+const countAllPoint = () =>	document.querySelector(`#allPoint`).innerText = document.querySelectorAll(`#QASet > div`).length;
+const countPoint = () => document.querySelector(`#point`).innerText = Number(document.querySelector(`#allPoint`).innerText) - document.querySelectorAll(`#QASet > div`).length;
+const checkWorkOut = () =>{ if(document.querySelector(`#point`).innerText === document.querySelector(`#allPoint`).innerText){ TIMER.stop() } };
+const checkQA = (event) =>{
+							if(event.target.value === event.target.dataset.answer){
+								document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
+							// }else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) };
+							}
+							countPoint();
+							checkWorkOut();
+							// localStorage.saveData = document.querySelector("body").outerHTML;
+						  };
+
+const makeQAHTML = (QAAAAarray) =>{
+	const makeQASet = (QAAAA,KEY) => {
+		const AAAA = R.takeLast(4,QAAAA);
+		const referenceFunction = R.pipe(R.split(" "),R.map(V=>{return `<span onclick="show('${V}')">${V} </span>`}))(AAAA[0]+` `+AAAA[1]+` `+AAAA[2]+` `+AAAA[3]);
+		// const answerText = document.querySelector(`#${QAAAA[0]} + section`).querySelector(".javascript").innerText;
+		const answerText = QAAAA[0];
+		// const maskAnswerText = answerText.replace(new RegExp(QAAAA[0], 'g'), "~");
+		return `<div class="QA" data-id="${KEY}">
+						<span onclick="show('${QAAAA[0]}')">${answerText}</span>
+						<input type="button" value="${AAAA[0]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+						<input type="button" value="${AAAA[1]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+						<input type="button" value="${AAAA[2]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+						<input type="button" value="${AAAA[3]}" data-answer="${QAAAA[0]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+						${referenceFunction.join("")}
+				</div>`;
+	}
+	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet).join("") );
+	countAllPoint();
+};
+
 countAndImportAndExe();
+makeQAHTML(makeRamdajsfunctionmaskqa());
 </script>
 </body>
 </html>
