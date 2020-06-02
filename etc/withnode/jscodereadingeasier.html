@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>js code reading easier</title>
+<meta name="viewport" content="width=device-width">
+<!-- https://ramdajs.com/ -->
+<script src="ramda.min.js"></script>
+<!-- https://gist.github.com/plugnburn/f9d3acf33bee8f3f7e2d -->
+<script src="dabijs_custom.js"></script>
+</head>
+<body>
+<button onclick="test0();">TEST</button>
+valueBold<input id="valueBold" type="checkbox" onchange="exe()" checked>
+{}<input id="target0" type="checkbox" onchange="exe()" checked>
+[]<input id="target1" type="checkbox" onchange="exe()" checked>
+()<input id="target2" type="checkbox" onchange="exe()" checked>
+=<input id="target3" type="checkbox" onchange="exe()" checked>
+;<input id="target4" type="checkbox" onchange="exe()" checked>
+'<input id="target5" type="checkbox" onchange="exe()" checked>
+"<input id="target6" type="checkbox" onchange="exe()" checked>
+/<input id="target7" type="checkbox" onchange="exe()" checked>
+.<input id="target8" type="checkbox" onchange="exe()" checked>
+,<input id="target9" type="checkbox" onchange="exe()" checked>
+:<input id="target10" type="checkbox" onchange="exe()" checked>
+const<input id="target11" type="checkbox" onchange="exe()" checked>
+let<input id="target12" type="checkbox" onchange="exe()" checked>
+var<input id="target13" type="checkbox" onchange="exe()" checked>
+function<input id="target14" type="checkbox" onchange="exe()" checked>
+<button onclick="uncheckall();">uncheckall</button>
+<button onclick="checkall();">checkall</button>
+<div>
+<textarea name="foo" id="foo" cols="80" rows="30" onInput="exe();"></textarea>
+<textarea name="bar" id="bar" cols="80" rows="30"></textarea>
+</div>
+<div>
+<a id="result"></a>
+</div>
+<script>
+let data = {foo:"",bar:"",baz:"",qux:"",quux:"",number1:"",number0:""};
+// DaBi('#foo', data, 'foo');
+const eachDataBind = (value, key) => DaBi(`#${key}`, data, `${key}`);
+R.forEachObjIndexed(eachDataBind, data);
+
+const test0 = () =>{
+	document.querySelector("#foo").value = 
+`const str = "foobarbaz";
+const numberArray = [1,2,3,4];
+		const keyConfig = () => {
+			window.addEventListener("keydown", function (event) {
+			if (event.defaultPrevented) {
+				return; // Do nothing if the event was already processed
+			}
+				switch (event.key) {
+				case "5":
+					document.querySelector('#start').click()
+				break;
+				case "1":
+					document.querySelector('#previous').click()
+				break;
+				case "2":
+					document.querySelector('#minibackward').click()
+				break;
+				case "3":
+					document.querySelector('#miniforward').click()
+				break;
+				case "4":
+					document.querySelector('#next').click()
+				break;
+				case "h":
+					document.querySelector('#position').value = 50;
+					position();
+				break;
+				case "Enter":
+				default:
+				}
+			// Cancel the default action to avoid it being handled twice
+			event.preventDefault();
+			}, true);
+		};`
+		exe();
+}
+
+const uncheckall = () => document.querySelectorAll('input').forEach(E=>{E.checked=false});
+const checkall = () => document.querySelectorAll('input').forEach(E=>{E.checked=true});
+const exe = () =>{
+	data.bar =  data.foo;
+
+	if(document.querySelector("#target0").checked){ data.bar = R.replace(/[\{\}]/g, ' ', data.bar) };
+	if(document.querySelector("#target1").checked){ data.bar = R.replace(/[\[\]]/g, ' ', data.bar) };
+	if(document.querySelector("#target2").checked){ data.bar = R.replace(/[\(\)]/g, ' ', data.bar) };
+	if(document.querySelector("#target3").checked){ data.bar = R.replace(/=/g, ' ', data.bar) };
+	if(document.querySelector("#target4").checked){ data.bar = R.replace(/;/g, ' ', data.bar) };
+	if(document.querySelector("#target5").checked){ data.bar = R.replace(/'/g, ' ', data.bar) };
+	if(document.querySelector("#target6").checked){ data.bar = R.replace(/"/g, ' ', data.bar) };
+	if(document.querySelector("#target7").checked){ data.bar = R.replace(/\//g, ' ', data.bar) };
+	if(document.querySelector("#target8").checked){ data.bar = R.replace(/\./g, ' ', data.bar) };
+	if(document.querySelector("#target9").checked){ data.bar = R.replace(/,/g, ' ', data.bar) };
+	if(document.querySelector("#target10").checked){ data.bar = R.replace(/:/g, ' ', data.bar) };
+	if(document.querySelector("#target11").checked){ data.bar = R.replace(/const/g, ' ', data.bar) };
+	if(document.querySelector("#target12").checked){ data.bar = R.replace(/let/g, ' ', data.bar) };
+	if(document.querySelector("#target13").checked){ data.bar = R.replace(/var/g, ' ', data.bar) };
+	if(document.querySelector("#target14").checked){ data.bar = R.replace(/function/g, ' ', data.bar) };
+
+	if(document.querySelector("#valueBold").checked){
+		const TARGETTEXT = data.foo;
+		let REG = /(const|let|var)\s(.+?)\s/gi;
+		let MATCH = REG.exec(TARGETTEXT);
+		do {
+			data.bar = R.replace( new RegExp( MATCH[2] ), `<B>${MATCH[2]}</B>`, data.bar)
+		} while ((MATCH = REG.exec(TARGETTEXT)) !== null);
+	}
+
+	document.querySelector("#result").innerHTML = R.replace(/\n/g, '<br>', data.bar);
+}
+exe();
+document.querySelector("button").click();
+</script>
+</body>
+</html>
