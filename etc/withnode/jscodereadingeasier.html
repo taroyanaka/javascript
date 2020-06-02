@@ -15,6 +15,7 @@ valueBold<input id="valueBold" type="checkbox" onchange="exe()" checked>
 {}<input id="target0" type="checkbox" onchange="exe()" checked>
 []<input id="target1" type="checkbox" onchange="exe()" checked>
 ()<input id="target2" type="checkbox" onchange="exe()" checked>
+<><input id="target2-1" type="checkbox" onchange="exe()" checked>
 =<input id="target3" type="checkbox" onchange="exe()" checked>
 ;<input id="target4" type="checkbox" onchange="exe()" checked>
 '<input id="target5" type="checkbox" onchange="exe()" checked>
@@ -22,6 +23,7 @@ valueBold<input id="valueBold" type="checkbox" onchange="exe()" checked>
 /<input id="target7" type="checkbox" onchange="exe()" checked>
 .<input id="target8" type="checkbox" onchange="exe()" checked>
 ,<input id="target9" type="checkbox" onchange="exe()" checked>
+:<input id="target10" type="checkbox" onchange="exe()" checked>
 :<input id="target10" type="checkbox" onchange="exe()" checked>
 const<input id="target11" type="checkbox" onchange="exe()" checked>
 let<input id="target12" type="checkbox" onchange="exe()" checked>
@@ -89,6 +91,7 @@ const exe = () =>{
 	if(document.querySelector("#target0").checked){ data.bar = R.replace(/[\{\}]/g, ' ', data.bar) };
 	if(document.querySelector("#target1").checked){ data.bar = R.replace(/[\[\]]/g, ' ', data.bar) };
 	if(document.querySelector("#target2").checked){ data.bar = R.replace(/[\(\)]/g, ' ', data.bar) };
+	if(document.querySelector("#target2-1").checked){ data.bar = R.replace(/[<>]/g, ' ', data.bar) };
 	if(document.querySelector("#target3").checked){ data.bar = R.replace(/=/g, ' ', data.bar) };
 	if(document.querySelector("#target4").checked){ data.bar = R.replace(/;/g, ' ', data.bar) };
 	if(document.querySelector("#target5").checked){ data.bar = R.replace(/'/g, ' ', data.bar) };
