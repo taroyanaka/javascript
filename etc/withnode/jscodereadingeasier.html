@@ -37,7 +37,7 @@ function<input id="target14" type="checkbox" onchange="exe()" checked>
 <a id="result"></a>
 </div>
 <script>
-let data = {foo:"",bar:"",baz:"",qux:"",quux:"",number1:"",number0:""};
+let data = {foo:"",bar:""};//,baz:"",qux:"",quux:"",number1:"",number0:""};
 // DaBi('#foo', data, 'foo');
 const eachDataBind = (value, key) => DaBi(`#${key}`, data, `${key}`);
 R.forEachObjIndexed(eachDataBind, data);
