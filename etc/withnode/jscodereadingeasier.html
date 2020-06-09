@@ -134,6 +134,9 @@ const uncheckall = () => document.querySelectorAll('input').forEach(E=>{E.checke
 const checkall = () => document.querySelectorAll('input').forEach(E=>{E.checked=true});
 const exe = () =>{
 	data.bar =  data.foo;
+	const replaceText0 = (STR) =>{	data.bar = R.replace(new RegExp( STR ,"g" ), ' ', data.bar) };
+	document.querySelector("#baz").value.split("\n").forEach(V=>{ replaceText0(V)} );
+
 	if(document.querySelector("#valueBold").checked){
 		const TARGETTEXT = data.foo;
 		let REG = /(const|let|var)\s(.+?)\s/gi;
@@ -143,8 +146,10 @@ const exe = () =>{
 			data.bar = R.replace( new RegExp( MATCH[2] ), `<B>${MATCH[2]}</B>`, data.bar)
 		} while ((MATCH = REG.exec(TARGETTEXT)) !== null);
 	}
+
 	document.querySelector("#result").innerHTML = R.replace(/\n/g, '<br>', data.bar);
 }
+
 
 const lexicalGrammarChange = () =>{
 	document.querySelector("#result").innerHTML = R.replace(/\n/g, '<br>', data.bar);
