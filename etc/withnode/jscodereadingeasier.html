@@ -134,67 +134,29 @@ const uncheckall = () => document.querySelectorAll('input').forEach(E=>{E.checke
 const checkall = () => document.querySelectorAll('input').forEach(E=>{E.checked=true});
 const exe = () =>{
 	data.bar =  data.foo;
-
-
-// fillInTheBlank([2,4],[1,2,3,4]) // => [ 1, '************', 3, '************' ]
-// const fillInTheBlank = (targetList,originalList) => {
-// 	return R.map(X => { 
-// 					return R.any(R.equals(X))(targetList) ? "************" : X
-// 				})(originalList)
-// }
-
-const replaceText0 = (STR) =>{	data.bar = R.replace(new RegExp( STR ,"g" ), ' ', data.bar) };
-document.querySelector("#baz").value.split("\n").forEach(V=>{ replaceText0(V)} );
-
-// const replaceText1 = (STR) =>{	
-// 	// data.bar = R.replace(new RegExp( STR ,"g" ), '**************', data.bar) 
-// 	const TARGETTEXT = data.foo;
-// 	let REG = new RegExp( "(" + STR + "?)" ,"g" );
-// 	// let REG = /(const|let|var)\s(.+?)\s/gi;
-// 	let MATCH = REG.exec(TARGETTEXT);
-// 	do {
-// 		data.bar = R.replace( new RegExp( MATCH ), `<B>${MATCH}</B>`, data.bar)
-// 	} while ((MATCH = REG.exec(TARGETTEXT)) !== null);
-// };
-// lexicalGrammar.split("\n").forEach(V=>{ replaceText1(V)} );
-
 	if(document.querySelector("#valueBold").checked){
 		const TARGETTEXT = data.foo;
-		// let REG = /(const|let|var|break|case|catch|continue|debugger|default|delete)/gi;
-		// let REG = /(const|let|var|break|case|catch|continue|debugger|default|delete)\s(.+?)\s/gi;
-		// let REG = /((const|let|var))\s(.+?)\s/gi;
-		// let REG = /(const|case)/g;
 		let REG = /(const|let|var)\s(.+?)\s/gi;
 		let MATCH = REG.exec(TARGETTEXT);
 		console.log(MATCH[2])
 		do {
-			// data.bar = R.replace( new RegExp( MATCH[1] ), `<B>${MATCH[1]}</B>`, data.bar)
 			data.bar = R.replace( new RegExp( MATCH[2] ), `<B>${MATCH[2]}</B>`, data.bar)
-			// data.bar = R.replace( new RegExp( MATCH[3] ), `<B>${MATCH[3]}</B>`, data.bar)
-			// console.log(MATCH)
 		} while ((MATCH = REG.exec(TARGETTEXT)) !== null);
 	}
-
 	document.querySelector("#result").innerHTML = R.replace(/\n/g, '<br>', data.bar);
 }
-
 
 const lexicalGrammarChange = () =>{
 	document.querySelector("#result").innerHTML = R.replace(/\n/g, '<br>', data.bar);
 		const replaceText = (str) =>{
 		let reg = new RegExp(str,"g");
-		document.querySelector("#result").innerText = R.replace(reg, " <i>"+str+"</i> ", document.querySelector("#result").innerText);
+		document.querySelector("#result").innerText = R.replace(reg, " <B>"+str+"</B> ", document.querySelector("#result").innerText);
 	}
 	document.querySelector("#qux").value.split("\n").forEach(V => { replaceText(V) });
 	document.querySelector("#result").innerHTML = R.replace(/\n/g, '<br>', document.querySelector("#result").innerText);
 }
 
-
-
-
 exe();
-
-
 </script>
 </body>
 </html>
