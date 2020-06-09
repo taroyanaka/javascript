@@ -10,39 +10,87 @@
 <script src="dabijs_custom.js"></script>
 </head>
 <body>
-<button onclick="test0();">TEST</button>
+<button onclick="test0();">TEST0</button>
+<button onclick="lexicalGrammarChange();">TEST1</button>
 valueBold<input id="valueBold" type="checkbox" onchange="exe()" checked>
-{}<input id="target0" type="checkbox" onchange="exe()" checked>
-[]<input id="target1" type="checkbox" onchange="exe()" checked>
-()<input id="target2" type="checkbox" onchange="exe()" checked>
-<><input id="target2-1" type="checkbox" onchange="exe()" checked>
-=<input id="target3" type="checkbox" onchange="exe()" checked>
-;<input id="target4" type="checkbox" onchange="exe()" checked>
-'<input id="target5" type="checkbox" onchange="exe()" checked>
-"<input id="target6" type="checkbox" onchange="exe()" checked>
-/<input id="target7" type="checkbox" onchange="exe()" checked>
-.<input id="target8" type="checkbox" onchange="exe()" checked>
-,<input id="target9" type="checkbox" onchange="exe()" checked>
-:<input id="target10" type="checkbox" onchange="exe()" checked>
-:<input id="target10" type="checkbox" onchange="exe()" checked>
-const<input id="target11" type="checkbox" onchange="exe()" checked>
-let<input id="target12" type="checkbox" onchange="exe()" checked>
-var<input id="target13" type="checkbox" onchange="exe()" checked>
-function<input id="target14" type="checkbox" onchange="exe()" checked>
-<button onclick="uncheckall();">uncheckall</button>
-<button onclick="checkall();">checkall</button>
 <div>
 <textarea name="foo" id="foo" cols="80" rows="30" onInput="exe();"></textarea>
-<textarea name="bar" id="bar" cols="80" rows="30"></textarea>
+<textarea name="bar" id="bar" cols="80" rows="30" onInput="exe();lexicalGrammarChange();"></textarea>
+<textarea name="baz" id="baz" cols="80" rows="30" onInput="exe();lexicalGrammarChange();"></textarea>
+<textarea name="qux" id="qux" cols="80" rows="30" onInput="exe();lexicalGrammarChange();"></textarea>
 </div>
 <div>
 <a id="result"></a>
 </div>
 <script>
-let data = {foo:"",bar:""};//,baz:"",qux:"",quux:"",number1:"",number0:""};
+let data = {foo:"",bar:"",baz:"",qux:""};//,quux:"",number1:"",number0:""};
 // DaBi('#foo', data, 'foo');
 const eachDataBind = (value, key) => DaBi(`#${key}`, data, `${key}`);
 R.forEachObjIndexed(eachDataBind, data);
+
+	document.querySelector("#baz").value = `\{
+\}
+\\[
+\\]
+\\(
+\\)
+<
+>
+=
+;
+'
+"
+\\/
+\\.
+,
+:`;
+
+	document.querySelector("#qux").value = `break
+case
+catch
+const
+continue
+debugger
+default
+delete
+do
+else
+finally
+for
+function
+if
+in
+instanceof
+new
+return
+switch
+this
+throw
+try
+typeof
+var
+void
+while
+with
+class
+enum
+export
+extends
+import
+super
+implements
+interface
+let
+package
+private
+protected
+public
+static
+yield
+null
+true
+false`;
+
 
 const test0 = () =>{
 	document.querySelector("#foo").value = 
@@ -51,7 +99,7 @@ const numberArray = [1,2,3,4];
 		const keyConfig = () => {
 			window.addEventListener("keydown", function (event) {
 			if (event.defaultPrevented) {
-				return; // Do nothing if the event was already processed
+				return;
 			}
 				switch (event.key) {
 				case "5":
@@ -76,7 +124,6 @@ const numberArray = [1,2,3,4];
 				case "Enter":
 				default:
 				}
-			// Cancel the default action to avoid it being handled twice
 			event.preventDefault();
 			}, true);
 		};`
@@ -88,36 +135,66 @@ const checkall = () => document.querySelectorAll('input').forEach(E=>{E.checked=
 const exe = () =>{
 	data.bar =  data.foo;
 
-	if(document.querySelector("#target0").checked){ data.bar = R.replace(/[\{\}]/g, ' ', data.bar) };
-	if(document.querySelector("#target1").checked){ data.bar = R.replace(/[\[\]]/g, ' ', data.bar) };
-	if(document.querySelector("#target2").checked){ data.bar = R.replace(/[\(\)]/g, ' ', data.bar) };
-	if(document.querySelector("#target2-1").checked){ data.bar = R.replace(/[<>]/g, ' ', data.bar) };
-	if(document.querySelector("#target3").checked){ data.bar = R.replace(/=/g, ' ', data.bar) };
-	if(document.querySelector("#target4").checked){ data.bar = R.replace(/;/g, ' ', data.bar) };
-	if(document.querySelector("#target5").checked){ data.bar = R.replace(/'/g, ' ', data.bar) };
-	if(document.querySelector("#target6").checked){ data.bar = R.replace(/"/g, ' ', data.bar) };
-	if(document.querySelector("#target7").checked){ data.bar = R.replace(/\//g, ' ', data.bar) };
-	if(document.querySelector("#target8").checked){ data.bar = R.replace(/\./g, ' ', data.bar) };
-	if(document.querySelector("#target9").checked){ data.bar = R.replace(/,/g, ' ', data.bar) };
-	if(document.querySelector("#target10").checked){ data.bar = R.replace(/:/g, ' ', data.bar) };
-	if(document.querySelector("#target11").checked){ data.bar = R.replace(/const/g, ' ', data.bar) };
-	if(document.querySelector("#target12").checked){ data.bar = R.replace(/let/g, ' ', data.bar) };
-	if(document.querySelector("#target13").checked){ data.bar = R.replace(/var/g, ' ', data.bar) };
-	if(document.querySelector("#target14").checked){ data.bar = R.replace(/function/g, ' ', data.bar) };
+
+// fillInTheBlank([2,4],[1,2,3,4]) // => [ 1, '************', 3, '************' ]
+// const fillInTheBlank = (targetList,originalList) => {
+// 	return R.map(X => { 
+// 					return R.any(R.equals(X))(targetList) ? "************" : X
+// 				})(originalList)
+// }
+
+const replaceText0 = (STR) =>{	data.bar = R.replace(new RegExp( STR ,"g" ), ' ', data.bar) };
+document.querySelector("#baz").value.split("\n").forEach(V=>{ replaceText0(V)} );
+
+// const replaceText1 = (STR) =>{	
+// 	// data.bar = R.replace(new RegExp( STR ,"g" ), '**************', data.bar) 
+// 	const TARGETTEXT = data.foo;
+// 	let REG = new RegExp( "(" + STR + "?)" ,"g" );
+// 	// let REG = /(const|let|var)\s(.+?)\s/gi;
+// 	let MATCH = REG.exec(TARGETTEXT);
+// 	do {
+// 		data.bar = R.replace( new RegExp( MATCH ), `<B>${MATCH}</B>`, data.bar)
+// 	} while ((MATCH = REG.exec(TARGETTEXT)) !== null);
+// };
+// lexicalGrammar.split("\n").forEach(V=>{ replaceText1(V)} );
 
 	if(document.querySelector("#valueBold").checked){
 		const TARGETTEXT = data.foo;
+		// let REG = /(const|let|var|break|case|catch|continue|debugger|default|delete)/gi;
+		// let REG = /(const|let|var|break|case|catch|continue|debugger|default|delete)\s(.+?)\s/gi;
+		// let REG = /((const|let|var))\s(.+?)\s/gi;
+		// let REG = /(const|case)/g;
 		let REG = /(const|let|var)\s(.+?)\s/gi;
 		let MATCH = REG.exec(TARGETTEXT);
+		console.log(MATCH[2])
 		do {
+			// data.bar = R.replace( new RegExp( MATCH[1] ), `<B>${MATCH[1]}</B>`, data.bar)
 			data.bar = R.replace( new RegExp( MATCH[2] ), `<B>${MATCH[2]}</B>`, data.bar)
+			// data.bar = R.replace( new RegExp( MATCH[3] ), `<B>${MATCH[3]}</B>`, data.bar)
+			// console.log(MATCH)
 		} while ((MATCH = REG.exec(TARGETTEXT)) !== null);
 	}
 
 	document.querySelector("#result").innerHTML = R.replace(/\n/g, '<br>', data.bar);
 }
+
+
+const lexicalGrammarChange = () =>{
+	document.querySelector("#result").innerHTML = R.replace(/\n/g, '<br>', data.bar);
+		const replaceText = (str) =>{
+		let reg = new RegExp(str,"g");
+		document.querySelector("#result").innerText = R.replace(reg, " <i>"+str+"</i> ", document.querySelector("#result").innerText);
+	}
+	document.querySelector("#qux").value.split("\n").forEach(V => { replaceText(V) });
+	document.querySelector("#result").innerHTML = R.replace(/\n/g, '<br>', document.querySelector("#result").innerText);
+}
+
+
+
+
 exe();
-document.querySelector("button").click();
+
+
 </script>
 </body>
 </html>

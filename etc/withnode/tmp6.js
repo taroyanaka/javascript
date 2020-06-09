@@ -4,35 +4,110 @@
 
 const R = require(`ramda`);
 
-const txt = `const count = ()=>{
-	data.foo = data.foo.replace(/\r?\n/g,"");
-	const val0 = R.split(" ")(data.foo);
-	const val1 = R.countBy(R.identity)(val0);
-	const val2 = R.toPairs(val1);
-	const by1AryDescend = R.descend(R.prop(1));
-	const val3 = R.sort(by1AryDescend, val2);
-	const UNDER = N => N[1] <= Number(data.number1);
-	const val4 = R.filter(UNDER, val3);
-	const OVER = N => N[1] >= Number(data.number0);
-	const val5 = R.filter(OVER, val4);
-	data.qux = R.join("\n")(R.pluck(0)(val5));
-	data.quux = R.join("\n")(R.pluck(1)(val5));
-}`
-
-console.log(
-	txt
-);
 
 
+const foo = `const str = "foobarbaz";
+const numberArray = [1,2,3,4];
+		const keyConfig = () => {
+			window.addEventListener("keydown", function (event) {
+			if (event.defaultPrevented) {
+				return; // Do nothing if the event was already processed
+			}
+				switch (event.key) {
+				case "5":
+					document.querySelector('#start').click()
+				break;
+				case "1":
+					document.querySelector('#previous').click()
+				break;
+				case "2":
+					document.querySelector('#minibackward').click()
+				break;
+				case "3":
+					document.querySelector('#miniforward').click()
+				break;
+				case "4":
+					document.querySelector('#next').click()
+				break;
+				case "h":
+					document.querySelector('#position').value = 50;
+					position();
+				break;
+				case "Enter":
+				default:
+				}
+			// Cancel the default action to avoid it being handled twice
+			event.preventDefault();
+			}, true);
+		};`
 
+let bar="";
 
-var aliceExcerpt = `const str = "foobarbaz";
-let numberArray = [1,2,3,4];
-		var keyConfig = () => {`
+const lexicalGrammar = `break
+case
+catch
+continue
+debugger
+default
+delete
+do
+else
+finally
+for
+function
+if
+in
+instanceof
+new
+return
+switch
+this
+throw
+try
+typeof
+var
+void
+while
+with
+class
+enum
+export
+extends
+import
+super
+implements
+interface
+let
+package
+private
+protected
+public
+static
+yield
+null
+true
+false`
 
-let regexpNames = /[const|let|var]\s(.+?)\s.+?\s/mig;
-let match = regexpNames.exec(aliceExcerpt);
+// const replaceText1 = (STR) => {
+// 	// data.bar = R.replace(new RegExp( STR ,"g" ), '**************', data.bar) 
+// 	const TARGETTEXT = foo;
+// 	let REG = new RegExp("(" + STR + "?)", "gi");
+// 	// let REG = /(const|let|var)\s(.+?)\s/gi;
+// 	let MATCH = REG.exec(TARGETTEXT);
+// 	do {
+// 		// bar = R.replace(new RegExp( MATCH[0] ), `<B>${ MATCH[0] }</B>`, bar)
+// 		// bar = R.replace(new RegExp(MATCH[1]), `<B>${MATCH[1]}</B>`, bar)
+// 		console.log( MATCH[0] )
+// 	} while ((MATCH = REG.exec(TARGETTEXT)) !== null);
+// };
+// lexicalGrammar.split("\n").forEach(V => { replaceText1(V) });
 
+bar = foo;
+const TARGETTEXT = foo;
+let REG = /(const)/gi;
+let MATCH = REG.exec(TARGETTEXT);
 do {
-	console.log(`Hello ${match[1]} ${match[2]}`);
-} while ((match = regexpNames.exec(aliceExcerpt)) !== null);
+	bar = R.replace(new RegExp(MATCH[1]), `<B>${MATCH[1]}</B>`, bar);
+	// console.log(MATCH[0])
+	console.log(bar);
+} while ((MATCH = REG.exec(TARGETTEXT)) !== null);
