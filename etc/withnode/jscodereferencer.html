@@ -1,9 +1,23 @@
-// ({
-// 	"plugins": ["jsdom-quokka-plugin"],
-// })
-
-const R = require(`ramda`);
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>js code referencer</title>
+<meta name="viewport" content="width=device-width">
+<!-- https://ramdajs.com/ -->
+<script src="ramda.min.js"></script>
+<!-- https://gist.github.com/plugnburn/f9d3acf33bee8f3f7e2d -->
+<script src="dabijs_custom.js"></script>
+</head>
+<body>
+<button onclick="test();">TEST</button>
+<div>
+<textarea name="foo" id="foo" cols="80" rows="30" onInput="exe();"></textarea>
+</div>
+<div>
+<a id="result"></a>
+</div>
+<script>
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 const allObject = [
 	Object,
@@ -59,9 +73,31 @@ const getAnyLang = (LANG="ja") =>{
 getAnyLang("ja");
 
 const unnestObjectMethodAndUrl = R.unnest(objectMethodAndUrl);
-console.log(unnestObjectMethodAndUrl);
 
 
+let data = {foo:""};//,bar:"",baz:"",qux:"",quux:"",number1:"",number0:""};
+// DaBi('#foo', data, 'foo');
+const eachDataBind = (value, key) => DaBi(`#${key}`, data, `${key}`);
+R.forEachObjIndexed(eachDataBind, data);
+
+
+// const ar0=[
+// 	['Array',
+// 	'forEach',
+// 	'https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach'],
+// 	['Array',
+// 		'filter',
+// 		'https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/filter'],
+// 	['Array',
+// 		'flat',
+// 		'https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/flat'],
+// 	['Array',
+// 		'flatMap',
+// 		'https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap'],
+// 	['Array',
+// 		'map',
+// 		'https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/map'],
+// ]
 
 const ar0 = [['Object',
 	'constructor',
@@ -735,3 +771,75 @@ const ar0 = [['Object',
 ['Promise',
 	'toLocaleString',
 	'https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Promise/toLocaleString']];
+
+
+const fillInTheBlank = (targetList,originalList) => {
+	return R.map(X => { 
+					return R.any(R.equals(X))(targetList) ? "************" : X
+				})(originalList)
+}
+
+document.querySelector("#result").innerText = document.querySelector("#foo").value;
+
+const replaceText = (ar) =>{
+	let reg = new RegExp(ar[1],"gi");
+	// const tmp = R.replace(reg, `<a href="${ar[2]}">`+ar[1]+"</a>", data.foo);
+	const tmp = R.replace(reg, `<a href="${ar[2]}">`+ar[1]+"</a>", tmpHTML);
+	// document.querySelector("#result").innerText = R.replace(reg, `<a href="${ar[2]}">`+ar[1]+"</a>", document.querySelector("#result").innerText);
+	tmpHTML = R.replace(/\n/g, '<br>', tmp);
+}
+
+
+let tmpHTML="";
+const exe = ()=>{
+	tmpHTML = data.foo;
+	ar0.forEach(V=>{
+		replaceText(V)
+	});
+	document.querySelector("#result").innerHTML = tmpHTML;
+}
+
+const test = ()=>{
+	document.querySelector("#foo").value = `const getMethods = (obj) => {
+	let properties = new Set()
+	let currentObj = obj
+	do {
+		Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
+	} while ((currentObj = Object.getPrototypeOf(currentObj)))
+	return [...properties.keys()].filter(item => typeof obj[item] === 'function')
+}
+
+let res = [];
+let objectMethodAndUrl = [];
+
+const getAnyLang = (LANG="ja") =>{
+	allObject.forEach(V => { 
+		const e = allObjectString.shift();
+		res.push(
+			getMethods(V.prototype).map(V => {
+			})
+		)
+		objectMethodAndUrl.push(
+			getMethods(V.prototype).map(V => {
+			})
+		)
+	})
+}
+getAnyLang("ja");`
+
+// 	`foo
+// bar baz
+// map
+// hogeforEach
+// foo
+// bar baz
+// map
+// hoge
+// forEach
+// js`
+	exe();
+}
+// test();
+</script>
+</body>
+</html>
