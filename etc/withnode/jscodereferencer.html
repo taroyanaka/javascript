@@ -12,6 +12,20 @@
 <body>
 <button onclick="test();">TEST</button>
 <div>
+<div>
+<select name="objectOption" id="objectOption" onInput="chooseObjectOption();">
+	<option value="Object">Object</option>
+	<option value="Boolean">Boolean</option>
+	<option value="Error">Error</option>
+	<option value="Number">Number</option>
+	<option value="Date">Date</option>
+	<option value="String">String</option>
+	<option value="RegExp">RegExp</option>
+	<option value="Array">Array</option>
+	<option value="Promise">Promise</option>
+</select>
+</div>
+
 <textarea name="foo" id="foo" cols="80" rows="30" onInput="exe();"></textarea>
 </div>
 <div>
@@ -30,17 +44,17 @@ const allObject = [
 	Array,
 	Promise,
 ]
-let allObjectString = [
-	"Object",
-	"Boolean",
-	"Error",
-	"Number",
-	"Date",
-	"String",
-	"RegExp",
-	"Array",
-	"Promise",
-]
+// let allObjectString = [
+// 	"Object",
+// 	"Boolean",
+// 	"Error",
+// 	"Number",
+// 	"Date",
+// 	"String",
+// 	"RegExp",
+// 	"Array",
+// 	"Promise",
+// ]
 
 // https://flaviocopes.com/how-to-list-object-methods-javascript/
 const getMethods = (obj) => {
@@ -57,7 +71,7 @@ let objectMethodAndUrl = [];
 
 const getAnyLang = (LANG="ja") =>{
 	allObject.forEach(V => { 
-		const e = allObjectString.shift();
+		const e = V.toString().split(" ")[1].replace("()","")
 		res.push(
 			getMethods(V.prototype).map(V => {
 				return `https://developer.mozilla.org/${LANG}/docs/Web/JavaScript/Reference/Global_Objects/${e}/${V}`
@@ -73,6 +87,11 @@ const getAnyLang = (LANG="ja") =>{
 getAnyLang("ja");
 
 const unnestObjectMethodAndUrl = R.unnest(objectMethodAndUrl);
+
+const chooseObjectOption = () =>{
+	return R.filter(V=>V[0]===document.querySelector("#objectOption").value, unnestObjectMethodAndUrl)
+}
+
 // unnestObjectMethodAndUrl is like this
 // const unnestObjectMethodAndUrl=[
 // 	['Array',
@@ -110,7 +129,7 @@ const replaceText = (ar) =>{
 let tmpHTML="";
 const exe = ()=>{
 	tmpHTML = data.foo;
-	unnestObjectMethodAndUrl.forEach(V=>{
+	chooseObjectOption().forEach(V=>{
 		replaceText(V)
 	});
 	document.querySelector("#result").innerHTML = tmpHTML;
@@ -154,6 +173,7 @@ getAnyLang("ja");`
 // hoge
 // forEach
 // js`
+document.querySelector("#objectOption").value = "Array";
 	exe();
 }
 // test();
