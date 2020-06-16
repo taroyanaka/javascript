@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>eight beat sequencer</title>
+<meta name="viewport" content="width=device-width">
+<!-- https://ramdajs.com/ -->
+<!-- <script src="ramda.js"></script> -->
+<!-- <script src="tone.js"></script> -->
+
+<!-- https://qiita.com/okumurakengo/items/52d1cdd08e705451e1d8 -->
+<!-- https://tonejs.github.io/docs/13.8.25/PolySynth.html -->
+
+<!-- <script src="https://unpkg.com/@webcomponents/webcomponentsjs@^2/webcomponents-bundle.js"></script> -->
+<script src="https://unpkg.com/tone"></script>
+<!-- <script src="https://unpkg.com/@tonejs/ui"></script> -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
+</head>
+<body>
+<div>
+  <h1 onclick="exe();">play</h1>
+</div>
+<div>
+	<button onclick="addScore();">+</button>
+	<button onclick="deleteScore();">-</button>
+</div>
+<div>
+	<select name="octave" id="octave" onInput="chooseOctave();">
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3" selected>3</option>
+		<option value="4">4</option>
+		<option value="5">5</option>
+		<option value="6">6</option>
+		<option value="7">7</option>
+		<option value="8">8</option>
+		<option value="9">9</option>
+		<option value="10">10</option>
+		<option value="11">11</option>
+		<option value="12">12</option>
+	</select>
+	<input type="number" id="bpm" name="bpm" min="1" max="300" value="120">
+	<button id="loop" onclick="loop();">ON</button>
+</div>
+<div>
+	<button onclick="addSound(event);">C</button>
+	<button onclick="addSound(event);">D</button>
+	<button onclick="addSound(event);">E</button>
+	<button onclick="addSound(event);">F</button>
+	<button onclick="addSound(event);">G</button>
+	<button onclick="addSound(event);">A</button>
+	<button onclick="addSound(event);">B</button>
+	<button onclick="addSound(event);">SPACE</button>
+</div>
+<div id="score">
+<textarea name="foo" id="foo" class="sounds" cols="3" rows="30"></textarea>
+<textarea name="bar" id="bar" class="sounds" cols="3" rows="30"></textarea>
+<textarea name="baz" id="baz" class="sounds" cols="3" rows="30"></textarea>
+</div>
+<script>
+const addScore = () =>{	document.querySelector("#score").insertAdjacentHTML("beforeEnd",`<textarea class="sounds" cols="3" rows="30"></textarea>`) };
+const deleteScore = (event) =>{	if(window.confirm('DELETE??')){document.querySelector("#score").removeChild(document.querySelector("#score").lastElementChild)} };
+const addSound = (event) =>{
+	const sound = event.target.textContent === "SPACE" ? " " : event.target.textContent + document.querySelector("#octave").value;
+	document.querySelector("#score").lastElementChild.value += sound + "\n";
+}
+const loop =()=>{	document.querySelector("#loop").innerText = document.querySelector("#loop").innerText==="ON" ? "OFF" : "ON" };
+
+let data = [
+	// note:ドレミなどの音階を指定
+	// dur:「4n」->「♩」(四分音符)、「8n」->「♪」(八分音符)
+	// nullだと休符
+  // { note: "C4", dur: "8n" },
+    // [{ note: "C4", dur: "8n" }, { note: "C3", dur: "8n" }],
+	//   { note: ["C4","C3"], dur: "8n" },
+	//  { note: "E4", dur: "8n" },
+	// null,
+	// { note: "D5", dur: "2n" },
+	// null,
+	// [{ note: "C5", dur: "8n" },{ note: "A4", dur: "8n" }],
+	// [{ note: "C5", dur: "2n" },{ note: "C5", dur: "2n" }],
+];
+
+document.querySelector("#foo").value = `C4
+C4
+G4
+G4
+A4
+A4
+G4
+G4
+F4
+F4
+E4
+E4
+D4
+E4
+C4
+`;
+
+document.querySelector("#bar").value = `C2
+C3
+E3
+C3
+F3
+C3
+E3
+C3
+D3
+B2
+C3
+A2
+F2
+G2
+C2
+`;
+
+document.querySelector("#baz").value = `
+C4
+
+C2
+
+C4
+
+C2
+
+C4
+
+C2
+
+C4
+`;
+
+
+
+const makeSound = () =>{
+	// const a = document.querySelector("#foo").value.split("\n");
+	// const b = document.querySelector("#bar").value.split("\n");
+	// const c = document.querySelector("#baz").value.split("\n");
+	// const a = [0, 1, 2];
+	// const b = [0, 10, 20];
+	// const c = [0, 100, 200];
+	// https://www.it-swarm.dev/ja/javascript/python%E3%81%AEzip%E9%96%A2%E6%95%B0%E3%81%AB%E7%9B%B8%E5%BD%93%E3%81%99%E3%82%8Bjavascript/972067105/
+	const nZip = (arr, ...arrs) => {
+		return arr.map((val, i) => arrs.reduce((a, arr) => [...a, arr[i]], [val]));
+	}
+	let sounds=[];
+	document.querySelectorAll(".sounds").forEach(V=>{sounds.push(V.value.split("\n"))});
+	const sound = nZip(...sounds);
+	// let sound = nZip(a, b, c);
+	console.log(sound);
+	const data = R.map(V=>{return { note: V, dur: "8n" }})(sound);
+	console.log(data);
+	return data;
+}
+
+const setup =() =>{
+	const polySynth = new Tone.PolySynth(4, Tone.Synth).toMaster();
+	const seq = new Tone.Sequence((time, { note, dur }) => {
+		polySynth.triggerAttackRelease(note, dur, time);
+	}, makeSound(), "4n").start(0);
+	seq.loop = document.querySelector("#loop").textContent==="OFF" ? true : false;
+}
+let starting=false;
+const play=()=>{
+	if(starting){
+		document.querySelector("h1").innerText = "play";
+		Tone.Transport.stop()
+		Tone.Transport.cancel();
+		starting=false;
+		throw new Error('stop');
+	};
+	document.querySelector("h1").innerText = "stop";
+	starting=true;
+	setup();
+	Tone.Transport.bpm.value = Number(document.querySelector("#bpm").value);
+	Tone.Transport.start();
+}
+const exe = () =>{
+	try{
+		play();
+	}catch(e){}
+}
+// exe();
+</script>
+</body>
+</html>

@@ -13,7 +13,7 @@
 <button onclick="test();">TEST</button>
 <div>
 <div>
-<select name="objectOption" id="objectOption" onInput="chooseObjectOption();">
+<select name="objectOption" id="objectOption" onInput="exe();">
 	<option value="Object">Object</option>
 	<option value="Boolean">Boolean</option>
 	<option value="Error">Error</option>
@@ -87,6 +87,11 @@ const getAnyLang = (LANG="ja") =>{
 getAnyLang("ja");
 
 const unnestObjectMethodAndUrl = R.unnest(objectMethodAndUrl);
+
+// let group = R.groupWith((a, b) => a[1]=== b[1], unnestObjectMethodAndUrl);
+// group = R.unnest(group);
+// const groupOverTwoElm = R.filter(V=>V.length>=2,group);
+// const removed = R.difference(unnestObjectMethodAndUrl, groupOverTwoElm); 
 
 const chooseObjectOption = () =>{
 	return R.filter(V=>V[0]===document.querySelector("#objectOption").value, unnestObjectMethodAndUrl)
