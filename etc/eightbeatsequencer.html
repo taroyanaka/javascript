@@ -41,16 +41,23 @@
 	</select>
 	<input type="number" id="bpm" name="bpm" min="1" max="300" value="120">
 	<button id="loop" onclick="loop();">ON</button>
+	<button id="hidesharp" onclick="hidesharp();">hidesharp</button>
 </div>
 <div>
 	<button onclick="addSound(event);">C</button>
+	<button onclick="addSound(event);" class="sharp">C#</button>
 	<button onclick="addSound(event);">D</button>
+	<button onclick="addSound(event);" class="sharp">D#</button>
 	<button onclick="addSound(event);">E</button>
 	<button onclick="addSound(event);">F</button>
+	<button onclick="addSound(event);" class="sharp">F#</button>
 	<button onclick="addSound(event);">G</button>
+	<button onclick="addSound(event);" class="sharp">G#</button>
 	<button onclick="addSound(event);">A</button>
+	<button onclick="addSound(event);" class="sharp">A#</button>
 	<button onclick="addSound(event);">B</button>
 	<button onclick="addSound(event);">SPACE</button>
+	<button onclick="deleteSound();">DELETE</button>
 </div>
 <div id="score">
 <textarea name="foo" id="foo" class="sounds" cols="3" rows="30"></textarea>
@@ -64,6 +71,22 @@ const addSound = (event) =>{
 	const sound = event.target.textContent === "SPACE" ? " " : event.target.textContent + document.querySelector("#octave").value;
 	document.querySelector("#score").lastElementChild.value += sound + "\n";
 }
+const deleteSound = () =>{
+	let sounds = document.querySelector("#score").lastElementChild.value.split("\n");
+	sounds.pop();
+	sounds.pop();
+	document.querySelector("#score").lastElementChild.value = sounds.join("\n") + "\n";
+}
+const hidesharp = () =>{
+	if(document.querySelector("#hidesharp").textContent==="hidesharp"){
+		document.querySelectorAll(".sharp").forEach(V=>{V.style.visibility="hidden"});
+		document.querySelector("#hidesharp").textContent="showsharp";
+	}else{
+		document.querySelectorAll(".sharp").forEach(V=>{V.style.visibility="visible"});
+		document.querySelector("#hidesharp").textContent="hidesharp";
+	}
+}
+
 const loop =()=>{	document.querySelector("#loop").innerText = document.querySelector("#loop").innerText==="ON" ? "OFF" : "ON" };
 
 let data = [
