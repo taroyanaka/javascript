@@ -8,6 +8,9 @@
 		width:30rem;
 		height:50rem;
 	}
+	div#res{
+		color :tomato;
+	}
 </style>
 </head>
 <body>
@@ -16,14 +19,11 @@
 	<div id="res"></div>
 </div>
 <textarea id="text" oninput="exe();"></textarea>
-<script type="text/javascript">
-let ary=[];
+<script>
 const exe = () =>{
-	document.querySelector("#res").textContent="";
-	ary = document.querySelector("#text").value.split("\n");
+	document.querySelector("#res").textContent = "";
 	const overNum = Number(document.querySelector("#OVERNUM").value);
-	ary.forEach((V,KEY)=>{if(V.length>overNum){
-		document.querySelector("#res").style="color :tomato;";
+	document.querySelector("#text").value.split("\n").forEach((V,KEY)=>{if(V.length>overNum){
 		document.querySelector("#res").textContent=`Line number ${KEY+1} is over ${overNum} chars It's ${V.length} chars`;
 	}})
 }
