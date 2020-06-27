@@ -23,9 +23,11 @@
 const exe = () =>{
 	document.querySelector("#res").textContent = "";
 	const overNum = Number(document.querySelector("#OVERNUM").value);
-	document.querySelector("#text").value.split("\n").forEach((V,KEY)=>{if(V.length>overNum){
-		document.querySelector("#res").textContent=`Line number ${KEY+1} is over ${overNum} chars It's ${V.length} chars`;
-	}})
+	document.querySelector("#text").value.split("\n").forEach((V,KEY)=>{
+		if(V.length>overNum){
+			document.querySelector("#res").textContent=`Line number ${KEY+1} is over ${overNum} chars It's ${V.length} chars`;
+		}
+	})
 }
 </script>
 </body>
