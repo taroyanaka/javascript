@@ -25,7 +25,6 @@
 <div class="zero">
 	multiline:<input type="checkbox" id="multiline"  onchange="exe();" checked>
 	addLineNumber:<input type="checkbox" id="addLineNumber"  onchange="exe();" checked>
-	<!-- addLineNumber:<input type="checkbox" id="addLineNumber"  onchange="exe();move();" checked> -->
 	<input id="OVERNUM" type="number" min="1" max="1000" value="15" onchange="exe();">
 </div>
 <div id="res" class="one"></div>
@@ -67,9 +66,6 @@ const exe = () =>{
 		cheacker("#text");
 	}
 }
-// const move = ()=>{
-// 	document.querySelector("#text").value = document.querySelector("#pretext").value;
-// }
 </script>
 </body>
 </html>
