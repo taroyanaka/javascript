@@ -39,7 +39,7 @@ const exe = () =>{
 	const cheacker = (id) =>{
 		document.querySelector(id).value.split("\n").forEach((V,KEY)=>{
 			if(V.length>Number(document.querySelector("#OVERNUM").value)){
-				document.querySelector("#res").innerText+=`${KEY+1} is ${V.length}\n`;// :
+				document.querySelector("#res").innerText+=`Line ${KEY+1} is ${V.length}\n`;// :
 			}
 		})
 
