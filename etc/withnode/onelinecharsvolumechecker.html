@@ -15,6 +15,7 @@
 </head>
 <body>
 <div>
+	multiline:<input type="checkbox" id="multiline" checked>
 	<input id="OVERNUM" type="number" min="1" max="1000" value="15" onchange="exe();">
 	<div id="res"></div>
 </div>
@@ -25,6 +26,8 @@ const exe = () =>{
 	const overNum = Number(document.querySelector("#OVERNUM").value);
 	document.querySelector("#text").value.split("\n").forEach((V,KEY)=>{
 		if(V.length>overNum){
+			document.querySelector("#multiline").checked ?
+			document.querySelector("#res").innerText+=`Line number ${KEY+1} is over ${overNum} chars It's ${V.length} chars\n` :
 			document.querySelector("#res").textContent=`Line number ${KEY+1} is over ${overNum} chars It's ${V.length} chars`;
 		}
 	})
