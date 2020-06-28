@@ -27,8 +27,8 @@ const exe = () =>{
 	document.querySelector("#text").value.split("\n").forEach((V,KEY)=>{
 		if(V.length>overNum){
 			document.querySelector("#multiline").checked ?
-			document.querySelector("#res").innerText+=`Line number ${KEY+1} is over ${overNum} chars It's ${V.length} chars\n` :
-			document.querySelector("#res").innerText=`Line number ${KEY+1} is over ${overNum} chars It's ${V.length} chars`;
+			document.querySelector("#res").innerText+=`Line ${KEY+1} is over ${overNum} chars It's ${V.length} chars\n` :
+			document.querySelector("#res").innerText=`Line ${KEY+1} is over ${overNum} chars It's ${V.length} chars`;
 		}
 	})
 }
