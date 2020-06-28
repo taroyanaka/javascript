@@ -16,7 +16,7 @@
 		width:15rem;
 		height:50rem;
 	}
-	#text{background-color: gray;}
+	#withnumtext{background-color: gray;}
 	div#res{
 		font-size: 0.8rem;
 		color :tomato;
@@ -24,19 +24,19 @@
 </style>
 </head>
 <body>
-<div class="zero">
+<div>
 	<input id="OVERNUM" type="number" min="1" max="1000" value="15" onchange="exe();">
 </div>
-<div id="res" class="one"></div>
-<textarea id="pretext" oninput="exe();"></textarea>
-<textarea id="text" oninput="exe();" class="two" readonly></textarea>
+<div id="res"></div>
+<textarea id="text" oninput="exe();"></textarea>
+<textarea id="withnumtext" readonly></textarea>
 <script>
 const exe = () =>{
-	document.querySelector("#text").readOnly=false;
+	document.querySelector("#withnumtext").readOnly=false;
 	document.querySelector("#res").textContent = "";
 	const overNum = Number(document.querySelector("#OVERNUM").value);
 	const cheacker = (id) =>{
-		document.querySelector("#text").value="";
+		document.querySelector("#withnumtext").value="";
 		document.querySelector(id).value.split("\n").forEach((V,KEY)=>{
 			if(V.length>overNum){
 				document.querySelector("#res").innerText+=`Line ${KEY+1} is over, ${V.length} chars\n`;// :
@@ -45,13 +45,13 @@ const exe = () =>{
 
 	}
 	const addnumber = ()=>{
-		document.querySelector("#pretext").value.split("\n").forEach((V,KEY)=>{
-			document.querySelector("#text").value+=`[${KEY+1}]${V}\n`;
+		document.querySelector("#text").value.split("\n").forEach((V,KEY)=>{
+			document.querySelector("#withnumtext").value+=`[${KEY+1}]${V}\n`;
 		})
 	}
-	cheacker("#pretext");
+	cheacker("#text");
 	addnumber();
-	document.querySelector("#text").readOnly=true;
+	document.querySelector("#withnumtext").readOnly=true;
 }
 </script>
 </body>
