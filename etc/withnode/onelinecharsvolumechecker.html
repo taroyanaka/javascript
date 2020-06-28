@@ -79,9 +79,13 @@ const exe = () =>{
 	addnumber();
 	document.querySelector("#withnumtext").readOnly=true;
 
-	document.querySelector("#text").addEventListener('touchend', event => {
-		event.preventDefault();
-	}, false);
+	if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+		window.document.addEventListener('touchmove', e => {
+			if(e.scale !== 1) {
+			e.preventDefault();
+			}
+		}, {passive: false});
+	}
 }
 </script>
 </body>
