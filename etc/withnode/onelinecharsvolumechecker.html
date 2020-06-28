@@ -14,13 +14,17 @@
 	}
 	textarea{
 		touch-action: manipulation;
-		width:15rem;
+		width:auto;
+		/* width:15rem; */
 		height:50rem;
 	}
 	#withnumtext{background-color: gray;}
 	div#res{
-		font-size: 17px;
-		/* font-size: 0.8rem; */
+		/* font-size: 17px; */
+		width: auto;
+		/* position: right; */
+		text-align: right;
+		font-size: 0.8rem;
 		color :tomato;
 	}
 </style>
@@ -39,7 +43,7 @@ const exe = () =>{
 	const cheacker = (id) =>{
 		document.querySelector(id).value.split("\n").forEach((V,KEY)=>{
 			if(V.length>Number(document.querySelector("#OVERNUM").value)){
-				document.querySelector("#res").innerText+=`Line ${KEY+1} is ${V.length}\n`;// :
+				document.querySelector("#res").innerText+=`${KEY+1} is ${V.length}\n`;// :
 			}
 		})
 
