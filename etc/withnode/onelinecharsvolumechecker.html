@@ -4,9 +4,23 @@
 <meta charset="utf-8">
 <title>one line chars volume checker</title>
 <style>
+	* {
+		margin: 0;
+	}
+	body{
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+	}
+	/* https://jsfiddle.net/vaakash/5TF5h/ */
 	textarea{
 		width:30rem;
 		height:50rem;
+		background: url(http://i.imgur.com/2cOaJ.png);
+		background-attachment: local;
+		background-repeat: no-repeat;
+		padding-left: 35px;
+		padding-top: 10px;
+		border-color:#ccc;
 	}
 	div#res{
 		color :tomato;
@@ -14,23 +28,25 @@
 </style>
 </head>
 <body>
-<div>
+<div class="zero">
 	multiline:<input type="checkbox" id="multiline"  onchange="exe();" checked>
 	<input id="OVERNUM" type="number" min="1" max="1000" value="15" onchange="exe();">
-	<div id="res"></div>
 </div>
-<textarea id="text" oninput="exe();"></textarea>
+<div id="res" class="one"></div>
+<textarea id="text" oninput="exe();" class="two"></textarea>
 <script>
+// The cause of the KEY+2 display is https://jsfiddle.net/vaakash/5TF5h/
 const exe = () =>{
 	document.querySelector("#res").textContent = "";
 	const overNum = Number(document.querySelector("#OVERNUM").value);
 	document.querySelector("#text").value.split("\n").forEach((V,KEY)=>{
 		if(V.length>overNum){
 			document.querySelector("#multiline").checked ?
-			document.querySelector("#res").innerText+=`Line ${KEY+1} is over ${overNum} chars It's ${V.length} chars\n` :
-			document.querySelector("#res").innerText=`Line ${KEY+1} is over ${overNum} chars It's ${V.length} chars`;
+			document.querySelector("#res").innerText+=`Line ${KEY+2} is over, ${V.length} chars\n` :
+			document.querySelector("#res").textContent=`Line ${KEY+2} is over, ${V.length} chars`;
 		}
 	})
 }
 </script>
 </body>
+</html>
