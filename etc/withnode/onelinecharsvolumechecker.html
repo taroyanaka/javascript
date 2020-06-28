@@ -35,7 +35,7 @@
 <script>
 const exe = () =>{
 	document.querySelector("#res").textContent = "";
-	let overNum = Number(document.querySelector("#OVERNUM").value);
+	const overNum = Number(document.querySelector("#OVERNUM").value);
 
 	const cheacker = (id) =>{
 		document.querySelector(id).value.split("\n").forEach((V,KEY)=>{
@@ -46,16 +46,20 @@ const exe = () =>{
 			}
 		})
 	}
+	const addnumber = ()=>{
+		document.querySelector("#pretext").value.split("\n").forEach((V,KEY)=>{
+			document.querySelector("#text").value+=`[${KEY+1}]${V}\n`;
+		})
+	}
 
+	document.querySelector("#text").readOnly=true;
 	if(document.querySelector("#addLineNumber").checked){
 		document.querySelector("#pretext") === null ? document.querySelector(`#textareas`).insertAdjacentHTML(`afterBegin`,  `<textarea id="pretext" oninput="exe();"></textarea>` ) : null;
 		document.querySelector("#pretext").value === "" ? document.querySelector("#pretext").value = document.querySelector("#text").value : null;
 		document.querySelector("#text").readOnly=true;
 		document.querySelector("#text").style="background-color: gray;";
 		document.querySelector("#text").value="";
-		document.querySelector("#pretext").value.split("\n").forEach((V,KEY)=>{
-			document.querySelector("#text").value+=`[${KEY+1}]${V}\n`;
-		})
+		addnumber();
 		cheacker("#pretext");
 	}
 	if(!document.querySelector("#addLineNumber").checked){
