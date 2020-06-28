@@ -9,66 +9,49 @@
 	}
 	body{
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(4, 1fr);
 	}
 	textarea{
+		touch-action: manipulation;
 		width:15rem;
 		height:50rem;
 	}
 	#text{background-color: gray;}
 	div#res{
+		font-size: 0.8rem;
 		color :tomato;
 	}
 </style>
 </head>
 <body>
 <div class="zero">
-	multiline:<input type="checkbox" id="multiline"  onchange="exe();" checked>
-	addLineNumber:<input type="checkbox" id="addLineNumber"  onchange="exe();" checked>
 	<input id="OVERNUM" type="number" min="1" max="1000" value="15" onchange="exe();">
 </div>
 <div id="res" class="one"></div>
-<div id="textareas">
 <textarea id="pretext" oninput="exe();"></textarea>
-<textarea id="text" oninput="exe();" class="two"></textarea>
-</div>
+<textarea id="text" oninput="exe();" class="two" readonly></textarea>
 <script>
 const exe = () =>{
+	document.querySelector("#text").readOnly=false;
 	document.querySelector("#res").textContent = "";
 	const overNum = Number(document.querySelector("#OVERNUM").value);
-
 	const cheacker = (id) =>{
+		document.querySelector("#text").value="";
 		document.querySelector(id).value.split("\n").forEach((V,KEY)=>{
 			if(V.length>overNum){
-				document.querySelector("#multiline").checked ?
-				document.querySelector("#res").innerText+=`Line ${KEY+1} is over, ${V.length} chars\n` :
-				document.querySelector("#res").textContent=`Line ${KEY+1} is over, ${V.length} chars`;
+				document.querySelector("#res").innerText+=`Line ${KEY+1} is over, ${V.length} chars\n`;// :
 			}
 		})
+
 	}
 	const addnumber = ()=>{
 		document.querySelector("#pretext").value.split("\n").forEach((V,KEY)=>{
 			document.querySelector("#text").value+=`[${KEY+1}]${V}\n`;
 		})
 	}
-
+	cheacker("#pretext");
+	addnumber();
 	document.querySelector("#text").readOnly=true;
-	if(document.querySelector("#addLineNumber").checked){
-		document.querySelector("#pretext") === null ? document.querySelector(`#textareas`).insertAdjacentHTML(`afterBegin`,  `<textarea id="pretext" oninput="exe();"></textarea>` ) : null;
-		document.querySelector("#pretext").value === "" ? document.querySelector("#pretext").value = document.querySelector("#text").value : null;
-		document.querySelector("#text").readOnly=true;
-		document.querySelector("#text").style="background-color: gray;";
-		document.querySelector("#text").value="";
-		addnumber();
-		cheacker("#pretext");
-	}
-	if(!document.querySelector("#addLineNumber").checked){
-		document.querySelector("#pretext") ? document.querySelector("#text").value = document.querySelector("#pretext").value : null;
-		document.querySelector("#text").readOnly=false;
-		document.querySelector("#text").style="background-color: white;";
-		document.querySelectorAll("#pretext").forEach(E=>{E.parentNode.removeChild(E)});
-		cheacker("#text");
-	}
 }
 </script>
 </body>
