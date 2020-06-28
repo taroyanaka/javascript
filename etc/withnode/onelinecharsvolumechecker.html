@@ -34,17 +34,16 @@
 const exe = () =>{
 	document.querySelector("#withnumtext").readOnly=false;
 	document.querySelector("#res").textContent = "";
-	const overNum = Number(document.querySelector("#OVERNUM").value);
 	const cheacker = (id) =>{
-		document.querySelector("#withnumtext").value="";
 		document.querySelector(id).value.split("\n").forEach((V,KEY)=>{
-			if(V.length>overNum){
-				document.querySelector("#res").innerText+=`Line ${KEY+1} is over, ${V.length} chars\n`;// :
+			if(V.length>Number(document.querySelector("#OVERNUM").value)){
+				document.querySelector("#res").innerText+=`${KEY+1} is ${V.length}\n`;// :
 			}
 		})
 
 	}
 	const addnumber = ()=>{
+		document.querySelector("#withnumtext").value="";
 		document.querySelector("#text").value.split("\n").forEach((V,KEY)=>{
 			document.querySelector("#withnumtext").value+=`[${KEY+1}]${V}\n`;
 		})
