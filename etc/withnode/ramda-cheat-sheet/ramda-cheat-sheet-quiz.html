@@ -1429,7 +1429,9 @@ mathematical modulo see `mathMod`.">modulo</a>
   </body>
   	  <h2></h2>
 <script>
-	document.querySelectorAll(`body > main > article > section > div > div > ul > li > a`).forEach(V=>{
+	const wordsCSSSelector = `body > main > article > section > div > div > ul > li > a`;
+
+	document.querySelectorAll(wordsCSSSelector).forEach(V=>{
 		V.setAttribute('data-tmptext', V.innerText);
 		V.setAttribute('data-tmpurl', V.href);
 		V.removeAttribute("href"); 
@@ -1448,27 +1450,17 @@ mathematical modulo see `mathMod`.">modulo</a>
 
 	const noShow = (event) =>{
 		noShowHistory.push(event.target.innerText);
-		noShowHistory = R.uniq(noShowHistory);
+		// noShowHistory = R.uniq(noShowHistory);
 		event.target.innerText = "************";
 		event.target.setAttribute('onclick', "show(event);");
 	}
 
 	const noShowHistoryAddColor = () =>{
-		document.querySelectorAll(`body > main > article > section > div > div > ul > li > a`).forEach(V=>{
-			V.style = (R.includes(V.innerText, noShowHistory) || R.includes(V.dataset.tmptext, noShowHistory)) ? "color: #ff0000;" : null;
+		document.querySelectorAll(wordsCSSSelector).forEach(V=>{
+			(R.includes(V.innerText, noShowHistory) || R.includes(V.dataset.tmptext, noShowHistory)) ? V.style = "color: #ff0000;" : null;
 		})
 	}
-
-	const allOpen = () =>{
-		document.querySelectorAll(`body > main > article > section > div > div > ul > li > a`).forEach(V=>{
-			V.innerText = V.dataset.tmptext;
-		})
-	}
-
-	const allClose = () =>{
-		document.querySelectorAll(`body > main > article > section > div > div > ul > li > a`).forEach(V=>{
-			V.innerText = "************";
-		})
-	}
+	const allOpen = () =>{document.querySelectorAll(wordsCSSSelector).forEach(V=>{V.innerText = V.dataset.tmptext})}
+	const allClose = () =>{document.querySelectorAll(wordsCSSSelector).forEach(V=>{V.innerText = "************"})}
 </script>
 </html>
