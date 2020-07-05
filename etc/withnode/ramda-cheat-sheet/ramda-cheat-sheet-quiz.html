@@ -106,7 +106,8 @@ h1 {
   </head>
   <body>
     <!-- <form id=search> -->
-      <h1>from <a  target="_blank" href="https://geusebi.github.io/ramda-cheat-sheet/dist/">https://geusebi.github.io/ramda-cheat-sheet/dist/</a>
+      <h1>from 
+		  <a  target="_blank" href="https://geusebi.github.io/ramda-cheat-sheet/dist/">https://geusebi.github.io/ramda-cheat-sheet/dist/</a>
 	    			<a id="tmpurl"  target="_blank" href="">open the doc URL</a>
 	  </h1>
       <!-- <label for=query>Search</label> -->
@@ -1424,10 +1425,10 @@ mathematical modulo see `mathMod`.">modulo</a>
     </main>
   </body>
   	  <h2></h2>
-  <script>
+			  <script>
 	const exe = (event) =>{
 		event.target.innerText = event.target.dataset.foo;
-		document.querySelector(`h2`).textContent = event.target.title;
+		document.querySelector(`h2`).innerText = event.target.title;
 		document.querySelector(`#tmpurl`).href = event.target.dataset.tmpurl;
 	}
 	
@@ -1436,7 +1437,7 @@ mathematical modulo see `mathMod`.">modulo</a>
 		V.setAttribute('onclick', "exe(event);");
 		V.setAttribute('data-tmpurl', V.href);
 		V.removeAttribute("href"); 
-		V.innerText="*******";
+		V.innerText="************";
 	} )})
   </script>
 </html>
