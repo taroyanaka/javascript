@@ -4,7 +4,7 @@
     <meta charset=utf8>
     <title>Ramda - cheat sheet quiz</title>
 	<!-- https://github.com/taroyanaka/geusebi.github.io/tree/master/ramda-cheat-sheet -->
-	<!-- <script src="ramda0-2-7.js"></script> -->
+	<script src="ramda0-2-7.js"></script>
     <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700|PT+Mono'
       rel='stylesheet' type='text/css'>
     <!-- <link rel=stylesheet href=style.css> -->
@@ -109,6 +109,9 @@ h1 {
       <h1>from 
 		  <a  target="_blank" href="https://geusebi.github.io/ramda-cheat-sheet/dist/">https://geusebi.github.io/ramda-cheat-sheet/dist/</a>
 	    			<a id="tmpurl"  target="_blank" href="">open the doc URL</a>
+	    			<a onclick="noShowHistoryAddColor();">noShowHistoryMakeBlank</a>
+	    			<a onclick="allOpen();">allOpen</a>
+	    			<a onclick="allClose();">allClose</a>
 	  </h1>
       <!-- <label for=query>Search</label> -->
       <!-- <input id=query type=text autocomplete=off autofocus/> -->
@@ -1426,18 +1429,46 @@ mathematical modulo see `mathMod`.">modulo</a>
   </body>
   	  <h2></h2>
 <script>
+	document.querySelectorAll(`body > main > article > section > div > div > ul > li > a`).forEach(V=>{
+		V.setAttribute('data-tmptext', V.innerText);
+		V.setAttribute('data-tmpurl', V.href);
+		V.removeAttribute("href"); 
+		V.innerText = "************";
+		V.setAttribute('onclick', "show(event);");
+	})
+
 	const show = (event) =>{
 		event.target.innerText = event.target.dataset.tmptext;
 		document.querySelector(`h2`).innerText = event.target.title;
 		document.querySelector(`#tmpurl`).href = event.target.dataset.tmpurl;
+		event.target.setAttribute('onclick', "noShow(event);");
 	}
-	
-	  document.querySelectorAll(`body > main > article > section > div > div > ul > li > a`).forEach(V=>{
-		V.setAttribute('data-tmptext', V.innerText);
-		V.setAttribute('data-tmpurl', V.href);
-		V.removeAttribute("href"); 
-		V.innerText="************";
-		V.setAttribute('onclick', "show(event);");
-	} )
+
+	let noShowHistory=[];
+
+	const noShow = (event) =>{
+		noShowHistory.push(event.target.innerText);
+		noShowHistory = R.uniq(noShowHistory);
+		event.target.innerText = "************";
+		event.target.setAttribute('onclick', "show(event);");
+	}
+
+	const noShowHistoryAddColor = () =>{
+		document.querySelectorAll(`body > main > article > section > div > div > ul > li > a`).forEach(V=>{
+			V.style = (R.includes(V.innerText, noShowHistory) || R.includes(V.dataset.tmptext, noShowHistory)) ? "color: #ff0000;" : null;
+		})
+	}
+
+	const allOpen = () =>{
+		document.querySelectorAll(`body > main > article > section > div > div > ul > li > a`).forEach(V=>{
+			V.innerText = V.dataset.tmptext;
+		})
+	}
+
+	const allClose = () =>{
+		document.querySelectorAll(`body > main > article > section > div > div > ul > li > a`).forEach(V=>{
+			V.innerText = "************";
+		})
+	}
 </script>
 </html>
