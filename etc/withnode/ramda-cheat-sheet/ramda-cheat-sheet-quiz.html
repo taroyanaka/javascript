@@ -4,7 +4,7 @@
     <meta charset=utf8>
     <title>Ramda - cheat sheet quiz</title>
 	<!-- https://github.com/taroyanaka/geusebi.github.io/tree/master/ramda-cheat-sheet -->
-	<script src="ramda0-2-7.js"></script>
+	<!-- <script src="ramda0-2-7.js"></script> -->
     <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700|PT+Mono'
       rel='stylesheet' type='text/css'>
     <!-- <link rel=stylesheet href=style.css> -->
@@ -1425,19 +1425,19 @@ mathematical modulo see `mathMod`.">modulo</a>
     </main>
   </body>
   	  <h2></h2>
-			  <script>
-	const exe = (event) =>{
-		event.target.innerText = event.target.dataset.foo;
+<script>
+	const show = (event) =>{
+		event.target.innerText = event.target.dataset.tmptext;
 		document.querySelector(`h2`).innerText = event.target.title;
 		document.querySelector(`#tmpurl`).href = event.target.dataset.tmpurl;
 	}
 	
-	  R.range(0,9).forEach(V=>{document.querySelectorAll(`body > main > article > section:nth-child(${V}) > div > div > ul > li > a`).forEach(V=>{
-		V.setAttribute('data-foo', V.innerText);
-		V.setAttribute('onclick', "exe(event);");
+	  document.querySelectorAll(`body > main > article > section > div > div > ul > li > a`).forEach(V=>{
+		V.setAttribute('data-tmptext', V.innerText);
 		V.setAttribute('data-tmpurl', V.href);
 		V.removeAttribute("href"); 
 		V.innerText="************";
-	} )})
-  </script>
+		V.setAttribute('onclick', "show(event);");
+	} )
+</script>
 </html>
