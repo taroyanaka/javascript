@@ -3,8 +3,9 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>quiz maker</title>
-  	<script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script>
+  <title>quiz maker(ramda.js version)</title>
+  	<!-- <script src="//cdn.jsdelivr.net/npm/ramda@0.26.1/dist/ramda.min.js"></script> -->
+  	<script src="ramda.min.js"></script>
 </head>
 
 <body>
@@ -576,7 +577,7 @@ const makeQAHTML = (QAAAAarray) =>{
 					<input type="button" value="${shuffledAAAA[3]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
 			   </div>`;
 	}
-	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet)  );
+	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet).join("")  );
 };
 let wrongQApair = [];
 const checkQA = (event) =>{ if(event.target.value === event.target.dataset.answer){

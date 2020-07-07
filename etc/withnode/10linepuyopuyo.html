@@ -1,0 +1,65 @@
+<body onKeyDown=K=event.keyCode-38 id=D>
+<script>
+// https://zapanet.info/blog/item/1134
+// https://qiita.com/yoitomakenouta/items/8b93d0b9dacf365ce0b1
+// フィールドを初期化して枠のブロックを配置
+// 1, 1, 1, 1, 1, 1, 1, 1,
+// 変数	役割
+// M, N	フィールド
+// K	数値
+// e	タイマー
+// g	落下中フラグ
+// h	主ぷよ操作位置
+// l	従ぷよ現在位置
+// p	従ぷよ移動先位置
+// B	操作ぷよ用乱数
+let M;
+let K;
+for (M = N = [i = 113]; --i; M[i - 1] = i % 8 < 2 | i < 8) {
+	M
+    // コード削減のためループ内部でそのまま関数宣言
+    function Y() {
+        // タイマーをインクリメント
+        // キー操作受付(xで右回転/→で移動) + 操作ぷよ配置
+        e++;
+        if (e %= 10){
+            for (N = [
+                K - 2 ?
+                    K - 50 ?
+                        h -= M[h + l - K] | M[h - K] ?
+                            0
+                            : K
+                        : M[h + p] || (x = p, p = -l, l = x)
+                    : e = 0
+                ], K = 0;
+                ++i < 113;
+                N[i] = M[i])
+                N[h] = B >> 2, N[h + l] = B % 4 - B % 1 + 2;
+		}
+        // 落下処理
+        if (!e && (h -= 8, !g || M[h] + M[h + l])) {
+            C = [M = N];
+            // 下にぷよが存在しない場合に落下させる
+            for (i = g = 1; ++i < 103; !M[i] * n && (M[i] = n, g = M[i + 8] = 0)) n =
+                M[i + 8];
+            // 同色で連結しているぷよをカウント、4連結以上で消滅させる
+            for (; --i;) {
+                n = c = 0;
+                for (E = [i]; g & M[i] > 1 & n >= c >> 2; t > 102 | C[t] | M[i] - M[t] || (E[++n] = C[t] = t)) t = p, p = -l, l = t, t += E[c++ >> 2];
+                for (; c > 16 && n;) g = M[E[n--]] = 0
+            }
+            // 新しく落ちてくるぷよを生成
+            B = g ? Math.random(h = 100, l = 8, p = -1) * 16 + 8 : --e
+        }
+        // フィールドを描画
+        for (i = 104, S = ""; i--; S += n-- ? n ? "<a style=color:#" + (248 * n) + ">●" + "</a>" : i % 8 ? "■" : "■<br>" : "＿") n = N[i];
+        D.innerHTML = S;
+        // ゲーム継続/終了判定
+        M[100] * g || setTimeout(Y, 50)
+    }
+}
+// ゲーム開始
+Y(g = h = e = 9, l = p = K = 0)
+
+</script>
+</body>
