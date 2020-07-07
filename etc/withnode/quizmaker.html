@@ -456,7 +456,7 @@ a
 キャラクター。`;</script>
 
   <div>
-    <input id="btn" type="button" value="make" style="width:100px;height:50px" />
+    <input id="btn" type="button" value="make" style="width:100px;height:50px" onclick="make();"/>
   </div>
   <div>
     <textarea name="foo" id="foo" cols="20" rows="100" required="required" maxlength="100000"
@@ -578,28 +578,19 @@ const makeQAHTML = (QAAAAarray) =>{
 			   </div>`;
 	}
 	document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet).join("")  );
+	keyConfig();
 };
 let wrongQApair = [];
 const checkQA = (event) =>{ if(event.target.value === event.target.dataset.answer){
 							document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) )
 							}else{ wrongQApair.push( [ QAAAAarray[event.target.dataset.id][0], QAAAAarray[event.target.dataset.id][1] ] ) } };
 
-insertTestData();
-makeQAHTML(getQAAAAarray(makeQApair()));
-keyConfig();
-
-
-
-
-
-
-
-
-
-
-
-
-
+const make = () =>{
+	makeQAHTML(getQAAAAarray(makeQApair()));
+}
+// insertTestData();
+// makeQAHTML(getQAAAAarray(makeQApair()));
+// keyConfig();
   </script>
 </body>
 
