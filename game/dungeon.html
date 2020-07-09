@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>game</title>
+<script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script>
+</head>
+<body>
+	<span>HP:</span><span id="HP"></span>
+	<span>HP:</span><span id="NAME"></span>
+	<span>AP:</span><span id="AP"></span>
+	<span>FLOOR:</span><span id="FLOOR"></span>
+	<div id="INDICATE"></div>
+<script>
+	let NAME = "太郎";
+	let HP = 10;
+	let AP = 2;
+	let FLOOR = 0;
+
+	let PROGRESS=[];
+
+	const status = () =>{
+		document.querySelector("#NAME").textContent = NAME;
+		document.querySelector("#HP").textContent = HP;
+		document.querySelector("#AP").textContent = AP;
+		document.querySelector("#FLOOR").textContent = FLOOR + 1;
+	}
+	status();
+
+	const indicate = (text) =>{ document.querySelector("#INDICATE").innerText += text+"\n" }
+
+	let PLAYER=[NAME,HP,AP];
+	let MONSTERS = [["ゴブリン",3,1],["骸骨剣士",5,2],["ドワーフ",6,1]];
+
+	const shuffleArray = array => {
+		for (let i = array.length - 1; i > 0; i--) {
+		let r = Math.floor(Math.random() * (i + 1));
+		let tmp = array[i];
+		array[i] = array[r];
+		array[r] = tmp;
+		}
+		return array
+	}
+
+	const getAnyMonster = (MONSTERS) =>{ 
+		const EntityMONSTER = R.clone(MONSTERS);
+		return shuffleArray(EntityMONSTER)[0];
+	}
+
+	const deathCheck = () =>{
+		if(Math.sign(PLAYER[1]) !== 1){
+			indicate(`${PLAYER[0]}は死亡した`);
+			PROGRESS=[];
+		}
+	}
+
+	const battle = (PLAYER,MONSTER) =>{
+		const attack = () =>{
+				while ( 
+					Math.sign(PLAYER[1]) === 1 &&
+					Math.sign(MONSTER[1]) === 1
+				) {
+					console.table(PLAYER[1],PLAYER[2],MONSTER[1],MONSTER[2]);
+					indicate(`戦闘中`);
+					MONSTER[1] = MONSTER[1] - PLAYER[2];
+					indicate(`${MONSTER[0]}のHP`+MONSTER[1]);
+					PLAYER[1] = PLAYER[1] - MONSTER[2];
+					indicate(`${PLAYER[0]}のHP`+PLAYER[1]);
+					deathCheck();
+				}
+				if(Math.sign(PLAYER[1]) === 1){indicate(`戦闘は終了した`)};
+		}
+		attack();
+	}
+
+	const THINGS = [
+		["肉を食ってHPが2増えた", ()=>{PLAYER[1]=PLAYER[1]+2}],
+		["腐った肉を食ってHPが5減った", ()=>{PLAYER[1]=PLAYER[1]-5}]
+	];
+
+	const getAnyHappening = () =>{
+		const EntityTHINGS = R.clone(THINGS);
+		return shuffleArray(EntityTHINGS)[0];
+	}
+
+	const happening = (THING) =>{
+		indicate(THING[0]);
+		THING[1]();
+		deathCheck();
+	}
+
+	PROGRESS=[battle, happening, battle, happening, battle, battle, battle];
+
+	const movePROGRESS = () =>{
+		let i=0;
+		while(i < PROGRESS.length){
+			const SEQUENCE = PROGRESS[i];
+			if(SEQUENCE===battle){SEQUENCE(PLAYER,getAnyMonster(MONSTERS))};
+			if(SEQUENCE===happening){SEQUENCE(getAnyHappening())};
+			i++;
+		}
+	}
+	movePROGRESS();
+</script>
+</body>
+</html>
