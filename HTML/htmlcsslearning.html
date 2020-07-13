@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>html css learning</title>
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.25.0/ramda.min.js"></script> -->
+<style>
+@charset "utf-8";
+/*
+=======================================
+  Reset CSS
+=======================================
+*/
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, main, menu, nav, section, summary,
+time, mark, audio, video{
+  margin:0;
+  padding:0;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,main,menu,nav,section{
+  display:block;
+}
+
+html{
+  -webkit-text-size-adjust: 100%;
+}
+
+body{
+  color: #59220d;
+  line-height: 1.5;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+img{
+  border: 0;
+}
+
+ul,ol{
+  list-style-type: none;
+}
+
+table {
+  border-collapse: collapse; 
+  border-spacing: 0;
+}
+
+img, input, select, textarea { 
+  vertical-align: middle;
+}
+
+a {
+  color: #59220d;
+  transition: 0.5s;
+}
+a:hover {
+  color: #d53e04;
+}
+a:hover img {
+  opacity: 0.7;
+}
+/*=========================================*/
+
+
+div#outer {
+  background: red;
+ letter-spacing: -.4em;
+}
+span.inner {
+display: inline-block;
+/* display: inline; */
+    letter-spacing: normal;
+/* display: inline; */
+  width: 2rem;
+  padding: 1rem;
+  border: 0.3rem solid green;
+  /* margin:0px 0px; */
+  /* text-align: right; */
+  text-align: center;
+  	background-color: black;
+  /* vertical-align: bottom; */
+}
+span.inner > a {
+	font: 1rem san-serif;
+	color: white;
+}
+
+</style>
+</head>
+<body>
+<div>
+「ブロックレベル」要素の一覧
+<address>address 連絡先情報です。</address>
+<article>article 記事コンテンツです。</article>
+<aside>aside 本論から外れたコンテンツです。</aside>
+
+<blockquote>blockquote 長い (「ブロック」の) 引用です。</blockquote>
+<details>details 折りたたみウィジェットです。</details>
+
+<dialog>dialog ダイアログボックスです。</dialog>
+<dd>dd 定義リストで用語を説明します。</dd>
+<div>div 文書の一部です。</div>
+<dl>dl 定義リストです。</dl>
+<dt>dt 定義語リストの用語です。</dt>
+<fieldset>fieldset フィールドセットのラベルです。</fieldset>
+
+
+<figure>
+	<figcaption>figcaption 図表のキャプションです。</figcaption>
+	figure キャプションを伴うメディアコンテンツをグループ化します。
+</figure>
+
+<footer>footer セクションまたはページのフッターです。</footer>
+<form>form 入力フォームです。</form>
+
+見出しレベル 1-6 です。
+<header>header セクションまたはページのヘッダーです。</header>
+<hgroup>hgroup 見出し情報をグループ化します。
+<h1>h1</h1>
+	 <h2>h2</h2>
+		  <h3>h3</h3>
+			   <h4>h4</h4>
+				    <h5>h5</h5>
+						 <h6>h6</h6>
+</hgroup>
+
+<hr>hr 水平線 (区切り線) です。</hr>
+
+<li>li リストの項目です。</li>
+<main>main この文書で固有の中心的なコンテンツを含みます。</main>
+<nav>nav ナビゲーションのリンクを含みます。</nav>
+<ol>ol 番号付きリストです。</ol>
+<p>p 段落です。</p>
+<pre>pre 整形済みテキストです。</pre>
+<section>section ウェブページのセクションです。</section>
+<table>table 表です。</table>
+<ul>ul 番号なしリストです。</ul>
+
+<hr>
+
+<p>
+	<a>インライン要素の、非置換要素は、開始タグと終了タグ囲まれ、インライン要素はほぼ全て非置換要素。置換要素は、空要素で開始タグだけ。以下が置換要素。</a>
+</p>
+<hr>
+<p>
+	<a>area、audio、canvas、embed、hr、iframe、img、input、menu、object、video</a>
+</p>
+
+</div>
+<div id="outer">
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+<span class="inner"><a>1</a></span>
+</div>
+<script>
+
+</script>
+</body>
+</html>
