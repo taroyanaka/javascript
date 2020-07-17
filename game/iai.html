@@ -38,7 +38,7 @@ const attack = () =>{
 const incoming = () =>{
 	makeTrack();
 	kyori.pop();
-	console.log(kyori);
+	// console.log(kyori);
 	(kyori.length <= maai && kyori.length !== 0)  ? indicater("you can kill") : indicater("you will die");
 	if(kyori.length <= maai && kyori.length !== 0){
 		if(sen && document.querySelector("#success").innerText === ""){document.querySelector("#success").innerText = "成功!!"}
