@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Go-no-Sen</title>
+<script src="ramda.min.js"></script>
+</head>
+<body>
+<button onclick="exe();">開始!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</button>
+間合い:<input type="number" value="10" id="maai"></input>
+距離:<input type="number" value="30" id="kyori"></input>
+時間:<input type="number" value="100" id="baseTime"></input>
+<button onclick="attack();">斬!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</button>
+<div id="success"></div>
+<div id="foo"></div>
+<div id="baz"></div>
+<script defer>
+let maai = Number(document.querySelector("#maai").value);
+let kyori = R.range(0, Number(document.querySelector("#kyori").value));
+let baseTime = Number(document.querySelector("#baseTime").value);
+// let maai = 10;
+// let kyori = R.range(0,30);
+// let baseTime = 100;
+
+const indicater = (text) =>{document.querySelector("#foo").innerText = text}
+const makeTrack = () =>{
+	document.querySelector(`#baz`)
+	.insertAdjacentHTML(`afterBegin`,
+		"<div>" + kyori.map(ID=>{return `<span id="${ID}">${ID}</span>`}).join("") + "</div>"
+	);
+}
+
+let sen=false;
+const attack = () =>{
+	sen=true;
+}
+const incoming = () =>{
+	makeTrack();
+	kyori.pop();
+	console.log(kyori);
+	(kyori.length <= maai && kyori.length !== 0)  ? indicater("you can kill") : indicater("you will die");
+	if(kyori.length <= maai && kyori.length !== 0){
+		if(sen && document.querySelector("#success").innerText === ""){document.querySelector("#success").innerText = "成功!!"}
+	}else{
+		if(sen && document.querySelector("#success").innerText === ""){document.querySelector("#success").innerText = "失敗!!"}
+	};
+	if(kyori.length===0 && document.querySelector("#success").innerText === ""){document.querySelector("#success").innerText = "失敗!!"}
+}
+
+const exe = () =>{
+	// https://ja.javascript.info/settimeout-setinterval
+	const interval = 1;
+	const times = kyori.length;
+	// インターバルで繰り返し
+	let timerId = setInterval(() => incoming(), baseTime * interval);
+	// n秒後に停止
+	setTimeout(() => { clearInterval(timerId); console.log('stop'); }, baseTime * interval * times);
+}
+
+// exe();
+</script>
+</body>
+</html>
