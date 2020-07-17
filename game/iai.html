@@ -3,20 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <title>Go-no-Sen</title>
-<script src="ramda.min.js"></script>
+<!-- <script src="ramda.min.js"></script> -->
 </head>
 <body>
 <button onclick="exe();">開始!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</button>
 間合い:<input type="number" value="10" id="maai"></input>
 距離:<input type="number" value="30" id="kyori"></input>
 時間:<input type="number" value="100" id="baseTime"></input>
+<hr />
 <button onclick="attack();">斬!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</button>
 <div id="success"></div>
 <div id="foo"></div>
 <div id="baz"></div>
 <script defer>
 let maai = Number(document.querySelector("#maai").value);
-let kyori = R.range(0, Number(document.querySelector("#kyori").value));
+let kyori = Array.from({length: Number(document.querySelector("#kyori").value)}, (v, k) => k);
+// let kyori = R.range(0, Number(document.querySelector("#kyori").value));
 let baseTime = Number(document.querySelector("#baseTime").value);
 // let maai = 10;
 // let kyori = R.range(0,30);
