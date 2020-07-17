@@ -7,9 +7,9 @@
 </head>
 <body>
 <button onclick="exe();">開始!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</button>
-間合い:<input type="number" value="10" id="maai" onchange="init();"></input>
-距離:<input type="number" value="30" id="kyori" onchange="init();"></input>
-時間:<input type="number" value="100" id="baseTime" onchange="init();"></input>
+間合い:<input type="number" value="10" id="maai" oninput="init();"></input>
+距離:<input type="number" value="30" id="kyori" oninput="init();"></input>
+時間:<input type="number" value="100" id="baseTime" oninput="init();"></input>
 <hr />
 <button onclick="attack();">斬!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</button>
 <div id="success"></div>
@@ -63,7 +63,7 @@ const exe = () =>{
 	// インターバルで繰り返し
 	let timerId = setInterval(() => incoming(), baseTime * interval);
 	// n秒後に停止
-	setTimeout(() => { clearInterval(timerId); console.log('stop'); }, baseTime * interval * times);
+	setTimeout(() => { clearInterval(timerId); console.log('stop'); }, (baseTime * interval * times));
 }
 
 // exe();
