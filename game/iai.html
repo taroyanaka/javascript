@@ -7,18 +7,18 @@
 </head>
 <body>
 <button onclick="exe();">開始!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</button>
-間合い:<input type="number" value="10" id="maai"></input>
-距離:<input type="number" value="30" id="kyori"></input>
-時間:<input type="number" value="100" id="baseTime"></input>
+間合い:<input type="number" value="10" id="maai" onchange="init();"></input>
+距離:<input type="number" value="30" id="kyori" onchange="init();"></input>
+時間:<input type="number" value="100" id="baseTime" onchange="init();"></input>
 <hr />
 <button onclick="attack();">斬!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</button>
 <div id="success"></div>
 <div id="foo"></div>
 <div id="baz"></div>
 <script defer>
+let sen=false;
 let maai = Number(document.querySelector("#maai").value);
 let kyori = Array.from({length: Number(document.querySelector("#kyori").value)}, (v, k) => k);
-// let kyori = R.range(0, Number(document.querySelector("#kyori").value));
 let baseTime = Number(document.querySelector("#baseTime").value);
 // let maai = 10;
 // let kyori = R.range(0,30);
@@ -32,7 +32,6 @@ const makeTrack = () =>{
 	);
 }
 
-let sen=false;
 const attack = () =>{
 	sen=true;
 }
@@ -49,7 +48,15 @@ const incoming = () =>{
 	if(kyori.length===0 && document.querySelector("#success").innerText === ""){document.querySelector("#success").innerText = "失敗!!"}
 }
 
+const init = () =>{
+	sen=false;
+	document.querySelector("#success").innerText = "";
+	maai = Number(document.querySelector("#maai").value);
+	kyori = Array.from({length: Number(document.querySelector("#kyori").value)}, (v, k) => k);
+	baseTime = Number(document.querySelector("#baseTime").value);
+}
 const exe = () =>{
+	init();
 	// https://ja.javascript.info/settimeout-setinterval
 	const interval = 1;
 	const times = kyori.length;
