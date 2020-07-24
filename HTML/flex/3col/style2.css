@@ -1,0 +1,47 @@
+@charset "UTF-8";
+/* CSS Document */
+
+*{
+  margin:0;
+  padding:0;
+}
+ul {
+  list-style: none;
+}
+#wrap{
+  width:800px;
+  margin:30px auto;
+  background-color: beige;
+}
+
+#header{
+  background-color: lightpink;
+}
+
+#contents {
+  display: flex;
+  justify-content: space-between;
+}
+
+#side{
+  background-color: skyblue;
+  width:200px;
+  order: 1;
+}
+
+#main{
+  background-color: palegreen;
+  width:360px;
+  display: block; /*for IE11*/
+  order: 2;
+}
+
+#navi{
+  background-color: plum;
+  width:200px;
+  order: 3;
+}
+
+#footer{
+  background-color: gold;
+}

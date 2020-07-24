@@ -1,0 +1,94 @@
+@charset "UTF-8";
+/* CSS Document */
+
+*{
+  margin:0;
+  padding:0;
+}
+body {
+  margin: 20px;
+}
+section {
+  margin: 20px 0;
+}
+ul {
+  list-style: none;
+}
+.wrap {
+  margin: 50px;
+}
+.flex {
+  display: flex;
+  padding: 20px;
+  border: 1px solid #e7e7e7;
+  background: #ffffeb;
+}
+.flex li {
+  width: 120px;
+  padding: 15px;
+  border: 2px solid #666;
+  background: #80ceff;
+}
+
+/*align-self*/
+.no7 .flex li:nth-child(1){
+  align-self: stretch;
+}
+.no7 .flex li:nth-child(2){
+  align-self: flex-start;
+}
+.no7 .flex li:nth-child(3){
+  align-self: flex-end;
+}
+.no7 .flex li:nth-child(4){
+  align-self: center;
+}
+.no7 .flex li:nth-child(5){
+  align-self: baseline;
+}
+
+/*order*/
+.no8 .flex li:nth-child(1) {
+  background: #ffd800;
+  order: 1;
+}
+.no8 .flex li:nth-child(2) {
+  background: #80d683;
+  order: 2;
+}
+
+/*flex-grow*/
+.no9 .flex.grow1 li:nth-child(1){
+  width: 200px;
+  flex-grow: 1;
+}
+.no9 .flex.grow1 li:nth-child(2){
+  width: 400px;
+  flex-grow: 1;
+}
+.no9 .flex.grow2 li:nth-child(2){
+  width: auto;
+  background: #ffd800;
+  flex-grow: 1;
+}
+
+/*flex-shrink*/
+.no10 .flex li{
+  width: 200px;
+}
+.no10 .flex li:nth-child(1){
+  background: #ffd800;
+  flex-shrink: 0;
+}
+
+/*flex-basis*/
+.no11 .flex li:nth-child(1){
+  width: 200px;
+}
+.no11 .flex li:nth-child(2){
+  background: #ffd800;
+  flex-basis: 200px;
+}
+.no11 .flex {
+  flex-direction: column;
+}

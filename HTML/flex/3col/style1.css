@@ -1,0 +1,36 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#wrap{
+  width:940px;
+  margin:30px auto;
+  background-color: beige;
+}
+
+#header{
+  background-color: lightpink;
+}
+
+#contents {
+  display: flex;
+  justify-content: space-between;
+}
+
+#cont1{
+  background-color: palegreen;
+  width:300px;
+}
+
+#cont2{
+  background-color: skyblue;
+  width:300px;
+}
+
+#cont3{
+  background-color: plum;
+  width:300px;
+}
+
+#footer{
+  background-color: gold;
+}

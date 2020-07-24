@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>flexアイテムに設定するプロパティ</title>
+  <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+ <h1>flexアイテム関連プロパティの練習</h1>
+ 
+  <section class="no7">
+    <h2>⑦align-self</h2>
+    <ul class="flex">
+      <li>【stretch】<br>アイテム<br>アイテム<br>アイテム</li>
+      <li>【flex-start】<br>アイテム</li>
+      <li>【flex-end】<br>アイテム<br>アイテム</li>
+      <li>【center】<br>アイテム</li>
+      <li>【baseline】<br>アイテム</li>
+    </ul>
+  </section>
+ 
+  <section class="no8">
+    <h2>⑧order</h2>
+    <ul class="flex">
+      <li>【1】<br>アイテム<br>アイテム</li>
+      <li>【2】<br>アイテム</li>
+      <li>アイテム<br>アイテム<br>アイテム</li>
+      <li>アイテム</li>
+      <li>アイテム</li>
+    </ul>
+  </section> 
+  
+  <section class="no9">
+    <h2>⑨flex-grow</h2>
+    <p>同じ比率でコンテナ幅いっぱいまで広げる</p>
+    <ul class="flex grow1">
+      <li>【flex-grow:1】<br>アイテム（200px）</li>
+      <li>【flex-grow:1】<br>アイテム（400px）</li>
+    </ul>
+    <p>特定のアイテムだけコンテナ幅いっぱいまで広げる</p>
+    <ul class="flex grow2">
+      <li>アイテム</li>
+      <li>【flex-grow:1】<br>アイテム（幅いっぱいにしたい）</li>
+    </ul>
+  </section>
+  
+  <section class="no10">
+    <h2>⑩flex-shrink</h2>
+    <ul class="flex">
+      <li>【flex-shrink:0】<br>アイテム<br>（200px固定）</li>
+      <li>アイテム<br>（最大200px）</li>
+      <li>アイテム<br>（最大200px）</li>
+    </ul>
+  </section>
+  
+  <section class="no11">
+    <h2>⑪flex-basis</h2>
+    <ul class="flex">
+      <li>アイテム<br>（width: 200px）</li>
+      <li>アイテム<br>（flex-basis: 200px）</li>
+    </ul>
+  </section>
+  
+  
+</body>
+</html>
