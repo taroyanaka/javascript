@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>小町の紹介 | KOMA-NATSU Web</title>
+<meta name="keywords" content="にゃんこ,ネコ,ねこ,猫,ねこ紹介,ねこ自慢">
+<meta name="description" content="我が家のアイドル、にゃんこ達を紹介します！可愛い猫写真を沢山掲載しています。">
+</head>
+
+<body>
+<header>
+  <h1>KOMA-NATSU Web</h1>
+  <p>我が家のアイドル、にゃんこ達を紹介します！</p>
+</header>
+
+<nav>
+  <ul>
+  <li>はじめに</li>
+  <li>我が家のにゃんこ</li>
+  <li>飼い主紹介</li>
+  </ul>
+</nav>
+
+<main>
+
+<section>
+  <h2>小町の紹介</h2>
+</section>
+
+</main>
+
+<footer>
+  <p>Copyright © KOMA-NATSU Web All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>

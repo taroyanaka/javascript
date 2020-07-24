@@ -1,0 +1,252 @@
+<html>
+	<head>
+		<title>Taro Yanaka HTML/CSS service</title>
+		<style>
+@charset "utf-8";
+/*
+=======================================
+  Reset CSS
+=======================================
+*/
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, main, menu, nav, section, summary,
+time, mark, audio, video{
+  margin:0;
+  padding:0;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,main,menu,nav,section{
+  display:block;
+}
+
+html{
+  -webkit-text-size-adjust: 100%;
+}
+
+body{
+  line-height: 1.5;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+img{
+  border: 0;
+  max-width: 100%;
+  height: auto;
+}
+
+ul,ol{
+  list-style-type: none;
+}
+
+table {
+  border-collapse: collapse; 
+  border-spacing: 0;
+}
+
+img, input, select, textarea { 
+  vertical-align: middle;
+}
+
+a {
+  transition: 0.5s;
+  text-decoration: none;
+}
+a:hover {
+  color: #000000;
+}
+a:hover img {
+  opacity: 0.7;
+}
+
+
+
+
+
+
+
+
+header,nav,main,footer {
+  text-align: center;
+}
+
+header{
+	background-color: rgb(157, 157, 157);
+	margin: 0 0 10px 0;
+}
+
+h1 {
+  width: 300px;
+  margin: 20px auto;
+  padding: 10px;
+  border: 10px solid gray;
+  background-color: white;
+  color: gray;
+  font-size: 300%;
+  border-radius: 10px;
+  text-shadow: 1px 1px 2px black;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+nav{
+	background-color: rgb(165, 165, 165);
+}
+
+nav ul{
+	margin: 0 ;
+    padding: 0 ;
+}
+nav li {
+  list-style-type: none;
+  display: inline-block;
+  width: auto;
+  margin: 0 10px;
+  vertical-align: bottom;
+}
+nav a {
+  display: block;
+  padding: 10px;
+  background: #270084;
+  border-radius: 8px;
+  color: #fff;
+  /* text-decoration: none; */
+}
+nav a:hover {
+  background: rgb(175, 255, 38);
+  color: #fff;
+}
+
+
+
+div.wrapper {
+  background-color: gray;
+}
+main{
+	width: auto;
+	  background-color: gray;
+}
+article{
+	border: 1px solid #000;
+	border-radius: 10px;
+	padding: 1%;
+	width: 40%;
+	float: left;
+	margin: 1% 1%;
+}
+
+h2 {
+  width: auto;
+  margin: 20px auto;
+  padding: 10px;
+  color: gray;
+  border-radius: 10px;
+  text-align: center;
+  background-color: rebeccapurple;
+}
+
+h2:hover{
+	  opacity: 0.7;
+}
+
+/* table{
+	background-color: gray;
+	width: auto;
+} */
+
+
+.clearfix {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+footer{
+	background-color: rgb(157, 157, 157);
+	margin: 10px 0 0 0;
+}
+footer p{
+	font-size: 300%;
+	  color: gray;
+}
+</style>
+	</head>
+	<header>
+		<h1>Taro Yanaka</h1>
+		<!-- <p>Introduce yourself</p> -->
+
+		<nav>
+			<ul>
+				<li><a href="https://twitter.com/yanaka">twitter</a></li>
+				<li><a href="https://www.instagram.com/taroyanaka/">instagram</a></li>
+				<li><a href="https://soundcloud.com/yanaka-1">soundcloud</a></li>
+			</ul>
+		</nav>
+	</header>
+
+	<main>
+		<a href="https://pbs.twimg.com/media/EE4JpUQU4AAJ-KW?format=jpg&name=medium">
+		<article>
+				<h2>picture101</h2>
+				<img src="https://pbs.twimg.com/media/EE4JpUQU4AAJ-KW?format=jpg&name=medium" alt="picture101"></article>
+		</article>
+		</a>
+
+		<a href="https://pbs.twimg.com/media/DbeOvuaU0AEPn4J?format=jpg&name=medium">
+		<article>
+			<h2>picture5</h2>
+			<img src="https://pbs.twimg.com/media/DbeOvuaU0AEPn4J?format=jpg&name=medium" alt="picture5"></article>
+		</article>
+		</a>
+
+		<a href="https://pbs.twimg.com/media/EBvxhhbU0AAJgA0?format=png&name=900x900">
+		<article>
+			<h2>picture21</h2>
+			<img src="https://pbs.twimg.com/media/EBvxhhbU0AAJgA0?format=png&name=900x900" alt="picture21"></article>
+		</article>
+		</a>
+
+		<!-- <article>
+			<table>
+				<tr>
+					<td>indoor hobby</td>
+					<td>video game</td>
+					<td>reading books</td>
+				</tr>
+				
+				<tr>
+					<td>outdoor hobby</td>
+					<td>triathlon</td>
+					<td>drinking</td>
+				</tr>
+			</table>
+		</article>
+		<article>
+		<p>Taro Yanaka skills:</p>
+
+		<dl>
+			<dt>paint</dt>
+			<dd>abstract art</dd>
+
+			<dt>making music</dt>
+			<dd>alternative</dd>
+
+			<dt>programming</dt>
+			<dd>HTML/CSS/JavaScript</dd>
+		</dl>
+		</article> -->
+	</main>
+	<footer class="clearfix">
+		<p>Copyright Taro Yanaka All Rights Reserved</p>
+	</footer>
+</div>
+</html>
