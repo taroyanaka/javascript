@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>puzzle</title>
+<script src="ramda.min.js"></script>
+<meta charset="UTF-8">
+<style>
+*{
+	margin:0;
+	padding:0;
+}
+body{
+	background-color: gray;
+}
+#table{
+	background-color: white;
+	border: 0;
+	width: 100%;
+	text-align: center;
+}
+.card {
+	width: var(--CARDWIDTH);
+	border: 3px solid black;
+	border-radius: 10px;
+	font-size: 200%;
+	box-shadow: gray 3px 3px;
+}
+</style>
+</head>
+<body>
+    <table id="table"></table>
+</body>
+<script>
+"use strict";
+let XBYYARRAY;
+let INDEXEDTDOBJECT;
+let INDEXEDTDARRAY;
+let SPLITTDARRAY;
+let CURRENTPOSITION;
+let TARGETPOSITION;
+let TARGETRECORD;
+let TARGETCOLUMN;
+let XVALUE = 5;
+let YVALUE = 4;
+let FROM;
+let TO;
+
+const makeTable = () =>{
+	XBYYARRAY = R.xprod(R.range(0, YVALUE), R.range(0, XVALUE ));
+	const makeTDTag = (num, key) =>{
+		const TD = document.createElement("td");
+		[TD.className, TD.value, TD.textContent, TD.dataset.position, TD.onclick] = ["card", key, key, key, move];
+		return TD;
+	}
+	INDEXEDTDOBJECT = R.mapObjIndexed(makeTDTag, XBYYARRAY);
+	INDEXEDTDARRAY = R.map(V=>{return V[1]})(R.toPairs(INDEXEDTDOBJECT));
+	const makeInnerTableTag = (SPLITTDARRAYOFONE) =>{
+		const TR = document.createElement("tr");
+		R.forEach(TD=>{TR.appendChild(TD)})(SPLITTDARRAYOFONE);
+		document.querySelector("table").appendChild(TR);
+	}
+	SPLITTDARRAY = R.splitEvery( XVALUE )(INDEXEDTDARRAY);
+	R.forEach(makeInnerTableTag)(SPLITTDARRAY);
+}
+const setInitialPosition = () =>{
+	document.querySelector("table tr td").textContent = "";
+	CURRENTPOSITION = [0,0];
+}
+const init = () =>{
+	makeTable();
+	setInitialPosition();
+}
+const move = (event) =>{
+	TARGETRECORD = Math.trunc( Number(event.target.dataset.position) / XVALUE );
+	TARGETCOLUMN = Number(event.target.dataset.position) - (TARGETRECORD * XVALUE );
+	//if CURRENTPOSITION = [2,2]
+	// [1,2] is upper [3,2] is lower [2,1] is previous [2,3] is next
+	const
+		ISUPPER = R.equals([TARGETRECORD-1, TARGETCOLUMN]),
+		ISLOWER = R.equals([TARGETRECORD+1, TARGETCOLUMN]),
+		ISPREVIOUS = R.equals([TARGETRECORD, TARGETCOLUMN-1]),
+		ISNEXT = R.equals([TARGETRECORD, TARGETCOLUMN+1]);
+	if( R.anyPass([ISUPPER, ISLOWER, ISPREVIOUS, ISNEXT])(CURRENTPOSITION) ){
+		positionValueReplace(CURRENTPOSITION[0], CURRENTPOSITION[1], TARGETRECORD, TARGETCOLUMN);
+		CURRENTPOSITION = [TARGETRECORD, TARGETCOLUMN];
+	}
+}
+const shuf = () =>{
+	TARGETRECORD = Math.floor(Math.random() * (YVALUE));
+	TARGETCOLUMN = Math.floor(Math.random() * (XVALUE));
+	positionValueReplace(CURRENTPOSITION[0], CURRENTPOSITION[1], TARGETRECORD, TARGETCOLUMN);
+	CURRENTPOSITION = [TARGETRECORD, TARGETCOLUMN];
+}
+const positionValueReplace = (FROMRECORD,FROMCOLUMN,TORECORD,TOCOLUMN) =>{
+	FROM = document.querySelector(`table tr:nth-child(${FROMRECORD+1}) td:nth-child(${FROMCOLUMN+1})`)
+	TO = document.querySelector(`table tr:nth-child(${TORECORD+1}) td:nth-child(${TOCOLUMN+1})`)
+	const TMP = FROM.value;
+	FROM.textContent = FROM.value = TO.textContent;
+	TO.value = TMP;
+	TO.textContent = "";
+}
+
+// https://stackoverflow.com/a/19303725
+// let seed=1;
+// const seedRandom = () =>{
+// 	const x = Math.sin(seed++) * 42;
+// 	return x - Math.floor(x);
+// }
+// const makeLongSeed = () =>{
+// 	return R.times(R.identity, 100).map(V=>{ return R.toString(seedRandom()).replace(/0\./,"") }).join("")
+// };
+
+const nTimesShuffle = (n) =>{
+	let i=0;
+	while(i<n){
+		i++;
+		shuf();
+	}
+}
+const test = () => {
+	document.querySelector("#table > tr:nth-child(2) > td").click();
+	document.querySelector("#table > tr:nth-child(2) > td:nth-child(2)").click();
+	document.querySelector("#table > tr:nth-child(3) > td:nth-child(2)").click();
+}
+
+init();
+document.querySelector(".card").style.setProperty("--CARDWIDTH", `${100/XVALUE}%`);
+nTimesShuffle(XVALUE*YVALUE*10);
+// test();
+</script>
+</html>
