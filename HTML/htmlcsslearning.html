@@ -403,7 +403,7 @@ ul,ol{
 }
 /* =======================================   Reset CSS */
 
-body{
+.outerfoo{
 	background-color: white;
 }
 .foo{
@@ -452,65 +452,66 @@ margin/padding
 left/right/top/bottom
 position: static;以外の直近先祖要素のpadding-box */
 </style>
+<div class="outerfoo">
+	<div class="foo">
+		<div class="bar">bar</div>
+		<div class="bar">bar</div>
+		<div class="bar">bar</div>
+		<div class="bar">bar</div>
+		<div class="bar">bar</div>
+	</div>
 
-<div class="foo">
-	<div class="bar">bar</div>
-	<div class="bar">bar</div>
-	<div class="bar">bar</div>
-	<div class="bar">bar</div>
-	<div class="bar">bar</div>
-</div>
-
-<div class="foo">
-	<div class="bar">
-		<ul>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-		</ul>
-	</div>
-	<div class="bar">
-		<ul>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-		</ul>
-	</div>
-	<div class="bar">
-		<ul>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-		</ul>
-	</div>
-	<div class="bar">
-		<ul>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-		</ul>
-	</div>
-	<div class="bar">
-		<ul>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-			<li><a>flex</a></li>
-		</ul>
+	<div class="foo">
+		<div class="bar">
+			<ul>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+			</ul>
+		</div>
+		<div class="bar">
+			<ul>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+			</ul>
+		</div>
+		<div class="bar">
+			<ul>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+			</ul>
+		</div>
+		<div class="bar">
+			<ul>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+			</ul>
+		</div>
+		<div class="bar">
+			<ul>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+				<li><a>flex</a></li>
+			</ul>
+		</div>
 	</div>
 </div>
 
