@@ -1,0 +1,165 @@
+<html>
+	<head>
+		<title>inline-block flex sample</title>
+		<style>
+/* =======================================   Reset CSS */
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, main, menu, nav, section, summary,
+time, mark, audio, video{
+  margin:0;
+  padding:0;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,main,menu,nav,section{
+  display:block;
+}
+
+html{
+  -webkit-text-size-adjust: 100%;
+}
+
+body{
+  line-height: 1.5;
+  font-size: 14px;
+  font-family: sans-serif;
+}
+
+img{
+  border: 0;
+  max-width: 100%;
+  height: auto;
+}
+
+ul,ol{
+  list-style-type: none;
+}
+/* =======================================   Reset CSS */
+
+body{
+	background-color: white;
+}
+.foo{
+	/* margin : 100px; */
+	margin: 0;
+	border : 0px solid gray;
+	padding : 0;
+	width : 500px;
+	height : 500px;
+	background-color : #FFA726;
+	text-align: center;
+	letter-spacing: -.4em;
+}
+.bar{
+	display: inline-block;
+	letter-spacing: normal;
+	margin : 10% 0;
+	padding: 0;
+	border: 1px solid black;
+	width : calc(100%/5 - 2px);
+	height : calc(80% - 2px);
+	vertical-align: bottom;
+	background-color : gray;
+}
+ul{
+	background-color: white;
+	width: 100%;
+	height: 100%;
+}
+li{
+	height: calc(100% / 6 -  5px);
+	width: calc(100% - 4px);
+	background-color: #7E57C2;
+	margin: 0 2px 5px 2px;
+	vertical-align: center;
+	display: flex;
+	/* display: table; */
+}
+ul > li > a{
+	background-color: gray;
+	margin: auto;
+	/* display: table-cell; */
+	/* vertical-align: middle; */
+	/* text-align: center; */
+}
+/* %算出基準
+width/height
+直近親要素のcontent-box
+margin/padding
+直近親要素のcontent-boxの""幅""
+left/right/top/bottom
+position: static;以外の直近先祖要素のpadding-box */
+</style>
+	</head>
+<body>
+<div class="foo">
+	<div class="bar">bar</div>
+	<div class="bar">bar</div>
+	<div class="bar">bar</div>
+	<div class="bar">bar</div>
+	<div class="bar">bar</div>
+</div>
+
+<div class="foo">
+	<div class="bar">
+		<ul>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+		</ul>
+	</div>
+	<div class="bar">
+		<ul>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+		</ul>
+	</div>
+	<div class="bar">
+		<ul>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+		</ul>
+	</div>
+	<div class="bar">
+		<ul>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+		</ul>
+	</div>
+	<div class="bar">
+		<ul>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+			<li><a>flex</a></li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>
