@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<title>youtube embed maker</title>
+	</head>
+	<body>
+	<header>
+    </header>
+<textarea oninput="makeThumbnail();"></textarea>
+	<main>
+        <div id="output"></div>
+	</main>
+	<footer class="clearfix">
+        <p>Copyright Taro Yanaka All Rights Reserved</p>
+        <button onclick="test();makeThumbnail();">Test</button>
+	</footer>
+</div>
+</body>
+<script>
+    const test = () =>{
+        document.querySelector("textarea").value = 
+`jM3GvD3DKbw
+oGTVoX7AaRc
+jM3GvD3DKbw
+oGTVoX7AaRc`
+    }
+
+    const makeThumbnail = () =>{
+        document.querySelectorAll("iframe").forEach(E=>{E.parentNode.removeChild(E)});
+
+        let url =
+        // document.querySelectorAll("#output")[0].value =
+        document.querySelector("textarea").value.split("\n").filter(V=>{return V!==""})
+        let makeString = (V) =>{
+            return `<iframe id="ytplayer" type="text/html" width="320" height="180"  src="https://www.youtube.com/embed/`
+            + V +
+            `?vq=small"></iframe>`
+        }
+        let res = url.map(V=>{return makeString(V)}).join("");
+        console.log(res);
+        document.querySelector(`#output`).insertAdjacentHTML(`afterEnd`,  res);
+    }
+
+    // test();
+    makeThumbnail();
+</script>
+</html>
