@@ -403,6 +403,7 @@
     }
 
     const chooseRandomProduct = () => {
+        document.querySelector("textarea").value = "";
         const text = shuffleArray(product);
         R.times(R.identity, document.querySelector("#number").value ).forEach(V=>{
             document.querySelector("textarea").value += text[V] + "\n"
