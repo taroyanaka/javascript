@@ -9,6 +9,9 @@
             h1{
                 font: 10px sans-serif;
             }
+            h2{
+                font: 5px sans-serif;
+            }
             input{
                 width: 100px;
                 height: 100px;
@@ -25,7 +28,7 @@
 	</head>
 	<body>
 	<header>
-        <h1>choose random famima product version 20200930</h1>
+        <h1>choose random famima product</h1>
     </header>
 	<main>
         <div>
@@ -40,6 +43,12 @@
         <div><span>Tax included ¥</span><span id="zeikomi"></span></div>
 	</main>
 	<footer class="clearfix">
+        <div>
+            <button onclick="getURL();shareURL();" class="btn" data-clipboard-target="#shareURL">shareURL</button>
+            <input type="text" name="shareURL" id="shareURL" size="100"></input>
+            <!-- <button class="btn" data-clipboard-target="#shareURL">copyURL</button> -->
+        </div>
+        <h2>version 20200930</h2>
         <!-- <p>Copyright Taro Yanaka All Rights Reserved</p> -->
 	</footer>
 </div>
@@ -440,5 +449,29 @@
     }
 
     chooseRandomProduct();
+    
+    const getURL = () =>{
+        return location.href
+        + `?number=` +
+        encodeURIComponent(document.querySelector("#number").value)
+        + `&textarea=` +
+        encodeURIComponent(document.querySelector("textarea").value)
+        + `&zeibetu=` +
+        encodeURIComponent(document.querySelector("#zeibetu").textContent)
+        + `&zeikomi=` +
+        encodeURIComponent(document.querySelector("#zeikomi").textContent);
+    }
+
+    const shareURL = () =>{
+        document.querySelector("#shareURL").value = getURL();
+    }
+
+    const INIT = () =>{
+        document.querySelector("#number").value = (new URL(document.location)).searchParams.get('number');
+        document.querySelector("textarea").value = (new URL(document.location)).searchParams.get('textarea');
+        document.querySelector("#zeibetu").textContent = (new URL(document.location)).searchParams.get('zeibetu');
+        document.querySelector("#zeikomi").textContent = (new URL(document.location)).searchParams.get('zeikomi');
+    }
+    (new URL(document.location)).searchParams.get('textarea') ? INIT() : null;
 </script>
 </html>
