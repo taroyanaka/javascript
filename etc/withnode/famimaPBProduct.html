@@ -3,21 +3,36 @@
         <title>famimaPBProduct Random</title>
         <!-- <script src="famimaPBProduct.js"></script> -->
         <script src="ramda.min.js"></script>
+        <script src="clipboard.js"></script>
         <style>
             @charset "utf-8";
+            input{
+                width: 100px;
+                height: 100px;
+            }
             textarea{
                 width: 300px;
                 height: 300px;
+            }
+            button{
+                width: 100px;
+                height: 100px;
             }
         </style>
 	</head>
 	<body>
 	<header>
     </header>
-        <h1>choose random famima product</h1>
+        <h1>choose random famima product version 20200930</h1>
 	<main>
-        <input id="number" type="number" value="5" step="1" min="1" max="363" onchange="chooseRandomProduct();"></input>
-        <textarea></textarea>
+        <div>
+            <input id="number" type="number" value="5" step="1" min="1" max="363" onchange="chooseRandomProduct();"></input>
+        </div>
+        <textarea id="targetText"></textarea>
+        <div>
+            <button class="btn" data-clipboard-target="#targetText">copy</button>
+            <button onclick="refresh();">🔁</button>
+        </div>
         <div><span>Tax not included ¥</span><span id="zeibetu"></span></div>
         <div><span>Tax included ¥</span><span id="zeikomi"></span></div>
 	</main>
@@ -27,6 +42,8 @@
 </div>
 </body>
 <script>
+    new ClipboardJS('.btn');
+
     const product = [
         ["除菌ボトルウェットティシュー　本体",  328,360],
         ["旨み芳醇　函館塩",  138,149],
@@ -413,6 +430,10 @@
         });
         document.querySelector("#zeibetu").textContent = zeibetu;
         document.querySelector("#zeikomi").textContent = zeikomi;
+    }
+
+    const refresh = () => {
+        chooseRandomProduct();
     }
 
     chooseRandomProduct();
