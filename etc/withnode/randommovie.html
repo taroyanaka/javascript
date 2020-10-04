@@ -1,0 +1,98 @@
+<head>
+    <html>
+        <title>random movie</title>
+        <script src="wikipedia映画作品一覧.js"></script>
+        <script src="clipboard.js"></script>
+        <style>
+            @charset "utf-8";
+            h1{
+                font: 10px sans-serif;
+            }
+            select{
+                width: 100px;
+                height: 100px;
+            }
+            textarea{
+                width: 300px;
+                height: 300px;
+            }
+            /* https://stackoverflow.com/questions/36728497/how-to-zoom-content-in-iframe-to-fit-my-page-size */
+            .wrap {
+                /* width: calc(1000*1.7)px; */
+                width: 100%;
+                height: 300px;
+                /* width: 320px;
+                height: 192px; */
+                padding: 0;
+                /* overflow: hidden; */
+            }
+            .frame {
+                width: calc(100% * 3);
+                height: calc(100% * 3);
+                border: 0;
+                -ms-transform: scale(0.25);
+                -moz-transform: scale(0.25);
+                -o-transform: scale(0.25);
+                -webkit-transform: scale(0.25);
+                transform: scale(0.25);
+
+                -ms-transform-origin: 0 0;
+                -moz-transform-origin: 0 0;
+                -o-transform-origin: 0 0;
+                -webkit-transform-origin: 0 0;
+                transform-origin: 0 0;
+            }
+         </style>
+	</head>
+	<body>
+	<header>
+    </header>
+	<main>
+        <div>
+            <div>
+                <input id="number" type="number" value="1" step="1" min="1" max="363" onchange="chooseRandomProduct();"></input>
+                <button class="btn" data-clipboard-target="#targetText0">copy</button>
+                <button onclick="chooseRandomProduct();">🔁</button>
+            </div>
+            <!-- <input id="number" type="number" value="5" step="1" min="1" max="363" onchange="chooseRandomProduct();"></input> -->
+        </div>
+        <ul id="resUl"></ul>
+        <textarea id="targetText0"></textarea>
+        <div id="foo"></div>
+	</main>
+	<footer class="clearfix">
+        <!-- <div> -->
+        <!-- </div> -->
+	</footer>
+</div>
+</body>
+<script>
+    new ClipboardJS('.btn');
+    
+    const shuffleArray = array => {
+      for (let i = array.length - 1; i > 0; i--) {
+        let r = Math.floor(Math.random() * (i + 1));
+        let tmp = array[i];
+        array[i] = array[r];
+        array[r] = tmp;
+      }
+      return array
+    }
+
+    const init = () => {
+        document.querySelectorAll(".resLi").forEach(E=>{E.parentNode.removeChild(E)});
+        document.querySelector("#targetText0").value = "";
+        document.querySelectorAll(".wrap").forEach(E=>{E.parentNode.removeChild(E)});
+    }
+    const chooseRandomProduct = () => {
+        init();
+        const text = shuffleArray(allFilm);
+        [...Array( Number(document.querySelector("#number").value) )].map((_, i) => i).forEach(V=>{
+            document.querySelector("#targetText0").value += text[V][0] + "\n";
+            document.querySelector(`#resUl`).insertAdjacentHTML(`beforeBegin`,  `<li class="resLi"><a href=`+ text[V][1]+`>`+ text[V][0] +`<a></li>` );
+            document.querySelector(`#foo`).insertAdjacentHTML(`beforeEnd`,  `<div class="wrap"><iframe class="frame" src="${text[V][1]}"><iframe></div>` );
+        });
+    }
+    chooseRandomProduct();
+</script>
+</html>
