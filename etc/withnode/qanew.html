@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>quiz maker(ramda.js version)</title>
+    <script src="ramda.min.js"></script>
+</head>
+<style>
+    #btn{
+        width:100px;
+        height:50px
+    }
+    .FlexTextarea{
+        width: 100%;
+    }
+    input[type="radio"]{
+        display:none;
+    }
+    input[type="radio"] + label{
+        display:inline-block;
+        width:100px;
+        padding:2px;
+        background-color:#e7f6d4;
+        text-align:center;
+        font-size:12px;
+        color:#ffffff;
+    }
+    input[type="radio"]:checked + label{
+        background-color:#50C878;
+    }
+    #seed{
+        display: none;
+    }
+</style>
+<body>
+    <header></header>
+
+    <div>
+        <input id="btn" type="button" value="make" onclick="make();"/>
+        <input id="btn" type="button" value="test" onclick="test();"/>
+        <!-- <input id="btn" type="button" value="answerTest" onclick="answerTest();"/>
+        <input id="btn" type="button" value="allTest" onclick="test();answerTest();"/> -->
+        <div>
+            <input type="radio" name="switch" id="radio1" checked onclick="displaySeedOrNot();">
+            <label for="radio1">Random</label>
+            <input type="radio" name="switch" id="radio2" onclick="displaySeedOrNot();">
+            <label for="radio2">Fixed Random</label>
+            <!-- <input type="number" value="1" id="seed"> -->
+            <input type="text" inputmode="numeric" pattern="\d*" value="42" id="seed">
+        </div>
+    </div>
+    <div>
+        <link rel="stylesheet" href="FlexTextarea.css">
+        <!-- https://qiita.com/tsmd/items/fce7bf1f65f03239eef0 -->
+        <!-- <label for="FlexTextarea">伸縮するテキストエリア</label> -->
+        <div class="FlexTextarea">
+            <div class="FlexTextarea__dummy"></div>
+            <textarea id="foo" class="FlexTextarea__textarea"></textarea>
+        </div>
+        <div class="FlexTextarea">
+            <div class="FlexTextarea__dummy"></div>
+            <textarea id="bar" class="FlexTextarea__textarea"></textarea>
+        </div>
+        <script src="FlexTextarea.js"></script>
+
+        <!-- <div id="description">If you use PC, You can use 1,2,3,4 key to choose the answer</div> -->
+    </div>
+    <div id="QASet"></div>
+<script>
+    const preSetTestData = () => {
+        document.querySelector("#foo").value = `a b c d`;
+        document.querySelector("#bar").value = `A
+B
+C
+D`;
+    }
+
+    let questionText = "";
+    let answerText = "";
+
+    const init = () =>{
+        questionText = document.querySelector("#foo").value;
+        answerText = document.querySelector("#bar").value;
+    }
+
+    const seedRandom = () =>{
+        const x = Math.sin(Number(document.querySelector("#seed").value)) * 10000;
+        return x - Math.floor(x);
+    };
+
+    const displaySeedOrNot = () =>{
+        document.querySelector("#radio2").checked ? document.querySelector("#seed").style="display:inline" : document.querySelector("#seed").style="display:none";
+    }
+
+    const shuffleArray = array => {
+        for (let i = array.length - 1; i > 0; i--) {
+        let r = document.querySelector("#radio1").checked ? Math.floor(Math.random() * (i + 1)) : Math.floor(seedRandom() * (i + 1));
+        // let r = Math.floor(Math.random() * (i + 1));
+        let tmp = array[i];
+        array[i] = array[r];
+        array[r] = tmp;
+        }
+        return array
+    }
+
+    function QASetKeyconfig(event){
+        if (event.defaultPrevented) {
+            return; // Do nothing if the event was already processed
+        }
+            switch (event.key) {
+            case "1":
+                document.querySelectorAll('#QASet > div.QA > input').item(0).click()
+            break;
+            case "2":
+                document.querySelectorAll('#QASet > div.QA > input').item(1).click()
+            break;
+            case "3":
+                document.querySelectorAll('#QASet > div.QA > input').item(2).click()
+            break;
+            case "4":
+                document.querySelectorAll('#QASet > div.QA > input').item(3).click()
+            break;
+            case "Enter":
+            default:
+            }
+        // Cancel the default action to avoid it being handled twice
+        event.preventDefault();
+    }
+
+    const keyConfig = () => {
+        window.addEventListener("keydown", QASetKeyconfig, true);
+    }
+
+
+    const insertTestData = () =>{
+        document.querySelector(`#foo`).value = R.flatten(questionText.split("\n").map(V=>{return V.split(" ")})).join("\n");
+        document.querySelector(`#bar`).value = answerText;
+    };
+
+    const makeQApair = () => R.transpose([ document.querySelector(`#foo`).value.split(`\n`) , document.querySelector(`#bar`).value.split(`\n`) ]) ;
+
+    const getQAAAAarray = (QApair) => {
+        const makeQAAAAarray = (x) => R.insertAll(-1,R.take(3,shuffleArray(R.without(x[1],R.pluck(1, QApair)))),x);
+        const fourLengthArrayCheck = (array) => R.uniq(array).length === 4;
+        return R.reject( fourLengthArrayCheck ,  R.map(makeQAAAAarray, QApair)  );
+    };
+
+    const makeQAHTML = (QAAAAarray) =>{
+        const makeQASet = (QAAAA,KEY) => {
+            const shuffledAAAA = shuffleArray(R.without([QAAAA[0]],QAAAA));
+            return `<div class="QA" data-id="${KEY}">
+                        <span>${QAAAA[0]}</span>
+                        <input type="button" value="${shuffledAAAA[0]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+                        <input type="button" value="${shuffledAAAA[1]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+                        <input type="button" value="${shuffledAAAA[2]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+                        <input type="button" value="${shuffledAAAA[3]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
+                </div>`;
+        }
+        document.querySelector(`#QASet`).insertAdjacentHTML(`afterBegin`,  QAAAAarray.map(makeQASet).join("")  );
+    };
+
+    let wrongQApair = [];
+    function resetQASetKeyconfig (event){
+            if (event.defaultPrevented) {
+                return; // Do nothing if the event was already processed
+            }
+                switch (event.key) {
+                case "1":
+                    document.querySelectorAll('header > div.QA > input').item(0).click()
+                break;
+                case "2":
+                    document.querySelectorAll('header > div.QA > input').item(1).click()
+                break;
+                case "3":
+                    document.querySelectorAll('header > div.QA > input').item(2).click()
+                break;
+                case "4":
+                    document.querySelectorAll('header > div.QA > input').item(3).click()
+                break;
+                case "Enter":
+                default:
+                }
+            // Cancel the default action to avoid it being handled twice
+            event.preventDefault();
+    }
+
+    const cheackRemoveAndResetKeyconfig = () =>{
+        if(!document.querySelector(`#QASet > div.QA`)){
+            window.removeEventListener("keydown", QASetKeyconfig, true);
+            window.addEventListener("keydown", resetQASetKeyconfig, true);
+        };
+    }
+
+    const checkQA = (event) =>{
+        if(event.target.value === event.target.dataset.answer){
+            document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) );
+        }else{
+            document.querySelector("header").appendChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) );
+            cheackRemoveAndResetKeyconfig();
+        };
+    };
+
+    const make = () =>{ 
+         makeQAHTML(getQAAAAarray(makeQApair()));
+         keyConfig();
+    };
+
+
+
+    const test = () =>{
+        document.querySelector("#radio2").click();
+        preSetTestData();
+        init();
+        insertTestData();
+        make();
+    }
+    const answerTest = () =>{
+        R.times(R.identity, 2).forEach(V=>{ document.querySelector("#QASet > div.QA > input").click() });
+        document.querySelector("#QASet > div.QA > input[type='button']:nth-child(3)").click();
+        document.querySelector("#QASet > div.QA > input[type='button']:nth-child(3)").click();
+        document.querySelector("header > div.QA > input[type='button']:nth-child(3)").click();
+        document.querySelector("header > div.QA > input[type='button']:nth-child(2)").click();
+        document.querySelector("header > div.QA > input[type='button']:nth-child(2)").click();
+    }
+</script>
+</body>
+</html>

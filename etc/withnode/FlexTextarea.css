@@ -1,0 +1,40 @@
+/* https://qiita.com/tsmd/items/fce7bf1f65f03239eef0 */
+.FlexTextarea {
+    position: relative;
+    /* font-size: 1rem; */
+    /* line-height: 1.8; */
+  }
+  
+  .FlexTextarea__dummy {
+    visibility: hidden;
+    min-height: 60px;
+    /* white-space: pre; */
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+  
+  .FlexTextarea__textarea {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    background-color: transparent;
+    border-radius: 4px;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+  }
+  .FlexTextarea__dummy, .FlexTextarea__textarea {
+    box-sizing: border-box;
+    overflow: hidden;
+    /* padding: 5px 15px; */
+    /* border: 1px solid #b6c3c6; */
+  }
+  
+  /* .FlexTextarea__textarea:focus {
+    box-shadow: 0 0 0 4px rgba(35, 167, 195, 0.3);
+    outline: 0;
+  } */
