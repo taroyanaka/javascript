@@ -8,7 +8,15 @@
 </head>
 </head>
 <body>
-<header></header>
+    <div class="accordion">
+        <label for="accordion-1">RETRY</label>
+        <input id="accordion-1" type="checkbox">
+        <div class="content">
+            <div class="inner">
+                <header></header>
+            </div>
+        </div>
+    </div>
     <div class="accordion">
         <label for="accordion-1">OPEN</label>
         <input id="accordion-1" type="checkbox">
@@ -209,7 +217,7 @@ D`;
         document.querySelector("header > div.QA > input[type='button']:nth-child(2)").click();
         document.querySelector("header > div.QA > input[type='button']:nth-child(2)").click();
     }
-    // test();
+    test();
 </script>
 </body>
 </html>
