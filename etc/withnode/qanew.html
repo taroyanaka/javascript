@@ -24,21 +24,6 @@
         <input id="accordion-1" type="checkbox">
         <div class="content">
             <div class="inner">
-
-                <div>
-                        <input id="btn" type="button" value="make" onclick="make();"/>
-                        <input id="btn" type="button" value="test" onclick="test();"/>
-
-                    <!-- <input id="btn" type="button" value="answerTest" onclick="answerTest();"/>
-                    <input id="btn" type="button" value="allTest" onclick="test();answerTest();"/> -->
-                        <input type="radio" name="switch" id="radio1" checked onclick="displaySeedOrNot();">
-                        <label for="radio1">Random</label>
-                        <input type="radio" name="switch" id="radio2" onclick="displaySeedOrNot();">
-                        <label for="radio2">Fixed Random</label>
-                        <!-- <input type="number" value="1" id="seed"> -->
-                        <input type="text" inputmode="numeric" pattern="\d*" value="42" id="seed">
-                    </div>
-                </div>
                 <div>
                     <link rel="stylesheet" href="FlexTextarea.css">
                     <!-- https://qiita.com/tsmd/items/fce7bf1f65f03239eef0 -->
@@ -54,6 +39,19 @@
                     <script src="FlexTextarea.js"></script>
 
                     <!-- <div id="description">If you use PC, You can use 1,2,3,4 key to choose the answer</div> -->
+                </div>
+                <div>
+                    <input id="btn" type="button" value="make" onclick="make();"/>
+                    <input id="btn" type="button" value="test" onclick="test();"/>
+                    <!-- <input id="btn" type="button" value="answerTest" onclick="answerTest();"/>
+                    <input id="btn" type="button" value="allTest" onclick="test();answerTest();"/> -->
+                        <input type="radio" name="switch" id="radio1" checked onclick="displaySeedOrNot();">
+                        <label for="radio1">Random</label>
+                        <input type="radio" name="switch" id="radio2" onclick="displaySeedOrNot();">
+                        <label for="radio2">Fixed Random</label>
+                        <!-- <input type="number" value="1" id="seed"> -->
+                        <input type="text" inputmode="numeric" pattern="\d*" value="42" id="seed">
+                </div>
             </div>
         </div>
     </div>
