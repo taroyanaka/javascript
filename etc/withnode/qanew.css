@@ -1,13 +1,16 @@
-*{
-    font-size: 30px;
-}
-
-html, body{
+    html, body{
         height: 100%;
         margin: 0;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
         /* background: gray; */
         /* color: black; */
     }
+
+    *{
+        font-size: 30px;
+    }
+    
 
     #btn{
         width:100px;
