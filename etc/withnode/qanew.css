@@ -1,8 +1,8 @@
     html, body{
         height: 100%;
         margin: 0;
-        -webkit-text-size-adjust: 100%;
-        -ms-text-size-adjust: 100%;
+        /* -webkit-text-size-adjust: 100%; */
+        /* -ms-text-size-adjust: 100%; */
         /* background: gray; */
         /* color: black; */
     }
@@ -29,9 +29,7 @@
         /* font-size: 30px; */
         font-weight: bold;
     }
-    textarea{
-        border: 3px black solid;
-    }
+
     input[type="radio"]{
         display:none;
     }
@@ -49,9 +47,6 @@
     }
     #seed{
         display: none;
-    }
-    textarea{
-        background: white;
     }
     #container{
         /* background: red; */
@@ -149,3 +144,8 @@
   padding: .6em 1.2em;
 }
 
+
+textarea{
+    color: black;
+    background: white;
+}
