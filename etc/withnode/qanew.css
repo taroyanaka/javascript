@@ -1,9 +1,10 @@
-        html, body{
-            height: 100%;
-            margin: 0;
-            /* background: gray; */
-            /* color: black; */
-        }
+    html, body{
+        height: 100%;
+        margin: 0;
+        font-size: 1.5rem;
+        /* background: gray; */
+        /* color: black; */
+    }
 
     #btn{
         width:100px;
@@ -13,6 +14,9 @@
     }
     .FlexTextarea{
         width: 100%;
+    }
+    input{
+        font-size: 1.5rem;
     }
     input[type="radio"]{
         display:none;
