@@ -1,7 +1,10 @@
-    html, body{
+*{
+    font-size: 30px;
+}
+
+html, body{
         height: 100%;
         margin: 0;
-        font-size: 30px;
         /* background: gray; */
         /* color: black; */
     }
@@ -16,11 +19,11 @@
         width: 100%;
     }
     input{
-        font-size: 30px;
+        /* font-size: 30px; */
         font-weight: bold;
     }
     div.QA > a > span{
-        font-size: 30px;
+        /* font-size: 30px; */
         font-weight: bold;
     }
     textarea{
