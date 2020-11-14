@@ -82,8 +82,10 @@
         opacity: 0.8;
     }
 
-    #QASet2 > div.QA > input{
+    #QASet > div.QA > input{
         word-wrap: break-word;
+        background-color: rgba(0, 0, 0, 0.9);
+        color: white;
         width: 100%;
     }
 
