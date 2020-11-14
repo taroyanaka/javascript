@@ -4,71 +4,58 @@
     <meta charset="UTF-8" />
     <title>quiz maker(ramda.js version)</title>
     <script src="ramda.min.js"></script>
+    <link rel="stylesheet" href="qanew.css">
 </head>
-<style>
-    #btn{
-        width:100px;
-        height:50px
-    }
-    .FlexTextarea{
-        width: 100%;
-    }
-    input[type="radio"]{
-        display:none;
-    }
-    input[type="radio"] + label{
-        display:inline-block;
-        width:100px;
-        padding:2px;
-        background-color:#e7f6d4;
-        text-align:center;
-        font-size:12px;
-        color:#ffffff;
-    }
-    input[type="radio"]:checked + label{
-        background-color:#50C878;
-    }
-    #seed{
-        display: none;
-    }
-</style>
+</head>
 <body>
-    <header></header>
+<header></header>
+    <div class="accordion">
+        <label for="accordion-1">OPEN</label>
+        <input id="accordion-1" type="checkbox">
+        <div class="content">
+            <div class="inner">
 
-    <div>
-        <input id="btn" type="button" value="make" onclick="make();"/>
-        <input id="btn" type="button" value="test" onclick="test();"/>
-        <!-- <input id="btn" type="button" value="answerTest" onclick="answerTest();"/>
-        <input id="btn" type="button" value="allTest" onclick="test();answerTest();"/> -->
-        <div>
-            <input type="radio" name="switch" id="radio1" checked onclick="displaySeedOrNot();">
-            <label for="radio1">Random</label>
-            <input type="radio" name="switch" id="radio2" onclick="displaySeedOrNot();">
-            <label for="radio2">Fixed Random</label>
-            <!-- <input type="number" value="1" id="seed"> -->
-            <input type="text" inputmode="numeric" pattern="\d*" value="42" id="seed">
+                <div>
+                        <input id="btn" type="button" value="make" onclick="make();"/>
+                        <input id="btn" type="button" value="test" onclick="test();"/>
+
+                    <!-- <input id="btn" type="button" value="answerTest" onclick="answerTest();"/>
+                    <input id="btn" type="button" value="allTest" onclick="test();answerTest();"/> -->
+                        <input type="radio" name="switch" id="radio1" checked onclick="displaySeedOrNot();">
+                        <label for="radio1">Random</label>
+                        <input type="radio" name="switch" id="radio2" onclick="displaySeedOrNot();">
+                        <label for="radio2">Fixed Random</label>
+                        <!-- <input type="number" value="1" id="seed"> -->
+                        <input type="text" inputmode="numeric" pattern="\d*" value="42" id="seed">
+                    </div>
+                </div>
+                <div>
+                    <link rel="stylesheet" href="FlexTextarea.css">
+                    <!-- https://qiita.com/tsmd/items/fce7bf1f65f03239eef0 -->
+                    <!-- <label for="FlexTextarea">伸縮するテキストエリア</label> -->
+                    <div class="FlexTextarea">
+                        <div class="FlexTextarea__dummy"></div>
+                        <textarea id="foo" class="FlexTextarea__textarea"></textarea>
+                    </div>
+                    <div class="FlexTextarea">
+                        <div class="FlexTextarea__dummy"></div>
+                        <textarea id="bar" class="FlexTextarea__textarea"></textarea>
+                    </div>
+                    <script src="FlexTextarea.js"></script>
+
+                    <!-- <div id="description">If you use PC, You can use 1,2,3,4 key to choose the answer</div> -->
+            </div>
         </div>
     </div>
-    <div>
-        <link rel="stylesheet" href="FlexTextarea.css">
-        <!-- https://qiita.com/tsmd/items/fce7bf1f65f03239eef0 -->
-        <!-- <label for="FlexTextarea">伸縮するテキストエリア</label> -->
-        <div class="FlexTextarea">
-            <div class="FlexTextarea__dummy"></div>
-            <textarea id="foo" class="FlexTextarea__textarea"></textarea>
-        </div>
-        <div class="FlexTextarea">
-            <div class="FlexTextarea__dummy"></div>
-            <textarea id="bar" class="FlexTextarea__textarea"></textarea>
-        </div>
-        <script src="FlexTextarea.js"></script>
 
-        <!-- <div id="description">If you use PC, You can use 1,2,3,4 key to choose the answer</div> -->
+
+    <div id="container">
+        <div id="QASet"></div>
     </div>
-    <div id="QASet"></div>
+
 <script>
     const preSetTestData = () => {
-        document.querySelector("#foo").value = `a b c d`;
+        document.querySelector("#foo").value = `aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa b c d`;
         document.querySelector("#bar").value = `A
 B
 C
@@ -149,7 +136,7 @@ D`;
         const makeQASet = (QAAAA,KEY) => {
             const shuffledAAAA = shuffleArray(R.without([QAAAA[0]],QAAAA));
             return `<div class="QA" data-id="${KEY}">
-                        <span>${QAAAA[0]}</span>
+                        <a><span>${QAAAA[0]}</span></a>
                         <input type="button" value="${shuffledAAAA[0]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
                         <input type="button" value="${shuffledAAAA[1]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
                         <input type="button" value="${shuffledAAAA[2]}" data-answer="${QAAAA[1]}" data-id="${KEY}" onclick="checkQA(event)"></input>
@@ -202,7 +189,7 @@ D`;
 
     const make = () =>{ 
          makeQAHTML(getQAAAAarray(makeQApair()));
-         keyConfig();
+        //  keyConfig();
     };
 
 
@@ -222,6 +209,8 @@ D`;
         document.querySelector("header > div.QA > input[type='button']:nth-child(2)").click();
         document.querySelector("header > div.QA > input[type='button']:nth-child(2)").click();
     }
+    test();
+
 </script>
 </body>
 </html>
