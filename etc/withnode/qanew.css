@@ -1,7 +1,7 @@
     html, body{
         height: 100%;
         margin: 0;
-        /* font-size: 1.5rem; */
+        font-size: 30px;
         /* background: gray; */
         /* color: black; */
     }
@@ -15,8 +15,12 @@
     .FlexTextarea{
         width: 100%;
     }
-    input, div.QA > a > span{
-        font-size: 2rem;
+    input{
+        font-size: 30px;
+        font-weight: bold;
+    }
+    div.QA > a > span{
+        font-size: 30px;
         font-weight: bold;
     }
     textarea{
