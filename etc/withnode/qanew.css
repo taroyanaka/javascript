@@ -54,7 +54,8 @@
         background: white;
     }
     #container{
-        background: red;
+        /* background: red; */
+        margin: 0 10px;
         height: 100%;
         /* display: grid; */
         /* grid-auto-rows: auto; */
