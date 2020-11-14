@@ -1,7 +1,7 @@
     html, body{
         height: 100%;
         margin: 0;
-        font-size: 1.5rem;
+        /* font-size: 1.5rem; */
         /* background: gray; */
         /* color: black; */
     }
@@ -16,7 +16,7 @@
         width: 100%;
     }
     input{
-        font-size: 1.5rem;
+        /* font-size: 1.5rem; */
     }
     input[type="radio"]{
         display:none;
@@ -46,22 +46,21 @@
     #container > #QASet{
         background: gray;
         width: 100%;
-        height: 100%;
+        /* height: 100%; */
         /* grid-auto-columns: auto; */
     }
-    header{
+    #QASet2{
         /* width: 100%; */
         /* height: 100%; */
     }
-    #QASet{
+    #QASet, #QASet2{
         height: 100%;
     }
     div.QA:first-child{
-        /* height: 500px; */
         height: 100%;
     }
     .accordion{
-        height: 5%;
+        /* height: 20%; */
     }
     div.QA:first-child > * {
         height: 10%;
@@ -76,24 +75,24 @@
         width: 100%;
     }
 
-    header > div.QA > input{
+    #QASet2 > div.QA > input{
         width: 100%;
     }
 
 
-    header, #container > #QASet > div.QA > a {
+    #container > #QASet > div.QA > a {
         display: block;
         width: 100%;
     }
 
-    header, #container > #QASet > div.QA > a > span{
+    #container > #QASet > div.QA > a > span{
         word-wrap: break-word;
     }
-    #container > #QASet > div.QA:not(:first-child){
+    #QASet > div.QA:not(:first-child){
         display: none;
     }
 
-    header > div.QA:not(:first-child){
+    div.QA:not(:first-child){
         display: none;
     }
 

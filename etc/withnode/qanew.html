@@ -13,7 +13,9 @@
         <input id="accordion-1" type="checkbox">
         <div class="content">
             <div class="inner">
-                <header></header>
+                <div id="container">
+                    <div id="QASet2"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -161,16 +163,16 @@ D`;
             }
                 switch (event.key) {
                 case "1":
-                    document.querySelectorAll('header > div.QA > input').item(0).click()
+                    document.querySelectorAll('#QASet2 > div.QA > input').item(0).click()
                 break;
                 case "2":
-                    document.querySelectorAll('header > div.QA > input').item(1).click()
+                    document.querySelectorAll('#QASet2 > div.QA > input').item(1).click()
                 break;
                 case "3":
-                    document.querySelectorAll('header > div.QA > input').item(2).click()
+                    document.querySelectorAll('#QASet2 > div.QA > input').item(2).click()
                 break;
                 case "4":
-                    document.querySelectorAll('header > div.QA > input').item(3).click()
+                    document.querySelectorAll('#QASet2 > div.QA > input').item(3).click()
                 break;
                 case "Enter":
                 default:
@@ -190,14 +192,14 @@ D`;
         if(event.target.value === event.target.dataset.answer){
             document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`).parentNode.removeChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) );
         }else{
-            document.querySelector("header").appendChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) );
+            document.querySelector("#QASet2").appendChild( document.querySelector(`div.QA[data-id="${event.target.dataset.id}"`) );
             cheackRemoveAndResetKeyconfig();
         };
     };
 
     const make = () =>{ 
          makeQAHTML(getQAAAAarray(makeQApair()));
-        //  keyConfig();
+         keyConfig();
     };
 
 
@@ -213,9 +215,9 @@ D`;
         R.times(R.identity, 2).forEach(V=>{ document.querySelector("#QASet > div.QA > input").click() });
         document.querySelector("#QASet > div.QA > input[type='button']:nth-child(3)").click();
         document.querySelector("#QASet > div.QA > input[type='button']:nth-child(3)").click();
-        document.querySelector("header > div.QA > input[type='button']:nth-child(3)").click();
-        document.querySelector("header > div.QA > input[type='button']:nth-child(2)").click();
-        document.querySelector("header > div.QA > input[type='button']:nth-child(2)").click();
+        document.querySelector("#QASet2 > div.QA > input[type='button']:nth-child(3)").click();
+        document.querySelector("#QASet2 > div.QA > input[type='button']:nth-child(2)").click();
+        document.querySelector("#QASet2 > div.QA > input[type='button']:nth-child(2)").click();
     }
     test();
 </script>
