@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="csstest.css">
+<script src="clipboard.js"></script>
+<title>master flexbox</title>
+<style>
+@charset "utf-8";
+
+*{
+    margin: 0;
+	padding: 0;
+    list-style: none;
+}
+html, body{
+    height: 100%;
+    margin: 0;
+}
+html * {
+    box-sizing: border-box;
+    font-size: 0.8rem;
+}
+html{
+    --flex-flow: ;
+    --place-content: ;
+    --place-items: ;
+    --place-self: ;
+}
+select{
+    width: 10%;
+    height: auto;
+    background-color: thistle;
+}
+.nav-container{
+    background-color: pink;
+    /* border: 1px solid black; */
+    /* height: 100%; */
+}
+.globalnav {
+	display: flex;
+    width: auto;
+    flex-flow: var(--flex-flow);
+    place-content: var(--place-content);
+    place-items: var(--place-items);
+}
+/* li{ */
+.globalnav > div{
+    width: 100px;
+    /* flex: 1; */
+    place-self: var(--place-self);
+    border: black solid 1px;
+}
+
+
+/* flex-box-properties: value */
+
+/* flex-direction: row; */
+/* flex-direction: row-reverse; */
+/* flex-direction: column; */
+/* flex-direction: column-reverse; */
+/*  */
+/* flex-wrap: nowrap; */
+/* flex-wrap: wrap; */
+/* flex-wrap: wrap-reverse; */
+/*  */
+/* justify-content: flex-start; */
+/* justify-content: flex-end; */
+/* justify-content: center; */
+/* justify-content: space-between; */
+/* justify-content: space-around; */
+/*  */
+/* align-items: flex-start; */
+/* align-items: flex-end; */
+/* align-items: center; */
+/* align-items: baseline; */
+/* align-items: stretch; */
+/*  */
+/* align-content: stretch; */
+/* align-content: flex-start; */
+/* align-content: flex-end; */
+/* align-content: center; */
+/* align-content: space-between; */
+/* align-content: space-around; */
+/*  */
+/* align-self: auto; */
+/* align-self: flex-start; */
+/* align-self: flex-end; */
+/* align-self: center; */
+/* align-self: baseline; */
+/* align-self: stretch; */
+</style>
+</head>
+<body>
+<div>flex-flow</div>
+<span>flex-direction</span>
+<select name="selector" class="flex-direction" onchange="flexFlowSet()">
+    <option value="row">row</option>
+    <option value="row-reverse">row-reverse</option>
+    <option value="column">column</option>
+    <option value="column-reverse">column-reverse</option>
+</select>
+<span>flex-wrap</span>
+<select name="selector" class="flex-wrap" onchange="flexFlowSet();">
+    <option value="nowrap">nowrap</option>
+    <option value="wrap">wrap</option>
+    <option value="wrap-reverse">wrap-reverse</option>
+</select>
+
+<div>place-content</div>
+<span>align-content</span>
+<select name="selector" class="align-content" onchange="placeContentSet()">
+    <option value="start">start</option>
+    <option value="end">end</option>
+    <option value="flex-start">flex-start</option>
+    <option value="flex-end">flex-end</option>
+    <option value="center">center</option>
+    <option value="normal">normal</option>
+    <option value="baseline">baseline</option>
+    <option value="space-between">space-between</option>
+    <option value="space-around">space-around</option>
+    <option value="space-evenly">space-evenly</option>
+    <option value="stretch">stretch</option>
+    <option value="safe">safe</option>
+</select>
+<span>justify-content</span>
+<select name="selector" class="justify-content" onchange="placeContentSet();">
+    <option value="start">start</option>
+    <option value="end">end</option>
+    <option value="flex-start">flex-start</option>
+    <option value="flex-end">flex-end</option>
+    <option value="center">center</option>
+    <option value="left">left</option>
+    <option value="right">right</option>
+    <option value="normal">normal</option>
+    <option value="baseline">baseline</option>
+    <option value="space-between">space-between</option>
+    <option value="space-around">space-around</option>
+    <option value="space-evenly">space-evenly</option>
+    <option value="stretch">stretch</option>
+    <option value="safe">safe</option>
+    <option value="unsafe">unsafe</option>
+</select>
+
+<div>place-items</div>
+<span>align-items</span>
+<select name="selector" class="align-items" onchange="placeItemsSet()">
+    <option value="normal">normal</option>
+    <option value="flex-start">flex-start</option>
+    <option value="flex-end">flex-end</option>
+    <option value="center">center</option>
+    <option value="start">start</option>
+    <option value="end">end</option>
+    <option value="self-start">self-start</option>
+    <option value="self-end">self-end</option>
+    <option value="baseline">baseline</option>
+    <option value="stretch">stretch</option>
+    <option value="safe">safe</option>
+</select>
+<span>justify-items</span>
+<select name="selector" class="justify-items" onchange="placeItemsSet();">
+    <option value="auto">auto</option>
+    <option value="normal">normal</option>
+    <option value="start">start</option>
+    <option value="end">end</option>
+    <option value="flex-start">flex-start</option>
+    <option value="flex-end">flex-end</option>
+    <option value="self-start">self-start</option>
+    <option value="self-end">self-end</option>
+    <option value="center">center</option>
+    <option value="left">left</option>
+    <option value="right">right</option>
+    <option value="baseline">baseline</option>
+    <option value="stretch">stretch</option>
+    <option value="safe">safe</option>
+    <option value="unsafe">unsafe</option>
+</select>
+
+<div>place-self</div>
+<span>align-self</span>
+<select name="selector" class="align-self" onchange="placeSelfSet()">
+    <option value="auto">auto</option>
+    <option value="normal">normal</option>
+    <option value="start">start</option>
+    <option value="end">end</option>
+    <option value="flex-start">flex-start</option>
+    <option value="flex-end">flex-end</option>
+    <option value="self-start">self-start</option>
+    <option value="self-end">self-end</option>
+    <option value="center">center</option>
+    <option value="left">left</option>
+    <option value="right">right</option>
+    <option value="baseline">baseline</option>
+    <option value="stretch">stretch</option>
+    <option value="safe">safe</option>
+</select>
+<span>justify-self</span>
+<select name="selector" class="justify-self" onchange="placeSelfSet();">
+    <option value="auto">auto</option>
+    <option value="normal">normal</option>
+    <option value="self-start">self-start</option>
+    <option value="self-end">self-end</option>
+    <option value="flex-start">flex-start</option>
+    <option value="flex-end">flex-end</option>
+    <option value="center">center</option>
+    <option value="baseline">baseline</option>
+    <option value="stretch">stretch</option>
+    <option value="safe">safe</option>
+</select>
+
+
+<nav>
+    <div class="nav-container">
+        <!-- <ul class="globalnav"> -->
+            <!-- <li>a a a a a a a a a a</li>
+            <li>ab ab ab ab ab ab ab ab ab ab</li>
+            <li>abc abc abc abc abc abc abc abc abc abc</li>
+            <li>abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd</li>
+            <li>abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde</li>
+            <li>abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde</li> -->
+        <!-- </ul> -->
+        <div class="globalnav">
+            <div>a a a a a a a a a a</div>
+            <div>ab ab ab ab ab ab ab ab ab ab</div>
+            <div>abc abc abc abc abc abc abc abc abc abc</div>
+            <div>a a a a a a a a a a</div>
+            <div>ab ab ab ab ab ab ab ab ab ab</div>
+            <div>abc abc abc abc abc abc abc abc abc abc</div>
+            <div>a a a a a a a a a a</div>
+            <div>ab ab ab ab ab ab ab ab ab ab</div>
+            <div>abc abc abc abc abc abc abc abc abc abc</div>
+            <div>a a a a a a a a a a</div>
+            <div>ab ab ab ab ab ab ab ab ab ab</div>
+            <div>abc abc abc abc abc abc abc abc abc abc</div>
+            <div>a a a a a a a a a a</div>
+            <div>ab ab ab ab ab ab ab ab ab ab</div>
+            <div>abc abc abc abc abc abc abc abc abc abc</div>
+            <!-- <div>abcd abcd abcd abcd abcd abcd abcd abcd abcd abcd</div>
+            <div>abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde</div>
+            <div>abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde abcde</div> -->
+        </div>
+    </div>
+</nav>
+
+<textarea name="cssText" id="cssText" cols="30" rows="10"></textarea>
+<button class="btn" data-clipboard-target="#cssText">COPY</button>
+<script>
+new ClipboardJS('.btn');
+
+const flexFlowSet = () =>{
+    document.querySelector("html").style.setProperty('--flex-flow',  document.querySelector(".flex-direction").value +" "+ document.querySelector(".flex-wrap").value );
+}
+const placeContentSet = () =>{
+    document.querySelector("html").style.setProperty('--place-content', document.querySelector(".align-content").value +" "+ document.querySelector(".justify-content").value );
+}
+const placeItemsSet = () =>{
+    document.querySelector("html").style.setProperty('--place-items', document.querySelector(".align-items").value +" "+ document.querySelector(".justify-items").value );
+}
+const placeSelfSet = () =>{
+    document.querySelector("html").style.setProperty('--place-self', document.querySelector(".align-self").value +" "+ document.querySelector(".justify-self").value );
+}
+
+const getPropertiesAndValues = ()=>{
+    document.querySelector("#cssText").value="";
+    document.querySelectorAll("select").forEach(V=>{
+        document.querySelector("#cssText").value += V.className +": "+ V.value +";\n";
+    })
+}
+
+document.querySelectorAll("select").forEach(V=>{
+    V.addEventListener("change", getPropertiesAndValues, false)
+});
+getPropertiesAndValues();
+</script>
+</body>
+</html>
