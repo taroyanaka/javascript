@@ -82,6 +82,8 @@ body{
 .post-bread{
     grid-area: bread;
 }
+
+/* https://stackoverflow.com/a/40206299 */
 .breadcrumb li {
 	display: inline-block;
 	background: gray;
