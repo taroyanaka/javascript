@@ -1,0 +1,262 @@
+@charset "UTF-8";
+
+body{
+    background: linear-gradient(to left top,#e66465, #9198e5);
+
+    font-size: 16px;
+
+    margin: 0 50px;
+}
+
+.post * {
+    margin: 0;
+    padding: 0;
+}
+
+.post-bread ol, .post-category ul{
+    display: grid;
+    gap: 10px;
+	grid-auto-flow: column;
+	justify-content: start;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.post-bread ol a, .post-category ul a{
+    text-decoration: none;
+    color: #666666;
+}
+
+.post img, .post svg{
+    width: 100%;
+	height: 100%;
+    object-fit: contain;
+}
+.post svg{
+    height: 30px;
+}
+.post p{
+    margin: 0 0.5rem;
+    /* font-size: 10px; */
+    line-height: 1.2rem;
+}
+
+.post{
+    display: grid;
+    gap: 30px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, minmax(100px, auto));
+    grid-template-areas:
+    /* "head head head head head"
+    "none sec01 sec01 sec01 none"
+    "none sec02 sec03 sec03 none"
+    "foot foot foot foot foot"; */
+    "head head head"
+    "sec01 sec01 sec01"
+    "sec02 sec03 sec03"
+    "foot foot foot";
+}
+
+.post-head{
+    grid-area: head;
+    color: #666666;
+    background-color: #930000;
+    margin: 0 -50px;
+
+    display: grid;
+    grid-template-columns: 50px 5fr repeat(3,1fr);
+    grid-template-areas:
+    "series main date date date"
+    "series main bread bread bread"
+    "series main category category category";
+}
+.post-series{
+    grid-area: series;
+    background-color: rgba(0,0,0,0.3);
+    writing-mode: vertical-rl;
+}
+
+.post-date{
+    grid-area: date;
+}
+.post-bread{
+    grid-area: bread;
+}
+.breadcrumb li {
+	display: inline-block;
+	background: gray;
+	padding: 5px 30px 5px 30px;
+	text-decoration: none;
+	clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%,   calc(100% - 10px) 100%, 0 100%, 10px 50%);
+	/* 正四角形 */
+	/* clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); */
+	/* 菱形 */
+	/* clip-path: polygon(0% 50%, 50% 0%, 100% 50%, 50% 100%); */
+	margin-right: -12px;
+}
+ul.breadcrumb li {
+    background: darkblue
+}
+.breadcrumb li:first-child {
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+}
+.post-category{
+    grid-area: category;
+}
+
+.main{
+    grid-area: main;
+}
+
+section.sec01{
+    grid-area: sec01;
+    /* background-color: #FFB74C; */
+}
+
+section.sec02{
+    grid-area: sec02;
+    /* background-color: #FFD400; */
+}
+
+section.sec03{
+    grid-area: sec03;
+    /* background-color: #008000; */
+}
+
+.post-foot{
+    grid-area: foot;
+    /* background-color: #0067C0; */
+}
+
+.sec{
+    /* background-color: gray; */
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(10%, auto), repeat(3, minmax(30%, auto));
+    gap: 0px;
+    grid-template-areas: "h2"
+    "fig"
+    "p"
+    "any";
+}
+h2{
+    grid-area: h2;
+    justify-self: start;
+    align-self: center;
+    display: grid;
+   grid-template-columns: 5rem 0px 1fr; 
+   grid-template-rows: 1fr 1fr;
+   grid-template-areas:
+   "emoji num text"
+   "emoji num text-trans";
+}
+h2 .emoji{
+    grid-area: emoji;
+    justify-self: end;
+    align-self: center;
+    font-size: 4rem;
+    margin-right: 10px;
+}
+h2 .num{
+    grid-area: num;
+    margin: 0 0 0 -50px;
+    align-self: center;
+    font: bold 50px gray;
+}
+h2 .text{
+    grid-area: text;
+    font: bold 30px black;
+    z-index: 2;
+    border-bottom: 0.4rem goldenrod solid;
+    border-left: 0.4rem goldenrod solid;
+    padding: 0 0.1rem;
+}
+h2 .text-trans{
+    grid-area: text-trans;
+    color: whitesmoke;
+    z-index: 1;
+    padding: 0 0.5rem;
+}
+
+figure{
+    grid-area: fig;
+}
+.sec p{
+    grid-area: p;
+}
+.any{
+    grid-area: any;
+
+    background-color: rgba(0,0,0,0.3);
+    /* opacity: 0.1; */
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    /* border: 3px dotted gray; */
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, minmax(30px, auto));
+    grid-template-areas:
+     "img h3"
+     "img p";
+}
+
+.any h3{
+    grid-area: h3;
+    border-left: goldenrod 5px solid;
+    padding-left: 5px;
+    /* border-bottom: goldenrod 5px solid; */
+}
+.any img{
+    grid-area: img;
+}
+.any p{
+    margin: 0 1rem;
+    grid-area: p;
+}
+
+.post-foot{
+    margin: 0 -50px;
+    background-color: rgba(250, 250, 250, 0.3);
+}
+.post-foot a{
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+.post-foot a p{
+    color: white;
+    text-shadow: 0.1rem 0.1rem 0.5rem white;
+}
+@media(max-width: 700px){
+.post{
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, minmax(100px, auto));
+    grid-template-areas:
+    "head head head"
+    "sec01 sec01 sec01"
+    "sec02 sec02 sec02"
+    "sec03 sec03 sec03"
+    "foot foot foot";
+}
+body{
+    font-size: 10px;
+    margin: 0 10px;
+}
+.post-bread ol, .post-category ul{
+    display: grid;
+	grid-auto-flow: row;
+}
+.post-head, .post-foot{
+    margin: 0 -10px;
+}
+
+}
