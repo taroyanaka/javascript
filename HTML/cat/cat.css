@@ -249,6 +249,22 @@ figure{
     "sec03 sec03 sec03"
     "foot foot foot";
 }
+.any{
+    grid-area: any;
+
+    background-color: rgba(0,0,0,0.3);
+ 
+    width: 100%;
+    height: 150px;
+    box-sizing: border-box;
+ 
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, minmax(30px, auto));
+    grid-template-areas:
+     "img h3"
+     "img p";
+}
 body{
     font-size: 10px;
     margin: 0 10px;
