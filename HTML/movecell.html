@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>move cell</title>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    body{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        grid-template-areas:
+        "table"
+        "buttons"
+        ;
+
+        width: 100vw;
+        height: 100vw;
+    }
+    td{
+        width: auto;
+        height: auto;
+        background: gray;
+    }
+    table{
+        grid-area: table;
+        border: black solid 10px;
+        border-collapse: separate;
+
+        width: 100%;
+        height: 100%;
+    }
+    .bar{
+        background-color: rebeccapurple;
+    }
+    .foo{
+        background-color: red;
+    }
+    /* .bar::after{
+        content: "-";
+        font-size: 10px;
+        margin: 0;
+        padding: 0;
+    } */
+    .buttons{
+        grid-area: buttons;
+
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        grid-template-areas:
+        "toTop toTop toTop"
+        "toLeft none toRight"
+        "toBottom toBottom toBottom"
+        ;
+    }
+.toTop{grid-area: toTop;}
+.toRight{grid-area: toRight;}
+.toBottom{grid-area: toBottom;}
+.toLeft{grid-area: toLeft;}
+</style>
+</head>
+<body>
+<table>
+	<tr class="tr-0">
+        <td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+		<td class="td-5"></td>
+	</tr>
+	<tr class="tr-1">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+		<td class="td-5"></td>
+	</tr>
+	<tr class="tr-2">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+		<td class="td-5"></td>
+	</tr>
+	<tr class="tr-3">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+		<td class="td-5"></td>
+	</tr>
+	<tr class="tr-4">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+		<td class="td-5"></td>
+	</tr>
+	<tr class="tr-5">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+		<td class="td-5"></td>
+	</tr>
+	<tr class="tr-6">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+		<td class="td-5"></td>
+	</tr>
+	<tr class="tr-7">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+		<td class="td-5"></td>
+	</tr>
+	<tr class="tr-8">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+		<td class="td-5"></td>
+	</tr>
+	<tr class="tr-9">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+		<td class="td-5"></td>
+	</tr>
+	<tr class="tr-10">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+		<td class="td-5"></td>
+	</tr>
+	<tr class="tr-11">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+		<td class="td-5"></td>
+	</tr>
+</table>
+<div class="buttons">
+    <button class="toTop" onclick="toTop();">toTop</button>
+    <button class="toRight" onclick="toRight();">toRight</button>
+    <button class="toBottom" onclick="toBottom();">toBottom</button>
+    <button class="toLeft" onclick="toLeft();">toLeft</button>
+</div>
+<script>
+const move = (from, to)=>{
+    document.querySelector(`.tr-${from[0]} .td-${from[1]}`).classList.remove(`foo`);
+    document.querySelector(`.tr-${to[0]} .td-${to[1]}`).classList.add(`foo`);
+}
+
+const showOld = ()=>{
+    // document.querySelector(`.tr-${old[0]} .td-${old[1]}`).classList.remove(`bar`);
+    document.querySelector(`.tr-${old[0]} .td-${old[1]}`).classList.add(`bar`);
+}
+
+const moveOrdinary = ()=>{
+    console.log(`old: ${old}`)
+    console.log(`next: ${next}`)
+    // showOld(old, next)
+    showOld();
+    move(old, next)
+};
+
+
+let old=[0,0];
+let next=[0,0]
+
+const deepCopy = ()=>{
+    old = JSON.parse(JSON.stringify(next));
+};
+
+const toTop = ()=>{
+    if(next[0] - 1 > -1){deepCopy();next[0]--;moveOrdinary();}
+}
+const toRight = ()=>{
+    if(next[1] + 1 < 6){deepCopy();next[1]++;moveOrdinary();}
+}
+const toBottom = ()=>{
+    if(next[0] + 1 < 12){deepCopy();next[0]++;moveOrdinary();}
+}
+const toLeft = ()=>{
+    if(next[1] - 1 > -1){deepCopy();next[1]--;moveOrdinary();}
+}
+
+// const check = (next)=>{
+//     const max = [11, 6];
+//     const min = [0, 0];
+//     console.log(next);
+//     if(
+//         next[0] === 11 ||
+//         next[1] === 6 ||
+//         next[0] === 0 ||
+//         next[1] === 0
+//     ){
+//         return false;
+//     }else{
+//         return true;
+//     }
+// }
+
+// const fn = ()=>{
+//   console.log("10 seconds " + i + " times");
+//   if( cond ) clearInterval(id);
+//   i++;
+// }
+// const tm = 10000;
+// let i = 1;
+// const id = setInterval(fn,tm);
+
+</script>
+</body>
+</html>
