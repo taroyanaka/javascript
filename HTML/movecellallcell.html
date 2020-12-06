@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>move cell</title>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    body{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        grid-template-areas:
+        "table"
+        "buttons"
+        ;
+
+        width: 100vw;
+        height: 100vw;
+    }
+    td{
+        width: auto;
+        height: auto;
+        background: gray;
+    }
+    table{
+        grid-area: table;
+        /* border: black solid 10px; */
+        border-collapse: separate;
+
+        width: 100%;
+        height: 100%;
+    }
+    .bar{
+        background-color: rebeccapurple;
+    }
+    .foo{
+        background-color: red;
+    }
+    /* .bar::after{
+        content: "-";
+        font-size: 10px;
+        margin: 0;
+        padding: 0;
+    } */
+    .buttons{
+        grid-area: buttons;
+
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        grid-template-areas:
+        "toTop toTop toTop"
+        "toLeft none toRight"
+        "toBottom toBottom toBottom"
+        ;
+    }
+    .buttonDiv{
+        width: 100%;
+        height: auto;
+        background-color: gray;
+        border: 1px solid white;
+
+        display: grid;
+        place-content: center center;
+    }
+.toTop{grid-area: toTop;}
+.toRight{grid-area: toRight;}
+.toBottom{grid-area: toBottom;}
+.toLeft{grid-area: toLeft;}
+
+/* .td-0, .td-7, .tr-0 > *, .tr-13 > *{ */
+.deny{
+    background-color: black;
+}
+.td-0, .td-7{
+    width: 2%;
+}
+.tr-0 > *, .tr-13 > *{
+    height: 4%;
+}
+</style>
+</head>
+<body>
+<table>
+	<tr class="tr-0">
+        <td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+	</tr>
+	<tr class="tr-1">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+	</tr>
+	<tr class="tr-2">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+	</tr>
+	<tr class="tr-3">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+	</tr>
+	<tr class="tr-4">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+	</tr>
+	<tr class="tr-5">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+	</tr>
+	<tr class="tr-6">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+	</tr>
+	<tr class="tr-7">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+	</tr>
+	<tr class="tr-8">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+	</tr>
+	<tr class="tr-9">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+	</tr>
+	<tr class="tr-10">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+	</tr>
+	<tr class="tr-11">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+    </tr>
+    <tr class="tr-12">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+    </tr>
+    <tr class="tr-13">
+		<td class="td-0"></td>
+		<td class="td-1"></td>
+		<td class="td-2"></td>
+		<td class="td-3"></td>
+		<td class="td-4"></td>
+        <td class="td-5"></td>
+        <td class="td-6"></td>
+        <td class="td-7"></td>
+	</tr>
+</table>
+<div class="buttons">
+    <div class="buttonDiv toTop" onclick="moveWhere('toTop');">toTop</div>
+    <div class="buttonDiv toRight" onclick="moveWhere('toRight');">toRight</div>
+    <div class="buttonDiv toBottom" onclick="moveWhere('toBottom');">toBottom</div>
+    <div class="buttonDiv toLeft" onclick="moveWhere('toLeft');">toLeft</div>
+</div>
+<script>
+let old=[1,1];
+
+const addDeny = (denyCellArray)=>{
+    denyCellArray.forEach(selector=>{
+        document.querySelectorAll( selector ).forEach(V=>{V.classList.add("deny")});
+    })
+}
+// initialize
+addDeny([".td-0", ".td-7", ".tr-0 > *", ".tr-13 > *"]);
+
+const clone = (from, to)=>{ old = JSON.parse(JSON.stringify(to)) };
+const move = (from, to)=>{
+    if(checkDeny(to)){
+        clone(from, to);
+        document.querySelector(`.tr-${from[0]} .td-${from[1]}`).classList.remove(`foo`);
+        document.querySelector(`.tr-${to[0]} .td-${to[1]}`).classList.add(`foo`);
+    }
+}
+const moveWhere = (where)=>{
+    switch (where) {
+        case "toTop":
+            move(old, [old[0]-1, old[1]]);
+            break;
+        case "toRight":
+            move(old, [old[0], old[1]+1]);
+            break;
+        case "toBottom":
+            move(old, [old[0]+1, old[1]]);
+            break;
+        case "toLeft":
+            move(old, [old[0], old[1]-1]);        
+            break;
+        default:
+            break;
+    }
+}
+const checkDeny = (to)=>{
+    return Array.from(document.querySelector(`.tr-${to[0]} .td-${to[1]}`).classList).includes("deny") ? false : true;
+}
+
+// const check = (next)=>{
+//     const max = [11, 6];
+//     const min = [0, 0];
+//     console.log(next);
+//     if(
+//         next[0] === 11 ||
+//         next[1] === 6 ||
+//         next[0] === 0 ||
+//         next[1] === 0
+//     ){
+//         return false;
+//     }else{
+//         return true;
+//     }
+// }
+
+// const fn = ()=>{
+//   console.log("10 seconds " + i + " times");
+//   if( cond ) clearInterval(id);
+//   i++;
+// }
+// const tm = 10000;
+// let i = 1;
+// const id = setInterval(fn,tm);
+
+</script>
+</body>
+</html>
