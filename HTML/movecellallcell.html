@@ -53,7 +53,7 @@
         grid-template-rows: repeat(3, 1fr);
         grid-template-areas:
         "toTop toTop toTop"
-        "toLeft none toRight"
+        "toLeft reset toRight"
         "toBottom toBottom toBottom"
         ;
     }
@@ -70,6 +70,7 @@
 .toRight{grid-area: toRight;}
 .toBottom{grid-area: toBottom;}
 .toLeft{grid-area: toLeft;}
+.reset{grid-area: reset;}
 
 /* .td-0, .td-7, .tr-0 > *, .tr-13 > *{ */
 .deny{
@@ -231,6 +232,7 @@
     <div class="buttonDiv toRight" onclick="moveWhere('toRight');">toRight</div>
     <div class="buttonDiv toBottom" onclick="moveWhere('toBottom');">toBottom</div>
     <div class="buttonDiv toLeft" onclick="moveWhere('toLeft');">toLeft</div>
+    <div class="buttonDiv reset" onclick="reset();">reset</div>
 </div>
 <script>
 let old=[1,1];
@@ -242,6 +244,36 @@ const addDeny = (denyCellArray)=>{
 }
 // initialize
 addDeny([".td-0", ".td-7", ".tr-0 > *", ".tr-13 > *"]);
+
+const removeDeny = (denyCellArray)=>{
+    denyCellArray.forEach(selector=>{
+        document.querySelectorAll( selector ).forEach(V=>{V.classList.remove("deny")});
+    })
+}
+
+const convertTestArray = [
+    [1,1],
+    [2,2],
+]
+const convertArrayToTableCell = (array)=>{
+    return array.map(V=>{return `.tr-${V[0]} > .td-${V[1]}`})
+}
+// convertArrayToTableCell(convertTestArray)
+// =>  [".tr-1 > .td-1", ".tr-2 > .td-2"]
+// addDeny(convertArrayToTableCell(convertTestArray))
+
+// removeAllDeny
+// removeDeny([".td-0", ".td-7", ".tr-0 > *", ".tr-13 > *"]);
+
+// example
+// addDeny(["tr:nth-child(2n) > *:nth-child(2n)"]);
+// addDeny([".tr-3 > *:nth-child(2n)"]);
+
+const reset = ()=>{
+    removeDeny(["table *"]);
+    addDeny([".td-0", ".td-7", ".tr-0 > *", ".tr-13 > *"]);
+    document.querySelectorAll(`table *`).forEach(V=>{V.classList.remove(`foo`)});
+}
 
 const clone = (from, to)=>{ old = JSON.parse(JSON.stringify(to)) };
 const move = (from, to)=>{
