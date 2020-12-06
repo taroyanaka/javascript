@@ -270,6 +270,7 @@ const convertArrayToTableCell = (array)=>{
 // addDeny([".tr-3 > *:nth-child(2n)"]);
 
 const reset = ()=>{
+    old = [1, 1];
     removeDeny(["table *"]);
     addDeny([".td-0", ".td-7", ".tr-0 > *", ".tr-13 > *"]);
     document.querySelectorAll(`table *`).forEach(V=>{V.classList.remove(`foo`)});
