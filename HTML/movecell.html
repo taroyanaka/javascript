@@ -57,6 +57,15 @@
         "toBottom toBottom toBottom"
         ;
     }
+    .buttonDiv{
+        width: 100%;
+        height: auto;
+        background-color: gray;
+        border: 1px solid white;
+
+        display: grid;
+        place-content: center center;
+    }
 .toTop{grid-area: toTop;}
 .toRight{grid-area: toRight;}
 .toBottom{grid-area: toBottom;}
@@ -163,10 +172,10 @@
 	</tr>
 </table>
 <div class="buttons">
-    <button class="toTop" onclick="toTop();">toTop</button>
-    <button class="toRight" onclick="toRight();">toRight</button>
-    <button class="toBottom" onclick="toBottom();">toBottom</button>
-    <button class="toLeft" onclick="toLeft();">toLeft</button>
+    <div class="buttonDiv toTop" onclick="toTop();">toTop</div>
+    <div class="buttonDiv toRight" onclick="toRight();">toRight</div>
+    <div class="buttonDiv toBottom" onclick="toBottom();">toBottom</div>
+    <div class="buttonDiv toLeft" onclick="toLeft();">toLeft</div>
 </div>
 <script>
 const move = (from, to)=>{
