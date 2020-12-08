@@ -8,11 +8,15 @@
 <title>vent</title>
 <body>
     <input type="button" value="test button" onclick="test();exe();">
-    <span>columns</span><input type="number" name="" id="" class="columns" value="2">
-    <span>rows</span><input type="number" name="" id="" class="rows" value="2">
+    <!-- <span>columns</span><input type="number" name="" id="" class="columns"> -->
+    <!-- <span>rows</span><input type="number" name="" id="" class="rows"> -->
+    <span>outer tag</span><input type="text" name="" id="" class="outer" value="div">
+    <span>outer class</span><input type="text" name="" id="" class="outerClass" value="outer">
+    <span>inner tag</span><input type="text" name="" id="" class="inner" value="div">
     <textarea name="" id="" cols="30" rows="10" class="foo" oninput="exe();"></textarea>
     <textarea name="" id="" cols="30" rows="10" class="bar"></textarea>
-
+    <textarea name="" id="" cols="30" rows="10" class="htmltxt"></textarea>
+    <!-- <div class="sandbox"></div> -->
     <script>
         // https://qiita.com/piroor/items/02885998c9f76f45bfa0
     function uniq(array) {
@@ -24,32 +28,86 @@
                 return '"'+V+'"';
             }).join("\n")
         }
+let classArray=[];
+let columnsLength = 0;
+let rowsLength = 0;
+const init = ()=>{
+    rowsLength = document.querySelector(".foo").value.split("\n").length;
+    document.querySelector(".foo").value.split("\n").forEach(V=>{
+        columnsLength = V.split(" ").length;
+    });
 
+}
         const exe0 = ()=>{
             let res = document.querySelector(".foo").value.split("\n");
-            let uniqqedres = uniq(res.map(V=>{return V.split(" ") }));
-            uniqqedres = uniqqedres.flat();
+            let uniqqedres =res.map(V=>{
+                return V.split(" ") 
+            });
+            uniqqedres =  uniq(uniqqedres.flat());
+            classArray = uniqqedres;
+            // https://stackoverflow.com/a/23095818
+            function random_rgb() {
+                var o = Math.round, r = Math.random, s = 255;
+                return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) +')';
+            }
             return uniqqedres.map(V=>{
-                return `.${V}{
+                return `.${V}{background-color: ${random_rgb()};
+    grid-area: ${V};
 
-}`
+}
+`
             }).join("")
         }
 
-        const exe = ()=>{
-            makeTxt();
-            document.querySelector("textarea.bar").value=`
-            grid-template-columns: ${document.querySelector(".columns").value};
-            grid-template-rows: ${document.querySelector(".rows").value};
-            grid-template-areas: ${makeTxt()};
-            ${exe0()}`
+        const makeFr = (num)=>{
+            return "1fr ".repeat(num);
         }
 
+        const makeHTML = ()=>{
+            const innerTag = document.querySelector(".inner").value;
+            const inner = classArray.map(V=>{
+                return `<${innerTag} class="${V}">${innerTag}</${innerTag}>`
+            }).join("\n")
+            const outerTag = document.querySelector(".outer").value;
+            const outer = `<${outerTag} class="${document.querySelector(".outerClass").value}">
+${inner}
+</${outerTag}>`
+            return outer;
+        }
+
+let parentCss="";
+let childCss="";
+        const exe = ()=>{
+            init();
+            makeTxt();
+            parentCss = `
+.${document.querySelector(".outerClass").value}{
+            display: grid;
+            grid-template-columns: ${makeFr(Number( columnsLength ))};
+            grid-template-rows: ${makeFr(Number( rowsLength ))};
+            grid-template-areas:
+${makeTxt()};
+}
+`
+            childCss = `${exe0()}`
+            document.querySelector("textarea.bar").value= parentCss + childCss;
+            document.querySelector(".htmltxt").value = makeHTML();
+        }
+
+        // const reflectHtml = ()=>{
+        //     document.querySelector(".sandbox").insertAdjacentHTML("afterbegin", document.querySelector(".htmltxt").value );
+        //     document.querySelector(".sandbox").style.backgroundColor = "gray";
+        //     document.querySelector(".sandbox").style.gridTemplateColumns = makeFr(Number( columnsLength ));
+        //     document.querySelector(".sandbox").style.gridTemplateRows = makeFr(Number( rowsLength ));
+        //     document.querySelector(".sandbox").style.gridTemplateAreas = makeTxt();
+        // }
         const test = ()=>{
             document.querySelector(".foo").value=`foo bar
 baz hoge
 fuga hoge`;
         }
+
+
     </script>
 </body>
 </html>
