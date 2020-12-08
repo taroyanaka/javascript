@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=2.0">
+<title>vent</title>
+<body>
+    <input type="button" value="test button" onclick="test();exe();">
+    <span>columns</span><input type="number" name="" id="" class="columns" value="2">
+    <span>rows</span><input type="number" name="" id="" class="rows" value="2">
+    <textarea name="" id="" cols="30" rows="10" class="foo" oninput="exe();"></textarea>
+    <textarea name="" id="" cols="30" rows="10" class="bar"></textarea>
+
+    <script>
+        // https://qiita.com/piroor/items/02885998c9f76f45bfa0
+    function uniq(array) {
+    return array.filter((elem, index, self) => self.indexOf(elem) === index);
+    }
+
+        const makeTxt = () =>{
+            return document.querySelector(".foo").value.split("\n").map(V=>{
+                return '"'+V+'"';
+            }).join("\n")
+        }
+
+        const exe0 = ()=>{
+            let res = document.querySelector(".foo").value.split("\n");
+            let uniqqedres = uniq(res.map(V=>{return V.split(" ") }));
+            uniqqedres = uniqqedres.flat();
+            return uniqqedres.map(V=>{
+                return `.${V}{
+
+}`
+            }).join("")
+        }
+
+        const exe = ()=>{
+            makeTxt();
+            document.querySelector("textarea.bar").value=`
+            grid-template-columns: ${document.querySelector(".columns").value};
+            grid-template-rows: ${document.querySelector(".rows").value};
+            grid-template-areas: ${makeTxt()};
+            ${exe0()}`
+        }
+
+        const test = ()=>{
+            document.querySelector(".foo").value=`foo bar
+baz hoge
+fuga hoge`;
+        }
+    </script>
+</body>
+</html>

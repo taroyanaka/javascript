@@ -11,10 +11,11 @@
     body{
         display: grid;
         grid-template-columns: 1fr;
-        grid-template-rows: 1fr 1fr;
+        grid-template-rows: 4fr 1fr 1fr;
         grid-template-areas:
         "table"
         "buttons"
+        "rotate"
         ;
 
         width: 100vw;
@@ -71,6 +72,14 @@
 .toBottom{grid-area: toBottom;}
 .toLeft{grid-area: toLeft;}
 .reset{grid-area: reset;}
+
+    .rotate{
+        grid-area: rotate;
+        background-color: gray;
+
+        display: grid;
+        place-content: center center;
+    }
 
 /* .td-0, .td-7, .tr-0 > *, .tr-13 > *{ */
 .deny{
@@ -234,6 +243,9 @@
     <div class="buttonDiv toLeft" onclick="moveWhere('toLeft');">toLeft</div>
     <div class="buttonDiv reset" onclick="reset();">reset</div>
 </div>
+<div class="rotate">
+    <div onclick="rotateButton();">rotateButton</div>
+</div>
 <script>
 let old=[1,1];
 
@@ -276,12 +288,59 @@ const reset = ()=>{
     document.querySelectorAll(`table *`).forEach(V=>{V.classList.remove(`foo`)});
 }
 
+const immediateClone = (arr)=>{ return JSON.parse(JSON.stringify(arr)) };
+
+
+let peace = [[0,0],[0,1],[0,2],[0,3]];
+const rotate = (rotatie, idx)=>{
+    let deg90 = immediateClone(rotatie).map(arr=>{return [arr[0], arr[1]] = [arr[1], arr[0]]});
+    let deg180 = immediateClone(rotatie).map(arr=>{return [arr[0], -arr[1]]});
+    let deg270 = immediateClone(deg90).map(arr=>{return [-arr[0], arr[1]]});
+    switch (idx) {
+        case 0:
+            return rotatie;
+            break;
+        case 1:
+            return deg90;
+            break;
+        case 2:
+            return deg180;
+            break;
+        case 3:
+            return deg270;
+            break;
+        default:
+            break;
+    }    
+}
+let idx = 0;
+const rotateButton = ()=>{
+    idx === 3 ? idx = 0 : idx++;
+    vector = rotate(peace, idx);
+};
+
+// let vector = rotate(peace, 0);
+    // vector = [[0,0],[1,0],[2,0],[3,0]];
+
+
+
 const clone = (from, to)=>{ old = JSON.parse(JSON.stringify(to)) };
 const move = (from, to)=>{
     if(checkDeny(to)){
         clone(from, to);
-        document.querySelector(`.tr-${from[0]} .td-${from[1]}`).classList.remove(`foo`);
-        document.querySelector(`.tr-${to[0]} .td-${to[1]}`).classList.add(`foo`);
+        // document.querySelector(`.tr-${from[0]} .td-${from[1]}`).classList.remove(`foo`);
+        // document.querySelector(`.tr-${to[0]} .td-${to[1]}`).classList.add(`foo`);
+    console.log(from);
+    console.log(to);
+
+
+        vector.forEach(V=>{
+            document.querySelector(`.tr-${from[0]+V[0]} .td-${from[1]+V[1]}`).classList.remove(`foo`);
+        })
+            // document.querySelector(`.tr-${old[0]+V[0]} .td-${old[1]+V[1]}`).classList.remove(`foo`);
+        vector.forEach(V=>{
+            document.querySelector(`.tr-${to[0]+V[0]} .td-${to[1]+V[1]}`).classList.add(`foo`);
+        })
     }
 }
 const moveWhere = (where)=>{
@@ -296,14 +355,18 @@ const moveWhere = (where)=>{
             move(old, [old[0]+1, old[1]]);
             break;
         case "toLeft":
-            move(old, [old[0], old[1]-1]);        
+            move(old, [old[0], old[1]-1]);
             break;
         default:
             break;
     }
 }
 const checkDeny = (to)=>{
-    return Array.from(document.querySelector(`.tr-${to[0]} .td-${to[1]}`).classList).includes("deny") ? false : true;
+    let res = true;
+    vector.forEach(V=>{
+        if(Array.from(document.querySelector(`.tr-${to[0]+V[0]} .td-${to[1]+V[1]}`).classList).includes("deny")){res = false};
+    });
+    return res;
 }
 
 // const check = (next)=>{
