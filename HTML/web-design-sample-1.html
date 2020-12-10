@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=2.0">
+<title>web design sample 1</title>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+<style>
+*{
+    margin: 0;
+    padding: 0;
+}
+.outer{
+    height: 100vw;
+            display: grid;
+            grid-template-columns: 1fr ;
+            grid-template-rows: 1fr 1fr 1fr ;
+            grid-template-areas:
+"header"
+"address"
+"footer";
+background-color: red;
+}
+.header{
+    background-color: white;
+    grid-area: header;
+    clip-path: circle(50%);
+    transform: translateX(-40%);
+}
+.address{
+    background-color: #ff06de;
+    grid-area: address;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+    "div a";
+    place-content: center end;
+}
+.address > a{
+    grid-area: a;
+
+    font-size: 4rem;
+    text-decoration: none;
+    color: #ff06de;
+    background-color: white;
+    font-weight: 900;
+    line-height: 3.7rem;
+    text-shadow: 0.1rem 0.1rem rgb(204, 204, 204);
+}
+.footer{
+    background-color: rgb(71, 0, 129);
+    grid-area: footer;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+    "a div";
+    place-content: center end;
+}
+.footer > a{
+    grid-area: a;
+
+    word-break: break-all;
+    font-size: 4rem;
+    text-decoration: none;
+    color:  rgb(71, 0, 129);
+    background-color: white;
+    font-weight: 900;
+    line-height: 3.7rem;
+    text-shadow: 0.1rem 0.1rem rgb(204, 204, 204);
+}
+a{
+    border-radius: 1rem;
+    font-family: 'Varela Round', sans-serif;
+}
+@media (max-width: 500px) {
+    .address > a{font-size: 2rem;line-height: 1.5rem;}
+    .footer > a{font-size: 2rem;line-height: 1.5rem;}
+}
+@media (max-width: 300px) {
+    .address > a{font-size: 1.5rem;line-height: 1.3rem;}
+    .footer > a{font-size: 1.5rem;line-height: 1.3rem;}
+}
+</style>
+<body>
+<div class="outer">
+    <div class="header"></div>
+    <div class="address"><a href="">Kokyogaien, Chiyoda Ku, Tokyo To, 100-0002, Japan</a></div>
+    <div class="footer"><a href="">3.141592653589793238462643383279502884</a></div>
+</div>
+</body>
+</html>
