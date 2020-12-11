@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=2.0">
+<title>vent list</title>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    .buttonWrapper{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
+        width: 100%;
+        height: 10rem;
+    }
+    .button{
+        border: 1px solid black;
+        background-color: cornsilk;
+        display: grid;
+        place-content: center;
+    }
+    .a-tag{
+        width: 100%;
+        height: 100%;
+    }
+</style>
+</head>
+<body>
+<div class="buttonWrapper">
+    <input class="listVolume" type="number" name="" id="" value="3">
+    <div class="grid-button button" onclick="gridGen('columns');">columns grid</div>
+    <div class="grid-button button" onclick="gridGen('rows');">rows grid</div>
+    with a tag<input type="checkbox" class="with-a-tag a-tag button" value="a tag"></input>
+</div>
+    <textarea class="css" name="" id="" cols="30" rows="10"></textarea>
+    <textarea class="html" name="" id="" cols="30" rows="10"></textarea>
+<script>
+// https://stackoverflow.com/a/23095818
+function random_rgb() {
+    var o = Math.round, r = Math.random, s = 255;
+    return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) +')';
+}
+
+const withATagCss = () =>{
+    return document.querySelector(".a-tag").checked
+    ?
+`\nli > a{
+    display: block;
+    background-color: #000000;
+    color: #FFFFFF;
+    text-decoration: none;
+}`
+:
+"";
+}
+
+const gridAreaCssLiTxt = (style) =>{
+    if(style === 'columns') return `"` +
+    [...Array(Number(document.querySelector(".listVolume").value)).keys()].map(V=>{return `li-${V+1} `})
+    .join("").trim()
+    + '"'
+ 
+    if(style === 'rows') return [...Array(Number(document.querySelector(".listVolume").value)).keys()].map(V=>{return `"li-${V+1}"`})
+    .join("\n").trim();
+}
+const childLiCssTxt = () =>{
+    return [...Array(Number(document.querySelector(".listVolume").value)).keys()].map(V=>{return `.li-${V+1}{background-color: ${random_rgb()};
+grid-area: li-${V+1};
+
+}${withATagCss()}`}).join("\n");
+}
+
+
+
+const cssTxt = (style) =>{return `.ul{
+            display: grid;
+            grid-template-${style === 'columns' ? 'columns' : 'rows'}: auto;
+            grid-template-areas:
+${gridAreaCssLiTxt(style)};
+}
+li{
+    list-style: none;
+}
+${childLiCssTxt()}`}
+
+const withATagHtml = () =>{
+    return document.querySelector(".a-tag").checked
+    ?
+[`<a href="#">`, `</a>`]
+:
+["", ""];
+}
+const childHtmlTxt = () =>{
+    return [...Array(Number(document.querySelector(".listVolume").value)).keys()].map(V=>{return `<li class="li-${V+1}">${withATagHtml()[0]}li-${V+1}${withATagHtml()[1]}</li>`}).join("\n");
+}
+const htmlTxt = () =>{return `<ul class="ul">
+${childHtmlTxt()}
+</ul>`}
+
+const gridGen = (style) =>{
+    document.querySelector(".css").value = cssTxt(style);
+    document.querySelector(".html").value = htmlTxt();
+}
+// const flexGen = () =>{}
+</script>
+</a>
+</body>
+</html>
