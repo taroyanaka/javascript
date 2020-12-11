@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=2.0">
+<title>text q a</title>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+}
+*{font-size: 1.5rem;line-height: 1.5rem;}
+.textarea1{
+    width: 10rem;
+    height: 10rem;
+}
+.textarea2{
+    width: 10rem;
+    height: 10rem;
+}
+</style>
+<body>
+<button onclick="test()">test</button>
+<button onclick="answerTest()">answerTest</button>
+<div class="outer">
+<input class="replacer" type="text" value="q">
+<textarea class="textarea1" href="" oninput="exe();makeAnswer();"></textarea>
+<button class="copy" onclick="copy();">←copy←</button>
+<textarea class="textarea2" href=""></textarea>
+<!-- <textarea class="textarea1" href="">q千代田q1番1号（q番号100q01）</textarea>
+<textarea class="textarea2" href="">東京都千代田区千代田1番1号（郵便番号100-0001）</textarea> -->
+<!-- <p>p test</p> -->
+</div>
+<div class="answer">
+
+
+</div>
+<script>
+
+// replacer is any "SINGLE" character
+// let txt1="q千代田q1番1号（q番号100-q001）";
+// let txt2="東京都千代田区千代田1番1号（郵便番号100-0001）";
+const copy = ()=>{
+    document.querySelector(".textarea1").value = document.querySelector(".textarea2").value;    
+}
+const exe = ()=>{
+    let txt1=document.querySelector(".textarea1").value;
+    let txt2=document.querySelector(".textarea2").value;
+    const replacer = document.querySelector(".replacer").value;
+
+    let res = [];
+    let replaceTargetLength=0;
+    txt1.split(replacer).forEach((V,IDX)=>{
+        let noReplaceString = txt1.split(replacer)[IDX+1];
+        let replacerPosition = txt1.search(noReplaceString) - 1;
+        let endPosition = txt2.search(noReplaceString);
+        res.push(txt2.slice(replacerPosition+replaceTargetLength, endPosition));
+        replaceTargetLength = txt2.slice(replacerPosition, endPosition).length - 1
+
+        console.log(noReplaceString);
+        console.log(replacerPosition);
+        console.log(endPosition);
+        console.log(res);
+    })
+    res.pop();
+    return res;
+}
+
+
+const check = (event) =>{
+    console.log(event.target.parentElement.dataset.answer);
+    console.log(event.target.value);
+    event.target.parentElement.dataset.answer === event.target.value
+    ? event.target.nextElementSibling.textContent = "○"
+    : false;
+}
+
+const makeAnswer = () =>{
+    if(document.querySelector(".answer ul")) document.querySelectorAll(".answer ul").forEach(E=>{E.parentNode.removeChild(E)});
+    let answerListHtml="";
+    answerListHtml = exe().map(V=>{
+        return `<li data-answer="${V}"><input class="answer" type="text" oninput="check(event)"><span></span></li>`
+    }).join("");
+    document.querySelector(".answer").insertAdjacentHTML("afterbegin", `<ul>${answerListHtml}</ul>`);
+}
+
+let allAnswer = [];
+const test = () =>{
+    document.querySelector(".textarea1").value = "q千代田q1番1号（q番号100q01）";
+    document.querySelector(".textarea2").value = "東京都千代田区千代田1番1号（郵便番号100-0001）";
+    makeAnswer();
+    allAnswer = exe();
+}
+
+const check2 = (elm) =>{
+    const element = elm;
+    if(element.parentElement.dataset.answer === element.value){
+        element.nextElementSibling.textContent = "○"; answerIdx++;
+    }
+}
+let answerIdx = 0;
+const answerTest = () =>{
+    const answer = allAnswer.shift();
+    document.querySelectorAll("input.answer")[answerIdx].value = answer;
+    check2(document.querySelectorAll("input.answer")[answerIdx]);
+}
+</script>
+<!-- <li class="answer"></li> -->
+</body>
+</html>
