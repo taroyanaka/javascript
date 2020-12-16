@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>css keyframes</title>
+<style>
+/* https://www.youtube.com/watch?v=upZqt5kGgps */
+*{
+    margin: 0;
+    padding: 0;
+}
+div{
+    position: absolute; 
+    width: 100px;
+    height: 100px;
+    background-color: coral;
+    font-weight: 900;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation-name: test;
+    animation-duration: 10s;
+}
+
+@keyframes test {
+    0%{
+        left: 0px;
+        top: 0px;
+    }
+    20%{
+        left: 100px;
+        top: 0px;
+    }
+    40%{
+        left: 200px;
+        top: 300px;
+    }
+    80%{
+        left: 0px;
+        top: 0px;
+    }
+}
+</style>
+</head>
+<body>
+<div>sample</div>
+</body>
+</html>
