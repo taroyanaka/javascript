@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>dungeon2</title>
+<script src="ramda0.27.1.js "></script>
+</head>
+<body>
+<script>
+
+const AZaz09 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+const AZaz = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+const az = "abcdefghijklmnopqrstuvwxyz";
+// https://stackoverflow.com/a/5915122
+function getRandomNumberStr(str){ return str[Math.floor(Math.random() * str.length)] }
+function getRandomStr(str, num) {
+	return [...Array(num).keys()].map(V=>{
+		return getRandomNumberStr(str)
+	}).join("")
+}
+
+const shuffleArray = array => {
+    for (let i = array.length - 1; i > 0; i--) {
+        let r = Math.floor(Math.random() * (i + 1));
+        let tmp = array[i];
+        array[i] = array[r];
+        array[r] = tmp;
+    }
+    return array
+}
+
+let monsters = R.range(1,1000).map(V=>{
+    const HP = shuffleArray(R.range(1, 100))[0];
+    const AP = shuffleArray(R.range(1, 10))[0];
+    return {
+        NAME: getRandomStr(AZaz, 6),
+        HP: HP,
+        back0_HP: HP,
+        back1_HP: Math.round(HP * (1 - Math.random()) ),
+        back2_HP: Math.round(HP * (1 + Math.random())),
+        AP: AP,
+        back0_AP: AP,
+        back1_AP: Math.round(AP * (1 - Math.random())),
+        back2_AP: Math.round(AP * (1 + Math.random())),
+    }
+})
+
+
+let HP = 10;
+let AP = 2;
+let player = {
+    NAME: "Human",
+    HP: HP,
+    back0_HP: HP,
+    back1_HP: HP,
+    back2_HP: HP,
+    AP: AP,
+    back0_AP: AP,
+    back1_AP: AP,
+    back2_AP: AP,
+}
+
+function showStatus(who){
+    console.log(`NAME:${who.NAME}`);
+    console.log(`HP:${who.HP}`);
+    console.log(`AP:${who.AP}`);
+}
+function attack(who, target){
+    // showStatus(who);
+    // showStatus(target);
+    target.HP = target.HP - who.AP;
+    return [who, target];
+}
+
+
+let lose = [];
+function buttle(you, monster){
+    let [_you, _monster] = [R.clone(you), R.clone(monster)];
+    console.log(_you);
+    function battleCheck(){
+        if (_monster.HP <= 0) lose.push(_monster);
+        if( _you.HP <= 0 ||
+            _monster.HP <= 0 ||
+            isNaN(_you.HP) ||
+            isNaN(_monster.HP)){
+            return false
+        }else{
+            return true
+        }
+    }
+    while ( battleCheck() ) {
+        [_you, _monster] = attack(_you, _monster);
+        if( !battleCheck() ) return _you;
+        [_monster, _you] = attack(_monster, _you);
+    }
+    return _you
+}
+
+function makeLeveledPlayer(level){
+    let player = {
+        NAME: "Human",
+        HP: HP * level,
+        back0_HP: HP,
+        back1_HP: HP,
+        back2_HP: HP,
+        AP: AP * level,
+        back0_AP: AP,
+        back1_AP: AP,
+        back2_AP: AP,
+    }
+    return player;
+}
+
+
+function makeMonster(leveledPlayer){
+    lose = [];
+    monsters.forEach(V=>{        buttle(leveledPlayer, V)    });
+    const loseMonster = lose.map(V=>{
+        return R.find(R.propEq("NAME", V.NAME))(monsters); 
+    })
+    let zeroRejectedMonsters = [];
+    loseMonster.forEach(V => {
+        let reject = false;
+        Object.values(V).forEach(val => {
+            if (val === 0) {
+                reject = true
+            }
+        });
+        if (reject != true) { zeroRejectedMonsters.push(V) };
+    })
+    return zeroRejectedMonsters;
+}
+let levele1layer = makeLeveledPlayer(1);
+let levele2layer = makeLeveledPlayer(2);
+let foo = makeMonster(levele1layer);
+let bar = makeMonster(levele2layer);
+
+
+function mix(one, two){
+    const [_one, _two] = [R.clone(one), R.clone(two)]
+
+    const newName = R.take(6, shuffleArray((one.NAME + two.NAME).split(""))).join("");
+
+    const oneTwoHpAry = [_one.back0_HP, _one.back1_HP, _one.back2_HP,].concat([_two.back0_HP, _two.back1_HP, _two.back2_HP,]);
+    const oneTwoApAry = [_one.back0_AP, _one.back1_AP, _one.back2_AP,].concat([_two.back0_AP, _two.back1_AP, _two.back2_AP,]);
+    const shuffleOneTwoHpAry = shuffleArray(oneTwoHpAry);
+    const shuffleOneTwoApAry = shuffleArray(oneTwoApAry);
+
+    return {
+        NAME: newName,
+        HP: shuffleOneTwoHpAry[0],
+        back0_HP: shuffleOneTwoHpAry[0],
+        back1_HP: shuffleOneTwoHpAry[1],
+        back2_HP: shuffleOneTwoHpAry[2],
+        AP: shuffleOneTwoApAry[0],
+        back0_AP: shuffleOneTwoApAry[0],
+        back1_AP: shuffleOneTwoApAry[1],
+        back2_AP: shuffleOneTwoApAry[2],
+    }
+}
+player = mix(player, foo[0]);
+console.table(player);
+
+</script>
+</body>
+</html>

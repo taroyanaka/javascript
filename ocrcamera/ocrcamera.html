@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OCR Camera</title>
+  <!-- <script src='https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js'></script> -->
+  <script src='v2.1.0.tesseract.js'></script>
+  <style>
+  canvas, video{
+    border: 1px solid gray;
+  }
+  .shutter, .switch-camera{
+    width: 2rem;
+    height: 2rem;
+  }
+  button{
+    width: 5rem;
+    height: 5rem;
+  }
+  </style>
+    <!-- https://blog.katsubemakito.net/html5/camera1 -->
+</head>
+<body>
+
+<h1>ORC Camera</h1>
+
+<div class="result">
+</div>
+
+<div class="progress-block">
+</div>
+
+<select name="lang" id="lang">
+    <option value="'afr">Afrikaans</option>
+    <option value="ara">Arabic</option>
+    <option value="aze">Azerbaijani</option>
+    <option value="bel">Belarusian</option>
+    <option value="ben">Bengali</option>
+    <option value="bul">Bulgarian</option>
+    <option value="cat">Catalan</option>
+    <option value="ces">Czech</option>
+    <option value="chi_sim">Chinese</option>
+    <option value="chi_tra">Traditional Chinese</option>
+    <option value="chr">Cherokee</option>
+    <option value="dan">Danish</option>
+    <option value="deu">German</option>
+    <option value="ell">Greek</option>
+    <option value="eng">English</option>
+    <option value="enm">English (Old)</option>
+    <option value="epo">Esperanto</option>
+    <option value="epo_alt">Esperanto alternative</option>
+    <option value="equ">Math</option>
+    <option value="est">Estonian</option>
+    <option value="eus">Basque</option>
+    <option value="fin">Finnish</option>
+    <option value="fra">French</option>
+    <option value="frk">Frankish</option>
+    <option value="frm">French (Old)</option>
+    <option value="glg">Galician</option>
+    <option value="grc">Ancient Greek</option>
+    <option value="heb">Hebrew</option>
+    <option value="hin">Hindi</option>
+    <option value="hrv">Croatian</option>
+    <option value="hun">Hungarian</option>
+    <option value="ind">Indonesian</option>
+    <option value="isl">Icelandic</option>
+    <option value="ita">Italian</option>
+    <option value="ita_old">Italian (Old)</option>
+    <option value="jpn" selected>Japanese</option>
+    <option value="kan">Kannada</option>
+    <option value="kor">Korean</option>
+    <option value="lav">Latvian</option>
+    <option value="lit">Lithuanian</option>
+    <option value="mal">Malayalam</option>
+    <option value="mkd">Macedonian</option>
+    <option value="mlt">Maltese</option>
+    <option value="msa">Malay</option>
+    <option value="nld">Dutch</option>
+    <option value="nor">Norwegian</option>
+    <option value="pol">Polish</option>
+    <option value="por">Portuguese</option>
+    <option value="ron">Romanian</option>
+    <option value="rus">Russian</option>
+    <option value="slk">Slovakian</option>
+    <option value="slv">Slovenian</option>
+    <option value="spa">Spanish</option>
+    <option value="spa_old">Old Spanish</option>
+    <option value="sqi">Albanian</option>
+    <option value="srp">Serbian (Latin)</option>
+    <option value="swa">Swahili</option>
+    <option value="swe">Swedish</option>
+    <option value="tam">Tamil</option>
+    <option value="tel">Telugu</option>
+    <option value="tgl">Tagalog</option>
+    <option value="tha">Thai</option>
+    <option value="tur">Turkish</option>
+    <option value="ukr">Ukrainian</option>
+    <option value="vie">Vietnamese</option>
+</select>
+
+<video id="camera" width="300" height="200"></video>
+<canvas id="picture" width="300" height="200"></canvas>
+<form>
+  <button type="button" class="shutter-button" onclick="shutter();">
+    <img src="1568439e-e0f0-40a1-8acc-270f0409ccbd.svg" class="shutter">
+  </button>
+  <button type="button" class="switch-camera-button" onclick="switchCamera();">
+    <img src="switch-camera.svg" class="switch-camera">
+  </button>
+</form>
+
+<script>
+function lang(){ return document.querySelector("#lang").value };
+function recognize(png){
+  document.querySelector(".progress-block").insertAdjacentHTML("afterbegin",
+      `<progress class="translate" max="100" value="0"></progress>`
+  );
+
+  Tesseract.recognize(
+    //   'https://tesseract.projectnaptha.com/img/eng_bw.png',
+    // 'foo.png',
+    png,
+    // 'jpn',
+    lang(),
+    {   logger: m =>{
+            console.log(m);
+            document.querySelector("progress").value = m.progress * 100;
+        }
+    }
+    ).then(({ data: { text } }) => {
+      document.querySelector(".result").insertAdjacentHTML("afterbegin",
+        `<textarea class="res" cols="30" rows="10"></textarea>`
+      );
+      document.querySelector("textarea.res").value = text;
+  })
+}
+
+let constraints = {
+  audio: false,
+  video: {
+    width: 300,
+    height: 200,
+    facingMode: "user"
+    // front camera
+    // facingMode: "user"
+    // rear camera
+    // facingMode: { exact: "environment" }  // リアカメラを利用する場合
+  }
+};
+
+let video  = document.querySelector("#camera");
+let canvas = document.querySelector("#picture");
+
+
+function setup(){
+   navigator.mediaDevices.getUserMedia(constraints)
+  .then( (stream) => {
+    video.srcObject = stream;
+    video.onloadedmetadata = (e) => {
+      video.play();
+    };
+  })
+  .catch( (err) => {
+    console.log(err.name + ": " + err.message);
+  });
+}
+
+function switchCamera(){
+    constraints.video.facingMode === "user"
+    ?
+    constraints.video.facingMode = { exact: "environment" }
+    :
+    constraints.video.facingMode = "user";
+    setup();
+}
+
+function shutter(){
+    const ctx = canvas.getContext("2d");
+    // video.pause();
+    // setTimeout( () => {
+    //   video.play();
+    // }, 10);
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // https://stackoverflow.com/a/11112370
+    const data = canvas.toDataURL("image/png");
+    recognize(data);
+};
+
+setup();
+</script>
+</body>
+</html>
