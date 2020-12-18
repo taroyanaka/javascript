@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Search</title>
+    <!-- https://stackoverflow.com/a/46867747 -->
+    <!-- https://stackoverflow.com/a/33520129 -->
+</head>
+<body>
+<input type="file" accept="text/plain" id="fileInput" multiple="multiple" />
+<div>
+    <input type="text" class="word" oninput="search()">
+    <ul class="result-list">
+    </ul>
+</div>
+<script>
+var fileContents = [];
+var fileContentsNames = [];
+
+document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+
+function search(){
+    const filesTxt = fileContents.filter(V=>{
+        return V.includes(document.querySelector(".word").value);
+    }).map((V,K)=>{
+        const limitedText = V.slice(0,100);
+        // return `<li class="result-item">${V}</li>`
+        // return `<li class="result-item">${fileContentsNames[K]}</li>`
+        return `<li class="result-item">
+            <a href="${fileContentsNames[K].replace('.txt','')}">"${fileContentsNames[K].replace('.txt','')}"</a>
+            <span>${limitedText}</span></li>`
+    }).join("");
+    document.querySelectorAll(".result-item").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector(".result-list").insertAdjacentHTML("afterbegin", filesTxt);
+}
+
+function handleFileSelect (e) {
+    var allFiles = e.target.files;
+    for (var i = 0; i < allFiles.length; i++) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            // alert(e.target.result);
+            fileContents.push(e.target.result);
+            // fileContents.push(e.target);
+        };
+        reader.readAsText(allFiles[i]);
+
+        fileContentsNames.push(allFiles[i].name);
+    };
+};
+
+</script>
+</body>
+</html>
