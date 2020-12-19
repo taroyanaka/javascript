@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        main{
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+        }
+        article{
+            border: 1px solid black;
+            margin: 0.5rem;
+            padding: 0.2rem;
+        }
+        input{
+            display: block;
+            width: 5rem;
+        }
+    </style>
+</head>
+<body>
+
+<input type="number" name="" class="number" value="10">
+<input type="button" name="" class="makeList" onclick="makeList();" value="makeList">
+<input type="button" value="test" onclick="test2();">
+<!-- <input type="button" value="test" onclick="test();"> -->
+
+<main></main>
+<!-- <article '[data-val]="foo"'> -->
+<!-- <article data-num="num-0">
+        expected value 期待値<input type="number" readonly class="expectedValue">
+        stakes 賭け金<input type="number" onchange="exe(event);" class="stakes">
+        magnification 倍率<input type="number" onchange="exe(event);" class="magnification">
+        probability 確率 (%)<input type="number" onchange="exe(event);" class="probability"  class="probability">
+</article>
+
+<article data-num="num-1">
+    expected value 期待値<input type="number" readonly class="expectedValue">
+    stakes 賭け金<input type="number" onchange="exe(event);" class="stakes">
+    magnification 倍率<input type="number" onchange="exe(event);" class="magnification">
+    probability 確率 (%)<input type="number" onchange="exe(event);" class="probability"  class="probability">
+</article> -->
+<script>
+
+
+////////////////////////WIP////////////////////////
+function sortByExpectedValue(){
+    document.querySelectorAll("article")[0].forEach
+    document.querySelectorAll("article")[0].outerHTML
+}
+///////////////////////////////////////////////////
+
+
+
+
+function exe(event, test){
+    const ID = event ? event.target.parentElement.dataset.num.split("-")[1] : test;
+    
+    document.querySelector(`article[data-num=num-${ID}] input[type=number].expectedValue`).value = 
+    Number(document.querySelector(`article[data-num=num-${ID}] input[type=number].stakes`).value) *
+    Number(document.querySelector(`article[data-num=num-${ID}] input[type=number].magnification`).value) *
+    Number(document.querySelector(`article[data-num=num-${ID}] input[type=number].probability`).value) / 100;
+}
+function test2(){
+    [...Array( Number( document.querySelectorAll("article").length) ).keys()].forEach(V=>{
+        document.querySelector(`[data-num=num-${V}] input[type=number].stakes`).value = Math.round(Math.random() * 100);
+        document.querySelector(`[data-num=num-${V}] input[type=number].magnification`).value = Math.round(Math.random() * 100);
+        document.querySelector(`[data-num=num-${V}] input[type=number].probability`).value = Math.round(Math.random() * 100);
+
+        exe(null, V);
+    })
+}
+function makeList() {
+    const list = [...Array( Number(document.querySelector(".number").value) ).keys()].map(V=>{
+        return `<article data-num="num-${V}">
+expected value 期待値<input type="number" readonly class="expectedValue">
+stakes 賭け金<input type="number" onchange="exe(event);" class="stakes">
+magnification 倍率<input type="number" onchange="exe(event);" class="magnification">
+probability 確率 (%)<input type="number" onchange="exe(event);" class="probability"  class="probability">
+</article>`
+    }).join("");
+    document.querySelector("main").insertAdjacentHTML("afterbegin", list);
+}
+
+
+// function test(){
+//     document.querySelector(`[data-num=num-0] input[type=number].stakes`).value = 10;
+//     document.querySelector(`[data-num=num-0] input[type=number].magnification`).value = 10;
+//     document.querySelector(`[data-num=num-0] input[type=number].probability`).value = 50;
+
+//     document.querySelector(`[data-num=num-1] input[type=number].stakes`).value = 7;
+//     document.querySelector(`[data-num=num-1] input[type=number].magnification`).value = 7;
+//     document.querySelector(`[data-num=num-1] input[type=number].probability`).value = 30;
+
+//     document.querySelector(`[data-num=num-2] input[type=number].stakes`).value = 1;
+//     document.querySelector(`[data-num=num-2] input[type=number].magnification`).value = 100;
+//     document.querySelector(`[data-num=num-2] input[type=number].probability`).value = 99;
+//     exe();
+// }
+
+
+</script>
+</body>
+</html>
