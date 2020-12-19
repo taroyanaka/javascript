@@ -7,6 +7,7 @@
     <!-- https://stackoverflow.com/a/46867747 -->
     <!-- https://stackoverflow.com/a/33520129 -->
 </head>
+<script src="ramda.min.js"></script>
 <body>
 <input type="file" accept="text/plain" id="fileInput" multiple="multiple" />
 <div>
@@ -15,20 +16,20 @@
     </ul>
 </div>
 <script>
-var fileContents = [];
-var fileContentsNames = [];
+let fileContents = [];
+let fileContentsNames = [];
+// let list = [];
 
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 
 function search(){
-    const filesTxt = fileContents.filter(V=>{
-        return V.includes(document.querySelector(".word").value);
+    const list = R.zip(fileContents, fileContentsNames);
+    const filesTxt = list.filter(V=>{
+        return V[0].includes(document.querySelector(".word").value);
     }).map((V,K)=>{
-        const limitedText = V.slice(0,100);
-        // return `<li class="result-item">${V}</li>`
-        // return `<li class="result-item">${fileContentsNames[K]}</li>`
+        const limitedText = V[0].slice(0,100);
         return `<li class="result-item">
-            <a href="${fileContentsNames[K].replace('.txt','')}">"${fileContentsNames[K].replace('.txt','')}"</a>
+            <a href="">"${V[1]}"</a>
             <span>${limitedText}</span></li>`
     }).join("");
     document.querySelectorAll(".result-item").forEach(E=>{E.parentNode.removeChild(E)});
