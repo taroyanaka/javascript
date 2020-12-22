@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../ramda.min.js"></script>
+</head>
+<body>
+
+<script>
+    const airports = "one two three four five six seven eight".split(" ");
+
+    const routes = [
+        ["one" , "two"],
+        ["one" , "three"],
+        ["three" , "four"],
+        ["four" , "five"],
+        ["four" , "six"],
+        ["seven" , "two"],
+        ["eight" , "five"],
+    ]
+    const adjacencyList = new Map();
+
+    function addNode(airport){
+        adjacencyList.set(airport, []);
+    }
+
+    function addEdge(origin, destination){
+        adjacencyList.get(origin).push(destination);
+        adjacencyList.get(destination).push(origin);
+    }
+
+airports.forEach(addNode);
+
+    routes.forEach(route => {
+        addEdge(...route)
+    });
+    
+    // console.log(adjacencyList);
+    // console.group(adjacencyList);
+    console.log(adjacencyList);
+
+</script>
+</body>
+</html>

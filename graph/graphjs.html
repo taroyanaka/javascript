@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="ramda.min.js"></script>
+</head>
+<body>
+
+    <svg viewBox="0 0 100 100">
+        <g fill="white" stroke="green" stroke-width="5">
+            <!-- <line x1="10" y1="10" x2="100" y2="80" stroke="black" stroke-width="2" /> -->
+            <!-- <polygon points="10,90 50,10 90,90" fill="green" stroke="black" stroke-width="2" /> -->
+<!-- <circle cx="50" cy="50" r="40" fill="none" stroke="black" stroke-width="2" /> -->
+            <!-- <ellipse cx="50" cy="50" rx="10" ry="50" fill="red" stroke="black" stroke-width="2" /> -->
+        </g>
+      </svg>
+
+<script>
+
+function writeCircle(cx, cy){
+    document.querySelector("g").insertAdjacentHTML("afterbegin",
+        `<circle cx=${cx} cy=${cy} r="3" fill="none" stroke="black" stroke-width="0.5" />`
+    )
+}
+function writeLine(x1, y1, x2, y2){
+    document.querySelector("g").insertAdjacentHTML("afterbegin",
+        `<line x1=${x1} y1=${y1} x2=${x2} y2=${y2} stroke="black" stroke-width="0.5" />`
+    )
+}
+// writeCircle(10, 20);
+// writeLine(10, 20, 20, 40);
+// writeCircle(20, 40);
+
+
+    // const airports = "one two three four five six seven eight".split(" ");
+    const number = "one two three four five six seven eight".split(" ");
+    let relation = [
+        ["one" , "two"],
+        ["two", "one"],
+        ["one" , "three"],
+        ["three" , "four"],
+        ["four" , "five"],
+        ["three" , "four"],
+        ["four" , "six"],
+        ["seven" , "two"],
+        ["eight" , "five"],
+        ["eight" , "five"],
+        ["five", "eight"],
+    ]
+
+console.log(    relation);
+
+const diff = function(a, b) { return a - b; };
+
+    relation = relation.map(V=>{
+        // return R.sort(diff, V)
+        // https://stackoverflow.com/a/64350906
+        return R.sortBy(R.identity, V)
+    })
+    relation = R.uniq(relation);
+
+    // console.log(    relation);
+
+    
+    // https://stackoverflow.com/a/55470465
+    const rangeStep = R.curry((start, end, step) => R.unfold(n => n < end ? [n, n + step] : false, start));
+
+rangeStep(10, number.length *10 + 10, 10);
+//=> [10, 20, 30, 40, 50, 60, 70, 80]
+
+const makeTwin = (ary) => ary.map(V=> [V, V] );
+
+const shuffleArray = array => {
+	for (let i = array.length - 1; i > 0; i--) {
+	let r = Math.floor(Math.random() * (i + 1));
+	let tmp = array[i];
+	array[i] = array[r];
+	array[r] = tmp;
+	}
+	return array
+}
+
+const twinShake = (twinsAry) => {
+    const zero = twinsAry.map(V=>{return V[0]});
+    const one = twinsAry.map(V=>{return V[1]});
+    const shuffleOne = shuffleArray(one);
+    const shuffleTwin = R.zip(zero, one);
+    return shuffleTwin;
+}
+
+const twinShakeAry = twinShake( makeTwin(rangeStep(10, number.length *10, 10)) );
+
+// writeCircle(...twinShakeAry[0]);
+
+// writeCircle(10, 20);
+// writeLine(10, 20, 20, 40);
+// writeCircle(20, 40);
+
+twinShakeAry.forEach(twinShakeOfOne=>{
+    writeCircle(...twinShakeOfOne)
+});
+
+
+
+
+
+    // R.uniq(relation)
+
+    // const routes = [
+    //     ["one" , "two"],
+    //     ["one" , "three"],
+    //     ["three" , "four"],
+    //     ["four" , "five"],
+    //     ["four" , "six"],
+    //     ["seven" , "two"],
+    //     ["eight" , "five"],
+    // ]
+//     const adjacencyList = new Map();
+
+//     function addNode(airport){
+//         adjacencyList.set(airport, []);
+//     }
+
+//     function addEdge(origin, destination){
+//         adjacencyList.get(origin).push(destination);
+//         adjacencyList.get(destination).push(origin);
+//     }
+
+// airports.forEach(addNode);
+
+//     routes.forEach(route => {
+//         addEdge(...route)
+//     });
+    
+    // console.log(adjacencyList);
+    // console.group(adjacencyList);
+    // console.log(adjacencyList);
+
+</script>
+</body>
+</html>
