@@ -51,7 +51,7 @@ function writeLine(x1, y1, x2, y2){
         ["five", "eight"],
     ]
 
-console.log(    relation);
+// console.log(    relation);
 
 const diff = function(a, b) { return a - b; };
 
@@ -84,14 +84,24 @@ const shuffleArray = array => {
 }
 
 const twinShake = (twinsAry) => {
-    const zero = twinsAry.map(V=>{return V[0]});
-    const one = twinsAry.map(V=>{return V[1]});
+    // const zero = twinsAry.map(V=>{return V[0]});
+    const zero = R.pluck(0, twinsAry);
+    // const one = twinsAry.map(V=>{return V[1]});
+    const one = R.pluck(1, twinsAry);
     const shuffleOne = shuffleArray(one);
     const shuffleTwin = R.zip(zero, one);
     return shuffleTwin;
 }
 
-const twinShakeAry = twinShake( makeTwin(rangeStep(10, number.length *10, 10)) );
+const twinShakeAry = twinShake( makeTwin(rangeStep(10, number.length *10 +10, 10)) );
+
+const numberWithTwinShakeAry = R.zip(number, twinShakeAry);
+
+// numberWithTwinShakeAry.map(A=>{
+//     relation.map(V=>{ 
+//       if(R.find(R.equals(V[0]), A )){ return A[1] }
+//   })
+// })
 
 // writeCircle(...twinShakeAry[0]);
 
@@ -103,10 +113,20 @@ twinShakeAry.forEach(twinShakeOfOne=>{
     writeCircle(...twinShakeOfOne)
 });
 
+// const numberWithTwinShakeAry = number.map((V, K) => { return [V, twinShakeAry[K]] });
 
+const relationByXY = relation.map(V => { 
+    return [
+        R.find(R.propEq(0, V[0]), numberWithTwinShakeAry)[1],
+        R.find(R.propEq(0, V[1]), numberWithTwinShakeAry)[1]
+    ]
+})
 
+console.log(relationByXY);
 
-
+relationByXY.forEach(V=>{
+    writeLine(V[0][0], V[0][1], V[1][0], V[1][1]);
+})
     // R.uniq(relation)
 
     // const routes = [
