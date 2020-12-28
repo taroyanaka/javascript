@@ -20,8 +20,10 @@
 
 	width: 100px;
 	height: 100px;
-	transform-style: preserve-3d;
-    transform: rotate3d(-1, 1, -1, 45deg);    
+	/* transform-style: preserve-3d;
+    transform: rotate3d(-1, 1, -1, 45deg); */
+	/* transform-style:; */
+    /* transform:; */
 }
 .face {
 	display: flex;
@@ -35,49 +37,70 @@
 	color: #fff;
 }
 .front {
-	background: rgba(90, 90, 90, .7);
-	transform: translateZ(50px)
+	/* background: rgba(90, 90, 90, .7); */
+	/* background:; */
+	/* transform: translateZ(50px); */
+	/* transform:; */
 }
-
 .back {
-	background: rgba(0, 210, 0, .7);
-	transform: rotateY(180deg) translateZ(50px);
+	/* background: rgba(0, 210, 0, .7); */
+	/* background:; */
+	/* transform: rotateY(180deg) translateZ(50px); */
+    /* transform:; */
 }
-
 .right {
-	background: rgba(210, 0, 0, .7);
-	transform: rotateY(90deg) translateZ(50px);
+	/* background: rgba(210, 0, 0, .7); */
+	/* background:; */
+	/* transform: rotateY(90deg) translateZ(50px); */
+    /* transform:; */
 }
-
 .left {
-	background: rgba(0, 0, 210, .7);
-	transform: rotateY(-90deg) translateZ(50px);
+	/* background: rgba(0, 0, 210, .7); */
+	/* background:; */
+	/* transform: rotateY(-90deg) translateZ(50px); */
+    /* transform:; */
 }
-
 .top {
-	background: rgba(210, 210, 0, .7);
-	transform: rotateX(90deg) translateZ(50px);
+	/* background: rgba(210, 210, 0, .7); */
+	/* background:; */
+	/* transform: rotateX(90deg) translateZ(50px); */
+    /* transform:; */
 }
-
 .bottom {
-	background: rgba(210, 0, 210, .7);
-	transform: rotateX(-90deg) translateZ(50px);
+	/* background: rgba(210, 0, 210, .7); */
+	/* background:; */
+	/* transform: rotateX(-90deg) translateZ(50px); */
+    /* transform:; */
 }
-
 img{
     width: 200px;
     height: 200px;
+}
+/* :root{
+  --face-translateZ: 50px;
+} */
+.set3dInput input{
+    display: block;
+}
+h1{
+    font-size: 16px;
 }
 </style>
 </head>
 <body>
 <header>
-    <h4>transform-style: preserve-3d;<br>
-    backface-visibility: hidden;<br>
-    transform: rotateY(Ndeg) translateZ(Npx);<br>
-    transform: rotateX(Ndeg) translateZ(Ndeg);<br>
-    transform: rotate3d(-1, 1, -1, 45deg);<br></h4>
+<h1>transform-style: preserve-3d;</h1>
+<h1>backface-visibility: hidden;</h1>
+<h1>transform: rotateY(Ndeg) translateZ(Npx);</h1>
+<h1>transform: rotateX(Ndeg) translateZ(Ndeg);</h1>
+<h1>transform: rotate3d(-1, 1, -1, 45deg);</h1>
 </header>
+<div class="set3dInput">
+x:<input type="number" name="" class="x" value="1" onchange="set3d();">
+y:<input type="number" name="" class="y" value="1" onchange="set3d();">
+z:<input type="number" name="" class="z" value="1" onchange="set3d();">
+deg:<input type="number" name="" class="deg" value="45" onchange="set3d();">
+</div>
 <div class="output">
     <div class="example">
         <div class="face front">1</div>
@@ -89,4 +112,57 @@ img{
     </div>
 </div>
 </body>
+<script>
+    // document.querySelector(".front").style.setProperty("transform", "rotateY(0deg) translateZ(50px)");
+    // document.querySelector(".back").style.setProperty("transform", "rotateY(180deg) translateZ(50px)");
+    // document.querySelector(".right").style.setProperty("transform", "rotateY(90deg) translateZ(50px)");
+    // document.querySelector(".left").style.setProperty("transform", "rotateY(-90deg) translateZ(50px)");
+    // document.querySelector(".top").style.setProperty("transform", "rotateX(90deg) translateZ(50px)");
+    // document.querySelector(".bottom").style.setProperty("transform", "rotateX(-90deg) translateZ(50px)");
+
+    // document.querySelector(".front").style.setProperty("background", "rgba(90, 90, 90, .7)");
+    // document.querySelector(".back").style.setProperty("background", "rgba(0, 210, 0, .7)");
+    // document.querySelector(".right").style.setProperty("background", "rgba(210, 0, 0, .7)");
+    // document.querySelector(".left").style.setProperty("background", "rgba(0, 0, 210, .7)");
+    // document.querySelector(".top").style.setProperty("background", "rgba(210, 210, 0, .7)");
+    // document.querySelector(".bottom").style.setProperty("background", "rgba(210, 0, 210, .7)");
+
+const ary0 = [
+    [ ".front", ["transform", "rotateY(0deg) translateZ(50px)"], ["background", "rgba(90, 90, 90, .7)"] ],
+    [ ".back", ["transform", "rotateY(180deg) translateZ(50px)"], ["background", "rgba(0, 210, 0, .7)"] ],
+    [ ".right", ["transform", "rotateY(90deg) translateZ(50px)"], ["background", "rgba(210, 0, 0, .7)"] ],
+    [ ".left", ["transform", "rotateY(-90deg) translateZ(50px)"], ["background", "rgba(0, 0, 210, .7)"] ],
+    [ ".top", ["transform", "rotateX(90deg) translateZ(50px)"], ["background", "rgba(210, 210, 0, .7)"] ],
+    [ ".bottom", ["transform", "rotateX(-90deg) translateZ(50px)"], ["background", "rgba(210, 0, 210, .7)"] ],
+]
+
+
+ary0.forEach(V=>{
+    // document.querySelector(".front").style.setProperty("transform", "rotateY(0deg) translateZ(50px)");
+    // document.querySelector(".front").style.setProperty("background", "rgba(90, 90, 90, .7)");
+
+    // console.log(V)
+    document.querySelector(V[0]).style.setProperty(V[1][0], V[1][1]);
+    document.querySelector(V[0]).style.setProperty(V[2][0], V[2][1]);
+})
+
+document.querySelector(".example").style.setProperty("transform-style", "preserve-3d");
+document.querySelector(".example").style.setProperty("transform", "rotate3d(-1, 1, -1, 45deg)");
+        // transfor-style: preserve-3d;
+        // transform: rotate3d(-1, 1, -1, 45deg);
+
+        // document.styleSheets[0].rules
+
+    // document.querySelector(".example").getPropertyValue("transform");
+function set3d() {
+    const x = document.querySelector(".x").value;
+    const y = document.querySelector(".y").value;
+    const z = document.querySelector(".z").value;
+    const deg = document.querySelector(".deg").value;
+    document.querySelector(".example").style.setProperty("transform", `rotate3d(${x}, ${y}, ${z}, ${deg+"deg"})`);
+    document.querySelectorAll("h1")[4].innerText = 
+    `transform: rotate3d(${x}, ${y}, ${z}, ${deg + "deg"});`;
+}
+set3d();
+</script>
 </html>
