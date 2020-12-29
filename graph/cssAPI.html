@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style></style>
+</head>
+<body>
+    <div class="foo"></div>
+    <div class="bar"></div>
+</body>
+<script>
+    const cssText = `.foo{
+            background-color: black;
+            width: 100px;
+            height: 100px;
+        }
+        .bar{
+            background-color: gray;
+            width: 100px;
+            height: 100px;
+        }`
+    document.querySelector("style").innerText = cssText;
+</script>
+</html>
