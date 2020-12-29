@@ -14,8 +14,8 @@
     top: 50px;
     left: 50px;
 
-	width: 100px;
-	height: 100px;
+	width: 300px;
+	height: 300px;
 }
 .face {
 	display: flex;
@@ -41,13 +41,11 @@ h1{
 input{
     width: 3rem;
 }`
-document.querySelector("style").innerText = cssText;
 </script>
 <body>
 
 <header>
-<h1>transform-style: preserve-3d;</h1>
-<h1>backface-visibility: hidden;</h1>
+<h1>css by JS string and how to use, transform-style: preserve-3d; rotateX rotateY translateZ rotate3d</h1>
 </header>
 
 <main>
@@ -58,32 +56,32 @@ document.querySelector("style").innerText = cssText;
 <div class="frontInput">
     front rotateX:<input type="number" name="" class="front-rotateX" value="0" onchange="make3D();">
     front rotateY:<input type="number" name="" class="front-rotateY" value="0" onchange="make3D();">
-    front translateZ:<input type="number" name="" class="front-translateZ" value="50" onchange="make3D();">
+    front translateZ:<input type="number" name="" class="front-translateZ" value="150" onchange="make3D();">
 </div>
 <div class="backInput">
     back rotateX:<input type="number" name="" class="back-rotateX" value="0" onchange="make3D();">
     back rotateY:<input type="number" name="" class="back-rotateY" value="180" onchange="make3D();">
-    back translateZ:<input type="number" name="" class="back-translateZ" value="50" onchange="make3D();">
+    back translateZ:<input type="number" name="" class="back-translateZ" value="150" onchange="make3D();">
 </div>
 <div class="rightInput">
     right rotateX:<input type="number" name="" class="right-rotateX" value="0" onchange="make3D();">
     right rotateY:<input type="number" name="" class="right-rotateY" value="90" onchange="make3D();">
-    right translateZ:<input type="number" name="" class="right-translateZ" value="50" onchange="make3D();">
+    right translateZ:<input type="number" name="" class="right-translateZ" value="150" onchange="make3D();">
 </div>
 <div class="leftInput">
     left rotateX:<input type="number" name="" class="left-rotateX" value="0" onchange="make3D();">
     left rotateY:<input type="number" name="" class="left-rotateY" value="-90" onchange="make3D();">
-    left translateZ:<input type="number" name="" class="left-translateZ" value="50" onchange="make3D();">
+    left translateZ:<input type="number" name="" class="left-translateZ" value="150" onchange="make3D();">
 </div>
 <div class="topInput">
     top rotateX:<input type="number" name="" class="top-rotateX" value="90" onchange="make3D();">
     top rotateY:<input type="number" name="" class="top-rotateY" value="0" onchange="make3D();">
-    top translateZ:<input type="number" name="" class="top-translateZ" value="50" onchange="make3D();">
+    top translateZ:<input type="number" name="" class="top-translateZ" value="150" onchange="make3D();">
 </div>
 <div class="bottomInput">
     bottom rotateX:<input type="number" name="" class="bottom-rotateX" value="-90" onchange="make3D();">
     bottom rotateY:<input type="number" name="" class="bottom-rotateY" value="0" onchange="make3D();">
-    bottom translateZ:<input type="number" name="" class="bottom-translateZ" value="50" onchange="make3D();">
+    bottom translateZ:<input type="number" name="" class="bottom-translateZ" value="150" onchange="make3D();">
 </div>
 
 <div class="set3dInput">
@@ -92,6 +90,7 @@ y:<input type="number" name="" class="y" value="1" onchange="make3D();">
 z:<input type="number" name="" class="z" value="1" onchange="make3D();">
 deg:<input type="number" name="" class="deg" value="50" onchange="make3D();">
 </div>
+
 <div class="output">
     <div class="example">
         <div class="face front">1</div>
@@ -102,6 +101,8 @@ deg:<input type="number" name="" class="deg" value="50" onchange="make3D();">
         <div class="face bottom">6</div>
     </div>
 </div>
+
+
 </body>
 <script>
 // https://gist.github.com/AllThingsSmitty/f9029e6236a7c2a03203
@@ -116,7 +117,7 @@ function initCSS() {
 let properties = []
 function make3D() {
     initCSS();
-    
+
     properties = [
         [".front",
             ["transform", `rotateX(${DQS(".front-rotateX").value}deg) rotateY(${DQS(".front-rotateY").value}deg) translateZ(${DQS(".front-translateZ").value}px)`],
