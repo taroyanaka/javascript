@@ -1,14 +1,7 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-    transform: rotateY(180deg) translateZ(50px);
-    transform: rotateX(90deg) translateZ(50px);
-    transform: rotate3d(-1, 1, -1, 45deg);
-    </title>
+    <title>css 3D</title>
     <!-- https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/rotate3d() -->
 <style>
 .output{
@@ -86,16 +79,50 @@ img{
 h1{
     font-size: 16px;
 }
+input{
+    width: 3rem;
+}
 </style>
 </head>
 <body>
 <header>
 <h1>transform-style: preserve-3d;</h1>
 <h1>backface-visibility: hidden;</h1>
-<h1>transform: rotateY(Ndeg) translateZ(Npx);</h1>
-<h1>transform: rotateX(Ndeg) translateZ(Ndeg);</h1>
-<h1>transform: rotate3d(-1, 1, -1, 45deg);</h1>
+<!-- <h1>transform: rotate3d(-1, 1, -1, 45deg);</h1> -->
 </header>
+
+<!-- rotateX(0deg) rotateY(0deg) translateZ(50px) -->
+<div class="frontInput">
+    front rotateX:<input type="number" name="" class="front-rotateX" value="0" onchange="make3D();">
+    front rotateY:<input type="number" name="" class="front-rotateY" value="0" onchange="make3D();">
+    front translateZ:<input type="number" name="" class="front-translateZ" value="50" onchange="make3D();">
+</div>
+<div class="backInput">
+    back rotateX:<input type="number" name="" class="back-rotateX" value="0" onchange="make3D();">
+    back rotateY:<input type="number" name="" class="back-rotateY" value="180" onchange="make3D();">
+    back translateZ:<input type="number" name="" class="back-translateZ" value="50" onchange="make3D();">
+</div>
+<div class="rightInput">
+    right rotateX:<input type="number" name="" class="right-rotateX" value="0" onchange="make3D();">
+    right rotateY:<input type="number" name="" class="right-rotateY" value="90" onchange="make3D();">
+    right translateZ:<input type="number" name="" class="right-translateZ" value="50" onchange="make3D();">
+</div>
+<div class="leftInput">
+    left rotateX:<input type="number" name="" class="left-rotateX" value="0" onchange="make3D();">
+    left rotateY:<input type="number" name="" class="left-rotateY" value="-90" onchange="make3D();">
+    left translateZ:<input type="number" name="" class="left-translateZ" value="50" onchange="make3D();">
+</div>
+<div class="topInput">
+    top rotateX:<input type="number" name="" class="top-rotateX" value="90" onchange="make3D();">
+    top rotateY:<input type="number" name="" class="top-rotateY" value="0" onchange="make3D();">
+    top translateZ:<input type="number" name="" class="top-translateZ" value="50" onchange="make3D();">
+</div>
+<div class="bottomInput">
+    bottom rotateX:<input type="number" name="" class="bottom-rotateX" value="-90" onchange="make3D();">
+    bottom rotateY:<input type="number" name="" class="bottom-rotateY" value="0" onchange="make3D();">
+    bottom translateZ:<input type="number" name="" class="bottom-translateZ" value="50" onchange="make3D();">
+</div>
+
 <div class="set3dInput">
 x:<input type="number" name="" class="x" value="1" onchange="set3d();">
 y:<input type="number" name="" class="y" value="1" onchange="set3d();">
@@ -128,24 +155,74 @@ deg:<input type="number" name="" class="deg" value="45" onchange="set3d();">
     // document.querySelector(".top").style.setProperty("background", "rgba(210, 210, 0, .7)");
     // document.querySelector(".bottom").style.setProperty("background", "rgba(210, 0, 210, .7)");
 
-const ary0 = [
-    [ ".front", ["transform", "rotateY(0deg) translateZ(50px)"], ["background", "rgba(90, 90, 90, .7)"] ],
-    [ ".back", ["transform", "rotateY(180deg) translateZ(50px)"], ["background", "rgba(0, 210, 0, .7)"] ],
-    [ ".right", ["transform", "rotateY(90deg) translateZ(50px)"], ["background", "rgba(210, 0, 0, .7)"] ],
-    [ ".left", ["transform", "rotateY(-90deg) translateZ(50px)"], ["background", "rgba(0, 0, 210, .7)"] ],
-    [ ".top", ["transform", "rotateX(90deg) translateZ(50px)"], ["background", "rgba(210, 210, 0, .7)"] ],
-    [ ".bottom", ["transform", "rotateX(-90deg) translateZ(50px)"], ["background", "rgba(210, 0, 210, .7)"] ],
+// https://gist.github.com/AllThingsSmitty/f9029e6236a7c2a03203
+const DQS = document.querySelector.bind(document);
+
+let ary0 = [
+    [ ".front",
+        ["transform", `rotateX(0deg) rotateY(0deg) translateZ(50px)`],
+        ["background", "rgba(90, 90, 90, .7)"]
+    ],
+    [ ".back",
+        ["transform", `rotateX(0deg) rotateY(180deg) translateZ(50px)`],
+        ["background", "rgba(0, 210, 0, .7)"]
+    ],
+    [ ".right",
+        ["transform", `rotateX(0deg) rotateY(90deg) translateZ(50px)`],
+        ["background", "rgba(210, 0, 0, .7)"]
+    ],
+    [ ".left",
+        ["transform", `rotateX(0deg) rotateY(-90deg) translateZ(50px)`],
+        ["background", "rgba(0, 0, 210, .7)"]
+    ],
+    [ ".top",
+        ["transform", `rotateX(90deg) rotateY(0deg) translateZ(50px)`],
+        ["background", "rgba(210, 210, 0, .7)"]
+    ],
+    [ ".bottom",
+        ["transform", `rotateX(-90deg) rotateY(0deg) translateZ(50px)`],
+        ["background", "rgba(210, 0, 210, .7)"]
+    ],
 ]
 
+function make3D() {
+    ary0 = [
+        [".front",
+            ["transform", `rotateX(${DQS(".front-rotateX").value}deg) rotateY(${DQS(".front-rotateY").value}deg) translateZ(${DQS(".front-translateZ").value}px)`],
+            ["background", "rgba(90, 90, 90, .7)"]
+        ],
+        [".back",
+            ["transform", `rotateX(${DQS(".back-rotateX").value}deg) rotateY(${DQS(".back-rotateY").value}deg) translateZ(${DQS(".back-translateZ").value}px)`],
+            ["background", "rgba(0, 210, 0, .7)"]
+        ],
+        [".right",
+            ["transform", `rotateX(${DQS(".right-rotateX").value}deg) rotateY(${DQS(".right-rotateY").value}deg) translateZ(${DQS(".right-translateZ").value}px)`],
+            ["background", "rgba(210, 0, 0, .7)"]
+        ],
+        [".left",
+            ["transform", `rotateX(${DQS(".left-rotateX").value}deg) rotateY(${DQS(".left-rotateY").value}deg) translateZ(${DQS(".left-translateZ").value}px)`],
+            ["background", "rgba(0, 0, 210, .7)"]
+        ],
+        [".top",
+            ["transform", `rotateX(${DQS(".top-rotateX").value}deg) rotateY(${DQS(".top-rotateY").value}deg) translateZ(${DQS(".top-translateZ").value}px)`],
+            ["background", "rgba(210, 210, 0, .7)"]
+        ],
+        [".bottom",
+            ["transform", `rotateX(${DQS(".bottom-rotateX").value}deg) rotateY(${DQS(".bottom-rotateY").value}deg) translateZ(${DQS(".bottom-translateZ").value}px)`],
+            ["background", "rgba(210, 0, 210, .7)"]
+        ],
+    ]
+    ary0.forEach(V=>{
+        // document.querySelector(".front").style.setProperty("transform", "rotateY(0deg) translateZ(50px)");
+        // document.querySelector(".front").style.setProperty("background", "rgba(90, 90, 90, .7)");
 
-ary0.forEach(V=>{
-    // document.querySelector(".front").style.setProperty("transform", "rotateY(0deg) translateZ(50px)");
-    // document.querySelector(".front").style.setProperty("background", "rgba(90, 90, 90, .7)");
+        // console.log(V)
+        document.querySelector(V[0]).style.setProperty(V[1][0], V[1][1]);
+        document.querySelector(V[0]).style.setProperty(V[2][0], V[2][1]);
+    })
+}
 
-    // console.log(V)
-    document.querySelector(V[0]).style.setProperty(V[1][0], V[1][1]);
-    document.querySelector(V[0]).style.setProperty(V[2][0], V[2][1]);
-})
+make3D();
 
 document.querySelector(".example").style.setProperty("transform-style", "preserve-3d");
 document.querySelector(".example").style.setProperty("transform", "rotate3d(-1, 1, -1, 45deg)");
@@ -161,8 +238,9 @@ function set3d() {
     const z = document.querySelector(".z").value;
     const deg = document.querySelector(".deg").value;
     document.querySelector(".example").style.setProperty("transform", `rotate3d(${x}, ${y}, ${z}, ${deg+"deg"})`);
-    document.querySelectorAll("h1")[4].innerText = 
-    `transform: rotate3d(${x}, ${y}, ${z}, ${deg + "deg"});`;
+    // document.querySelectorAll("h1")[4].innerText = 
+    // `transform: rotate3d(${x}, ${y}, ${z}, ${deg + "deg"});`;
+    make3D();
 }
 set3d();
 </script>
