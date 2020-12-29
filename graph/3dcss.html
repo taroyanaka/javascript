@@ -16,11 +16,6 @@
 
 	width: 100px;
 	height: 100px;
-	/* height: var(--foo); */
-	/* transform-style: preserve-3d;
-    transform: rotate3d(-1, 1, -1, 45deg); */
-	/* transform-style:; */
-    /* transform:; */
 }
 .face {
 	display: flex;
@@ -46,19 +41,20 @@ h1{
 input{
     width: 3rem;
 }`
-    // document.querySelector("style").innerText = cssText;
+document.querySelector("style").innerText = cssText;
 </script>
 <body>
+
 <header>
 <h1>transform-style: preserve-3d;</h1>
 <h1>backface-visibility: hidden;</h1>
-<!-- <h1>transform: rotate3d(-1, 1, -1, 45deg);</h1> -->
 </header>
+
 <main>
-    <textarea name="" id="" cols="30" rows="10" class="cssText"></textarea>
-    <textarea name="" id="" cols="30" rows="10" class="htmlText"></textarea>
+<textarea name="" id="" cols="30" rows="10" class="cssText"></textarea>
+<textarea name="" id="" cols="30" rows="10" class="htmlText"></textarea>
 </main>
-<!-- rotateX(0deg) rotateY(0deg) translateZ(50px) -->
+
 <div class="frontInput">
     front rotateX:<input type="number" name="" class="front-rotateX" value="0" onchange="make3D();">
     front rotateY:<input type="number" name="" class="front-rotateY" value="0" onchange="make3D();">
@@ -91,10 +87,10 @@ input{
 </div>
 
 <div class="set3dInput">
-x:<input type="number" name="" class="x" value="1" onchange="set3d();">
-y:<input type="number" name="" class="y" value="1" onchange="set3d();">
-z:<input type="number" name="" class="z" value="1" onchange="set3d();">
-deg:<input type="number" name="" class="deg" value="50" onchange="set3d();">
+x:<input type="number" name="" class="x" value="1" onchange="make3D();">
+y:<input type="number" name="" class="y" value="1" onchange="make3D();">
+z:<input type="number" name="" class="z" value="1" onchange="make3D();">
+deg:<input type="number" name="" class="deg" value="50" onchange="make3D();">
 </div>
 <div class="output">
     <div class="example">
@@ -108,52 +104,20 @@ deg:<input type="number" name="" class="deg" value="50" onchange="set3d();">
 </div>
 </body>
 <script>
-    // document.querySelector(".front").style.setProperty("transform", "rotateY(0deg) translateZ(50px)");
-    // document.querySelector(".back").style.setProperty("transform", "rotateY(180deg) translateZ(50px)");
-    // document.querySelector(".right").style.setProperty("transform", "rotateY(90deg) translateZ(50px)");
-    // document.querySelector(".left").style.setProperty("transform", "rotateY(-90deg) translateZ(50px)");
-    // document.querySelector(".top").style.setProperty("transform", "rotateX(90deg) translateZ(50px)");
-    // document.querySelector(".bottom").style.setProperty("transform", "rotateX(-90deg) translateZ(50px)");
-
-    // document.querySelector(".front").style.setProperty("background", "rgba(90, 90, 90, .7)");
-    // document.querySelector(".back").style.setProperty("background", "rgba(0, 210, 0, .7)");
-    // document.querySelector(".right").style.setProperty("background", "rgba(210, 0, 0, .7)");
-    // document.querySelector(".left").style.setProperty("background", "rgba(0, 0, 210, .7)");
-    // document.querySelector(".top").style.setProperty("background", "rgba(210, 210, 0, .7)");
-    // document.querySelector(".bottom").style.setProperty("background", "rgba(210, 0, 210, .7)");
-
 // https://gist.github.com/AllThingsSmitty/f9029e6236a7c2a03203
 const DQS = document.querySelector.bind(document);
 
-let ary0 = [
-    // [ ".front",
-    //     ["transform", `rotateX(0deg) rotateY(0deg) translateZ(50px)`],
-    //     ["background", "rgba(90, 90, 90, .7)"]
-    // ],
-    // [ ".back",
-    //     ["transform", `rotateX(0deg) rotateY(180deg) translateZ(50px)`],
-    //     ["background", "rgba(0, 210, 0, .7)"]
-    // ],
-    // [ ".right",
-    //     ["transform", `rotateX(0deg) rotateY(90deg) translateZ(50px)`],
-    //     ["background", "rgba(210, 0, 0, .7)"]
-    // ],
-    // [ ".left",
-    //     ["transform", `rotateX(0deg) rotateY(-90deg) translateZ(50px)`],
-    //     ["background", "rgba(0, 0, 210, .7)"]
-    // ],
-    // [ ".top",
-    //     ["transform", `rotateX(90deg) rotateY(0deg) translateZ(50px)`],
-    //     ["background", "rgba(210, 210, 0, .7)"]
-    // ],
-    // [ ".bottom",
-    //     ["transform", `rotateX(-90deg) rotateY(0deg) translateZ(50px)`],
-    //     ["background", "rgba(210, 0, 210, .7)"]
-    // ],
-]
+function initCSS() {
+    DQS("style").innerText = "";
+    DQS("style").innerText += cssText;
+    DQS("style").innerText += `.example{transform-style: preserve-3d}`;
+}
 
+let properties = []
 function make3D() {
-    ary0 = [
+    initCSS();
+    
+    properties = [
         [".front",
             ["transform", `rotateX(${DQS(".front-rotateX").value}deg) rotateY(${DQS(".front-rotateY").value}deg) translateZ(${DQS(".front-translateZ").value}px)`],
             ["background", "rgba(90, 90, 90, .7)"]
@@ -180,73 +144,18 @@ function make3D() {
         ],
     ]
 
-    document.querySelector("style").innerText = "";
-    document.querySelector("style").innerText += cssText;
-    document.querySelector("style").innerText += `.example{transform-style: preserve-3d}`;
-
-
-    ary0.forEach(elm=>{
-        // document.querySelector(".front").style.setProperty("transform", "rotateY(0deg) translateZ(50px)");
-        // document.querySelector(".front").style.setProperty("background", "rgba(90, 90, 90, .7)");
-
-        // console.log(V)
-        // document.querySelector(V[0]).style.setProperty(V[1][0], V[1][1]);
-        // document.querySelector(V[0]).style.setProperty(V[2][0], V[2][1]);
-
-        // const elm = V;
+    properties.forEach(elm=>{
         const css = `${elm[0]} { ${elm[1][0]}  :  ${elm[1][1]}  ;
           ${elm[2][0]}  :  ${elm[2][1]}  }`;
-        document.querySelector("style").innerText += css;
-        // console.log(css);
-
-        // foo = Array.from(document.styleSheets[0].rules).filter(V => { return V.selectorText === ".front" })[0].cssText = 
-        // const bar = V[0];
-        // console.log(bar);
-        // const foo = Array.from(document.styleSheets[0].rules).filter(V => { return V.selectorText === bar })[0].cssText;
-        
-        // console.log(foo);
-        // console.log(V[0]);
-        // const foo = Array.from(document.styleSheets[0].rules).filter(V => { return V.selectorText === bar })[0].cssText = `${bar} {
-        // ${V[1][0]}: ${V[1][1]};
-        // ${V[2][0]}: ${V[2][1]};
-        // }`;
+        DQS("style").innerText += css;
     })
-   
 
-    // document.querySelector("style").innerText += `.example{transform: rotate3d(-1, 1, -1, 45deg)}`
+    DQS("style").innerText += `.example{transform: rotate3d(${DQS(".x").value}, ${DQS(".y").value}, ${DQS(".z").value}, ${DQS(".deg").value}deg)}`
 
-    const x = document.querySelector(".x").value;
-    const y = document.querySelector(".y").value;
-    const z = document.querySelector(".z").value;
-    const deg = document.querySelector(".deg").value;
-    
-    document.querySelector("style").innerText += `.example{transform: rotate3d(${x}, ${y}, ${z}, ${deg}deg)}`
-
-
-    document.querySelector("main textarea.cssText").value = Array.from(document.styleSheets[0].rules).map(V => { return V.cssText + "\n" }).join("");
-    document.querySelector("main textarea.htmlText").value = document.querySelector(".output").outerHTML;
+    DQS("main textarea.cssText").value = Array.from(document.styleSheets[0].rules).map(V => { return V.cssText + "\n" }).join("");
+    DQS("main textarea.htmlText").value = DQS(".output").outerHTML;
 }
 
 make3D();
-
-// document.querySelector(".example").style.setProperty("transform-style", "preserve-3d");
-// document.querySelector(".example").style.setProperty("transform", "rotate3d(-1, 1, -1, 45deg)");
-        // transfor-style: preserve-3d;
-        // transform: rotate3d(-1, 1, -1, 45deg);
-
-        // document.styleSheets[0].rules
-
-    // document.querySelector(".example").getPropertyValue("transform");
-function set3d() {
-    const x = document.querySelector(".x").value;
-    const y = document.querySelector(".y").value;
-    const z = document.querySelector(".z").value;
-    const deg = document.querySelector(".deg").value;
-    // document.querySelector(".example").style.setProperty("transform", `rotate3d(${x}, ${y}, ${z}, ${deg+"deg"})`);
-    // document.querySelectorAll("h1")[4].innerText = 
-    // `transform: rotate3d(${x}, ${y}, ${z}, ${deg + "deg"});`;
-    make3D();
-}
-// set3d();
 </script>
 </html>
