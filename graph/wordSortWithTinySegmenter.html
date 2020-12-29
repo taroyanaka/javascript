@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- https://github.com/leungwensen/tiny-segmenter -->
+<!-- http://kodainippon.com/%E6%97%A5%E6%9C%AC%E6%9B%B8%E7%B4%80%E3%83%BB%E7%8F%BE%E4%BB%A3%E6%97%A5%E6%9C%AC%E8%AA%9E%E8%A8%B3%EF%BC%88%E5%AE%8C%E5%85%A8%E8%A8%B3%EF%BC%89/ -->
+<!-- http://park3.wakwak.com/~pierrot/fft/ -->
+<title>TinySegmenter</title>
+<script src="tiny_segmenter.js"></script>
+<script src="ramda.min.js"></script>
+
+<script src="testJapaneseText.js"></script>
+<script src="fftalltext.js"></script>
+</head>
+<body>
+
+<script>
+const segmenter = new TinySegmenter();
+let foo = [];
+function jpTest() {    document.querySelector(".in").value = testJapaneseText }
+function fftTest() {    document.querySelector(".in").value = fftalltext }
+function Clear() { document.querySelectorAll("textarea").forEach(V => { V.value = "" }) }
+
+let val5;
+
+function count() {
+    // const val0 = R.split(" ")(document.querySelector(`.in`).value);
+    const val0 = foo;
+    const val1 = R.countBy(R.identity)(val0);
+    const val2 = R.toPairs(val1);
+    const by1AryDescend = R.descend(R.prop(1));
+    const val3 = R.sort(by1AryDescend, val2);
+    const UNDER = N => N[1] <= Number(document.querySelector(`#number1`).value);
+    const val4 = R.filter(UNDER, val3);
+    const OVER = N => N[1] >= Number(document.querySelector(`#number0`).value);
+    val5 = R.filter(OVER, val4);
+    document.querySelector(`#bar`).value = R.join("\n")(R.pluck(0)(val5));
+    document.querySelector(`#baz`).value = R.join("\n")(R.pluck(1)(val5));
+    sample = R.clone(val5);
+}
+function Segment() {
+    const ary = foo = segmenter.segment(document.querySelector(".in").value);
+    document.querySelector(".res").value = ary;
+    count();
+}
+</script>
+
+<div>
+    under <input type="number" name="number1" id="number1" value="10000" min="1" onChange="count();">
+</div>
+<div>
+    over <input type="number" name="number0" id="number0" value="1" min="1" onChange="count();">
+</div>
+
+<input type="button" onclick="jpTest();Segment();" value="jpTest">
+<input type="button" onclick="fftTest();Segment();" value="fftTest">
+<input type="button" onclick="Clear();" value="Clear">
+<textarea name="" class="in" cols="30" rows="10" oninput="exe();"></textarea>
+<textarea name="" class="res" cols="30" rows="10"></textarea>
+
+<div>
+    <textarea name="bar" id="bar" cols="20" rows="100" required="required"></textarea>
+    <textarea name="baz" id="baz" cols="20" rows="100" required="required"></textarea>
+</div>
+</body>
+</html>
