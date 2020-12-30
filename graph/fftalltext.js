@@ -1,7 +1,6 @@
 // http://park3.wakwak.com/~pierrot/fft/
 
-let fftalltext = `Bland Logo ～ Title Back
-戦士は剣を手に取り胸に一つの石を抱く
+let fftalltext = `戦士は剣を手に取り胸に一つの石を抱く
 
 消えゆく記憶をその剣に刻み
 
