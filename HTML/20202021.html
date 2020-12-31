@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2021</title>
+    <style>
+        div{
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 100vw;
+            height: 100vh;
+            transition: all 10s ease-out;
+            background-image: url("./green.jpg");
+            background-size: cover;
+        }
+        h1{
+            transition: all 10s ease-out;
+            color: white;
+            font-size: 2021px;
+        }
+    </style>
+</head>
+
+<body>
+<div onclick="newYear();">
+    <h1>2021</h1>
+</div>
+<script>
+    window.onload = function () {
+        function smaller() {
+            document.querySelector("h1").style.fontSize = "1rem";
+        }
+        smaller()
+    }
+    function newYear() {
+        document.querySelector("h1").innerText = "🐄".repeat(2021);
+    }
+</script>
+</body>
+</html>
