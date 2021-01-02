@@ -35,120 +35,25 @@
 </head>
 <body>
 <textarea name="" class="text" cols="30" rows="10"></textarea>
-a<input type="text" name="" class="a" oninput="bar();">
-b<input type="text" name="" class="b" oninput="bar();">
-similarity<input type="text" name="" class="similarity" oninput="bar();">
+a<input type="text" name="" class="a" oninput="exe();">
+b<input type="text" name="" class="b" oninput="exe();">
+similarity<input type="text" name="" class="similarity" oninput="exe();">
 </body>
 <script>
-// document.querySelector(".a").value = "spin";
-// document.querySelector(".b").value = "cat";
-
-//     document.querySelector(".text").value = `A big black bug bit a big black big
-// but the big black big bit the big black bug back`;
-// document.querySelector(".text").value = `Six little mice sat down to spin,
-// Pussy cat passed and she peeped in.
-// What are you doing, my little men?
-// Weaving coats for gentlemen.
-// Shall I come in and cut off your threads?
-// No, no, pussy cat, you’d bite off our heads!
-// Oh, no, I’ll not, I’ll help you spin.
-// That may be so, but you don’t come in.`;
-
-    document.querySelector(".a").value = "one";
-    document.querySelector(".b").value = "two";
-document.querySelector(".text").value = `one two one three
+document.querySelector(".a").value = "one";
+document.querySelector(".b").value = "two";
+document.querySelector(".text").value = `one two three one
 four five one two
 five one four three
-two one two one`
+two one two one six`
 
-    function preprocess(sentence) {
+// zeros
+// shape
+// tolist
 
-        console.log("foo")
-        console.log(sentence)
-
-        let splitedSentences = [];
-
-        // It works the same as "for ~ in ~" in Python (for value in array)
-        sentence.forEach(function (value) {
-            splitedSentences.push(value.toLowerCase().split(/[^’.\w]+/g).join(' ').replace('.', ' .'));
-        });
-
-        splitedSentences = splitedSentences.join(' ').split(/[^’.\w]+/g);
-        // splitedSentences = subset(splitedSentences, 0, -1);
-        splitedSentences = splitedSentences.slice(0, -1);
-
-        let word2Id = {};
-        let id2Word = {};
-
-        // It works the same as "enumerate" in Python (for idx,element in enumerate(array))
-        splitedSentences.forEach(function (word) {
-            if (!(word in word2Id)) {
-                let newId = Object.keys(word2Id).length;
-                word2Id[word] = newId;
-                id2Word[newId] = word;
-            }
-        });
-
-        let corpus = [];
-
-        // It works the same as "for ~ in ~" in Python (for value in array)
-        splitedSentences.forEach(function (value) {
-            corpus.push(word2Id[value]);
-        });
-
-        // numjs courpus
-        let numcorpus = nj.array(corpus);
-
-        // console.log(id2Word);
-        return [numcorpus, word2Id, id2Word];
-    }
-
-    let result;
-
-    // setup()
 let coOccurrenceMatrix;
-function buildCoOccurrenceMatrix(corpus, vocabSize, windowSize = 1) {
-        corpusSize = corpus.shape[0];
-        coOccurrenceMatrix = nj.zeros([vocabSize, vocabSize], 'int32');
-
-        for (let [idx, wordId] of corpus.tolist().entries()) {
-
-            let leftNum = 0
-            let rightNum = 0
-
-            for (let i = 1; i < windowSize + 1; i++) {
-                let leftIdx = idx - 1;
-                let rightIdx = idx + 1;
-
-
-                if (leftIdx >= 0) {
-                    let leftWordId = corpus.get(leftIdx);
-                    leftNum += 1;
-                    coOccurrenceMatrix.set(wordId, leftWordId, leftNum);
-                }
-                if (rightIdx < corpusSize) {
-                    let rightWordId = corpus.get(rightIdx);
-                    rightNum += 1;
-                    coOccurrenceMatrix.set(wordId, rightWordId, rightNum);
-                }
-            }
-        }
-
-        return coOccurrenceMatrix;
-}
-
 let nx;
 let ny;
-function cosSimilarity(x, y) {
-    nx = x.divide((nj.sqrt(nj.sum(x.pow(2))).add(Number.EPSILON)).get(0));
-    ny = y.divide((nj.sqrt(nj.sum(y.pow(2))).add(Number.EPSILON)).get(0));
-
-    return nj.dot(nx, ny);
-}
-
-
-
-
 let corpus;
 let word2Id;
 let id2Word;
@@ -157,65 +62,108 @@ let simde;
 let CM;
 let strA;
 let strB;
+let result;
 
-function bar(){
-        let text =  document.querySelector(".text").value.split("\n");
-        let result = preprocess(text)
+function preprocess(sentence) {
+    let splitedSentences = [];
 
-        corpus = result[0];
-        word2Id = result[1];
-        id2Word = result[2];
-        // let corpus = result[0];
-        // let word2Id = result[1];
-        // let id2Word = result[2];
+    sentence.forEach(function (value) {
+        splitedSentences.push(value.toLowerCase().split(/[^’.\w]+/g).join(' ').replace('.', ' .'));
+    });
 
-        console.log("corpus", corpus);
-        console.log("word to id", word2Id);
-        console.log("id to word", id2Word);
+    splitedSentences = splitedSentences.join(' ').split(/[^’.\w]+/g);
 
-        vocabSize = Object.keys(word2Id).length;
-        console.log(vocabSize)
-        // 5
-        CM = buildCoOccurrenceMatrix(corpus, vocabSize);
-        // baz = buildCoOccurrenceMatrix(corpus, vocabSize);
-        console.log('co occurrence matrix', CM.tolist());
+    splitedSentences = splitedSentences.slice(0, -1);
 
-        strA = CM.tolist()[word2Id[document.querySelector(".a").value]]
-        console.log(`${document.querySelector(".a").value} vector`, strA);
+    let word2Id = {};
+    let id2Word = {};
 
-        strB = CM.tolist()[word2Id[document.querySelector(".b").value]]
-        console.log(`${document.querySelector(".b").value} vector`, strB)
-        // let spin = CM.tolist()[word2Id['spin']]
-        // console.log('spin vector', spin);
+    splitedSentences.forEach(function (word) {
+        if (!(word in word2Id)) {
+            let newId = Object.keys(word2Id).length;
+            word2Id[word] = newId;
+            id2Word[newId] = word;
+        }
+    });
 
-        // let cat = CM.tolist()[word2Id['cat']]
-        // console.log('cat vector', cat)
+    corpus = [];
+    splitedSentences.forEach(function (value) {
+        corpus.push(word2Id[value]);
+    });
 
-
-        // e vector[0, 0, 1, 0, 1]
-        // let e = CM.tolist()[id2Word['e']]
-        // console.log('e vector', e)
-        // e vector[0, 0, 1, 1, 0]
-        simde = cosSimilarity(nj.array(strA), nj.array(strB));
-        // console.log('similarity between spin to cat: ' + Math.floor(simde.get(0) * 100) + '%');
-        console.log(`similarity between ${document.querySelector(".a").value} to ${document.querySelector(".b").value}: ` + Math.floor(simde.get(0) * 100) + '%');
-        document.querySelector(".similarity").value = `${Math.floor(simde.get(0) * 100)}%`
-
-    // similarity between d to e: 49%
-
+    let numcorpus = nj.array(corpus);
+    return [numcorpus, word2Id, id2Word];
 }
 
-    bar();
+function buildCoOccurrenceMatrix(corpus, vocabSize, windowSize = 1) {
+    corpusSize = corpus.shape[0];
+    coOccurrenceMatrix = nj.zeros([vocabSize, vocabSize], 'int32');
+
+    for (let [idx, wordId] of corpus.tolist().entries()) {
+
+        let leftNum = 0
+        let rightNum = 0
+
+        for (let i = 1; i < windowSize + 1; i++) {
+            let leftIdx = idx - 1;
+            let rightIdx = idx + 1;
+
+            if (leftIdx >= 0) {
+                let leftWordId = corpus.get(leftIdx);
+                leftNum += 1;
+                coOccurrenceMatrix.set(wordId, leftWordId, leftNum);
+            }
+            if (rightIdx < corpusSize) {
+                let rightWordId = corpus.get(rightIdx);
+                rightNum += 1;
+                coOccurrenceMatrix.set(wordId, rightWordId, rightNum);
+            }
+        }
+    }
+
+    return coOccurrenceMatrix;
+}
 
 
-    // zeros
-    // shape
+function cosSimilarity(x, y) {
+    nx = x.divide((nj.sqrt(nj.sum(x.pow(2))).add(Number.EPSILON)).get(0));
+    ny = y.divide((nj.sqrt(nj.sum(y.pow(2))).add(Number.EPSILON)).get(0));
 
-// let ary = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-// let ary1 = R.splitEvery(3, ary);
-// ary1[0][0] = 10;
-// // console.log(ary1);
-// let qux = nj.array(ary);
+    return nj.dot(nx, ny);
+}
+
+function exe(){
+    let text =  document.querySelector(".text").value.split("\n");
+    let result = preprocess(text)
+
+    corpus = result[0];
+    word2Id = result[1];
+    id2Word = result[2];
+    // let corpus = result[0];
+    // let word2Id = result[1];
+    // let id2Word = result[2];
+
+    console.log("corpus", corpus);
+    console.log("word to id", word2Id);
+    console.log("id to word", id2Word);
+
+    vocabSize = Object.keys(word2Id).length;
+    console.log(vocabSize)
+    CM = buildCoOccurrenceMatrix(corpus, vocabSize);
+    console.log('co occurrence matrix', CM.tolist());
+
+    strA = CM.tolist()[word2Id[document.querySelector(".a").value]]
+    console.log(`${document.querySelector(".a").value} vector`, strA);
+
+    strB = CM.tolist()[word2Id[document.querySelector(".b").value]]
+    console.log(`${document.querySelector(".b").value} vector`, strB)
+
+    simde = cosSimilarity(nj.array(strA), nj.array(strB));
+    console.log(`similarity between ${document.querySelector(".a").value} to ${document.querySelector(".b").value}: ` + Math.floor(simde.get(0) * 100) + '%');
+    document.querySelector(".similarity").value = `${Math.floor(simde.get(0) * 100)}%`
+}
+
+exe();
 
 </script>
 </html>
