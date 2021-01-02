@@ -5,33 +5,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>anime0</title>
 <style>
-@keyframes foo {
-0%{
-    text-align: start;
-    opacity:0;
-    background-color: blue;
-}
-50%{
-    text-align: center;
-}
-100%{
-    text-align: end;
-    opacity:1;
-    background-color: pink;
-}
-}
+div{
+    display: flex;
 
-.move {
     animation-name: foo;
     animation-duration: 3s;
     animation-timing-function: linear;
     animation-delay: 2s;
     animation-iteration-count: 2;
 }
+
+@keyframes foo {
+    0%{
+        background-color: blue;
+        justify-content: flex-end;
+    }
+    50%{
+        background-color: yellow;
+        justify-content: center;
+    }
+    100%{
+        background-color: pink;
+        justify-content: flex-start;
+    }
+}
+.outside {
+    border-radius: 10px;
+}
+
+h1{
+    margin: 0 30px 0 30px;
+}
 </style>
 </head>
 <body>
-<h1 class="move">fooooo</h1>
+<div class="outside">
+    <h1>fooooo</h1>
+</div>
 </body>
 <script>
 </script>
