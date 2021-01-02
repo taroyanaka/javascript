@@ -1,0 +1,47 @@
+body{
+    margin: 0;
+    padding: 0;
+    /* width: 400px; */
+    display: grid;
+    grid-template-columns: repeat(auto, 5fr);
+    grid-template-rows: 2fr;
+    grid-template-areas:
+    "header"
+    "main"
+    "footer";
+}
+header{
+    display: grid;
+    grid-template-rows: 4fr 2fr;
+    grid-template-areas:
+    "logo english";
+}
+main{
+    background-color: pink;
+    display: grid;
+    grid-template-columns: 5fr 2fr;
+    grid-template-rows: 2fr;
+    grid-template-areas:
+    "articles list"
+    "articles list";
+}
+.articles{
+    grid-area: articles;
+}
+.list{
+    grid-area: list;
+}
+.logo{
+    grid-area: logo;
+}
+.english{
+    grid-area: english;
+}
+h1{
+    font-size: 2rem;
+    color: purple;
+}
+h2{
+    font-size: 1.2srem;
+    color: greenyellow;
+}
