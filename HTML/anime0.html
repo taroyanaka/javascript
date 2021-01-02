@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>anime0</title>
+<style>
+@keyframes foo {
+0%{
+    text-align: start;
+    opacity:0;
+    background-color: blue;
+}
+50%{
+    text-align: center;
+}
+100%{
+    text-align: end;
+    opacity:1;
+    background-color: pink;
+}
+}
+
+.move {
+    animation-name: foo;
+    animation-duration: 3s;
+    animation-timing-function: linear;
+    animation-delay: 2s;
+    animation-iteration-count: 2;
+}
+</style>
+</head>
+<body>
+<h1 class="move">fooooo</h1>
+</body>
+<script>
+</script>
+</html>
