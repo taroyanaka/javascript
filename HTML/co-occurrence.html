@@ -197,7 +197,8 @@ function bar(){
         // console.log('e vector', e)
         // e vector[0, 0, 1, 1, 0]
         simde = cosSimilarity(nj.array(strA), nj.array(strB));
-        console.log('similarity between spin to cat: ' + Math.floor(simde.get(0) * 100) + '%');
+        // console.log('similarity between spin to cat: ' + Math.floor(simde.get(0) * 100) + '%');
+        console.log(`similarity between ${document.querySelector(".a").value} to ${document.querySelector(".b").value}: ` + Math.floor(simde.get(0) * 100) + '%');
         document.querySelector(".similarity").value = `${Math.floor(simde.get(0) * 100)}%`
 
     // similarity between d to e: 49%
