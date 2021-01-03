@@ -99,7 +99,13 @@ probability 確率 (%)<input type="number" onchange="exe(event);" class="probabi
 //     document.querySelector(`[data-num=num-2] input[type=number].probability`).value = 99;
 //     exe();
 // }
-
+let number=[];
+number = Array.from(document.querySelectorAll("article input.expectedValue")).map(V => { return Number(V.value) })
+number = number.map(V => { return Math.round(V) })
+// https://secret-garden.hatenablog.com/entry/2017/10/24/191414
+function sortByNum(ary){return ary.sort((a, b) => a - b)};
+function reverseByNum(ary){return ary.sort((a, b) => b - a)};
+number = reverseByNum(number);
 
 </script>
 </body>
