@@ -73,6 +73,54 @@ details > * {
     <p>Using the &lt;details&gt; element</p>
     <p>And no unnecessary DOM</p>
 </details> -->
+<button onclick="test()">test data</button>
+
+<select name="lang" class="lang" onInput="chooseLang();">
+<option>az</option>
+<option>ar</option>
+<option>cz</option>
+<option>de</option>
+<option>de_AT</option>
+<option>de_CH</option>
+<option>en</option>
+<option>en_AU</option>
+<option>en_AU_ocker</option>
+<option>en_BORK</option>
+<option>en_CA</option>
+<option>en_GB</option>
+<option>en_IE</option>
+<option>en_IND</option>
+<option selected>en_US</option>
+<option>en_ZA</option>
+<option>es</option>
+<option>es_MX</option>
+<option>fa</option>
+<option>fi</option>
+<option>fr</option>
+<option>fr_CA</option>
+<option>fr_CH</option>
+<option>ge</option>
+<option>id_ID</option>
+<option>it</option>
+<option>ja</option>
+<option>ko</option>
+<option>nb_NO</option>
+<option>nep</option>
+<option>nl</option>
+<option>nl_BE</option>
+<option>pl</option>
+<option>pt_BR</option>
+<option>pt_PT</option>
+<option>ro</option>
+<option>ru</option>
+<option>sk</option>
+<option>sv</option>
+<option>tr</option>
+<option>uk</option>
+<option>vi</option>
+<option>zh_CN</option>
+<option>zh_TW</option>
+</select>
 
 <input type="text" name="" id="" class="res">
 
@@ -341,6 +389,14 @@ details > * {
 </ul>
 
 <script>
+function test() {
+    document.querySelector(".lang").value = "ja";
+    chooseLang();
+    Array.from(document.querySelectorAll("li")).filter(V => { return V.innerText === "firstName" })[0].click();
+}
+function chooseLang() {
+    faker.locale = document.querySelector(".lang").value;
+}
     // var randomName = faker.name.findName(); // Caitlyn Kerluke
     // var randomEmail = faker.internet.email(); // Rusty@arne.info
     // var randomCard = faker.helpers.createCard(); // random contact card containing many properties
