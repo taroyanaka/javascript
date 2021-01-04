@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="faker.js"></script>
+    <style>
+
+/* https://codepen.io/kallmanation/pen/abdmJNz */
+
+/* details > summary:focus { */
+  /* outline: none; */
+/* } */
+/* details > summary::-webkit-details-marker {
+  display: none;
+} */
+/* details > summary {
+  list-style: none;
+  border: solid 1px teal;
+  border-radius: 0.5rem;
+}
+details[open] > summary {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+} */
+/* details[open] > :not(summary) { */
+  /* border-left: solid 1px teal; */
+  /* border-right: solid 1px teal; */
+/* } */
+/* details[open] > :last-child { */
+  /* border-bottom: solid 1px teal; */
+  /* border-bottom-left-radius: 0.5rem; */
+  /* border-bottom-right-radius: 0.5rem; */
+/* } */
+/* details > summary::before { */
+  /* content: "";
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: solid 2px black;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  margin-right: 0.6rem;
+  transition: transform 0.2s;
+  transform: rotate(-45deg) translate(-20%, 20%); */
+/* } */
+/* details[open] > summary::before { */
+  /* transform: rotate(135deg) translate(-20%, 20%); */
+/* } */
+
+/* layout */
+/* section.accordion { */
+  /* max-width: 400px; */
+  /* width: 100%; */
+  /* padding: 10px;  */
+/* } */
+details {
+  padding: 10px;
+}
+details > * {
+  width: 100%;
+  padding: 10px;
+  margin: 0px;
+}
+    </style>
+</head>
+<body>
+
+<!-- https://codepen.io/kallmanation/pen/abdmJNz -->
+<!-- <details close>
+    <summary>CSS-only Accordion</summary>
+    <p>Using the &lt;details&gt; element</p>
+    <p>And no unnecessary DOM</p>
+</details> -->
+
+<input type="text" name="" id="" class="res">
+
+<details close><summary>address</summary>
+        <ul>
+            <li>zipCode</li>
+            <li>zipCodeByState</li>
+            <li>city</li>
+            <li>cityPrefix</li>
+            <li>citySuffix</li>
+            <li>streetName</li>
+            <li>streetAddress</li>
+            <li>streetSuffix</li>
+            <li>streetPrefix</li>
+            <li>secondaryAddress</li>
+            <li>county</li>
+            <li>country</li>
+            <li>countryCode</li>
+            <li>state</li>
+            <li>stateAbbr</li>
+            <li>latitude</li>
+            <li>longitude</li>
+            <li>direction</li>
+            <li>cardinalDirection</li>
+            <li>ordinalDirection</li>
+            <li>nearbyGPSCoordinate</li>
+            <li>timeZone</li>
+        </ul>
+</details>
+<details close><summary>commerce</summary>
+        <ul>
+            <li>color</li>
+            <li>department</li>
+            <li>productName</li>
+            <li>price</li>
+            <li>productAdjective</li>
+            <li>productMaterial</li>
+            <li>product</li>
+            <li>productDescription</li>
+        </ul>
+</details>
+<details close><summary>company</summary>
+        <ul>
+            <li>suffixes</li>
+            <li>companyName</li>
+            <li>companySuffix</li>
+            <li>catchPhrase</li>
+            <li>bs</li>
+            <li>catchPhraseAdjective</li>
+            <li>catchPhraseDescriptor</li>
+            <li>catchPhraseNoun</li>
+            <li>bsAdjective</li>
+            <li>bsBuzz</li>
+            <li>bsNoun</li>
+        </ul>
+</details>
+<details close><summary>database</summary>
+        <ul>
+            <li>column</li>
+            <li>type</li>
+            <li>collation</li>
+            <li>engine</li>
+        </ul>
+</details>
+<details close><summary>date</summary>
+        <ul>
+            <li>past</li>
+            <li>future</li>
+            <li>between</li>
+            <li>recent</li>
+            <li>soon</li>
+            <li>month</li>
+            <li>weekday</li>
+        </ul>
+</details>
+<details close><summary>fake</li></summary>
+<details close><summary>finance</summary>
+        <ul>
+            <li>account</li>
+            <li>accountName</li>
+            <li>routingNumber</li>
+            <li>mask</li>
+            <li>amount</li>
+            <li>transactionType</li>
+            <li>currencyCode</li>
+            <li>currencyName</li>
+            <li>currencySymbol</li>
+            <li>bitcoinAddress</li>
+            <li>litecoinAddress</li>
+            <li>creditCardNumber</li>
+            <li>creditCardCVV</li>
+            <li>ethereumAddress</li>
+            <li>iban</li>
+            <li>bic</li>
+            <li>transactionDescription</li>
+        </ul>
+</details>
+<details close><summary>git</summary>
+        <ul>
+            <li>branch</li>
+            <li>commitEntry</li>
+            <li>commitMessage</li>
+            <li>commitSha</li>
+            <li>shortSha</li>
+        </ul>
+</details>
+<details close><summary>hacker</summary>
+        <ul>
+            <li>abbreviation</li>
+            <li>adjective</li>
+            <li>noun</li>
+            <li>verb</li>
+            <li>ingverb</li>
+            <li>phrase</li>
+        </ul>
+</details>
+<details close><summary>helpers</summary>
+        <ul>
+            <li>randomize</li>
+            <li>slugify</li>
+            <li>replaceSymbolWithNumber</li>
+            <li>replaceSymbols</li>
+            <li>replaceCreditCardSymbols</li>
+            <li>repeatString</li>
+            <li>regexpStyleStringParse</li>
+            <li>shuffle</li>
+            <li>mustache</li>
+            <li>createCard</li>
+            <li>contextualCard</li>
+            <li>userCard</li>
+            <li>createTransaction</li>
+        </ul>
+</details>
+<details close><summary>image</summary>
+        <ul>
+            <li>image</li>
+            <li>avatar</li>
+            <li>imageUrl</li>
+            <li>abstract</li>
+            <li>animals</li>
+            <li>business</li>
+            <li>cats</li>
+            <li>city</li>
+            <li>food</li>
+            <li>nightlife</li>
+            <li>fashion</li>
+            <li>people</li>
+            <li>nature</li>
+            <li>sports</li>
+            <li>technics</li>
+            <li>transport</li>
+            <li>dataUri</li>
+            <li>lorempixel</li>
+            <li>unsplash</li>
+            <li>lorempicsum</li>
+        </ul>
+</details>
+<details close><summary>internet</summary>
+        <ul>
+            <li>avatar</li>
+            <li>email</li>
+            <li>exampleEmail</li>
+            <li>userName</li>
+            <li>protocol</li>
+            <li>url</li>
+            <li>domainName</li>
+            <li>domainSuffix</li>
+            <li>domainWord</li>
+            <li>ip</li>
+            <li>ipv6</li>
+            <li>userAgent</li>
+            <li>color</li>
+            <li>mac</li>
+            <li>password</li>
+        </ul>
+</details>
+<details close><summary>lorem</summary>
+        <ul>
+            <li>word</li>
+            <li>words</li>
+            <li>sentence</li>
+            <li>slug</li>
+            <li>sentences</li>
+            <li>paragraph</li>
+            <li>paragraphs</li>
+            <li>text</li>
+            <li>lines</li>
+        </ul>
+</details>
+<details close><summary>music</summary>
+        <ul>
+            <li>genre</li>
+        </ul>
+</details>
+<details close><summary>name</summary>
+        <ul>
+            <li>firstName</li>
+            <li>lastName</li>
+            <li>findName</li>
+            <li>jobTitle</li>
+            <li>gender</li>
+            <li>prefix</li>
+            <li>suffix</li>
+            <li>title</li>
+            <li>jobDescriptor</li>
+            <li>jobArea</li>
+            <li>jobType</li>
+        </ul>
+</details>
+<details close><summary>phone</summary>
+        <ul>
+            <li>phoneNumber</li>
+            <li>phoneNumberFormat</li>
+            <li>phoneFormats</li>
+        </ul>
+</details>
+<details close><summary>random</summary>
+        <ul>
+            <li>number</li>
+            <li>float</li>
+            <li>arrayElement</li>
+            <li>arrayElements</li>
+            <li>objectElement</li>
+            <li>uuid</li>
+            <li>boolean</li>
+            <li>word</li>
+            <li>words</li>
+            <li>image</li>
+            <li>locale</li>
+            <li>alpha</li>
+            <li>alphaNumeric</li>
+            <li>hexaDecimal</li>
+        </ul>
+</details>
+<details close><summary>system</summary>
+        <ul>
+            <li>fileName</li>
+            <li>commonFileName</li>
+            <li>mimeType</li>
+            <li>commonFileType</li>
+            <li>commonFileExt</li>
+            <li>fileType</li>
+            <li>fileExt</li>
+            <li>directoryPath</li>
+            <li>filePath</li>
+            <li>semver</li>
+        </ul>
+</details>
+<details close><summary>time</summary>
+        <ul>
+            <li>recent</li>
+        </ul>
+</details>
+<details close><summary>unique</li></summary>
+<details close><summary>vehicle</summary>
+        <ul>
+            <li>vehicle</li>
+            <li>manufacturer</li>
+            <li>model</li>
+            <li>type</li>
+            <li>fuel</li>
+            <li>vin</li>
+            <li>color</li>
+        </ul>
+</details>
+</ul>
+
+<script>
+    // var randomName = faker.name.findName(); // Caitlyn Kerluke
+    // var randomEmail = faker.internet.email(); // Rusty@arne.info
+    // var randomCard = faker.helpers.createCard(); // random contact card containing many properties
+
+function exe(event) {
+    const category = event.target.parentElement.parentElement.querySelector("summary").innerText;
+    const method = event.target.innerText;
+    // this is faker.name.findName();
+    console.log(faker[category][method]());
+
+    document.querySelector("input").value = faker[category][method]();
+}
+    document.querySelectorAll("li").forEach(V=>{
+        V.addEventListener("click", exe, false);
+    })
+</script>
+</body>
+</html>
