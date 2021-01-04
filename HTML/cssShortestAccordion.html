@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Css Shortest Accordion Sample</title>
+<!-- https://dev.to/kallmanation/building-an-accordion-with-only-css-67h -->
+<!-- https://codepen.io/kallmanation/pen/abdmJNz -->
+<style>
+/* https://codepen.io/kallmanation/pen/abdmJNz */
+
+/* details > summary:focus {
+  outline: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
+details > summary {
+  list-style: none;
+  border: solid 1px teal;
+  border-radius: 0.5rem;
+}
+details[open] > summary {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+details[open] > :not(summary) {
+  border-left: solid 1px teal;
+  border-right: solid 1px teal;
+}
+details[open] > :last-child {
+  border-bottom: solid 1px teal;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+}
+details > summary::before {
+  content: "";
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border: solid 2px black;
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  margin-right: 0.6rem;
+  transition: transform 0.2s;
+  transform: rotate(-45deg) translate(-20%, 20%);
+}
+details[open] > summary::before {
+  transform: rotate(135deg) translate(-20%, 20%);
+} */
+
+/* layout */
+/* section.accordion {
+  max-width: 400px;
+  width: 100%;
+  padding: 10px; 
+} */
+
+details {
+  padding: 10px;
+}
+details > * {
+  width: 100%;
+  padding: 10px;
+  margin: 0px;
+}
+</style>
+</head>
+<body>
+<!-- https://codepen.io/kallmanation/pen/abdmJNz -->
+<details close>
+    <summary>CSS-only Accordion</summary>
+    <p>Using the &lt;details&gt; element</p>
+    <p>And no unnecessary DOM</p>
+</details>
+
+<!-- <section class="accordion">
+    <details open>
+        <summary>CSS-only Accordion</summary>
+        <p>Using the &lt;details&gt; element</p>
+        <p>And no unnecessary DOM</p>
+    </details>
+    <details>
+        <summary>Animated open-close</summary>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla mollis consectetur iaculis. Fusce vestibulum
+            pulvinar est. Fusce faucibus aliquet purus hendrerit efficitur. Phasellus ante urna, mattis et ligula eu,
+            venenatis vulputate ex. Fusce quis enim aliquam, finibus mi vel, sagittis urna. Morbi in enim placerat,
+            sagittis ante vitae, ultrices nisl. Duis molestie quis ante vitae rhoncus. Integer ultricies libero ut
+            efficitur sagittis. Vestibulum euismod pharetra ligula, eget bibendum turpis gravida non. Curabitur pulvinar
+            nulla id porttitor vehicula. Vivamus efficitur est sed lectus commodo, in facilisis magna vehicula. Sed in
+            massa nunc. Praesent sodales neque nec lectus auctor, id faucibus libero malesuada. Fusce tempus, diam quis
+            consequat efficitur, erat justo pretium massa, et vehicula risus lectus non quam. Nam faucibus luctus metus
+            vitae malesuada.</p>
+    </details>
+    <details>
+        <summary>Even put images in them</summary>
+        <img
+            src="https://images.unsplash.com/photo-1513006666308-523b5f33c3dd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2592&q=80" />
+    </details>
+    <details>
+        <summary>Woops, no content!</summary>
+    </details>
+</section> -->
+</body>
+</html>
