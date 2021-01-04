@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>clicked js css</title>
+    <style>
+        .clicked{
+            opacity: 0.5;
+            color: blueviolet;
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+    <textarea cols="30" rows="10"></textarea>
+    <ul>
+        <li onclick="clicked(event);" class="">one</li>
+        <li onclick="clicked(event);" class="">two</li>
+        <li onclick="clicked(event);" class="">three</li>
+    </ul>
+</body>
+<script>
+function show() {
+    const allClickedAry = Array.from(document.querySelectorAll(".clicked")).map(V => { return V.innerText });
+    document.querySelector("textarea").value = "";
+    document.querySelector("textarea").value = allClickedAry.join("\n");    
+}
+function clicked(event) {
+    console.log(event.target.classList.value);
+    event.target.classList.value.includes("clicked")
+    ?
+    event.target.classList.remove("clicked")
+    :
+    event.target.classList.add("clicked");
+    show();
+}
+</script>
+</html>
