@@ -24,15 +24,11 @@
 function show() {
     const allClickedAry = Array.from(document.querySelectorAll(".clicked")).map(V => { return V.innerText });
     document.querySelector("textarea").value = "";
-    document.querySelector("textarea").value = allClickedAry.join("\n");    
+    document.querySelector("textarea").value = allClickedAry.join("\n");
 }
 function clicked(event) {
-    console.log(event.target.classList.value);
-    event.target.classList.value.includes("clicked")
-    ?
-    event.target.classList.remove("clicked")
-    :
-    event.target.classList.add("clicked");
+    // console.log(event.target.classList.value);
+    event.target.classList.value.includes("clicked") ? event.target.classList.remove("clicked") : event.target.classList.add("clicked");
     show();
 }
 </script>
