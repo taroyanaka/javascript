@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="faker.js"></script>
+    <script src="ramda.min.js"></script>
     <style>
 
 /* https://codepen.io/kallmanation/pen/abdmJNz */
@@ -63,9 +64,19 @@ details > * {
   padding: 10px;
   margin: 0px;
 }
+.clicked{
+    opacity: 0.5;
+    color: blueviolet;
+    background-color: blue;
+}
     </style>
 </head>
 <body>
+<input type="number" class="nTimes" value="10">
+
+<textarea cols="30" rows="10" class="res1"></textarea>
+<textarea cols="30" rows="10" class="res2"></textarea>
+
 
 <!-- https://codepen.io/kallmanation/pen/abdmJNz -->
 <!-- <details close>
@@ -73,8 +84,6 @@ details > * {
     <p>Using the &lt;details&gt; element</p>
     <p>And no unnecessary DOM</p>
 </details> -->
-<button onclick="test()">test data</button>
-
 <select name="lang" class="lang" onInput="chooseLang();">
 <option>az</option>
 <option>ar</option>
@@ -122,7 +131,9 @@ details > * {
 <option>zh_TW</option>
 </select>
 
-<input type="text" name="" id="" class="res">
+<input type="text" name="" id="" class="oneline">
+
+<button onclick="test()">test data</button>
 
 <details close><summary>address</summary>
         <ul>
@@ -389,17 +400,13 @@ details > * {
 </ul>
 
 <script>
+
+function chooseLang() {    faker.locale = document.querySelector(".lang").value }
 function test() {
     document.querySelector(".lang").value = "ja";
     chooseLang();
     Array.from(document.querySelectorAll("li")).filter(V => { return V.innerText === "firstName" })[0].click();
 }
-function chooseLang() {
-    faker.locale = document.querySelector(".lang").value;
-}
-    // var randomName = faker.name.findName(); // Caitlyn Kerluke
-    // var randomEmail = faker.internet.email(); // Rusty@arne.info
-    // var randomCard = faker.helpers.createCard(); // random contact card containing many properties
 
 function exe(event) {
     const category = event.target.parentElement.parentElement.querySelector("summary").innerText;
@@ -407,11 +414,49 @@ function exe(event) {
     // this is faker.name.findName();
     console.log(faker[category][method]());
 
-    document.querySelector("input").value = faker[category][method]();
+    document.querySelector("input.oneline").value = faker[category][method]();
 }
-    document.querySelectorAll("li").forEach(V=>{
-        V.addEventListener("click", exe, false);
+let collectedChoosedMethods=[];
+function collectChoosedMethods() {
+    Array.from(document.querySelectorAll(".clicked")).map(V => {
+        const category = V.parentElement.parentElement.querySelector("summary").innerText;
+        const method = V.innerText;
+        collectedChoosedMethods.push(faker[category][method]);
     })
+}
+function show() {
+    const allClickedAry = Array.from(document.querySelectorAll(".clicked")).map(V => { 
+        return `${V.parentElement.parentElement.querySelector("summary").innerText}, ${V.innerText}`
+    });
+    document.querySelector("textarea.res1").value = allClickedAry.join("\n");
+}
+function clicked(event) {
+    // console.log(event.target.classList.value);
+    event.target.classList.value.includes("clicked") ? event.target.classList.remove("clicked") : event.target.classList.add("clicked");
+    show();
+    collectChoosedMethods();
+    makeList();
+}
+
+////////////// WIP
+let res = [];
+let tmpList;
+function makeList() {
+    const times = Number(document.querySelector("input.nTimes").value);
+    [...Array(times).keys()].forEach(time=>{
+        tmpList = collectedChoosedMethods.map(V => { return V() }).join("|");
+        console.log(tmpList);
+        res.push(tmpList);
+    })
+    document.querySelector("textarea.res2").value = "";
+    document.querySelector("textarea.res2").value = res + "\n";
+}
+////////////// WIP
+
+document.querySelectorAll("li").forEach(V=>{
+    V.addEventListener("click", exe, false);
+    V.addEventListener("click", clicked, false);
+})
 </script>
 </body>
 </html>
