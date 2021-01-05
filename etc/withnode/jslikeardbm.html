@@ -9,53 +9,6 @@
     <style>
 
 /* https://codepen.io/kallmanation/pen/abdmJNz */
-
-/* details > summary:focus { */
-  /* outline: none; */
-/* } */
-/* details > summary::-webkit-details-marker {
-  display: none;
-} */
-/* details > summary {
-  list-style: none;
-  border: solid 1px teal;
-  border-radius: 0.5rem;
-}
-details[open] > summary {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-} */
-/* details[open] > :not(summary) { */
-  /* border-left: solid 1px teal; */
-  /* border-right: solid 1px teal; */
-/* } */
-/* details[open] > :last-child { */
-  /* border-bottom: solid 1px teal; */
-  /* border-bottom-left-radius: 0.5rem; */
-  /* border-bottom-right-radius: 0.5rem; */
-/* } */
-/* details > summary::before { */
-  /* content: "";
-  display: inline-block;
-  width: 0.5rem;
-  height: 0.5rem;
-  border: solid 2px black;
-  border-left-color: transparent;
-  border-bottom-color: transparent;
-  margin-right: 0.6rem;
-  transition: transform 0.2s;
-  transform: rotate(-45deg) translate(-20%, 20%); */
-/* } */
-/* details[open] > summary::before { */
-  /* transform: rotate(135deg) translate(-20%, 20%); */
-/* } */
-
-/* layout */
-/* section.accordion { */
-  /* max-width: 400px; */
-  /* width: 100%; */
-  /* padding: 10px;  */
-/* } */
 details {
   padding: 10px;
 }
@@ -410,8 +363,12 @@ FROM
 
 <script>
 // values
-let LIST = [];
+// var foo0 = [1,2,3];
+// const foo1 = [1,2,3];
+// let foo2 = [1,2,3];
+var LIST = [];
 let tmpList;
+
 
 function chooseLang() { faker.locale = document.querySelector(".lang").value }
 
@@ -457,7 +414,8 @@ function query0() {
     const foo = Number(document.querySelector(".column0").value);
     const bar = document.querySelector(".table1").value;
     //////////////////// WIP is bar to LIST convert
-    const baz = R.pluck(foo, LIST);
+    // const baz = R.pluck(foo, window["LIST"]);
+    const baz = R.pluck(foo, window[bar]);
     console.log(baz);
 }
 //////////////////// WIP
