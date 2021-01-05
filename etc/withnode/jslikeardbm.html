@@ -404,78 +404,84 @@ textarea{
 </ul>
 
 <script>
+// values
+let list = [];
+let tmpList;
 
-function chooseLang() {    faker.locale = document.querySelector(".lang").value }
-function test() {
-    document.querySelector(".lang").value = "ja";
-    chooseLang();
-    Array.from(document.querySelectorAll("li")).filter(V => { return V.innerText === "firstName" })[0].click();
-}
+function chooseLang() { faker.locale = document.querySelector(".lang").value }
 
 function exe(event) {
     const category = event.target.parentElement.parentElement.querySelector("summary").innerText;
     const method = event.target.innerText;
     // this is faker.name.findName();
     // console.log(faker[category][method]());
-
     document.querySelector("input.oneline").value = faker[category][method]();
 }
-let collectedChoosedMethods=[];
+
 function collectChoosedMethods() {
-    collectedChoosedMethods = Array.from(document.querySelectorAll(".clicked")).map(V => {
+    return Array.from(document.querySelectorAll(".clicked")).map(V => {
         const category = V.parentElement.parentElement.querySelector("summary").innerText;
         const method = V.innerText;
-        collectedChoosedMethods.push(faker[category][method]);
         return faker[category][method];
     })
 }
-function show() {
-    const allClickedAry = Array.from(document.querySelectorAll(".clicked")).map(V => { 
-        return `${V.parentElement.parentElement.querySelector("summary").innerText}, ${V.innerText}`
-    });
-    document.querySelector("textarea.res1").value = allClickedAry.join("\n");
+
+function makeList() {
+    list = [];
+    const times = Number(document.querySelector("input.nTimes").value);
+    [...Array(times).keys()].forEach(NOUSE => {
+        list.push(collectChoosedMethods().map(V => { return V() }));
+    })
+    return list;
 }
+
 function clicked(event) {
     // console.log(event.target.classList.value);
     event.target.classList.value.includes("clicked") ? event.target.classList.remove("clicked") : event.target.classList.add("clicked");
     show();
     collectChoosedMethods();
-    makeList();
+    insertListToTextarea();
 }
 
-let res = [];
-let tmpList;
-function makeList() {
-    res = [];
-    const times = Number(document.querySelector("input.nTimes").value);
-    [...Array(times).keys()].forEach(time=>{
-        tmpList = collectedChoosedMethods.map(V => { return V() });
-        res.push(tmpList);
-    })
-    console.log(res);
-    document.querySelector("textarea.res2").value = "";
-    document.querySelector("textarea.res2").value = res.map(V=>{return V+"\n"}).join("");
+function init() {
+    document.querySelectorAll("li").forEach(V => {
+        V.addEventListener("click", exe, false);
+        V.addEventListener("click", clicked, false);
+    })    
 }
 
-function testAnyClick(any="firstName") {
+init();
+
+// to display
+function show() {
+    const allClickedAry = Array.from(document.querySelectorAll(".clicked")).map(V => {
+        return `${V.parentElement.parentElement.querySelector("summary").innerText}, ${V.innerText}`
+    });
+    document.querySelector("textarea.res1").value = allClickedAry.join("\n");
+}
+function insertListToTextarea() {
+    const resultForTextarea = makeList().map(V => { return V + "\n" }).join("");
+    document.querySelector("textarea.res2").value = resultForTextarea;
+}
+
+// test function
+function testAnyClick(any = "firstName") {
     Array.from(document.querySelectorAll("li")).filter(V => { return V.innerText === any })[0].click();
 }
-
+function test() {
+    document.querySelector(".lang").value = "ja";
+    chooseLang();
+    Array.from(document.querySelectorAll("li")).filter(V => { return V.innerText === "firstName" })[0].click();
+}
 function test2() {
     document.querySelector(".lang").value = "ja";
     chooseLang();
     testAnyClick("zipCode");
-    testAnyClick("city");
     testAnyClick("firstName");
     testAnyClick("lastName");
+    testAnyClick("past");
 }
 
-
-
-document.querySelectorAll("li").forEach(V=>{
-    V.addEventListener("click", exe, false);
-    V.addEventListener("click", clicked, false);
-})
 </script>
 </body>
 </html>
