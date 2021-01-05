@@ -77,8 +77,8 @@ textarea{
 <body>
 <input type="number" class="nTimes" value="10">
 
-<textarea cols="30" rows="10" class="res1"></textarea>
-<textarea cols="30" rows="10" class="res2"></textarea>
+<textarea cols="30" rows="10" class="textarea1"></textarea>
+<textarea cols="30" rows="10" class="textarea2"></textarea>
 
 
 <!-- https://codepen.io/kallmanation/pen/abdmJNz -->
@@ -405,17 +405,10 @@ textarea{
 
 <script>
 // values
-let list = [];
+let LIST = [];
 let tmpList;
 
 function chooseLang() { faker.locale = document.querySelector(".lang").value }
-
-function exe(event) {
-    const category = event.target.parentElement.parentElement.querySelector("summary").innerText;
-    const method = event.target.innerText;
-    // console.log(faker[category][method]()); // this is same faker.name.firstName();
-    document.querySelector("input.oneline").value = faker[category][method]();
-}
 
 function collectChoosedMethods() {
     return Array.from(document.querySelectorAll(".clicked")).map(V => {
@@ -426,25 +419,25 @@ function collectChoosedMethods() {
 }
 
 function makeList() {
-    list = [];
+    LIST = [];
     const times = Number(document.querySelector("input.nTimes").value);
     [...Array(times).keys()].forEach(NOUSE => {
-        list.push(collectChoosedMethods().map(V => { return V() }));
+        LIST.push(collectChoosedMethods().map(V => { return V() }));
     })
-    return list;
+    return LIST;
 }
 
 function clicked(event) {
-    // console.log(event.target.classList.value);
+    // console.log(event.taget.classList.value);
     event.target.classList.value.includes("clicked") ? event.target.classList.remove("clicked") : event.target.classList.add("clicked");
-    show();
-    collectChoosedMethods();
-    insertListToTextarea();
+    makeList();
+    insertListToTextarea1();
+    insertListToTextarea2();
 }
 
 function init() {
     document.querySelectorAll("li").forEach(V => {
-        V.addEventListener("click", exe, false);
+        V.addEventListener("click", showInputTagOneline, false);
         V.addEventListener("click", clicked, false);
     })    
 }
@@ -452,15 +445,21 @@ function init() {
 init();
 
 // to display
-function show() {
+function showInputTagOneline(event) {
+    const category = event.target.parentElement.parentElement.querySelector("summary").innerText;
+    const method = event.target.innerText;
+    // console.log(faker[category][method]()); // this is same faker.name.firstName();
+    document.querySelector("input.oneline").value = faker[category][method]();
+}
+function insertListToTextarea1() {
     const allClickedAry = Array.from(document.querySelectorAll(".clicked")).map(V => {
         return `${V.parentElement.parentElement.querySelector("summary").innerText}, ${V.innerText}`
     });
-    document.querySelector("textarea.res1").value = allClickedAry.join("\n");
+    document.querySelector("textarea.textarea1").value = allClickedAry.join("\n");
 }
-function insertListToTextarea() {
-    const resultForTextarea = makeList().map(V => { return V + "\n" }).join("");
-    document.querySelector("textarea.res2").value = resultForTextarea;
+function insertListToTextarea2() {
+    const resultForTextarea = LIST.map(V => { return V + "\n" }).join("");
+    document.querySelector("textarea.textarea2").value = resultForTextarea;
 }
 
 // test function
