@@ -69,6 +69,9 @@ details > * {
     color: blueviolet;
     background-color: blue;
 }
+textarea{
+    width: 100vw;
+}
     </style>
 </head>
 <body>
@@ -134,6 +137,7 @@ details > * {
 <input type="text" name="" id="" class="oneline">
 
 <button onclick="test()">test data</button>
+<button onclick="test2()">test2 data</button>
 
 <details close><summary>address</summary>
         <ul>
@@ -412,16 +416,17 @@ function exe(event) {
     const category = event.target.parentElement.parentElement.querySelector("summary").innerText;
     const method = event.target.innerText;
     // this is faker.name.findName();
-    console.log(faker[category][method]());
+    // console.log(faker[category][method]());
 
     document.querySelector("input.oneline").value = faker[category][method]();
 }
 let collectedChoosedMethods=[];
 function collectChoosedMethods() {
-    Array.from(document.querySelectorAll(".clicked")).map(V => {
+    collectedChoosedMethods = Array.from(document.querySelectorAll(".clicked")).map(V => {
         const category = V.parentElement.parentElement.querySelector("summary").innerText;
         const method = V.innerText;
         collectedChoosedMethods.push(faker[category][method]);
+        return faker[category][method];
     })
 }
 function show() {
@@ -438,20 +443,34 @@ function clicked(event) {
     makeList();
 }
 
-////////////// WIP
 let res = [];
 let tmpList;
 function makeList() {
+    res = [];
     const times = Number(document.querySelector("input.nTimes").value);
     [...Array(times).keys()].forEach(time=>{
-        tmpList = collectedChoosedMethods.map(V => { return V() }).join("|");
-        console.log(tmpList);
+        tmpList = collectedChoosedMethods.map(V => { return V() });
         res.push(tmpList);
     })
+    console.log(res);
     document.querySelector("textarea.res2").value = "";
-    document.querySelector("textarea.res2").value = res + "\n";
+    document.querySelector("textarea.res2").value = res.map(V=>{return V+"\n"}).join("");
 }
-////////////// WIP
+
+function testAnyClick(any="firstName") {
+    Array.from(document.querySelectorAll("li")).filter(V => { return V.innerText === any })[0].click();
+}
+
+function test2() {
+    document.querySelector(".lang").value = "ja";
+    chooseLang();
+    testAnyClick("zipCode");
+    testAnyClick("city");
+    testAnyClick("firstName");
+    testAnyClick("lastName");
+}
+
+
 
 document.querySelectorAll("li").forEach(V=>{
     V.addEventListener("click", exe, false);
