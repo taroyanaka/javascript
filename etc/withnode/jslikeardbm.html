@@ -413,8 +413,7 @@ function chooseLang() { faker.locale = document.querySelector(".lang").value }
 function exe(event) {
     const category = event.target.parentElement.parentElement.querySelector("summary").innerText;
     const method = event.target.innerText;
-    // this is faker.name.findName();
-    // console.log(faker[category][method]());
+    // console.log(faker[category][method]()); // this is same faker.name.firstName();
     document.querySelector("input.oneline").value = faker[category][method]();
 }
 
