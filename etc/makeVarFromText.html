@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make Var From Text</title>
+</head>
+<body>
+    <input type="text" class="foo" value="foo">
+    <input type="text" class="baz" value="baz">
+</body>
+<script>
+    window[document.querySelector(".foo").value] = "bar";
+    console.log(foo);
+    document.querySelector(".baz").value = foo;
+</script>
+</html>
