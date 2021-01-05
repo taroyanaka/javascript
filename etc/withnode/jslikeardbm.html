@@ -37,6 +37,7 @@ FROM
 
 <textarea cols="30" rows="10" class="textarea1"></textarea>
 <textarea cols="30" rows="10" class="textarea2"></textarea>
+<textarea cols="30" rows="10" class="textarea3"></textarea>
 
 
 <!-- https://codepen.io/kallmanation/pen/abdmJNz -->
@@ -413,10 +414,9 @@ function query0() {
     console.log(document.querySelector(".table1").value);
     const foo = Number(document.querySelector(".column0").value);
     const bar = document.querySelector(".table1").value;
-    //////////////////// WIP is bar to LIST convert
-    // const baz = R.pluck(foo, window["LIST"]);
     const baz = R.pluck(foo, window[bar]);
     console.log(baz);
+    document.querySelector(".textarea3").value = baz;
 }
 //////////////////// WIP
 
