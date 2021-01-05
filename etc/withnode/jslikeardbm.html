@@ -75,6 +75,11 @@ textarea{
     </style>
 </head>
 <body>
+SELECT
+<input type="text" name="" class="column0" value="2">
+FROM
+<input type="text" name="" class="table1" value="LIST">
+
 <input type="number" class="nTimes" value="10">
 
 <textarea cols="30" rows="10" class="textarea1"></textarea>
@@ -444,6 +449,20 @@ function init() {
 
 init();
 
+//////////////////// WIP
+// query
+function query0() {
+    console.log(document.querySelector(".column0").value);
+    console.log(document.querySelector(".table1").value);
+    const foo = Number(document.querySelector(".column0").value);
+    const bar = document.querySelector(".table1").value;
+    //////////////////// WIP is bar to LIST convert
+    const baz = R.pluck(foo, LIST);
+    console.log(baz);
+}
+//////////////////// WIP
+
+
 // to display
 function showInputTagOneline(event) {
     const category = event.target.parentElement.parentElement.querySelector("summary").innerText;
@@ -478,6 +497,7 @@ function test2() {
     testAnyClick("firstName");
     testAnyClick("lastName");
     testAnyClick("past");
+    query0();
 }
 
 </script>
