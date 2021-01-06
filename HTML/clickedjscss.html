@@ -23,7 +23,6 @@
 <script>
 function show() {
     const allClickedAry = Array.from(document.querySelectorAll(".clicked")).map(V => { return V.innerText });
-    document.querySelector("textarea").value = "";
     document.querySelector("textarea").value = allClickedAry.join("\n");
 }
 function clicked(event) {

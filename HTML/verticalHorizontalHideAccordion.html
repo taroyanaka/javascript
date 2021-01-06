@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Horizontal Hide Accordion</title>
+    <style>
+/* https://codepen.io/kallmanation/pen/abdmJNz */
+details {
+    padding: 10px;
+}
+details > * {
+    width: 100%;
+    padding: 10px;
+    margin: 0px;
+    text-decoration: none;
+}
+/* https://stackoverflow.com/a/10813665/9740478 */
+details > summary {
+    list-style-type: none;
+}
+details > summary::-webkit-details-marker {
+    display: none;
+}
+.horizontal{
+    background-color: antiquewhite;
+}
+.horizontal > li{
+    background-color: pink;
+}
+.horizontal > li > details{
+    background-color: purple;
+    padding: 0;
+}
+/* .horizontal > li{
+    margin: 0;
+    padding: 0;
+}
+.horizontal > li > details{
+    margin: 0;
+    padding: 0;
+} */
+.horizontal > li > details > ul{
+    margin: 0;
+    padding: 0;
+}
+.vertical > li{
+    background-color: gray;
+    margin: 0;
+}
+.horizontal > li{
+    margin: 0 5px 0 5px;
+}
+.horizontal{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+}
+summary, details{
+    margin: 0;
+    padding: 0;
+}
+li{
+    list-style: none;
+}
+.top-level{
+    background-color: whitesmoke;
+}
+</style>
+</head>
+<body>
+<details close>
+<summary class="top-level">open this</summary>
+
+<ul class="horizontal">
+<li><details close>
+    <summary>open this too</summary>
+    <ul class="vertical">
+        <li>zipCode</li>
+        <li>zipCodeByState</li>
+        <li>city</li>
+    </ul>
+</details></li>
+<li><details close>
+    <summary>open this too</summary>
+    <ul class="vertical">
+        <li>zipCode</li>
+        <li>zipCodeByState</li>
+        <li>city</li>
+    </ul>
+</details></li>
+<li><details close>
+    <summary>open this too</summary>
+    <ul class="vertical">
+        <li>zipCode</li>
+        <li>zipCodeByState</li>
+        <li>city</li>
+    </ul>
+</details></li>
+</ul>
+
+</details>
+
+
+<details close>
+<summary class="top-level">open this</summary>
+
+<ul class="horizontal">
+    <li>
+        <details open>
+            <summary>address</summary>
+            <ul class="vertical">
+                <li>zipCode</li>
+                <li>zipCodeByState</li>
+                <li>city</li>
+            </ul>
+        </details>
+    </li>
+    <li>
+        <details open>
+            <summary>address</summary>
+            <ul class="vertical">
+                <li>zipCode</li>
+                <li>zipCodeByState</li>
+                <li>city</li>
+            </ul>
+        </details>
+    </li>
+    <li>
+        <details open>
+            <summary>address</summary>
+            <ul class="vertical">
+                <li>zipCode</li>
+                <li>zipCodeByState</li>
+                <li>city</li>
+            </ul>
+        </details>
+    </li>
+</ul>
+</details>
+</body>
+</html>
