@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Font Sizing</title>
+    <!-- https://css-tricks.com/snippets/css/fluid-typography/ -->
+    <!-- https://codepen.io/cadenP/pen/amBrby -->
+    <!-- https://zellwk.com/blog/css-values-in-js/ -->
+    <!-- https://developer.mozilla.org/en-US/docs/Web/API/Window/resize_event -->
+    
+    <!-- https://codepen.io/fgeierst/pen/mdeOQLG -->
+    <!-- https://coliss.com/articles/build-websites/operation/css/css-about-min-max-clamp.html -->
+    <!-- https://css-tricks.com/how-do-you-do-max-font-size-in-css/ -->
+</head>
+<style>
+:root{
+    --foo:calc(3vw);
+    --bar:calc(100vw);
+    /* --responsiveFontSize:calc(16px + (18-14)*(100vw - 300px)/(1600 - 200)); */
+    /* --responsiveFontSize:calc(16px + 4 * (100vw - 300px) / 1400); */
+    /* --responsiveFontSize:calc(16px + 4 * (100vw - 300px) / 1400); */
+    /* --responsiveFontSize: min(max(1px, 4vw), 22px); */
+    /* --responsiveFontSize: min(max(12px, 3vw), 22px); */
+    --responsiveFontSize: clamp(12px, 3vw, 22px);
+    /* font-size: var(--responsiveFontSize); */
+}
+body {
+    font-size: var(--responsiveFontSize);
+}
+h1{
+    font-size: 2rem;
+}
+p{
+    font-size: 1rem;
+}
+
+q{
+    font-size: var(--foo);
+}
+pre{
+    font-size: var(--bar);
+}
+</style>
+<script>
+    function reportWindowSize(){
+        document.querySelectorAll("div")[0].textContent = getComputedStyle(document.querySelector("q")).fontSize;
+        document.querySelectorAll("div")[1].textContent = getComputedStyle(document.querySelector("body")).fontSize;
+        document.querySelectorAll("div")[2].textContent = getComputedStyle(document.querySelector("pre")).fontSize;
+    }
+    window.addEventListener('resize', reportWindowSize);
+</script>
+<span>3vw:</span><div></div>
+<span>font-size: clamp(12px, 3vw, 22px)</span><div></div>
+<span>view port is 100vw, 1vw is 1/100vw, and now 100vw is </span><div></div>
+<body>
+<h1>This is H1</h1>
+<p>29349-7102,Buckinghamshire,black,Fully-configurable dynamic throughput
+    91650,Berkshire,yellow,Distributed stable task-force
+    61542,Borders,purple,Decentralized national intranet
+    80630-2467,Borders,teal,Persistent content-based data-warehouse
+    89623-2442,Borders,ivory,Progressive systematic local area network
+    58156,Avon,orange,Cross-group stable database
+    64467,Buckinghamshire,violet,Secured modular orchestration
+    57070,Cambridgeshire,silver,Diverse heuristic matrices
+    43134,Avon,red,Secured leading edge implementation
+    65963-4668,Bedfordshire,orange,Business-focused upward-trending help-desk
+</p>
+<q></q>
+<pre></pre>
+</body>
+</html>
