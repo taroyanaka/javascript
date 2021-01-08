@@ -4,96 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- https://codepen.io/InstructorPoarch/pen/eYpJeOe -->
 </head>
 <style>
 *,html{
-	margin:0;
-	padding:0;
+    margin:0;
+    padding:0;
+    background-color: rgba(209,171,122,1);
 }
 body{
-	background-color:#EBF7D4;
+    background-color: rgba(140,25,210,1);
 }
 nav{
-	background-color:#98CA32;
-	text-align:right;
-	overflow:hidden;
+    /* overflow:hidden; */
+    background-color: rgba(250,195,149,1);
+}
+.largeNav{
+    display: flex;
+    justify-content: space-evenly;
 }
 nav a{
-	display:inline-block;
-	text-decoration:none;
-	color:#190934;
-	padding:14px 16px;
-	font-size:17px;
-	font-family:sans-serif;
-}
-nav a.active{
-background-color:#5A18C9;
-	color:#EBF7D4;
+    width: 100%;
+    background-color: rgba(148,180,94,1);
 }
 nav a:hover{
-	background-color:#EBF7D4;
-	color:#190934;
+    color: white;
+    background-color: purple;
 }
 details{
-	display:none;
-	width:150px;
-	height:50px;
-}
-section{
-	text-Align:center;
+    display:none;
+    background-color: rgba(28,62,145,1);
 }
 
-/* mark{
-	background-color:#5A18C9;
-	color:#EBF7D4;
-	padding:5px;
-} */
-/* p{
-	margin-top:10px;
-} */
-/* footer{
-	position:absolute;
-	bottom:0;
-	background-color:#190934;
-	width:100%;
-	padding:10px;
-	color:#EBF7D4;
-	font-family:sans-serif;
-} */
 @media screen and (max-width: 600px) {
-	.largeNav{
-		display:none;
-	}
-	details{
-		display:inline;
-		padding:25px;
-		text-align:cetner;
-		width:90%;
-		font-size:24px;
-		margin-right:25px;
-	}
-	details a{
-		display:grid;
-		justify-content:center;
-		text-align:center;
-	}
-	details a:hover{
-		background-color:#EBF7D4;
-	color:#190934;
-	}
+    .largeNav{
+        display:none;
+        background-color: rgba(89,67,233,1);
+    }
+    details{
+        display:inline;
+        padding:1rem;
+        width:100%;
+        font-size:2rem;
+        background-color: rgba(201,104,12,1);
+    }
+    details a{
+        display: grid;
+        justify-content: center;
+        background-color: rgba(27,111,85,1);
+    }
+    details a:hover{
+        background-color:#EBF7D4;
+        color:#190934;
+        background-color: rgba(210,222,131,1);
+    }
 }
-
-
-
-
-
-
-
 </style>
 <body>
 <nav>
     <div class="largeNav">
-        <a href="#" class="active">Home</a>
+        <a href="#">Home</a>
         <a href="#">Services</a>
         <a href="#">About</a>
         <a href="#">Contact</a>
@@ -107,7 +77,7 @@ section{
     </details>
 </nav>
 <section>
-    <h1> Mobile nav dropdown</h1>
+    <h1>Mobile nav dropdown</h1>
     <h3>HTML5 <code>&#60;details&#62;</code> tag.</h3>
 </section>
 </body>
