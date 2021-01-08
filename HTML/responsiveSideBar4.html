@@ -39,7 +39,7 @@ span {
     display: none;
     background-color: rgba(32,242,208,1); 
 }
-a > p{
+a > p {
     margin: 0;
 }
 
@@ -88,8 +88,11 @@ a {
 }
 main {
     margin: 0;
-    background-color: rgba(196,161,101,1); 
+    background-color: gray;
 }
+}
+article{
+    background-color: rgba(196,161,101,1);
 }
 </style>
 </head>
@@ -98,19 +101,19 @@ main {
     <ul>
         <li>
             <a href="#">
-                <span class="text">Cats1</span>
+                <span class="text">FOO</span>
                 <p>foo</p>
             </a>
         </li>
         <li>
             <a href="#">
-                <span class="text">Cats2</span>
+                <span class="text">FOO</span>
                 <p>foo</p>
             </a>
         </li>
         <li>
             <a href="#">
-                <span class="text">Cats3</span>
+                <span class="text">FOO</span>
                 <p>foo</p>
             </a>
         </li>
@@ -118,59 +121,44 @@ main {
 </nav>
 
 <main>
-<h1>This is H1</h1>
-<p>
-29349-7102,Buckinghamshire,black,Fully-configurable dynamic throughput 91650,Berkshire,yellow,Distributed stable
-task-force 61542,Borders,purple,Decentralized national intranet 80630-2467,Borders,teal,Persistent content-based
-data-warehouse 89623-2442,Borders,ivory,Progressive systematic local area network 58156,Avon,orange,Cross-group stable
-database 64467,Buckinghamshire,violet,Secured modular orchestration 57070,Cambridgeshire,silver,Diverse heuristic
-matrices 43134,Avon,red,Secured leading edge implementation 65963-4668,Bedfordshire,orange,Business-focused
-upward-trending help-desk
-</p>
-<h1>This is H1</h1>
-<p>
-    29349-7102,Buckinghamshire,black,Fully-configurable dynamic throughput 91650,Berkshire,yellow,Distributed stable
-    task-force 61542,Borders,purple,Decentralized national intranet 80630-2467,Borders,teal,Persistent content-based
-    data-warehouse 89623-2442,Borders,ivory,Progressive systematic local area network 58156,Avon,orange,Cross-group
-    stable
-    database 64467,Buckinghamshire,violet,Secured modular orchestration 57070,Cambridgeshire,silver,Diverse heuristic
-    matrices 43134,Avon,red,Secured leading edge implementation 65963-4668,Bedfordshire,orange,Business-focused
-    upward-trending help-desk
-</p>
-<h1>This is H1</h1>
-<p>
-    29349-7102,Buckinghamshire,black,Fully-configurable dynamic throughput 91650,Berkshire,yellow,Distributed stable
-    task-force 61542,Borders,purple,Decentralized national intranet 80630-2467,Borders,teal,Persistent content-based
-    data-warehouse 89623-2442,Borders,ivory,Progressive systematic local area network 58156,Avon,orange,Cross-group
-    stable
-    database 64467,Buckinghamshire,violet,Secured modular orchestration 57070,Cambridgeshire,silver,Diverse heuristic
-    matrices 43134,Avon,red,Secured leading edge implementation 65963-4668,Bedfordshire,orange,Business-focused
-    upward-trending help-desk
-</p>
-<h1>This is H1</h1>
-<p>
-    29349-7102,Buckinghamshire,black,Fully-configurable dynamic throughput 91650,Berkshire,yellow,Distributed stable
-    task-force 61542,Borders,purple,Decentralized national intranet 80630-2467,Borders,teal,Persistent content-based
-    data-warehouse 89623-2442,Borders,ivory,Progressive systematic local area network 58156,Avon,orange,Cross-group
-    stable
-    database 64467,Buckinghamshire,violet,Secured modular orchestration 57070,Cambridgeshire,silver,Diverse heuristic
-    matrices 43134,Avon,red,Secured leading edge implementation 65963-4668,Bedfordshire,orange,Business-focused
-    upward-trending help-desk
-</p>
-<h1>This is H1</h1>
-<p>
-    29349-7102,Buckinghamshire,black,Fully-configurable dynamic throughput 91650,Berkshire,yellow,Distributed stable
-    task-force 61542,Borders,purple,Decentralized national intranet 80630-2467,Borders,teal,Persistent content-based
-    data-warehouse 89623-2442,Borders,ivory,Progressive systematic local area network 58156,Avon,orange,Cross-group
-    stable
-    database 64467,Buckinghamshire,violet,Secured modular orchestration 57070,Cambridgeshire,silver,Diverse heuristic
-    matrices 43134,Avon,red,Secured leading edge implementation 65963-4668,Bedfordshire,orange,Business-focused
-    upward-trending help-desk
-</p>
+<article>
+<h1></h1>
+<p></p>
+</article>
+
+<article>
+<h1></h1>
+<p></p>
+</article>
+
+<article>
+<h1></h1>
+<p></p>
+</article>
+
+<article>
+<h1></h1>
+<p></p>
+</article>
+
+<article>
+<h1></h1>
+<p></p>
+</article>
 </main>
 </body>
 
 <script>
+document.querySelectorAll("h1").forEach(V=>{V.textContent = `This is H1`});
+document.querySelectorAll("article p").forEach(V=>{V.textContent = `29349-7102,Buckinghamshire,black,Fully-configurable dynamic throughput 91650,Berkshire,yellow,Distributed stable
+task-force 61542,Borders,purple,Decentralized national intranet 80630-2467,Borders,teal,Persistent content-based
+data-warehouse 89623-2442,Borders,ivory,Progressive systematic local area network 58156,Avon,orange,Cross-group stable
+database 64467,Buckinghamshire,violet,Secured modular orchestration 57070,Cambridgeshire,silver,Diverse heuristic
+matrices 43134,Avon,red,Secured leading edge implementation 65963-4668,Bedfordshire,orange,Business-focused
+upward-trending help-desk`});
+
+
+
 function styleAttributeWithColor() {
     function randomRgba() {
             const o = Math.round, r = Math.random, s = 255;
@@ -189,6 +177,5 @@ function styleTagWithColor() {
     var autoColorStyleString = splitedStyleString.map(V => { return V + `background-color: ${randomRgba()}; \n}` }).join("")
     return autoColorStyleString
 }
-
 </script>
 </html>
