@@ -15,32 +15,21 @@
 </head>
 <style>
 :root{
-    --foo:calc(3vw);
-    --bar:calc(100vw);
     /* --responsiveFontSize:calc(16px + (18-14)*(100vw - 300px)/(1600 - 200)); */
     /* --responsiveFontSize:calc(16px + 4 * (100vw - 300px) / 1400); */
     /* --responsiveFontSize:calc(16px + 4 * (100vw - 300px) / 1400); */
     /* --responsiveFontSize: min(max(1px, 4vw), 22px); */
     /* --responsiveFontSize: min(max(12px, 3vw), 22px); */
+    --foo:calc(3vw);
+    --bar:calc(100vw);
     --responsiveFontSize: clamp(12px, 3vw, 22px);
-    /* font-size: var(--responsiveFontSize); */
 }
-body {
-    font-size: var(--responsiveFontSize);
-}
-h1{
-    font-size: 2rem;
-}
-p{
-    font-size: 1rem;
-}
+body{font-size: var(--responsiveFontSize);}
+q{font-size: var(--foo);}
+pre{font-size: var(--bar);}
 
-q{
-    font-size: var(--foo);
-}
-pre{
-    font-size: var(--bar);
-}
+h1{font-size: 2rem;}
+p{font-size: 1rem;}
 </style>
 <script>
     function reportWindowSize(){
