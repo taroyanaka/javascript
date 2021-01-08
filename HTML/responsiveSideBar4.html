@@ -49,50 +49,50 @@ nav {
     height: 100vh;
     background-color: rgba(19,55,37,1); 
 }
-/* nav:hover { */
-/* nav:focus { */
-nav:active {
+nav:hover {
     width: 30rem;
     transition: 600ms;
     background-color: rgba(184,19,168,1); 
 }
-/* nav:hover span { */
-/* nav:focus span { */
-nav:active span {
+nav:hover span {
     display: inline;
     background-color: rgba(63,76,152,1); 
+}
+nav:hover .logo{
+    background-color: white;
 }
 }
 
 @media only screen and (max-width: 600px) {
-.nav {
+nav {
     bottom: 0;
     width: 100vw;
     height: 5rem;
     background-color: rgba(13,61,51,1); 
 }
+/* ul.foo { */
 ul {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
+margin: 0;
+padding: 0;
+width: 100%;
+height: 100%;
 
-    flex-direction: row;
-    background-color: red;
+flex-direction: row;
+background-color: red;
 }
 li{
-    display: flex;
-    justify-content: center;
-    width: 100%;
+display: flex;
+justify-content: center;
+width: 100%;
 
-    background-color: rgba(109,159,134,1); 
+background-color: rgba(109,159,134,1); 
 }
 a {
-    margin: 0;
-    padding: 0;
-    display: block;
-    width: 100%;
-    background-color: pink;
+margin: 0;
+padding: 0;
+display: block;
+width: 100%;
+background-color: pink;
 }
 main {
 margin: 0;
@@ -102,23 +102,26 @@ background-color: rgba(196,161,101,1);
 </style>
 </head>
 <body>
-<nav>
-    <ul>
-        <li>
-            <a href="#">
-                <span>Cats1</span>
+<nav class="navbar">
+    <!-- <ul class="nav"> -->
+    <ul class="foo">
+        <!-- <li class="logo-text logo">bar</li> -->
+        <li class="item">
+            <a href="#" class="link">
+                <span class="text">Cats1</span>
                 <p>foo</p>
             </a>
         </li>
-        <li>
-            <a href="#">
-                <span>Cats2</span>
+
+        <li class="item">
+            <a href="#" class="link">
+                <span class="text">Cats2</span>
                 <p>foo</p>
             </a>
         </li>
-        <li>
-            <a href="#">
-                <span>Cats3</span>
+        <li class="item">
+            <a href="#" class="link">
+                <span class="text">Cats3</span>
                 <p>foo</p>
             </a>
         </li>
