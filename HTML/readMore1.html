@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read More1</title>
+    <!-- https://codepen.io/Idered/pen/AeBgF -->
+    <!-- https://codepen.io/xpatrickx/pen/qmqEzJ -->
+    <style>
+.read-more-state {
+  display: none;
+}
+.read-more-target {
+  /* visibility: collapse; */
+  opacity: 0;
+  font-size: 0;
+  transition: 0.25s ease;
+}
+.read-more-state:checked ~ .read-more-wrap .read-more-target,
+.read-more-state:checked ~ .read-more-target {
+/*   visibility: visible; */
+  opacity: 1;
+  font-size: inherit;
+}
+.read-more-state ~ .read-more-trigger:before {
+  content: "More";
+}
+.read-more-state:checked ~ .read-more-trigger:before {
+  content: "Less";
+}
+.read-more-trigger {
+  margin-top: 40px;
+  cursor: pointer;
+/*   display: block; */
+  padding: 0.3em;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: 0.9em;
+  line-height: 2;
+  border: 1px solid #d8d8d8;
+  border-radius: 0.25em;
+  margin: 0 auto;
+  width: 90px;
+/*   text-align: center; */
+}
+
+    </style>
+</head>
+<body>
+<div>
+    <input type="checkbox" class="read-more-state" id="post-3" />
+
+    <p class="read-more-wrap">When you start mining, a small part of your computer's unused processing power is
+        redirected toward mining a popular cryptocurrency called Monero, which is secure and private. At the end of
+        every month, we exchange the Monero for US dollars and contribute
+        the earnings to featured project.
+
+    </p>
+
+    <p class="read-more-wrap read-more-target">100% of the currency your computer generates is used by Healthfundit to
+        fund potentially life saving research that may otherwise not get done.</p>
+    <p class="read-more-wrap read-more-target">Peer-review is the gold-standard of quality in science. This means
+        scientific experts in each field review a proporal's merit. Only those that score in the top 30th percentile
+        receive mined funds or you can select a specific area <a href="#"> below</a> </p>
+
+
+    <p class="read-more-wrap read-more-target">
+        Most users can expect to generate around $3 to $5 per month. It might not seem like much, but because of the
+        revolving funding model, it adds up quickly.
+    </p>
+
+    <label for="post-3" class="read-more-trigger"></label>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>read more 3</title>
+    <!-- https://codepen.io/LSP/pen/EgJypb/ -->
+    <style>
+.read-more-state {
+  display: none;
+}
+
+.read-more-target {
+  width: 200px;
+  opacity: 1;
+  max-height: 45px;
+  font-size: 20px;
+  transition: .25s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.read-more-state:checked + .read-more-target {
+  opacity: 1;
+  font-size: inherit;
+  max-height: 999em;
+}
+
+.read-more-trigger {
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 .5em;
+  color: #666;
+  font-size: 20px;
+  line-height: 2;
+  border: 1px solid #ddd;
+  border-radius: .25em;
+}
+
+/* Other style */ 
+body {
+  padding: 2%;
+}
+    </style>
+</head>
+<body>
+<div>
+    <label class="read-more-trigger">
+        <input type="checkbox" class="read-more-state" />
+        <p class="read-more-target">lorem 3 lorem 3 lorem 3 lorem lorem 3 lorem 3 lorem 3 lorem 3lorem 3lorem </p>
+    </label>
+</div>
+</body>
+</html>
