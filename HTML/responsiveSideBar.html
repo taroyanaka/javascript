@@ -183,5 +183,31 @@ nav > ul > li > a > i::before {
         <h1>Full View, Please!</h1>
     </main>
 </div>
+
+
+<script>
+   // document.querySelectorAll("body *").forEach(V => { console.log(V.className) });
+   Array.from(document.querySelectorAll("*")).filter(V => { return V.className }).map(V => { return V.textContent = V.className });
+   // document.querySelector("li").parentNode.parentNode.parentNode.tagName;
+   let baz = [];
+   function foo() {
+      document.querySelectorAll("body *").forEach(NODE => {
+         let foo = NODE;
+         //let foo = document.querySelector("li");
+         let bar = [];
+         while (foo.parentNode.tagName !== "BODY") {
+            foo = foo.parentNode;
+            // bar.push(foo.tagName);
+            bar.unshift(foo.tagName);
+            // bar.unshift([foo.tagName, foo.textContent]);
+         }
+         baz.push(bar);
+      })
+   }
+   foo(); baz;
+</script>
+
+
+
 </body>
 </html>

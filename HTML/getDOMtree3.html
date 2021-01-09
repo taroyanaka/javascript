@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get DOM Tree 3</title>
+</head>
+<body>
+<main class="one">
+    <div class="two">
+        <span class="three">
+            this is main > div > span, look console
+        </span>
+    </div>
+</main>
+</body>
+<script>
+function getDOMTree(withClassNameOption) {
+    let allResult = [];
+    document.querySelectorAll("body *").forEach(NODE => {
+        let result = [];
+        while (NODE.tagName !== "BODY") {
+            withClassNameOption ?
+            result.unshift(NODE.tagName + " " + NODE.className) :
+            result.unshift(NODE.tagName);
+
+            NODE = NODE.parentNode;
+        }
+        allResult.push(result);
+    })
+    return allResult;
+}
+// const baz = getDOMTree(true);
+const baz = getDOMTree();
+console.log(baz);
+</script>
+</html>
