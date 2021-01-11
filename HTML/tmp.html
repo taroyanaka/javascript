@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="ramda.min.js"></script> -->
+</head>
+<body>
+</body>
+<script src="ramda.min.js"></script>
+<script>
+    let list = [
+        ["099-0469",60071],
+        ["388-6233",71065],
+        ["364-6291",13106],
+        ["443-9545",40302],
+        ["276-2578",21997],
+        ["449-6545",4675],
+        ["895-0046",31260],
+        ["423-7448",37843],
+        ["765-9542",10973],
+        ["460-7131",19866]
+    ]
+    // list.map(V => { return [V[0], V[1]] })
+    let list2 = list.map(V => { return [V[0].replace("-", ""), V[1]] })
+    // let list3 = list.map(V => { return [V[0].replace("-", ""), V[1]] }).sort();
+    let list3 = R.sortWith([
+            // R.descend(R.prop(0)),
+            // R.ascend(R.prop('name'))
+            // R.ascend(R.prop(0)
+            R.ascend(R.prop(1)
+            )
+        ])(list2)
+
+    // SELECT * FROM list3 ORDER BY 0 ASC;
+</script>
+</html>
