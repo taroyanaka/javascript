@@ -49,17 +49,17 @@ function test1(){
 
 function exe(){
     // alasql(document.querySelector(".query0").value);
-try {
+    try {
     alasql(document.querySelector(".query1").value);
-} catch (error) {
+    } catch (error) {
     console.error(error);
-}
+    }
 
     var res1 = alasql( document.querySelector(".query2").value );
-    var res1_2 = res1.map(V=>{
-        let ary = [V.city, V.pop];
-        return ary;
-    })
+    var res1_2 = res1.map(V=>{ return [V.city, V.pop] })
+    //     let ary = [V.city, V.pop];
+    //     return ary;
+    // })
     document.querySelector(".res1").value = res1_2;
 }
 // alasql("CREATE TABLE cities (city string, pop number)");
