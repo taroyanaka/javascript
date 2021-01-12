@@ -15,16 +15,25 @@
 </head>
 <body>
     <!-- <textarea name="" class="query" id="" cols="30" rows="10"></textarea> -->
+    <textarea name="" class="query1" id="" cols="30" rows="10">
+CREATE TABLE cities (city string, pop number);
+INSERT INTO cities VALUES ('Paris',2249975),('Berlin',3517424),('Madrid',3041579)
+    </textarea>
+    <textarea name="" class="query2" id="" cols="30" rows="10">SELECT * FROM cities WHERE pop < 3500000 ORDER BY pop DESC</textarea>
     <textarea name="" class="res1" id="" cols="30" rows="10"></textarea>
     <textarea name="" class="res2" id="" cols="30" rows="10"></textarea>
     <button class="test1" onclick="test1();">test</button>
 <script>
 
 function test1(){
-    alasql("CREATE TABLE cities (city string, pop number)");
-    alasql("INSERT INTO cities VALUES ('Paris',2249975),('Berlin',3517424),('Madrid',3041579)");
-    /* execute query */
-    var res1 = alasql("SELECT * FROM cities WHERE pop < 3500000 ORDER BY pop DESC");
+    // alasql("CREATE TABLE cities (city string, pop number)");
+//     alasql(`CREATE TABLE cities (city string, pop number);INSERT INTO cities VALUES ('Paris',2249975),('Berlin',3517424),('Madrid',3041579)`);
+
+    // alasql("INSERT INTO cities VALUES ('Paris',2249975),('Berlin',3517424),('Madrid',3041579)");
+    alasql(document.querySelector(".query1").value);
+    var res1 = alasql( document.querySelector(".query2").value );
+    // var res1 = alasql("SELECT * FROM cities WHERE pop < 3500000 ORDER BY pop DESC");
+    // var res1 = alasql("SELECT * FROM cities WHERE pop < 3500000 ORDER BY pop DESC");
     var res1_2 = res1.map(V=>{
         let ary = [V.city, V.pop];
         return ary;
