@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>responsive Sidebar 2</title>
+    <!-- https://codepen.io/jo_Geek/pen/xgbaEr -->
 </head>
 <style>
 * {
@@ -15,72 +16,73 @@ body {
   font-family: 'segoe ui';
 }
 
-.nav {
+body > div.nav {
   height: 50px;
   width: 100%;
   background-color: #4d4d4d;
   position: relative;
 }
 
-.nav > .nav-header {
+body > div > div.nav-header {
   display: inline;
 }
 
-.nav > .nav-header > .nav-title {
+body > div > div.nav-header > div.nav-title {
   display: inline-block;
   font-size: 22px;
   color: #fff;
   padding: 10px 10px 10px 10px;
 }
 
-.nav > .nav-btn {
+body > div > div.nav-btn {
   display: none;
 }
 
-.nav > .nav-links {
+body > div > div.nav-links {
   display: inline;
   float: right;
   font-size: 18px;
 }
 
-.nav > .nav-links > a {
+body > div > div.nav-links > a {
   display: inline-block;
   padding: 13px 10px 13px 10px;
   text-decoration: none;
   color: #efefef;
 }
 
-.nav > .nav-links > a:hover {
+body > div > div.nav-links > a:hover {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-.nav > #nav-check {
+body > div > input#nav-check {
   display: none;
 }
 
 @media (max-width:600px) {
-  .nav > .nav-btn {
+  body > div > div.nav-btn {
     display: inline-block;
     position: absolute;
     right: 0px;
     top: 0px;
   }
-  .nav > .nav-btn > label {
+  body > div > div.nav-btn > label {
     display: inline-block;
     width: 50px;
     height: 50px;
     padding: 13px;
   }
-  .nav > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
+  body > div > div.nav-btn > label:hover,
+  body > div > input#nav-check:checked ~ div.nav-btn > label {
     background-color: rgba(0, 0, 0, 0.3);
   }
-  .nav > .nav-btn > label > span {
+  body > div > div.nav-btn > label > span {
     display: block;
     width: 25px;
     height: 10px;
     border-top: 2px solid #eee;
   }
-  .nav > .nav-links {
+  body > div > div.nav-links {
     position: absolute;
     display: block;
     width: 100%;
@@ -91,14 +93,14 @@ body {
     top: 50px;
     left: 0px;
   }
-  .nav > .nav-links > a {
+  body > div > div.nav-links > a {
     display: block;
     width: 100%;
   }
-  .nav > #nav-check:not(:checked) ~ .nav-links {
+  body > div > input#nav-check:not(:checked) ~ div.nav-links {
     height: 0px;
   }
-  .nav > #nav-check:checked ~ .nav-links {
+  body > div > input#nav-check:checked ~ div.nav-links {
     height: calc(100vh - 50px);
     overflow-y: auto;
   }
@@ -128,5 +130,28 @@ body {
         <a href="">JsFiddle</a>
     </div>
 </div>
+<div class="dom-view-one-click"></div>
+<textarea onclick='document.querySelector("textarea").value = document.querySelector("body").innerHTML' name="" id="" cols="30" rows="10"></textarea>
 </body>
+<script>
+    var getDOM = (function () {
+      var dom = '',
+      depth = 0;
+
+      return function (node, n) {
+        for (var i = 0; i < depth; i++) { dom += '<span>|---</span>'; } dom += '<b>' +
+          node.nodeName.toLowerCase() + '</b>';
+        if (node.id) { dom += '[#' + node.id + ']'; }
+        if (node.className) { dom += '(' + '.' + node.className + ')' }
+        if (typeof n === 'number') { dom += '<span>{child #' + n + '}</span>'; }
+        dom += '<br>';
+        depth++;
+        [].forEach.call(node.children, function (node, childNumber) { getDOM(node, childNumber); });
+        depth--;
+        return dom;
+      };
+    })();
+    document.querySelector('.dom-view-one-click').innerHTML = getDOM(document.body);
+    getDOM();
+</script>
 </html>
