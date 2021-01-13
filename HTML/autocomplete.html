@@ -6,7 +6,163 @@
     <title>autocomplete</title>
     <!-- https://codepen.io/everytimeicob/pen/NWRjajL -->
     <!-- https://codepen.io/ticquique/details/VwjEVLR -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
+<style>
+.error-popup {
+    opacity: 0;
+    animation-name: fadeOut;
+    animation-duration: 2s;
+    pointer-events: none;
+    
+}
+
+.error-popup.visible{
+    opacity: 1;
+    animation-name: fadeIn;
+    animation-duration: 2s;
+}
+
+.page-wrapper {
+    padding: 2rem;
+    display: flex;
+    flew-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.row .col.s12.page-content {
+    margin-left: 0;
+    max-width: 600px;
+    
+}
+
+.flag {
+    width: 30px;
+}
+
+.card-action {
+    display: flex;
+    justify-content: space-between;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+</style>
+<script>
+    const limit_sugerences = 10
+    const spanish_words = { lang: "spanish", urls: "https://raw.githubusercontent.com/lorenbrichter/Words/master/Words/es.txt", flag: "https://lipis.github.io/flag-icon-css/flags/4x3/es.svg" };
+    const english_words = { lang: "english", urls: "https://raw.githubusercontent.com/lorenbrichter/Words/master/Words/en.txt", flag: "https://lipis.github.io/flag-icon-css/flags/4x3/gb.svg" };
+    const german_words = { lang: "german", urls: "https://raw.githubusercontent.com/lorenbrichter/Words/master/Words/de.txt", flag: "https://lipis.github.io/flag-icon-css/flags/4x3/de.svg" };
+    const french_words = { lang: "french", urls: "https://raw.githubusercontent.com/lorenbrichter/Words/master/Words/fr.txt", flag: "https://lipis.github.io/flag-icon-css/flags/4x3/fr.svg" };
+    const word_urls = [spanish_words, english_words, german_words, french_words];
+
+
+    const workerConfig = {
+        word_urls
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const elems = document.querySelectorAll('.autocomplete');
+        const instances = M.Autocomplete.init(elems, { minLength: 2, limit: limit_sugerences });
+        const instance = instances[0];
+
+        const createCountry = ({ lang, flag }) => {
+            const langContainer = document.querySelector("#langContainer");
+            const label = document.createElement("label");
+            const checkbox = document.createElement("input");
+            checkbox.checked = true;
+            checkbox.classList.add("filled-in");
+            checkbox.id = lang;
+            checkbox.type = "checkbox";
+            label.appendChild(checkbox);
+
+            const span = document.createElement("span");
+            const img = document.createElement("img");
+            img.classList.add("flag");
+            img.alt = lang;
+            img.src = flag;
+            span.appendChild(img);
+            label.appendChild(span);
+            langContainer.appendChild(label);
+            return checkbox;
+        }
+
+        const updatePercent = (total, percent, lang) => {
+            const element = document.querySelector(".determinate");
+            const elementInfo = document.querySelector(".progress-info");
+            elementInfo.innerHTML = `${total} loaded words - ${percent.toFixed(1)}% ${lang}`
+            element.style.width = `${percent}%`;
+            if (percent == 100) document.querySelectorAll(".prg").forEach(v => v.remove());
+        }
+
+        const updatePrefixes = (res) => {
+            instance.updateData(res);
+        }
+
+        const manageError = (error) => {
+            const element = document.querySelector(".error-popup");
+            element.innerHTML = error;
+            element.classList.toggle("visible")
+            setTimeout(() => {
+                element.classList.toggle("visible")
+            }, 3000)
+        }
+
+        const startWorker = () => {
+            var blob = new Blob([document.querySelector('#worker').textContent]);
+            const w = new Worker(window.URL.createObjectURL(blob));
+            w.onmessage = function ({ data }) {
+                const { type, message } = data;
+                if (type == "initial") {
+
+                } else if (type == "error") {
+                    manageError(message);
+                } else if (type == "progress") {
+                    const [total, language, percent] = message.split(" ");
+                    updatePercent(total, parseFloat(percent), language);
+                } else if (type == "prefix") {
+                    updatePrefixes(message)
+                } else {
+                    console.log(message)
+                }
+            };
+
+            w.postMessage({ type: "initial", message: workerConfig })
+            return w;
+        }
+
+
+        const countriesCheckbox = word_urls.map(createCountry);
+        const worker = startWorker();
+        elems[0].addEventListener("input", (e) => {
+            if (e.target.value.length >= 2) {
+                const langs = countriesCheckbox.filter(v => v.checked).map(v => v.id);
+                const message = { prefix: e.target.value, limit: limit_sugerences, lang: langs }
+                worker.postMessage({ type: "prefix", message });
+            };
+        });
+
+    });
+</script>
 <body>
 HTML CSS JSResult Skip Results Iframe
 <div class="row page-wrapper">
@@ -159,6 +315,7 @@ HTML CSS JSResult Skip Results Iframe
     }
     
     onmessage = workerListener
+    
     </script>
     
 </html>
