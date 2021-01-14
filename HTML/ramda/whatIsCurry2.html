@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>what is _curry2()</title>
+    <!-- https://github.com/ramda/ramda/blob/master/source/internal/_curry2.js -->
+</head>
+<body>
+</body>
+<script>
+// function _curry2(fn) {
+
+// function curryFoo(fn) {
+//     return function f2(a, b) {
+//         switch (arguments.length) {
+//             case 0:
+//                 return f2;
+//             case 1:
+//                 return _isPlaceholder(a)
+//                     ? f2
+//                     : _curry1(function (_b) { return fn(a, _b); });
+//             default:
+//                 return _isPlaceholder(a) && _isPlaceholder(b)
+//                     ? f2
+//                     : _isPlaceholder(a)
+//                         ? _curry1(function (_a) { return fn(_a, b); })
+//                         : _isPlaceholder(b)
+//                             ? _curry1(function (_b) { return fn(a, _b); })
+//                             : fn(a, b);
+//         }
+//         return arguments.length
+//     };
+// }
+
+
+function argumentsLength(fn) {
+    return function f2(a, b) {
+        return arguments.length
+    };
+}
+
+
+function curryFoo0(fn) {
+    return function f2(a, b) {
+        switch (arguments.length) {
+            case 0:
+                return f2;
+        }
+    };
+}
+function _isPlaceholder(a) {
+    return a != null && typeof a === 'object'
+    // && a['@@functional/placeholder'] === true;
+    // typeof { "foo": "bar" }
+    // => "object"
+}
+function _curry1(fn) {
+    return function f1(a) {
+        if (arguments.length === 0 || _isPlaceholder(a)) {
+            return f1;
+            // return "f1";
+        } else {
+            return fn.apply(this, arguments);
+        }
+    };
+}
+function curryFoo1(fn) {
+    return function f2(a, b) {
+        switch (arguments.length) {
+        case 1:
+            return _isPlaceholder(a) ? f2 : _curry1(function (_b) { return fn(a, _b) });
+        };
+    }
+}
+function curryFoo2(fn) {
+    return function f2(a, b) {
+        return _isPlaceholder(a) && _isPlaceholder(b)
+            ? f2
+            : _isPlaceholder(a)
+                ? _curry1(function (_a) { return fn(_a, b); })
+                : _isPlaceholder(b)
+                    ? _curry1(function (_b) { return fn(a, _b); })
+                    : fn(a, b);
+    };
+}
+
+
+// _isPlaceholder is "It's not null and OBJECT"
+
+var _argumentsLength = argumentsLength(function foo(a, b, c, d) {
+        return [1, 2, 3]
+    }
+)
+var foo0 = curryFoo0(function foo0(a, b, c, d) {
+        return a
+    }
+)
+var foo1 = curryFoo1(function foo1(a, b, c) {
+        return [a,b,c]
+    }
+)
+var foo2 = curryFoo2(function foo2(a, b, c, d) {
+        return [a, b, c, d]
+    }
+)
+
+console.log(_argumentsLength(1, 2, 3, 4, 5));
+console.log(_argumentsLength(1, 2, 3, 4, 5, 6));
+
+
+// baz = foo0()
+console.log(foo0("BAZ"));
+// foo0 = foo0(42)
+console.log(foo0(42));
+
+
+baz = foo1(42);
+
+// case 1 _isPlaceholder(a)
+// _curry1(function (_b) { return fn(a, _b) }) 
+// if (arguments.length === 0 || _isPlaceholder(a))  return "f1";
+
+console.log(`baz() ${baz()}`);
+
+// case 1 _isPlaceholder(a)
+// _curry1(function (_b) { return fn(a, _b) }) 
+// if (arguments.length === 0 || _isPlaceholder(a))  return "f1";
+
+console.log(`baz({"foo":"bar"}) ${baz({ "foo": "bar" })}`);
+// console.log(`baz({"foo":"bar"}) ${baz({ "foo": "bar" })([1])}`);
+// console.log(`baz({"foo":"bar"}) ${baz({ "foo": "bar" })([1, 2])}`);
+// console.log(`baz({"foo":"bar"}) ${baz([1, 2])}`);
+// console.log(`baz({"foo":"bar"}) ${baz(1, 2)}`);
+
+// case 1 _isPlaceholder(a)
+// f2
+// ???? f2 is fn.apply(this, arguments) is "function foo(a, b, c, d) {    return a     }"
+
+console.log(`baz(42) ${baz(42)}`)
+console.log(`foo1(41)(42) ${foo1(41)(42)}`)
+
+// console.log(`foo1(41)(42)(43) ${foo1(41)(42)(43)}`)
+// => this is error
+
+
+console.log(`foo2(43, 44) ${foo2(43, 44)}`)
+console.log(`foo2(43, 44, 45, 46) ${foo2(43, 44, 45, 46)}`)
+// console.log(`foo2(41)(42) ${foo2(41)(42)}`)
+</script>
+</html>
