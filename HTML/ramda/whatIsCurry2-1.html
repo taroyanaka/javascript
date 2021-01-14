@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>what is _curry2()</title>
+    <!-- https://github.com/ramda/ramda/blob/master/source/internal/_curry2.js -->
+</head>
+<body>
+</body>
+<script>
+
+    function fooFn(fn) {
+        return function f2(a, b) {
+            // console.log(`f2 is ${f2}`);
+            // console.log(`fn is ${fn}`);
+            // console.log(`a ${a}`);
+            // console.log(`b ${b}`);
+            // console.log(`fn ${fn}`);
+            a = true;
+            b = true;
+            // return _isPlaceholder(a) && _isPlaceholder(b)
+            return a && b ? f2 : a ? _curry1(function (_a) { return fn(_a, b); }) : b ? _curry1(function (_b) { return fn(a, _b); }): fn(a, b);
+        //         ? f2
+        //         : _isPlaceholder(a)
+        //             ? _curry1(function (_a) { return fn(_a, b); })
+        //             : _isPlaceholder(b)
+        //                 ? _curry1(function (_b) { return fn(a, _b); })
+        //                 : fn(a, b);
+        };
+    }
+
+    // fooFn(1, 2)
+    // (3, 4);
+
+
+    function _isPlaceholder(a) {
+        return a != null && typeof a === 'object'
+        // && a['@@functional/placeholder'] === true;
+        // typeof { "foo": "bar" }
+        // => "object"
+    }
+
+    function _curry2(fn) {
+        return function f2(a, b) {
+            switch (arguments.length) {
+                case 0:
+                    return f2;
+                case 1:
+                    return _isPlaceholder(a)
+                        ? f2
+                        : _curry1(function (_b) { return fn(a, _b); });
+                default:
+                    return _isPlaceholder(a) && _isPlaceholder(b)
+                        ? f2
+                        : _isPlaceholder(a)
+                            ? _curry1(function (_a) { return fn(_a, b); })
+                            : _isPlaceholder(b)
+                                ? _curry1(function (_b) { return fn(a, _b); })
+                                : fn(a, b);
+            }
+        };
+    }
+
+    function _curry1(fn) {
+        console.log("one");
+        return function f1(a) {
+            console.log(`arguments[0] is ${arguments[0]}`);
+            console.log(`arguments[1] is ${arguments[1]}`);
+            console.log(`fn.apply(this, arguments) is ${fn.apply(this, arguments)}`);
+            console.log(`arguments.length is ${arguments.length}`);
+            console.log(`f1 is ${f1}`);
+            console.log("two");
+            if (arguments.length === 0 || _isPlaceholder(a)) {
+                console.log("three");
+                return f1;
+            } else {
+                console.log("four");
+                return fn.apply(this, arguments);
+            }
+        };
+    }
+
+    // _curry1(
+    //     function (_a) { return fn(_a, b); }
+    // )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function returnHOGEHOGE() {
+    return "HOGEHOGE"
+}
+
+    // fooFn(returnHOGE)(3, 4);
+    // var returnHOGE = fooFn(function returnHOGE(A, B) {
+    // var returnHOGE = _curry2(function returnHOGE() {
+    //     return "res"
+    // }
+    // );
+
+
+console.log(
+_curry1(
+    // function (_a) { return returnHOGEHOGE(_a, b); }
+    function (_a) { return returnHOGEHOGE(_a, 2); }
+)
+(100, 200)
+)
+
+// { console.log(100000000) } else { console.log(999999999999) }
+
+// if (
+//     _curry1(function (_a) { return returnHOGEHOGE(_a, b); })(1, 2)
+// ) { console.log(100000000) } else { console.log(999999999999) }
+
+
+
+    // console.log(
+        // _isPlaceholder({"foo":"bar"})
+        // _isPlaceholder({})
+        // returnHOGE({"foo":"bar"}, -2)
+    // );
+
+    // (
+        // 4
+    // );
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</html>

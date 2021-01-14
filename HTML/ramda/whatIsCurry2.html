@@ -36,6 +36,8 @@
 
 function argumentsLength(fn) {
     return function f2(a, b) {
+        console.log(`a ${a}`);
+        console.log(`b ${b}`);
         return arguments.length
     };
 }
@@ -43,6 +45,8 @@ function argumentsLength(fn) {
 
 function curryFoo0(fn) {
     return function f2(a, b) {
+        console.log(`a ${a}`);
+        console.log(`b ${b}`);
         switch (arguments.length) {
             case 0:
                 return f2;
@@ -67,6 +71,8 @@ function _curry1(fn) {
 }
 function curryFoo1(fn) {
     return function f2(a, b) {
+        console.log(`a ${a}`);
+        console.log(`b ${b}`);
         switch (arguments.length) {
         case 1:
             return _isPlaceholder(a) ? f2 : _curry1(function (_b) { return fn(a, _b) });
@@ -75,6 +81,8 @@ function curryFoo1(fn) {
 }
 function curryFoo2(fn) {
     return function f2(a, b) {
+        console.log(`a ${a}`);
+        console.log(`b ${b}`);
         return _isPlaceholder(a) && _isPlaceholder(b)
             ? f2
             : _isPlaceholder(a)
@@ -86,7 +94,7 @@ function curryFoo2(fn) {
 }
 
 
-// _isPlaceholder is "It's not null and OBJECT"
+// _isPlaceholder is "not null and OBJECT"
 
 var _argumentsLength = argumentsLength(function foo(a, b, c, d) {
         return [1, 2, 3]
@@ -115,31 +123,29 @@ console.log(foo0("BAZ"));
 console.log(foo0(42));
 
 
-baz = foo1(42);
+
+// case 1 _isPlaceholder(a)
+// _curry1(function (_b) { return fn(a, _b) }) 
+// if (arguments.length === 0 || _isPlaceholder(a))  return "f1";
+// console.log(`foo1(4200)(returnHOGE) ${foo1(4200)(returnHOGE)}`);
+// console.log(`foo1(returnHOGE)(4200) ${foo1(returnHOGE("HOGEHOGE"))(4200)}`);
 
 // case 1 _isPlaceholder(a)
 // _curry1(function (_b) { return fn(a, _b) }) 
 // if (arguments.length === 0 || _isPlaceholder(a))  return "f1";
 
-console.log(`baz() ${baz()}`);
-
-// case 1 _isPlaceholder(a)
-// _curry1(function (_b) { return fn(a, _b) }) 
-// if (arguments.length === 0 || _isPlaceholder(a))  return "f1";
-
-console.log(`baz({"foo":"bar"}) ${baz({ "foo": "bar" })}`);
-// console.log(`baz({"foo":"bar"}) ${baz({ "foo": "bar" })([1])}`);
-// console.log(`baz({"foo":"bar"}) ${baz({ "foo": "bar" })([1, 2])}`);
-// console.log(`baz({"foo":"bar"}) ${baz([1, 2])}`);
-// console.log(`baz({"foo":"bar"}) ${baz(1, 2)}`);
+console.log(`foo1({"foo":"bar"}) ${foo1({ "foo": "bar" })}`);
+// console.log(`foo1({"foo":"bar"}) ${foo1({ "foo": "bar" })([1])}`);
+// console.log(`foo1({"foo":"bar"}) ${foo1({ "foo": "bar" })([1, 2])}`);
+// console.log(`foo1({"foo":"bar"}) ${foo1([1, 2])}`);
+// console.log(`foo1({"foo":"bar"}) ${foo1(1, 2)}`);
 
 // case 1 _isPlaceholder(a)
 // f2
 // ???? f2 is fn.apply(this, arguments) is "function foo(a, b, c, d) {    return a     }"
 
-console.log(`baz(42) ${baz(42)}`)
+console.log(`foo1(42) ${foo1(42)}`)
 console.log(`foo1(41)(42) ${foo1(41)(42)}`)
-
 // console.log(`foo1(41)(42)(43) ${foo1(41)(42)(43)}`)
 // => this is error
 
@@ -147,5 +153,66 @@ console.log(`foo1(41)(42) ${foo1(41)(42)}`)
 console.log(`foo2(43, 44) ${foo2(43, 44)}`)
 console.log(`foo2(43, 44, 45, 46) ${foo2(43, 44, 45, 46)}`)
 // console.log(`foo2(41)(42) ${foo2(41)(42)}`)
+
+
+
+    function fooFn(fn) {
+        return function f2(a, b) {
+            // console.log(`f2 is ${f2}`);
+            // console.log(`fn is ${fn}`);
+            // console.log(`a ${a}`);
+            // console.log(`b ${b}`);
+            // console.log(`fn ${fn}`);
+            a = true;
+            b = true;
+            // return _isPlaceholder(a) && _isPlaceholder(b)
+            return a && b ? f2 : a ? _curry1(function (_a) { return fn(_a, b); }) : b ? _curry1(function (_b) { return fn(a, _b); }): fn(a, b);
+        //         ? f2
+        //         : _isPlaceholder(a)
+        //             ? _curry1(function (_a) { return fn(_a, b); })
+        //             : _isPlaceholder(b)
+        //                 ? _curry1(function (_b) { return fn(a, _b); })
+        //                 : fn(a, b);
+        };
+    }
+
+    // fooFn(1, 2)
+    // (3, 4);
+
+    function _curry2(fn) {
+        return function f2(a, b) {
+            switch (arguments.length) {
+                case 0:
+                    return f2;
+                case 1:
+                    return _isPlaceholder(a)
+                        ? f2
+                        : _curry1(function (_b) { return fn(a, _b); });
+                default:
+                    return _isPlaceholder(a) && _isPlaceholder(b)
+                        ? f2
+                        : _isPlaceholder(a)
+                            ? _curry1(function (_a) { return fn(_a, b); })
+                            : _isPlaceholder(b)
+                                ? _curry1(function (_b) { return fn(a, _b); })
+                                : fn(a, b);
+            }
+        };
+    }
+
+
+    // fooFn(returnHOGE)(3, 4);
+    // var returnHOGE = fooFn(function returnHOGE(A, B) {
+    var returnHOGE = _curry2(function returnHOGE(A, B) {
+            return "res"
+        }
+    );
+    console.log(
+        returnHOGE(1, -2)
+    );
+
+    // (
+        // 4
+    // );
 </script>
 </html>
