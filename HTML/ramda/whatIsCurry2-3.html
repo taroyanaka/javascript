@@ -11,17 +11,36 @@
 var a = "A";
 var b = "B";
 function test0(a, b) { return `${a} and ${b}` }
+function test100(){
+    var a = "hoge";
+    // var _b = 100;
+    const fn = (a, b) => a+b;
+    test1( (_b=100) => { return fn(a, _b) } )("HOGEHOGEHOGE");
+    // test1( (_b=100) => { return fn(a, _b) } )
+}
+    
+    
+function test1(fn) {
+    return function f1(a) {
+        console.log(a)
+    }
+}
 
-function test(testFn) {
+test100();
+
+
+
+
+// function test(testFn) {
     // console.log(typeof testFn);
     // console.log( testFn );
     // console.log( testFn() );
-    console.log( testFn("BAR", "FOO") );
-}
+    // console.log( testFn("BAR", "FOO") );
+// }
 
 // this is same this
 // test( (_b)=>{ return test0(a, _b) } )
-test(function (_b) { return test0(a, _b); })
+// test(function (_b) { return test0(a, _b); })
 
 </script>
 </html>
