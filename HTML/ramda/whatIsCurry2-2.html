@@ -22,6 +22,7 @@ function _isPlaceholder(a) {
         a['@@functional/placeholder'] === true;
 }
 function _curry1(fn) {
+    console.log(b);
         return function f1(a) {
             if (arguments.length === 0 || _isPlaceholder(a)) {
                 return f1;
@@ -63,6 +64,9 @@ var range = _curry2(function range(from, to) {
     return result;
 });
 
-document.querySelector("h1").textContent = range(10, __)(12);
+
+
+// document.querySelector("h1").textContent = range(10, __)(12);
+document.querySelector("h1").textContent = range(10, 12);
 </script>
 </html>

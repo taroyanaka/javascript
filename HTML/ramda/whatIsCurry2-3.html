@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+</body>
+<script>
+var a = "A";
+var b = "B";
+function test0(a, b) { return `${a} and ${b}` }
+
+function test(testFn) {
+    // console.log(typeof testFn);
+    // console.log( testFn );
+    // console.log( testFn() );
+    console.log( testFn("BAR", "FOO") );
+}
+
+// this is same this
+// test( (_b)=>{ return test0(a, _b) } )
+test(function (_b) { return test0(a, _b); })
+
+</script>
+</html>
