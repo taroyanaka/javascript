@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1></h1>
+</body>
+<script>
+// https://github.com/ramda/ramda/blob/cbc65c7f311a366aa3618a18c1a439a72f482218/dist/ramda.js#L46
+var __ = { '@@functional/placeholder': true };
+
+function _isNumber(x) {
+    return Object.prototype.toString.call(x) === '[object Number]';
+}
+
+function _isPlaceholder(a) {
+    return a != null &&
+        typeof a === 'object' &&
+        a['@@functional/placeholder'] === true;
+}
+function _curry1(fn) {
+        return function f1(a) {
+            if (arguments.length === 0 || _isPlaceholder(a)) {
+                return f1;
+            } else {
+                return fn.apply(this, arguments);
+            }
+        };
+    }
+function _curry2(fn) {
+        return function f2(a, b) {
+            switch (arguments.length) {
+                case 0:
+                    return f2;
+                case 1:
+                    return _isPlaceholder(a)
+                        ? f2
+                        : _curry1(function (_b) { return fn(a, _b); });
+                default:
+                    return _isPlaceholder(a) && _isPlaceholder(b)
+                        ? f2
+                        : _isPlaceholder(a)
+                            ? _curry1(function (_a) { return fn(_a, b); })
+                            : _isPlaceholder(b)
+                                ? _curry1(function (_b) { return fn(a, _b); })
+                                : fn(a, b);
+            }
+        };
+    }
+var range = _curry2(function range(from, to) {
+    if (!(_isNumber(from) && _isNumber(to))) {
+        throw new TypeError('Both arguments to range must be numbers');
+    }
+    var result = [];
+    var n = from;
+    while (n < to) {
+        result.push(n);
+        n += 1;
+    }
+    return result;
+});
+
+document.querySelector("h1").textContent = range(10, __)(12);
+</script>
+</html>
