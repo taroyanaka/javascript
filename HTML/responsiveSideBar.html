@@ -24,15 +24,13 @@ a {
 body > div {
    /* display: flex; */
    width: 100%;
-   min-height: 100vh;
+   /* min-height: 100vh; */
 }
 main {
    display: flex;
    justify-content: center;
    align-items: center;
-   /* flex: 1; */
 }
-/* Sidebar */
 div > div > a {
    z-index: 2;
    position: fixed;
@@ -43,8 +41,6 @@ div > div > a {
    background: #192b3c;
 }
 div > div > a > i {
-   display: inline-block;
-   /* margin: 1.5rem 0 0 1.5rem; */
    color: #f07ab0;
 }
 nav {
@@ -78,10 +74,8 @@ nav > ul > li {
 nav > ul > li > a {
    position: relative;
    display: inline-block;
-   /* width: 100%; */
-   /* height: 4rem; */
 }
-nav > ul > li > a em {
+nav > ul > li > a > em {
    position: absolute;
    top: 50%;
    left: 4rem;
@@ -105,13 +99,10 @@ nav > ul > li > a > i::before {
    transform: translate(-50%, -50%);
 }
 
-/* Mobile First */
 @media (min-width: 400px) {
    main {
       margin-left: 4rem;
-      /* margin: 4rem 0 0 0; */
    }
-   /* Sidebar */
    div > div > a {
       width: 4rem;
    }
@@ -122,7 +113,8 @@ nav > ul > li > a > i::before {
    nav:hover,
    nav:focus,
    div > div > a:hover + nav,
-   div > div > a:focus + nav {
+   div > div > a:focus + nav
+   {
       width: 15rem;
    }
 }
@@ -140,7 +132,6 @@ nav > ul > li > a > i::before {
    }
    nav ul {
       top: 1.3rem;
-      /* top: 0; */
    }
 }
 
@@ -193,50 +184,69 @@ nav > ul > li > a > i::before {
         })();
         document.querySelector('.dom-view-one-click').innerHTML = getDOM(document.body);">dom-view-one-click</div> -->
 
-<div class="dom-view-one-click">dom-view-one-click</div>
+<!-- <div class="dom-view-one-click">dom-view-one-click</div> -->
     </main>
 </div>
 <script>
-   var getDOM = (function () {
-      var dom = '',
-         depth = 0;
+   // var getDOM = (function () {
+   //    var dom = '',
+   //       depth = 0;
 
-      return function (node, n) {
-         for (var i = 0; i < depth; i++) { dom += '<span>|---</span>'; } dom += '<b>' +
-         node.nodeName.toLowerCase()
-         + '</b>';
-         if (node.id) { dom += '[#' + node.id + ']'; }
-         if (node.className) { dom += '(' + node.className + ')' }
-         if (typeof n === 'number') { dom += '<span>{child #' + n + '}</span>'; }
-               dom += '<br>';
-               depth++;
-               [].forEach.call(node.children, function (node, childNumber) { getDOM(node, childNumber); });
-               depth--; return dom;
-      };
-   })();
-   document.querySelector('.dom-view-one-click').innerHTML = getDOM(document.body);
-   getDOM();
+   //    return function (node, n) {
+   //       for (var i = 0; i < depth; i++) { dom += '<span>|---</span>'; } dom += '<b>' +
+   //       node.nodeName.toLowerCase()
+   //       + '</b>';
+   //       if (node.id) { dom += '[#' + node.id + ']'; }
+   //       if (node.className) { dom += '(' + node.className + ')' }
+   //       if (typeof n === 'number') { dom += '<span>{child #' + n + '}</span>'; }
+   //             dom += '<br>';
+   //             depth++;
+   //             [].forEach.call(node.children, function (node, childNumber) { getDOM(node, childNumber); });
+   //             depth--; return dom;
+   //    };
+   // })();
+   // document.querySelector('.dom-view-one-click').innerHTML = getDOM(document.body);
+   // getDOM();
 
    // document.querySelectorAll("body *").forEach(V => { console.log(V.className) });
-   Array.from(document.querySelectorAll("*")).filter(V => { return V.className }).map(V => { return V.textContent = V.className });
    // document.querySelector("li").parentNode.parentNode.parentNode.tagName;
-   let baz = [];
+
+
+
+
+
+
+
+
+
+
+const load = () => {
+   let res = [];
    function foo() {
-      document.querySelectorAll("body *").forEach(NODE => {
-         let foo = NODE;
-         //let foo = document.querySelector("li");
+      document.querySelectorAll("body *").forEach(ELM => {
+         let foo = ELM;
          let bar = [];
-         while (foo.parentNode.tagName !== "BODY") {
-            foo = foo.parentNode;
-            // bar.push(foo.tagName);
+         while (foo.parentElement.tagName !== "BODY") {
             bar.unshift(foo.tagName);
-            // bar.unshift([foo.tagName, foo.textContent]);
+            foo = foo.parentElement;
          }
-         baz.push(bar);
+         res.push(bar);
       })
    }
-   // foo();
+   
+   foo();
+   document.querySelector("body main").insertAdjacentHTML("beforeend", `<textarea name="" id="" cols="30" rows="30">${res.map(V=>{return V.join(" ") + "\n" }).join("")}</textarea>`)
+   
+}
+window.onload = load;
+
+
+
    // baz;
+
+
+// Array.from(document.querySelectorAll("*")).filter(V => { return V.className }).map(V => { return V.textContent = V.className });
+
 </script>
 
 
