@@ -32,7 +32,7 @@ button{
         </ul></div>
     </div>
 </div>
-<button onclick="function getDomTreeInsert(){var res = [];function foo() {document.querySelectorAll('body *').forEach(ELM => {var foo = ELM;var bar = [];while (foo.parentElement.tagName !== 'BODY') {bar.unshift(foo.tagName);foo = foo.parentElement;}res.push(bar);})}foo();document.querySelector('body').insertAdjacentHTML('beforeend', `<textarea name='' id='' cols='30' rows='30'>${res.map(V=>{return V.join(' ') + '\n' }).join('')}</textarea>`)};getDomTreeInsert();">hey guy click this getDomTreeInsert</button>
+<button onclick="function getDomTreeInsert(){var res = [];function foo() {document.querySelectorAll('body *').forEach(ELM => {var foo = ELM;var bar = [];while (foo.parentElement.tagName !== 'BODY') {bar.unshift(foo.tagName);foo = foo.parentElement;}res.push(bar);})}foo();document.querySelector('body').insertAdjacentHTML('beforeend', `<textarea name='' id='' cols='30' rows='30'>${res.map(V=>{return V.join(' ') + '\n' }).join('')}</textarea>`)};getDomTreeInsert();">Hey guys click this getDomTreeInsert</button>
 
 <!-- this is unminify version -->
 <!-- <button onclick="function getDomTreeInsert(){
