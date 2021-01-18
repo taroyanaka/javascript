@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>getDomTreeInsert</title>
+    <title>get Dom Tree Insert</title>
     <style>
 div.area{
     background-color: gray;
@@ -32,12 +32,15 @@ button{
         </ul></div>
     </div>
 </div>
-<button onclick="function getDomTreeInsert(){
-    let res = [];
+<button onclick="function getDomTreeInsert(){var res = [];function foo() {document.querySelectorAll('body *').forEach(ELM => {var foo = ELM;var bar = [];while (foo.parentElement.tagName !== 'BODY') {bar.unshift(foo.tagName);foo = foo.parentElement;}res.push(bar);})}foo();document.querySelector('body').insertAdjacentHTML('beforeend', `<textarea name='' id='' cols='30' rows='30'>${res.map(V=>{return V.join(' ') + '\n' }).join('')}</textarea>`)};getDomTreeInsert();">hey guy click this getDomTreeInsert</button>
+
+<!-- this is unminify version -->
+<!-- <button onclick="function getDomTreeInsert(){
+    var res = [];
     function foo() {
        document.querySelectorAll('body *').forEach(ELM => {
-          let foo = ELM;
-          let bar = [];
+          var foo = ELM;
+          var bar = [];
           while (foo.parentElement.tagName !== 'BODY') {
              bar.unshift(foo.tagName);
              foo = foo.parentElement;
@@ -49,6 +52,6 @@ button{
     foo();
     document.querySelector('body').insertAdjacentHTML('beforeend', `<textarea name='' id='' cols='30' rows='30'>${res.map(V=>{return V.join(' ') + '\n' }).join('')}</textarea>`)
     // window.onload = getDomTreeInsert;   
- };getDomTreeInsert();">hey guy click this getDomTreeInsert</button>
+ };getDomTreeInsert();">hey guy click this getDomTreeInsert</button> -->
 </body>
 </html>
