@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>getDomTreeInsert</title>
+    <style>
+div.area{
+    background-color: gray;
+}
+div.area a{
+    background-color: blueviolet;
+}
+li{
+    background-color: plum;
+}
+button{
+    width: 10rem;
+    height: 5rem;
+    font-weight: 900;
+}
+    </style>
+</head>
+<body>
+<div class="area">
+    <div>
+        <a href=""><span>this is target</span></a>
+        <div><ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul></div>
+    </div>
+</div>
+<button onclick="function getDomTreeInsert(){
+    let res = [];
+    function foo() {
+       document.querySelectorAll('body *').forEach(ELM => {
+          let foo = ELM;
+          let bar = [];
+          while (foo.parentElement.tagName !== 'BODY') {
+             bar.unshift(foo.tagName);
+             foo = foo.parentElement;
+          }
+          res.push(bar);
+       })
+    }
+    
+    foo();
+    document.querySelector('body').insertAdjacentHTML('beforeend', `<textarea name='' id='' cols='30' rows='30'>${res.map(V=>{return V.join(' ') + '\n' }).join('')}</textarea>`)
+    // window.onload = getDomTreeInsert;   
+ };getDomTreeInsert();">hey guy click this getDomTreeInsert</button>
+</body>
+</html>

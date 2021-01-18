@@ -220,7 +220,7 @@ nav > ul > li > a > i::before {
 
 
 
-const load = () => {
+const getDomTreeItInsert = () => {
    let res = [];
    function foo() {
       document.querySelectorAll("body *").forEach(ELM => {
@@ -235,10 +235,10 @@ const load = () => {
    }
    
    foo();
-   document.querySelector("body main").insertAdjacentHTML("beforeend", `<textarea name="" id="" cols="30" rows="30">${res.map(V=>{return V.join(" ") + "\n" }).join("")}</textarea>`)
-   
-}
-window.onload = load;
+   document.querySelector("body").insertAdjacentHTML("beforeend", `<textarea name="" id="" cols="30" rows="30">${res.map(V=>{return V.join(" ") + "\n" }).join("")}</textarea>`)
+   // window.onload = getDomTreeItInsert;   
+};getDomTreeItInsert();
+
 
 
 
@@ -249,6 +249,24 @@ window.onload = load;
 
 </script>
 
+<div onclick="function getDomTreeItInsert(){
+   let res = [];
+   function foo() {
+      document.querySelectorAll('body *').forEach(ELM => {
+         let foo = ELM;
+         let bar = [];
+         while (foo.parentElement.tagName !== 'BODY') {
+            bar.unshift(foo.tagName);
+            foo = foo.parentElement;
+         }
+         res.push(bar);
+      })
+   }
+   
+   foo();
+   document.querySelector('body').insertAdjacentHTML('beforeend', `<textarea name='' id='' cols='30' rows='30'>${res.map(V=>{return V.join(' ') + '\n' }).join('')}</textarea>`)
+   // window.onload = getDomTreeItInsert;   
+};getDomTreeItInsert();"></div>
 
 
 </body>
