@@ -19,7 +19,17 @@ h1 {
 a {
    color: white;
 } 
-
+button{
+   width: 30rem;
+   height: 30rem;
+}
+textarea{
+   width: 20rem;
+   height: 20rem;
+   position: absolute;
+   top: 0;
+   right: 0;
+}
 /* Layout */
 body > div {
    /* display: flex; */
@@ -171,103 +181,9 @@ nav > ul > li > a > i::before {
     <!-- Content -->
     <main>
         <h1>Full View, Please!</h1>
-<!-- <div class="dom-view-one-click" onclick="var getDOM = (function () {
-            var dom = '',
-                depth = 0;
-
-            return function (node, n) {
-                for (var i = 0; i < depth; i++) { dom += '<span>|---</span>'; } dom += '<b>' + node.nodeName.toLowerCase() + '</b>'; if
-                    (node.id) { dom += '[#' + node.id + ']'; } if (node.className) { dom += '(' + node.className + ')' } if (typeof
-                        n === 'number') { dom += '<span>{child #' + n + '}</span>'; } dom += '<br>'; depth++;[].forEach.call(node.children,
-                            function (node, childNumber) { getDOM(node, childNumber); }); depth--; return dom;
-            };
-        })();
-        document.querySelector('.dom-view-one-click').innerHTML = getDOM(document.body);">dom-view-one-click</div> -->
-
-<!-- <div class="dom-view-one-click">dom-view-one-click</div> -->
     </main>
+    <button onclick="function getDomTreeInsert(){var res = [];function foo() {document.querySelectorAll('body *').forEach(ELM => {var foo = ELM;var bar = [];while (foo.parentElement.tagName !== 'BODY') {bar.unshift(foo.tagName);foo = foo.parentElement;}res.push(bar);})}foo();document.querySelector('body').insertAdjacentHTML('beforeend', `<textarea cols='30' rows='30'>${res.map(V=>{return V.join(' ') + '\n' }).join('')}</textarea>`)};getDomTreeInsert();">Hey guys click this getDomTreeInsert</button>
 </div>
-<script>
-   // var getDOM = (function () {
-   //    var dom = '',
-   //       depth = 0;
-
-   //    return function (node, n) {
-   //       for (var i = 0; i < depth; i++) { dom += '<span>|---</span>'; } dom += '<b>' +
-   //       node.nodeName.toLowerCase()
-   //       + '</b>';
-   //       if (node.id) { dom += '[#' + node.id + ']'; }
-   //       if (node.className) { dom += '(' + node.className + ')' }
-   //       if (typeof n === 'number') { dom += '<span>{child #' + n + '}</span>'; }
-   //             dom += '<br>';
-   //             depth++;
-   //             [].forEach.call(node.children, function (node, childNumber) { getDOM(node, childNumber); });
-   //             depth--; return dom;
-   //    };
-   // })();
-   // document.querySelector('.dom-view-one-click').innerHTML = getDOM(document.body);
-   // getDOM();
-
-   // document.querySelectorAll("body *").forEach(V => { console.log(V.className) });
-   // document.querySelector("li").parentNode.parentNode.parentNode.tagName;
-
-
-
-
-
-
-
-
-
-
-const getDomTreeItInsert = () => {
-   let res = [];
-   function foo() {
-      document.querySelectorAll("body *").forEach(ELM => {
-         let foo = ELM;
-         let bar = [];
-         while (foo.parentElement.tagName !== "BODY") {
-            bar.unshift(foo.tagName);
-            foo = foo.parentElement;
-         }
-         res.push(bar);
-      })
-   }
-   
-   foo();
-   document.querySelector("body").insertAdjacentHTML("beforeend", `<textarea name="" id="" cols="30" rows="30">${res.map(V=>{return V.join(" ") + "\n" }).join("")}</textarea>`)
-   // window.onload = getDomTreeItInsert;   
-};getDomTreeItInsert();
-
-
-
-
-   // baz;
-
-
-// Array.from(document.querySelectorAll("*")).filter(V => { return V.className }).map(V => { return V.textContent = V.className });
-
-</script>
-
-<div onclick="function getDomTreeItInsert(){
-   let res = [];
-   function foo() {
-      document.querySelectorAll('body *').forEach(ELM => {
-         let foo = ELM;
-         let bar = [];
-         while (foo.parentElement.tagName !== 'BODY') {
-            bar.unshift(foo.tagName);
-            foo = foo.parentElement;
-         }
-         res.push(bar);
-      })
-   }
-   
-   foo();
-   document.querySelector('body').insertAdjacentHTML('beforeend', `<textarea name='' id='' cols='30' rows='30'>${res.map(V=>{return V.join(' ') + '\n' }).join('')}</textarea>`)
-   // window.onload = getDomTreeItInsert;   
-};getDomTreeItInsert();"></div>
-
 
 </body>
 </html>
