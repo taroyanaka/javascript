@@ -13,25 +13,32 @@
 
 body {
   margin: 0px;
-  font-family: 'segoe ui';
 }
 
 body > div.nav {
   height: 50px;
   width: 100%;
-  background-color: #4d4d4d;
+  background-color: gray;
   position: relative;
 }
 
 body > div > div.nav-header {
   display: inline;
+  background-color: black;
 }
 
 body > div > div.nav-header > div.nav-title {
   display: inline-block;
-  font-size: 22px;
+  height: 100%;
+  width: 100px;
+  /* display: flex; */
+  /* justify-content: center; */
+   /* align-items: center; */
+
+  /* font-size: 22px; */
   color: #fff;
-  padding: 10px 10px 10px 10px;
+  /* padding: 10px 10px 10px 10px; */
+  background-color: yellowgreen;
 }
 
 body > div > div.nav-btn {
@@ -39,16 +46,27 @@ body > div > div.nav-btn {
 }
 
 body > div > div.nav-links {
-  display: inline;
+  /* display: inline; */
   float: right;
-  font-size: 18px;
+  /* font-size: 18px; */
+  background-color: violet;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+   align-items: center;
+   /* width: 600px; */
 }
 
 body > div > div.nav-links > a {
-  display: inline-block;
-  padding: 13px 10px 13px 10px;
+  margin: 0px 20px;
+  /* display: inline-block; */
+  /* padding: auto 10px; */
+  /* margin: auto 10px; */
+  /* height: 100%; */
+  /* padding: 13px 10px 13px 10px; */
   text-decoration: none;
   color: #efefef;
+  /* background-color: wheat; */
 }
 
 body > div > div.nav-links > a:hover {
@@ -59,7 +77,7 @@ body > div > input#nav-check {
   display: none;
 }
 
-@media (max-width:600px) {
+@media (max-width:700px) {
   body > div > div.nav-btn {
     display: inline-block;
     position: absolute;
@@ -131,32 +149,24 @@ body > div > input#nav-check {
     </div>
 </div>
 
+<button onclick="function getDomTreeInsert(){
+    var res = [];
+    function foo() {
+       document.querySelectorAll('body *').forEach(ELM => {
+          var foo = ELM;
+          var bar = [];
+          while (foo.parentElement.tagName !== 'BODY') {
+             bar.unshift(foo.className ? foo.tagName + '.' + foo.className : foo.tagName);
+             foo = foo.parentElement;
+          }
+          res.push(bar);
+       })
+    }
+    
+    foo();
+    document.querySelector('body').insertAdjacentHTML('beforeend', `<textarea cols='30' rows='30'>${res.map(V=>{return V.join(' ') + '\n' }).join('')}</textarea>`)
+    // window.onload = getDomTreeInsert;   
+ };getDomTreeInsert();">hey guy click this getDomTreeInsert</button>
 
-
-<div class="dom-view-one-click"></div>
-<textarea onclick='document.querySelector("textarea").value = document.querySelector("body").innerHTML' name="" id="" cols="30" rows="10"></textarea>
 </body>
-<script>
-    var getDOM = (function () {
-      var dom = '',
-      depth = 0;
-
-      return function (node, n) {
-        for (var i = 0; i < depth; i++) { dom += '<span>|---</span>'; } dom += '<b>' +
-          node.nodeName.toLowerCase() + '</b>';
-        if (node.id) { dom += '[#' + node.id + ']'; }
-        if (node.className) { dom += '(' + '.' + node.className + ')' }
-        if (typeof n === 'number') { dom += '<span>{child #' + n + '}</span>'; }
-        dom += '<br>';
-        depth++;
-        [].forEach.call(node.children, function (node, childNumber) { getDOM(node, childNumber); });
-        depth--;
-        return dom;
-      };
-    })();
-    document.querySelector('.dom-view-one-click').innerHTML = getDOM(document.body);
-    getDOM();
-</script>
-
-
 </html>
