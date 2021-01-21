@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sql js</title>
+    <script src="ramda.min.js"></script>
+    <!-- https://gist.github.com/sourcegr/9cf944414c8d30a4004e39e2ee0a5605 -->
+</head>
+<body>
+<script>
+// include ramda library
+var users = [
+  {id:1, name: 'papas', is_published:true},
+  {id:2, name: 'nick', is_published:false},
+  {id:3, name: 'Jopahn', is_published:true}
+];
+
+var $select = function(key){
+  var _collection, cls = [];
+  
+  function get_ramda_eq(str){
+    return {
+      endsWith   : R.endsWith,
+      contains   : R.contains,
+      equals     : R.equals,
+      startsWith : R.startsWith
+    }[str];
+  }
+  
+  return {
+    from: function(collection){
+      _collection = collection;
+      return this;
+    },
+    where: function(){
+      var _col = arguments[0];
+      var _comp = get_ramda_eq(arguments[1]);
+      var _val = arguments[2];
+      cls.push(x => _comp(_val, x[_col]));
+      return this;
+    },
+    run:function(){
+      return R.compose(
+        R.pluck(key),
+        R.filter(R.allPass(cls))
+      )(_collection);
+    }
+  }
+}
+// example
+$select('name').
+  from(users).
+  where('is_published', 'equals', true).
+  run();
+//  where('name', 'startsWith', 'pa').
+//  where('name', 'endsWith', 'as').
+//  where('name', 'contains', 'ap').
+let res = $select('name').
+  from(users).
+  where('is_published', 'equals', true).
+  run();
+console.log(res);
+
+
+
+// my example
+var $FOO1 = function(param){
+  return {
+    foo: function(param2){
+      return param2;
+    }
+  }
+}
+const res1 = $FOO1().foo("BAR");
+console.log(res1);
+
+var $FOO2 = function(param){
+    var whatthisis = [1];
+  return {
+    foo2: function(param2){
+    //   return param2;
+      return this;
+    },
+    foo3: function(param3){
+      return param3;
+    }
+  }
+}
+const res2 = $FOO2().foo2("BAR2");
+console.log(res2);
+const res3 = $FOO2().foo2("BAR2").foo3("BAR2");
+console.log(res3);
+</script>
+</body>
+</html>
