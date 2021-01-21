@@ -10,11 +10,6 @@
 <body>
 <script>
 // include ramda library
-var users = [
-  {id:1, name: 'papas', is_published:true},
-  {id:2, name: 'nick', is_published:false},
-  {id:3, name: 'Jopahn', is_published:true}
-];
 
 // https://github.com/ramda/ramda/blob/cbc65c7f311a366aa3618a18c1a439a72f482218/source/endsWith.js
     // https://github.com/ramda/ramda/blob/cbc65c7f311a366aa3618a18c1a439a72f482218/source/takeLast.js
@@ -64,6 +59,8 @@ var $select = function(key){
       var _col = arguments[0];
       var _comp = get_ramda_eq(arguments[1]);
       var _val = arguments[2];
+    //   console.log(arguments[0]);
+    //   console.log(arguments[1]);
       cls.push(x => _comp(_val, x[_col]));
       return this;
     },
@@ -75,6 +72,13 @@ var $select = function(key){
     }
   }
 }
+
+var users = [
+  {id:1, name: 'papas', is_published:true},
+  {id:2, name: 'nick', is_published:false},
+  {id:3, name: 'Jopahn', is_published:true}
+];
+
 // example
 $select('name').
   from(users).
@@ -100,10 +104,10 @@ var $FOO1 = function(param){
   }
 }
 const res1 = $FOO1().foo("BAR");
-console.log(res1);
+// console.log(res1);
 
 var $FOO2 = function(param){
-    var whatthisis = [1];
+    // var whatthisis = [1];
   return {
     foo2: function(param2){
     //   return param2;
@@ -115,9 +119,9 @@ var $FOO2 = function(param){
   }
 }
 const res2 = $FOO2().foo2("BAR2");
-console.log(res2);
+// console.log(res2);
 const res3 = $FOO2().foo2("BAR2").foo3("BAR2");
-console.log(res3);
+// console.log(res3);
 </script>
 </body>
 </html>
