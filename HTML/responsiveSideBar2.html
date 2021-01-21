@@ -11,7 +11,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-
 }
 body > nav {
   height: 50px;
@@ -26,20 +25,18 @@ nav div.nav-title {
   color: #fff;
   background-color: yellowgreen;
 }
-nav > div.nav-btn {
+nav > label > div.nav-btn {
   display: none;
 }
 nav > div.nav-links {
-  float: right;
   background-color: violet;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 nav > div.nav-links > a {
-  display: inline-block;
-  margin: 0;
   padding: 0 30px;
   color: white;
 }
