@@ -9,153 +9,113 @@
 <style>
 * {
   box-sizing: border-box;
-}
+  margin: 0;
+  padding: 0;
 
-body {
-  margin: 0px;
 }
-
-body > div.nav {
+body > nav {
   height: 50px;
   width: 100%;
   background-color: gray;
   position: relative;
 }
-
-body > div > div.nav-header {
-  /* display: inline; */
-  /* background-color: black; */
-}
-
-/* body > div > div.nav-header > div.nav-title { */
-body > div > div.nav-title {
-  /* display: inline-block; */
+nav div.nav-title {
+  display: inline-block;
   height: 100%;
   width: 100px;
-  /* background-color: saddlebrown; */
-  display: flex;
-  justify-content: center;
-   align-items: center;
-
-  /* font-size: 22px; */
   color: #fff;
-  /* padding: 10px 10px 10px 10px; */
   background-color: yellowgreen;
 }
-
-body > div > div.nav-btn {
+nav > div.nav-btn {
   display: none;
 }
-
-body > div > div.nav-links {
-  /* display: inline; */
+nav > div.nav-links {
   float: right;
-  /* font-size: 18px; */
   background-color: violet;
   height: 100%;
   display: flex;
   justify-content: center;
-   align-items: center;
-   /* width: 600px; */
+  align-items: center;
 }
-
-body > div > div.nav-links > a {
-  margin: 0px 20px;
-  /* display: inline-block; */
-  /* padding: auto 10px; */
-  /* margin: auto 10px; */
-  /* height: 100%; */
-  /* padding: 13px 10px 13px 10px; */
-  text-decoration: none;
-  color: #efefef;
-  /* background-color: wheat; */
+nav > div.nav-links > a {
+  display: inline-block;
+  margin: 0;
+  padding: 0 30px;
+  color: white;
 }
-
-body > div > div.nav-links > a:hover {
-  background-color: rgba(0, 0, 0, 0.3);
+nav > div.nav-links > a:hover {
+  height: 100%;
+  padding: 0 30px;
+  background-color: black;
 }
-
-body > div > input#nav-check {
+nav > input#nav-check {
   display: none;
 }
 
 @media (max-width:700px) {
-body > div > div.nav-btn {
-  /* display: inline-block; */
-  display: inline;
-  position: absolute;
-  right: 0px;
-  top: 0px;
-}
-body > div > div.nav-btn > label {
+nav > label {
   display: inline-block;
-  /* display: inline; */
+  float: right;
   width: 50px;
   height: 50px;
   padding: 13px;
   background-color: rebeccapurple;
 }
-body > div > div.nav-btn > label:hover,
-body > div > input#nav-check:checked ~ div.nav-btn > label {
-  background-color: rgba(0, 0, 0, 0.3);
+
+nav > div.nav-btn:hover,
+nav > input#nav-check:checked ~ div.nav-btn  {
+  background-color: red;
 }
-body > div > div.nav-btn > label > span {
-  display: block;
-  width: 25px;
-  height: 10px;
-  border-top: 2px solid #eee;
-}
-body > div > div.nav-links {
+nav > div.nav-links {
   position: absolute;
   display: block;
   width: 100%;
-  background-color: #333;
+  background-color: pink;
   height: 0px;
   transition: all 0.3s ease-in;
   overflow-y: hidden;
   top: 50px;
   left: 0px;
 }
-body > div > div.nav-links > a {
+nav > div.nav-links > a {
   display: block;
   width: 100%;
   height: 100px;
   margin: 0;
   padding: 0;
 }
-body > div > input#nav-check:not(:checked) ~ div.nav-links {
+nav > div.nav-links > a:hover {
+  height: 100px;
+}
+
+nav > input#nav-check:not(:checked) ~ div.nav-links {
   height: 0px;
 }
-body > div > input#nav-check:checked ~ div.nav-links {
+nav > input#nav-check:checked ~ div.nav-links {
   height: calc(100vh - 50px);
-  /* overflow-y: auto; */
 }
 }
 </style>
 <body>
-<div class="nav">
+<nav>
     <input type="checkbox" id="nav-check">
-    <!-- <div class="nav-header"> -->
         <div class="nav-title">
-            JoGeek
+            TITLE
         </div>
-    <!-- </div> -->
-    <div class="nav-btn">
-        <label for="nav-check">
-            <span></span>
-            <span></span>
-            <span></span>
-        </label>
-    </div>
+    <label for="nav-check">
+      <div class="nav-btn">
+        HOGE
+      </div>
+    </label>
 
     <div class="nav-links">
-        <a href="">Github</a>
-        <a href="">Stackoverflow</a>
-        <a href="">LinkedIn</a>
-        <a href="">Codepen</a>
-        <a href="">JsFiddle</a>
+        <a href="">FOO</a>
+        <a href="">BAR</a>
+        <a href="">BAZ</a>
+        <a href="">QUX</a>
+        <a href="">QUUX</a>
     </div>
-</div>
+  </nav>
 
 <button onclick="function getDomTreeInsert(){
     var res = [];
@@ -163,7 +123,6 @@ body > div > input#nav-check:checked ~ div.nav-links {
        document.querySelectorAll('body *').forEach(ELM => {
           var foo = ELM;
           var bar = [];
-          // while (foo.parentElement.tagName !== 'BODY') {
           while (foo.tagName !== 'BODY') {
              bar.unshift(foo.className ? foo.tagName + '.' + foo.className : foo.tagName);
              foo = foo.parentElement;
@@ -173,9 +132,7 @@ body > div > input#nav-check:checked ~ div.nav-links {
     }
     
     foo();
-    document.querySelector('body').insertAdjacentHTML('beforeend', `<textarea cols='30' rows='30'>${res.map(V=>{return V.join(' ') + '\n' }).join('')}</textarea>`)
-    // window.onload = getDomTreeInsert;   
- };getDomTreeInsert();">hey guy click this getDomTreeInsert</button>
+    document.querySelector('body').insertAdjacentHTML('beforeend', `<textarea cols='30' rows='30'>${res.map(V=>{return V.join(' ') + '\n' }).join('')}</textarea>`)};getDomTreeInsert();">hey guy click this getDomTreeInsert</button>
 
 </body>
 </html>
