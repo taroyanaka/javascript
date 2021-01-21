@@ -39,6 +39,8 @@ nav > div.nav-links {
 nav > div.nav-links > a {
   padding: 0 30px;
   color: white;
+  display: inline-block;
+  height: 100%;
 }
 nav > div.nav-links > a:hover {
   height: 100%;
@@ -50,6 +52,10 @@ nav > input#nav-check {
 }
 
 @media (max-width:700px) {
+nav > label > div.nav-btn {
+  display: contents;
+
+}
 nav > label {
   display: inline-block;
   float: right;
@@ -58,8 +64,7 @@ nav > label {
   padding: 13px;
   background-color: rebeccapurple;
 }
-
-nav > div.nav-btn:hover,
+nav div.nav-btn:hover,
 nav > input#nav-check:checked ~ div.nav-btn  {
   background-color: red;
 }
@@ -84,7 +89,6 @@ nav > div.nav-links > a {
 nav > div.nav-links > a:hover {
   height: 100px;
 }
-
 nav > input#nav-check:not(:checked) ~ div.nav-links {
   height: 0px;
 }
