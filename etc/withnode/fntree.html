@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="ramdaWithConsoleTrace.js"></script>
+    <title>How to read from Chrome's console in JavaScript</title>
 </head>
 <body>
 <script>
-    console.log(
-        R.repeat({"foo":"bar"}, 5) //=> [{}, {}, {}, {}, {}]
-    )
+    // https://stackoverflow.com/a/19846113/9740478
+
+    console.stdlog = console.log.bind(console);
+        console.logs = [];
+        console.log = function () {
+            console.logs.push(Array.from(arguments));
+            console.stdlog.apply(console, arguments);
+        }
+
+
+    console.log(1);
+    console.log(2);
+    console.logs;
 </script>
 </body>
 </html>
