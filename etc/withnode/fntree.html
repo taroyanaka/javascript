@@ -10,12 +10,11 @@
     // https://stackoverflow.com/a/19846113/9740478
 
     console.stdlog = console.log.bind(console);
-        console.logs = [];
-        console.log = function () {
-            console.logs.push(Array.from(arguments));
-            console.stdlog.apply(console, arguments);
-        }
-
+    console.logs = [];
+    console.log = function () {
+        console.logs.push(Array.from(arguments));
+        console.stdlog.apply(console, arguments);
+    }
 
     console.log(1);
     console.log(2);
