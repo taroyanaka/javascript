@@ -9,39 +9,23 @@
 .read-more-state {
   display: none;
 }
-
 .read-more-target {
   width: 200px;
-  opacity: 1;
-  max-height: 45px;
-  font-size: 20px;
-  transition: .25s ease;
   overflow: hidden;
-  text-overflow: ellipsis;
+  max-height: 2.5rem;
+  transition: .25s ease;
 }
-
 .read-more-state:checked + .read-more-target {
-  opacity: 1;
-  font-size: inherit;
-  max-height: 999em;
+  max-height: 999rem;
 }
-
 .read-more-trigger {
-  cursor: pointer;
   display: inline-block;
-  padding: 0 .5em;
-  color: #666;
-  font-size: 20px;
-  line-height: 2;
-  border: 1px solid #ddd;
-  border-radius: .25em;
+  font-size: 1.5rem;
+  line-height: 1.8rem;
+  border: 1px solid gray;
+  border-radius: 0.25rem;
 }
-
-/* Other style */ 
-body {
-  padding: 2%;
-}
-    </style>
+</style>
 </head>
 <body>
 <div>
