@@ -12,52 +12,37 @@ body {
     color: black;
 }
 header {
-  background-color: rgba(0,0,0,.5);
-  font-size: 1.5em;
-  text-align: center;
-  padding: 1em;
+  background-color: blueviolet;
 }
-
 .panel-wrapper {
   position: relative;
 }
-
 .btn {
   color: #fff;
-  background: #000;
-  border-radius: 1.5em;
-  left: 30%;
-  padding: 1em;
-  text-decoration: none;
-  width: 40%;
+  background: pink;
 }
 .show, .hide {
   position: absolute;
   bottom: -1em;
-  z-index: 100;
-  text-align: center;
+  z-index: 1;
 }
-
 .hide {display: none;}
 .show:target {display: none;}
 .show:target ~ .hide {display: block;}
 .show:target ~ .panel {
-   max-height: 2000px; 
+   max-height: 9999px; 
 }
 .show:target ~ .fade {
   margin-top: 0;
 }
-
 .panel {
   position: relative;
-  margin: 2em auto;
-  width: 70%;
   max-height: 100px;
   overflow: hidden;
   transition: max-height .5s ease;
 }
 .fade {
-  background: linear-gradient(to bottom, rgba(1,1,1,0) 0%,rgba(1,1,1,1) 75%);
+  background: linear-gradient(to bottom, rgba(1,1,1,0) 0%,rgba(1,1,1,1) 95%);
   height: 100px;
   margin-top: -100px;
   position: relative;
@@ -91,5 +76,22 @@ header {
     </div><!-- end panel -->
     <div class="fade"></div>
 </div><!-- end panel-wrapper -->
+
+<button onclick="function getDomTreeInsert(){
+  var res = [];
+  function foo() {
+     document.querySelectorAll('body *').forEach(ELM => {
+        var foo = ELM;
+        var bar = [];
+        while (foo.tagName !== 'BODY') {
+           bar.unshift(foo.className ? foo.tagName + '.' + foo.className : foo.tagName);
+           foo = foo.parentElement;
+        }
+        res.push(bar);
+     })
+  }
+  
+  foo();
+  document.querySelector('body').insertAdjacentHTML('beforeend', `<textarea cols='30' rows='30'>${res.map(V=>{return V.join(' ') + '\n' }).join('')}</textarea>`)};getDomTreeInsert();">hey guy click this getDomTreeInsert</button>
 </body>
 </html>
