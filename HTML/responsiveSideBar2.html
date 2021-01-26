@@ -18,17 +18,17 @@ body > nav {
   background-color: gray;
   position: relative;
 }
-nav div.nav-title {
+nav div.title {
   display: inline-block;
   height: 100%;
   width: 100px;
   color: #fff;
   background-color: yellowgreen;
 }
-nav > label > div.nav-btn {
+nav > label > div.btn {
   display: none;
 }
-nav > div.nav-links {
+nav > div.links {
   background-color: violet;
   height: 100%;
   display: inline-block;
@@ -36,23 +36,23 @@ nav > div.nav-links {
   right: 0;
   top: 0;
 }
-nav > div.nav-links > a {
+nav > div.links > a {
   padding: 0 30px;
   color: white;
   display: inline-block;
 }
-nav > div.nav-links > a:hover {
+nav > div.links > a:hover {
   height: 100%;
   padding: 0 30px;
   background-color: black;
 }
-nav > input#nav-check {
+nav > input#check {
   display: none;
 }
 
 @media (max-width:500px) {
-nav > label > div.nav-btn {
-  display: contents;
+nav > label > div.btn {
+  /* display: contents; */
 }
 nav > label {
   display: inline-block;
@@ -62,11 +62,11 @@ nav > label {
   padding: 13px;
   background-color: rebeccapurple;
 }
-label div.nav-btn:hover,
-nav > input#nav-check:checked ~ div.nav-btn  {
+label div.btn:hover,
+nav > input#check:checked ~ div.btn  {
   background-color: red;
 }
-nav > div.nav-links {
+nav > div.links {
   position: absolute;
   display: block;
   width: 100%;
@@ -77,32 +77,32 @@ nav > div.nav-links {
   top: 50px;
   left: 0px;
 }
-nav > div.nav-links > a {
+nav > div.links > a {
   display: block;
   width: 100%;
   height: 100px;
 }
-nav > div.nav-links > a:hover {
+nav > div.links > a:hover {
   height: 100px;
 }
-nav > input#nav-check:not(:checked) ~ div.nav-links {
+nav > input#check:not(:checked) ~ div.links {
   height: 0px;
 }
-nav > input#nav-check:checked ~ div.nav-links {
+nav > input#check:checked ~ div.links {
   height: calc(100vh - 50px);
 }
 }
 </style>
 <body>
 <nav>
-    <div class="nav-title">TITLE</div>
+    <div class="title">TITLE</div>
 
-    <input type="checkbox" id="nav-check">
-    <label for="nav-check">
-      <div class="nav-btn">HOGE</div>
+    <input type="checkbox" id="check">
+    <label for="check">
+      <div class="btn">HOGE</div>
     </label>
 
-    <div class="nav-links">
+    <div class="links">
         <a href="">FOO</a>
         <a href="">BAR</a>
         <a href="">BAZ</a>
