@@ -25,7 +25,7 @@ td{
 </table>
 </body>
 <script>
-    const record = `    <tr>
+const record = `<tr>
     <td>1</td>
     <td>2</td>
     <td>3</td>
@@ -40,5 +40,47 @@ document.querySelector("table").insertAdjacentHTML("afterbegin", R.times(R.ident
     return record
 }).join("")
 )
+// ♔♚キング、♕♛クイーン、♖♜、ルーク、♗♝ビショップ、♘♞ナイト、♙♟ポーン
+const initPieceWhiteNotPawn = `<td>♖</td>
+<td>♘</td>
+<td>♗</td>
+<td>♕</td>
+<td>♔</td>
+<td>♗</td>
+<td>♘</td>
+<td>♖</td>`
+const initPieceWhitePawn = `<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>`
+document.querySelectorAll("table tr")[7].innerHTML = `<tr>${initPieceWhiteNotPawn}</tr>`
+document.querySelectorAll("table tr")[6].innerHTML = `<tr>${initPieceWhitePawn}</tr>`
+
+// ♔♚キング、♕♛クイーン、♖♜、ルーク、♗♝ビショップ、♘♞ナイト、♙♟ポーン
+const initPieceBlackNotPawn = `<td>♜</td>
+<td>♞</td>
+<td>♝</td>
+<td>♛</td>
+<td>♚</td>
+<td>♝</td>
+<td>♞</td>
+<td>♜</td>`
+const initPieceBlackPawn = `<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>`
+document.querySelectorAll("table tr")[0].innerHTML = `<tr>${initPieceBlackNotPawn}</tr>`
+document.querySelectorAll("table tr")[1].innerHTML = `<tr>${initPieceBlackPawn}</tr>`
+
+
+
 </script>
 </html>
