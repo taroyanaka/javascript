@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chess</title>
+    <script src="ramda.js"></script>
+<style>
+tr:nth-child(even) td:nth-child(even){
+	background: gray;
+}
+tr:nth-child(odd) td:nth-child(odd){
+	background: gray;
+}
+td{
+    height: 30px;
+    width: 30px;
+}
+</style>
+</head>
+<body>
+<h1>chess</h1>
+<table>
+
+</table>
+</body>
+<script>
+    const record = `    <tr>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5</td>
+    <td>6</td>
+    <td>7</td>
+    <td>8</td>
+</tr>`
+// document.querySelector("h1").textContent = R.add(1,2);
+document.querySelector("table").insertAdjacentHTML("afterbegin", R.times(R.identity, 8).map(V=>{
+    return record
+}).join("")
+)
+</script>
+</html>
