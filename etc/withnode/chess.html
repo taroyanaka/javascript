@@ -6,16 +6,33 @@
     <title>chess</title>
     <script src="ramda.js"></script>
 <style>
-tr:nth-child(even) td:nth-child(even){
-	background: gray;
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
-tr:nth-child(odd) td:nth-child(odd){
-	background: gray;
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 td{
+    background-color: gray;
+}
+tr:nth-child(odd) td:nth-child(odd){
+	background-color: white;
+}
+tr:nth-child(even) td:nth-child(even){
+	background-color: white;
+}
+td{
+    border: 2px solid black;
+    /* border: none; */
     height: 30px;
     width: 30px;
 }
+/* td:focus, td:hover{
+    background-color: blueviolet;
+} */
 </style>
 </head>
 <body>
@@ -79,6 +96,17 @@ const initPieceBlackPawn = `<td>♟</td>
 <td>♟</td>`
 document.querySelectorAll("table tr")[0].innerHTML = `<tr>${initPieceBlackNotPawn}</tr>`
 document.querySelectorAll("table tr")[1].innerHTML = `<tr>${initPieceBlackPawn}</tr>`
+
+// document.querySelectorAll(".data").forEach(e => {
+//                 e.addEventListener("click", fetchAndSet, false)
+//             });
+            
+document.querySelectorAll("td").forEach(V=>{
+    V.addEventListener("click", function (V) {
+        V.target.style = "background-color: purple;"
+    },false)
+
+})
 
 
 
