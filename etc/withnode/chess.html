@@ -98,7 +98,7 @@ document.querySelectorAll("table tr")[0].innerHTML = `<tr>${initPieceBlackNotPaw
 document.querySelectorAll("table tr")[1].innerHTML = `<tr>${initPieceBlackPawn}</tr>`
 
 let from;
-let to;
+// let to;
 let ex;
 
 document.querySelectorAll("td").forEach(V=>{
@@ -112,11 +112,15 @@ document.querySelectorAll("td").forEach(V=>{
             V.target.style = "background-color: purple;"
             from = V.target.textContent;ex = V
         };
-        // if(from){V.target.style = "background-color: purple;"};
     },false)
 })
 
+function tdSelector(trIdx, tdIdx){
+    return document.querySelectorAll(`table tr`)[trIdx].children[tdIdx]
+}
 
+tdSelector(0,0).click()
+tdSelector(1,0).click()
 
 </script>
 </html>
