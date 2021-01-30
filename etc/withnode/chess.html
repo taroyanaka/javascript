@@ -43,6 +43,7 @@ td{
 </body>
 <script>
 const record = `<tr>
+    <td>0</td>
     <td>1</td>
     <td>2</td>
     <td>3</td>
@@ -50,7 +51,6 @@ const record = `<tr>
     <td>5</td>
     <td>6</td>
     <td>7</td>
-    <td>8</td>
 </tr>`
 // document.querySelector("h1").textContent = R.add(1,2);
 document.querySelector("table").insertAdjacentHTML("afterbegin", R.times(R.identity, 8).map(V=>{
@@ -97,15 +97,23 @@ const initPieceBlackPawn = `<td>♟</td>
 document.querySelectorAll("table tr")[0].innerHTML = `<tr>${initPieceBlackNotPawn}</tr>`
 document.querySelectorAll("table tr")[1].innerHTML = `<tr>${initPieceBlackPawn}</tr>`
 
-// document.querySelectorAll(".data").forEach(e => {
-//                 e.addEventListener("click", fetchAndSet, false)
-//             });
-            
+let from;
+let to;
+let ex;
+
 document.querySelectorAll("td").forEach(V=>{
     V.addEventListener("click", function (V) {
-        V.target.style = "background-color: purple;"
+        if(from){
+            ex.target.style = "background-color:;"
+            ex.target.textContent = V.target.textContent;
+            V.target.textContent = from;
+            from=null;
+        }else{
+            V.target.style = "background-color: purple;"
+            from = V.target.textContent;ex = V
+        };
+        // if(from){V.target.style = "background-color: purple;"};
     },false)
-
 })
 
 
