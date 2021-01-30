@@ -57,6 +57,7 @@ document.querySelector("table").insertAdjacentHTML("afterbegin", R.times(R.ident
     return record
 }).join("")
 )
+document.querySelectorAll("td").forEach((V,K)=>{V.dataset.num = K});
 // ♔♚キング、♕♛クイーン、♖♜、ルーク、♗♝ビショップ、♘♞ナイト、♙♟ポーン
 const initPieceWhiteNotPawn = `<td>♖</td>
 <td>♘</td>
@@ -100,11 +101,8 @@ document.querySelectorAll("table tr")[1].innerHTML = `<tr>${initPieceBlackPawn}<
 let from;
 // let to;
 let ex;
-let idx=0
 
-function giveClickable(ex){
-    console.log(ex);
-}
+
 
 // 0
 // 125
@@ -117,6 +115,7 @@ function giveClickable(ex){
 
 function getIdxNumToTrTdIdx(IdxNum){
     let res = (IdxNum/8).toString().split(".");
+    // console.log(res);
     if(res.length===1){res.push(0)};
     res = res.map(NumStr=>{return Number(NumStr)});
 
@@ -157,6 +156,7 @@ function getIdxNumToTrTdIdx(IdxNum){
 // getIdxNumToTrTdIdx(36)
 
 document.querySelectorAll("td").forEach(V=>{
+    document.querySelectorAll("td").forEach((V,K)=>{V.dataset.num = K});
     V.addEventListener("click", function (V) {
         if(from){
             ex.target.style = "background-color:;"
@@ -180,6 +180,13 @@ function trTdSelector(trIdx, tdIdx){
 trTdSelector(0,0).click()
 trTdSelector(4,4).click()
 trTdSelector(4,4).click()
+
+function giveClickable(ex){
+    console.log(ex.target.dataset.num);
+    const res = getIdxNumToTrTdIdx(Number(ex.target.dataset.num));
+    console.log(res);
+}
+
 
 </script>
 </html>
