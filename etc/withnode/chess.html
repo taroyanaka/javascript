@@ -302,24 +302,26 @@ function whenKnight() {
             // [3, 6],
     ];
 
-    function makeFooBar(xy) {
+    // function makeFooBar(xy) {
+    function makeXAxisYAxis(xy) {
+        const [x, y] = [xy[0], xy[1]];
         return [
                     [
-                        [xy[0]+2, xy[1]+1],
-                        [xy[0]+2, xy[1]-1],
-                        [xy[0]-2, xy[1]+1],
-                        [xy[0]-2, xy[1]-1]
+                        [x+2, y+1],
+                        [x+2, y-1],
+                        [x-2, y+1],
+                        [x-2, y-1]
                     ],
                     [
-                        [xy[0]+1, xy[1]+2],
-                        [xy[0]-1, xy[1]+2],
-                        [xy[0]+1, xy[1]-2],
-                        [xy[0]-1, xy[1]-2],
+                        [x+1, y+2],
+                        [x-1, y+2],
+                        [x+1, y-2],
+                        [x-1, y-2],
                     ]
                 ]
     }
-    const [foo, bar] = makeFooBar(xy);
-    return concatAll( [foo, bar] );
+    const [XAxis, YAxis] = makeXAxisYAxis(xy);
+    return concatAll( [XAxis, YAxis] );
 }
 
 // function makeFooBarSecond(tmp) {
