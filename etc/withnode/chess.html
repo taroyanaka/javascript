@@ -206,6 +206,10 @@ function giveClickable(ex, text){
                 case "♝":
                 givePieceMoveClickable(whenBishop);
                 break;
+                case "♕":
+                case "♛":
+                givePieceMoveClickable(whenQueen);
+                break;
             default:
                 break;
         }
@@ -215,6 +219,13 @@ function giveClickable(ex, text){
     const res = foo(ex, text);
     console.log(res);
 }
+
+// https://stackoverflow.com/a/6454237/9740478
+// https://qiita.com/KtheS/items/1a93ba0a6d722a534439
+const between = (min, max) => x =>  x >= min && x <= max;
+const isBetweenZeroToSeven = between(0, 7);
+const betweenXY = (min, max) => (x, y) =>  x >= min && x <= max && y >= min && y <= max;
+const isBetweenZeroToSevenXY = between(0, 7);
 
 function whenRook() {
     // let xy = [4,4];
@@ -234,17 +245,16 @@ function whenRook() {
     tmp.push(...minusX);
     tmp.push(...plusY);
     tmp.push(...minusY);
-    let tmp2 = tmp.filter(V=>{if(V[0]<=7
-                            &&V[0]>=0
-                            &&V[1]<=7
-                            &&V[1]>=0){
+    let tmp2 = tmp.filter(V=>{if(
+                            isBetweenZeroToSevenXY(V[0], V[1])
+                            // V[0]<=7
+                            // &&V[0]>=0
+                            // &&V[1]<=7
+                            // &&V[1]>=0
+                            ){
                         return V} })
     return tmp2
 }
-
-trTdSelector(0,2).click()
-trTdSelector(4,4).click()
-trTdSelector(4,4).click()
 
 
 function whenBishop() {
@@ -272,6 +282,49 @@ function whenBishop() {
     return tmp2
 }
 
+
+function whenQueen() {
+    let xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
+    
+        let plusX = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]] });
+        let minusX = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]] });
+        let plusY = R.range(1,8).map(V=>{return [xy[0], xy[1]+V] });
+        let minusY = R.range(1,8).map(V=>{return [xy[0], xy[1]-V] });
+
+        let plusXY = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]+V] });
+        let minusXY = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]-V] });
+        let plusYminusX = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]+V] });
+        let plusXminusY = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]-V] });
+//     console.log(
+// plusX,
+// minusX,
+// plusY,
+// minusY,
+
+// plusXY,
+// minusXY,
+// plusYminusX,
+// plusXminusY
+//     )
+    let tmp =[];
+    tmp.push(...plusX);
+    tmp.push(...minusX);
+    tmp.push(...plusY);
+    tmp.push(...minusY);
+
+    tmp.push(...plusXY);
+    tmp.push(...minusXY);
+    tmp.push(...plusYminusX);
+    tmp.push(...plusXminusY);
+    let tmp2 = tmp.filter(V=>{if(V[0]<=7
+                            &&V[0]>=0
+                            &&V[1]<=7
+                            &&V[1]>=0){
+                        return V} })
+    return tmp2
+}
+
+
 function givePieceMoveClickable(whenAny) {
     document.querySelectorAll("td").forEach(TD=>{
         // TD.style = "background-color:;";
@@ -283,5 +336,18 @@ function givePieceMoveClickable(whenAny) {
     })
 }
 // givePieceMoveClickable()
+
+// Rook
+trTdSelector(0,0).click()
+
+// Bishop
+// trTdSelector(0,2).click()
+
+// Queen
+// trTdSelector(0,3).click()
+
+trTdSelector(4,4).click()
+trTdSelector(4,4).click()
+
 </script>
 </html>
