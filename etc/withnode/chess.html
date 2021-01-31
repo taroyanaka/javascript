@@ -210,6 +210,10 @@ function giveClickable(ex, text){
                 case "♛":
                 givePieceMoveClickable(whenQueen);
                 break;
+                case "♘":
+                case "♞":
+                givePieceMoveClickable(whenKnight);
+                break;
             default:
                 break;
         }
@@ -275,6 +279,27 @@ function whenQueen() {
     return concatAll( [plusX, minusX, plusY, minusY, plusXY, minusXY, plusYminusX, plusXminusY] );
 }
 
+function whenKnight() {
+    const xy = [4, 4];
+
+    const foo = [
+        // [6, 4],
+        [6, 5],
+        [6, 3],
+        // [2, 4],
+        [2, 5],
+        [2, 3],
+    ];
+    const bar = [
+        // [4, 2],
+        [5, 2],
+        [3, 2],
+        // [4, 6],
+        [5, 6],
+        [3, 6],
+    ];
+    return concatAll( [foo, bar] );
+}
 
 function givePieceMoveClickable(whenAny) {
     document.querySelectorAll("td").forEach(TD=>{
@@ -295,7 +320,11 @@ function givePieceMoveClickable(whenAny) {
 // trTdSelector(0,2).click()
 
 // Queen
-trTdSelector(0,3).click()
+// trTdSelector(0,3).click()
+
+// Knight
+trTdSelector(0,1).click()
+
 
 trTdSelector(4,4).click()
 trTdSelector(4,4).click()
