@@ -182,9 +182,6 @@ function trTdSelector(trIdx, tdIdx){
     return document.querySelectorAll(`table tr`)[trIdx].children[tdIdx]
 }
 
-trTdSelector(0,0).click()
-trTdSelector(4,4).click()
-trTdSelector(4,4).click()
 
 function giveClickable(ex, text){
     console.log(ex.target.dataset.num);
@@ -204,6 +201,10 @@ function giveClickable(ex, text){
                 // console.log([x, y])
                 // return [x, y]
                 givePieceMoveClickable(whenRook);
+                break;
+                case "♗":
+                case "♝":
+                givePieceMoveClickable(whenBishop);
                 break;
             default:
                 break;
@@ -233,6 +234,36 @@ function whenRook() {
     tmp.push(...minusX);
     tmp.push(...plusY);
     tmp.push(...minusY);
+    let tmp2 = tmp.filter(V=>{if(V[0]<=7
+                            &&V[0]>=0
+                            &&V[1]<=7
+                            &&V[1]>=0){
+                        return V} })
+    return tmp2
+}
+
+trTdSelector(0,2).click()
+trTdSelector(4,4).click()
+trTdSelector(4,4).click()
+
+
+function whenBishop() {
+    let xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
+        let plusXY = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]+V] });
+        let minusXY = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]-V] });
+        let plusYminusX = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]+V] });
+        let plusXminusY = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]-V] });
+//     console.log(
+// plusXY,
+// minusXY,
+// plusYminusX,
+// plusXminusY
+//     )
+    let tmp =[];
+    tmp.push(...plusXY);
+    tmp.push(...minusXY);
+    tmp.push(...plusYminusX);
+    tmp.push(...plusXminusY);
     let tmp2 = tmp.filter(V=>{if(V[0]<=7
                             &&V[0]>=0
                             &&V[1]<=7
