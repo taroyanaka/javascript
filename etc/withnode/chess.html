@@ -227,14 +227,15 @@ function giveClickable(ex, text){
 const betweenXY = (min, max) => (x, y) =>  x >= min && x <= max && y >= min && y <= max;
 const isBetweenZeroToSevenXY = betweenXY(0, 7);
 
-
 const oneToSevenAry = [1, 2, 3, 4, 5, 6, 7];
 // https://github.com/ramda/ramda/issues/1897#issuecomment-609868750
 const concatAll = R.converge(R.reduce(R.concat), [R.head, R.tail]);
 // const duo = R.aperture(2, concatAll);
 
+const getXY = () => [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
+
 function whenRook() {
-    const xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
+    const xy = getXY();
 
     const plusX = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]] });
     const minusX = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]] });
@@ -246,7 +247,7 @@ function whenRook() {
 
 
 function whenBishop() {
-    const xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
+    const xy = getXY();
 
     const plusXY = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]+V] });
     const minusXY = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]-V] });
@@ -258,7 +259,8 @@ function whenBishop() {
 
 
 function whenQueen() {
-    const xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
+    const xy = getXY();
+    // const xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
     
     const plusX = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]] });
     const minusX = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]] });
