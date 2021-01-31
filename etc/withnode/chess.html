@@ -231,46 +231,17 @@ const isBetweenZeroToSevenXY = betweenXY(0, 7);
 const oneToSevenAry = [1, 2, 3, 4, 5, 6, 7];
 // https://github.com/ramda/ramda/issues/1897#issuecomment-609868750
 const concatAll = R.converge(R.reduce(R.concat), [R.head, R.tail]);
-const duo = R.aperture(2, concatAll);
+// const duo = R.aperture(2, concatAll);
 
 function whenRook() {
-    // let xy = [4,4];
     const xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
 
     const plusX = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]] });
     const minusX = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]] });
     const plusY = oneToSevenAry.map(V=>{return [xy[0], xy[1]+V] });
     const minusY = oneToSevenAry.map(V=>{return [xy[0], xy[1]-V] });
-    // console.log(
-    // plusX,
-    // minusX,
-    // plusY,
-    // minusY,
-    // )
 
-    // let tmp =[];
-//     let tmp = [plusX,
-// minusX,
-// plusY,
-// minusY]
-
-// tmp = concatAll(tmp);
-const tmp = concatAll( [plusX, minusX, plusY, minusY] );
-// .map(V=>{return R.unnest(V) });
-    // tmp.push(...plusX);
-    // tmp.push(...minusX);
-    // tmp.push(...plusY);
-    // tmp.push(...minusY);
-    let tmp2 = tmp.filter(V=>{if(
-                            isBetweenZeroToSevenXY(V[0], V[1])
-                            // V[0]<=7
-                            // &&V[0]>=0
-                            // &&V[1]<=7
-                            // &&V[1]>=0
-                            ){
-                        return V} })
-    // return tmp2
-    return tmp
+    return concatAll( [plusX, minusX, plusY, minusY] );
 }
 
 
@@ -281,26 +252,8 @@ function whenBishop() {
     const minusXY = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]-V] });
     const plusYminusX = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]+V] });
     const plusXminusY = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]-V] });
-//     console.log(
-// plusXY,
-// minusXY,
-// plusYminusX,
-// plusXminusY
-//     )
-    // let tmp =[];
-    // tmp.push(...plusXY);
-    // tmp.push(...minusXY);
-    // tmp.push(...plusYminusX);
-    // tmp.push(...plusXminusY);
-    // let tmp2 = tmp.filter(V=>{if(V[0]<=7
-    //                         &&V[0]>=0
-    //                         &&V[1]<=7
-    //                         &&V[1]>=0){
-    //                     return V} })
-    // return tmp2
 
-    const tmp = concatAll( [plusXY, minusXY, plusYminusX, plusXminusY] );
-    return tmp
+    return concatAll( [plusXY, minusXY, plusYminusX, plusXminusY] );
 }
 
 
@@ -316,35 +269,8 @@ function whenQueen() {
     const minusXY = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]-V] });
     const plusYminusX = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]+V] });
     const plusXminusY = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]-V] });
-//     console.log(
-// plusX,
-// minusX,
-// plusY,
-// minusY,
 
-// plusXY,
-// minusXY,
-// plusYminusX,
-// plusXminusY
-//     )
-    // let tmp =[];
-    // tmp.push(...plusX);
-    // tmp.push(...minusX);
-    // tmp.push(...plusY);
-    // tmp.push(...minusY);
-
-    // tmp.push(...plusXY);
-    // tmp.push(...minusXY);
-    // tmp.push(...plusYminusX);
-    // tmp.push(...plusXminusY);
-    // let tmp2 = tmp.filter(V=>{if(V[0]<=7
-    //                         &&V[0]>=0
-    //                         &&V[1]<=7
-    //                         &&V[1]>=0){
-    //                     return V} })
-    const tmp = concatAll( [plusX, minusX, plusY, minusY, plusXY, minusXY, plusYminusX, plusXminusY] );
-    // return tmp2
-    return tmp
+    return concatAll( [plusX, minusX, plusY, minusY, plusXY, minusXY, plusYminusX, plusXminusY] );
 }
 
 
