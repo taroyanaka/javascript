@@ -57,7 +57,6 @@ document.querySelector("table").insertAdjacentHTML("afterbegin", R.times(R.ident
     return record
 }).join("")
 )
-document.querySelectorAll("td").forEach((V,K)=>{V.dataset.num = K});
 // ♔♚キング、♕♛クイーン、♖♜、ルーク、♗♝ビショップ、♘♞ナイト、♙♟ポーン
 const initPieceWhiteNotPawn = `<td>♖</td>
 <td>♘</td>
@@ -97,12 +96,6 @@ const initPieceBlackPawn = `<td>♟</td>
 <td>♟</td>`
 document.querySelectorAll("table tr")[0].innerHTML = `<tr>${initPieceBlackNotPawn}</tr>`
 document.querySelectorAll("table tr")[1].innerHTML = `<tr>${initPieceBlackPawn}</tr>`
-
-let from;
-// let to;
-let ex;
-
-
 
 // 0
 // 125
@@ -155,23 +148,35 @@ function getIdxNumToTrTdIdx(IdxNum){
 // document.querySelectorAll("td")[36]
 // getIdxNumToTrTdIdx(36)
 
-document.querySelectorAll("td").forEach(V=>{
+
+function init() {
     document.querySelectorAll("td").forEach((V,K)=>{V.dataset.num = K});
+    document.querySelectorAll("td").forEach((V)=>{
+        [V.dataset.x, V.dataset.y] = getIdxNumToTrTdIdx(Number(V.dataset.num));
+    });
+}
+init();
+
+let exTargetTextContent;
+let exV;
+
+document.querySelectorAll("td").forEach(V=>{
     V.addEventListener("click", function (V) {
-        if(from){
-            ex.target.style = "background-color:;"
-            ex.target.textContent = V.target.textContent;
-            V.target.textContent = from;
-            from=null;
+        if(exTargetTextContent){
+            exV.target.style = "background-color:;"
+            exV.target.textContent = V.target.textContent;
+            V.target.textContent = exTargetTextContent;
+            exTargetTextContent=null;
         }else{
             V.target.style = "background-color: purple;"
-            from = V.target.textContent;
-            ex = V;
-            ex.target.dataset.EX = "ex";
-            giveClickable(ex);
+            exTargetTextContent = V.target.textContent;
+            exV = V;
+            giveClickable(exV, exTargetTextContent);
         };
+        init();
     },false)
 })
+
 
 function trTdSelector(trIdx, tdIdx){
     return document.querySelectorAll(`table tr`)[trIdx].children[tdIdx]
@@ -181,23 +186,55 @@ trTdSelector(0,0).click()
 trTdSelector(4,4).click()
 trTdSelector(4,4).click()
 
-function giveClickable(ex){
+function giveClickable(ex, text){
     console.log(ex.target.dataset.num);
-    const res = getIdxNumToTrTdIdx(Number(ex.target.dataset.num));
+
+    function foo(ex, text) {
+        // https://stackoverflow.com/a/6513594/9740478
+        // let _num = [4,4];
+        let _num = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
+        switch (text) {
+        // switch ("♜") {
+        // switch ("♖") {
+                case "♖":
+                case "♜":
+                //  console.log("foo")
+                let [x, y] = [_num[0]+1 ,_num[1]];
+                // _num[0]+1 ,_num[1]+1
+                // console.log([x, y])
+                return [x, y]
+                break;
+            default:
+                break;
+        }
+    }
+
+    // const res = getIdxNumToTrTdIdx(Number(ex.target.dataset.num));
+    const res = foo(ex, text);
     console.log(res);
 }
 
-// https://stackoverflow.com/a/6513594/9740478
-switch ("♜") {
-// switch ("♖") {
-        case "♖":
-        case "♜":
-         console.log("foo")
-        break;
-
-    default:
-        break;
-}
+let xy = [4,4];
+    let plusX = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]] });
+    let minusX = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]] });
+    let plusY = R.range(1,8).map(V=>{return [xy[0], xy[1]+V] });
+    let minusY = R.range(1,8).map(V=>{return [xy[0], xy[1]-V] });
+console.log(
+    plusX,
+minusX,
+plusY,
+minusY,
+)
+let tmp =[];
+tmp.push(...plusX);
+tmp.push(...minusY);
+tmp.push(...plusY);
+tmp.push(...minusY);
+let tmp2 = tmp.filter(V=>{if(V[0]<=7
+                        &&V[0]>=0
+                        &&V[1]<=7
+                        &&V[1]>=0){
+                    return V} })
 
 </script>
 </html>
