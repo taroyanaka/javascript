@@ -279,27 +279,54 @@ function whenQueen() {
     return concatAll( [plusX, minusX, plusY, minusY, plusXY, minusXY, plusYminusX, plusXminusY] );
 }
 
-function whenKnight() {
-    const xy = [4, 4];
 
-    const foo = [
+
+function whenKnight() {
+    // const xy = [4, 4];
+    const xy = getXY();
+
+    const _foo = [
         // [6, 4],
-        [6, 5],
-        [6, 3],
+            // [6, 5],
+            // [6, 3],
         // [2, 4],
-        [2, 5],
-        [2, 3],
+            // [2, 5],
+            // [2, 3],
     ];
-    const bar = [
+    const _bar = [
         // [4, 2],
-        [5, 2],
-        [3, 2],
+            // [5, 2],
+            // [3, 2],
         // [4, 6],
-        [5, 6],
-        [3, 6],
+            // [5, 6],
+            // [3, 6],
     ];
+
+    function makeFooBar(xy) {
+        return [
+                    [
+                        [xy[0]+2, xy[1]+1],
+                        [xy[0]+2, xy[1]-1],
+                        [xy[0]-2, xy[1]+1],
+                        [xy[0]-2, xy[1]-1]
+                    ],
+                    [
+                        [xy[0]+1, xy[1]+2],
+                        [xy[0]-1, xy[1]+2],
+                        [xy[0]+1, xy[1]-2],
+                        [xy[0]-1, xy[1]-2],
+                    ]
+                ]
+    }
+    const [foo, bar] = makeFooBar(xy);
     return concatAll( [foo, bar] );
 }
+
+// function makeFooBarSecond(tmp) {
+//     return 
+// }
+
+
 
 function givePieceMoveClickable(whenAny) {
     document.querySelectorAll("td").forEach(TD=>{
