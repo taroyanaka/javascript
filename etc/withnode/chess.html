@@ -222,29 +222,45 @@ function giveClickable(ex, text){
 
 // https://stackoverflow.com/a/6454237/9740478
 // https://qiita.com/KtheS/items/1a93ba0a6d722a534439
-const between = (min, max) => x =>  x >= min && x <= max;
-const isBetweenZeroToSeven = between(0, 7);
+// const between = (min, max) => x =>  x >= min && x <= max;
+// const isBetweenZeroToSeven = between(0, 7);
 const betweenXY = (min, max) => (x, y) =>  x >= min && x <= max && y >= min && y <= max;
-const isBetweenZeroToSevenXY = between(0, 7);
+const isBetweenZeroToSevenXY = betweenXY(0, 7);
+
+
+const oneToSevenAry = [1, 2, 3, 4, 5, 6, 7];
+// https://github.com/ramda/ramda/issues/1897#issuecomment-609868750
+const concatAll = R.converge(R.reduce(R.concat), [R.head, R.tail]);
+const duo = R.aperture(2, concatAll);
 
 function whenRook() {
     // let xy = [4,4];
-    let xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
-        let plusX = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]] });
-        let minusX = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]] });
-        let plusY = R.range(1,8).map(V=>{return [xy[0], xy[1]+V] });
-        let minusY = R.range(1,8).map(V=>{return [xy[0], xy[1]-V] });
+    const xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
+
+    const plusX = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]] });
+    const minusX = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]] });
+    const plusY = oneToSevenAry.map(V=>{return [xy[0], xy[1]+V] });
+    const minusY = oneToSevenAry.map(V=>{return [xy[0], xy[1]-V] });
     // console.log(
     // plusX,
     // minusX,
     // plusY,
     // minusY,
     // )
-    let tmp =[];
-    tmp.push(...plusX);
-    tmp.push(...minusX);
-    tmp.push(...plusY);
-    tmp.push(...minusY);
+
+    // let tmp =[];
+//     let tmp = [plusX,
+// minusX,
+// plusY,
+// minusY]
+
+// tmp = concatAll(tmp);
+const tmp = concatAll( [plusX, minusX, plusY, minusY] );
+// .map(V=>{return R.unnest(V) });
+    // tmp.push(...plusX);
+    // tmp.push(...minusX);
+    // tmp.push(...plusY);
+    // tmp.push(...minusY);
     let tmp2 = tmp.filter(V=>{if(
                             isBetweenZeroToSevenXY(V[0], V[1])
                             // V[0]<=7
@@ -253,48 +269,53 @@ function whenRook() {
                             // &&V[1]>=0
                             ){
                         return V} })
-    return tmp2
+    // return tmp2
+    return tmp
 }
 
 
 function whenBishop() {
-    let xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
-        let plusXY = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]+V] });
-        let minusXY = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]-V] });
-        let plusYminusX = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]+V] });
-        let plusXminusY = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]-V] });
+    const xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
+
+    const plusXY = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]+V] });
+    const minusXY = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]-V] });
+    const plusYminusX = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]+V] });
+    const plusXminusY = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]-V] });
 //     console.log(
 // plusXY,
 // minusXY,
 // plusYminusX,
 // plusXminusY
 //     )
-    let tmp =[];
-    tmp.push(...plusXY);
-    tmp.push(...minusXY);
-    tmp.push(...plusYminusX);
-    tmp.push(...plusXminusY);
-    let tmp2 = tmp.filter(V=>{if(V[0]<=7
-                            &&V[0]>=0
-                            &&V[1]<=7
-                            &&V[1]>=0){
-                        return V} })
-    return tmp2
+    // let tmp =[];
+    // tmp.push(...plusXY);
+    // tmp.push(...minusXY);
+    // tmp.push(...plusYminusX);
+    // tmp.push(...plusXminusY);
+    // let tmp2 = tmp.filter(V=>{if(V[0]<=7
+    //                         &&V[0]>=0
+    //                         &&V[1]<=7
+    //                         &&V[1]>=0){
+    //                     return V} })
+    // return tmp2
+
+    const tmp = concatAll( [plusXY, minusXY, plusYminusX, plusXminusY] );
+    return tmp
 }
 
 
 function whenQueen() {
-    let xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
+    const xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
     
-        let plusX = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]] });
-        let minusX = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]] });
-        let plusY = R.range(1,8).map(V=>{return [xy[0], xy[1]+V] });
-        let minusY = R.range(1,8).map(V=>{return [xy[0], xy[1]-V] });
+    const plusX = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]] });
+    const minusX = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]] });
+    const plusY = oneToSevenAry.map(V=>{return [xy[0], xy[1]+V] });
+    const minusY = oneToSevenAry.map(V=>{return [xy[0], xy[1]-V] });
 
-        let plusXY = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]+V] });
-        let minusXY = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]-V] });
-        let plusYminusX = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]+V] });
-        let plusXminusY = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]-V] });
+    const plusXY = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]+V] });
+    const minusXY = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]-V] });
+    const plusYminusX = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]+V] });
+    const plusXminusY = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]-V] });
 //     console.log(
 // plusX,
 // minusX,
@@ -306,22 +327,24 @@ function whenQueen() {
 // plusYminusX,
 // plusXminusY
 //     )
-    let tmp =[];
-    tmp.push(...plusX);
-    tmp.push(...minusX);
-    tmp.push(...plusY);
-    tmp.push(...minusY);
+    // let tmp =[];
+    // tmp.push(...plusX);
+    // tmp.push(...minusX);
+    // tmp.push(...plusY);
+    // tmp.push(...minusY);
 
-    tmp.push(...plusXY);
-    tmp.push(...minusXY);
-    tmp.push(...plusYminusX);
-    tmp.push(...plusXminusY);
-    let tmp2 = tmp.filter(V=>{if(V[0]<=7
-                            &&V[0]>=0
-                            &&V[1]<=7
-                            &&V[1]>=0){
-                        return V} })
-    return tmp2
+    // tmp.push(...plusXY);
+    // tmp.push(...minusXY);
+    // tmp.push(...plusYminusX);
+    // tmp.push(...plusXminusY);
+    // let tmp2 = tmp.filter(V=>{if(V[0]<=7
+    //                         &&V[0]>=0
+    //                         &&V[1]<=7
+    //                         &&V[1]>=0){
+    //                     return V} })
+    const tmp = concatAll( [plusX, minusX, plusY, minusY, plusXY, minusXY, plusYminusX, plusXminusY] );
+    // return tmp2
+    return tmp
 }
 
 
@@ -338,13 +361,13 @@ function givePieceMoveClickable(whenAny) {
 // givePieceMoveClickable()
 
 // Rook
-trTdSelector(0,0).click()
+// trTdSelector(0,0).click()
 
 // Bishop
 // trTdSelector(0,2).click()
 
 // Queen
-// trTdSelector(0,3).click()
+trTdSelector(0,3).click()
 
 trTdSelector(4,4).click()
 trTdSelector(4,4).click()
