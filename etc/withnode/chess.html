@@ -219,15 +219,15 @@ let xy = [4,4];
     let minusX = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]] });
     let plusY = R.range(1,8).map(V=>{return [xy[0], xy[1]+V] });
     let minusY = R.range(1,8).map(V=>{return [xy[0], xy[1]-V] });
-console.log(
-    plusX,
-minusX,
-plusY,
-minusY,
-)
+// console.log(
+// plusX,
+// minusX,
+// plusY,
+// minusY,
+// )
 let tmp =[];
 tmp.push(...plusX);
-tmp.push(...minusY);
+tmp.push(...minusX);
 tmp.push(...plusY);
 tmp.push(...minusY);
 let tmp2 = tmp.filter(V=>{if(V[0]<=7
@@ -235,6 +235,12 @@ let tmp2 = tmp.filter(V=>{if(V[0]<=7
                         &&V[1]<=7
                         &&V[1]>=0){
                     return V} })
-
+document.querySelectorAll("td").forEach(TD=>{
+    tmp2.forEach(ARY=>{
+        TD.dataset.x === String(ARY[0]) && TD.dataset.y === String(ARY[1]) ?
+        TD.style = "background-color: pink;"
+        :null;
+    })
+})
 </script>
 </html>
