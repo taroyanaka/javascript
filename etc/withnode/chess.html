@@ -216,7 +216,8 @@ function giveClickable(ex, text){
 }
 
 function whenRook() {
-    let xy = [4,4];
+    // let xy = [4,4];
+    let xy = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
         let plusX = R.range(1,8).map(V=>{return [xy[0]+V, xy[1]] });
         let minusX = R.range(1,8).map(V=>{return [xy[0]-V, xy[1]] });
         let plusY = R.range(1,8).map(V=>{return [xy[0], xy[1]+V] });
@@ -242,6 +243,7 @@ function whenRook() {
 
 function givePieceMoveClickable(whenAny) {
     document.querySelectorAll("td").forEach(TD=>{
+        // TD.style = "background-color:;";
         whenAny().forEach(ARY=>{
             if( TD.dataset.x === String(ARY[0]) && TD.dataset.y === String(ARY[1]) ){
                 TD.style = "background-color: pink;"
