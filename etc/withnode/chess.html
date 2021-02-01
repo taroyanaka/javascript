@@ -186,21 +186,16 @@ function trTdSelector(tdIdx, trIdx){
 
 
 function givePieceMoveClickable(ex, whenAny) {
+    // console.log(ex.target.textContent)
 
-// console.log(ex.target.textContent)
+    // https://stackoverflow.com/a/6454237/9740478
+    // https://qiita.com/KtheS/items/1a93ba0a6d722a534439
+    // const between = (min, max) => x =>  x >= min && x <= max;
+    // const isBetweenZeroToSeven = between(0, 7);
+    const betweenXY = (min, max) => (x, y) =>  x >= min && x <= max && y >= min && y <= max;
+    const isBetweenZeroToSevenXY = betweenXY(0, 7);
 
-// https://stackoverflow.com/a/6454237/9740478
-// https://qiita.com/KtheS/items/1a93ba0a6d722a534439
-// const between = (min, max) => x =>  x >= min && x <= max;
-// const isBetweenZeroToSeven = between(0, 7);
-const betweenXY = (min, max) => (x, y) =>  x >= min && x <= max && y >= min && y <= max;
-const isBetweenZeroToSevenXY = betweenXY(0, 7);
-
-
-
-function rejectOutOfBoard(XYary) {
-    if(isBetweenZeroToSevenXY(XYary[0], XYary[1])){return XYary}
-}
+    function rejectOutOfBoard(XYary) { if(isBetweenZeroToSevenXY(XYary[0], XYary[1])){return XYary}}
 
     function isBlackOrWhite(foo) {
         const isSpace = (str) =>{return true ? str === "" : false}
@@ -208,40 +203,25 @@ function rejectOutOfBoard(XYary) {
     }
     const exColor = isBlackOrWhite(ex.target.textContent);
     console.log(exColor);
-    // console.log(isBlackOrWhite(trTdSelector(7, 0).textContent));
 
     const res = whenAny().filter(V=>{
         return rejectOutOfBoard(V);
     }).filter(V=>{
         const piece = trTdSelector(V[0], V[1]).textContent;
-        // console.log(piece);
-        // console.log(V);
         if(exColor !== isBlackOrWhite(piece)){return V};
     })
     console.log(res)
-    // return res;
 
-    // console.log(whenAny())
     function addColor(targetAry) {
         document.querySelectorAll("td").forEach(TD=>{
-            // whenAny().map(ARY=>{ return ARY  }).filter(V=>{return })
-
             targetAry.forEach(ARY=>{
-            // whenAny().forEach(ARY=>{
-            //     if( TD.dataset.x === String(ARY[0]) && TD.dataset.y === String(ARY[1]) ){
             if( TD.dataset.x === String(ARY[0]) && TD.dataset.y === String(ARY[1]) ){
                     TD.style = "background-color: pink;"
                 }
-
             })
-            //         TD.style = "background-color: pink;"
-            //     }
-            // })
         })
     }
     addColor(res);
-
-
 }
 
 const oneToSevenAry = [1, 2, 3, 4, 5, 6, 7];
@@ -418,8 +398,10 @@ function whenWhitePawn() {
 
 // givePieceMoveClickable()
 
-// Rook
-trTdSelector(7,0).click()
+// BlackRook
+// trTdSelector(7,0).click()
+// WhiteRook
+trTdSelector(0,7).click()
 
 // Bishop
 // trTdSelector(2, 0).click()
