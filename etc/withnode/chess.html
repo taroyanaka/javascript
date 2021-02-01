@@ -140,7 +140,7 @@ function getIdxNumToTrTdIdx(IdxNum){
             default:
             }
     }
-    res = [res[0], getTdIdx(res[1])];
+    res = [getTdIdx(res[1]), res[0]];
     return res;
 }
 
@@ -152,6 +152,7 @@ function getIdxNumToTrTdIdx(IdxNum){
 function init() {
     document.querySelectorAll("td").forEach((V,K)=>{V.dataset.num = K});
     document.querySelectorAll("td").forEach((V)=>{
+        // [V.dataset.x, V.dataset.y] = getIdxNumToTrTdIdx(Number(V.dataset.num));
         [V.dataset.x, V.dataset.y] = getIdxNumToTrTdIdx(Number(V.dataset.num));
     });
 }
@@ -179,7 +180,7 @@ document.querySelectorAll("td").forEach(V=>{
 
 
 function trTdSelector(trIdx, tdIdx){
-    return document.querySelectorAll(`table tr`)[trIdx].children[tdIdx]
+    return document.querySelectorAll(`table tr`)[tdIdx].children[trIdx]
 }
 
 
@@ -214,6 +215,16 @@ function giveClickable(ex, text){
                 case "♞":
                 givePieceMoveClickable(whenKnight);
                 break;
+
+                case "♟":
+                    // console.log(100)
+                // givePieceMoveClickable(hogehoge);
+                givePieceMoveClickable(whenBlackPawn);
+                break;
+                case "♙":
+                givePieceMoveClickable(whenWhitePawn);
+                break;
+
             default:
                 break;
         }
@@ -321,18 +332,38 @@ function whenKnight() {
                 ]
     }
     const [XAxis, YAxis] = makeXAxisYAxis(xy);
-    return concatAll( [XAxis, YAxis] );
+    // return concatAll( [XAxis, YAxis] );
+    console.log(R.concat(XAxis, YAxis))
+    return R.concat(XAxis, YAxis);
 }
 
-// function makeFooBarSecond(tmp) {
-//     return 
-// }
-
-
+function whenBlackPawn() {
+    const xy = getXY();
+    const [x, y] = [xy[0], xy[1]];
+    switch (y) {
+        case 1:
+        return [[x, y+1], [x, y+2]]
+        break;
+        default:
+        return [[x, y+1]]
+        break;
+    }
+}
+function whenWhitePawn() {
+    const xy = getXY();
+    const [x, y] = [xy[0], xy[1]];
+    switch (y) {
+        case 6:
+        return [[x, y-1], [x, y-2]]
+        break;
+        default:
+        return [[x, y-1]]
+        break;
+    }
+}
 
 function givePieceMoveClickable(whenAny) {
     document.querySelectorAll("td").forEach(TD=>{
-        // TD.style = "background-color:;";
         whenAny().forEach(ARY=>{
             if( TD.dataset.x === String(ARY[0]) && TD.dataset.y === String(ARY[1]) ){
                 TD.style = "background-color: pink;"
@@ -340,19 +371,27 @@ function givePieceMoveClickable(whenAny) {
         })
     })
 }
+
+
+
 // givePieceMoveClickable()
 
 // Rook
-// trTdSelector(0,0).click()
+// trTdSelector(7,0).click()
 
 // Bishop
-// trTdSelector(0,2).click()
+// trTdSelector(2, 0).click()
 
 // Queen
-// trTdSelector(0,3).click()
+// trTdSelector(3, 0).click()
 
 // Knight
-trTdSelector(0,1).click()
+// trTdSelector(1,0).click()
+
+// BlackPawn
+// trTdSelector(0,1).click()
+// WhitePawn
+trTdSelector(7,6).click()
 
 
 trTdSelector(4,4).click()
