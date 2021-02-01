@@ -152,7 +152,6 @@ function getIdxNumToTrTdIdx(IdxNum){
 function init() {
     document.querySelectorAll("td").forEach((V,K)=>{V.dataset.num = K});
     document.querySelectorAll("td").forEach((V)=>{
-        // [V.dataset.x, V.dataset.y] = getIdxNumToTrTdIdx(Number(V.dataset.num));
         [V.dataset.x, V.dataset.y] = getIdxNumToTrTdIdx(Number(V.dataset.num));
     });
 }
@@ -161,22 +160,26 @@ init();
 let exTargetTextContent;
 let exV;
 
-document.querySelectorAll("td").forEach(V=>{
-    V.addEventListener("click", function (V) {
-        if(exTargetTextContent){
-            exV.target.style = "background-color:;"
-            exV.target.textContent = V.target.textContent;
-            V.target.textContent = exTargetTextContent;
-            exTargetTextContent=null;
-        }else{
-            V.target.style = "background-color: purple;"
-            exTargetTextContent = V.target.textContent;
-            exV = V;
-            giveClickable(exV, exTargetTextContent);
-        };
-        init();
-    },false)
-})
+function coreFunction(V) {
+    if(exTargetTextContent){
+        exV.target.style = "background-color:;"
+        exV.target.textContent = V.target.textContent;
+        V.target.textContent = exTargetTextContent;
+        exTargetTextContent=null;
+    }else{
+        V.target.style = "background-color: purple;"
+        exTargetTextContent = V.target.textContent;
+        exV = V;
+        giveClickable(exV, exTargetTextContent);
+    };
+    init();
+}
+function setCoreFunctionToTD() {
+    document.querySelectorAll("td").forEach(V=>{
+        V.addEventListener("click", coreFunction, false);
+    })
+}
+setCoreFunctionToTD();
 
 
 function trTdSelector(tdIdx, trIdx){
@@ -197,18 +200,18 @@ function givePieceMoveClickable(ex, whenAny) {
 
     function rejectOutOfBoard(XYary) { if(isBetweenZeroToSevenXY(XYary[0], XYary[1])){return XYary}}
 
-    function isBlackOrWhite(foo) {
+    function isSpaceOrBlackOrWhite(foo) {
         const isSpace = (str) =>{return true ? str === "" : false}
         return isSpace(foo) ? "space" : R.includes(foo, ["♔","♕","♖","♗","♘","♙"]) ? "white" : "black";
     }
-    const exColor = isBlackOrWhite(ex.target.textContent);
+    const exColor = isSpaceOrBlackOrWhite(ex.target.textContent);
     console.log(exColor);
 
     const res = whenAny().filter(V=>{
         return rejectOutOfBoard(V);
     }).filter(V=>{
         const piece = trTdSelector(V[0], V[1]).textContent;
-        if(exColor !== isBlackOrWhite(piece)){return V};
+        if(exColor !== isSpaceOrBlackOrWhite(piece)){return V};
     })
     console.log(res)
 
