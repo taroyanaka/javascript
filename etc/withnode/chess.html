@@ -43,14 +43,14 @@ td{
 </body>
 <script>
 const record = `<tr>
-    <td>0</td>
-    <td>1</td>
-    <td>2</td>
-    <td>3</td>
-    <td>4</td>
-    <td>5</td>
-    <td>6</td>
-    <td>7</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
 </tr>`
 // document.querySelector("h1").textContent = R.add(1,2);
 document.querySelector("table").insertAdjacentHTML("afterbegin", R.times(R.identity, 8).map(V=>{
@@ -179,13 +179,75 @@ document.querySelectorAll("td").forEach(V=>{
 })
 
 
-function trTdSelector(trIdx, tdIdx){
-    return document.querySelectorAll(`table tr`)[tdIdx].children[trIdx]
+function trTdSelector(tdIdx, trIdx){
+    return document.querySelectorAll(`table tr`)[trIdx].children[tdIdx]
 }
 
 
+
+function givePieceMoveClickable(ex, whenAny) {
+
+// console.log(ex.target.textContent)
+
+// https://stackoverflow.com/a/6454237/9740478
+// https://qiita.com/KtheS/items/1a93ba0a6d722a534439
+// const between = (min, max) => x =>  x >= min && x <= max;
+// const isBetweenZeroToSeven = between(0, 7);
+const betweenXY = (min, max) => (x, y) =>  x >= min && x <= max && y >= min && y <= max;
+const isBetweenZeroToSevenXY = betweenXY(0, 7);
+
+
+
+function rejectOutOfBoard(XYary) {
+    if(isBetweenZeroToSevenXY(XYary[0], XYary[1])){return XYary}
+}
+
+    function isBlackOrWhite(foo) {
+        const isSpace = (str) =>{return true ? str === "" : false}
+        return isSpace(foo) ? "space" : R.includes(foo, ["♔","♕","♖","♗","♘","♙"]) ? "white" : "black";
+    }
+    const exColor = isBlackOrWhite(ex.target.textContent);
+    console.log(exColor);
+    // console.log(isBlackOrWhite(trTdSelector(7, 0).textContent));
+
+    const res = whenAny().filter(V=>{
+        return rejectOutOfBoard(V);
+    }).filter(V=>{
+        const piece = trTdSelector(V[0], V[1]).textContent;
+        // console.log(piece);
+        // console.log(V);
+        if(exColor !== isBlackOrWhite(piece)){return V};
+    })
+    console.log(res)
+    // return res;
+
+    // console.log(whenAny())
+    function addColor(targetAry) {
+        document.querySelectorAll("td").forEach(TD=>{
+            // whenAny().map(ARY=>{ return ARY  }).filter(V=>{return })
+
+            targetAry.forEach(ARY=>{
+            // whenAny().forEach(ARY=>{
+            //     if( TD.dataset.x === String(ARY[0]) && TD.dataset.y === String(ARY[1]) ){
+            if( TD.dataset.x === String(ARY[0]) && TD.dataset.y === String(ARY[1]) ){
+                    TD.style = "background-color: pink;"
+                }
+
+            })
+            //         TD.style = "background-color: pink;"
+            //     }
+            // })
+        })
+    }
+    addColor(res);
+
+
+}
+
+const oneToSevenAry = [1, 2, 3, 4, 5, 6, 7];
+
 function giveClickable(ex, text){
-    console.log(ex.target.dataset.num);
+    // console.log(ex.target.dataset.num);
 
     function foo(ex, text) {
         // https://stackoverflow.com/a/6513594/9740478
@@ -201,28 +263,28 @@ function giveClickable(ex, text){
                 // _num[0]+1 ,_num[1]+1
                 // console.log([x, y])
                 // return [x, y]
-                givePieceMoveClickable(whenRook);
+                givePieceMoveClickable(ex, whenRook);
                 break;
                 case "♗":
                 case "♝":
-                givePieceMoveClickable(whenBishop);
+                givePieceMoveClickable(ex, whenBishop);
                 break;
                 case "♕":
                 case "♛":
-                givePieceMoveClickable(whenQueen);
+                givePieceMoveClickable(ex, whenQueen);
                 break;
                 case "♘":
                 case "♞":
-                givePieceMoveClickable(whenKnight);
+                givePieceMoveClickable(ex, whenKnight);
                 break;
 
                 case "♟":
                     // console.log(100)
-                // givePieceMoveClickable(hogehoge);
-                givePieceMoveClickable(whenBlackPawn);
+                // givePieceMoveClickable(ex, hogehoge);
+                givePieceMoveClickable(ex, whenBlackPawn);
                 break;
                 case "♙":
-                givePieceMoveClickable(whenWhitePawn);
+                givePieceMoveClickable(ex, whenWhitePawn);
                 break;
 
             default:
@@ -232,17 +294,9 @@ function giveClickable(ex, text){
 
     // const res = getIdxNumToTrTdIdx(Number(ex.target.dataset.num));
     const res = foo(ex, text);
-    console.log(res);
+    // console.log(res);
 }
 
-// https://stackoverflow.com/a/6454237/9740478
-// https://qiita.com/KtheS/items/1a93ba0a6d722a534439
-// const between = (min, max) => x =>  x >= min && x <= max;
-// const isBetweenZeroToSeven = between(0, 7);
-const betweenXY = (min, max) => (x, y) =>  x >= min && x <= max && y >= min && y <= max;
-const isBetweenZeroToSevenXY = betweenXY(0, 7);
-
-const oneToSevenAry = [1, 2, 3, 4, 5, 6, 7];
 // https://github.com/ramda/ramda/issues/1897#issuecomment-609868750
 const concatAll = R.converge(R.reduce(R.concat), [R.head, R.tail]);
 // const duo = R.aperture(2, concatAll);
@@ -333,7 +387,7 @@ function whenKnight() {
     }
     const [XAxis, YAxis] = makeXAxisYAxis(xy);
     // return concatAll( [XAxis, YAxis] );
-    console.log(R.concat(XAxis, YAxis))
+    // console.log(R.concat(XAxis, YAxis))
     return R.concat(XAxis, YAxis);
 }
 
@@ -362,22 +416,10 @@ function whenWhitePawn() {
     }
 }
 
-function givePieceMoveClickable(whenAny) {
-    document.querySelectorAll("td").forEach(TD=>{
-        whenAny().forEach(ARY=>{
-            if( TD.dataset.x === String(ARY[0]) && TD.dataset.y === String(ARY[1]) ){
-                TD.style = "background-color: pink;"
-            }
-        })
-    })
-}
-
-
-
 // givePieceMoveClickable()
 
 // Rook
-// trTdSelector(7,0).click()
+trTdSelector(7,0).click()
 
 // Bishop
 // trTdSelector(2, 0).click()
@@ -391,7 +433,7 @@ function givePieceMoveClickable(whenAny) {
 // BlackPawn
 // trTdSelector(0,1).click()
 // WhitePawn
-trTdSelector(7,6).click()
+// trTdSelector(7,6).click()
 
 
 trTdSelector(4,4).click()
