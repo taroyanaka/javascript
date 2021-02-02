@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="faker.js"></script>
+    <script src="ramda.min.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+.outer{
+    height: 100vw;
+            display: grid;
+            grid-template-columns: 0.5fr 1.5fr;
+            grid-template-rows: 0.5fr 1.5fr;
+            grid-template-areas:
+"side main"
+"side main";
+/* background-color: red; */
+}
+div.main{
+    grid-area: main;
+    width: 100%;
+    /* background-color: red; */
+}
+div.side{
+    grid-area: side;
+    width: 100%;
+    /* background-color: blue; */
+}
+/* https://codepen.io/kallmanation/pen/abdmJNz */
+details {
+  /* padding: 0px; */
+  border: solid black 1px;
+}
+details > * {
+  width: 100%;
+  /* padding: 10px; */
+  margin: 0px;
+  /* background-color: blue; */
+}
+.clicked{
+    opacity: 0.5;
+    color: blueviolet;
+    background-color: blue;
+}
+textarea{
+    /* width: 100vw; */
+    width: 100%;
+}
+    </style>
+</head>
+<body class="outer">
+<div class="main">
+    SELECT
+    <input type="text" name="" class="column0" value="2">
+    FROM
+    <input type="text" name="" class="table1" value="LIST">
+
+    <input type="number" class="nTimes" value="10">
+
+    <textarea cols="30" rows="10" class="textarea1"></textarea>
+    <textarea cols="30" rows="10" class="textarea2"></textarea>
+    <textarea cols="30" rows="10" class="textarea3"></textarea>
+
+
+    <!-- https://codepen.io/kallmanation/pen/abdmJNz -->
+    <!-- <details close>
+        <summary>CSS-only Accordion</summary>
+        <p>Using the &lt;details&gt; element</p>
+        <p>And no unnecessary DOM</p>
+    </details> -->
+
+    <input type="text" name="" id="" class="oneline">
+
+    <button onclick="test()">test data</button>
+    <button onclick="test2()">test2 data</button>
+</div>
+<div class="side">
+    <div class="fakerMenu"></div>
+    <script src="fakerMenu.js"></script>
+    <script defer>
+    document.querySelector(".fakerMenu").insertAdjacentHTML("afterbegin", fakerMenuStr);
+    function chooseLang() { faker.locale = document.querySelector(".lang").value };
+    </script>
+</div>
+
+<script>
+
+
+// values
+// var foo0 = [1,2,3];
+// const foo1 = [1,2,3];
+// let foo2 = [1,2,3];
+var LIST = [];
+let tmpList;
+
+
+
+
+function collectChoosedMethods() {
+    return Array.from(document.querySelectorAll(".clicked")).map(V => {
+        const category = V.parentElement.parentElement.querySelector("summary").innerText;
+        const method = V.innerText;
+        return faker[category][method];
+    })
+}
+
+function makeList() {
+    LIST = [];
+    const times = Number(document.querySelector("input.nTimes").value);
+    [...Array(times).keys()].forEach(NOUSE => {
+        LIST.push(collectChoosedMethods().map(V => { return V() }));
+    })
+    return LIST;
+}
+
+function clicked(event) {
+    // console.log(event.taget.classList.value);
+    event.target.classList.value.includes("clicked") ? event.target.classList.remove("clicked") : event.target.classList.add("clicked");
+    makeList();
+    insertListToTextarea1();
+    insertListToTextarea2();
+}
+
+function init() {
+    document.querySelectorAll("li").forEach(V => {
+        V.addEventListener("click", showInputTagOneline, false);
+        V.addEventListener("click", clicked, false);
+    })    
+}
+
+init();
+
+//////////////////// WIP
+// query
+function query0() {
+    console.log(document.querySelector(".column0").value);
+    console.log(document.querySelector(".table1").value);
+    const foo = Number(document.querySelector(".column0").value);
+    const bar = document.querySelector(".table1").value;
+    const baz = R.pluck(foo, window[bar]);
+    console.log(baz);
+    document.querySelector(".textarea3").value = baz;
+}
+//////////////////// WIP
+
+
+// to display
+function showInputTagOneline(event) {
+    const category = event.target.parentElement.parentElement.querySelector("summary").innerText;
+    const method = event.target.innerText;
+    // console.log(faker[category][method]()); // this is same faker.name.firstName();
+    document.querySelector("input.oneline").value = faker[category][method]();
+}
+function insertListToTextarea1() {
+    const allClickedAry = Array.from(document.querySelectorAll(".clicked")).map(V => {
+        return `${V.parentElement.parentElement.querySelector("summary").innerText}, ${V.innerText}`
+    });
+    document.querySelector("textarea.textarea1").value = allClickedAry.join("\n");
+}
+function insertListToTextarea2() {
+    const resultForTextarea = LIST.map(V => { return V + "\n" }).join("");
+    document.querySelector("textarea.textarea2").value = resultForTextarea;
+}
+
+// test function
+function testAnyClick(any = "firstName") {
+    Array.from(document.querySelectorAll("li")).filter(V => { return V.innerText === any })[0].click();
+}
+function test() {
+    document.querySelector(".lang").value = "ja";
+    chooseLang();
+    Array.from(document.querySelectorAll("li")).filter(V => { return V.innerText === "firstName" })[0].click();
+}
+function test2() {
+    document.querySelector(".lang").value = "ja";
+    chooseLang();
+    testAnyClick("zipCode");
+    testAnyClick("firstName");
+    testAnyClick("lastName");
+    testAnyClick("past");
+    query0();
+}
+
+</script>
+</body>
+
+</html>
