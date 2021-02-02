@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ala sql with faker js</title>
+    <script src="alasql.js"></script>
     <script src="faker.js"></script>
-    <script src="ramda.min.js"></script>
+    <script src="ramda.js"></script>
     <style>
         *{
             margin: 0;
@@ -65,6 +66,11 @@ textarea{
     <textarea cols="30" rows="10" class="textarea1"></textarea>
     <textarea cols="30" rows="10" class="textarea2"></textarea>
     <textarea cols="30" rows="10" class="textarea3"></textarea>
+
+    <textarea name="" class="query1" id="" cols="30" rows="10" oninput="exe();"></textarea>
+    <textarea name="" class="query2" id="" cols="30" rows="10" oninput="exe();"></textarea>
+    <textarea name="" class="res1" id="" cols="30" rows="10" oninput="exe();"></textarea>
+
 
 
     <!-- https://codepen.io/kallmanation/pen/abdmJNz -->
@@ -185,6 +191,40 @@ function test2() {
     testAnyClick("past");
     query0();
 }
+
+
+
+
+function test1(){    
+    // document.querySelector(".query1").value = `CREATE TABLE cities (city string, pop number);INSERT INTO cities VALUES ('Paris',2249975),('Berlin',3517424),('Madrid',3041579)`;
+
+const insertValues = `('Paris',2249975),('Berlin',3517424),('Madrid',3041579)`;
+document.querySelector(".query1").value = `CREATE TABLE cities (city string, pop number);INSERT INTO cities VALUES ${insertValues}`;
+    document.querySelector(".query2").value = `SELECT * FROM cities WHERE pop < 3500000 ORDER BY pop DESC`;
+
+    // document.querySelector(".query2").value = `SELECT * FROM cities WHERE pop < 3500000 ORDER BY pop DESC`;
+
+    alasql(document.querySelector(".query1").value);
+    var res1 = alasql( document.querySelector(".query2").value );
+    var res1_2 = res1.map(V=>{
+        let ary = [V.city, V.pop];
+        return ary;
+    })
+    document.querySelector(".res1").value = res1_2;
+}
+
+function exe(){
+    try {
+        alasql(document.querySelector(".query1").value);
+    } catch (error) {
+        console.error(error);
+    }
+    var res1 = alasql( document.querySelector(".query2").value );
+    var res1_2 = res1.map(V=>{ return [V.city, V.pop] })
+    document.querySelector(".res1").value = res1_2;
+}
+test1();
+exe();
 
 </script>
 </body>
