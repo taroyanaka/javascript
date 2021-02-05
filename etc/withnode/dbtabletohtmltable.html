@@ -99,20 +99,20 @@ const aryWithKeyWithHeaderProp = aryWithKey.map(V=>{
 console.log(aryWithKeyWithHeader);
 console.log(aryWithKeyWithHeaderProp);
 
-const headerHTML = header.map(V=>{return `<th>${V}</th>`}).join("");
 
-function makeTDAry(innerAry){
+
+const headerHTML = "<tr>" + header.map(V=>{return `<th>${V}</th>`}).join("") + "</tr>";
+
+function makeTDStr(innerAry){
     return innerAry.map(V=>{return `<td>${V}</td>`}).join("")
 }
-// foo.map(V=>{return `<td>${V}</td>`).join("")
 const tableBody = aryWithKey.map(innerAry=>{return `<tr>${
-    makeTDAry(innerAry)
+    makeTDStr(innerAry)
 }</tr>`}).join("");
+
 document.querySelector("table").insertAdjacentHTML("afterbegin",
     `<thead>
-        <tr>
-            ${headerHTML}
-        </tr>
+        ${headerHTML}
     </thead>
     <tbody>
             ${tableBody}
