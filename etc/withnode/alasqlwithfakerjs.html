@@ -212,7 +212,7 @@ document.querySelector(".query1").value =
     alasql(document.querySelector(".query1").value);
     var res1 = alasql( document.querySelector(".query2").value );
     var res1_2 = res1.map(V=>{
-        let ary = [V.city, V.pop];
+        let ary = [V.foo, V.bar, V.baz];
         return ary;
     })
     document.querySelector(".res1").value = res1_2;
@@ -225,7 +225,7 @@ function exe(){
         console.error(error);
     }
     var res1 = alasql( document.querySelector(".query2").value );
-    var res1_2 = res1.map(V=>{ return [V.foo, V.bar] })
+    var res1_2 = res1.map(V=>{ return [V.foo, V.bar, V.baz] })
     document.querySelector(".res1").value = res1_2;
 }
 test2();
