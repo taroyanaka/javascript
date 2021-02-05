@@ -7,6 +7,7 @@
     <script src="ramda.js"></script>
 </head>
 <body>
+
 <script>
 var ary = [
   [
@@ -80,12 +81,26 @@ var ary = [
     "木村"
   ]
 ]
-let foo = R.insertAll(0, ary, [1,2,3,4]);
-let bar = R.insertAll(0, [10,20],[30]);
-let bar2 = R.insertAll(0, [["POST_CODE", "TIME1", "TIME2", "FIRST_NAME", "LAST_NAME"]], ary);
-console.log(
-bar2
-);
+// let foo = R.insertAll(0, ary, [1,2,3,4]);
+// let bar = R.insertAll(0, [10,20],[30]);
+let id=0;
+const aryWithKey = ary.map(V=>{V = R.insert(0, ++id, V);return V})
+const header = [["id", "POST_CODE", "TIME1", "TIME2", "FIRST_NAME", "LAST_NAME"]];
+const aryWithKeyWithHeader = R.insertAll(0, header, aryWithKey);
+// const aryWithKeyWithHeaderProp = R.insertAll(0, header, aryWithKey);
+
+const aryWithKeyWithHeaderProp = aryWithKey.map(V=>{ return R.zipObj(R.unnest(header), V);
+//=> {a: 1, b: 2, c: 3}
+})
+
+// console.log(aryWithKeyWithHeader);
+console.log(aryWithKeyWithHeaderProp);
+
+
+
+
+
+
 </script>
 </body>
 </html>
