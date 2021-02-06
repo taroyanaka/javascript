@@ -118,16 +118,6 @@ function init() {
     })    
 }
 
-
-function query0() {
-    console.log(document.querySelector(".column0").value);
-    console.log(document.querySelector(".table1").value);
-    const foo = Number(document.querySelector(".column0").value);
-    const bar = document.querySelector(".table1").value;
-    const baz = R.pluck(foo, window[bar]);
-    document.querySelector(".textarea3").value = baz;
-}
-
 function insertListToTextarea1() {
     allClickedAry = Array.from(document.querySelectorAll(".clicked")).map(V => {
         return `${V.parentElement.parentElement.querySelector("summary").innerText}, ${V.innerText}`
@@ -233,3 +223,11 @@ document.querySelector("table").insertAdjacentHTML("afterbegin", makeTable(heade
     chooseLang();
     Array.from(document.querySelectorAll("li")).filter(V => { return V.innerText === "firstName" })[0].click();
 } -->
+<!-- // function query0() {
+    //     console.log(document.querySelector(".column0").value);
+    //     console.log(document.querySelector(".table1").value);
+    //     const foo = Number(document.querySelector(".column0").value);
+    //     const bar = document.querySelector(".table1").value;
+    //     const baz = R.pluck(foo, window[bar]);
+    //     document.querySelector(".textarea3").value = baz;
+    // } -->
