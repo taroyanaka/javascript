@@ -62,17 +62,16 @@ td {border: solid 1px gray}
 <div class="main">
 <table></table>
 
-
-    SELECT
+    <!-- SELECT
     <input type="text" name="" class="column0" value="2">
     FROM
-    <input type="text" name="" class="table1" value="LIST">
+    <input type="text" name="" class="table1" value="LIST"> -->
 
     <input type="number" class="nTimes" value="10">
 
     <textarea cols="30" rows="10" class="textarea1"></textarea>
     <textarea cols="30" rows="10" class="textarea2"></textarea>
-    <textarea cols="30" rows="10" class="textarea3"></textarea>
+    <!-- <textarea cols="30" rows="10" class="textarea3"></textarea> -->
 
     <textarea name="" class="query1" id="" cols="30" rows="10" oninput="exe();"></textarea>
     <textarea name="" class="query2" id="" cols="30" rows="10" oninput="exe();"></textarea>
@@ -197,7 +196,7 @@ function test2() {
     testAnyClick("firstName");
     testAnyClick("lastName");
     testAnyClick("past");
-    query0();
+    // query0();
 }
 
 
@@ -244,11 +243,6 @@ function makeTable(headerAry, ary){
     let id=0;
     const aryWithKey = ary.map(V=>{V = R.insert(0, ++id, V);return V});
     const header = R.insert(0, "id", headerAry);
-    // const header = ["id", "POST_CODE", "TIME1", "TIME2", "FIRST_NAME", "LAST_NAME"];
-    // const aryWithKeyWithHeader = R.insertAll(0, [header], aryWithKey);
-    // const aryWithKeyWithHeaderProp = aryWithKey.map(V=>{
-    //     return R.zipObj(header, V)
-    // })
     const headerHTML = "<tr>" + header.map(V=>{return `<th>${V}</th>`}).join("") + "</tr>";
     function makeTDStr(innerAry){
         return innerAry.map(V=>{return `<td>${V}</td>`}).join("")
