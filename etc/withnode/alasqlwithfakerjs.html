@@ -102,6 +102,8 @@ textarea{
 // const foo1 = [1,2,3];
 // let foo2 = [1,2,3];
 var LIST = [];
+var allClickedAry;
+var headerAry;
 let tmpList;
 
 
@@ -163,10 +165,11 @@ function showInputTagOneline(event) {
     document.querySelector("input.oneline").value = faker[category][method]();
 }
 function insertListToTextarea1() {
-    const allClickedAry = Array.from(document.querySelectorAll(".clicked")).map(V => {
+    allClickedAry = Array.from(document.querySelectorAll(".clicked")).map(V => {
         return `${V.parentElement.parentElement.querySelector("summary").innerText}, ${V.innerText}`
     });
     document.querySelector("textarea.textarea1").value = allClickedAry.join("\n");
+    headerAry = allClickedAry.map(V=>{return V.split(",")[0] + V.split(",")[1].replace(" ", "_") });
 }
 function insertListToTextarea2() {
     const resultForTextarea = LIST.map(V => { return V + "\n" }).join("");
