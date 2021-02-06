@@ -89,39 +89,79 @@ var ary = [
 ]
 // let foo = R.insertAll(0, ary, [1,2,3,4]);
 // let bar = R.insertAll(0, [10,20],[30]);
-let id=0;
-const aryWithKey = ary.map(V=>{V = R.insert(0, ++id, V);return V});
-
-const header = ["id", "POST_CODE", "TIME1", "TIME2", "FIRST_NAME", "LAST_NAME"];
-
-const aryWithKeyWithHeader = R.insertAll(0, [header], aryWithKey);
-
-const aryWithKeyWithHeaderProp = aryWithKey.map(V=>{
-    return R.zipObj(header, V)
-})
-
-console.log(aryWithKeyWithHeader);
-console.log(aryWithKeyWithHeaderProp);
 
 
 
-const headerHTML = "<tr>" + header.map(V=>{return `<th>${V}</th>`}).join("") + "</tr>";
 
-function makeTDStr(innerAry){
-    return innerAry.map(V=>{return `<td>${V}</td>`}).join("")
+
+
+function makeTable(headerAry, ary){
+    let id=0;
+    const aryWithKey = ary.map(V=>{V = R.insert(0, ++id, V);return V});
+    // const header = R.insert(0, 100, [1,2,3]);
+    const header = R.insert(0, "id", headerAry);
+    // const header = ["id", "POST_CODE", "TIME1", "TIME2", "FIRST_NAME", "LAST_NAME"];
+    // const aryWithKeyWithHeader = R.insertAll(0, [header], aryWithKey);
+    // const aryWithKeyWithHeaderProp = aryWithKey.map(V=>{
+    //     return R.zipObj(header, V)
+    // })
+
+    const headerHTML = "<tr>" + header.map(V=>{return `<th>${V}</th>`}).join("") + "</tr>";
+    function makeTDStr(innerAry){
+        return innerAry.map(V=>{return `<td>${V}</td>`}).join("")
+    }
+    const tableBody = aryWithKey.map(innerAry=>{return `<tr>${
+        makeTDStr(innerAry)
+    }</tr>`}).join("");
+    const text = `<thead>
+            ${headerHTML}
+        </thead>
+        <tbody>
+                ${tableBody}
+        </tbody>`
+    return text;
+    // document.querySelector("table").insertAdjacentHTML("afterbegin",
+    //     `<thead>
+    //         ${headerHTML}
+    //     </thead>
+    //     <tbody>
+    //             ${tableBody}
+    //     </tbody>`
+    // )
 }
-const tableBody = aryWithKey.map(innerAry=>{return `<tr>${
-    makeTDStr(innerAry)
-}</tr>`}).join("");
+const headerAry = ["POST_CODE", "TIME1", "TIME2", "FIRST_NAME", "LAST_NAME"];
+document.querySelector("table").insertAdjacentHTML("afterbegin", makeTable(headerAry, ary) )
 
-document.querySelector("table").insertAdjacentHTML("afterbegin",
-    `<thead>
-        ${headerHTML}
-    </thead>
-    <tbody>
-            ${tableBody}
-    </tbody>`
-)
+
+
+// const aryWithKey = ary.map(V=>{V = R.insert(0, ++id, V);return V});
+// const header = ["id", "POST_CODE", "TIME1", "TIME2", "FIRST_NAME", "LAST_NAME"];
+// const aryWithKeyWithHeader = R.insertAll(0, [header], aryWithKey);
+// const aryWithKeyWithHeaderProp = aryWithKey.map(V=>{
+//     return R.zipObj(header, V)
+// })
+// console.log(aryWithKeyWithHeader);
+// console.log(aryWithKeyWithHeaderProp);
+// const headerHTML = "<tr>" + header.map(V=>{return `<th>${V}</th>`}).join("") + "</tr>";
+// function makeTDStr(innerAry){
+//     return innerAry.map(V=>{return `<td>${V}</td>`}).join("")
+// }
+// const tableBody = aryWithKey.map(innerAry=>{return `<tr>${
+//     makeTDStr(innerAry)
+// }</tr>`}).join("");
+// document.querySelector("table").insertAdjacentHTML("afterbegin",
+//     `<thead>
+//         ${headerHTML}
+//     </thead>
+//     <tbody>
+//             ${tableBody}
+//     </tbody>`
+// )
+
+
+
+
+
 // `<thead>
 //         <tr>
 //             <th>column0</th>
