@@ -52,10 +52,17 @@ textarea{
     /* width: 100vw; */
     width: 100%;
 }
+table {border: solid 1px black; border-collapse: collapse;}
+th {border: solid 1px gray}
+td {border: solid 1px gray}
+
     </style>
 </head>
 <body class="outer">
 <div class="main">
+<table></table>
+
+
     SELECT
     <input type="text" name="" class="column0" value="2">
     FROM
@@ -105,8 +112,6 @@ var LIST = [];
 var allClickedAry;
 var headerAry;
 let tmpList;
-
-
 
 
 function collectChoosedMethods() {
@@ -234,6 +239,34 @@ function exe(){
 test2();
 test1();
 exe();
+
+function makeTable(headerAry, ary){
+    let id=0;
+    const aryWithKey = ary.map(V=>{V = R.insert(0, ++id, V);return V});
+    const header = R.insert(0, "id", headerAry);
+    // const header = ["id", "POST_CODE", "TIME1", "TIME2", "FIRST_NAME", "LAST_NAME"];
+    // const aryWithKeyWithHeader = R.insertAll(0, [header], aryWithKey);
+    // const aryWithKeyWithHeaderProp = aryWithKey.map(V=>{
+    //     return R.zipObj(header, V)
+    // })
+    const headerHTML = "<tr>" + header.map(V=>{return `<th>${V}</th>`}).join("") + "</tr>";
+    function makeTDStr(innerAry){
+        return innerAry.map(V=>{return `<td>${V}</td>`}).join("")
+    }
+    const tableBody = aryWithKey.map(innerAry=>{return `<tr>${
+        makeTDStr(innerAry)
+    }</tr>`}).join("");
+    const text = `<thead>
+            ${headerHTML}
+        </thead>
+        <tbody>
+                ${tableBody}
+        </tbody>`
+    return text;
+}
+// const headerAry = ["POST_CODE", "TIME1", "TIME2", "FIRST_NAME", "LAST_NAME"];
+document.querySelector("table").insertAdjacentHTML("afterbegin", makeTable(headerAry, LIST) )
+
 
 </script>
 </body>
