@@ -144,31 +144,11 @@ document.querySelector("table").insertAdjacentHTML("afterbegin",
 )
 
 
-const count = ()=>{
-		const val0 = R.split(" ")(document.querySelector(`#foo`).value);
-		const val1 = R.countBy(R.identity)(val0);
-		const val2 = R.toPairs(val1);
-		const by1AryDescend = R.descend(R.prop(1));
-		const val3 = R.sort(by1AryDescend, val2);
-		const UNDER = N => N[1] <= Number(document.querySelector(`#number1`).value);
-		const val4 = R.filter(UNDER, val3);
-		const OVER = N => N[1] >= Number(document.querySelector(`#number0`).value);
-		const val5 = R.filter(OVER, val4);
-		document.querySelector(`#bar`).value = R.join("\n")(R.pluck(0)(val5));
-		document.querySelector(`#baz`).value = R.join("\n")(R.pluck(1)(val5));
-		sample = R.clone(val5);
-	}
-
-    const byId = R.descend(R.prop('id'));
-// const people = [
-//   { name: 'Emma', age: 70 },
-//   { name: 'Peter', age: 78 },
-//   { name: 'Mikhail', age: 62 },
-// ];
-const peopleByOldestFirst = R.sort(byId, aryWithKeyWithHeaderProp);
+const byId = R.descend(R.prop('id'));
+const peopleByIdDesc = R.sort(byId, aryWithKeyWithHeaderProp);
 
 console.log(
-    peopleByOldestFirst
+    peopleByIdDesc
 )
 // `<thead>
 //         <tr>
