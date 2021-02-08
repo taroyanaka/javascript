@@ -6,7 +6,12 @@
     <title>alasql</title>
     <script src="alasql.js"></script>
     <script src="quickSQLcheatsheet.js"></script>
+    <script src="ramda.js"></script>
     <style>
+        input{
+            width: 30rem;
+            height: 2rem;
+        }
         textarea{
             width: 100rem;
             height: 100rem;
@@ -19,12 +24,35 @@
     <textarea name="" class="res1" id="" cols="30" rows="10" oninput="exe();"></textarea>
     <button class="test1" onclick="test1();">test</button> -->
 
+
+<input name="" class="input0"></input>
 <textarea name="" class="textarea0"></textarea>
-<!-- <textarea name="" class="textarea0" cols="100" rows="100"></textarea> -->
 
 <script>
+
+document.querySelector(".input0").value = quickSQLcheatsheet.split("\n")[0];
 document.querySelector(".textarea0").textContent = quickSQLcheatsheet;
-document.querySelectorAll("#readme > div.Box-body.px-5.pb-5 > article > ul > li > code")
+
+// https://stackoverflow.com/a/650031/9740478
+
+// AA BB ‘%“`.split(/ |;|\n|"/);
+
+let tmpLength = 0
+let foo;
+let origin = `a b;
+AA BB '%"`
+origin = quickSQLcheatsheet;
+foo = origin.split(/\s|;|\n|'|"|\(|\)|\|/).filter(V=>{return V !== ""});
+const diff = function(a, b) { return a - b; };
+foo = (R.uniq(foo)).sort();
+foo = foo.filter(V=>{return V.match(/[A-Z]{2}/);})
+console.log(
+    foo
+)
+
+
+
+
 
 // function test1(){
 //     document.querySelector(".query1").value = `CREATE TABLE cities (city string, pop number);INSERT INTO cities VALUES ('Paris',2249975),('Berlin',3517424),('Madrid',3041579)`;

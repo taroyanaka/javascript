@@ -18,12 +18,12 @@ SELECT column_names FROM table_name LIMIT offset, count;
 % (percent sign) is a wildcard character that represents zero, one, or multiple characters
 _ (underscore) is a wildcard character that represents a single character
 SELECT column_names FROM table_name WHERE column_name LIKE pattern;
-LIKE ‘a%’ (find any values that start with “a”)
-LIKE ‘%a’ (find any values that end with “a”)
-LIKE ‘%or%’ (find any values that have “or” in any position)
-LIKE ‘_r%’ (find any values that have “r” in the second position)
-LIKE ‘a_%_%’ (find any values that start with “a” and are at least 3 characters in length)
-LIKE ‘[a-c]%’ (find any values starting with “a”, “b”, or “c”
+LIKE 'a%' (find any values that start with "a")
+LIKE '%a' (find any values that end with "a")
+LIKE '%or%' (find any values that have "or" in any position)
+LIKE '_r%' (find any values that have "r" in the second position)
+LIKE 'a_%_%' (find any values that start with "a" and are at least 3 characters in length)
+LIKE '[a-c]%' (find any values starting with "a", "b", or "c"
 essentially the IN operator is shorthand for multiple OR conditions
 SELECT column_names FROM table_name WHERE column_name IN (value1, value2, …);
 SELECT column_names FROM table_name WHERE column_name IN (SELECT STATEMENT);
@@ -35,7 +35,7 @@ SELECT * FROM table_name WHERE column_name IS NOT NULL;
 SELECT column_name AS alias_name FROM table_name;
 SELECT column_name FROM table_name AS alias_name;
 SELECT column_name AS alias_name1, column_name2 AS alias_name2;
-SELECT column_name1, column_name2 + ‘, ‘ + column_name3 AS alias_name;
+SELECT column_name1, column_name2 + ', ' + column_name3 AS alias_name;
 Each SELECT statement within UNION must have the same number of columns
 The columns must have similar data types
 The columns in each SELECT statement must also be in the same order
@@ -143,12 +143,12 @@ column4 datatype,
 // * % (percent sign) is a wildcard character that represents zero, one, or multiple characters
 // * _ (underscore) is a wildcard character that represents a single character
 // * SELECT column_names FROM table_name WHERE column_name LIKE pattern;
-// * LIKE ‘a%’ (find any values that start with “a”)
-// * LIKE ‘%a’ (find any values that end with “a”)
-// * LIKE ‘%or%’ (find any values that have “or” in any position)
-// * LIKE ‘_r%’ (find any values that have “r” in the second position)
-// * LIKE ‘a_%_%’ (find any values that start with “a” and are at least 3 characters in length)
-// * LIKE ‘[a-c]%’ (find any values starting with “a”, “b”, or “c”
+// * LIKE 'a%' (find any values that start with "a")
+// * LIKE '%a' (find any values that end with "a")
+// * LIKE '%or%' (find any values that have "or" in any position)
+// * LIKE '_r%' (find any values that have "r" in the second position)
+// * LIKE 'a_%_%' (find any values that start with "a" and are at least 3 characters in length)
+// * LIKE '[a-c]%' (find any values starting with "a", "b", or "c"
 
 // ### **IN**: operator that allows you to specify multiple values in a WHERE clause
 // * essentially the IN operator is shorthand for multiple OR conditions
@@ -168,7 +168,7 @@ column4 datatype,
 // * SELECT column_name AS alias_name FROM table_name;
 // * SELECT column_name FROM table_name AS alias_name;
 // * SELECT column_name AS alias_name1, column_name2 AS alias_name2;
-// * SELECT column_name1, column_name2 + ‘, ‘ + column_name3 AS alias_name;
+// * SELECT column_name1, column_name2 + ', ' + column_name3 AS alias_name;
 
 // ### **UNION**: set operator used to combine the result-set of two or more SELECT statements
 // * Each SELECT statement within UNION must have the same number of columns
