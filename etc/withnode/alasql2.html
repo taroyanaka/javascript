@@ -27,26 +27,31 @@
 }
         li{
             list-style: none;
-            background-color: red;
+            /* background-color: red; */
         }
         button{
-            display: none;
-            background-color: blueviolet;
+            /* display: none; */
+            /* background-color: blueviolet; */
         }
         ul{
             /* background-color: blue; */
         }
 
-        .read-more-state {
+.read-more-state {
     display: none;
   }
-  .read-more-target {
+  button{
+      /* background-color: yellowgreen; */
+      margin: 0;
+      padding: 0;
+  }
+  .read-more-target, button {
     visibility: collapse;
     opacity: 0;
     font-size: 0;
     transition: 0.5s ease;
   }
-  .read-more-state:checked ~ .read-more-target {
+  .read-more-state:checked ~ .read-more-target, .read-more-state:checked ~ .read-more-target > button {
     visibility: visible;
     opacity: 1;
     font-size: inherit;
@@ -68,13 +73,13 @@
   .read-more-state2 {
     display: none;
   }
-  .read-more-target2 {
+  .read-more-target2, button {
     visibility: collapse;
     opacity: 0;
     font-size: 0;
     transition: 0.25s ease;
   }
-  .read-more-state2:checked ~ .read-more-target2 {
+  .read-more-state2:checked ~ .read-more-target2, .read-more-state2:checked ~ .read-more-target2 > button {
     visibility: visible;
     opacity: 1;
     font-size: inherit;
@@ -169,7 +174,7 @@ console.log(
 
 
 let upperFooText = upperFoo.map(V=>{
-    return `<li class="read-more-target">${V}</li>`
+    return `<li class="read-more-target"><button>${V}</button></li>`
     // return `<li class="read-more-target">${V}</li>`
 }).join("");
 document.querySelector(".first").insertAdjacentHTML("afterend", upperFooText)
@@ -179,7 +184,7 @@ document.querySelector(".first").insertAdjacentHTML("afterend", upperFooText)
 
 
 let lowerFooText = lowerFoo.map(V=>{
-    return `<li class="read-more-target2">${V}</li>`
+    return `<li class="read-more-target2"><button>${V}</button></li>`
 }).join("");
 document.querySelector(".second").insertAdjacentHTML("afterend", lowerFooText)
 
