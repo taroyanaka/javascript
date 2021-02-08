@@ -16,6 +16,13 @@
             width: 100rem;
             height: 100rem;
         }
+        .container-keyword, .container-target {
+  display: flex;
+  flex-wrap: wrap;
+}
+        li{
+            list-style: none;
+        }
     </style>
 </head>
 <body>
@@ -23,14 +30,15 @@
     <textarea name="" class="query2" id="" cols="30" rows="10" oninput="exe();"></textarea>
     <textarea name="" class="res1" id="" cols="30" rows="10" oninput="exe();"></textarea>
     <button class="test1" onclick="test1();">test</button> -->
-
+<ul class="container-keyword"></ul>
+<ul class="container-target"></ul>
 
 <input name="" class="input0"></input>
 <textarea name="" class="textarea0"></textarea>
 
 <script>
 
-document.querySelector(".input0").value = quickSQLcheatsheet.split("\n")[0];
+// document.querySelector(".input0").value = quickSQLcheatsheet.split("\n")[0];
 document.querySelector(".textarea0").textContent = quickSQLcheatsheet;
 
 // https://stackoverflow.com/a/650031/9740478
@@ -42,18 +50,31 @@ let foo;
 let origin;
 // origin = `a b;
 // AA BB '%"`
+
 origin = quickSQLcheatsheet;
 foo = origin.split(/\s|;|\n|'|"|\(|\)|\|/).filter(V=>{return V !== ""});
+
 const diff = function(a, b) { return a - b; };
 foo = (R.uniq(foo)).sort();
-foo = foo.filter(V=>{return V.match(/[A-Z]{2}/);})
+upperFoo = foo.filter(V=>{return V.match(/[A-Z]{2}/);})
+lowerFoo = foo.filter(V=>{return V.match(/[a-z]/);})
+
 console.log(
-    foo
+    // upperFoo
+    lowerFoo
 )
 
 
 
-
+// document.querySelector(".input0").value = quickSQLcheatsheet.split("\n")[0];
+let upperFooText = upperFoo.map(V=>{
+    return `<li><button>${V}</button></li>`
+}).join("");
+document.querySelector(".container-keyword").insertAdjacentHTML("afterbegin", upperFooText)
+let lowerFooText = lowerFoo.map(V=>{
+    return `<li><button>${V}</button></li>`
+}).join("");
+document.querySelector(".container-target").insertAdjacentHTML("afterbegin", lowerFooText)
 
 // function test1(){
 //     document.querySelector(".query1").value = `CREATE TABLE cities (city string, pop number);INSERT INTO cities VALUES ('Paris',2249975),('Berlin',3517424),('Madrid',3041579)`;
