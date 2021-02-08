@@ -14,7 +14,7 @@
             padding: 0;
         }
         input{
-            width: 30rem;
+            width: 20rem;
             height: 2rem;
         }
         textarea{
@@ -112,6 +112,7 @@
       <label for="post" class="read-more-trigger"></label>
   </div> -->
   
+<input name="" class="input0"></input>
   
 <ul class="container-keyword">
     <input type="checkbox" class="read-more-state" id="post" />
@@ -129,7 +130,7 @@
 
 <!-- <ul class="container-target"></ul> -->
 
-<!-- <input name="" class="input0"></input> -->
+
 <textarea name="" class="textarea0"></textarea>
 
 <script>
@@ -172,9 +173,13 @@ console.log(
 //   </div>
 
 
+function insertText(event){
+    console.log(event.target.textContent);
+    document.querySelector(".input0").value += event.target.textContent + " ";
+}
 
 let upperFooText = upperFoo.map(V=>{
-    return `<li class="read-more-target"><button>${V}</button></li>`
+    return `<li class="read-more-target"><button onclick="insertText(event);">${V}</button></li>`
     // return `<li class="read-more-target">${V}</li>`
 }).join("");
 document.querySelector(".first").insertAdjacentHTML("afterend", upperFooText)
@@ -184,7 +189,7 @@ document.querySelector(".first").insertAdjacentHTML("afterend", upperFooText)
 
 
 let lowerFooText = lowerFoo.map(V=>{
-    return `<li class="read-more-target2"><button>${V}</button></li>`
+    return `<li class="read-more-target2"><button onclick="insertText(event);">${V}</button></li>`
 }).join("");
 document.querySelector(".second").insertAdjacentHTML("afterend", lowerFooText)
 
