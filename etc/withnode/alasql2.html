@@ -8,109 +8,84 @@
     <script src="quickSQLcheatsheet.js"></script>
     <script src="ramda.js"></script>
     <style>
-        *{
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        input{
-            width: 20rem;
-            height: 2rem;
-        }
-        textarea{
-            width: 100rem;
-            height: 100rem;
-        }
-        .container-keyword, .container-target {
-  display: flex;
-  flex-wrap: wrap;
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
-        li{
-            list-style: none;
-            /* background-color: red; */
-        }
-        button{
-            /* display: none; */
-            /* background-color: blueviolet; */
-        }
-        ul{
-            /* background-color: blue; */
-        }
-
+input{
+    width: 20rem;
+    height: 2rem;
+}
+textarea{
+    width: 100rem;
+    height: 100rem;
+}
+.container-keyword, .container-target {
+    display: flex;
+    flex-wrap: wrap;
+}
+li{
+    list-style: none;
+}
 .read-more-state {
     display: none;
-  }
-  button{
-      /* background-color: yellowgreen; */
-      margin: 0;
-      padding: 0;
-  }
-  .read-more-target, button {
+}
+button{
+    /* background-color: yellowgreen; */
+    margin: 0;
+    padding: 0;
+}
+.read-more-target, button {
     visibility: collapse;
     opacity: 0;
     font-size: 0;
     transition: 0.5s ease;
-  }
-  .read-more-state:checked ~ .read-more-target, .read-more-state:checked ~ .read-more-target > button {
+}
+.read-more-state:checked ~ .read-more-target, .read-more-state:checked ~ .read-more-target > button {
     visibility: visible;
     opacity: 1;
     font-size: inherit;
-  }
-  .read-more-state ~ .read-more-trigger:before {
+}
+.read-more-state ~ .read-more-trigger:before {
     content: "More";
-  }
-  .read-more-state:checked ~ .read-more-trigger:before {
+}
+.read-more-state:checked ~ .read-more-trigger:before {
     content: "Less";
-  }
-  .read-more-trigger {
+}
+.read-more-trigger {
     background-color: black;
     color: white;
     border-radius: 0.25em;
-  }
-
-        
-
-  .read-more-state2 {
+}
+.read-more-state2 {
     display: none;
-  }
-  .read-more-target2, button {
+}
+.read-more-target2, button {
     visibility: collapse;
     opacity: 0;
     font-size: 0;
     transition: 0.25s ease;
-  }
-  .read-more-state2:checked ~ .read-more-target2, .read-more-state2:checked ~ .read-more-target2 > button {
+}
+.read-more-state2:checked ~ .read-more-target2, .read-more-state2:checked ~ .read-more-target2 > button {
     visibility: visible;
     opacity: 1;
     font-size: inherit;
-  }
-  .read-more-state2 ~ .read-more-trigger2:before {
+}
+.read-more-state2 ~ .read-more-trigger2:before {
     content: "More";
-  }
-  .read-more-state2:checked ~ .read-more-trigger2:before {
+}
+.read-more-state2:checked ~ .read-more-trigger2:before {
     content: "Less";
-  }
-  .read-more-trigger2 {
+}
+.read-more-trigger2 {
     background-color: black;
     color: white;
     border-radius: 0.25em;
-  }
-  
-
-    </style>
+}
+</style>
 </head>
 <body>
-    <!-- <textarea name="" class="query1" id="" cols="30" rows="10" oninput="exe();"></textarea>
-    <textarea name="" class="query2" id="" cols="30" rows="10" oninput="exe();"></textarea>
-    <textarea name="" class="res1" id="" cols="30" rows="10" oninput="exe();"></textarea>
-    <button class="test1" onclick="test1();">test</button> -->
-  <!-- <div>
-      <input type="checkbox" class="read-more-state" id="post" />
-      <p class="read-more-wrap">no fold</p>
-      <p class="read-more-target">unfold 1</p>
-      <p class="read-more-target">unfold 2</p>
-      <label for="post" class="read-more-trigger"></label>
-  </div> -->
   
 <input name="" class="input0"></input>
   
@@ -128,21 +103,14 @@
 </ul>
 
 
-<!-- <ul class="container-target"></ul> -->
-
-
 <textarea name="" class="textarea0"></textarea>
 
 <script>
 
-// document.querySelector(".input0").value = quickSQLcheatsheet.split("\n")[0];
 document.querySelector(".textarea0").textContent = quickSQLcheatsheet;
 
 // https://stackoverflow.com/a/650031/9740478
 
-// AA BB ‘%“`.split(/ |;|\n|"/);
-
-let tmpLength = 0
 let foo;
 let origin;
 // origin = `a b;
@@ -156,13 +124,7 @@ foo = R.uniq(foo).sort();
 upperFoo = foo.filter(V=>{return V.match(/[A-Z]{2}/);})
 lowerFoo = foo.filter(V=>{return V.match(/[a-z]/);})
 
-console.log(
-    // upperFoo
-    lowerFoo
-)
-
-// document.querySelector(".input0").value = quickSQLcheatsheet.split("\n")[0];
-
+// console.log(    [upperFoo,    lowerFoo])
 
 // <div>
 //       <input type="checkbox" class="read-more-state" id="post" />
@@ -171,8 +133,6 @@ console.log(
 //       <p class="read-more-target">unfold 2</p>
 //       <label for="post" class="read-more-trigger"></label>
 //   </div>
-
-
 function insertText(event){
     console.log(event.target.textContent);
     document.querySelector(".input0").value += event.target.textContent + " ";
@@ -180,76 +140,14 @@ function insertText(event){
 
 let upperFooText = upperFoo.map(V=>{
     return `<li class="read-more-target"><button onclick="insertText(event);">${V}</button></li>`
-    // return `<li class="read-more-target">${V}</li>`
 }).join("");
 document.querySelector(".first").insertAdjacentHTML("afterend", upperFooText)
-// document.querySelector(".container-keyword").insertAdjacentHTML("afterbegin", upperFooText)
-
-
-
 
 let lowerFooText = lowerFoo.map(V=>{
     return `<li class="read-more-target2"><button onclick="insertText(event);">${V}</button></li>`
 }).join("");
 document.querySelector(".second").insertAdjacentHTML("afterend", lowerFooText)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function test1(){
-//     document.querySelector(".query1").value = `CREATE TABLE cities (city string, pop number);INSERT INTO cities VALUES ('Paris',2249975),('Berlin',3517424),('Madrid',3041579)`;
-//     document.querySelector(".query2").value = `SELECT * FROM cities WHERE pop < 3500000 ORDER BY pop DESC`;
-//     alasql(document.querySelector(".query1").value);
-//     var res1 = alasql( document.querySelector(".query2").value );
-//     var res1_2 = res1.map(V=>{
-//         let ary = [V.city, V.pop];
-//         return ary;
-//     })
-//     document.querySelector(".res1").value = res1_2;
-// }
-// function exe(){
-//     try {
-//     alasql(document.querySelector(".query1").value);
-//     } catch (error) {
-//     console.error(error);
-//     }
-
-//     var res1 = alasql( document.querySelector(".query2").value );
-//     var res1_2 = res1.map(V=>{ return [V.city, V.pop] })
-//     document.querySelector(".res1").value = res1_2;
-// }
 </script>
 </body>
 </html>
