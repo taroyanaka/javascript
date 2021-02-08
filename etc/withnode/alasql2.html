@@ -39,8 +39,9 @@ document.querySelector(".textarea0").textContent = quickSQLcheatsheet;
 
 let tmpLength = 0
 let foo;
-let origin = `a b;
-AA BB '%"`
+let origin;
+// origin = `a b;
+// AA BB '%"`
 origin = quickSQLcheatsheet;
 foo = origin.split(/\s|;|\n|'|"|\(|\)|\|/).filter(V=>{return V !== ""});
 const diff = function(a, b) { return a - b; };
