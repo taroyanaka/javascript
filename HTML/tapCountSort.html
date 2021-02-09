@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>tap count sort</title>
+    <script src="ramda.js"></script>
+</head>
+<style>
+/* https://www.color-hex.com/color-palette/8250 */
+input{
+    width: 5rem;
+    height: 5rem;
+}
+input#ASC ~ label{
+    color: #52d053;
+    background-color: whitesmoke;
+}
+input#DESC ~ label{
+    color: #765898;
+    background-color: whitesmoke;
+}
+label{
+    font-size: large;
+    font-style: oblique;
+    background-color: whitesmoke;
+}
+li{
+    width: 10rem;
+    height: 2rem;
+    background-color: whitesmoke;
+    margin: 0.5rem;
+    padding: 0.2rem;
+    list-style: none;
+    border: 1px solid black;
+    border-radius: 5%;
+}
+.foo{
+    color: whitesmoke;
+    background-color: 	#000000;
+}
+.bar{
+    background-color: #e6770b;
+}
+.baz{
+    background-color: #d3290f;
+}
+</style>
+<body>
+<input type="radio" id="ASC" name="sortType" value="ASC" onchange="main(event);" checked>
+<label for="ASC">ASC</label>
+<input type="radio" id="DESC" name="sortType" value="DESC" onchange="main(event);">
+<label for="DESC">DESC</label>
+<ul>
+    <li data-count="0" onclick="main(event);" class="foo">foo</li>
+    <li data-count="2" onclick="main(event);" class="bar">bar</li>
+    <li data-count="0" onclick="main(event);" class="baz">baz</li>
+</ul>
+</body>
+<script>
+let fooAry=[];
+
+// function fooFn() {        console.log(typeof document.querySelector("input[type='radio']:checked").value)    }
+
+function showCount() {
+    document.querySelectorAll("li").forEach(V=>{
+        V.textContent = V.textContent.split(" ")[0] + " count:" + V.dataset.count
+    })
+}
+
+function clickCounterIncrement(event){
+    event.target.dataset.count = Number(event.target.dataset.count) + 1;
+    document.querySelectorAll("li").forEach(V=>{ console.log(V.dataset ) })
+}
+
+function sortByClickCount() {
+    fooAry=[];
+    document.querySelectorAll("li").forEach(V=>{
+        fooAry.push([Number(V.dataset.count), V])
+    })
+    // const normalSort = R.sortBy(R.prop(0));
+    // const sortByASC = R.sort(R.ascend(R.prop(0)));
+    // const sortByDESC = R.sort(R.descend(R.prop(0)));
+
+    const sortByASCorDESC = document.querySelector("input[type='radio']:checked").value === "ASC" ? R.sort(R.descend(R.prop(0))) : R.sort(R.ascend(R.prop(0)));
+    const sortedFooAry = sortByASCorDESC(fooAry);
+    // sortedFooAry.forEach(V=>{        console.log(V[1])    })
+    const fooStr = sortedFooAry.map(V=>{return V[1].outerHTML}).join("");
+	document.querySelectorAll("li").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector("ul").insertAdjacentHTML("afterbegin", fooStr)
+}
+
+function main(event) {
+    clickCounterIncrement(event);
+    sortByClickCount();
+    showCount();
+}
+
+showCount();
+</script>
+</html>
