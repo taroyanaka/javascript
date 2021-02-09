@@ -26,13 +26,10 @@ tr:nth-child(even) td:nth-child(even){
 }
 td{
     border: 2px solid black;
-    /* border: none; */
+
     height: 30px;
     width: 30px;
 }
-/* td:focus, td:hover{
-    background-color: blueviolet;
-} */
 </style>
 </head>
 <body>
@@ -52,12 +49,12 @@ const record = `<tr>
     <td></td>
     <td></td>
 </tr>`
-// document.querySelector("h1").textContent = R.add(1,2);
+
 document.querySelector("table").insertAdjacentHTML("afterbegin", R.times(R.identity, 8).map(V=>{
     return record
 }).join("")
 )
-// ♔♚キング、♕♛クイーン、♖♜、ルーク、♗♝ビショップ、♘♞ナイト、♙♟ポーン
+
 const initPieceWhiteNotPawn = `<td>♖</td>
 <td>♘</td>
 <td>♗</td>
@@ -77,7 +74,6 @@ const initPieceWhitePawn = `<td>♙</td>
 document.querySelectorAll("table tr")[7].innerHTML = `<tr>${initPieceWhiteNotPawn}</tr>`
 document.querySelectorAll("table tr")[6].innerHTML = `<tr>${initPieceWhitePawn}</tr>`
 
-// ♔♚キング、♕♛クイーン、♖♜、ルーク、♗♝ビショップ、♘♞ナイト、♙♟ポーン
 const initPieceBlackNotPawn = `<td>♜</td>
 <td>♞</td>
 <td>♝</td>
@@ -106,40 +102,40 @@ document.querySelectorAll("table tr")[1].innerHTML = `<tr>${initPieceBlackPawn}<
 // 75
 // 875
 
+function getTdIdx(num){
+    switch (num) {
+        case 0:
+            return 0;
+        break;
+        case 125:
+            return 1;
+        break;
+        case 25:
+            return 2;
+        break;
+        case 375:
+            return 3;
+        break;
+        case 5:
+            return 4;
+        break;
+        case 625:
+            return 5;
+        break;
+        case 75:
+            return 6;
+        break;
+        case 875:
+            return 7;
+        default:
+        }
+}
+
 function getIdxNumToTrTdIdx(IdxNum){
     let res = (IdxNum/8).toString().split(".");
-    // console.log(res);
     if(res.length===1){res.push(0)};
     res = res.map(NumStr=>{return Number(NumStr)});
 
-    function getTdIdx(num){
-        switch (num) {
-            case 0:
-                return 0;
-            break;
-            case 125:
-                return 1;
-            break;
-            case 25:
-                return 2;
-            break;
-            case 375:
-                return 3;
-            break;
-            case 5:
-                return 4;
-            break;
-            case 625:
-                return 5;
-            break;
-            case 75:
-                return 6;
-            break;
-            case 875:
-                return 7;
-            default:
-            }
-    }
     res = [getTdIdx(res[1]), res[0]];
     return res;
 }
@@ -147,7 +143,6 @@ function getIdxNumToTrTdIdx(IdxNum){
 // example
 // document.querySelectorAll("td")[36]
 // getIdxNumToTrTdIdx(36)
-
 
 function init() {
     document.querySelectorAll("td").forEach((V,K)=>{V.dataset.num = K});
@@ -186,7 +181,8 @@ function trTdSelector(tdIdx, trIdx){
     return document.querySelectorAll(`table tr`)[trIdx].children[tdIdx]
 }
 
-
+let bar;
+let baz;
 
 function givePieceMoveClickable(ex, whenAny) {
     // console.log(ex.target.textContent)
@@ -205,16 +201,32 @@ function givePieceMoveClickable(ex, whenAny) {
         return isSpace(foo) ? "space" : R.includes(foo, ["♔","♕","♖","♗","♘","♙"]) ? "white" : "black";
     }
     const exColor = isSpaceOrBlackOrWhite(ex.target.textContent);
-    console.log(exColor);
+    // console.log(exColor);
 
+    let piece;
     const res = whenAny().filter(V=>{
         return rejectOutOfBoard(V);
     }).filter(V=>{
-        const piece = trTdSelector(V[0], V[1]).textContent;
+        piece = trTdSelector(V[0], V[1]).textContent;
         if(exColor !== isSpaceOrBlackOrWhite(piece)){return V};
     })
-    console.log(res)
 
+    // 駒がある座標から0,0としたベクトルを出す ベクトルを絶対値ベースにする(右上のx,y方向の計算だけにする)
+    // (もしくは絶対値ではなくそれぞれの方向で別々に判定してrejectする?ロジック書く自信無いからこれはプランB)
+
+    // 縦横移動できる駒の場合
+    // ベクトルのxかyが0では無い方が最小のx(or y)で逆色判定した座標(最短の取れる駒)より大きかったらその座標をreject
+
+    // 斜め移動できる駒の場合
+    // 単純にベクトルのxy合計値が最小のx(or y)で逆色判定した座標(最短の取れる駒)より大きかったらその座標をreject
+
+    // 調子良い時に書く
+
+    // console.log(res)
+    // console.log(piece)
+    // console.log(whenAny())
+    // bar = res;
+    // baz = ex;
     function addColor(targetAry) {
         document.querySelectorAll("td").forEach(TD=>{
             targetAry.forEach(ARY=>{
@@ -229,61 +241,46 @@ function givePieceMoveClickable(ex, whenAny) {
 
 const oneToSevenAry = [1, 2, 3, 4, 5, 6, 7];
 
-function giveClickable(ex, text){
-    // console.log(ex.target.dataset.num);
-
-    function foo(ex, text) {
-        // https://stackoverflow.com/a/6513594/9740478
-        // let _num = [4,4];
-        let _num = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
-        switch (text) {
-        // switch ("♜") {
-        // switch ("♖") {
-                case "♖":
-                case "♜":
-                //  console.log("foo")
-                // let [x, y] = [_num[0]+1 ,_num[1]];
-                // _num[0]+1 ,_num[1]+1
-                // console.log([x, y])
-                // return [x, y]
-                givePieceMoveClickable(ex, whenRook);
-                break;
-                case "♗":
-                case "♝":
-                givePieceMoveClickable(ex, whenBishop);
-                break;
-                case "♕":
-                case "♛":
-                givePieceMoveClickable(ex, whenQueen);
-                break;
-                case "♘":
-                case "♞":
-                givePieceMoveClickable(ex, whenKnight);
-                break;
-
-                case "♟":
-                    // console.log(100)
-                // givePieceMoveClickable(ex, hogehoge);
-                givePieceMoveClickable(ex, whenBlackPawn);
-                break;
-                case "♙":
-                givePieceMoveClickable(ex, whenWhitePawn);
-                break;
-
-            default:
-                break;
-        }
+function foo(ex, text) {
+    // https://stackoverflow.com/a/6513594/9740478
+    // let _num = [4,4];
+    let _num = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
+    switch (text) {
+        case "♖":
+        case "♜":
+        givePieceMoveClickable(ex, whenRook);
+        break;
+        case "♗":
+        case "♝":
+        givePieceMoveClickable(ex, whenBishop);
+        break;
+        case "♕":
+        case "♛":
+        givePieceMoveClickable(ex, whenQueen);
+        break;
+        case "♘":
+        case "♞":
+        givePieceMoveClickable(ex, whenKnight);
+        break;
+        case "♟":
+        givePieceMoveClickable(ex, whenBlackPawn);
+        break;
+        case "♙":
+        givePieceMoveClickable(ex, whenWhitePawn);
+        break;
+        default:
+        break;
     }
+}
 
-    // const res = getIdxNumToTrTdIdx(Number(ex.target.dataset.num));
+
+function giveClickable(ex, text){
     const res = foo(ex, text);
-    // console.log(res);
 }
 
 // https://github.com/ramda/ramda/issues/1897#issuecomment-609868750
 const concatAll = R.converge(R.reduce(R.concat), [R.head, R.tail]);
 // const duo = R.aperture(2, concatAll);
-
 const getXY = () => [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
 
 function whenRook() {
@@ -324,6 +321,7 @@ function whenQueen() {
     const plusYminusX = oneToSevenAry.map(V=>{return [xy[0]-V, xy[1]+V] });
     const plusXminusY = oneToSevenAry.map(V=>{return [xy[0]+V, xy[1]-V] });
 
+    // console.log(concatAll( [plusX, minusX, plusY, minusY, plusXY, minusXY, plusYminusX, plusXminusY] ));
     return concatAll( [plusX, minusX, plusY, minusY, plusXY, minusXY, plusYminusX, plusXminusY] );
 }
 
@@ -404,7 +402,7 @@ function whenWhitePawn() {
 // BlackRook
 // trTdSelector(7,0).click()
 // WhiteRook
-trTdSelector(0,7).click()
+trTdSelector(3,0).click()
 
 // Bishop
 // trTdSelector(2, 0).click()
@@ -424,5 +422,6 @@ trTdSelector(0,7).click()
 trTdSelector(4,4).click()
 trTdSelector(4,4).click()
 
+// ♔♚キング、♕♛クイーン、♖♜、ルーク、♗♝ビショップ、♘♞ナイト、♙♟ポーン
 </script>
 </html>
