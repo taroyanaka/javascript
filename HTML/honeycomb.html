@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>honeycomb css</title>
+    <!-- https://stackoverflow.com/a/57709517/9740478 -->
+        <!-- https://codepen.io/harsimarriar96/pen/WyOgVb -->
+    <style>
+.foo{
+  width: 500px;
+}
+
+img{
+  background-color: gray;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.comb{
+  width: 75px;
+  height: 75px;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 165px;
+  /* overflow: hidden; */
+  /* position: relative; */
+  /* width: 800px; */
+}
+
+.comb:nth-of-type(2n){
+  top: 120px;
+}
+/* img::before{
+    content: "foo";
+    z-index: 100;
+} */
+h1{
+    position: absolute;
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  color: #000;
+  margin: 0 auto;
+  z-index: 1;
+  font-size: 10px;
+  /* background-color: red; */
+  background-color: gray;
+  overflow: hidden;
+}
+    </style>
+</head>
+<body>
+    <!-- <div class="image-with-text">
+        <h1>Text on image</h1>
+        <img src="http://placehold.it/800x800" />
+      </div> -->
+
+
+    <div class="foo">
+        <div class="comb"><h1>Text on image Text on image Text on imageText on imageText on imageText on image</h1><img src="https://via.placeholder.com/150"></div>
+        <div class="comb"><h1>Text on image Text on image Text on imageText on imageText on imageText on image</h1><img src="https://via.placeholder.com/150"></div>
+        <div class="comb"><h1>Text on image Text on image Text on imageText on imageText on imageText on image</h1><img src="https://via.placeholder.com/150"></div>
+        <div class="comb"><h1>Text on image Text on image Text on imageText on imageText on imageText on image</h1><img src="https://via.placeholder.com/150"></div>
+        <div class="comb"><h1>Text on image Text on image Text on imageText on imageText on imageText on image</h1><img src="https://via.placeholder.com/150"></div>
+        <div class="comb"><h1>Text on image Text on image Text on imageText on imageText on imageText on image</h1><img src="https://via.placeholder.com/150"></div>
+        <div class="comb"><h1>Text on image Text on image Text on imageText on imageText on imageText on image</h1><img src="https://via.placeholder.com/150"></div>
+        <div class="comb"><h1>Text on image Text on image Text on imageText on imageText on imageText on image</h1><img src="https://via.placeholder.com/150"></div>
+        <div class="comb"><h1>Text on image Text on image Text on imageText on imageText on imageText on image</h1><img src="https://via.placeholder.com/150"></div>
+        <div class="comb"><h1>Text on image Text on image Text on imageText on imageText on imageText on image</h1><img src="https://via.placeholder.com/150"></div>
+        <div class="comb"><h1>Text on image Text on image Text on imageText on imageText on imageText on image</h1><img src="https://via.placeholder.com/150"></div>
+        <div class="comb"><h1>Text on image Text on image Text on imageText on imageText on imageText on image</h1><img src="https://via.placeholder.com/150"></div>
+    </div>
+</body>
+</html>
