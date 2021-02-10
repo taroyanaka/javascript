@@ -4,24 +4,29 @@
     <meta charset="UTF-8">
     <title>tap count sort</title>
     <script src="ramda.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
 </head>
 <style>
 /* https://www.color-hex.com/color-palette/8250 */
+*{
+    font-family: 'Orbitron', sans-serif;
+}
 input{
     width: 5rem;
     height: 5rem;
 }
 input#ASC ~ label{
-    color: #52d053;
-    background-color: whitesmoke;
+    color: whitesmoke;
+    background-color: #52d053;
 }
 input#DESC ~ label{
-    color: #765898;
-    background-color: whitesmoke;
+    color: whitesmoke;
+    background-color: #765898;
 }
 label{
-    font-size: large;
-    font-style: oblique;
+    font: xx-large;
+    /* font-style: oblique; */
     background-color: whitesmoke;
 }
 li{
@@ -52,7 +57,7 @@ li{
 <label for="DESC">DESC</label>
 <ul>
     <li data-count="0" onclick="main(event);" class="foo">foo</li>
-    <li data-count="2" onclick="main(event);" class="bar">bar</li>
+    <li data-count="0" onclick="main(event);" class="bar">bar</li>
     <li data-count="0" onclick="main(event);" class="baz">baz</li>
 </ul>
 </body>
