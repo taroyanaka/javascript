@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>word picker</title>
-    <!-- <script src="ramda.js"></script> -->
+    <script src="ramda.js"></script>
     <!-- <script src="alasql.js"></script> -->
     <style>
         *{
@@ -21,9 +21,10 @@
 </style>
 </head>
 <body>
+<!-- <button onclick="test(event);"></button> -->
 <div class="to">
     <button onclick="test(event);">A</button>
-    <button onclick="test(event);" class="test"></button>
+    <button onclick="test(event);">A</button>
     <button onclick="test(event);">A</button>
     <button onclick="test(event);">A</button>
 </div>
@@ -34,6 +35,7 @@
 </div>
 </body>
 <script>
+// R.intersperse('a', ['b', 'n', 'n', 's']);
 let clickCount = 0;
 
 let txt="";
@@ -62,5 +64,17 @@ function test(event) {
     }
 }
 
+// document.querySelectorAll(".to > button")
+
+
+let hoge =  Array.from(document.querySelectorAll(".to > button")).reduce((A,V)=>{A.push(V.outerHTML);return A},[]);
+const blankButton = `<button onclick="test(event);"></button>`
+let hoge2 = R.intersperse(blankButton, hoge);
+let hoge2_1 = R.insert(0, blankButton, hoge2)
+let hoge2_2 = R.insert(-1, blankButton, hoge2_1)
+
+let hoge3 = hoge2_2.join("");
+document.querySelectorAll(".to > button").forEach(E=>{E.parentNode.removeChild(E)});
+document.querySelector(".to").insertAdjacentHTML("afterbegin", hoge3);
 </script>
 </html>
