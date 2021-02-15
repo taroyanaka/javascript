@@ -53,11 +53,13 @@ function test(event) {
         // foo = event.target.innerText;
         event.target.style = "background-color: blueviolet;";
         clickCount++;
+        reEditablize();
             break;
         case 1:
         event.target.innerText = "";
         event.target.style = "";
         clickCount = 0;
+        // reEditablize();
             break;
         default:
             break;
@@ -66,15 +68,20 @@ function test(event) {
 
 // document.querySelectorAll(".to > button")
 
+function reEditablize() {
+    let hoge =  Array.from(document.querySelectorAll(".to > button")).reduce((A,V)=>{
+        if(V.innerText){A.push(V.outerHTML)}
+        // A.push(V.outerHTML)
+        ;return A},[]);
+    const blankButton = `<button onclick="test(event);"></button>`
+    let hoge2 = R.intersperse(blankButton, hoge);
+    let hoge2_1 = R.insert(0, blankButton, hoge2)
+    let hoge2_2 = R.insert(-1, blankButton, hoge2_1)
+    let hoge3 = hoge2_2.join("");
+    document.querySelectorAll(".to > button").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector(".to").insertAdjacentHTML("afterbegin", hoge3);
+}
 
-let hoge =  Array.from(document.querySelectorAll(".to > button")).reduce((A,V)=>{A.push(V.outerHTML);return A},[]);
-const blankButton = `<button onclick="test(event);"></button>`
-let hoge2 = R.intersperse(blankButton, hoge);
-let hoge2_1 = R.insert(0, blankButton, hoge2)
-let hoge2_2 = R.insert(-1, blankButton, hoge2_1)
-
-let hoge3 = hoge2_2.join("");
-document.querySelectorAll(".to > button").forEach(E=>{E.parentNode.removeChild(E)});
-document.querySelector(".to").insertAdjacentHTML("afterbegin", hoge3);
+reEditablize();
 </script>
 </html>
