@@ -21,18 +21,24 @@
 </style>
 </head>
 <body>
-<!-- <button onclick="test(event);"></button> -->
+<textarea name="" class="res" cols="30" rows="10"></textarea>
+
+<!-- SELECT
+*
+FROM
+table_name -->
 <div class="to">
-    <button onclick="test(event);">A</button>
-    <button onclick="test(event);">A</button>
-    <button onclick="test(event);">A</button>
-    <button onclick="test(event);">A</button>
+    <button onclick="test(event);">SELECT</button>
+    <button onclick="test(event);">*</button>
+    <button onclick="test(event);">FROM</button>
+    <button onclick="test(event);">table_name</button>
 </div>
 <div class="from">
     <button onclick="setText(event);">foo</button>
     <button onclick="setText(event);">bar</button>
     <button onclick="setText(event);">baz</button>
 </div>
+
 </body>
 <script>
 // R.intersperse('a', ['b', 'n', 'n', 's']);
@@ -67,21 +73,29 @@ function test(event) {
 }
 
 // document.querySelectorAll(".to > button")
-
+// let foo="";
 function reEditablize() {
-    let hoge =  Array.from(document.querySelectorAll(".to > button")).reduce((A,V)=>{
+    const hoge =  Array.from(document.querySelectorAll(".to > button")).reduce((A,V)=>{
         if(V.innerText){A.push(V.outerHTML)}
         // A.push(V.outerHTML)
         ;return A},[]);
     const blankButton = `<button onclick="test(event);"></button>`
-    let hoge2 = R.intersperse(blankButton, hoge);
-    let hoge2_1 = R.insert(0, blankButton, hoge2)
-    let hoge2_2 = R.insert(-1, blankButton, hoge2_1)
-    let hoge3 = hoge2_2.join("");
+    const hoge2 = R.intersperse(blankButton, hoge);
+    const hoge2_1 = R.insert(0, blankButton, hoge2)
+    const hoge2_2 = R.insert(-1, blankButton, hoge2_1)
+    const hoge3 = hoge2_2.join("");
     document.querySelectorAll(".to > button").forEach(E=>{E.parentNode.removeChild(E)});
     document.querySelector(".to").insertAdjacentHTML("afterbegin", hoge3);
+    const foo =         Array.from(document.querySelectorAll(".to > button")).reduce((A,V)=>{return A + V.innerText + " " } ,"");
+    // console.log(foo);
+
+    console.log(        foo    );
+    document.querySelector(".res").value = foo;
 }
 
 reEditablize();
+
+// Array.from(document.querySelectorAll(".to > button")).reduce((A,V)=>{return A + V.innerText},"");
+
 </script>
 </html>
