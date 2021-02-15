@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>word picker</title>
+    <!-- <script src="ramda.js"></script> -->
+    <!-- <script src="alasql.js"></script> -->
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        button{
+            width: 3rem;
+            height: 3rem;
+            /* background-color: greenyellow; */
+        }
+    </style>
+<style>
+</style>
+</head>
+<body>
+<div class="to">
+    <button onclick="test(event);">A</button>
+    <button onclick="test(event);" class="test"></button>
+    <button onclick="test(event);">A</button>
+    <button onclick="test(event);">A</button>
+</div>
+<div class="from">
+    <button onclick="setText(event);">foo</button>
+    <button onclick="setText(event);">bar</button>
+    <button onclick="setText(event);">baz</button>
+</div>
+</body>
+<script>
+let clickCount = 0;
+
+let txt="";
+function setText(event) {
+    txt = event.target.innerText;
+    document.querySelectorAll(".from > button").forEach(V=>{V.style="";})
+    event.target.style = "background-color: greenyellow;";
+}
+// let foo = "";
+function test(event) {
+    // event.target.innerText = txt;
+    switch (clickCount) {
+        case 0:
+        event.target.innerText = txt;
+        // foo = event.target.innerText;
+        event.target.style = "background-color: blueviolet;";
+        clickCount++;
+            break;
+        case 1:
+        event.target.innerText = "";
+        event.target.style = "";
+        clickCount = 0;
+            break;
+        default:
+            break;
+    }
+}
+
+</script>
+</html>
