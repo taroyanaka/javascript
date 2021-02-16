@@ -34,38 +34,91 @@ table_name -->
     <button onclick="test(event);">table_name</button>
 </div>
 <div class="from">
-    <button onclick="setText(event);">foo</button>
-    <button onclick="setText(event);">bar</button>
-    <button onclick="setText(event);">baz</button>
+    <button onclick="setText(event);">foo0</button>
+    <button onclick="setText(event);">bar0</button>
+    <button onclick="setText(event);">baz0</button>
+    <button onclick="setText(event);">foo1</button>
+    <button onclick="setText(event);">bar1</button>
+    <button onclick="setText(event);">baz1</button>
+    <button onclick="setText(event);">foo2</button>
+    <button onclick="setText(event);">bar2</button>
+    <button onclick="setText(event);">baz2</button>
+    <button onclick="setText(event);">foo3</button>
+    <button onclick="setText(event);">bar3</button>
+    <button onclick="setText(event);">baz3</button>
+</div>
+<div>
+    <button onclick="reset()">reset</button>
 </div>
 
 </body>
 <script>
-// R.intersperse('a', ['b', 'n', 'n', 's']);
 let clickCount = 0;
 
 let txt="";
+let txts=[];
+
+const rainbow = [
+  "#ee82ee",
+  "#4b0082",
+  "#0000ff",
+  "#008000",
+  "#ffff00",
+  "#ffa500",
+  "#ff0000"
+]
+let colorNum = 0;
+function reset() {
+    colorNum = 0;
+    txts = [];
+    clickCount = 0;
+    document.querySelectorAll(".from > button").forEach(V=>{V.style=""});
+    document.querySelectorAll(".to > button").forEach(V=>{V.style=""});
+}
+
+function rainbowCounter() {
+    colorNum = rainbow.length === colorNum ? 1 : colorNum + 1;
+    console.log(colorNum - 1);
+    return rainbow[colorNum - 1];
+}
 function setText(event) {
-    txt = event.target.innerText;
-    document.querySelectorAll(".from > button").forEach(V=>{V.style="";})
-    event.target.style = "background-color: greenyellow;";
+    // txt = event.target.innerText;
+    txts.push(event.target.innerText);
+    console.log(txts)
+    // document.querySelectorAll(".from > button").forEach(V=>{V.style="";})
+    // event.target.style = "background-color: greenyellow;";
+    event.target.style = `background-color: ${rainbowCounter()};`;
 }
 // let foo = "";
 function test(event) {
     // event.target.innerText = txt;
     switch (clickCount) {
         case 0:
-        event.target.innerText = txt;
+        // event.target.innerText = txt;
+        const ELMPASS = getNodeIndex(event.target);
+        // txts.forEach(TXT=>{
+        txts.reduce((A, TXT)=>{
+            // event.target.innerText = TXT;
+            console.log(A);
+            console.log(ELMPASS);
+            A += ELMPASS;
+            document.querySelectorAll(".to > button")[A].innerText = TXT;
+            reEditablize();
+            return A;
+        }, 0)
+        document.querySelectorAll(".from > button").forEach(V=>{V.style="";})
+        txts = [];
+
         // foo = event.target.innerText;
-        event.target.style = "background-color: blueviolet;";
+        // event.target.style = "background-color: blueviolet;";
         clickCount++;
-        reEditablize();
+
             break;
         case 1:
         event.target.innerText = "";
         event.target.style = "";
         clickCount = 0;
-        // reEditablize();
+        reEditablize();
             break;
         default:
             break;
@@ -75,9 +128,9 @@ function test(event) {
 // document.querySelectorAll(".to > button")
 // let foo="";
 function reEditablize() {
-    const hoge =  Array.from(document.querySelectorAll(".to > button")).reduce((A,V)=>{
-        if(V.innerText){A.push(V.outerHTML)}
-        // A.push(V.outerHTML)
+    const hoge =  Array.from(document.querySelectorAll(".to > button")).filter(V=>{return V.innerText}).reduce((A,V)=>{
+        // if(V.innerText){A.push(V.outerHTML)}
+        A.push(V.outerHTML)
         ;return A},[]);
     const blankButton = `<button onclick="test(event);"></button>`
     const hoge2 = R.intersperse(blankButton, hoge);
@@ -89,13 +142,21 @@ function reEditablize() {
     const foo =         Array.from(document.querySelectorAll(".to > button")).reduce((A,V)=>{return A + V.innerText + " " } ,"");
     // console.log(foo);
 
-    console.log(        foo    );
+    // console.log(        foo    );
     document.querySelector(".res").value = foo;
 }
 
 reEditablize();
 
 // Array.from(document.querySelectorAll(".to > button")).reduce((A,V)=>{return A + V.innerText},"");
+
+
+// https://stackoverflow.com/a/40052000/9740478
+function getNodeIndex( elm ){ 
+    // return [...elm.parentNode.children].findIndex(c => c == elm)
+    // or
+    return [...elm.parentNode.children].indexOf(elm)
+}
 
 </script>
 </html>
