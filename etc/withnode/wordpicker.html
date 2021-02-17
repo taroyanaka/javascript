@@ -22,30 +22,31 @@
 </head>
 <body>
 <textarea name="" class="res" cols="30" rows="10"></textarea>
+<input name="" class="pre" cols="30" rows="10"></input>
 
 <!-- SELECT
 *
 FROM
 table_name -->
 <div class="to">
-    <button onclick="test(event);">SELECT</button>
-    <button onclick="test(event);">*</button>
-    <button onclick="test(event);">FROM</button>
-    <button onclick="test(event);">table_name</button>
+    <button onclick="exe(event);">SELECT</button>
+    <button onclick="exe(event);">*</button>
+    <button onclick="exe(event);">FROM</button>
+    <button onclick="exe(event);">table_name</button>
 </div>
 <div class="from">
-    <button onclick="setText(event);">foo0</button>
-    <button onclick="setText(event);">bar0</button>
-    <button onclick="setText(event);">baz0</button>
-    <button onclick="setText(event);">foo1</button>
-    <button onclick="setText(event);">bar1</button>
-    <button onclick="setText(event);">baz1</button>
-    <button onclick="setText(event);">foo2</button>
-    <button onclick="setText(event);">bar2</button>
-    <button onclick="setText(event);">baz2</button>
-    <button onclick="setText(event);">foo3</button>
-    <button onclick="setText(event);">bar3</button>
-    <button onclick="setText(event);">baz3</button>
+    <button onclick="pickWord(event);">foo0</button>
+    <button onclick="pickWord(event);">bar0</button>
+    <button onclick="pickWord(event);">baz0</button>
+    <button onclick="pickWord(event);">foo1</button>
+    <button onclick="pickWord(event);">bar1</button>
+    <button onclick="pickWord(event);">baz1</button>
+    <button onclick="pickWord(event);">foo2</button>
+    <button onclick="pickWord(event);">bar2</button>
+    <button onclick="pickWord(event);">baz2</button>
+    <button onclick="pickWord(event);">foo3</button>
+    <button onclick="pickWord(event);">bar3</button>
+    <button onclick="pickWord(event);">baz3</button>
 </div>
 <div>
     <button onclick="reset()">reset</button>
@@ -53,10 +54,11 @@ table_name -->
 
 </body>
 <script>
-let clickCount = 0;
+// let clickCount = 0;
+// let txt="";
 
-let txt="";
 let txts=[];
+let colorNum = 0;
 
 const rainbow = [
   "#ee82ee",
@@ -67,96 +69,89 @@ const rainbow = [
   "#ffa500",
   "#ff0000"
 ]
-let colorNum = 0;
-function reset() {
-    colorNum = 0;
-    txts = [];
-    clickCount = 0;
-    document.querySelectorAll(".from > button").forEach(V=>{V.style=""});
-    document.querySelectorAll(".to > button").forEach(V=>{V.style=""});
-}
+
+// https://stackoverflow.com/a/40052000/9740478
+function getNodeIndex(elm){ return [...elm.parentNode.children].indexOf(elm)}
 
 function rainbowCounter() {
     colorNum = rainbow.length === colorNum ? 1 : colorNum + 1;
-    console.log(colorNum - 1);
     return rainbow[colorNum - 1];
 }
-function setText(event) {
-    // txt = event.target.innerText;
+function pickWord(event) {
     txts.push(event.target.innerText);
-    console.log(txts)
-    // document.querySelectorAll(".from > button").forEach(V=>{V.style="";})
-    // event.target.style = "background-color: greenyellow;";
     event.target.style = `background-color: ${rainbowCounter()};`;
-}
-// let foo = "";
-function test(event) {
-    // event.target.innerText = txt;
-    switch (clickCount) {
-        case 0:
-        // event.target.innerText = txt;
-        const ELMPASS = getNodeIndex(event.target);
-        // txts.forEach(TXT=>{
-        txts.reduce((A, TXT)=>{
-            // event.target.innerText = TXT;
-            console.log(A);
-            console.log(ELMPASS);
-            A += ELMPASS;
-            document.querySelectorAll(".to > button")[A].innerText = TXT;
-            reEditablize();
-            return A;
-        }, 0)
-        document.querySelectorAll(".from > button").forEach(V=>{V.style="";})
-        txts = [];
-
-        // foo = event.target.innerText;
-        // event.target.style = "background-color: blueviolet;";
-        clickCount++;
-
-            break;
-        case 1:
-        event.target.innerText = "";
-        event.target.style = "";
-        clickCount = 0;
-        reEditablize();
-            break;
-        default:
-            break;
-    }
+    getFromText();
 }
 
-// document.querySelectorAll(".to > button")
-// let foo="";
+function getToText() {
+    document.querySelector(".res").value = Array.from(document.querySelectorAll(".to > button"))
+                    .filter(V=>{return V.innerText})
+                    .reduce((A,V)=>{return A + V.innerText + " " } ,"");
+}
+
+function getFromText() {
+    document.querySelector(".pre").value = Array.from(document.querySelectorAll(".from > button"))
+                    .filter(V=>{return V.style.backgroundColor;
+                    })
+                    .reduce((A,V)=>{return A + V.innerText + " " } ,"");
+}
+
+function collectToHTML() {
+    return Array.from(document.querySelectorAll(".to > button"))
+            .filter(V=>{return V.innerText})
+            .reduce((A,V)=>{
+                A.push(V.outerHTML);
+                return A;
+            },[])
+}
+
 function reEditablize() {
-    const hoge =  Array.from(document.querySelectorAll(".to > button")).filter(V=>{return V.innerText}).reduce((A,V)=>{
-        // if(V.innerText){A.push(V.outerHTML)}
-        A.push(V.outerHTML)
-        ;return A},[]);
-    const blankButton = `<button onclick="test(event);"></button>`
-    const hoge2 = R.intersperse(blankButton, hoge);
-    const hoge2_1 = R.insert(0, blankButton, hoge2)
-    const hoge2_2 = R.insert(-1, blankButton, hoge2_1)
-    const hoge3 = hoge2_2.join("");
+    const toHTML = collectToHTML();
+    const blankButton = `<button onclick="exe(event);"></button>`
+    const toHTML2 = R.intersperse(blankButton, toHTML);
+    const toHTML2_1 = R.insert(0, blankButton, toHTML2)
+    const toHTML2_2 = R.insert(-1, blankButton, toHTML2_1)
+    const toHTML3 = toHTML2_2.join("");
     document.querySelectorAll(".to > button").forEach(E=>{E.parentNode.removeChild(E)});
-    document.querySelector(".to").insertAdjacentHTML("afterbegin", hoge3);
-    const foo =         Array.from(document.querySelectorAll(".to > button")).reduce((A,V)=>{return A + V.innerText + " " } ,"");
-    // console.log(foo);
+    document.querySelector(".to").insertAdjacentHTML("afterbegin", toHTML3);
 
-    // console.log(        foo    );
-    document.querySelector(".res").value = foo;
+    getToText();
+}
+
+function whenTargetTextIsBlank(ELMPASS) {
+    txts.reverse().forEach(TXT=>{
+        document.querySelectorAll(".to > button")[ELMPASS].innerText = TXT;
+        reEditablize();
+    })
+}
+function whenTargetTextIsNotBlank(EVENT, ELMPASS) {
+    // R.drop(1, ['foo', 'bar', 'baz']);
+    //=> ['bar', 'baz']
+    // R.take(1, ['foo', 'bar', 'baz']);
+    //=> ['foo']
+    EVENT.target.innerText = R.take(1, txts);
+    reEditablize();
+    const NEXTELMPASS = ELMPASS + 2;
+    R.drop(1, txts).reverse().forEach(TXT=>{
+        document.querySelectorAll(".to > button")[NEXTELMPASS].innerText = TXT;
+        reEditablize();
+    });
+}
+
+function reset() {
+    colorNum = 0;
+    txts = [];
+    document.querySelectorAll(".from > button").forEach(V=>{V.style=""});
+    document.querySelector(".pre").value = "";
+}
+
+function exe(event) {
+    const ELMPASS = getNodeIndex(event.target);
+    event.target.innerText ? whenTargetTextIsNotBlank(event, ELMPASS) : whenTargetTextIsBlank(ELMPASS);
+    reset();
+    event.target.innerText = "";
 }
 
 reEditablize();
-
-// Array.from(document.querySelectorAll(".to > button")).reduce((A,V)=>{return A + V.innerText},"");
-
-
-// https://stackoverflow.com/a/40052000/9740478
-function getNodeIndex( elm ){ 
-    // return [...elm.parentNode.children].findIndex(c => c == elm)
-    // or
-    return [...elm.parentNode.children].indexOf(elm)
-}
-
 </script>
 </html>
