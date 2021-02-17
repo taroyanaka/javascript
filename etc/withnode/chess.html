@@ -193,10 +193,10 @@ let bar;
 let baz;
 let res;
 let piece;
+let X, Y;
+let exColor;
 
 function givePieceMoveClickable(ex, whenAny) {
-    bar = ex.target;
-    const [X, Y] = getXYFromElm(bar);
     // console.log(ex.target.textContent)
 
     // https://stackoverflow.com/a/6454237/9740478
@@ -212,7 +212,7 @@ function givePieceMoveClickable(ex, whenAny) {
         const isSpace = (str) =>{return true ? str === "" : false}
         return isSpace(foo) ? "space" : R.includes(foo, ["♔","♕","♖","♗","♘","♙"]) ? "white" : "black";
     }
-    const exColor = isSpaceOrBlackOrWhite(ex.target.textContent);
+    exColor = isSpaceOrBlackOrWhite(ex.target.textContent);
     // console.log(exColor);
 
 
@@ -223,6 +223,24 @@ function givePieceMoveClickable(ex, whenAny) {
         piece = trTdSelector(V[0], V[1]).textContent;
         if(exColor !== isSpaceOrBlackOrWhite(piece)){return V};
     })
+
+    bar = ex.target;
+    [X, Y] = getXYFromElm(bar);
+    // R.sortBy(R.prop(1))(
+    //     res.filter(V=>{return V[0]===X})
+    // )
+    baz = R.sortBy(R.prop(1))(
+        res.filter(V=>{return V[0]===X})
+    ).map(V=>{
+        return [
+            V[0],
+            V[1],
+            isSpaceOrBlackOrWhite(trTdSelector(V[0], V[1]).textContent)
+        ]
+    })
+
+    
+
 
     // 駒がある座標から0,0としたベクトルを出す ベクトルを絶対値ベースにする(右上のx,y方向の計算だけにする)
     // (もしくは絶対値ではなくそれぞれの方向で別々に判定してrejectする?ロジック書く自信無いからこれはプランB)
