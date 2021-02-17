@@ -39,6 +39,14 @@ td{
 </table>
 </body>
 <script>
+// function getNodeIndex(elm){ return [...elm.parentNode.children].indexOf(elm)}
+function getXYFromElm(elm){
+    const X = [...elm.parentNode.children].indexOf(elm);
+    const parent = elm.parentNode;
+    const Y = [...parent.parentNode.children].indexOf(parent);
+    return [X, Y];
+}
+
 const record = `<tr>
     <td></td>
     <td></td>
@@ -183,8 +191,11 @@ function trTdSelector(tdIdx, trIdx){
 
 let bar;
 let baz;
+let res;
+let piece;
 
 function givePieceMoveClickable(ex, whenAny) {
+    bar = ex;
     // console.log(ex.target.textContent)
 
     // https://stackoverflow.com/a/6454237/9740478
@@ -203,8 +214,9 @@ function givePieceMoveClickable(ex, whenAny) {
     const exColor = isSpaceOrBlackOrWhite(ex.target.textContent);
     // console.log(exColor);
 
-    let piece;
-    const res = whenAny().filter(V=>{
+
+    // const res = whenAny().filter(V=>{
+    res = whenAny().filter(V=>{
         return rejectOutOfBoard(V);
     }).filter(V=>{
         piece = trTdSelector(V[0], V[1]).textContent;
