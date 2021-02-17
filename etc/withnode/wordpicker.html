@@ -11,9 +11,16 @@
             margin: 0;
             padding: 0;
         }
+        .to, .from{
+            /* https://stackoverflow.com/a/33257267/9740478 */
+            display: flex;
+            flex-direction: row;
+        }
         button{
             width: 3rem;
             height: 3rem;
+            /* https://stackoverflow.com/questions/5078239/how-do-i-remove-the-space-between-inline-inline-block-elements */
+            /* vertical-align: bottom; */
         }
     </style>
 <style>
@@ -23,10 +30,6 @@
 <textarea name="" class="res" cols="30" rows="10"></textarea>
 <input name="" class="pre" cols="30" rows="10"></input>
 
-<!-- SELECT
-*
-FROM
-table_name -->
 <div class="to">
     <button onclick="exe(event);">SELECT</button>
     <button onclick="exe(event);">*</button>
