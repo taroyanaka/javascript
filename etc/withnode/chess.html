@@ -195,7 +195,8 @@ let res;
 let piece;
 
 function givePieceMoveClickable(ex, whenAny) {
-    bar = ex;
+    bar = ex.target;
+    const [X, Y] = getXYFromElm(bar);
     // console.log(ex.target.textContent)
 
     // https://stackoverflow.com/a/6454237/9740478
