@@ -191,10 +191,12 @@ function trTdSelector(tdIdx, trIdx){
 
 let bar;
 let baz;
+let qux;
 let res;
 let piece;
 let X, Y;
 let exColor;
+let oppositeColor;
 
 function givePieceMoveClickable(ex, whenAny) {
     // console.log(ex.target.textContent)
@@ -226,6 +228,7 @@ function givePieceMoveClickable(ex, whenAny) {
 
     bar = ex.target;
     [X, Y] = getXYFromElm(bar);
+    oppositeColor = exColor === "black" ? "white" : "black";
     // R.sortBy(R.prop(1))(
     //     res.filter(V=>{return V[0]===X})
     // )
@@ -237,7 +240,10 @@ function givePieceMoveClickable(ex, whenAny) {
             V[1],
             isSpaceOrBlackOrWhite(trTdSelector(V[0], V[1]).textContent)
         ]
+    }).filter(V=>{
+        return V[2] === oppositeColor;
     })
+    qux = R.take(2, baz[0]);
 
     
 
