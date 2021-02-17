@@ -46,6 +46,7 @@ foo4 bar4 baz4`
 }
 
 function makeLiHTMLAndInsertUl() {
+    document.querySelectorAll("li").forEach(E=>{E.parentNode.removeChild(E)});
     document.querySelector("ul").insertAdjacentHTML("afterbegin",
         document.querySelector(".lines").value.split("\n").map(V=>{return `<li onclick="exe(event)">${V}</li>`}).join("")
     )
