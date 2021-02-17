@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>line to button</title>
+<script src="ramda.js"></script>
+<!-- <script src="alasql.js"></script> -->
+<style>
+*{
+    margin: 0;
+    padding: 0;
+}
+li{
+    background-color: gray;
+    margin: 10px 0 0 0;
+}
+li:hover{
+    background-color: blueviolet;
+}
+.res-button{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+button{
+    width: 3rem;
+    height: 3rem;
+    /* https://stackoverflow.com/questions/5078239/how-do-i-remove-the-space-between-inline-inline-block-elements */
+    /* vertical-align: bottom; */
+}
+</style>
+</head>
+<body>
+<textarea name="" class="lines" cols="30" rows="10" oninput="makeLiHTMLAndInsertUl();"></textarea>
+<ul></ul>
+<div class="res-button"></div>
+</body>
+<script>
+function init() {
+    document.querySelector(".lines").value = `foo0 bar0 baz0
+foo1 bar1 baz1
+foo2 bar2 baz2
+foo3 bar3 baz3
+foo4 bar4 baz4`
+}
+
+function makeLiHTMLAndInsertUl() {
+    document.querySelector("ul").insertAdjacentHTML("afterbegin",
+        document.querySelector(".lines").value.split("\n").map(V=>{return `<li onclick="exe(event)">${V}</li>`}).join("")
+    )
+}
+
+function exe(EVENT) {
+    document.querySelectorAll(".res-button > button").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector(".res-button").insertAdjacentHTML("afterbegin",
+        EVENT.target.innerText.split(" ").map(V=>{return `<button>${V}</button>`}).join("")
+    )
+}
+
+function test() { document.querySelector("li").click() }
+
+init();
+makeLiHTMLAndInsertUl();
+
+test();
+</script>
+</html>
