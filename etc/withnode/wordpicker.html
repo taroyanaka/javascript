@@ -121,13 +121,9 @@ function whenTargetTextIsBlank(ELMPASS) {
     })
 }
 function whenTargetTextIsNotBlank(EVENT, ELMPASS) {
-    // R.drop(1, ['foo', 'bar', 'baz']);
-    //=> ['bar', 'baz']
-    // R.take(1, ['foo', 'bar', 'baz']);
-    //=> ['foo']
     EVENT.target.innerText = R.take(1, txts);
     reEditablize();
-    const NEXTELMPASS = ELMPASS + 2;
+    const NEXTELMPASS = ELMPASS + 1;
     R.drop(1, txts).reverse().forEach(TXT=>{
         document.querySelectorAll(".to > button")[NEXTELMPASS].innerText = TXT;
         reEditablize();
