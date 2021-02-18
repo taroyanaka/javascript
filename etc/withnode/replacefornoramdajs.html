@@ -79,6 +79,8 @@ function insertAll(idx, elms, list) {
 // => (6) [10, 20, 100, 200, 1000, 2000]
 const bar4_2 = R.insertAll(1, [0,1], foo);
 const bar4_3 = insertAll(1, [0,1], foo);
+const bar4_4 = R.insertAll(-1, [0,1], foo);
+const bar4_5 = insertAll(-1, [0,1], foo);
 
 function exe() {
     // document.querySelector(".res").value = bar0_1;
@@ -95,6 +97,8 @@ function exe() {
     document.querySelector(".res").value = bar4_1;
     document.querySelector(".res").value = bar4_2;
     document.querySelector(".res").value = bar4_3;
+    document.querySelector(".res").value = bar4_4;
+    document.querySelector(".res").value = bar4_5;
 }
 document.querySelector("button").click();
 </script>
