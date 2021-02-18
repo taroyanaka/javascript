@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>replace for no ramda js</title>
+    <script src="ramda.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        button{
+            width: 3rem;
+            height: 3rem;
+        }
+    </style>
+</head>
+<body>
+<textarea name="" class="example" cols="30" rows="10">
+let bar = foo.slice(0, 1);
+let bar0_1 = foo.slice(0, -1);
+let bar0_2 = foo.slice(-1);
+const bar2 = R.take(1, foo);
+const bar3 = R.take(1, JSON.parse(JSON.stringify(foo)));
+
+const bar3_1 = R.takeLast(1, foo);
+const bar3_2 = foo.slice(foo.length-1, foo.length);
+const bar3_3 = R.takeLast(2, foo);
+const bar3_4 = foo.slice(foo.length-2, foo.length);
+
+// document.querySelector(".res").value = bar0_1;
+// document.querySelector(".res").value = bar0_2;
+// document.querySelector(".res").value = bar;
+// document.querySelector(".res").value = bar2;
+// document.querySelector(".res").value = bar3;
+// document.querySelector(".res").value = bar3_1;
+// document.querySelector(".res").value = bar3_2;
+document.querySelector(".res").value = bar3_3;
+document.querySelector(".res").value = bar3_4;
+
+function insert(idx, elm, list) {
+    let res = list.slice(0);
+    res.splice(idx, 0, elm);
+    return res;
+}
+const bar4 = R.insert(1, "bar4", foo);
+const bar4_1 = insert(1, "bar4", foo);
+document.querySelector(".res").value = bar4;
+document.querySelector(".res").value = bar4_1;
+</textarea>
+<textarea name="" class="res" cols="30" rows="10"></textarea>
+<div>
+    <button onclick="exe()">exe</button>
+</div>
+</body>
+<script>
+    let foo = [100, 200, 300];
+    function exe() {
+        let bar = foo.slice(0, 1);
+        let bar0_1 = foo.slice(0, -1);
+        let bar0_2 = foo.slice(-1);
+        const bar2 = R.take(1, foo);
+        const bar3 = R.take(1, JSON.parse(JSON.stringify(foo)));
+
+        const bar3_1 = R.takeLast(1, foo);
+        const bar3_2 = foo.slice(foo.length-1, foo.length);
+        const bar3_3 = R.takeLast(2, foo);
+        const bar3_4 = foo.slice(foo.length-2, foo.length);
+
+        // document.querySelector(".res").value = bar0_1;
+        // document.querySelector(".res").value = bar0_2;
+        // document.querySelector(".res").value = bar;
+        // document.querySelector(".res").value = bar2;
+        // document.querySelector(".res").value = bar3;
+        // document.querySelector(".res").value = bar3_1;
+        // document.querySelector(".res").value = bar3_2;
+        document.querySelector(".res").value = bar3_3;
+        document.querySelector(".res").value = bar3_4;
+
+        function insert(idx, elm, list) {
+            let res = list.slice(0);
+            res.splice(idx, 0, elm);
+            return res;
+        }
+        const bar4 = R.insert(1, "bar4", foo);
+        const bar4_1 = insert(1, "bar4", foo);
+        document.querySelector(".res").value = bar4;
+        document.querySelector(".res").value = bar4_1;
+
+    }
+    document.querySelector("button").click();
+</script>
+</html>
