@@ -17,34 +17,7 @@
     </style>
 </head>
 <body>
-<textarea name="" class="example" cols="30" rows="10">
-let foo = [100, 200, 300];
-
-const bar = foo.slice(0, 1);
-const bar0_1 = foo.slice(0, -1);
-const bar0_2 = foo.slice(-1);
-const bar2 = R.take(1, foo);
-const bar3 = R.take(1, JSON.parse(JSON.stringify(foo)));
-
-const bar3_1 = R.takeLast(1, foo);
-const bar3_2 = foo.slice(foo.length-1, foo.length);
-const bar3_3 = R.takeLast(2, foo);
-const bar3_4 = foo.slice(foo.length-2, foo.length);
-
-function insert(idx, elm, list) {
-    let res = list.slice(0);
-    res.splice(idx, 0, elm);
-    return res;
-}
-const bar4 = R.insert(1, "bar4", foo);
-const bar4_1 = insert(1, "bar4", foo);
-
-function insertAll(idx, elms, list) {
-    return [].concat( list.slice(0, idx), elms, list.slice(idx) );
-}
-const bar4_2 = R.insertAll(1, [0,1], foo);
-const bar4_3 = insertAll(1, [0,1], foo);
-</textarea>
+<textarea name="" class="example" cols="30" rows="10"></textarea>
 <textarea name="" class="res" cols="30" rows="10"></textarea>
 <div>
     <button onclick="exe()">exe</button>
@@ -101,5 +74,7 @@ function exe() {
     document.querySelector(".res").value = bar4_5;
 }
 document.querySelector("button").click();
+
+document.querySelector(".example").value = document.querySelectorAll("script")[2].innerText;
 </script>
 </html>
