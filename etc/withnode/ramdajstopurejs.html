@@ -84,7 +84,7 @@ function innerJoin(pred, xs, ys) {
 };
 const bar5_1 = JSON.stringify(
     innerJoin(
-        (record, id) => record.id === id,
+        (record, related_id) => record.id === related_id,
         [
             {id: 824, name: 'Richie Furay'},
             {id: 956, name: 'Dewey Martin'},
