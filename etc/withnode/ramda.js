@@ -5353,6 +5353,18 @@
    *      );
    *      //=> [{id: 456, name: 'Stephen Stills'}, {id: 177, name: 'Neil Young'}]
    */
+  function _includesWith(pred, x, list) {
+    var idx = 0;
+    var len = list.length;
+
+    while (idx < len) {
+      if (pred(x, list[idx])) {
+        return true;
+      }
+      idx += 1;
+    }
+    return false;
+  }
   var innerJoin = _curry3(function innerJoin(pred, xs, ys) {
     return _filter(function(x) { return _includesWith(pred, x, ys); }, xs);
   });
