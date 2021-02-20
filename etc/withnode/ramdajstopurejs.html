@@ -96,6 +96,15 @@ const bar5_1 = JSON.stringify(
     )
 )
 
+const bar6 = R.drop(1, ['foo', 'bar', 'baz']); //=> ['bar', 'baz']
+function drop(n, xs) {return xs.slice(n, Infinity)}
+const bar6_1 = drop(1, ['foo', 'bar', 'baz']);
+
+const bar6_2 = R.dropLast(1, ['foo', 'bar', 'baz']); //=> ['foo', 'bar']
+function dropLast(n, xs) {return xs.slice(0, xs.length - n)}
+const bar6_3 = dropLast(1, ['foo', 'bar', 'baz']);
+
+
 function exe() {
     document.querySelector(".res").value = bar0_1;
     document.querySelector(".res").value = bar0_2;
@@ -116,6 +125,13 @@ function exe() {
 
     document.querySelector(".res").value = bar5;
     document.querySelector(".res").value = bar5_1;
+
+    document.querySelector(".res").value = bar6;
+    document.querySelector(".res").value = bar6_1;
+    document.querySelector(".res").value = bar6_2;
+    document.querySelector(".res").value = bar6_3;
+    // document.querySelector(".res").value = bar6_4;
+    // document.querySelector(".res").value = bar6_5;
 }
 document.querySelector("button").click();
 
