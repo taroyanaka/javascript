@@ -97,11 +97,11 @@ const bar5_1 = JSON.stringify(
 )
 
 const bar6 = R.drop(1, ['foo', 'bar', 'baz']); //=> ['bar', 'baz']
-function drop(n, xs) {return xs.slice(n, Infinity)}
+function drop(n, list) {return list.slice(n, Infinity)}
 const bar6_1 = drop(1, ['foo', 'bar', 'baz']);
 
 const bar6_2 = R.dropLast(1, ['foo', 'bar', 'baz']); //=> ['foo', 'bar']
-function dropLast(n, xs) {return xs.slice(0, xs.length - n)}
+function dropLast(n, list) {return list.slice(0, list.length - n)}
 const bar6_3 = dropLast(1, ['foo', 'bar', 'baz']);
 
 
