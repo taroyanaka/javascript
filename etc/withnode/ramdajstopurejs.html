@@ -60,13 +60,6 @@ const bar4_3 = insertAll(1, [0,1], foo);
 const bar4_4 = R.insertAll(-1, [0,1], foo);
 const bar4_5 = insertAll(-1, [0,1], foo);
 
-function innerJoin(pred, xs, ys) {
-    return xs.filter(X=>{
-        let flag;
-        ys.forEach(Y=>{if(pred(X, Y)){flag = true}});
-        return flag ? true : false;
-    });
-};
 const bar5 = JSON.stringify(
     R.innerJoin(
         (record, id) => record.id === id,
@@ -82,6 +75,13 @@ const bar5 = JSON.stringify(
 )
 //=> [{id: 456, name: 'Stephen Stills'}, {id: 177, name: 'Neil Young'}]
 
+function innerJoin(pred, xs, ys) {
+    return xs.filter(X=>{
+        let flag;
+        ys.forEach(Y=>{if(pred(X, Y)){flag = true}});
+        return flag ? true : false;
+    });
+};
 const bar5_1 = JSON.stringify(
     innerJoin(
         (record, id) => record.id === id,
@@ -115,7 +115,7 @@ function exe() {
     document.querySelector(".res").value = bar4_5;
 
     document.querySelector(".res").value = bar5;
-    // document.querySelector(".res").value = bar5_1;
+    document.querySelector(".res").value = bar5_1;
 }
 document.querySelector("button").click();
 
