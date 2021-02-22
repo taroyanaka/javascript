@@ -104,6 +104,30 @@ const bar6_2 = R.dropLast(1, ['foo', 'bar', 'baz']); //=> ['foo', 'bar']
 function dropLast(n, list) {return list.slice(0, list.length - n)}
 const bar6_3 = dropLast(1, ['foo', 'bar', 'baz']);
 
+function skeletonPipe() {
+    const arrayArguments = Object.keys(arguments).map((key) => arguments[key] );
+    const tailArrayArguments = arrayArguments.slice(1);
+    function _pipe(accumulator, currentValue){ return function() {
+        console.log(`accumulator is ${accumulator.apply(this, arguments)}`);
+        console.log(`currentValue is ${currentValue.call(this, accumulator.apply(this, arguments))}`)
+        return currentValue.call(this, accumulator.apply(this, arguments));
+    }}
+    const fn = tailArrayArguments.reduce(_pipe, arguments[0])
+    return fn;
+}
+
+function pipe() {
+    const arrayArguments = Object.keys(arguments).map((key) => arguments[key] );
+    const tailArrayArguments = arrayArguments.slice(1);
+    function _pipe(A, V){ return function() { return V.call(this, A.apply(this, arguments)) }}
+    const fn = tailArrayArguments.reduce(_pipe, arguments[0])
+    return fn;
+}
+
+const minus999 = (x) => x -999;
+const bar7 = R.pipe(R.add(10), R.add(100), R.add(1000))(1);
+const bar7_1 = pipe(R.add(10), R.add(100), R.add(1000))(1);
+
 
 function exe() {
     document.querySelector(".res").value = bar0_1;
@@ -132,6 +156,11 @@ function exe() {
     document.querySelector(".res").value = bar6_3;
     // document.querySelector(".res").value = bar6_4;
     // document.querySelector(".res").value = bar6_5;
+
+    document.querySelector(".res").value = bar7;
+    document.querySelector(".res").value = bar7_1;
+    // document.querySelector(".res").value = bar7_2;
+    // document.querySelector(".res").value = bar7_3;
 }
 document.querySelector("button").click();
 
