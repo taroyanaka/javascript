@@ -117,11 +117,9 @@ function skeletonPipe() {
 }
 
 function pipe() {
-    const arrayArguments = Object.keys(arguments).map((key) => arguments[key] );
-    const tailArrayArguments = arrayArguments.slice(1);
+    const tailArrayArguments = Object.keys(arguments).map((key) => arguments[key] ).slice(1);
     function _pipe(A, V){ return function() { return V.call(this, A.apply(this, arguments)) }}
-    const fn = tailArrayArguments.reduce(_pipe, arguments[0])
-    return fn;
+    return tailArrayArguments.reduce(_pipe, arguments[0])
 }
 
 const minus999 = (x) => x -999;
