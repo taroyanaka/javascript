@@ -125,6 +125,51 @@ function pipe() {
 const minus999 = (x) => x -999;
 const bar7 = R.pipe(R.add(10), R.add(100), R.add(1000))(1);
 const bar7_1 = pipe(R.add(10), R.add(100), R.add(1000))(1);
+const bar7_2 = R.pipe(Math.pow, R.negate, R.inc)(3, 4);
+const bar7_3 = pipe(Math.pow, R.negate, R.inc)(3, 4);
+
+const RByAge = R.comparator((a, b) => a.age < b.age);
+const people = [
+  { name: 'Emma', age: 70 },
+  { name: 'Peter', age: 78 },
+  { name: 'Mikhail', age: 62 },
+];
+const peopleByIncreasingAge = R.sort(RByAge, people);
+
+const bar8 = 
+JSON.stringify(
+    R.sort(RByAge, people)
+);
+//=> [{ name: 'Mikhail', age: 62 },{ name: 'Emma', age: 70 }, { name: 'Peter', age: 78 }]
+
+function comparator(pred) {
+    return function(a, b) {
+        return pred(a, b) ? -1 : pred(b, a) ? 1 : 0;
+    };
+};
+const byAge = comparator((a, b) => a.age < b.age);
+
+const bar8_1 = JSON.stringify(
+    people.sort(byAge)
+)
+
+// const bar8_2 = 
+// const bar8_3 = 
+
+
+// function comparator(pred) {
+//     return function(a, b) {
+//         return pred(a, b) ? -1 : pred(b, a) ? 1 : 0;
+//     };
+// };
+
+// function sortBy(fn, list) {
+//     return Array.prototype.slice.call(list, 0).sort(function(a, b) {
+//         var aa = fn(a);
+//         var bb = fn(b);
+//         return aa < bb ? -1 : aa > bb ? 1 : 0;
+//     });
+// };
 
 
 function exe() {
@@ -157,8 +202,13 @@ function exe() {
 
     document.querySelector(".res").value = bar7;
     document.querySelector(".res").value = bar7_1;
-    // document.querySelector(".res").value = bar7_2;
-    // document.querySelector(".res").value = bar7_3;
+    document.querySelector(".res").value = bar7_2;
+    document.querySelector(".res").value = bar7_3;
+
+    document.querySelector(".res").value = bar8;
+    document.querySelector(".res").value = bar8_1;
+    // document.querySelector(".res").value = bar8_2;
+    // document.querySelector(".res").value = bar8_3;
 }
 document.querySelector("button").click();
 
