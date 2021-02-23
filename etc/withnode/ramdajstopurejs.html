@@ -239,21 +239,23 @@ function find(fn, list) {
     },A=[])[0]
 };
 
-function findIndex(fn, list) {
+function findLast(fn, list) {
     return list.reverse().filter(V=>{return fn(V)}).reduce((A, V)=>{
         A.push(V);
         return A;
     },A=[])[0]
+}
 
-    // var idx = 0;
-    // var len = list.length;
-    // while (idx < len) {
-    //     if (fn(list[idx])) {
-    //         return idx;
-    //     }
-    //     idx += 1;
-    // }
-    // return -1;
+function findIndex(fn, list) {
+    var idx = 0;
+    var len = list.length;
+    while (idx < len) {
+        if (fn(list[idx])) {
+            return idx;
+        }
+        idx += 1;
+    }
+    return -1;
 };
 
 const EQ = (a,b) => (list) =>{ return list[a] === b }
