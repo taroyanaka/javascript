@@ -243,7 +243,17 @@ function find(fn, list) {
     }
 };
 
-
+function findIndex(fn, list) {
+    var idx = 0;
+    var len = list.length;
+    while (idx < len) {
+        if (fn(list[idx])) {
+            return idx;
+        }
+        idx += 1;
+    }
+    return -1;
+};
 
 const EQ = (a,b) => (list) =>{ return list[a] === b }
 const xs = [{a: 1}, {a: 2}, {a: 3}];
@@ -257,10 +267,16 @@ EQ("a", 2)(xs[2]);
 const bar10 = JSON.stringify( R.find(R.propEq('a', 2), xs) );
 // => {"a":2}
 const bar10_1 = JSON.stringify( find(EQ('a', 2), xs) );
-
 const bar10_2 = JSON.stringify( R.find(R.propEq('bar', "bar1"), fooObject) );
 // => {"foo":"foo1","bar":"bar1","baz":"baz1"}
 const bar10_3 = JSON.stringify( find(EQ('bar', "bar1"), fooObject) );
+
+const bar11 = R.findIndex(R.propEq('a', 2), xs);
+// => 1
+const bar11_1 = findIndex(EQ('a', 2), xs);
+const bar11_2 = R.findIndex(R.propEq('bar', "bar1"), fooObject);
+// => 1
+const bar11_3 = findIndex(EQ('bar', "bar1"), fooObject);
 
 
 
@@ -309,6 +325,11 @@ function exe() {
     document.querySelector(".res").value = bar10_1;
     document.querySelector(".res").value = bar10_2;
     document.querySelector(".res").value = bar10_3;
+
+    document.querySelector(".res").value = bar11;
+    document.querySelector(".res").value = bar11_1;
+    // document.querySelector(".res").value = bar11_2;
+    // document.querySelector(".res").value = bar11_3;
 }
 document.querySelector("button").click();
 
