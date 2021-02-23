@@ -233,26 +233,27 @@ const bar9_1 = pluck("bar", fooObject);
 
 
 function find(fn, list) {
-    var idx = 0;
-    var len = list.length;
-    while (idx < len) {
-        if (fn(list[idx])) {
-            return list[idx];
-        }
-        idx += 1;
-    }
+    return list.filter(V=>{return fn(V)}).reduce((A, V)=>{
+        A.push(V);
+        return A;
+    },A=[])[0]
 };
 
 function findIndex(fn, list) {
-    var idx = 0;
-    var len = list.length;
-    while (idx < len) {
-        if (fn(list[idx])) {
-            return idx;
-        }
-        idx += 1;
-    }
-    return -1;
+    return list.reverse().filter(V=>{return fn(V)}).reduce((A, V)=>{
+        A.push(V);
+        return A;
+    },A=[])[0]
+
+    // var idx = 0;
+    // var len = list.length;
+    // while (idx < len) {
+    //     if (fn(list[idx])) {
+    //         return idx;
+    //     }
+    //     idx += 1;
+    // }
+    // return -1;
 };
 
 const EQ = (a,b) => (list) =>{ return list[a] === b }
@@ -271,12 +272,14 @@ const bar10_2 = JSON.stringify( R.find(R.propEq('bar', "bar1"), fooObject) );
 // => {"foo":"foo1","bar":"bar1","baz":"baz1"}
 const bar10_3 = JSON.stringify( find(EQ('bar', "bar1"), fooObject) );
 
-const bar11 = R.findIndex(R.propEq('a', 2), xs);
+
+
+const bar11 = JSON.stringify( R.findIndex(R.propEq('a', 2), xs) );
 // => 1
-const bar11_1 = findIndex(EQ('a', 2), xs);
-const bar11_2 = R.findIndex(R.propEq('bar', "bar1"), fooObject);
+const bar11_1 = JSON.stringify( findIndex(EQ('a', 2), xs) );
+const bar11_2 = JSON.stringify( R.findIndex(R.propEq('bar', "bar1"), fooObject) );
 // => 1
-const bar11_3 = findIndex(EQ('bar', "bar1"), fooObject);
+const bar11_3 = JSON.stringify( findIndex(EQ('bar', "bar1"), fooObject) );
 
 
 
@@ -328,8 +331,8 @@ function exe() {
 
     document.querySelector(".res").value = bar11;
     document.querySelector(".res").value = bar11_1;
-    // document.querySelector(".res").value = bar11_2;
-    // document.querySelector(".res").value = bar11_3;
+    document.querySelector(".res").value = bar11_2;
+    document.querySelector(".res").value = bar11_3;
 }
 document.querySelector("button").click();
 
