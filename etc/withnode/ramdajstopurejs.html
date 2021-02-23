@@ -142,19 +142,54 @@ JSON.stringify(
 );
 //=> [{ name: 'Mikhail', age: 62 },{ name: 'Emma', age: 70 }, { name: 'Peter', age: 78 }]
 
-function comparator(pred) {
-    return function(a, b) {
-        return pred(a, b) ? -1 : pred(b, a) ? 1 : 0;
-    };
-};
+// function comparator(pred) {
+//     return function(a, b) {
+//         return pred(a, b) ? -1 : pred(b, a) ? 1 : 0;
+//     };
+// };
+const comparator = pred =>(a, b)=>{pred(a, b) ? -1 : pred(b, a) ? 1 : 0};
 const byAge = comparator((a, b) => a.age < b.age);
 
 const bar8_1 = JSON.stringify(
     people.sort(byAge)
 )
 
-// const bar8_2 = 
-// const bar8_3 = 
+const nums = [10, 20, 15, 5, 1];
+const numsIdx = {"10":1, "20":2, "15":3, "5":4, "1":5, "3":6};
+let tmp=[];
+const res = nums.sort(function(a, b){
+    const A = numsIdx[a.toString()]
+    const B = numsIdx[b.toString()]
+    tmp.push([A, B])
+    console.log(tmp);
+    return a - b;
+});
+let tmp2 = tmp.map(V=>{return V.sort()})
+let tmp3 = tmp2.sort((a,b)=>{return a[0] - b[0]})
+// =>
+// 0: (2) [1, 2]
+// 1: (2) [1, 3]
+// 2: (2) [1, 4]
+// 3: (2) [1, 5]
+// 4: (2) [2, 3]
+// 5: (2) [2, 3]
+// 6: (2) [3, 4]
+// 7: (2) [3, 5]
+// 8: (2) [4, 5]
+
+// a(後) - b(前)で
+// 結果が
+//     +であれば(aの方が大きい数字であれば) a, b
+//     -であれば(bの方が大きい数字であれば) b, a
+// になる
+// その処理を全組み合わせ行う
+
+// a(after) - b(before).
+// If the result is.
+//     If the result is + (if a is a larger number), then a, b
+//     If the result is - (if b is a larger number), then b, a
+// is the result.
+// Do that process for all combinations
 
 
 // function comparator(pred) {
@@ -170,6 +205,63 @@ const bar8_1 = JSON.stringify(
 //         return aa < bb ? -1 : aa > bb ? 1 : 0;
 //     });
 // };
+
+
+
+
+
+
+function pluck(p, list) {
+    return list.map(V=>{return V[p]});
+};
+
+// var partition = juxt([R.filter, R.reject]);
+// const getRange = juxt([Math.min, Math.max]);
+
+const fooArray = [
+    [1, 2],
+    [3, 4],
+    [5, 6],
+];
+const fooObject = [
+    {foo:"foo0", bar:"bar0", baz:"baz0"},
+    {foo:"foo1", bar:"bar1", baz:"baz1"},
+    {foo:"foo2", bar:"bar2", baz:"baz2"},
+];
+const bar9 = pluck(1, fooArray);
+const bar9_1 = pluck("bar", fooObject);
+
+
+function find(fn, list) {
+    var idx = 0;
+    var len = list.length;
+    while (idx < len) {
+        if (fn(list[idx])) {
+            return list[idx];
+        }
+        idx += 1;
+    }
+};
+
+
+
+const EQ = (a,b) => (list) =>{ return list[a] === b }
+const xs = [{a: 1}, {a: 2}, {a: 3}];
+EQ("a", 2)(xs[0]);
+// => false
+EQ("a", 2)(xs[1]);
+// => true
+EQ("a", 2)(xs[2]);
+// => false
+
+const bar10 = JSON.stringify( R.find(R.propEq('a', 2), xs) );
+// => {"a":2}
+const bar10_1 = JSON.stringify( find(EQ('a', 2), xs) );
+
+const bar10_2 = JSON.stringify( R.find(R.propEq('bar', "bar1"), fooObject) );
+// => {"foo":"foo1","bar":"bar1","baz":"baz1"}
+const bar10_3 = JSON.stringify( find(EQ('bar', "bar1"), fooObject) );
+
 
 
 function exe() {
@@ -209,6 +301,14 @@ function exe() {
     document.querySelector(".res").value = bar8_1;
     // document.querySelector(".res").value = bar8_2;
     // document.querySelector(".res").value = bar8_3;
+
+    document.querySelector(".res").value = bar9;
+    document.querySelector(".res").value = bar9_1;
+
+    document.querySelector(".res").value = bar10;
+    document.querySelector(".res").value = bar10_1;
+    document.querySelector(".res").value = bar10_2;
+    document.querySelector(".res").value = bar10_3;
 }
 document.querySelector("button").click();
 
