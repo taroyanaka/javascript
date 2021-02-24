@@ -417,13 +417,22 @@ function stepWith(fn, n, times) {
     },A=[]);
 };
 
+const multiplyXYminus100 = (x, y) => x * y - 100;
 const bar19 = JSON.stringify( step(2, 4) ); //=> [2, 4, 6, 8]
 const bar19_1 = JSON.stringify( step(50, 3) ); //=> [50, 100, 150]
-
-const multiplyXYminus100 = (x, y) => x * y - 100;
 const bar19_2 = JSON.stringify( stepWith(multiplyXYminus100, 50, 3) ); //=> [-50, 0, 50]
 
 
+// https://stackoverflow.com/a/49945349/9740478
+function toPairs(obj) {
+    return Object.entries(obj).reduce((A, [K, V], IDX)=>{
+        if(obj.hasOwnProperty(K)){ A[IDX] = [K, obj[K]] };
+        return A;
+    },A=[]);
+};
+
+const bar20 = JSON.stringify( R.toPairs({a: 1, b: 2, c: 3}) ); //=> [['a', 1], ['b', 2], ['c', 3]]
+const bar20_1 = JSON.stringify( toPairs({a: 1, b: 2, c: 3}) ); //=> [['a', 1], ['b', 2], ['c', 3]]
 
 function exe() {
     document.querySelector(".res").value = bar0_1;
@@ -533,6 +542,8 @@ function exe() {
     document.querySelector(".res").value = bar19_1;
     document.querySelector(".res").value = bar19_2;
 
+    document.querySelector(".res").value = bar20;
+    document.querySelector(".res").value = bar20_1;
 }
 document.querySelector("button").click();
 
