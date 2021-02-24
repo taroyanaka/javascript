@@ -410,8 +410,18 @@ function step(n, times) {
     },A=[]);
 };
 
+function stepWith(fn, n, times) {
+    return [...Array(times)].reduce((A,V,IDX)=>{
+        A.push( fn(n, (IDX+1)) );
+        return A;
+    },A=[]);
+};
+
 const bar19 = JSON.stringify( step(2, 4) ); //=> [2, 4, 6, 8]
 const bar19_1 = JSON.stringify( step(50, 3) ); //=> [50, 100, 150]
+
+const multiplyXYminus100 = (x, y) => x * y - 100;
+const bar19_2 = JSON.stringify( stepWith(multiplyXYminus100, 50, 3) ); //=> [-50, 0, 50]
 
 
 
@@ -521,6 +531,7 @@ function exe() {
 
     document.querySelector(".res").value = bar19;
     document.querySelector(".res").value = bar19_1;
+    document.querySelector(".res").value = bar19_2;
 
 }
 document.querySelector("button").click();
