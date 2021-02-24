@@ -398,10 +398,10 @@ function range(from, to) {
     ,A=[]);
 };
 
-const bar18 = JSON.stringify( R.range(1, 5) );    //=> [1, 2, 3, 4]
-const bar18_1 = JSON.stringify( range(1, 5) );    //=> [1, 2, 3, 4]
-const bar18_2 = JSON.stringify( R.range(50, 53) );  //=> [50, 51, 52]
-const bar18_3 = JSON.stringify( range(50, 53) );  //=> [50, 51, 52]
+const bar18 = JSON.stringify( R.range(1, 5) ); //=> [1, 2, 3, 4]
+const bar18_1 = JSON.stringify( range(1, 5) ); //=> [1, 2, 3, 4]
+const bar18_2 = JSON.stringify( R.range(50, 53) ); //=> [50, 51, 52]
+const bar18_3 = JSON.stringify( range(50, 53) ); //=> [50, 51, 52]
 
 function step(n, times) {
     return [...Array(times)].reduce((A,V,IDX)=>{
@@ -410,8 +410,8 @@ function step(n, times) {
     ,A=[]);
 };
 
-const bar19 = JSON.stringify( step(2, 4) );    //=> [2, 4, ,6, 8]
-const bar19_1 = JSON.stringify( step(50, 3) );  //=> [50, 100, 150]
+const bar19 = JSON.stringify( step(2, 4) ); //=> [2, 4, 6, 8]
+const bar19_1 = JSON.stringify( step(50, 3) ); //=> [50, 100, 150]
 
 
 
