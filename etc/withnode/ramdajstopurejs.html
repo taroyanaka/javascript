@@ -161,7 +161,7 @@ const res = nums.sort(function(a, b){
     const A = numsIdx[a.toString()]
     const B = numsIdx[b.toString()]
     tmp.push([A, B])
-    console.log(tmp);
+    // console.log(tmp);
     return a - b;
 });
 let tmp2 = tmp.map(V=>{return V.sort()})
@@ -227,6 +227,7 @@ const fooObject = [
     {foo:"foo0", bar:"bar0", baz:"baz0"},
     {foo:"foo1", bar:"bar1", baz:"baz1"},
     {foo:"foo2", bar:"bar2", baz:"baz2"},
+    {foo:"foo100", bar:"bar1", baz:"baz100"},
 ];
 const bar9 = pluck(1, fooArray);
 const bar9_1 = pluck("bar", fooObject);
@@ -247,15 +248,17 @@ function findLast(fn, list) {
 }
 
 function findIndex(fn, list) {
-    var idx = 0;
-    var len = list.length;
-    while (idx < len) {
-        if (fn(list[idx])) {
-            return idx;
-        }
-        idx += 1;
-    }
-    return -1;
+    return list.reduce((A, V, IDX)=>{
+        if(fn(V)){A.push(IDX)};
+        return A;
+    },A=[])[0]
+};
+
+function findLastIndex(fn, list) {
+    return list.reduce((A, V, IDX)=>{
+        if(fn(V)){A.unshift(IDX)};
+        return A;
+    },A=[])[0]
 };
 
 const EQ = (a,b) => (list) =>{ return list[a] === b }
@@ -282,6 +285,133 @@ const bar11_1 = JSON.stringify( findIndex(EQ('a', 2), xs) );
 const bar11_2 = JSON.stringify( R.findIndex(R.propEq('bar', "bar1"), fooObject) );
 // => 1
 const bar11_3 = JSON.stringify( findIndex(EQ('bar', "bar1"), fooObject) );
+
+
+
+const bar12 = JSON.stringify( R.findLast(R.propEq('a', 2), xs) );
+const bar12_1 = JSON.stringify( findLast(EQ('a', 2), xs) );
+const bar12_2 = JSON.stringify( R.findLast(R.propEq('bar', "bar1"), fooObject) );
+const bar12_3 = JSON.stringify( findLast(EQ('bar', "bar1"), fooObject) );
+
+
+const bar13 = JSON.stringify( R.findLastIndex(R.propEq('a', 2), xs) );
+// => 1
+const bar13_1 = JSON.stringify( findLastIndex(EQ('a', 2), xs) );
+const bar13_2 = JSON.stringify( R.findLastIndex(R.propEq('bar', "bar1"), fooObject) );
+// => 2
+const bar13_3 = JSON.stringify( findLastIndex(EQ('bar', "bar1"), fooObject) );
+
+
+function transpose(outerlist) {
+    return outerlist.reduce((RES, innerList)=>{
+        innerList.forEach((VAL, IDX)=>{
+            if(typeof RES[IDX] === 'undefined'){RES[IDX] = []};
+            RES[IDX].push(VAL);
+        });
+        return RES;
+    }, RES=[])
+};
+
+const bar14 = JSON.stringify( R.transpose([[1, 'a'], [2, 'b'], [3, 'c']]) );
+//=> [[1, 2, 3], ['a', 'b', 'c']]
+const bar14_1 = JSON.stringify( transpose([[1, 'a'], [2, 'b'], [3, 'c']]) );
+const bar14_2 = JSON.stringify( R.transpose([[1, 2, 3], ['a', 'b', 'c']]) );
+//=> [[1, 'a'], [2, 'b'], [3, 'c']]
+const bar14_3 = JSON.stringify( transpose([[1, 2, 3], ['a', 'b', 'c']]) );
+const bar14_4 = JSON.stringify( R.transpose([[10, 11], [20], [], [30, 31, 32]]) );
+//=> [[10, 20, 30], [11, 31], [32]]
+const bar14_5 = JSON.stringify( transpose([[10, 11], [20], [], [30, 31, 32]]) );
+
+function zip(a, b) {
+    return (a.length < b.length ? a : b).reduce((A, V, IDX)=>{
+        A.push([a[IDX], b[IDX]]);
+        return A;
+    },A=[]);
+};
+
+function zipObj(keys, values) {
+    return (keys.length < values.length ? keys : values).reduce((A, V, IDX)=>{
+        A[keys[IDX]] = values[IDX];
+        return A;
+    },A={});
+};
+
+function zipWith(fn, a, b) {
+    return (a.length < b.length ? a : b).reduce((A, V, IDX)=>{
+        A.push( fn(a[IDX], b[IDX]) );
+        return A;
+    },A=[]);
+};
+
+const multiplyXY = (x, y) => x * y;
+const bar15_0_0 = JSON.stringify( R.zip([1, 2, 3], ['a', 'b', 'c']) ); //=> [[1, 'a'], [2, 'b'], [3, 'c']]
+const bar15_0_1 = JSON.stringify( zip([1, 2, 3], ['a', 'b', 'c']) ); //=> [[1, 'a'], [2, 'b'], [3, 'c']]
+const bar15_0_2 = JSON.stringify( R.zip([1, 2, 3, 10], ['a', 'b', 'c']) ); //=> [[1, 'a'], [2, 'b'], [3, 'c']]
+const bar15_0_3 = JSON.stringify( zip([1, 2, 3, 10], ['a', 'b', 'c']) ); //=> [[1, 'a'], [2, 'b'], [3, 'c']]
+const bar15_0_4 = JSON.stringify( R.zip([1, 2, 3], ['a', 'b', 'c', 'D']) ); //=> [[1, 'a'], [2, 'b'], [3, 'c']]
+const bar15_0_5 = JSON.stringify( zip([1, 2, 3], ['a', 'b', 'c', 'D']) ); //=> [[1, 'a'], [2, 'b'], [3, 'c']]
+
+const bar15_1_0 = JSON.stringify( R.zipObj(['a', 'b', 'c'], [1, 2, 3]) ); //=> {a: 1, b: 2, c: 3}
+const bar15_1_1 = JSON.stringify( zipObj(['a', 'b', 'c'], [1, 2, 3]) ); //=> {a: 1, b: 2, c: 3}
+const bar15_1_2 = JSON.stringify( R.zipObj(['a', 'b', 'c'], [1, 2, 3, 10]) ); //=> {a: 1, b: 2, c: 3}
+const bar15_1_3 = JSON.stringify( zipObj(['a', 'b', 'c'], [1, 2, 3, 10]) ); //=> {a: 1, b: 2, c: 3}
+const bar15_1_4 = JSON.stringify( R.zipObj(['a', 'b', 'c', 'D'], [1, 2, 3]) ); //=> {a: 1, b: 2, c: 3}
+const bar15_1_5 = JSON.stringify( zipObj(['a', 'b', 'c', 'D'], [1, 2, 3]) ); //=> {a: 1, b: 2, c: 3}
+
+const bar15_2_0 = JSON.stringify( R.zipWith(multiplyXY, [1, 2, 3], [10, 20, 30]) ); //=> [10, 40, 90]
+const bar15_2_1 = JSON.stringify( zipWith(multiplyXY, [1, 2, 3], [10, 20, 30]) ); //=> [10, 40, 90]
+const bar15_2_2 = JSON.stringify( R.zipWith(multiplyXY, [1, 2, 3, 4000], [10, 20, 30]) ); //=> [10, 40, 90]
+const bar15_2_3 = JSON.stringify( zipWith(multiplyXY, [1, 2, 3, 4000], [10, 20, 30]) ); //=> [10, 40, 90]
+const bar15_2_4 = JSON.stringify( R.zipWith(multiplyXY, [1, 2, 3], [10, 20, 30, 4000]) ); //=> [10, 40, 90]
+const bar15_2_5 = JSON.stringify( zipWith(multiplyXY, [1, 2, 3], [10, 20, 30, 4000]) ); //=> [10, 40, 90]
+
+function pick(names, obj) {
+    return names.reduce((A, V, IDX)=>{
+        if(V in obj){ A[V] = obj[V] };
+        return A;
+    },A={});
+};
+
+function pickAll(names, obj) {
+    return names.reduce((A, V, IDX)=>{
+        A[V] = obj[V];
+        return A;
+    },A={});
+};
+
+const bar16 = JSON.stringify( R.pick(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}) ); //=> {a: 1, d: 4}
+const bar16_1 = JSON.stringify( pick(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}) ); //=> {a: 1, d: 4}
+const bar16_2 = JSON.stringify( R.pick(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}) ); //=> {a: 1}
+const bar16_3 = JSON.stringify( pick(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}) ); //=> {a: 1}
+
+
+const bar17 = R.pickAll(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}
+const bar17_1 = pickAll(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, d: 4}
+const bar17_2 = R.pickAll(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, e: undefined, f: undefined}
+const bar17_3 = pickAll(['a', 'e', 'f'], {a: 1, b: 2, c: 3, d: 4}); //=> {a: 1, e: undefined, f: undefined}
+
+
+function range(from, to) {
+    return [...Array(to - from)].reduce((A,V,IDX)=>{
+        A.push(from + IDX);
+        return A}
+    ,A=[]);
+};
+
+const bar18 = JSON.stringify( R.range(1, 5) );    //=> [1, 2, 3, 4]
+const bar18_1 = JSON.stringify( range(1, 5) );    //=> [1, 2, 3, 4]
+const bar18_2 = JSON.stringify( R.range(50, 53) );  //=> [50, 51, 52]
+const bar18_3 = JSON.stringify( range(50, 53) );  //=> [50, 51, 52]
+
+function step(n, times) {
+    return [...Array(times)].reduce((A,V,IDX)=>{
+        A.push( n * (IDX+1) );
+        return A}
+    ,A=[]);
+};
+
+const bar19 = JSON.stringify( step(2, 4) );    //=> [2, 4, ,6, 8]
+const bar19_1 = JSON.stringify( step(50, 3) );  //=> [50, 100, 150]
 
 
 
@@ -335,6 +465,63 @@ function exe() {
     document.querySelector(".res").value = bar11_1;
     document.querySelector(".res").value = bar11_2;
     document.querySelector(".res").value = bar11_3;
+
+    document.querySelector(".res").value = bar12;
+    document.querySelector(".res").value = bar12_1;
+    document.querySelector(".res").value = bar12_2;
+    document.querySelector(".res").value = bar12_3;
+
+    document.querySelector(".res").value = bar13;
+    document.querySelector(".res").value = bar13_1;
+    document.querySelector(".res").value = bar13_2;
+    document.querySelector(".res").value = bar13_3;
+
+    document.querySelector(".res").value = bar14;
+    document.querySelector(".res").value = bar14_1;
+    document.querySelector(".res").value = bar14_2;
+    document.querySelector(".res").value = bar14_3;
+    document.querySelector(".res").value = bar14_4;
+    document.querySelector(".res").value = bar14_5;
+
+    document.querySelector(".res").value = bar15_0_0;
+    document.querySelector(".res").value = bar15_0_1;
+    document.querySelector(".res").value = bar15_0_2;
+    document.querySelector(".res").value = bar15_0_3;
+    document.querySelector(".res").value = bar15_0_4;
+    document.querySelector(".res").value = bar15_0_5;
+
+    document.querySelector(".res").value = bar15_1_0;
+    document.querySelector(".res").value = bar15_1_1;
+    document.querySelector(".res").value = bar15_1_2;
+    document.querySelector(".res").value = bar15_1_3;
+    document.querySelector(".res").value = bar15_1_4;
+    document.querySelector(".res").value = bar15_1_5;
+
+    document.querySelector(".res").value = bar15_2_0;
+    document.querySelector(".res").value = bar15_2_1;
+    document.querySelector(".res").value = bar15_2_2;
+    document.querySelector(".res").value = bar15_2_3;
+    document.querySelector(".res").value = bar15_2_4;
+    document.querySelector(".res").value = bar15_2_5;
+
+    document.querySelector(".res").value = bar16;
+    document.querySelector(".res").value = bar16_1;
+    document.querySelector(".res").value = bar16_2;
+    document.querySelector(".res").value = bar16_3;
+
+    document.querySelector(".res").value = JSON.stringify(bar17);
+    document.querySelector(".res").value = JSON.stringify(bar17_1);
+    document.querySelector(".res").value = JSON.stringify(bar17_2);
+    document.querySelector(".res").value = JSON.stringify(bar17_3);
+
+    document.querySelector(".res").value = bar18;
+    document.querySelector(".res").value = bar18_1;
+    document.querySelector(".res").value = bar18_2;
+    document.querySelector(".res").value = bar18_3;
+
+    document.querySelector(".res").value = bar19;
+    document.querySelector(".res").value = bar19_1;
+
 }
 document.querySelector("button").click();
 
