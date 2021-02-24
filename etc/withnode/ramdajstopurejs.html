@@ -434,6 +434,30 @@ function toPairs(obj) {
 const bar20 = JSON.stringify( R.toPairs({a: 1, b: 2, c: 3}) ); //=> [['a', 1], ['b', 2], ['c', 3]]
 const bar20_1 = JSON.stringify( toPairs({a: 1, b: 2, c: 3}) ); //=> [['a', 1], ['b', 2], ['c', 3]]
 
+
+function uniq(list) {
+    return [...new Set(list)];
+};
+
+function uniqBy(fn, list) {
+    const set = new Set();
+    return list.reduce((A,V,IDX)=>{
+        if(set.add(fn(V))){ A.push(V) };
+        return A;
+    },A=[]);
+};
+
+const bar21 = JSON.stringify( R.uniq([1, 1, 2, 1]) ); //=> [1, 2]
+const bar21_1 = JSON.stringify( uniq([1, 1, 2, 1]) ); //=> [1, 2]
+const bar21_2 = JSON.stringify( R.uniq([1, '1']) );     //=> [1, '1']
+const bar21_3 = JSON.stringify( uniq([1, '1']) );     //=> [1, '1']
+const bar21_4 = JSON.stringify( R.uniq([[42], [42]]) ); //=> [[42]]
+const bar21_5 = JSON.stringify( uniq([[42], [42]]) ); //=> this is fail...... not [[42]]  ====> [[42],[42]]
+
+const bar22 = JSON.stringify( R.uniqBy(Math.abs, [-1, -5, 2, 10, 1, 2]) ); //=> [-1, -5, 2, 10]
+const bar22_1 = JSON.stringify( uniqBy(Math.abs, [-1, -5, 2, 10, 1, 2]) ); //=> [-1, -5, 2, 10]
+
+
 function exe() {
     document.querySelector(".res").value = bar0_1;
     document.querySelector(".res").value = bar0_2;
@@ -544,6 +568,16 @@ function exe() {
 
     document.querySelector(".res").value = bar20;
     document.querySelector(".res").value = bar20_1;
+
+    document.querySelector(".res").value = bar21;
+    document.querySelector(".res").value = bar21_1;
+    document.querySelector(".res").value = bar21_2;
+    document.querySelector(".res").value = bar21_3;
+    document.querySelector(".res").value = bar21_4;
+    document.querySelector(".res").value = bar21_5;
+
+    document.querySelector(".res").value = bar22;
+    document.querySelector(".res").value = bar22_1;
 }
 document.querySelector("button").click();
 
