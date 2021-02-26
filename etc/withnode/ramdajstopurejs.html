@@ -582,7 +582,24 @@ function fromPairs(pairs) {
 const bar29 = JSON.stringify( R.fromPairs([['a', 1], ['b', 2], ['c', 3]]) ); //=> {a: 1, b: 2, c: 3}
 const bar29_1 = JSON.stringify( fromPairs([['a', 1], ['b', 2], ['c', 3]]) );
 
+function intersection(list1, list2) {
+    return list1.filter(V=>{return list2.includes(V)});
+}
 
+  R.intersection([1,2,3,4], [7,6,5,4,3]); //=> [4, 3]
+  intersection([1,2,3,4], [7,6,5,4,3]); //=> [4, 3]
+
+
+
+function intersperse(separator, list) {
+    return list.reduce((A,V,IDX)=>{
+        A.push(...( IDX === list.length - 1 ? [V] : [V, separator] ))
+        return A;
+    },A=[]);
+};
+
+R.intersperse('a', ['b', 'n', 'n', 's']); //=> ['b', 'a', 'n', 'a', 'n', 'a', 's']
+intersperse('a', ['b', 'n', 'n', 's']); //=> ['b', 'a', 'n', 'a', 'n', 'a', 's']
 
 function exe() {
     document.querySelector(".res").value = bar0_1;
