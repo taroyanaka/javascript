@@ -457,20 +457,6 @@ const bar21_5 = JSON.stringify( uniq([[42], [42]]) ); //=> this is fail...... no
 const bar22 = JSON.stringify( R.uniqBy(Math.abs, [-1, -5, 2, 10, 1, 2]) ); //=> [-1, -5, 2, 10]
 const bar22_1 = JSON.stringify( uniqBy(Math.abs, [-1, -5, 2, 10, 1, 2]) ); //=> [-1, -5, 2, 10]
 
-
-
-function remove(start, count, list) {
-    var result = Array.prototype.slice.call(list, 0);
-    result.splice(start, count);
-    return result;
-};
-R.remove(2, 3, [1,2,3,4,5,6,7,8]); //=> [1,2,6,7,8]
-// const bar23 = JSON.stringify( R.difference([1,2,3,4], [7,6,5,4,3]) ); //=> [1,2]
-// const bar23_1 = JSON.stringify( difference([1,2,3,4], [7,6,5,4,3]) ); //=> [1,2]
-// const bar23_2 = JSON.stringify( R.difference([{a: 1}, {b: 2}], [{a: 1}, {c: 3}]) ); //=> [{b: 2}]
-// const bar23_3 = JSON.stringify( difference([{a: 1}, {b: 2}], [{a: 1}, {c: 3}]) ); //=> [{b: 2}]
-
-
 function without(xs, list){
     return list.filter(V=>{return !xs.includes(V)})
 };
@@ -506,6 +492,17 @@ let output;
 // output = $.$$("h1").__.map(V=>{return V.innerText})[0];
 output = $._([1, 2, 1, 3, 4]).uniq().__;
 // console.log(output);
+
+
+
+function remove(start, count, list) {
+    list.splice(start, count);
+    return list;
+};
+
+const bar24 = JSON.stringify( R.remove(2, 3, [1,2,3,4,5,6,7,8]) ); //=> [1,2,6,7,8]
+const bar24_1 = JSON.stringify( remove(2, 3, [1,2,3,4,5,6,7,8]) ); //=> [1,2,6,7,8]
+
 
 
 
@@ -635,8 +632,8 @@ function exe() {
     // document.querySelector(".res").value = bar23_2;
     // document.querySelector(".res").value = bar23_3;
 
-    // document.querySelector(".res").value = bar24;
-    // document.querySelector(".res").value = bar24_1;
+    document.querySelector(".res").value = bar24;
+    document.querySelector(".res").value = bar24_1;
     // document.querySelector(".res").value = bar24_2;
     // document.querySelector(".res").value = bar24_3;
 
