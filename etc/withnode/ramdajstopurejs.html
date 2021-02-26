@@ -568,10 +568,6 @@ const bar28_3 = JSON.stringify( groupWith((a, b) => a + 1 === b, [0, 1, 1, 2, 3,
 const bar28_4 = JSON.stringify( R.groupWith((a, b) => a % 2 === b % 2, [0, 1, 1, 2, 3, 5, 8, 13, 21]) );//=> [[0], [1, 1], [2], [3, 5], [8], [13, 21]]
 const bar28_5 = JSON.stringify( groupWith((a, b) => a % 2 === b % 2, [0, 1, 1, 2, 3, 5, 8, 13, 21]) );
 
-
-
-
-
 function fromPairs(pairs) {
     return pairs.reduce((A,V,IDX)=>{
         A[V[0]] = V[1];
@@ -586,9 +582,8 @@ function intersection(list1, list2) {
     return list1.filter(V=>{return list2.includes(V)});
 }
 
-  R.intersection([1,2,3,4], [7,6,5,4,3]); //=> [4, 3]
-  intersection([1,2,3,4], [7,6,5,4,3]); //=> [4, 3]
-
+const bar30 = JSON.stringify( R.intersection([1,2,3,4], [7,6,5,4,3]) ); //=> [4, 3]
+const bar30_1 = JSON.stringify( intersection([1,2,3,4], [7,6,5,4,3]) ); //=> [4, 3]
 
 
 function intersperse(separator, list) {
@@ -598,8 +593,8 @@ function intersperse(separator, list) {
     },A=[]);
 };
 
-R.intersperse('a', ['b', 'n', 'n', 's']); //=> ['b', 'a', 'n', 'a', 'n', 'a', 's']
-intersperse('a', ['b', 'n', 'n', 's']); //=> ['b', 'a', 'n', 'a', 'n', 'a', 's']
+const bar31 = JSON.stringify( R.intersperse('a', ['b', 'n', 'n', 's']) ); //=> ['b', 'a', 'n', 'a', 'n', 'a', 's']
+const bar31_1 = JSON.stringify( intersperse('a', ['b', 'n', 'n', 's']) ); //=> ['b', 'a', 'n', 'a', 'n', 'a', 's']
 
 function exe() {
     document.querySelector(".res").value = bar0_1;
@@ -766,6 +761,12 @@ function exe() {
     // document.querySelector(".res").value = bar29_3;
     // document.querySelector(".res").value = bar29_4;
     // document.querySelector(".res").value = bar29_5;
+
+    document.querySelector(".res").value = bar30;
+    document.querySelector(".res").value = bar30_1;
+
+    document.querySelector(".res").value = bar31;
+    document.querySelector(".res").value = bar31_1;
 }
 document.querySelector("button").click();
 
