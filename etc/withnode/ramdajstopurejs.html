@@ -503,6 +503,84 @@ function remove(start, count, list) {
 const bar24 = JSON.stringify( R.remove(2, 3, [1,2,3,4,5,6,7,8]) ); //=> [1,2,6,7,8]
 const bar24_1 = JSON.stringify( remove(2, 3, [1,2,3,4,5,6,7,8]) ); //=> [1,2,6,7,8]
 
+function times(fn, n) {
+    return [...Array(n)].reduce((A,V,IDX)=>{
+        A.push( fn((IDX++)) );
+        return A;
+    },A=[]);
+}
+
+const justReturn = (x) => x;
+const bar25 = JSON.stringify( R.times(justReturn, 5) ); //=> [0, 1, 2, 3, 4]
+const bar25_1 = JSON.stringify( times(justReturn, 5) ); //=> [0, 1, 2, 3, 4]
+
+function repeat(VAL, n) {
+    return [...Array(n)].reduce((A,V,IDX)=>{
+        A.push( VAL );
+        return A;
+    },A=[]);
+}
+
+const bar26 = JSON.stringify( R.repeat('hi', 5) ); //=> ['hi', 'hi', 'hi', 'hi', 'hi']
+const bar26_1 = JSON.stringify( repeat('hi', 5) ); //=> ['hi', 'hi', 'hi', 'hi', 'hi']
+const rrepeatedObjs = R.repeat({}, 5); //=> [{}, {}, {}, {}, {}]
+const bar26_2 = JSON.stringify( rrepeatedObjs[0] === rrepeatedObjs[1] ); //=> true
+const repeatedObjs = repeat({}, 5); //=> [{}, {}, {}, {}, {}]
+const bar26_3 = JSON.stringify( repeatedObjs[0] === repeatedObjs[1] ); //=> true
+
+const defaultTo = (d) => (v) => {
+        return v == null || v !== v ? d : v;
+};
+const RdefaultTo42 = R.defaultTo(42);
+const defaultTo42 = defaultTo(42);
+
+const bar27 = JSON.stringify( RdefaultTo42(null) );  //=> 42
+const bar27_1 = JSON.stringify( defaultTo42(null) );  //=> 42
+const bar27_2 = JSON.stringify( RdefaultTo42(undefined) ) //=> 42
+const bar27_3 = JSON.stringify( defaultTo42(undefined) ) //=> 42
+const bar27_4 = JSON.stringify( RdefaultTo42(false) ) //=> false
+const bar27_5 = JSON.stringify( defaultTo42(false) ) //=> false
+const bar27_6 = JSON.stringify( RdefaultTo42('Ramda') ) //=> 'Ramda'
+const bar27_7 = JSON.stringify( defaultTo42('Ramda') ) //=> 'Ramda'
+const bar27_8 = JSON.stringify( RdefaultTo42(NaN)) //=> 42
+const bar27_9 = JSON.stringify( defaultTo42(NaN)) //=> 42
+
+
+function groupWith(fn, list) {
+    let idx = 0;
+    return list.reduce((A,V)=>{
+        while (idx < list.length) {
+            let nextidx = idx + 1;
+                while (nextidx < list.length && fn(list[nextidx - 1], list[nextidx])) {
+                    nextidx += 1;
+                }
+            A.push(list.slice(idx, nextidx));
+            idx = nextidx;
+        }
+        return A;
+    },A=[]);
+}
+
+const bar28 = JSON.stringify( R.groupWith(R.equals, [0, 1, 1, 2, 3, 5, 8, 13, 21]) );//=> [[0], [1, 1], [2], [3], [5], [8], [13], [21]]
+const bar28_1 = JSON.stringify( groupWith(R.equals, [0, 1, 1, 2, 3, 5, 8, 13, 21]) );
+const bar28_2 = JSON.stringify( R.groupWith((a, b) => a + 1 === b, [0, 1, 1, 2, 3, 5, 8, 13, 21]) );//=> [[0, 1], [1, 2, 3], [5], [8], [13], [21]]
+const bar28_3 = JSON.stringify( groupWith((a, b) => a + 1 === b, [0, 1, 1, 2, 3, 5, 8, 13, 21]) );
+const bar28_4 = JSON.stringify( R.groupWith((a, b) => a % 2 === b % 2, [0, 1, 1, 2, 3, 5, 8, 13, 21]) );//=> [[0], [1, 1], [2], [3, 5], [8], [13, 21]]
+const bar28_5 = JSON.stringify( groupWith((a, b) => a % 2 === b % 2, [0, 1, 1, 2, 3, 5, 8, 13, 21]) );
+
+
+
+
+
+function fromPairs(pairs) {
+    return pairs.reduce((A,V,IDX)=>{
+        A[V[0]] = V[1];
+        return A;
+    },A={});
+};
+
+const bar29 = JSON.stringify( R.fromPairs([['a', 1], ['b', 2], ['c', 3]]) ); //=> {a: 1, b: 2, c: 3}
+const bar29_1 = JSON.stringify( fromPairs([['a', 1], ['b', 2], ['c', 3]]) );
 
 
 
@@ -637,10 +715,40 @@ function exe() {
     // document.querySelector(".res").value = bar24_2;
     // document.querySelector(".res").value = bar24_3;
 
-    // document.querySelector(".res").value = bar25;
-    // document.querySelector(".res").value = bar25_1;
+    document.querySelector(".res").value = bar25;
+    document.querySelector(".res").value = bar25_1;
     // document.querySelector(".res").value = bar25_2;
     // document.querySelector(".res").value = bar25_3;
+
+    document.querySelector(".res").value = bar26;
+    document.querySelector(".res").value = bar26_1;
+    document.querySelector(".res").value = bar26_2;
+    document.querySelector(".res").value = bar26_3;
+
+    document.querySelector(".res").value = bar27;
+    document.querySelector(".res").value = bar27_1;
+    document.querySelector(".res").value = bar27_2;
+    document.querySelector(".res").value = bar27_3;
+    document.querySelector(".res").value = bar27_4;
+    document.querySelector(".res").value = bar27_5;
+    document.querySelector(".res").value = bar27_6;
+    document.querySelector(".res").value = bar27_7;
+    document.querySelector(".res").value = bar27_8;
+    document.querySelector(".res").value = bar27_9;
+
+    document.querySelector(".res").value = bar28;
+    document.querySelector(".res").value = bar28_1;
+    document.querySelector(".res").value = bar28_2;
+    document.querySelector(".res").value = bar28_3;
+    document.querySelector(".res").value = bar28_4;
+    document.querySelector(".res").value = bar28_5;
+
+    document.querySelector(".res").value = bar29;
+    document.querySelector(".res").value = bar29_1;
+    // document.querySelector(".res").value = bar29_2;
+    // document.querySelector(".res").value = bar29_3;
+    // document.querySelector(".res").value = bar29_4;
+    // document.querySelector(".res").value = bar29_5;
 }
 document.querySelector("button").click();
 
