@@ -490,19 +490,21 @@ const $ = {
     this.__ = LIST;
     return this;
   },
-  $$: function(selector){ this.__ = $$(selector); return this; },
-  $$_: function(selector){ this.__ = $$_(selector); return this; },
-  without: function(xs){this.__ = without(xs, $.__); return this},
+  $$: function(selector){ this.__ = $$(selector); return this;},
+  $$_: function(selector){ this.__ = $$_(selector); return this;},
+  without: function(xs){this.__ = without(xs, $.__); return this;},
   without1: function(xs) {
     this.__ = this.__.filter(V=>{return !xs.includes(V)})
     return this;
   },
+  uniq: function(){this.__ = uniq($.__); return this;},
 }
-// let output;
+let output;
 // output = $._([1, 2, 1, 3, 4]).without([1, 2]).__;
 // output = $._([1, 2, 1, 3, 4]).without1([1, 2]).__;
 // output = $.$$("button").__.map(V=>{return V.innerText})[0];
 // output = $.$$("h1").__.map(V=>{return V.innerText})[0];
+output = $._([1, 2, 1, 3, 4]).uniq().__;
 // console.log(output);
 
 
