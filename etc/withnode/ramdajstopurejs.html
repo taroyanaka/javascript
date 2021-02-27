@@ -698,6 +698,36 @@ function xprod(a, b){
 bar36_0 = JSON.stringify( R.xprod([1, 2], ['a', 'b']) ); //=> [[1, 'a'], [1, 'b'], [2, 'a'], [2, 'b']]
 bar36_1 = JSON.stringify( xprod([1, 2], ['a', 'b']) ); //=> [[1, 'a'], [1, 'b'], [2, 'a'], [2, 'b']]
 
+
+// https://stackoverflow.com/a/23555773/9740478
+function startsWith(prefix, list){
+    return JSON.stringify(list.slice(0, prefix.length)) === JSON.stringify(prefix);
+};
+
+bar37_0 = JSON.stringify( R.startsWith('a', 'abc') ); //=> true
+bar37_1 = JSON.stringify( startsWith('a', 'abc') ); //=> true
+bar37_2 = JSON.stringify( R.startsWith('b', 'abc') ); //=> false
+bar37_3 = JSON.stringify( startsWith('b', 'abc') ); //=> false
+bar37_4 = JSON.stringify( R.startsWith(['a'], ['a', 'b', 'c']) );    //=> true
+bar37_5 = JSON.stringify( startsWith(['a'], ['a', 'b', 'c']) );    //=> true
+bar37_6 = JSON.stringify( R.startsWith(['b'], ['a', 'b', 'c']) );    //=> false
+bar37_7 = JSON.stringify( startsWith(['b'], ['a', 'b', 'c']) );    //=> false
+
+function endsWith(suffix, list) {
+    return JSON.stringify(list.slice(list.length - 1, list.length)) === JSON.stringify(suffix);
+};
+
+bar38_0 = JSON.stringify( R.endsWith('c', 'abc') );                //=> true
+bar38_1 = JSON.stringify( endsWith('c', 'abc') );                //=> true
+bar38_2 = JSON.stringify( R.endsWith('b', 'abc') );                //=> false
+bar38_3 = JSON.stringify( endsWith('b', 'abc') );                //=> false
+bar38_4 = JSON.stringify( R.endsWith(['c'], ['a', 'b', 'c']) );    //=> true
+bar38_5 = JSON.stringify( endsWith(['c'], ['a', 'b', 'c']) );    //=> true
+bar38_6 = JSON.stringify( R.endsWith(['b'], ['a', 'b', 'c']) );    //=> false
+bar38_7 = JSON.stringify( endsWith(['b'], ['a', 'b', 'c']) );    //=> false
+
+
+
 function exe() {
     document.querySelector(".res").value = bar0_1;
     document.querySelector(".res").value = bar0_2;
@@ -924,25 +954,24 @@ function exe() {
     // document.querySelector(".res").value = bar36_8;
     // document.querySelector(".res").value = bar36_9;
 
-    // document.querySelector(".res").value = bar37_0;
-    // document.querySelector(".res").value = bar37_1;
-    // document.querySelector(".res").value = bar37_2;
-    // document.querySelector(".res").value = bar37_3;
-    // document.querySelector(".res").value = bar37_4;
-    // document.querySelector(".res").value = bar37_5;
-    // document.querySelector(".res").value = bar37_6;
-    // document.querySelector(".res").value = bar37_7;
-    // document.querySelector(".res").value = bar37_8;
-    // document.querySelector(".res").value = bar37_9;
-    // document.querySelector(".res").value = bar38_0;
-    // document.querySelector(".res").value = bar38_1;
-    // document.querySelector(".res").value = bar38_2;
-    // document.querySelector(".res").value = bar38_3;
-    // document.querySelector(".res").value = bar38_4;
-    // document.querySelector(".res").value = bar38_5;
-    // document.querySelector(".res").value = bar38_6;
-    // document.querySelector(".res").value = bar38_7;
-    // document.querySelector(".res").value = bar38_8;
+    document.querySelector(".res").value = bar37_0;
+    document.querySelector(".res").value = bar37_1;
+    document.querySelector(".res").value = bar37_2;
+    document.querySelector(".res").value = bar37_3;
+    document.querySelector(".res").value = bar37_4;
+    document.querySelector(".res").value = bar37_5;
+    document.querySelector(".res").value = bar37_6;
+    document.querySelector(".res").value = bar37_7;
+
+    document.querySelector(".res").value = bar38_0;
+    document.querySelector(".res").value = bar38_1;
+    document.querySelector(".res").value = bar38_2;
+    document.querySelector(".res").value = bar38_3;
+    document.querySelector(".res").value = bar38_4;
+    document.querySelector(".res").value = bar38_5;
+    document.querySelector(".res").value = bar38_6;
+    document.querySelector(".res").value = bar38_7;
+
     // document.querySelector(".res").value = bar38_9;
     // document.querySelector(".res").value = bar39_0;
     // document.querySelector(".res").value = bar39_1;
