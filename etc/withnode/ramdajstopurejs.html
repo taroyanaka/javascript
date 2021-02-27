@@ -609,6 +609,48 @@ bar32_1 = JSON.stringify( mergeAll([{foo:1},{bar:2},{baz:3}]) ); //=> {foo:1,bar
 bar32_2 = JSON.stringify( R.mergeAll([{foo:1},{foo:2},{bar:2}]) ); //=> {foo:2,bar:2}
 bar32_3 = JSON.stringify( mergeAll([{foo:1},{foo:2},{bar:2}]) ); //=> {foo:2,bar:2}
 
+
+
+// function _concat(set1, set2) {
+//     set1 = set1 || [];
+//     set2 = set2 || [];
+//     var idx;
+//     var len1 = set1.length;
+//     var len2 = set2.length;
+//     var result = [];
+
+//     idx = 0;
+//     while (idx < len1) {
+//       result[result.length] = set1[idx];
+//       idx += 1;
+//     }
+//     idx = 0;
+//     while (idx < len2) {
+//       result[result.length] = set2[idx];
+//       idx += 1;
+//     }
+//     return result;
+//   }
+function adjust(idx, fn, list) {
+    const _idx = (idx < 0 ? list.length : 0) + idx;
+    return list.map((V,IDX)=>{ return (_idx === IDX ? fn(V): V) })
+};
+
+bar33_0 = JSON.stringify( R.adjust(1, R.toUpper, ['a', 'b', 'c', 'd']) );      //=> ['a', 'B', 'c', 'd']
+bar33_1 = JSON.stringify( adjust(1, R.toUpper, ['a', 'b', 'c', 'd']) );      //=> ['a', 'B', 'c', 'd']
+bar33_2 = JSON.stringify( R.adjust(-1, R.toUpper, ['a', 'b', 'c', 'd']) );     //=> ['a', 'b', 'c', 'D']
+bar33_3 = JSON.stringify( adjust(-1, R.toUpper, ['a', 'b', 'c', 'd']) );     //=> ['a', 'b', 'c', 'D']
+
+function update(idx, x, list) {
+    const _idx = (idx < 0 ? list.length : 0) + idx;
+    return list.map((V,IDX)=>{ return (_idx === IDX ? x: V) })
+};
+
+bar34_0 = JSON.stringify( R.update(1, '_', ['a', 'b', 'c']) );      //=> ['a', '_', 'c']
+bar34_1 = JSON.stringify( update(1, '_', ['a', 'b', 'c']) );      //=> ['a', '_', 'c']
+bar34_2 = JSON.stringify( R.update(-1, '_', ['a', 'b', 'c']) );     //=> ['a', 'b', '_']
+bar34_3 = JSON.stringify( update(-1, '_', ['a', 'b', 'c']) );     //=> ['a', 'b', '_']
+
 function exe() {
     document.querySelector(".res").value = bar0_1;
     document.querySelector(".res").value = bar0_2;
@@ -791,20 +833,20 @@ function exe() {
     // document.querySelector(".res").value = bar32_7;
     // document.querySelector(".res").value = bar32_8;
     // document.querySelector(".res").value = bar32_9;
-    // document.querySelector(".res").value = bar33_0;
-    // document.querySelector(".res").value = bar33_1;
-    // document.querySelector(".res").value = bar33_2;
-    // document.querySelector(".res").value = bar33_3;
+    document.querySelector(".res").value = bar33_0;
+    document.querySelector(".res").value = bar33_1;
+    document.querySelector(".res").value = bar33_2;
+    document.querySelector(".res").value = bar33_3;
     // document.querySelector(".res").value = bar33_4;
     // document.querySelector(".res").value = bar33_5;
     // document.querySelector(".res").value = bar33_6;
     // document.querySelector(".res").value = bar33_7;
     // document.querySelector(".res").value = bar33_8;
     // document.querySelector(".res").value = bar33_9;
-    // document.querySelector(".res").value = bar34_0;
-    // document.querySelector(".res").value = bar34_1;
-    // document.querySelector(".res").value = bar34_2;
-    // document.querySelector(".res").value = bar34_3;
+    document.querySelector(".res").value = bar34_0;
+    document.querySelector(".res").value = bar34_1;
+    document.querySelector(".res").value = bar34_2;
+    document.querySelector(".res").value = bar34_3;
     // document.querySelector(".res").value = bar34_4;
     // document.querySelector(".res").value = bar34_5;
     // document.querySelector(".res").value = bar34_6;
