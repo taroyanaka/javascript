@@ -643,13 +643,47 @@ bar33_3 = JSON.stringify( adjust(-1, R.toUpper, ['a', 'b', 'c', 'd']) );     //=
 
 function update(idx, x, list) {
     const _idx = (idx < 0 ? list.length : 0) + idx;
-    return list.map((V,IDX)=>{ return (_idx === IDX ? x: V) })
+    return list.map((V,IDX)=>{return _idx === IDX ? x: V})
 };
 
 bar34_0 = JSON.stringify( R.update(1, '_', ['a', 'b', 'c']) );      //=> ['a', '_', 'c']
 bar34_1 = JSON.stringify( update(1, '_', ['a', 'b', 'c']) );      //=> ['a', '_', 'c']
 bar34_2 = JSON.stringify( R.update(-1, '_', ['a', 'b', 'c']) );     //=> ['a', 'b', '_']
 bar34_3 = JSON.stringify( update(-1, '_', ['a', 'b', 'c']) );     //=> ['a', 'b', '_']
+
+
+const where = (spec)=>(testObj)=>{
+    return Object.entries(spec).reduce((A, [K, V], IDX)=>{
+        if( spec.hasOwnProperty(K) && !V(testObj[K]) ){ A = false };
+        return A;
+    },A=true);
+};
+
+// pred :: Object -> Boolean
+const Rpred = R.where({
+  a: R.equals('foo'),
+  b: R.complement(R.equals('bar')),
+  x: R.gt(R.__, 10),
+  y: R.lt(R.__, 20)
+});
+const pred = where({
+  a: R.equals('foo'),
+  b: R.complement(R.equals('bar')),
+  x: R.gt(R.__, 10),
+  y: R.lt(R.__, 20)
+});
+
+bar35_0 = JSON.stringify( Rpred({a: 'foo', b: 'xxx', x: 11, y: 19}) ); //=> true
+bar35_1 = JSON.stringify( pred({a: 'foo', b: 'xxx', x: 11, y: 19}) ); //=> true
+bar35_2 = JSON.stringify( Rpred({a: 'xxx', b: 'xxx', x: 11, y: 19}) ); //=> false
+bar35_3 = JSON.stringify( pred({a: 'xxx', b: 'xxx', x: 11, y: 19}) ); //=> false
+bar35_4 = JSON.stringify( Rpred({a: 'foo', b: 'bar', x: 11, y: 19}) ); //=> false
+bar35_5 = JSON.stringify( pred({a: 'foo', b: 'bar', x: 11, y: 19}) ); //=> false
+bar35_6 = JSON.stringify( Rpred({a: 'foo', b: 'xxx', x: 10, y: 19}) ); //=> false
+bar35_7 = JSON.stringify( pred({a: 'foo', b: 'xxx', x: 10, y: 19}) ); //=> false
+bar35_8 = JSON.stringify( Rpred({a: 'foo', b: 'xxx', x: 11, y: 20}) ); //=> false
+bar35_9 = JSON.stringify( pred({a: 'foo', b: 'xxx', x: 11, y: 20}) ); //=> false
+
 
 function exe() {
     document.querySelector(".res").value = bar0_1;
@@ -853,16 +887,18 @@ function exe() {
     // document.querySelector(".res").value = bar34_7;
     // document.querySelector(".res").value = bar34_8;
     // document.querySelector(".res").value = bar34_9;
-    // document.querySelector(".res").value = bar35_0;
-    // document.querySelector(".res").value = bar35_1;
-    // document.querySelector(".res").value = bar35_2;
-    // document.querySelector(".res").value = bar35_3;
-    // document.querySelector(".res").value = bar35_4;
-    // document.querySelector(".res").value = bar35_5;
-    // document.querySelector(".res").value = bar35_6;
-    // document.querySelector(".res").value = bar35_7;
-    // document.querySelector(".res").value = bar35_8;
-    // document.querySelector(".res").value = bar35_9;
+
+    document.querySelector(".res").value = bar35_0;
+    document.querySelector(".res").value = bar35_1;
+    document.querySelector(".res").value = bar35_2;
+    document.querySelector(".res").value = bar35_3;
+    document.querySelector(".res").value = bar35_4;
+    document.querySelector(".res").value = bar35_5;
+    document.querySelector(".res").value = bar35_6;
+    document.querySelector(".res").value = bar35_7;
+    document.querySelector(".res").value = bar35_8;
+    document.querySelector(".res").value = bar35_9;
+
     // document.querySelector(".res").value = bar36_0;
     // document.querySelector(".res").value = bar36_1;
     // document.querySelector(".res").value = bar36_2;
