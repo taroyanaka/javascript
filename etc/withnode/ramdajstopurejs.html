@@ -684,6 +684,19 @@ bar35_7 = JSON.stringify( pred({a: 'foo', b: 'xxx', x: 10, y: 19}) ); //=> false
 bar35_8 = JSON.stringify( Rpred({a: 'foo', b: 'xxx', x: 11, y: 20}) ); //=> false
 bar35_9 = JSON.stringify( pred({a: 'foo', b: 'xxx', x: 11, y: 20}) ); //=> false
 
+function xprod(a, b){
+    return a.reduce((A,aV,aIDX)=>{
+        const RESULT = b.reduce((B,bV)=>{
+            B.push([a[aIDX], bV]);
+            return B;
+        }, B=[]);
+        A.push(...RESULT);
+        return A;
+    }, A=[])
+}
+
+bar36_0 = JSON.stringify( R.xprod([1, 2], ['a', 'b']) ); //=> [[1, 'a'], [1, 'b'], [2, 'a'], [2, 'b']]
+bar36_1 = JSON.stringify( xprod([1, 2], ['a', 'b']) ); //=> [[1, 'a'], [1, 'b'], [2, 'a'], [2, 'b']]
 
 function exe() {
     document.querySelector(".res").value = bar0_1;
@@ -691,6 +704,7 @@ function exe() {
     document.querySelector(".res").value = bar;
     document.querySelector(".res").value = bar2;
     document.querySelector(".res").value = bar3;
+
     document.querySelector(".res").value = bar3_1;
     document.querySelector(".res").value = bar3_2;
     document.querySelector(".res").value = bar3_3;
@@ -899,8 +913,8 @@ function exe() {
     document.querySelector(".res").value = bar35_8;
     document.querySelector(".res").value = bar35_9;
 
-    // document.querySelector(".res").value = bar36_0;
-    // document.querySelector(".res").value = bar36_1;
+    document.querySelector(".res").value = bar36_0;
+    document.querySelector(".res").value = bar36_1;
     // document.querySelector(".res").value = bar36_2;
     // document.querySelector(".res").value = bar36_3;
     // document.querySelector(".res").value = bar36_4;
@@ -909,6 +923,7 @@ function exe() {
     // document.querySelector(".res").value = bar36_7;
     // document.querySelector(".res").value = bar36_8;
     // document.querySelector(".res").value = bar36_9;
+
     // document.querySelector(".res").value = bar37_0;
     // document.querySelector(".res").value = bar37_1;
     // document.querySelector(".res").value = bar37_2;
