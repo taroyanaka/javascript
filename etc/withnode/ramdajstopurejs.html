@@ -726,6 +726,23 @@ bar38_5 = JSON.stringify( endsWith(['c'], ['a', 'b', 'c']) );    //=> true
 bar38_6 = JSON.stringify( R.endsWith(['b'], ['a', 'b', 'c']) );    //=> false
 bar38_7 = JSON.stringify( endsWith(['b'], ['a', 'b', 'c']) );    //=> false
 
+function nth(offset, list) {
+    const idx = offset < 0 ? list.length + offset : offset;
+    return typeof list === "string" ? list.charAt(idx) : list[idx];
+};
+
+const nthTestList = ['foo', 'bar', 'baz', 'quux'];
+bar39_0 = JSON.stringify( R.nth(1, nthTestList) ); //=> 'bar'
+bar39_1 = JSON.stringify( nth(1, nthTestList) ); //=> 'bar'
+bar39_2 = JSON.stringify( R.nth(-1, nthTestList) ); //=> 'quux'
+bar39_3 = JSON.stringify( nth(-1, nthTestList) ); //=> 'quux'
+bar39_4 = JSON.stringify( R.nth(-99, nthTestList) ); //=> undefined
+bar39_5 = JSON.stringify( nth(-99, nthTestList) ); //=> undefined
+bar39_6 = JSON.stringify( R.nth(2, 'abc') ); //=> 'c'
+bar39_7 = JSON.stringify( nth(2, 'abc') ); //=> 'c'
+bar39_8 = JSON.stringify( R.nth(3, 'abc') ); //=> ''
+bar39_9 = JSON.stringify( nth(3, 'abc') ); //=> ''
+
 
 
 function exe() {
@@ -972,17 +989,17 @@ function exe() {
     document.querySelector(".res").value = bar38_6;
     document.querySelector(".res").value = bar38_7;
 
-    // document.querySelector(".res").value = bar38_9;
-    // document.querySelector(".res").value = bar39_0;
-    // document.querySelector(".res").value = bar39_1;
-    // document.querySelector(".res").value = bar39_2;
-    // document.querySelector(".res").value = bar39_3;
-    // document.querySelector(".res").value = bar39_4;
-    // document.querySelector(".res").value = bar39_5;
-    // document.querySelector(".res").value = bar39_6;
-    // document.querySelector(".res").value = bar39_7;
-    // document.querySelector(".res").value = bar39_8;
-    // document.querySelector(".res").value = bar39_9;
+    document.querySelector(".res").value = bar39_0;
+    document.querySelector(".res").value = bar39_1;
+    document.querySelector(".res").value = bar39_2;
+    document.querySelector(".res").value = bar39_3;
+    document.querySelector(".res").value = bar39_4;
+    document.querySelector(".res").value = bar39_5;
+    document.querySelector(".res").value = bar39_6;
+    document.querySelector(".res").value = bar39_7;
+    document.querySelector(".res").value = bar39_8;
+    document.querySelector(".res").value = bar39_9;
+
     // document.querySelector(".res").value = bar40_0;
     // document.querySelector(".res").value = bar40_1;
     // document.querySelector(".res").value = bar40_2;
