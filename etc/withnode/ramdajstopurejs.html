@@ -596,6 +596,19 @@ function intersperse(separator, list) {
 const bar31 = JSON.stringify( R.intersperse('a', ['b', 'n', 'n', 's']) ); //=> ['b', 'a', 'n', 'a', 'n', 'a', 's']
 const bar31_1 = JSON.stringify( intersperse('a', ['b', 'n', 'n', 's']) ); //=> ['b', 'a', 'n', 'a', 'n', 'a', 's']
 
+
+// range(32, 51).map(V=>{return range(0, 10).map(VAL=>{return "bar" + V.toString() + "_" + VAL.toString() } ).join(",") } ).join(",")
+let bar32_0,bar32_1,bar32_2,bar32_3,bar32_4,bar32_5,bar32_6,bar32_7,bar32_8,bar32_9,bar33_0,bar33_1,bar33_2,bar33_3,bar33_4,bar33_5,bar33_6,bar33_7,bar33_8,bar33_9,bar34_0,bar34_1,bar34_2,bar34_3,bar34_4,bar34_5,bar34_6,bar34_7,bar34_8,bar34_9,bar35_0,bar35_1,bar35_2,bar35_3,bar35_4,bar35_5,bar35_6,bar35_7,bar35_8,bar35_9,bar36_0,bar36_1,bar36_2,bar36_3,bar36_4,bar36_5,bar36_6,bar36_7,bar36_8,bar36_9,bar37_0,bar37_1,bar37_2,bar37_3,bar37_4,bar37_5,bar37_6,bar37_7,bar37_8,bar37_9,bar38_0,bar38_1,bar38_2,bar38_3,bar38_4,bar38_5,bar38_6,bar38_7,bar38_8,bar38_9,bar39_0,bar39_1,bar39_2,bar39_3,bar39_4,bar39_5,bar39_6,bar39_7,bar39_8,bar39_9,bar40_0,bar40_1,bar40_2,bar40_3,bar40_4,bar40_5,bar40_6,bar40_7,bar40_8,bar40_9,bar41_0,bar41_1,bar41_2,bar41_3,bar41_4,bar41_5,bar41_6,bar41_7,bar41_8,bar41_9,bar42_0,bar42_1,bar42_2,bar42_3,bar42_4,bar42_5,bar42_6,bar42_7,bar42_8,bar42_9,bar43_0,bar43_1,bar43_2,bar43_3,bar43_4,bar43_5,bar43_6,bar43_7,bar43_8,bar43_9,bar44_0,bar44_1,bar44_2,bar44_3,bar44_4,bar44_5,bar44_6,bar44_7,bar44_8,bar44_9,bar45_0,bar45_1,bar45_2,bar45_3,bar45_4,bar45_5,bar45_6,bar45_7,bar45_8,bar45_9,bar46_0,bar46_1,bar46_2,bar46_3,bar46_4,bar46_5,bar46_6,bar46_7,bar46_8,bar46_9,bar47_0,bar47_1,bar47_2,bar47_3,bar47_4,bar47_5,bar47_6,bar47_7,bar47_8,bar47_9,bar48_0,bar48_1,bar48_2,bar48_3,bar48_4,bar48_5,bar48_6,bar48_7,bar48_8,bar48_9,bar49_0,bar49_1,bar49_2,bar49_3,bar49_4,bar49_5,bar49_6,bar49_7,bar49_8,bar49_9,bar50_0,bar50_1,bar50_2,bar50_3,bar50_4,bar50_5,bar50_6,bar50_7,bar50_8,bar50_9;
+
+function mergeAll(list) {
+    return Object.assign.apply({}, [].concat(list));
+};
+
+bar32_0 = JSON.stringify( R.mergeAll([{foo:1},{bar:2},{baz:3}]) ); //=> {foo:1,bar:2,baz:3}
+bar32_1 = JSON.stringify( mergeAll([{foo:1},{bar:2},{baz:3}]) ); //=> {foo:1,bar:2,baz:3}
+bar32_2 = JSON.stringify( R.mergeAll([{foo:1},{foo:2},{bar:2}]) ); //=> {foo:2,bar:2}
+bar32_3 = JSON.stringify( mergeAll([{foo:1},{foo:2},{bar:2}]) ); //=> {foo:2,bar:2}
+
 function exe() {
     document.querySelector(".res").value = bar0_1;
     document.querySelector(".res").value = bar0_2;
@@ -767,6 +780,198 @@ function exe() {
 
     document.querySelector(".res").value = bar31;
     document.querySelector(".res").value = bar31_1;
+
+    document.querySelector(".res").value = bar32_0;
+    document.querySelector(".res").value = bar32_1;
+    document.querySelector(".res").value = bar32_2;
+    document.querySelector(".res").value = bar32_3;
+    // document.querySelector(".res").value = bar32_4;
+    // document.querySelector(".res").value = bar32_5;
+    // document.querySelector(".res").value = bar32_6;
+    // document.querySelector(".res").value = bar32_7;
+    // document.querySelector(".res").value = bar32_8;
+    // document.querySelector(".res").value = bar32_9;
+    // document.querySelector(".res").value = bar33_0;
+    // document.querySelector(".res").value = bar33_1;
+    // document.querySelector(".res").value = bar33_2;
+    // document.querySelector(".res").value = bar33_3;
+    // document.querySelector(".res").value = bar33_4;
+    // document.querySelector(".res").value = bar33_5;
+    // document.querySelector(".res").value = bar33_6;
+    // document.querySelector(".res").value = bar33_7;
+    // document.querySelector(".res").value = bar33_8;
+    // document.querySelector(".res").value = bar33_9;
+    // document.querySelector(".res").value = bar34_0;
+    // document.querySelector(".res").value = bar34_1;
+    // document.querySelector(".res").value = bar34_2;
+    // document.querySelector(".res").value = bar34_3;
+    // document.querySelector(".res").value = bar34_4;
+    // document.querySelector(".res").value = bar34_5;
+    // document.querySelector(".res").value = bar34_6;
+    // document.querySelector(".res").value = bar34_7;
+    // document.querySelector(".res").value = bar34_8;
+    // document.querySelector(".res").value = bar34_9;
+    // document.querySelector(".res").value = bar35_0;
+    // document.querySelector(".res").value = bar35_1;
+    // document.querySelector(".res").value = bar35_2;
+    // document.querySelector(".res").value = bar35_3;
+    // document.querySelector(".res").value = bar35_4;
+    // document.querySelector(".res").value = bar35_5;
+    // document.querySelector(".res").value = bar35_6;
+    // document.querySelector(".res").value = bar35_7;
+    // document.querySelector(".res").value = bar35_8;
+    // document.querySelector(".res").value = bar35_9;
+    // document.querySelector(".res").value = bar36_0;
+    // document.querySelector(".res").value = bar36_1;
+    // document.querySelector(".res").value = bar36_2;
+    // document.querySelector(".res").value = bar36_3;
+    // document.querySelector(".res").value = bar36_4;
+    // document.querySelector(".res").value = bar36_5;
+    // document.querySelector(".res").value = bar36_6;
+    // document.querySelector(".res").value = bar36_7;
+    // document.querySelector(".res").value = bar36_8;
+    // document.querySelector(".res").value = bar36_9;
+    // document.querySelector(".res").value = bar37_0;
+    // document.querySelector(".res").value = bar37_1;
+    // document.querySelector(".res").value = bar37_2;
+    // document.querySelector(".res").value = bar37_3;
+    // document.querySelector(".res").value = bar37_4;
+    // document.querySelector(".res").value = bar37_5;
+    // document.querySelector(".res").value = bar37_6;
+    // document.querySelector(".res").value = bar37_7;
+    // document.querySelector(".res").value = bar37_8;
+    // document.querySelector(".res").value = bar37_9;
+    // document.querySelector(".res").value = bar38_0;
+    // document.querySelector(".res").value = bar38_1;
+    // document.querySelector(".res").value = bar38_2;
+    // document.querySelector(".res").value = bar38_3;
+    // document.querySelector(".res").value = bar38_4;
+    // document.querySelector(".res").value = bar38_5;
+    // document.querySelector(".res").value = bar38_6;
+    // document.querySelector(".res").value = bar38_7;
+    // document.querySelector(".res").value = bar38_8;
+    // document.querySelector(".res").value = bar38_9;
+    // document.querySelector(".res").value = bar39_0;
+    // document.querySelector(".res").value = bar39_1;
+    // document.querySelector(".res").value = bar39_2;
+    // document.querySelector(".res").value = bar39_3;
+    // document.querySelector(".res").value = bar39_4;
+    // document.querySelector(".res").value = bar39_5;
+    // document.querySelector(".res").value = bar39_6;
+    // document.querySelector(".res").value = bar39_7;
+    // document.querySelector(".res").value = bar39_8;
+    // document.querySelector(".res").value = bar39_9;
+    // document.querySelector(".res").value = bar40_0;
+    // document.querySelector(".res").value = bar40_1;
+    // document.querySelector(".res").value = bar40_2;
+    // document.querySelector(".res").value = bar40_3;
+    // document.querySelector(".res").value = bar40_4;
+    // document.querySelector(".res").value = bar40_5;
+    // document.querySelector(".res").value = bar40_6;
+    // document.querySelector(".res").value = bar40_7;
+    // document.querySelector(".res").value = bar40_8;
+    // document.querySelector(".res").value = bar40_9;
+    // document.querySelector(".res").value = bar41_0;
+    // document.querySelector(".res").value = bar41_1;
+    // document.querySelector(".res").value = bar41_2;
+    // document.querySelector(".res").value = bar41_3;
+    // document.querySelector(".res").value = bar41_4;
+    // document.querySelector(".res").value = bar41_5;
+    // document.querySelector(".res").value = bar41_6;
+    // document.querySelector(".res").value = bar41_7;
+    // document.querySelector(".res").value = bar41_8;
+    // document.querySelector(".res").value = bar41_9;
+    // document.querySelector(".res").value = bar42_0;
+    // document.querySelector(".res").value = bar42_1;
+    // document.querySelector(".res").value = bar42_2;
+    // document.querySelector(".res").value = bar42_3;
+    // document.querySelector(".res").value = bar42_4;
+    // document.querySelector(".res").value = bar42_5;
+    // document.querySelector(".res").value = bar42_6;
+    // document.querySelector(".res").value = bar42_7;
+    // document.querySelector(".res").value = bar42_8;
+    // document.querySelector(".res").value = bar42_9;
+    // document.querySelector(".res").value = bar43_0;
+    // document.querySelector(".res").value = bar43_1;
+    // document.querySelector(".res").value = bar43_2;
+    // document.querySelector(".res").value = bar43_3;
+    // document.querySelector(".res").value = bar43_4;
+    // document.querySelector(".res").value = bar43_5;
+    // document.querySelector(".res").value = bar43_6;
+    // document.querySelector(".res").value = bar43_7;
+    // document.querySelector(".res").value = bar43_8;
+    // document.querySelector(".res").value = bar43_9;
+    // document.querySelector(".res").value = bar44_0;
+    // document.querySelector(".res").value = bar44_1;
+    // document.querySelector(".res").value = bar44_2;
+    // document.querySelector(".res").value = bar44_3;
+    // document.querySelector(".res").value = bar44_4;
+    // document.querySelector(".res").value = bar44_5;
+    // document.querySelector(".res").value = bar44_6;
+    // document.querySelector(".res").value = bar44_7;
+    // document.querySelector(".res").value = bar44_8;
+    // document.querySelector(".res").value = bar44_9;
+    // document.querySelector(".res").value = bar45_0;
+    // document.querySelector(".res").value = bar45_1;
+    // document.querySelector(".res").value = bar45_2;
+    // document.querySelector(".res").value = bar45_3;
+    // document.querySelector(".res").value = bar45_4;
+    // document.querySelector(".res").value = bar45_5;
+    // document.querySelector(".res").value = bar45_6;
+    // document.querySelector(".res").value = bar45_7;
+    // document.querySelector(".res").value = bar45_8;
+    // document.querySelector(".res").value = bar45_9;
+    // document.querySelector(".res").value = bar46_0;
+    // document.querySelector(".res").value = bar46_1;
+    // document.querySelector(".res").value = bar46_2;
+    // document.querySelector(".res").value = bar46_3;
+    // document.querySelector(".res").value = bar46_4;
+    // document.querySelector(".res").value = bar46_5;
+    // document.querySelector(".res").value = bar46_6;
+    // document.querySelector(".res").value = bar46_7;
+    // document.querySelector(".res").value = bar46_8;
+    // document.querySelector(".res").value = bar46_9;
+    // document.querySelector(".res").value = bar47_0;
+    // document.querySelector(".res").value = bar47_1;
+    // document.querySelector(".res").value = bar47_2;
+    // document.querySelector(".res").value = bar47_3;
+    // document.querySelector(".res").value = bar47_4;
+    // document.querySelector(".res").value = bar47_5;
+    // document.querySelector(".res").value = bar47_6;
+    // document.querySelector(".res").value = bar47_7;
+    // document.querySelector(".res").value = bar47_8;
+    // document.querySelector(".res").value = bar47_9;
+    // document.querySelector(".res").value = bar48_0;
+    // document.querySelector(".res").value = bar48_1;
+    // document.querySelector(".res").value = bar48_2;
+    // document.querySelector(".res").value = bar48_3;
+    // document.querySelector(".res").value = bar48_4;
+    // document.querySelector(".res").value = bar48_5;
+    // document.querySelector(".res").value = bar48_6;
+    // document.querySelector(".res").value = bar48_7;
+    // document.querySelector(".res").value = bar48_8;
+    // document.querySelector(".res").value = bar48_9;
+    // document.querySelector(".res").value = bar49_0;
+    // document.querySelector(".res").value = bar49_1;
+    // document.querySelector(".res").value = bar49_2;
+    // document.querySelector(".res").value = bar49_3;
+    // document.querySelector(".res").value = bar49_4;
+    // document.querySelector(".res").value = bar49_5;
+    // document.querySelector(".res").value = bar49_6;
+    // document.querySelector(".res").value = bar49_7;
+    // document.querySelector(".res").value = bar49_8;
+    // document.querySelector(".res").value = bar49_9;
+    // document.querySelector(".res").value = bar50_0;
+    // document.querySelector(".res").value = bar50_1;
+    // document.querySelector(".res").value = bar50_2;
+    // document.querySelector(".res").value = bar50_3;
+    // document.querySelector(".res").value = bar50_4;
+    // document.querySelector(".res").value = bar50_5;
+    // document.querySelector(".res").value = bar50_6;
+    // document.querySelector(".res").value = bar50_7;
+    // document.querySelector(".res").value = bar50_8;
+    // document.querySelector(".res").value = bar50_9;
+
 }
 document.querySelector("button").click();
 
