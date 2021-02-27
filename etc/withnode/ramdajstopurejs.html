@@ -609,8 +609,6 @@ bar32_1 = JSON.stringify( mergeAll([{foo:1},{bar:2},{baz:3}]) ); //=> {foo:1,bar
 bar32_2 = JSON.stringify( R.mergeAll([{foo:1},{foo:2},{bar:2}]) ); //=> {foo:2,bar:2}
 bar32_3 = JSON.stringify( mergeAll([{foo:1},{foo:2},{bar:2}]) ); //=> {foo:2,bar:2}
 
-
-
 // function _concat(set1, set2) {
 //     set1 = set1 || [];
 //     set2 = set2 || [];
@@ -743,6 +741,15 @@ bar39_7 = JSON.stringify( nth(2, 'abc') ); //=> 'c'
 bar39_8 = JSON.stringify( R.nth(3, 'abc') ); //=> ''
 bar39_9 = JSON.stringify( nth(3, 'abc') ); //=> ''
 
+function omit(names, obj) {
+    return Object.entries(obj).reduce((A, [K, V], IDX)=>{
+        if(!names.includes(K)){A[K] = obj[K]};
+        return A;
+    },A={});
+};
+
+bar40_0 = JSON.stringify( R.omit(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}) ); //=> {b: 2, c: 3}
+bar40_1 = JSON.stringify( omit(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}) ); //=> {b: 2, c: 3}
 
 
 function exe() {
@@ -1000,16 +1007,9 @@ function exe() {
     document.querySelector(".res").value = bar39_8;
     document.querySelector(".res").value = bar39_9;
 
-    // document.querySelector(".res").value = bar40_0;
-    // document.querySelector(".res").value = bar40_1;
-    // document.querySelector(".res").value = bar40_2;
-    // document.querySelector(".res").value = bar40_3;
-    // document.querySelector(".res").value = bar40_4;
-    // document.querySelector(".res").value = bar40_5;
-    // document.querySelector(".res").value = bar40_6;
-    // document.querySelector(".res").value = bar40_7;
-    // document.querySelector(".res").value = bar40_8;
-    // document.querySelector(".res").value = bar40_9;
+    document.querySelector(".res").value = bar40_0;
+    document.querySelector(".res").value = bar40_1;
+
     // document.querySelector(".res").value = bar41_0;
     // document.querySelector(".res").value = bar41_1;
     // document.querySelector(".res").value = bar41_2;
