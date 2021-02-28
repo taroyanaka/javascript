@@ -339,16 +339,6 @@ const bar14_4 = JSON.stringify( R.transpose([[10, 11], [20], [], [30, 31, 32]]) 
 //=> [[10, 20, 30], [11, 31], [32]]
 const bar14_5 = JSON.stringify( transpose([[10, 11], [20], [], [30, 31, 32]]) );
 
-function _concat() {
-    const collection = Object.keys(arguments).map(key => arguments[key]);
-    if( collection.reduce((A,V)=>{A=Array.isArray(V); return A;},A=false) ){
-        return [].concat( ...collection );
-    }
-    if( collection.reduce((A,V)=>{A = (typeof V === "string") ? true : false; return A;},A=false) ){
-        return collection.join("")
-    }
-};
-
 function zip() {
     const args = Object.keys(arguments).map(key => arguments[key]);
     const mostLongArg = Object.keys(arguments).map(key => arguments[key]).sort()[0];
