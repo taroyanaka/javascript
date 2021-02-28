@@ -352,7 +352,7 @@ function _concat() {
 function zip() {
     const args = Object.keys(arguments).map(key => arguments[key]);
     const mostLongArg = Object.keys(arguments).map(key => arguments[key]).sort()[0];
-    return mostLongArg.reduce((A, VAL, IDX)=>{
+    return mostLongArg.reduce((A, NOUSEVAL, IDX)=>{
         let tmp = [];
         tmp.push( ...args.map(arg=>arg[IDX]).filter(V=> V !== null) );
         A.push( tmp );
@@ -791,7 +791,7 @@ bar41_1 = JSON.stringify( concat([1,2],[3,4]) );
 bar41_2 = JSON.stringify( R.concat("foo","bar") );
 bar41_3 = JSON.stringify( concat("foo","bar") );
 
-// my concat func support more than 3 arguments three ar
+// my concat func support more than 3 arguments three
 bar41_4 = JSON.stringify( concat([1,2],[3,4],[5,6]) );
 bar41_5 = JSON.stringify( concat("foo","bar", "baz") );
 
