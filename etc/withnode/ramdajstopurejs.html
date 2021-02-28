@@ -785,10 +785,10 @@ bar41_3 = JSON.stringify( concat("foo","bar") );
 bar41_4 = JSON.stringify( concat([1,2],[3,4],[5,6]) );
 bar41_5 = JSON.stringify( concat("foo","bar", "baz") );
 
-function tail(params) { return params.slice(1) }
-function head(params) { return params.slice(0, 1) }
-function init(params) { return params.slice(0, params.length -1) }
-function last(params) { return params.slice(params.length -1, params.length) }
+function tail(params){return params.slice(1)};
+function head(params){return params.slice(0, 1)};
+function init(params){return params.slice(0, params.length -1)};
+function last(params){return params.slice(params.length -1, params.length)};
 
 
 function exe() {
