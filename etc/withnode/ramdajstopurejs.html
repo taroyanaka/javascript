@@ -339,9 +339,23 @@ const bar14_4 = JSON.stringify( R.transpose([[10, 11], [20], [], [30, 31, 32]]) 
 //=> [[10, 20, 30], [11, 31], [32]]
 const bar14_5 = JSON.stringify( transpose([[10, 11], [20], [], [30, 31, 32]]) );
 
-function zip(a, b) {
-    return (a.length < b.length ? a : b).reduce((A, V, IDX)=>{
-        A.push([a[IDX], b[IDX]]);
+function _concat() {
+    const collection = Object.keys(arguments).map(key => arguments[key]);
+    if( collection.reduce((A,V)=>{A=Array.isArray(V); return A;},A=false) ){
+        return [].concat( ...collection );
+    }
+    if( collection.reduce((A,V)=>{A = (typeof V === "string") ? true : false; return A;},A=false) ){
+        return collection.join("")
+    }
+};
+
+function zip() {
+    const args = Object.keys(arguments).map(key => arguments[key]);
+    const mostLongArg = Object.keys(arguments).map(key => arguments[key]).sort()[0];
+    return mostLongArg.reduce((A, VAL, IDX)=>{
+        let tmp = [];
+        tmp.push( ...args.map(arg=>arg[IDX]).filter(V=> V !== null) );
+        A.push( tmp );
         return A;
     },A=[]);
 };
@@ -367,6 +381,11 @@ const bar15_0_2 = JSON.stringify( R.zip([1, 2, 3, 10], ['a', 'b', 'c']) ); //=> 
 const bar15_0_3 = JSON.stringify( zip([1, 2, 3, 10], ['a', 'b', 'c']) ); //=> [[1, 'a'], [2, 'b'], [3, 'c']]
 const bar15_0_4 = JSON.stringify( R.zip([1, 2, 3], ['a', 'b', 'c', 'D']) ); //=> [[1, 'a'], [2, 'b'], [3, 'c']]
 const bar15_0_5 = JSON.stringify( zip([1, 2, 3], ['a', 'b', 'c', 'D']) ); //=> [[1, 'a'], [2, 'b'], [3, 'c']]
+
+// my zip func support more than three arguments
+const bar15_0_6 = JSON.stringify( zip([1, 2, 3, 4], ['a', 'b', 'c', 'D'], [100, "foo", 1000, "bar"]) ); //=> [[1,"a",100],[2,"b","foo"],[3,"c",1000],[4,"D","bar"]]
+const bar15_0_7 = JSON.stringify( zip([0, 1], ['a', 'b', 'c', 'D'], [100, "foo"]) ); //=> [[0,"a",100],[1,"b","foo"]]
+
 
 const bar15_1_0 = JSON.stringify( R.zipObj(['a', 'b', 'c'], [1, 2, 3]) ); //=> {a: 1, b: 2, c: 3}
 const bar15_1_1 = JSON.stringify( zipObj(['a', 'b', 'c'], [1, 2, 3]) ); //=> {a: 1, b: 2, c: 3}
@@ -772,31 +791,10 @@ bar41_1 = JSON.stringify( concat([1,2],[3,4]) );
 bar41_2 = JSON.stringify( R.concat("foo","bar") );
 bar41_3 = JSON.stringify( concat("foo","bar") );
 
-// my concat func support more than 3 arguments
+// my concat func support more than 3 arguments three ar
 bar41_4 = JSON.stringify( concat([1,2],[3,4],[5,6]) );
 bar41_5 = JSON.stringify( concat("foo","bar", "baz") );
 
-
-// function _concat(set1, set2) {
-//     set1 = set1 || [];
-//     set2 = set2 || [];
-//     var idx;
-//     var len1 = set1.length;
-//     var len2 = set2.length;
-//     var result = [];
-
-//     idx = 0;
-//     while (idx < len1) {
-//       result[result.length] = set1[idx];
-//       idx += 1;
-//     }
-//     idx = 0;
-//     while (idx < len2) {
-//       result[result.length] = set2[idx];
-//       idx += 1;
-//     }
-//     return result;
-// }
 
 function exe() {
     document.querySelector(".res").value = bar0_0;
@@ -881,6 +879,8 @@ function exe() {
     document.querySelector(".res").value = bar15_0_3;
     document.querySelector(".res").value = bar15_0_4;
     document.querySelector(".res").value = bar15_0_5;
+    document.querySelector(".res").value = bar15_0_6;
+    document.querySelector(".res").value = bar15_0_7;
 
     document.querySelector(".res").value = bar15_1_0;
     document.querySelector(".res").value = bar15_1_1;
@@ -1038,6 +1038,39 @@ function exe() {
     document.querySelector(".res").value = bar41_3;
     document.querySelector(".res").value = bar41_4;
     document.querySelector(".res").value = bar41_5;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // document.querySelector(".res").value = bar41_8;
