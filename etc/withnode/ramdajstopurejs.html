@@ -31,16 +31,43 @@
 <script class="code">
 let foo = [100, 200, 300];
 
-const bar = foo.slice(0, 1);
-const bar0_1 = foo.slice(0, -1);
-const bar0_2 = foo.slice(-1);
-const bar2 = R.take(1, foo);
-const bar3 = R.take(1, JSON.parse(JSON.stringify(foo)));
+function take(n, list) {
+    const idx = n < 0 ? list.length + n : n;
+    return list.slice(0, idx);
+}
+const bar0_0 = R.take(1, ['foo', 'bar', 'baz']); //=> ['foo']
+const bar0_1 = take(1, ['foo', 'bar', 'baz']); //=> ['foo']
+const bar0_2 = R.take(2, ['foo', 'bar', 'baz']); //=> ['foo', 'bar']
+const bar0_3 = take(2, ['foo', 'bar', 'baz']); //=> ['foo', 'bar']
+const bar0_4 = R.take(3, ['foo', 'bar', 'baz']); //=> ['foo', 'bar', 'baz']
+const bar0_5 = take(3, ['foo', 'bar', 'baz']); //=> ['foo', 'bar', 'baz']
+const bar0_6 = R.take(4, ['foo', 'bar', 'baz']); //=> ['foo', 'bar', 'baz']
+const bar0_7 = take(4, ['foo', 'bar', 'baz']); //=> ['foo', 'bar', 'baz']
+const bar0_8 = R.take(3, 'ramda');               //=> 'ram'
+const bar0_9 = take(3, 'ramda');               //=> 'ram'
 
-const bar3_1 = R.takeLast(1, foo);
-const bar3_2 = foo.slice(foo.length-1, foo.length);
-const bar3_3 = R.takeLast(2, foo);
-const bar3_4 = foo.slice(foo.length-2, foo.length);
+// const bar = foo.slice(0, 1);
+// const bar0_1 = foo.slice(0, -1);
+// const bar0_2 = foo.slice(-1);
+// const bar2 = R.take(1, foo);
+// const bar3 = R.take(1, JSON.parse(JSON.stringify(foo)));
+
+
+function takeLast(n, list) {
+    const idx = n < 0 ? list.length + n : n;
+    return list.slice(0, -idx);
+}
+
+const bar1_0 = R.takeLast(1, ['foo', 'bar', 'baz']); //=> ['baz']
+const bar1_1 = takeLast(1, ['foo', 'bar', 'baz']); //=> ['baz']
+const bar1_2 = R.takeLast(2, ['foo', 'bar', 'baz']); //=> ['bar', 'baz']
+const bar1_3 = takeLast(2, ['foo', 'bar', 'baz']); //=> ['bar', 'baz']
+const bar1_4 = R.takeLast(3, ['foo', 'bar', 'baz']); //=> ['foo', 'bar', 'baz']
+const bar1_5 = takeLast(3, ['foo', 'bar', 'baz']); //=> ['foo', 'bar', 'baz']
+const bar1_6 = R.takeLast(4, ['foo', 'bar', 'baz']); //=> ['foo', 'bar', 'baz']
+const bar1_7 = takeLast(4, ['foo', 'bar', 'baz']); //=> ['foo', 'bar', 'baz']
+const bar1_8 = R.takeLast(3, 'ramda');               //=> 'mda'
+const bar1_9 = takeLast(3, 'ramda');               //=> 'mda'
 
 function insert(idx, elm, list) {
     let res = list.slice(0);
@@ -597,7 +624,7 @@ const bar31 = JSON.stringify( R.intersperse('a', ['b', 'n', 'n', 's']) ); //=> [
 const bar31_1 = JSON.stringify( intersperse('a', ['b', 'n', 'n', 's']) ); //=> ['b', 'a', 'n', 'a', 'n', 'a', 's']
 
 
-// range(32, 51).map(V=>{return range(0, 10).map(VAL=>{return "bar" + V.toString() + "_" + VAL.toString() } ).join(",") } ).join(",")
+range(32, 51).map(V=>{return range(0, 10).map(VAL=>{return "bar" + V.toString() + "_" + VAL.toString() } ).join(",") } ).join(",");
 let bar32_0,bar32_1,bar32_2,bar32_3,bar32_4,bar32_5,bar32_6,bar32_7,bar32_8,bar32_9,bar33_0,bar33_1,bar33_2,bar33_3,bar33_4,bar33_5,bar33_6,bar33_7,bar33_8,bar33_9,bar34_0,bar34_1,bar34_2,bar34_3,bar34_4,bar34_5,bar34_6,bar34_7,bar34_8,bar34_9,bar35_0,bar35_1,bar35_2,bar35_3,bar35_4,bar35_5,bar35_6,bar35_7,bar35_8,bar35_9,bar36_0,bar36_1,bar36_2,bar36_3,bar36_4,bar36_5,bar36_6,bar36_7,bar36_8,bar36_9,bar37_0,bar37_1,bar37_2,bar37_3,bar37_4,bar37_5,bar37_6,bar37_7,bar37_8,bar37_9,bar38_0,bar38_1,bar38_2,bar38_3,bar38_4,bar38_5,bar38_6,bar38_7,bar38_8,bar38_9,bar39_0,bar39_1,bar39_2,bar39_3,bar39_4,bar39_5,bar39_6,bar39_7,bar39_8,bar39_9,bar40_0,bar40_1,bar40_2,bar40_3,bar40_4,bar40_5,bar40_6,bar40_7,bar40_8,bar40_9,bar41_0,bar41_1,bar41_2,bar41_3,bar41_4,bar41_5,bar41_6,bar41_7,bar41_8,bar41_9,bar42_0,bar42_1,bar42_2,bar42_3,bar42_4,bar42_5,bar42_6,bar42_7,bar42_8,bar42_9,bar43_0,bar43_1,bar43_2,bar43_3,bar43_4,bar43_5,bar43_6,bar43_7,bar43_8,bar43_9,bar44_0,bar44_1,bar44_2,bar44_3,bar44_4,bar44_5,bar44_6,bar44_7,bar44_8,bar44_9,bar45_0,bar45_1,bar45_2,bar45_3,bar45_4,bar45_5,bar45_6,bar45_7,bar45_8,bar45_9,bar46_0,bar46_1,bar46_2,bar46_3,bar46_4,bar46_5,bar46_6,bar46_7,bar46_8,bar46_9,bar47_0,bar47_1,bar47_2,bar47_3,bar47_4,bar47_5,bar47_6,bar47_7,bar47_8,bar47_9,bar48_0,bar48_1,bar48_2,bar48_3,bar48_4,bar48_5,bar48_6,bar48_7,bar48_8,bar48_9,bar49_0,bar49_1,bar49_2,bar49_3,bar49_4,bar49_5,bar49_6,bar49_7,bar49_8,bar49_9,bar50_0,bar50_1,bar50_2,bar50_3,bar50_4,bar50_5,bar50_6,bar50_7,bar50_8,bar50_9;
 
 function mergeAll(list) {
@@ -753,262 +780,246 @@ bar40_1 = JSON.stringify( omit(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}) ); //=> {b:
 
 
 function exe() {
+    document.querySelector(".res").value = bar0_0;
     document.querySelector(".res").value = bar0_1;
     document.querySelector(".res").value = bar0_2;
-    document.querySelector(".res").value = bar;
-    document.querySelector(".res").value = bar2;
-    document.querySelector(".res").value = bar3;
+    document.querySelector(".res").value = bar0_3;
+    document.querySelector(".res").value = bar0_4;
+    document.querySelector(".res").value = bar0_5;
+    document.querySelector(".res").value = bar0_6;
+    document.querySelector(".res").value = bar0_7;
+    document.querySelector(".res").value = bar0_8;
+    document.querySelector(".res").value = bar0_9;
 
-    document.querySelector(".res").value = bar3_1;
-    document.querySelector(".res").value = bar3_2;
-    document.querySelector(".res").value = bar3_3;
-    document.querySelector(".res").value = bar3_4;
+    document.querySelector(".res").value = bar1_0;
+    document.querySelector(".res").value = bar1_1;
+    document.querySelector(".res").value = bar1_2;
+    document.querySelector(".res").value = bar1_3;
+    document.querySelector(".res").value = bar1_4;
+    document.querySelector(".res").value = bar1_5;
+    document.querySelector(".res").value = bar1_6;
+    document.querySelector(".res").value = bar1_7;
+    document.querySelector(".res").value = bar1_8;
+    document.querySelector(".res").value = bar1_9;
 
-    document.querySelector(".res").value = bar4;
-    document.querySelector(".res").value = bar4_1;
-    document.querySelector(".res").value = bar4_2;
-    document.querySelector(".res").value = bar4_3;
-    document.querySelector(".res").value = bar4_4;
-    document.querySelector(".res").value = bar4_5;
 
-    document.querySelector(".res").value = bar5;
-    document.querySelector(".res").value = bar5_1;
+    // document.querySelector(".res").value = bar4;
+    // document.querySelector(".res").value = bar4_1;
+    // document.querySelector(".res").value = bar4_2;
+    // document.querySelector(".res").value = bar4_3;
+    // document.querySelector(".res").value = bar4_4;
+    // document.querySelector(".res").value = bar4_5;
 
-    document.querySelector(".res").value = bar6;
-    document.querySelector(".res").value = bar6_1;
-    document.querySelector(".res").value = bar6_2;
-    document.querySelector(".res").value = bar6_3;
-    // document.querySelector(".res").value = bar6_4;
-    // document.querySelector(".res").value = bar6_5;
+    // document.querySelector(".res").value = bar5;
+    // document.querySelector(".res").value = bar5_1;
 
-    document.querySelector(".res").value = bar7;
-    document.querySelector(".res").value = bar7_1;
-    document.querySelector(".res").value = bar7_2;
-    document.querySelector(".res").value = bar7_3;
+    // document.querySelector(".res").value = bar6;
+    // document.querySelector(".res").value = bar6_1;
+    // document.querySelector(".res").value = bar6_2;
+    // document.querySelector(".res").value = bar6_3;
 
-    document.querySelector(".res").value = bar8;
-    document.querySelector(".res").value = bar8_1;
-    // document.querySelector(".res").value = bar8_2;
-    // document.querySelector(".res").value = bar8_3;
+    // document.querySelector(".res").value = bar7;
+    // document.querySelector(".res").value = bar7_1;
+    // document.querySelector(".res").value = bar7_2;
+    // document.querySelector(".res").value = bar7_3;
 
-    document.querySelector(".res").value = bar9;
-    document.querySelector(".res").value = bar9_1;
+    // document.querySelector(".res").value = bar8;
+    // document.querySelector(".res").value = bar8_1;
 
-    document.querySelector(".res").value = bar10;
-    document.querySelector(".res").value = bar10_1;
-    document.querySelector(".res").value = bar10_2;
-    document.querySelector(".res").value = bar10_3;
+    // document.querySelector(".res").value = bar9;
+    // document.querySelector(".res").value = bar9_1;
 
-    document.querySelector(".res").value = bar11;
-    document.querySelector(".res").value = bar11_1;
-    document.querySelector(".res").value = bar11_2;
-    document.querySelector(".res").value = bar11_3;
+    // document.querySelector(".res").value = bar10;
+    // document.querySelector(".res").value = bar10_1;
+    // document.querySelector(".res").value = bar10_2;
+    // document.querySelector(".res").value = bar10_3;
 
-    document.querySelector(".res").value = bar12;
-    document.querySelector(".res").value = bar12_1;
-    document.querySelector(".res").value = bar12_2;
-    document.querySelector(".res").value = bar12_3;
+    // document.querySelector(".res").value = bar11;
+    // document.querySelector(".res").value = bar11_1;
+    // document.querySelector(".res").value = bar11_2;
+    // document.querySelector(".res").value = bar11_3;
 
-    document.querySelector(".res").value = bar13;
-    document.querySelector(".res").value = bar13_1;
-    document.querySelector(".res").value = bar13_2;
-    document.querySelector(".res").value = bar13_3;
+    // document.querySelector(".res").value = bar12;
+    // document.querySelector(".res").value = bar12_1;
+    // document.querySelector(".res").value = bar12_2;
+    // document.querySelector(".res").value = bar12_3;
 
-    document.querySelector(".res").value = bar14;
-    document.querySelector(".res").value = bar14_1;
-    document.querySelector(".res").value = bar14_2;
-    document.querySelector(".res").value = bar14_3;
-    document.querySelector(".res").value = bar14_4;
-    document.querySelector(".res").value = bar14_5;
+    // document.querySelector(".res").value = bar13;
+    // document.querySelector(".res").value = bar13_1;
+    // document.querySelector(".res").value = bar13_2;
+    // document.querySelector(".res").value = bar13_3;
 
-    document.querySelector(".res").value = bar15_0_0;
-    document.querySelector(".res").value = bar15_0_1;
-    document.querySelector(".res").value = bar15_0_2;
-    document.querySelector(".res").value = bar15_0_3;
-    document.querySelector(".res").value = bar15_0_4;
-    document.querySelector(".res").value = bar15_0_5;
+    // document.querySelector(".res").value = bar14;
+    // document.querySelector(".res").value = bar14_1;
+    // document.querySelector(".res").value = bar14_2;
+    // document.querySelector(".res").value = bar14_3;
+    // document.querySelector(".res").value = bar14_4;
+    // document.querySelector(".res").value = bar14_5;
 
-    document.querySelector(".res").value = bar15_1_0;
-    document.querySelector(".res").value = bar15_1_1;
-    document.querySelector(".res").value = bar15_1_2;
-    document.querySelector(".res").value = bar15_1_3;
-    document.querySelector(".res").value = bar15_1_4;
-    document.querySelector(".res").value = bar15_1_5;
+    // document.querySelector(".res").value = bar15_0_0;
+    // document.querySelector(".res").value = bar15_0_1;
+    // document.querySelector(".res").value = bar15_0_2;
+    // document.querySelector(".res").value = bar15_0_3;
+    // document.querySelector(".res").value = bar15_0_4;
+    // document.querySelector(".res").value = bar15_0_5;
 
-    document.querySelector(".res").value = bar15_2_0;
-    document.querySelector(".res").value = bar15_2_1;
-    document.querySelector(".res").value = bar15_2_2;
-    document.querySelector(".res").value = bar15_2_3;
-    document.querySelector(".res").value = bar15_2_4;
-    document.querySelector(".res").value = bar15_2_5;
+    // document.querySelector(".res").value = bar15_1_0;
+    // document.querySelector(".res").value = bar15_1_1;
+    // document.querySelector(".res").value = bar15_1_2;
+    // document.querySelector(".res").value = bar15_1_3;
+    // document.querySelector(".res").value = bar15_1_4;
+    // document.querySelector(".res").value = bar15_1_5;
 
-    document.querySelector(".res").value = bar16;
-    document.querySelector(".res").value = bar16_1;
-    document.querySelector(".res").value = bar16_2;
-    document.querySelector(".res").value = bar16_3;
+    // document.querySelector(".res").value = bar15_2_0;
+    // document.querySelector(".res").value = bar15_2_1;
+    // document.querySelector(".res").value = bar15_2_2;
+    // document.querySelector(".res").value = bar15_2_3;
+    // document.querySelector(".res").value = bar15_2_4;
+    // document.querySelector(".res").value = bar15_2_5;
 
-    document.querySelector(".res").value = JSON.stringify(bar17);
-    document.querySelector(".res").value = JSON.stringify(bar17_1);
-    document.querySelector(".res").value = JSON.stringify(bar17_2);
-    document.querySelector(".res").value = JSON.stringify(bar17_3);
+    // document.querySelector(".res").value = bar16;
+    // document.querySelector(".res").value = bar16_1;
+    // document.querySelector(".res").value = bar16_2;
+    // document.querySelector(".res").value = bar16_3;
 
-    document.querySelector(".res").value = bar18;
-    document.querySelector(".res").value = bar18_1;
-    document.querySelector(".res").value = bar18_2;
-    document.querySelector(".res").value = bar18_3;
+    // document.querySelector(".res").value = JSON.stringify(bar17);
+    // document.querySelector(".res").value = JSON.stringify(bar17_1);
+    // document.querySelector(".res").value = JSON.stringify(bar17_2);
+    // document.querySelector(".res").value = JSON.stringify(bar17_3);
 
-    document.querySelector(".res").value = bar19;
-    document.querySelector(".res").value = bar19_1;
-    document.querySelector(".res").value = bar19_2;
+    // document.querySelector(".res").value = bar18;
+    // document.querySelector(".res").value = bar18_1;
+    // document.querySelector(".res").value = bar18_2;
+    // document.querySelector(".res").value = bar18_3;
 
-    document.querySelector(".res").value = bar20;
-    document.querySelector(".res").value = bar20_1;
+    // document.querySelector(".res").value = bar19;
+    // document.querySelector(".res").value = bar19_1;
+    // document.querySelector(".res").value = bar19_2;
 
-    document.querySelector(".res").value = bar21;
-    document.querySelector(".res").value = bar21_1;
-    document.querySelector(".res").value = bar21_2;
-    document.querySelector(".res").value = bar21_3;
-    document.querySelector(".res").value = bar21_4;
-    document.querySelector(".res").value = bar21_5;
+    // document.querySelector(".res").value = bar20;
+    // document.querySelector(".res").value = bar20_1;
 
-    document.querySelector(".res").value = bar22;
-    document.querySelector(".res").value = bar22_1;
+    // document.querySelector(".res").value = bar21;
+    // document.querySelector(".res").value = bar21_1;
+    // document.querySelector(".res").value = bar21_2;
+    // document.querySelector(".res").value = bar21_3;
+    // document.querySelector(".res").value = bar21_4;
+    // document.querySelector(".res").value = bar21_5;
 
-    document.querySelector(".res").value = bar23;
-    document.querySelector(".res").value = bar23_1;
-    // document.querySelector(".res").value = bar23_2;
-    // document.querySelector(".res").value = bar23_3;
+    // document.querySelector(".res").value = bar22;
+    // document.querySelector(".res").value = bar22_1;
 
-    document.querySelector(".res").value = bar24;
-    document.querySelector(".res").value = bar24_1;
-    // document.querySelector(".res").value = bar24_2;
-    // document.querySelector(".res").value = bar24_3;
+    // document.querySelector(".res").value = bar23;
+    // document.querySelector(".res").value = bar23_1;
 
-    document.querySelector(".res").value = bar25;
-    document.querySelector(".res").value = bar25_1;
-    // document.querySelector(".res").value = bar25_2;
-    // document.querySelector(".res").value = bar25_3;
+    // document.querySelector(".res").value = bar24;
+    // document.querySelector(".res").value = bar24_1;
 
-    document.querySelector(".res").value = bar26;
-    document.querySelector(".res").value = bar26_1;
-    document.querySelector(".res").value = bar26_2;
-    document.querySelector(".res").value = bar26_3;
+    // document.querySelector(".res").value = bar25;
+    // document.querySelector(".res").value = bar25_1;
 
-    document.querySelector(".res").value = bar27;
-    document.querySelector(".res").value = bar27_1;
-    document.querySelector(".res").value = bar27_2;
-    document.querySelector(".res").value = bar27_3;
-    document.querySelector(".res").value = bar27_4;
-    document.querySelector(".res").value = bar27_5;
-    document.querySelector(".res").value = bar27_6;
-    document.querySelector(".res").value = bar27_7;
-    document.querySelector(".res").value = bar27_8;
-    document.querySelector(".res").value = bar27_9;
+    // document.querySelector(".res").value = bar26;
+    // document.querySelector(".res").value = bar26_1;
+    // document.querySelector(".res").value = bar26_2;
+    // document.querySelector(".res").value = bar26_3;
 
-    document.querySelector(".res").value = bar28;
-    document.querySelector(".res").value = bar28_1;
-    document.querySelector(".res").value = bar28_2;
-    document.querySelector(".res").value = bar28_3;
-    document.querySelector(".res").value = bar28_4;
-    document.querySelector(".res").value = bar28_5;
+    // document.querySelector(".res").value = bar27;
+    // document.querySelector(".res").value = bar27_1;
+    // document.querySelector(".res").value = bar27_2;
+    // document.querySelector(".res").value = bar27_3;
+    // document.querySelector(".res").value = bar27_4;
+    // document.querySelector(".res").value = bar27_5;
+    // document.querySelector(".res").value = bar27_6;
+    // document.querySelector(".res").value = bar27_7;
+    // document.querySelector(".res").value = bar27_8;
+    // document.querySelector(".res").value = bar27_9;
 
-    document.querySelector(".res").value = bar29;
-    document.querySelector(".res").value = bar29_1;
-    // document.querySelector(".res").value = bar29_2;
-    // document.querySelector(".res").value = bar29_3;
-    // document.querySelector(".res").value = bar29_4;
-    // document.querySelector(".res").value = bar29_5;
+    // document.querySelector(".res").value = bar28;
+    // document.querySelector(".res").value = bar28_1;
+    // document.querySelector(".res").value = bar28_2;
+    // document.querySelector(".res").value = bar28_3;
+    // document.querySelector(".res").value = bar28_4;
+    // document.querySelector(".res").value = bar28_5;
 
-    document.querySelector(".res").value = bar30;
-    document.querySelector(".res").value = bar30_1;
+    // document.querySelector(".res").value = bar29;
+    // document.querySelector(".res").value = bar29_1;
 
-    document.querySelector(".res").value = bar31;
-    document.querySelector(".res").value = bar31_1;
+    // document.querySelector(".res").value = bar30;
+    // document.querySelector(".res").value = bar30_1;
 
-    document.querySelector(".res").value = bar32_0;
-    document.querySelector(".res").value = bar32_1;
-    document.querySelector(".res").value = bar32_2;
-    document.querySelector(".res").value = bar32_3;
-    // document.querySelector(".res").value = bar32_4;
-    // document.querySelector(".res").value = bar32_5;
-    // document.querySelector(".res").value = bar32_6;
-    // document.querySelector(".res").value = bar32_7;
-    // document.querySelector(".res").value = bar32_8;
-    // document.querySelector(".res").value = bar32_9;
-    document.querySelector(".res").value = bar33_0;
-    document.querySelector(".res").value = bar33_1;
-    document.querySelector(".res").value = bar33_2;
-    document.querySelector(".res").value = bar33_3;
-    // document.querySelector(".res").value = bar33_4;
-    // document.querySelector(".res").value = bar33_5;
-    // document.querySelector(".res").value = bar33_6;
-    // document.querySelector(".res").value = bar33_7;
-    // document.querySelector(".res").value = bar33_8;
-    // document.querySelector(".res").value = bar33_9;
-    document.querySelector(".res").value = bar34_0;
-    document.querySelector(".res").value = bar34_1;
-    document.querySelector(".res").value = bar34_2;
-    document.querySelector(".res").value = bar34_3;
-    // document.querySelector(".res").value = bar34_4;
-    // document.querySelector(".res").value = bar34_5;
-    // document.querySelector(".res").value = bar34_6;
-    // document.querySelector(".res").value = bar34_7;
-    // document.querySelector(".res").value = bar34_8;
-    // document.querySelector(".res").value = bar34_9;
+    // document.querySelector(".res").value = bar31;
+    // document.querySelector(".res").value = bar31_1;
 
-    document.querySelector(".res").value = bar35_0;
-    document.querySelector(".res").value = bar35_1;
-    document.querySelector(".res").value = bar35_2;
-    document.querySelector(".res").value = bar35_3;
-    document.querySelector(".res").value = bar35_4;
-    document.querySelector(".res").value = bar35_5;
-    document.querySelector(".res").value = bar35_6;
-    document.querySelector(".res").value = bar35_7;
-    document.querySelector(".res").value = bar35_8;
-    document.querySelector(".res").value = bar35_9;
+    // document.querySelector(".res").value = bar32_0;
+    // document.querySelector(".res").value = bar32_1;
+    // document.querySelector(".res").value = bar32_2;
+    // document.querySelector(".res").value = bar32_3;
 
-    document.querySelector(".res").value = bar36_0;
-    document.querySelector(".res").value = bar36_1;
-    // document.querySelector(".res").value = bar36_2;
-    // document.querySelector(".res").value = bar36_3;
-    // document.querySelector(".res").value = bar36_4;
-    // document.querySelector(".res").value = bar36_5;
-    // document.querySelector(".res").value = bar36_6;
-    // document.querySelector(".res").value = bar36_7;
-    // document.querySelector(".res").value = bar36_8;
-    // document.querySelector(".res").value = bar36_9;
+    // document.querySelector(".res").value = bar33_0;
+    // document.querySelector(".res").value = bar33_1;
+    // document.querySelector(".res").value = bar33_2;
+    // document.querySelector(".res").value = bar33_3;
 
-    document.querySelector(".res").value = bar37_0;
-    document.querySelector(".res").value = bar37_1;
-    document.querySelector(".res").value = bar37_2;
-    document.querySelector(".res").value = bar37_3;
-    document.querySelector(".res").value = bar37_4;
-    document.querySelector(".res").value = bar37_5;
-    document.querySelector(".res").value = bar37_6;
-    document.querySelector(".res").value = bar37_7;
+    // document.querySelector(".res").value = bar34_0;
+    // document.querySelector(".res").value = bar34_1;
+    // document.querySelector(".res").value = bar34_2;
+    // document.querySelector(".res").value = bar34_3;
 
-    document.querySelector(".res").value = bar38_0;
-    document.querySelector(".res").value = bar38_1;
-    document.querySelector(".res").value = bar38_2;
-    document.querySelector(".res").value = bar38_3;
-    document.querySelector(".res").value = bar38_4;
-    document.querySelector(".res").value = bar38_5;
-    document.querySelector(".res").value = bar38_6;
-    document.querySelector(".res").value = bar38_7;
+    // document.querySelector(".res").value = bar35_0;
+    // document.querySelector(".res").value = bar35_1;
+    // document.querySelector(".res").value = bar35_2;
+    // document.querySelector(".res").value = bar35_3;
+    // document.querySelector(".res").value = bar35_4;
+    // document.querySelector(".res").value = bar35_5;
+    // document.querySelector(".res").value = bar35_6;
+    // document.querySelector(".res").value = bar35_7;
+    // document.querySelector(".res").value = bar35_8;
+    // document.querySelector(".res").value = bar35_9;
 
-    document.querySelector(".res").value = bar39_0;
-    document.querySelector(".res").value = bar39_1;
-    document.querySelector(".res").value = bar39_2;
-    document.querySelector(".res").value = bar39_3;
-    document.querySelector(".res").value = bar39_4;
-    document.querySelector(".res").value = bar39_5;
-    document.querySelector(".res").value = bar39_6;
-    document.querySelector(".res").value = bar39_7;
-    document.querySelector(".res").value = bar39_8;
-    document.querySelector(".res").value = bar39_9;
+    // document.querySelector(".res").value = bar36_0;
+    // document.querySelector(".res").value = bar36_1;
 
-    document.querySelector(".res").value = bar40_0;
-    document.querySelector(".res").value = bar40_1;
+    // document.querySelector(".res").value = bar37_0;
+    // document.querySelector(".res").value = bar37_1;
+    // document.querySelector(".res").value = bar37_2;
+    // document.querySelector(".res").value = bar37_3;
+    // document.querySelector(".res").value = bar37_4;
+    // document.querySelector(".res").value = bar37_5;
+    // document.querySelector(".res").value = bar37_6;
+    // document.querySelector(".res").value = bar37_7;
+
+    // document.querySelector(".res").value = bar38_0;
+    // document.querySelector(".res").value = bar38_1;
+    // document.querySelector(".res").value = bar38_2;
+    // document.querySelector(".res").value = bar38_3;
+    // document.querySelector(".res").value = bar38_4;
+    // document.querySelector(".res").value = bar38_5;
+    // document.querySelector(".res").value = bar38_6;
+    // document.querySelector(".res").value = bar38_7;
+
+    // document.querySelector(".res").value = bar39_0;
+    // document.querySelector(".res").value = bar39_1;
+    // document.querySelector(".res").value = bar39_2;
+    // document.querySelector(".res").value = bar39_3;
+    // document.querySelector(".res").value = bar39_4;
+    // document.querySelector(".res").value = bar39_5;
+    // document.querySelector(".res").value = bar39_6;
+    // document.querySelector(".res").value = bar39_7;
+    // document.querySelector(".res").value = bar39_8;
+    // document.querySelector(".res").value = bar39_9;
+
+    // document.querySelector(".res").value = bar40_0;
+    // document.querySelector(".res").value = bar40_1;
+
+
+
+
+
+
+
+
+
+
 
     // document.querySelector(".res").value = bar41_0;
     // document.querySelector(".res").value = bar41_1;
