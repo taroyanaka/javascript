@@ -164,7 +164,13 @@ JSON.stringify(
 //         return pred(a, b) ? -1 : pred(b, a) ? 1 : 0;
 //     };
 // };
-const comparator = pred =>(a, b)=>{pred(a, b) ? -1 : pred(b, a) ? 1 : 0};
+// const comparator = pred =>(a, b)=>{pred(a, b) ? -1 : pred(b, a) ? 1 : 0};
+function comparator(pred) {
+    return function(a, b){
+        return pred(a, b) ? -1 : pred(b, a) ? 1 : 0
+    };
+}
+
 const byAge = comparator((a, b) => a.age < b.age);
 
 const bar8_1 = JSON.stringify(
