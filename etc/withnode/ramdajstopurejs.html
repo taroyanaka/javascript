@@ -841,7 +841,24 @@ function flatten(list) {
 }
 
 bar43_0 = JSON.stringify( R.flatten([1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]) ); //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-bar43_1 = JSON.stringify( flatten([1, 2, [3, 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]) ); //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+bar43_1 = JSON.stringify( flatten([1, 2, [3, [], 4], 5, [6, [7, 8, [9, [10, 11], 12]]]]) ); //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+
+function chain(fn, list) {
+    return list.map(V=>fn(V)).reduce((A,V,IDX)=>{
+        if ( Array.isArray(V) ) {
+            flatten(V).forEach((VAL,IDX)=>{
+                A.push(VAL);
+            })
+        } else {
+            A.push(V);
+        }
+        return A;
+    },A=[])
+    // return _makeFlat(false)(map(fn, monad));
+};
+const duplicate = n => [n, n];
+bar44_0 = R.chain(duplicate, [1, 2, 3]); //=> [1, 1, 2, 2, 3, 3]
+bar44_1 = chain(duplicate, [1, 2, 3]); //=> [1, 1, 2, 2, 3, 3]
 
 function exe() {
     document.querySelector(".res").value = bar0_0;
@@ -1088,35 +1105,12 @@ function exe() {
     document.querySelector(".res").value = bar43_0;
     document.querySelector(".res").value = bar43_1;
 
+    document.querySelector(".res").value = bar44_0;
+    document.querySelector(".res").value = bar44_1;
 
 
 
 
-
-
-
-
-
-
-
-    // document.querySelector(".res").value = bar43_2;
-    // document.querySelector(".res").value = bar43_3;
-    // document.querySelector(".res").value = bar43_4;
-    // document.querySelector(".res").value = bar43_5;
-    // document.querySelector(".res").value = bar43_6;
-    // document.querySelector(".res").value = bar43_7;
-    // document.querySelector(".res").value = bar43_8;
-    // document.querySelector(".res").value = bar43_9;
-    // document.querySelector(".res").value = bar44_0;
-    // document.querySelector(".res").value = bar44_1;
-    // document.querySelector(".res").value = bar44_2;
-    // document.querySelector(".res").value = bar44_3;
-    // document.querySelector(".res").value = bar44_4;
-    // document.querySelector(".res").value = bar44_5;
-    // document.querySelector(".res").value = bar44_6;
-    // document.querySelector(".res").value = bar44_7;
-    // document.querySelector(".res").value = bar44_8;
-    // document.querySelector(".res").value = bar44_9;
     // document.querySelector(".res").value = bar45_0;
     // document.querySelector(".res").value = bar45_1;
     // document.querySelector(".res").value = bar45_2;
