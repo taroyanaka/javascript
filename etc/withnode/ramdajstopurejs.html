@@ -249,16 +249,16 @@ const fooObject = [
 const bar9 = pluck(1, fooArray);
 const bar9_1 = pluck("bar", fooObject);
 
-
-function find(fn, list) {
-    return list.filter(V=>{return fn(V)}).reduce((A, V)=>{
-        A.push(V);
-        return A;
-    },A=[])[0]
-};
+// use built-in find function
+// function find(fn, list) {
+//     return list.filter(V=>{return fn(V)}).reduce((A, V)=>{
+//         A.push(V);
+//         return A;
+//     },A=[])[0]
+// };
 
 function findLast(fn, list) {
-    return list.reverse().filter(V=>{return fn(V)}).reduce((A, V)=>{
+    return list.filter(V=>{return fn(V)}).reduceRight((A, V)=>{
         A.push(V);
         return A;
     },A=[])[0]
@@ -289,10 +289,14 @@ EQ("a", 2)(xs[2]);
 
 const bar10 = JSON.stringify( R.find(R.propEq('a', 2), xs) );
 // => {"a":2}
-const bar10_1 = JSON.stringify( find(EQ('a', 2), xs) );
+// const bar10_1 = JSON.stringify( find(EQ('a', 2), xs) );
+const bar10_1 = JSON.stringify( xs.find(EQ('a', 2)) );
+// 
 const bar10_2 = JSON.stringify( R.find(R.propEq('bar', "bar1"), fooObject) );
 // => {"foo":"foo1","bar":"bar1","baz":"baz1"}
-const bar10_3 = JSON.stringify( find(EQ('bar', "bar1"), fooObject) );
+
+// const bar10_3 = JSON.stringify( find(EQ('bar', "bar1"), fooObject) );
+const bar10_3 = JSON.stringify( fooObject.find(EQ('bar', "bar1")) );
 
 
 
@@ -767,12 +771,12 @@ bar40_1 = JSON.stringify( omit(['a', 'd'], {a: 1, b: 2, c: 3, d: 4}) ); //=> {b:
 
 
 function concat() {
-    const collection = Object.keys(arguments).map(key => arguments[key]);
-    if( collection.reduce((A,V)=>{A=Array.isArray(V); return A;},A=false) ){
-        return [].concat( ...collection );
+    const args = Object.keys(arguments).map(key => arguments[key]);
+    if(args.every(V=>Array.isArray(V))){
+        return [].concat( ...args );
     }
-    if( collection.reduce((A,V)=>{A = (typeof V === "string") ? true : false; return A;},A=false) ){
-        return collection.join("")
+    if(args.every(V=>typeof V === "string")){
+        return args.join("")
     }
 };
 
