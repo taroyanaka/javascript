@@ -811,11 +811,11 @@ const recursiveMap = function myself(fn, list){
     }
 }
 const recursiveMapTestArray =
-        [1,
+    [1,
         [{foo:100},3],
         [4,[5,6]],
         [7, {bar:[8, {baz:9}]}],
-        ];
+    ];
 
 const plus1 = (n) => n + 1;
 const recursiveMapTestArrayResult =
@@ -854,11 +854,37 @@ function chain(fn, list) {
         }
         return A;
     },A=[])
-    // return _makeFlat(false)(map(fn, monad));
 };
 const duplicate = n => [n, n];
 bar44_0 = R.chain(duplicate, [1, 2, 3]); //=> [1, 1, 2, 2, 3, 3]
 bar44_1 = chain(duplicate, [1, 2, 3]); //=> [1, 1, 2, 2, 3, 3]
+
+
+
+
+
+// !!!!!!!!
+// https://stackoverflow.com/a/122704/9740478
+// JSON.parse(JSON.stringify(value)); is =>
+// => date: new Date(),  // stringified
+// => undef: undefined,  // lost
+// => inf: Infinity,  // forced to 'null'
+// => re: /.*/,  // lost
+// !!!!!!!!
+function clone(value) {
+    return JSON.parse(JSON.stringify(value));
+};
+
+function multiClone(n, value) {
+    return [...Array(n)].reduce((A,V,IDX)=>{
+        A.push( JSON.parse(JSON.stringify( value )) );
+        return A;
+    },A=[]);
+}
+const [multiCloneRes0, multiCloneRes1, multiCloneRes2] = multiClone(3, recursiveMapTestArray)
+// console.table( multiCloneRes0 );
+// console.table( multiCloneRes1 );
+// console.table( multiCloneRes2 );
 
 function exe() {
     document.querySelector(".res").value = bar0_0;
