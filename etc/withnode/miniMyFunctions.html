@@ -605,6 +605,9 @@ function clone(value){
     return JSON.parse(JSON.stringify(value));
 };`
 const splitRes = text.split(/^(\};)$/gm).filter(V=> V!=="};").map(V=>V+`};`);
+
+// add to copyq
+
 // [
 //   "function take(n, list) {\n    return list.slice(0, n);\n};",
 //   "\nfunction takeLast(n, list) {\n    return list.slice(list.length, list.length - n);\n};",
