@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+</body>
+<script>
+
+let foo = [100, 200, 300];
+const justReturn = (x) => x;
+
+function take(n, list) {
+    return list.slice(0, n);
+}
+
+function takeLast(n, list) {
+    return list.slice(list.length, list.length - n);
+}
+function insert(idx, elm, list) {
+    let res = list.slice(0);
+    res.splice(idx, 0, elm);
+    return res;
+}
+
+function insertAll(idx, elms, list) {
+    return [].concat( list.slice(0, idx), elms, list.slice(idx) );
+}
+
+function innerJoin(pred, xs, ys) {
+    return xs.filter(X=>{
+        let flag;
+        ys.forEach(Y=>{if(pred(X, Y)){flag = true}});
+        return flag ? true : false;
+    });
+};
+function drop(n, list) {return list.slice(n, Infinity)}
+function dropLast(n, list) {return list.slice(0, list.length - n)}
+
+function pipe() {
+    const tailArrayArguments = Object.keys(arguments).map((key) => arguments[key] ).slice(1);
+    function _pipe(A, V){ return function() { return V.call(this, A.apply(this, arguments)) }}
+    return tailArrayArguments.reduce(_pipe, arguments[0])
+}
+const comparator = pred =>(a, b)=>{pred(a, b) ? -1 : pred(b, a) ? 1 : 0};
+const byAge = comparator((a, b) => a.age < b.age);
+
+
+
+function pluck(p, list) {
+    return list.map(V=>{return V[p]});
+};
+
+function findLast(fn, list) {
+    return list.filter(V=>{return fn(V)}).reduceRight((A, V)=>{
+        A.push(V);
+        return A;
+    },A=[])[0]
+}
+
+function findIndex(fn, list) {
+    return list.reduce((A, V, IDX)=>{
+        if(fn(V)){A.push(IDX)};
+        return A;
+    },A=[])[0]
+};
+
+function findLastIndex(fn, list) {
+    return list.reduce((A, V, IDX)=>{
+        if(fn(V)){A.unshift(IDX)};
+        return A;
+    },A=[])[0]
+};
+
+const EQ = (a,b) => (list) =>{ return list[a] === b }
+
+function transpose(outerlist) {
+    return outerlist.reduce((RES, innerList)=>{
+        innerList.forEach((VAL, IDX)=>{
+            if(typeof RES[IDX] === 'undefined'){RES[IDX] = []};
+            RES[IDX].push(VAL);
+        });
+        return RES;
+    }, RES=[])
+};
+
+function zip() {
+    const args = Object.keys(arguments).map(key => arguments[key]);
+    const mostLongArg = Object.keys(arguments).map(key => arguments[key]).sort()[0];
+    return mostLongArg.reduce((A, NOUSEVAL, IDX)=>{
+        let tmp = [];
+        tmp.push( ...args.map(arg=>arg[IDX]).filter(V=> V !== null) );
+        A.push( tmp );
+        return A;
+    },A=[]);
+};
+
+function zipObj(keys, values) {
+    return (keys.length < values.length ? keys : values).reduce((A, V, IDX)=>{
+        A[keys[IDX]] = values[IDX];
+        return A;
+    },A={});
+};
+
+function zipWith(fn, a, b) {
+    return (a.length < b.length ? a : b).reduce((A, V, IDX)=>{
+        A.push( fn(a[IDX], b[IDX]) );
+        return A;
+    },A=[]);
+};
+
+function pick(names, obj) {
+    return names.reduce((A, V, IDX)=>{
+        if(V in obj){ A[V] = obj[V] };
+        return A;
+    },A={});
+};
+
+function pickAll(names, obj) {
+    return names.reduce((A, V, IDX)=>{
+        A[V] = obj[V];
+        return A;
+    },A={});
+};
+
+function range(from, to) {
+    return [...Array(to - from)].reduce((A,V,IDX)=>{
+        A.push(from + IDX);
+        return A;
+    },A=[]);
+};
+
+function toPairs(obj) {
+    return Object.entries(obj).reduce((A, [K, V], IDX)=>{
+        if(obj.hasOwnProperty(K)){ A[IDX] = [K, obj[K]] };
+        return A;
+    },A=[]);
+};
+
+function uniq(list) {
+    list = list.map(V=>{return JSON.stringify(V) });
+    return [...new Set(list)].map(V=>{return JSON.parse(V) });;
+};
+
+function uniqBy(fn, list) {
+    let _list = [];
+    let prevLen = 0;
+    return list.reduce((A,V,IDX)=>{
+        _list.push( JSON.stringify(fn(V)) );
+        _list = [...new Set( _list )];
+        if(prevLen !== _list.length){ A.push(V) };
+        prevLen = _list.length
+        return A;
+    },A=[])
+};
+
+function without(xs, list){
+    return list.filter(V=>{return !xs.includes(V)})
+};
+
+function remove(start, count, list) {
+    list.splice(start, count);
+    return list;
+};
+
+function times(fn, n) {
+    return [...Array(n)].reduce((A,V,IDX)=>{
+        A.push( fn((IDX++)) );
+        return A;
+    },A=[]);
+}
+
+function repeat(VAL, n) {
+    return [...Array(n)].reduce((A,V,IDX)=>{
+        A.push( VAL );
+        return A;
+    },A=[]);
+}
+
+const defaultTo = (d) => (v) => {
+        return v == null || v !== v ? d : v;
+};
+
+function groupWith(fn, list) {
+    let idx = 0;
+    return list.reduce((A,V)=>{
+        while (idx < list.length) {
+            let nextidx = idx + 1;
+                while (nextidx < list.length && fn(list[nextidx - 1], list[nextidx])) {
+                    nextidx += 1;
+                }
+            A.push(list.slice(idx, nextidx));
+            idx = nextidx;
+        }
+        return A;
+    },A=[]);
+}
+
+function fromPairs(pairs) {
+    return pairs.reduce((A,V,IDX)=>{
+        A[V[0]] = V[1];
+        return A;
+    },A={});
+};
+
+function intersection(list1, list2) {
+    return list1.filter(V=>{return list2.includes(V)});
+}
+
+function intersperse(separator, list) {
+    return list.reduce((A,V,IDX)=>{
+        A.push(...( IDX === list.length - 1 ? [V] : [V, separator] ))
+        return A;
+    },A=[]);
+};
+
+function mergeAll(list) {
+    return Object.assign.apply({}, [].concat(list));
+};
+
+function adjust(idx, fn, list) {
+    const _idx = (idx < 0 ? list.length : 0) + idx;
+    return list.map((V,IDX)=>{ return (_idx === IDX ? fn(V): V) })
+};
+
+function update(idx, x, list) {
+    const _idx = (idx < 0 ? list.length : 0) + idx;
+    return list.map((V,IDX)=>{return _idx === IDX ? x: V})
+};
+
+const where = (spec)=>(testObj)=>{
+    return Object.entries(spec).reduce((A, [K, V], IDX)=>{
+        if( spec.hasOwnProperty(K) && !V(testObj[K]) ){ A = false };
+        return A;
+    },A=true);
+};
+
+function xprod(a, b){
+    return a.reduce((A,aV,aIDX)=>{
+        const RESULT = b.reduce((B,bV)=>{
+            B.push([a[aIDX], bV]);
+            return B;
+        }, B=[]);
+        A.push(...RESULT);
+        return A;
+    }, A=[])
+}
+
+function startsWith(prefix, list){
+    return JSON.stringify(list.slice(0, prefix.length)) === JSON.stringify(prefix);
+};
+
+function endsWith(suffix, list) {
+    return JSON.stringify(list.slice(list.length - 1, list.length)) === JSON.stringify(suffix);
+};
+
+function nth(offset, list) {
+    const idx = offset < 0 ? list.length + offset : offset;
+    return typeof list === "string" ? list.charAt(idx) : list[idx];
+};
+
+function omit(names, obj) {
+    return Object.entries(obj).reduce((A, [K, V], IDX)=>{
+        if(!names.includes(K)){A[K] = obj[K]};
+        return A;
+    },A={});
+};
+
+function tail(params){return params.slice(1)};
+function head(params){return params.slice(0, 1)};
+function init(params){return params.slice(0, params.length -1)};
+function last(params){return params.slice(params.length -1, params.length)};
+
+function flatten(list) {
+    return list.reduce((A,V,IDX)=>{
+        if ( Array.isArray(V) ) {
+            flatten(V).forEach((VAL,IDX)=>{
+                A.push(VAL);
+            })
+        } else {
+            A.push(V);
+        }
+        return A;
+    },A=[])
+}
+
+function chain(fn, list) {
+    return list.map(V=>fn(V)).reduce((A,V,IDX)=>{
+        if ( Array.isArray(V) ) {
+            flatten(V).forEach((VAL,IDX)=>{
+                A.push(VAL);
+            })
+        } else {
+            A.push(V);
+        }
+        return A;
+    },A=[])
+};
+
+function clone(value){
+    return JSON.parse(JSON.stringify(value));
+};
+
+
+
+
+
+
+
+////////////////////// my functions //////////////////////
+function step(n, times) {
+    return [...Array(times)].reduce((A,V,IDX)=>{
+        A.push( n * (IDX+1) );
+        return A;
+    },A=[]);
+};
+
+function stepWith(fn, n, times) {
+    return [...Array(times)].reduce((A,V,IDX)=>{
+        A.push( fn(n, (IDX+1)) );
+        return A;
+    },A=[]);
+};
+
+const recursiveMap = function myself(fn, list){
+    const isNotNullArray =(list)=> Array.isArray(list) && list.length !== 0;
+    const isNotNullObject =(list)=> typeof list === 'object' && list !== null;
+    if(isNotNullArray(list)){
+        return list.map(VAL=> (isNotNullArray(VAL) || isNotNullObject(VAL)) ? myself(fn, VAL) : fn(VAL) );
+    }
+    if(isNotNullObject(list)){
+        return Object.entries(list).reduce((A, [KEY, VAL])=>{
+            if(list.hasOwnProperty(KEY)){
+                A[KEY] = (isNotNullArray(VAL) || isNotNullObject(VAL)) ? myself(fn, VAL) : fn(VAL) ;
+            };
+            return A;
+        },A={});
+    }
+}
+
+function multiClone(n, value) {
+    return [...Array(n)].reduce((A,V,IDX)=>{
+        A.push( JSON.parse(JSON.stringify( value )) );
+        return A;
+    },A=[]);
+}
+
+const $$_ = (selector)=>{ return document.querySelectorAll.bind(document)(selector) }
+// => NodeList
+const $$ = (selector)=>{ return Array.from(document.querySelectorAll.bind(document)(selector)) }
+// => List
+const $ = {
+  __: {},
+  _: function(LIST) {
+    this.__ = LIST;
+    return this;
+  },
+  $$: function(selector){ this.__ = $$(selector); return this;},
+  $$_: function(selector){ this.__ = $$_(selector); return this;},
+  without: function(xs){this.__ = without(xs, $.__); return this;},
+  without1: function(xs) {
+    this.__ = this.__.filter(V=>{return !xs.includes(V)})
+    return this;
+  },
+  uniq: function(){this.__ = uniq($.__); return this;},
+}
+
+let output;
+// output = $._([1, 2, 1, 3, 4]).without([1, 2]).__;
+// output = $._([1, 2, 1, 3, 4]).without1([1, 2]).__;
+// output = $.$$("button").__.map(V=>{return V.innerText})[0];
+// output = $.$$("h1").__.map(V=>{return V.innerText})[0];
+output = $._([1, 2, 1, 3, 4]).uniq().__;
+// console.log(output);
+
+</script>
+</html>

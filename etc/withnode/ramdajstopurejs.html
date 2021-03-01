@@ -865,13 +865,13 @@ bar44_1 = chain(duplicate, [1, 2, 3]); //=> [1, 1, 2, 2, 3, 3]
 
 // !!!!!!!!
 // https://stackoverflow.com/a/122704/9740478
-// JSON.parse(JSON.stringify(value)); is =>
+// JSON.parse(JSON.stringify(value)) is =>
 // => date: new Date(),  // stringified
 // => undef: undefined,  // lost
 // => inf: Infinity,  // forced to 'null'
-// => re: /.*/,  // lost
+// => regexp: /.*/,  // lost
 // !!!!!!!!
-function clone(value) {
+function clone(value){
     return JSON.parse(JSON.stringify(value));
 };
 
