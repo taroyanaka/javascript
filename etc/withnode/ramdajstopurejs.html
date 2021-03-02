@@ -865,6 +865,19 @@ const duplicate = n => [n, n];
 bar44_0 = R.chain(duplicate, [1, 2, 3]); //=> [1, 1, 2, 2, 3, 3]
 bar44_1 = chain(duplicate, [1, 2, 3]); //=> [1, 1, 2, 2, 3, 3]
 
+function aperture(n, list) {
+    return [...Array(list.length - (n - 1))].reduce((A,V,IDX)=>{
+            A.push( list.slice(IDX, IDX + n) );
+        return A;},A=[])
+};
+
+bar45_0 = R.aperture(2, [1, 2, 3, 4, 5]); //=> [[1, 2], [2, 3], [3, 4], [4, 5]]
+bar45_1 = aperture(2, [1, 2, 3, 4, 5]); //=> [[1, 2], [2, 3], [3, 4], [4, 5]]
+bar45_2 = R.aperture(3, [1, 2, 3, 4, 5]); //=> [[1, 2, 3], [2, 3, 4], [3, 4, 5]]
+bar45_3 = aperture(3, [1, 2, 3, 4, 5]); //=> [[1, 2, 3], [2, 3, 4], [3, 4, 5]]
+// bar45_4 = R.aperture(7, [1, 2, 3, 4, 5]); //=> []
+// bar45_5 = aperture(7, [1, 2, 3, 4, 5]); //=> Uncaught RangeError: Invalid array length
+
 
 
 
@@ -1140,17 +1153,22 @@ function exe() {
     document.querySelector(".res").value = bar44_0;
     document.querySelector(".res").value = bar44_1;
 
-
-
-
-    // document.querySelector(".res").value = bar45_0;
-    // document.querySelector(".res").value = bar45_1;
-    // document.querySelector(".res").value = bar45_2;
-    // document.querySelector(".res").value = bar45_3;
+    document.querySelector(".res").value = bar45_0;
+    document.querySelector(".res").value = bar45_1;
+    document.querySelector(".res").value = bar45_2;
+    document.querySelector(".res").value = bar45_3;
     // document.querySelector(".res").value = bar45_4;
     // document.querySelector(".res").value = bar45_5;
-    // document.querySelector(".res").value = bar45_6;
-    // document.querySelector(".res").value = bar45_7;
+    
+
+
+
+
+
+
+
+
+
     // document.querySelector(".res").value = bar45_8;
     // document.querySelector(".res").value = bar45_9;
     // document.querySelector(".res").value = bar46_0;
