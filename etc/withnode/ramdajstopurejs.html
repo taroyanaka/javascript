@@ -799,39 +799,6 @@ function head(params){return params.slice(0, 1)};
 function init(params){return params.slice(0, params.length -1)};
 function last(params){return params.slice(params.length -1, params.length)};
 
-// https://stackoverflow.com/a/7065175/9740478
-// https://stackoverflow.com/a/8511350/9740478
-const recursiveMap = function myself(fn, list){
-    const isNotNullArray =(list)=> Array.isArray(list) && list.length !== 0;
-    const isNotNullObject =(list)=> typeof list === 'object' && list !== null;
-    if(isNotNullArray(list)){
-        return list.map(VAL=> (isNotNullArray(VAL) || isNotNullObject(VAL)) ? myself(fn, VAL) : fn(VAL) );
-    }
-    if(isNotNullObject(list)){
-        return Object.entries(list).reduce((A, [KEY, VAL])=>{
-            if(list.hasOwnProperty(KEY)){
-                A[KEY] = (isNotNullArray(VAL) || isNotNullObject(VAL)) ? myself(fn, VAL) : fn(VAL) ;
-            };
-            return A;
-        },A={});
-    }
-}
-const recursiveMapTestArray =
-    [1,
-        [{foo:100},3],
-        [4,[5,6]],
-        [7, {bar:[8, {baz:9}]}],
-    ];
-
-const plus1 = (n) => n + 1;
-const recursiveMapTestArrayResult =
-    recursiveMap(
-        plus1, 
-        recursiveMapTestArray
-    )
-
-bar42_0 = JSON.stringify( recursiveMapTestArray ); // => [1,[{"foo":100},3],[4,[5,6]],[7,{"bar":[8,{"baz":9}]}]]
-bar42_1 = JSON.stringify( recursiveMapTestArrayResult ); // => [2,[{"foo":101},4],[5,[6,7]],[8,{"bar":[9,{"baz":10}]}]]
 
 function flatten(list) {
     return list.reduce((A,V,IDX)=>{
@@ -878,6 +845,82 @@ bar45_3 = aperture(3, [1, 2, 3, 4, 5]); //=> [[1, 2, 3], [2, 3, 4], [3, 4, 5]]
 // bar45_4 = R.aperture(7, [1, 2, 3, 4, 5]); //=> []
 // bar45_5 = aperture(7, [1, 2, 3, 4, 5]); //=> Uncaught RangeError: Invalid array length
 
+
+
+// => undef: undefined,  // lost
+// => inf: Infinity,  // forced to 'null'
+// => regexp: /.*/,  // lost
+// !!!!!!!!
+function clone(value){
+    return JSON.parse(JSON.stringify(value));
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// https://stackoverflow.com/a/7065175/9740478
+// https://stackoverflow.com/a/8511350/9740478
+const recursiveMap = function myself(fn, list){
+    const isNotNullArray =(list)=> Array.isArray(list) && list.length !== 0;
+    const isNotNullObject =(list)=> typeof list === 'object' && list !== null;
+    if(isNotNullArray(list)){
+        return list.map(VAL=> (isNotNullArray(VAL) || isNotNullObject(VAL)) ? myself(fn, VAL) : fn(VAL) );
+    }
+    if(isNotNullObject(list)){
+        return Object.entries(list).reduce((A, [KEY, VAL])=>{
+            if(list.hasOwnProperty(KEY)){
+                A[KEY] = (isNotNullArray(VAL) || isNotNullObject(VAL)) ? myself(fn, VAL) : fn(VAL) ;
+            };
+            return A;
+        },A={});
+    }
+}
+const recursiveMapTestArray =
+    [1,
+        [{foo:100},3],
+        [4,[5,6]],
+        [7, {bar:[8, {baz:9}]}],
+    ];
+
+const plus1 = (n) => n + 1;
+const recursiveMapTestArrayResult =
+    recursiveMap(
+        plus1, 
+        recursiveMapTestArray
+    )
+
+bar42_0 = JSON.stringify( recursiveMapTestArray ); // => [1,[{"foo":100},3],[4,[5,6]],[7,{"bar":[8,{"baz":9}]}]]
+bar42_1 = JSON.stringify( recursiveMapTestArrayResult ); // => [2,[{"foo":101},4],[5,[6,7]],[8,{"bar":[9,{"baz":10}]}]]
+
+
 function nList(n, list){
     let NUM=0;
     return [...Array(list.length - (n - 1))].reduce((A,V,IDX)=>{
@@ -905,13 +948,7 @@ bar47_1 = nLessThanNList(2, [1, 2, 3, 4, 5]); //=> [[1, 2],[3, 4],[5]]
 bar47_2 = nLessThanNList(3, [1, 2, 3, 4, 5]); //=> [[1, 2, 3],[4, 5]]
 
 
-// => undef: undefined,  // lost
-// => inf: Infinity,  // forced to 'null'
-// => regexp: /.*/,  // lost
-// !!!!!!!!
-function clone(value){
-    return JSON.parse(JSON.stringify(value));
-};
+
 
 function multiClone(n, value) {
     return [...Array(n)].reduce((A,V,IDX)=>{
