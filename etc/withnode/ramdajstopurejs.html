@@ -349,10 +349,10 @@ const bar14_4 = JSON.stringify( R.transpose([[10, 11], [20], [], [30, 31, 32]]) 
 //=> [[10, 20, 30], [11, 31], [32]]
 const bar14_5 = JSON.stringify( transpose([[10, 11], [20], [], [30, 31, 32]]) );
 
-function zip() {
+function zip(){
     const args = Object.keys(arguments).map(key => arguments[key]);
-    const mostLongArg = Object.keys(arguments).map(key => arguments[key]).sort()[0];
-    return mostLongArg.reduce((A, NOUSEVAL, IDX)=>{
+    const mostShortArg = Object.keys(arguments).map(key => arguments[key]).sort()[0];
+    return mostShortArg.reduce((A, NOUSEVAL, IDX)=>{
         let tmp = [];
         tmp.push( ...args.map(arg=>arg[IDX]).filter(V=> V !== null) );
         A.push( tmp );
@@ -878,14 +878,33 @@ bar45_3 = aperture(3, [1, 2, 3, 4, 5]); //=> [[1, 2, 3], [2, 3, 4], [3, 4, 5]]
 // bar45_4 = R.aperture(7, [1, 2, 3, 4, 5]); //=> []
 // bar45_5 = aperture(7, [1, 2, 3, 4, 5]); //=> Uncaught RangeError: Invalid array length
 
+function nList(n, list){
+    let NUM=0;
+    return [...Array(list.length - (n - 1))].reduce((A,V,IDX)=>{
+            A.push( list.slice(NUM, n + NUM) );
+            NUM += n;
+            return A;
+    },A=[]).filter(V=>V.length===n);
+}
+bar46_0 = nList(1, [1, 2, 3, 4, 5]); //=> [[1, 2], [2, 3], [3, 4], [4, 5]]
+bar46_1 = nList(2, [1, 2, 3, 4, 5]); //=> [[1, 2, 3], [2, 3, 4], [3, 4, 5]]
+bar46_2 = nList(3, [1, 2, 3, 4, 5]); //=> [[1, 2, 3], [2, 3, 4], 
+
+function nLessThanNList(n, list){
+    let NUM=0;
+    return [...Array(list.length - (n - 1))].reduce((A,V,IDX)=>{
+            A.push( list.slice(NUM, n + NUM) );
+            NUM += n;
+            return A;
+    },A=[]).filter(V=>V.length!==0);
+}
+
+bar47_0 = nLessThanNList(1, [1, 2, 3, 4, 5]); //=> [[1, 2], [2, 3], [3, 4], [4, 5]]
+bar47_1 = nLessThanNList(2, [1, 2, 3, 4, 5]); //=> [[1, 2, 3], [2, 3, 4], [3, 4, 5]]
+bar47_2 = nLessThanNList(3, [1, 2, 3, 4, 5]); //=> [[1, 2, 3], [2, 3, 4], 
 
 
 
-
-// !!!!!!!!
-// https://stackoverflow.com/a/122704/9740478
-// JSON.parse(JSON.stringify(value)) is =>
-// => date: new Date(),  // stringified
 // => undef: undefined,  // lost
 // => inf: Infinity,  // forced to 'null'
 // => regexp: /.*/,  // lost
@@ -1159,7 +1178,14 @@ function exe() {
     document.querySelector(".res").value = bar45_3;
     // document.querySelector(".res").value = bar45_4;
     // document.querySelector(".res").value = bar45_5;
-    
+
+    document.querySelector(".res").value = bar46_0;
+    document.querySelector(".res").value = bar46_1;
+    document.querySelector(".res").value = bar46_2;
+
+    document.querySelector(".res").value = bar47_0;
+    document.querySelector(".res").value = bar47_1;
+    document.querySelector(".res").value = bar47_2;
 
 
 
@@ -1169,28 +1195,13 @@ function exe() {
 
 
 
-    // document.querySelector(".res").value = bar45_8;
-    // document.querySelector(".res").value = bar45_9;
-    // document.querySelector(".res").value = bar46_0;
-    // document.querySelector(".res").value = bar46_1;
-    // document.querySelector(".res").value = bar46_2;
-    // document.querySelector(".res").value = bar46_3;
-    // document.querySelector(".res").value = bar46_4;
-    // document.querySelector(".res").value = bar46_5;
-    // document.querySelector(".res").value = bar46_6;
-    // document.querySelector(".res").value = bar46_7;
-    // document.querySelector(".res").value = bar46_8;
-    // document.querySelector(".res").value = bar46_9;
-    // document.querySelector(".res").value = bar47_0;
-    // document.querySelector(".res").value = bar47_1;
-    // document.querySelector(".res").value = bar47_2;
-    // document.querySelector(".res").value = bar47_3;
-    // document.querySelector(".res").value = bar47_4;
-    // document.querySelector(".res").value = bar47_5;
-    // document.querySelector(".res").value = bar47_6;
-    // document.querySelector(".res").value = bar47_7;
-    // document.querySelector(".res").value = bar47_8;
-    // document.querySelector(".res").value = bar47_9;
+
+
+
+
+
+
+
     // document.querySelector(".res").value = bar48_0;
     // document.querySelector(".res").value = bar48_1;
     // document.querySelector(".res").value = bar48_2;
