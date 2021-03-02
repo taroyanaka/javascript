@@ -83,10 +83,17 @@ button{
     color: white;
     border-radius: 0.25em;
 }
+.foo100 > li:hover{
+    background-color: blueviolet;
+}
 </style>
 </head>
 <body>
-  
+<ul class="foo100"></ul>
+
+<ul></ul>
+
+
 <input name="" class="input0"></input>
   
 <ul class="container-keyword">
@@ -147,6 +154,41 @@ let lowerFooText = lowerFoo.map(V=>{
     return `<li class="read-more-target2"><button onclick="insertText(event);">${V}</button></li>`
 }).join("");
 document.querySelector(".second").insertAdjacentHTML("afterend", lowerFooText)
+
+
+// document.querySelector(".textarea0") = 
+
+function makeLiHTMLAndInsertUl() {
+    document.querySelectorAll("li").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector("ul").insertAdjacentHTML("afterbegin",
+        document.querySelector(".textarea0").value.split("\n").map(V=>{return `<li onclick="exe(event)">${V}</li>`}).join("")
+        // document.querySelector(".lines").value.split("\n").map(V=>{return `<li onclick="exe(event)">${V}</li>`}).join("")
+    )
+}
+
+function exe(EVENT) {
+    document.querySelectorAll(".res-button > button").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector(".res-button").insertAdjacentHTML("afterbegin",
+        EVENT.target.innerText.split(" ").map(V=>{return `<button>${V}</button>`}).join("")
+    )
+}
+
+
+
+
+function makeLiHTMLAndInsertUl() {
+    document.querySelectorAll("ul.foo100 > li").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector(".foo100").insertAdjacentHTML("afterbegin",
+        document.querySelector(".textarea0").value.split("\n").map(V=>{return `<li onclick="exe(event)">${V}</li>`}).join("")
+    )
+}
+
+function exe(EVENT) {
+    document.querySelector(".input0").value = EVENT.target.innerText
+}
+
+makeLiHTMLAndInsertUl();
+
 
 </script>
 </body>
