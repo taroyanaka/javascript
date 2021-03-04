@@ -70,6 +70,7 @@ td {border: solid 1px gray}
 
     <!-- <button onclick="test()">test data</button> -->
     <button onclick="test2()">test2 data</button>
+    <button onclick="test3()">test3 data</button>
 </div>
 <div class="side">
     <div class="fakerMenu"></div>
@@ -92,7 +93,7 @@ function collectChoosedMethods() {
     return Array.from(document.querySelectorAll(".clicked")).map(V => {
         const category = V.parentElement.parentElement.querySelector("summary").innerText;
         const method = V.innerText;
-        return faker[category][method];
+        return [`${category}${method}`, faker[category][method]() ];
     })
 }
 
@@ -100,7 +101,7 @@ function makeList() {
     LIST = [];
     const times = Number(document.querySelector("input.nTimes").value);
     [...Array(times).keys()].forEach(NOUSE => {
-        LIST.push(collectChoosedMethods().map(V => { return V() }));
+        LIST.push(collectChoosedMethods().map(V => { return V[0] }));
     })
     return LIST;
 }
@@ -137,17 +138,17 @@ function testAnyClick(any = "firstName") {
 function test2() {
     document.querySelector(".lang").value = "ja";
     chooseLang();
-    testAnyClick("zipCode");
-    testAnyClick("firstName");
-    testAnyClick("lastName");
-    testAnyClick("past");
+    // testAnyClick("zipCode");
+    // testAnyClick("firstName");
+    // testAnyClick("lastName");
+    // testAnyClick("past");
 }
 
 function test1(){    
     insertValues = LIST.map(V=>{return [V[0], V[2], V[3]]}).map(V=>{return `('${V[0]}', '${V[1]}', '${V[2]}'),`}).join("");
     insertValues = insertValues.slice(0, insertValues.length-1);
 
-document.querySelector(".query1").value =
+    document.querySelector(".query1").value =
 `CREATE TABLE LIST0 (foo string, bar string, baz string); INSERT INTO LIST0 VALUES ${insertValues}`;
     document.querySelector(".query2").value = `SELECT * FROM LIST0`;
     alasql(document.querySelector(".query1").value);
@@ -168,6 +169,11 @@ function exe(){
     var res1 = alasql( document.querySelector(".query2").value );
     var res1_2 = res1.map(V=>{ return [V.foo, V.bar, V.baz] })
     document.querySelector(".res1").value = res1_2;
+
+    // document.querySelectorAll("table > *").parentNode.removeChild(document.querySelectorAll("table > *"))
+    document.querySelectorAll("table > *").forEach(E=>{E.parentNode.removeChild(E)});
+
+    document.querySelector("table").insertAdjacentHTML("afterbegin", makeTable(headerAry, LIST) )
 }
 
 function makeTable(headerAry, ary){
@@ -191,43 +197,11 @@ function makeTable(headerAry, ary){
 }
 
 init();
-test2();
+// test2();
 test1();
 exe();
-document.querySelector("table").insertAdjacentHTML("afterbegin", makeTable(headerAry, LIST) )
+
 </script>
 </body>
 
 </html>
-    <!-- https://codepen.io/kallmanation/pen/abdmJNz -->
-    <!-- <details close>
-        <summary>CSS-only Accordion</summary>
-        <p>Using the &lt;details&gt; element</p>
-        <p>And no unnecessary DOM</p>
-    </details> -->
-        <!-- <input type="text" name="" id="" class="oneline"> -->
-        <!-- // V.addEventListener("click", showInputTagOneline, false); -->
-        <!-- // function showInputTagOneline(event) {
-            //     const category = event.target.parentElement.parentElement.querySelector("summary").innerText;
-            //     const method = event.target.innerText;
-            //     // console.log(faker[category][method]()); // this is same faker.name.firstName();
-            //     document.querySelector("input.oneline").value = faker[category][method]();
-            // } -->
-    <!-- // document.querySelector(".query1").value = `CREATE TABLE cities (city string, pop number);INSERT INTO cities VALUES ('Paris',2249975),('Berlin',3517424),('Madrid',3041579)`;
-    // const insertValues = `('Paris',2249975),('Berlin',3517424),('Madrid',3041579)`; -->
-    <!-- // `CREATE TABLE cities (city string, pop number);INSERT INTO cities VALUES ('Paris',2249975),('Berlin',3517424),('Madrid',3041579)`;
-// document.querySelector(".query2").value = `SELECT * FROM cities WHERE pop < 3500000 ORDER BY pop DESC`; -->
-<!-- // const headerAry = ["POST_CODE", "TIME1", "TIME2", "FIRST_NAME", "LAST_NAME"]; -->
-<!-- function test() {
-    document.querySelector(".lang").value = "ja";
-    chooseLang();
-    Array.from(document.querySelectorAll("li")).filter(V => { return V.innerText === "firstName" })[0].click();
-} -->
-<!-- // function query0() {
-    //     console.log(document.querySelector(".column0").value);
-    //     console.log(document.querySelector(".table1").value);
-    //     const foo = Number(document.querySelector(".column0").value);
-    //     const bar = document.querySelector(".table1").value;
-    //     const baz = R.pluck(foo, window[bar]);
-    //     document.querySelector(".textarea3").value = baz;
-    // } -->
