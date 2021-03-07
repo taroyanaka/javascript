@@ -161,6 +161,8 @@ function test1(){
 }
 
 function exe(){
+    makeList();
+    test1();
     try {
         alasql(document.querySelector(".query1").value);
     } catch (error) {
