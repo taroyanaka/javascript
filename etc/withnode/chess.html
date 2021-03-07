@@ -198,6 +198,7 @@ let X, Y;
 let exColor;
 let oppositeColor;
 let num;
+let color;
 
 function dev() {
     bar = ex.target;
@@ -217,17 +218,6 @@ function dev() {
     qux = R.take(2, baz[0]);
 }
 
-
-const betweenXY = (min, max) => (x, y) =>  x >= min && x <= max && y >= min && y <= max;
-const isBetweenZeroToSevenXY = betweenXY(0, 7);
-
-function rejectOutOfBoard(XYary) { if(isBetweenZeroToSevenXY(XYary[0], XYary[1])){return XYary}}
-
-function isSpaceOrBlackOrWhite(foo) {
-    const isSpace = (str) =>{return true ? str === "" : false}
-    return isSpace(foo) ? "space" : R.includes(foo, ["♔","♕","♖","♗","♘","♙"]) ? "white" : "black";
-}
-
 function addColor(targetAry) {
     console.trace();
     document.querySelectorAll("td").forEach(TD=>{
@@ -239,10 +229,16 @@ function addColor(targetAry) {
     })
 }
 
-
+const betweenXY = (min, max) => (x, y) =>  x >= min && x <= max && y >= min && y <= max;
+const isBetweenZeroToSevenXY = betweenXY(0, 7);
+function rejectOutOfBoard(XYary) { if(isBetweenZeroToSevenXY(XYary[0], XYary[1])){return XYary}}
+const isSpace = (str) =>{return true ? str === "" : false}
+function isSpaceOrBlackOrWhite(foo) {
+    return isSpace(foo) ? "space" : R.includes(foo, ["♔","♕","♖","♗","♘","♙"]) ? "white" : "black";
+}
 function givePieceMoveClickable(ex, whenAny) {
     exColor = isSpaceOrBlackOrWhite(ex.target.textContent);
-    const color = whenAny().filter(V=>{
+    color = whenAny().filter(V=>{
         return rejectOutOfBoard(V);
     }).filter(V=>{
         piece = trTdSelector(V[0], V[1]).textContent;
@@ -252,7 +248,6 @@ function givePieceMoveClickable(ex, whenAny) {
 }
 
 const oneToSevenAry = [1, 2, 3, 4, 5, 6, 7];
-
 function foo(ex, text) {
     num = [Number(exV.target.dataset.x), Number(exV.target.dataset.y)];
     switch (text) {
