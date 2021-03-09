@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chess</title>
+    <script src="ramda.js"></script>
+<style>
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+table{
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+td{
+    background-color: gray;
+}
+tr:nth-child(odd) td:nth-child(odd){
+	background-color: white;
+}
+tr:nth-child(even) td:nth-child(even){
+	background-color: white;
+}
+td{
+    border: 2px solid black;
+
+    height: 30px;
+    width: 30px;
+}
+td.before{
+    background-color: red;
+}
+</style>
+</head>
+<body>
+<h1>chess2</h1>
+<h2>developping on https://taroyanaka.github.io/javascript/etc/withnode/chess.html</h2>
+<table>
+
+</table>
+</body>
+<script>
+const record = `<tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>`
+
+document.querySelector("table").insertAdjacentHTML("afterbegin", R.times(R.identity, 8).map(V=>{
+    return record
+}).join("")
+)
+
+const initPieceWhiteNotPawn = `<td>♖</td>
+<td>♘</td>
+<td>♗</td>
+<td>♕</td>
+<td>♔</td>
+<td>♗</td>
+<td>♘</td>
+<td>♖</td>`
+const initPieceWhitePawn = `<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>
+<td>♙</td>`
+document.querySelectorAll("table tr")[7].innerHTML = `<tr>${initPieceWhiteNotPawn}</tr>`
+document.querySelectorAll("table tr")[6].innerHTML = `<tr>${initPieceWhitePawn}</tr>`
+
+const initPieceBlackNotPawn = `<td>♜</td>
+<td>♞</td>
+<td>♝</td>
+<td>♛</td>
+<td>♚</td>
+<td>♝</td>
+<td>♞</td>
+<td>♜</td>`
+const initPieceBlackPawn = `<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>
+<td>♟</td>`
+document.querySelectorAll("table tr")[0].innerHTML = `<tr>${initPieceBlackNotPawn}</tr>`
+document.querySelectorAll("table tr")[1].innerHTML = `<tr>${initPieceBlackPawn}</tr>`
+
+
+
+
+
+
+
+
+
+
+let beforeXY;
+let afterXY;
+
+let beforeText;
+let afterText;
+let beforeElm;
+
+function getXYFromElm(elm){
+    const X = [...elm.parentNode.children].indexOf(elm);
+    const parent = elm.parentNode;
+    const Y = 7 - [...parent.parentNode.children].indexOf(parent);
+    return [X, Y];
+}
+
+function updateTable() {
+    Array.from(document.querySelectorAll("table tbody tr td")).forEach(V=>{
+        V.dataset["x"] = getXYFromElm(V)[0];
+        V.dataset["y"] = getXYFromElm(V)[1];
+        V.dataset["piece"] = V.innerText ? V.innerText : "space";
+        V.dataset["color"] = "nocolor";
+        if(["♜","♞","♝","♛","♚","♝","♞","♜","♟"].includes(V.innerText)){V.dataset["color"] = "black"};
+        if(["♖","♘","♗","♕","♔","♗","♘","♖","♙"].includes(V.innerText)){V.dataset["color"] = "white"};
+    })
+}
+
+function selectCell(x, y) {
+    return Array.from(document.querySelectorAll("table tbody tr td")).filter(V=>{
+        return V.dataset["x"] === x.toString() && V.dataset["y"] === y.toString()
+    })[0];
+}
+
+const addClick = () => document.querySelectorAll("table tbody tr td").forEach(V=>{ V.addEventListener("click", click, null) });
+const removeClick = () => document.querySelectorAll("table tbody tr td").forEach(V=>{ V.removeEventListener("click", click, null) });
+
+const addNextClick = () => document.querySelectorAll("table tbody tr td").forEach(V=>{ V.addEventListener("click", nextClick, null) });
+const removeNextClick = () => document.querySelectorAll("table tbody tr td").forEach(V=>{ V.removeEventListener("click", nextClick, null) });
+
+function swapBefore() {
+    beforeElm = event;
+    beforeText = event.target.innerText;
+    updateTable();
+}
+function swapAfter() {
+    afterText = event.target.innerText;
+    event.target.innerText = beforeText;
+    beforeElm.target.innerText = afterText;
+    updateTable();
+}
+
+function nextClick(event) {
+    document.querySelectorAll("td").forEach(V=>V.style = "");
+    afterXY = JSON.stringify([event.target.dataset.x, event.target.dataset.y]);
+    swapAfter();
+    removeNextClick();
+    addClick();
+}
+function click(event) {
+    event.target.style = "background-color: red;";
+    beforeXY = JSON.stringify([event.target.dataset.x, event.target.dataset.y]);
+    swapBefore();
+    removeClick();
+    addNextClick();
+}
+
+const outOfBoard = (list) => list.filter(V=> V[0]>=0 && V[0]<=7 && V[1]>=0 && V[1]<=7 );
+const oneToSevenAry = [1, 2, 3, 4, 5, 6, 7];
+function whenRook(x, y) {
+    const plusX = oneToSevenAry.map(V=>{return [x+V, y] });
+    const minusX = oneToSevenAry.map(V=>{return [x-V, y] });
+    const plusY = oneToSevenAry.map(V=>{return [x, y+V] });
+    const minusY = oneToSevenAry.map(V=>{return [x, y-V] });
+
+    return [].concat(plusX,minusX,plusY,minusY);
+}
+
+
+
+function giveClick() {
+    document.querySelectorAll("table tbody tr td").forEach(V=>{  V.addEventListener("click", click, null) })
+}
+
+
+function init() {
+    updateTable();
+    giveClick();
+}
+init();
+
+function testOnDev() {
+    // outOfBoard(whenRook(3,3)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
+    // outOfBoard(whenRook(1,1)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
+    // outOfBoard(whenRook(0,0)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
+    // outOfBoard(whenRook(7,7)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
+    // outOfBoard(whenRook(6,6)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
+}
+testOnDev();
+</script>
+</html>
