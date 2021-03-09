@@ -238,12 +238,42 @@ function isSpaceOrBlackOrWhite(foo) {
 }
 function givePieceMoveClickable(ex, whenAny) {
     exColor = isSpaceOrBlackOrWhite(ex.target.textContent);
+
+
+
     color = whenAny().filter(V=>{
         return rejectOutOfBoard(V);
     }).filter(V=>{
         piece = trTdSelector(V[0], V[1]).textContent;
         if(exColor !== isSpaceOrBlackOrWhite(piece)){return V};
     })
+
+    bar = ex.target;
+    [X, Y] = getXYFromElm(bar);
+    oppositeColor = exColor === "black" ? "white" : "black";
+    baz = R.sortBy(R.prop(1))(
+        color.filter(V=>{return V[0]===X})
+    ).map(V=>{
+        return [
+            V[0],
+            V[1],
+            isSpaceOrBlackOrWhite(trTdSelector(V[0], V[1]).textContent)
+        ]
+    }).filter(V=>{
+        return V[2] === oppositeColor;
+    })
+    baz = R.drop(1, baz);
+    qux = R.take(2, baz);
+    qux2 = qux.map(V=>V.slice(0,2))[0];
+
+    color = color.filter(V=>{
+        // return qux.filter(VAL=>{return JSON.stringify(V) === JSON.stringify( VAL.slice(0,2) )})
+        console.log(V)
+        // return V.includes(JSON.stringify(qux2[0]))
+        // return V.includes([4,7])
+        return JSON.stringify(V) !== JSON.stringify(qux2);
+    })
+
     addColor(color);
 }
 
