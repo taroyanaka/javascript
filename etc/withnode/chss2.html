@@ -124,7 +124,7 @@ function updateTable() {
         V.dataset["x"] = getXYFromElm(V)[0];
         V.dataset["y"] = getXYFromElm(V)[1];
         V.dataset["piece"] = V.innerText ? V.innerText : "space";
-        V.dataset["color"] = "space";
+        V.dataset["color"] = "nocolor";
         if(["♜","♞","♝","♛","♚","♝","♞","♜","♟"].includes(V.innerText)){V.dataset["color"] = "black"};
         if(["♖","♘","♗","♕","♔","♗","♘","♖","♙"].includes(V.innerText)){V.dataset["color"] = "white"};
     })
@@ -196,7 +196,7 @@ init();
 function testOnDev() {
     // outOfBoard(whenRook(3,3)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
     // outOfBoard(whenRook(1,1)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
-    outOfBoard(whenRook(0,0)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
+    // outOfBoard(whenRook(0,0)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
     // outOfBoard(whenRook(7,7)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
     // outOfBoard(whenRook(6,6)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
 }
