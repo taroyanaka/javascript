@@ -236,23 +236,11 @@ const isSpace = (str) =>{return true ? str === "" : false}
 function isSpaceOrBlackOrWhite(foo) {
     return isSpace(foo) ? "space" : R.includes(foo, ["♔","♕","♖","♗","♘","♙"]) ? "white" : "black";
 }
-function givePieceMoveClickable(ex, whenAny) {
-    exColor = isSpaceOrBlackOrWhite(ex.target.textContent);
 
-
-
-    color = whenAny().filter(V=>{
-        return rejectOutOfBoard(V);
-    }).filter(V=>{
-        piece = trTdSelector(V[0], V[1]).textContent;
-        if(exColor !== isSpaceOrBlackOrWhite(piece)){return V};
-    })
-
-    bar = ex.target;
-    [X, Y] = getXYFromElm(bar);
-    oppositeColor = exColor === "black" ? "white" : "black";
-    baz = R.sortBy(R.prop(1))(
-        color.filter(V=>{return V[0]===X})
+function rejectListX(X, Y, list, oppositeColor) {
+    list2 = R.sortBy(R.prop(0))(
+        // list.filter(V=>{return V[0]===X})
+        list.filter(V=>{return V[0]===X || V[1]===Y })
     ).map(V=>{
         return [
             V[0],
@@ -261,19 +249,29 @@ function givePieceMoveClickable(ex, whenAny) {
         ]
     }).filter(V=>{
         return V[2] === oppositeColor;
+    }).map(V=>{
+        return [V[0], V[1]];
     })
-    baz = R.drop(1, baz);
-    qux = R.take(2, baz);
-    qux2 = qux.map(V=>V.slice(0,2))[0];
+    list3 = R.tail(list2);
+    list4 = list3.map(V=>JSON.stringify( V ));
+    return list4;
+}
 
-    color = color.filter(V=>{
-        // return qux.filter(VAL=>{return JSON.stringify(V) === JSON.stringify( VAL.slice(0,2) )})
-        console.log(V)
-        // return V.includes(JSON.stringify(qux2[0]))
-        // return V.includes([4,7])
-        return JSON.stringify(V) !== JSON.stringify(qux2);
+
+function givePieceMoveClickable(ex, whenAny) {
+    exColor = isSpaceOrBlackOrWhite(ex.target.textContent);
+    color = whenAny().filter(V=>{
+        return rejectOutOfBoard(V);
+    }).filter(V=>{
+        piece = trTdSelector(V[0], V[1]).textContent;
+        if(exColor !== isSpaceOrBlackOrWhite(piece)){return V};
     })
-
+    bar = ex.target;
+    [X, Y] = getXYFromElm(bar);
+    oppositeColor = exColor === "black" ? "white" : "black";
+    baz = rejectListX(X, Y, color, oppositeColor);
+    // baz = rejectList(null, Y, color, oppositeColor);
+    color = color.filter(V=>{ return !baz.includes(JSON.stringify(V)) });
     addColor(color);
 }
 
@@ -437,13 +435,13 @@ function whenWhitePawn() {
 // BlackRook
 // trTdSelector(7,0).click()
 // WhiteRook
-trTdSelector(3,0).click()
+// trTdSelector(3,0).click()
 
 // Bishop
 // trTdSelector(2, 0).click()
 
 // Queen
-// trTdSelector(3, 0).click()
+trTdSelector(3, 0).click()
 
 // Knight
 // trTdSelector(1,0).click()
@@ -454,8 +452,8 @@ trTdSelector(3,0).click()
 // trTdSelector(7,6).click()
 
 
-trTdSelector(4,4).click()
-trTdSelector(4,4).click()
+// trTdSelector(4,4).click()
+// trTdSelector(4,4).click()
 
 // ♔♚キング、♕♛クイーン、♖♜、ルーク、♗♝ビショップ、♘♞ナイト、♙♟ポーン
 
