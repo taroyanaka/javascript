@@ -124,6 +124,9 @@ function updateTable() {
         V.dataset["x"] = getXYFromElm(V)[0];
         V.dataset["y"] = getXYFromElm(V)[1];
         V.dataset["piece"] = V.innerText ? V.innerText : "space";
+        V.dataset["color"] = "space";
+        if(["♜","♞","♝","♛","♚","♝","♞","♜","♟"].includes(V.innerText)){V.dataset["color"] = "black"};
+        if(["♖","♘","♗","♕","♔","♗","♘","♖","♙"].includes(V.innerText)){V.dataset["color"] = "white"};
     })
 }
 
@@ -166,9 +169,7 @@ function click(event) {
     addNextClick();
 }
 
-const outOfBoard = (list) => list.filter(V=>{
-    return (V[0]>=0 && V[0]<=7 && V[1]>=0 && V[1]<=7)
-});
+const outOfBoard = (list) => list.filter(V=> V[0]>=0 && V[0]<=7 && V[1]>=0 && V[1]<=7 );
 const oneToSevenAry = [1, 2, 3, 4, 5, 6, 7];
 function whenRook(x, y) {
     const plusX = oneToSevenAry.map(V=>{return [x+V, y] });
@@ -193,7 +194,11 @@ function init() {
 init();
 
 function testOnDev() {
-    outOfBoard(whenRook(3,3)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");    
+    // outOfBoard(whenRook(3,3)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
+    // outOfBoard(whenRook(1,1)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
+    outOfBoard(whenRook(0,0)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
+    // outOfBoard(whenRook(7,7)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
+    // outOfBoard(whenRook(6,6)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
 }
 testOnDev();
 
