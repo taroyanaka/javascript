@@ -229,7 +229,16 @@ const oppositecolor = selectCell(...num).dataset.oppositecolor;
 
 
 outOfBoard(whenRook(...num))
-.map(V=> [V[0],V[1],num[0]-V[0],num[1]-V[1],Math.abs(num[0]-V[0]),Math.abs(num[1]-V[1]),selectCell(V[0], V[1]).dataset.color])
+.map(V=> [
+    V[0],
+    V[1],
+    num[0]-V[0],
+    num[1]-V[1],
+    Math.abs(num[0]-V[0]),
+    Math.abs(num[1]-V[1]),
+    selectCell(V[0], V[1]).dataset.color
+    ]
+)
 
 
 
