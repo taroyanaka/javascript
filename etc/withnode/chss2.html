@@ -96,6 +96,22 @@ const initPieceBlackPawn = `<td>♟</td>
 document.querySelectorAll("table tr")[0].innerHTML = `<tr>${initPieceBlackNotPawn}</tr>`
 document.querySelectorAll("table tr")[1].innerHTML = `<tr>${initPieceBlackPawn}</tr>`
 
+
+
+
+
+
+
+
+
+
+let beforeXY;
+let afterXY;
+
+let beforeText;
+let afterText;
+let beforeElm;
+
 function getXYFromElm(elm){
     const X = [...elm.parentNode.children].indexOf(elm);
     const parent = elm.parentNode;
@@ -110,23 +126,18 @@ function updateTable() {
         V.dataset["piece"] = V.innerText ? V.innerText : "space";
     })
 }
-updateTable();
 
-let beforeXY;
-let afterXY;
+function selectCell(x, y) {
+    return Array.from(document.querySelectorAll("table tbody tr td")).filter(V=>{
+        return V.dataset["x"] === x.toString() && V.dataset["y"] === y.toString()
+    })[0];
+}
 
 const addClick = () => document.querySelectorAll("table tbody tr td").forEach(V=>{ V.addEventListener("click", click, null) });
 const removeClick = () => document.querySelectorAll("table tbody tr td").forEach(V=>{ V.removeEventListener("click", click, null) });
 
-
 const addNextClick = () => document.querySelectorAll("table tbody tr td").forEach(V=>{ V.addEventListener("click", nextClick, null) });
 const removeNextClick = () => document.querySelectorAll("table tbody tr td").forEach(V=>{ V.removeEventListener("click", nextClick, null) });
-
-
-
-let beforeText;
-let afterText;
-let beforeElm;
 
 function swapBefore() {
     beforeElm = event;
@@ -154,13 +165,37 @@ function click(event) {
     removeClick();
     addNextClick();
 }
-document.querySelectorAll("table tbody tr td").forEach(V=>{
-    V.addEventListener("click", click, null);
-})
+
+const outOfBoard = (list) => list.filter(V=>{
+    return (V[0]>=0 && V[0]<=7 && V[1]>=0 && V[1]<=7)
+});
+const oneToSevenAry = [1, 2, 3, 4, 5, 6, 7];
+function whenRook(x, y) {
+    const plusX = oneToSevenAry.map(V=>{return [x+V, y] });
+    const minusX = oneToSevenAry.map(V=>{return [x-V, y] });
+    const plusY = oneToSevenAry.map(V=>{return [x, y+V] });
+    const minusY = oneToSevenAry.map(V=>{return [x, y-V] });
+
+    return [].concat(plusX,minusX,plusY,minusY);
+}
 
 
 
+function giveClick() {
+    document.querySelectorAll("table tbody tr td").forEach(V=>{  V.addEventListener("click", click, null) })
+}
 
+
+function init() {
+    updateTable();
+    giveClick();
+}
+init();
+
+function testOnDev() {
+    outOfBoard(whenRook(3,3)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");    
+}
+testOnDev();
 
 
 
