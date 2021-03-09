@@ -126,8 +126,14 @@ function updateTable() {
         V.dataset["y"] = getXYFromElm(V)[1];
         V.dataset["piece"] = V.innerText ? V.innerText : "space";
         V.dataset["color"] = "nocolor";
-        if(["♜","♞","♝","♛","♚","♝","♞","♜","♟"].includes(V.innerText)){V.dataset["color"] = "black"};
-        if(["♖","♘","♗","♕","♔","♗","♘","♖","♙"].includes(V.innerText)){V.dataset["color"] = "white"};
+        if(["♜","♞","♝","♛","♚","♝","♞","♜","♟"].includes(V.innerText)){
+            V.dataset["color"] = "black"
+            V.dataset["oppositecolor"] = "white"
+        };
+        if(["♖","♘","♗","♕","♔","♗","♘","♖","♙"].includes(V.innerText)){
+            V.dataset["color"] = "white"
+            V.dataset["oppositecolor"] = "black"
+        };
     })
 }
 
@@ -194,12 +200,45 @@ function init() {
 }
 init();
 
+
+selectCell(0,0).click();
+selectCell(3,3).click();
+selectCell(1,1).click();
+selectCell(2,3).click();
+selectCell(1,0).click();
+selectCell(4,4).click();
+selectCell(3,0).click();
+selectCell(4,5).click();
+selectCell(4,0).click();
+selectCell(6,3).click();
+
+selectCell(0,7).click();
+selectCell(4,3).click();
+
+
+const num = [4,3];
+const color = selectCell(...num).dataset.color;
+const oppositecolor = selectCell(...num).dataset.oppositecolor;
+
+// outOfBoard(whenRook(...num))
+// .filter(V=>selectCell(V[0], V[1]).dataset.color !== color)
+// .filter(V=>selectCell(V[0], V[1]).dataset.color === oppositecolor)
+// .map(V=> [num[0]-V[0], num[1]-V[1]])
+// .map(V=> [Math.abs(V[0]), Math.abs(V[1])])
+// .map(VAL=> selectCell(VAL[0], VAL[1]))
+
+
+outOfBoard(whenRook(...num))
+.map(V=> [V[0],V[1],num[0]-V[0],num[1]-V[1],Math.abs(num[0]-V[0]),Math.abs(num[1]-V[1]),selectCell(V[0], V[1]).dataset.color])
+
+
+
 function testOnDev() {
     // outOfBoard(whenRook(3,3)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
     // outOfBoard(whenRook(1,1)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
     // outOfBoard(whenRook(0,0)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
     // outOfBoard(whenRook(7,7)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
-    // outOfBoard(whenRook(6,6)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
+    outOfBoard(whenRook(...num)).filter(V=>selectCell(V[0], V[1]).dataset.color !== color).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
 }
 testOnDev();
 </script>
