@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sosos html learn 1</title>
+    <style>
+        *{
+    margin: 0;
+    padding: 0;
+}
+.outer{
+    height: 100vw;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 3fr;
+    grid-template-areas:
+    "header"
+    "content"
+    "footer";
+}
+.header{
+    height: 20%;
+    background-color: white;
+    grid-area: header;
+
+    display: grid;
+    /* grid-template-columns: 7fr; */
+    grid-template-columns: 0.5fr 1fr 1fr 1fr 0.2fr 0.5fr;
+    grid-template-rows: 3fr;
+    grid-template-areas:
+    "logo h1 other1 other2 other3 qrcode"
+    "logo h2 other1 other2 other3 qrcode"
+    "logo h3 other1 other2 other3 qrcode";
+}
+.header > *:not(h1, h2, h3){
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.logo{
+    background-color: blueviolet;
+    grid-area: logo;
+}
+img{
+    width: 100%;
+    min-width: 100px;
+    height: 100%;
+}
+h1{
+    background-color: gray;
+    grid-area: h1;
+}
+h2{
+    background-color: gray;
+    grid-area: h2;
+}
+h3{
+    background-color: gray;
+    grid-area: h3;
+}
+h1,h2,h3{font-size: 9px;}
+.other1{
+    background-color: gray;
+    grid-area: other1;
+}
+.other2{
+    background-color: gray;
+    grid-area: other2;
+}
+.other3{
+    /* background-color: red; */
+    grid-area: other3;
+    writing-mode: vertical-rl;
+    font-size: 8px;
+}
+.qrcode{
+    background-color: gray;
+    grid-area: qrcode;
+}
+.number{
+    background-color: red;
+    border-radius: 50%;
+}
+a{
+    text-decoration: none;
+    color:white;
+}
+    </style>
+</head>
+<body class="outer">
+<div class="header">
+    <img src="img/Sssplit.svg" alt="logo" class="logo">
+    <h1>ソソウェブ</h1>
+    <h2>ソソスウェブ会員サービス</h2>
+    <h3>※フィーチャーフォン(ガラケー)には対応しておりません。</h3>
+    <div class="other1">今すぐできる</div>
+    <div class="other2"><span class="number"><a href="">7</a></span> 簡単登録!</div>
+    <div class="other3">アプリのインストールはこちらから</div>
+    <div class="qrcode">QRコード</div>
+</div>
+
+
+(1)アプリをインストール
+
+(2)アプリを起動して右上の鍵マークをタップ
+
+(3)「会員登録」をタップ
+
+
+(4)メールアドレスを入カして「送信」をタップ
+入力頂いたアドレスに仮登録メールが届きます
+
+
+※メールが属かない場合は
+supportemail.SOSO@web.jp
+アドレスを受信出来るよう
+ご設定ください。
+また連惑メールにふり分けられている
+場合もございます。
+そもらもご確認ください。
+
+
+今日からさっそくお得に使おう!
+
+
+(5)届いたメールを開き「本登録する」をタップ
+
+(6)パスワードを決定する必要事項を入力し最下部の確認をタップ
+
+(7)登録内容の確認画面に移行します内容に間違いがなければ、最下部の登録をタップして登録完了です    
+</body>
+</html>
