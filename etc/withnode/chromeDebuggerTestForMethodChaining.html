@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>chromeDebuggerTestForMethodChaining</title>
+</head>
+<body>
+<script>
+const res = [1,2,3].map(V=>
+    V+10)
+    .map(V=>
+        V+100)
+        .filter(V=>
+            V>111)
+            .map(V=>{
+                V+=1000;
+                V+=10000;
+                return V;
+            })
+            .reduce((A,V)=>{
+                A += (V + 10);
+                return A;},A=0)
+
+const res1=[1,2,3].map(V=>V+10).map(V=>V+100).filter(V=>V>111).reduce((A,V)=>{A+=(V+10);return A;},A=0)
+</script>
+</body>
+</html>

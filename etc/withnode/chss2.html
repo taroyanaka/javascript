@@ -228,6 +228,7 @@ const oppositecolor = selectCell(...num).dataset.oppositecolor;
 // .map(VAL=> selectCell(VAL[0], VAL[1]))
 
 
+
 outOfBoard(whenRook(...num))
 .map(V=> [
     V[0],
@@ -242,6 +243,9 @@ outOfBoard(whenRook(...num))
 
 
 
+
+
+
 function testOnDev() {
     // outOfBoard(whenRook(3,3)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
     // outOfBoard(whenRook(1,1)).forEach(VAL=> selectCell(VAL[0], VAL[1]).style = "background-color: red;");
@@ -251,4 +255,5 @@ function testOnDev() {
 }
 testOnDev();
 </script>
+
 </html>
