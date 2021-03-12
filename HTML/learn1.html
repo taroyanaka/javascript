@@ -101,16 +101,25 @@ span{
     "content5 content6 content7 content7";
 }
 .content > *{
+    padding: 10px;
     background-color: gray;
 }
 .content > * > img {
     height: 300px;
     width: auto;
-    margin: 30px;
+    margin: 30px 30px 0 30px;
 }
-.content > * > div {
-    padding: 0;
+
+.content-text{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+.content-text *{
+    font-size: 12px;
+
+}
+
 .content1{
     grid-area: content1;
 }
@@ -150,19 +159,22 @@ span{
 
 <div class="content">
 <div class="content1">
-    <div class="content-text"><span class="number">1</span>アプリをインストール</div>
+    <div class="content-text">
+        <span class="number">1</span>
+        <span class="text">アプリをインストール</span>
+    </div>
     <img src="img/phone.png" alt="" srcset="" class="phone-image">
 </div>
 <div class="content2">
-    <div class="content-text"><span class="number">2</span>アプリを起動して右上の鍵マークをタップ</div>
+    <div class="content-text"><span class="number">2</span><span class="text">アプリを起動して右上の鍵マークをタップ</span></div>
     <img src="img/phone.png" alt="" srcset="" class="phone-image">
 </div>
 <div class="content3">
-    <div class="content-text"><span class="number">3</span>「会員登録」をタップ</div>
+    <div class="content-text"><span class="number">3</span><span class="text">「会員登録」をタップ</span></div>
     <img src="img/phone.png" alt="" srcset="" class="phone-image">
 </div>
 <div class="content4">
-    <div class="content-text"><span class="number">4</span>メールアドレスを入カして「送信」をタップ入力頂いたアドレスに仮登録メールが届きます</div>
+    <div class="content-text"><span class="number">4</span><span class="text">メールアドレスを入カして「送信」をタップ入力頂いたアドレスに仮登録メールが届きます</span></div>
     <img src="img/phone.png" alt="" srcset="" class="phone-image">
 
     <div class="note">※メールが属かない場合は
@@ -174,15 +186,15 @@ span{
         そもらもご確認ください。</div>
 </div>
 <div class="content5">
-    <div class="content-text"><span class="number">5</span>届いたメールを開き「本登録する」をタップ</div>
+    <div class="content-text"><span class="number">5</span><span class="text">届いたメールを開き「本登録する」をタップ</span></div>
     <img src="img/phone.png" alt="" srcset="" class="phone-image">
 </div>
 <div class="content6">
-    <div class="content-text"><span class="number">6</span>パスワードを決定する必要事項を入力し最下部の確認をタップ</div>
+    <div class="content-text"><span class="number">6</span><span class="text">パスワードを決定する必要事項を入力し最下部の確認をタップ</span></div>
     <img src="img/phone.png" alt="" srcset="" class="phone-image">
 </div>
 <div class="content7">
-    <div class="content-text"><span class="number">7</span>登録内容の確認画面に移行します内容に間違いがなければ、最下部の登録をタップして登録完了です</div>
+    <div class="content-text"><span class="number">7</span><span class="text">登録内容の確認画面に移行します内容に間違いがなければ、最下部の登録をタップして登録完了です</span></div>
     <img src="img/phone.png" alt="" srcset="" class="phone-image">
 
     <div class="announcement">今日からさっそくお得に使おう!</div>
