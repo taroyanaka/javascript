@@ -90,7 +90,7 @@ function getList() {
 }
 
 function exe() {
-    res = getList().map(V=> `<div class="child-${V[0]}-${V[1]}"></div>`).join("")
+    res = getList().map(V=> `<div class="child-${V[0]}-${V[1]}" data-row="${V[0]}" data-column="${V[1]}"></div>`).join("")
     document.querySelector("style").innerText = makeCss();
     document.querySelector(".parent").innerHTML = "";
     document.querySelector(".parent").insertAdjacentHTML("afterbegin", res);
