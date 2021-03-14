@@ -368,23 +368,15 @@ function nList(n, list){
     },A=[]).filter(V=>V.length===n);
 }
 
-// width: ${100/column}vw;    height: ${100/row}vh;
-// height:100vh;width:100vw
-
 function makeCssText() {
     const column = Number(document.querySelector(".column").value);
     const row = Number(document.querySelector(".row").value);
     const sum = Number(document.querySelector(".column").value) * Number(document.querySelector(".row").value);
 
     let cssText = `
-    body{
-        width: 100vw;
-        height: 100vh;
-    }
 .res > *{
     width: ${100/column}vw;
     height: ${100/row}vh;
-
 }
 .res{
     display: grid;
