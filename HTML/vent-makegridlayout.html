@@ -368,12 +368,20 @@ function nList(n, list){
     },A=[]).filter(V=>V.length===n);
 }
 
-function makeCssText() {
-    const column = Number(document.querySelector(".column").value);
-    const row = Number(document.querySelector(".row").value);
-    const sum = Number(document.querySelector(".column").value) * Number(document.querySelector(".row").value);
+let column = Number(document.querySelector(".column").value);
+let row = Number(document.querySelector(".row").value);
+let sum = Number(document.querySelector(".column").value) * Number(document.querySelector(".row").value);
 
-    let cssText = `
+
+let cssText;
+let areas;
+
+function makeCssText() {
+    column = Number(document.querySelector(".column").value);
+    row = Number(document.querySelector(".row").value);
+    sum = Number(document.querySelector(".column").value) * Number(document.querySelector(".row").value);
+    areas = nList(column, [...Array(sum).keys()])
+    cssText = `
 .res > *{
     width: ${100/column}vw;
     height: ${100/row}vh;
@@ -384,13 +392,11 @@ function makeCssText() {
     grid-template-rows: ${row}fr;
     grid-template-areas:
 `
-    const areas = nList(column, [...Array(sum).keys()])
     cssText += areas.map(V=>
                             '"' + V.map(VAL=>
                                         'content' +  VAL.toString() + ' '
                                         ).join('') + '"'
                         ).join('\n') + ';}\n'
-
 
     cssText += [...Array(sum).keys()].map(V=>
 `.content${V}{
