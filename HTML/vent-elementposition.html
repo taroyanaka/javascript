@@ -10,30 +10,18 @@
     </style>
 </head>
 <body>
+    <button onclick="init();">clear</button>
     <div class="result">
         <textarea name="" class="resultCss" cols="30" rows="10"></textarea>
         <textarea name="" class="resultHtml" cols="30" rows="10"></textarea>
     </div>
-    <!-- <button onClick="add()">add</button> -->
 
     <div class="names">
-        <textarea type="text" class="name">zero</textarea>
     </div>
     <select class="column" onInput="exe()">
-        <!-- <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option> -->
     </select>
     <select class="row" onInput="exe()">
-        <!-- <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option> -->
     </select>
-
-    <!-- <input type="number" name="" class="column" value="10" oninput="exe()"> -->
-    <!-- <input type="number" name="" class="row" value="10" oninput="exe()"> -->
 
 <div class="parent">
     <div class="child"></div>
@@ -231,15 +219,16 @@ function exe() {
     document.querySelector(".parent").insertAdjacentHTML("afterbegin", res);
     document.querySelectorAll(`div[class*="child"]`).forEach(V=>V.addEventListener("click", exe2 ,false));
 }
-exe();
 
-function test() {
+function init() {
     document.querySelector(".column").value = 10;
     document.querySelector(".row").value = 10;
     exe();
     document.querySelectorAll(`div[class*="child"]`).forEach(V=>V.addEventListener("click", exe2 ,false));
+    document.querySelectorAll(".result > textarea").forEach(V=>V.value = "");
+    document.querySelectorAll(".name").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector(".names").insertAdjacentHTML("afterbegin",`        <textarea type="text" class="name">zero</textarea>`);
 }
-test();
 
 let foo;
 let bar;
@@ -276,14 +265,12 @@ function exe3(event) {
     });
 
     resultCss += `.${document.querySelector(".names").lastElementChild.value} {
-    grid-column: ${barFirst[1]+1} / ${barLast[1]+1};
-    grid-row: ${barFirst[0]+1} / ${barLast[0]+1};
+    grid-column: ${barFirst[0]+1} / ${barLast[0]+1};
+    grid-row: ${barFirst[1]+1} / ${barLast[1]+1};
 }
 `
 resultHtml += `    <div class="${document.querySelector(".names").lastElementChild.value}"></div>
 `
-
-
 
     document.querySelector(".resultCss").value = resultCss;
     document.querySelector(".resultHtml").value = `<div class="result">
@@ -302,5 +289,7 @@ function nameChange(event) {
     document.querySelectorAll(`div[class*="child"]`).forEach(V=> V.innerText = V.innerText.replace(event.target.dataset.number, event.target.value));
 }
 
+exe();
+init();
 </script>
 </html>
