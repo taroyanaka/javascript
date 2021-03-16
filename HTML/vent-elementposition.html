@@ -197,14 +197,16 @@ div[class*="child"]{
 function getList() {
     column = Number(document.querySelector(".column").value);
     row = Number(document.querySelector(".row").value);
-    return xprod([...Array(column).keys()], [...Array(row).keys()]);
+    return xprod([...Array(row).keys()], [...Array(column).keys()]);
 }
 
 function exe() {
-    res = getList().map(V=> `<div class="child-${V[0]}-${V[1]}" data-row="${V[0]}" data-column="${V[1]}"></div>`).join("")
+    res = getList().map(V=> `<div class="child-column-${V[0]}-row-${V[1]}" data-column="${V[0]}" data-row="${V[1]}"></div>`).join("")
+    // res = getList().map(V=> `<div class="child-${V[0]}-${V[0]}" data-row="${V[0]}" data-column="${V[1]}"></div>`).join("")
     document.querySelector("style").innerText = makeCss();
     document.querySelector(".parent").innerHTML = "";
     document.querySelector(".parent").insertAdjacentHTML("afterbegin", res);
+    document.querySelectorAll(`div[class*="child"]`).forEach(V=>V.addEventListener("click", exe2 ,false));
 }
 exe();
 
@@ -233,6 +235,7 @@ let x;
 let y;
 let xy;
 function range(from,to){return[...Array(to-from)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
+function rangePlus(from,to){return[...Array((to+1)-from)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
 function exe3(event) {
     foo[0].push(Number(event.target.dataset.row));
     foo[1].push(Number(event.target.dataset.column));
@@ -240,12 +243,15 @@ function exe3(event) {
     bar.sort((a,b)=>(a[0]+a[1]) - (b[0]+b[1]))
     barFirst = take(1,bar)[0];
     barLast = takeLast(1,bar)[0];
-    x = range(barFirst[0], barLast[0]+1);
-    y = range(barFirst[1], barLast[1]+1);
+    x = rangePlus(barFirst[0], barLast[0]);
+    y = rangePlus(barFirst[1], barLast[1]);
+    console.log(event.target.dataset.row);
+    console.log(event.target.dataset.col);
     xy = xprod(x, y);
+    // console.log(xy);
     xy.forEach(V=>{
-        document.querySelector(`.child-${V[0]}-${V[1]}`).style = "background-color: gray;"
-        document.querySelector(`.child-${V[0]}-${V[1]}`).innerText = document.querySelector(".names").lastElementChild.value;
+        document.querySelector(`.child-column-${V[1]}-row-${V[0]}`).style = "background-color: gray;"
+        document.querySelector(`.child-column-${V[1]}-row-${V[0]}`).innerText = document.querySelector(".names").lastElementChild.value;
     });
     add();
 
