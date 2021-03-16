@@ -10,8 +10,10 @@
     </style>
 </head>
 <body>
-    <textarea name="" class="resultCss" cols="30" rows="10"></textarea>
-    <textarea name="" class="resultHtml" cols="30" rows="10"></textarea>
+    <div class="result">
+        <textarea name="" class="resultCss" cols="30" rows="10"></textarea>
+        <textarea name="" class="resultHtml" cols="30" rows="10"></textarea>
+    </div>
     <!-- <button onClick="add()">add</button> -->
 
     <div class="names">
@@ -142,7 +144,10 @@ const numberEnglish = [
 ]
 function add() {
     document.querySelector(".names").insertAdjacentHTML("afterbegin", `<textarea type="text" class="name"></textarea>`, false)
-    document.querySelectorAll(".name").forEach((V,IDX)=>V.value = numberEnglish[IDX]);
+    document.querySelectorAll(".name").forEach((V,IDX)=>{
+            V.value = numberEnglish[IDX];
+            V.dataset.number = numberEnglish[IDX];
+    });
 }
 
 const option = [...Array(100).keys()].map((V,IDX)=>`<option value="${IDX+1}">${IDX+1}</option>`).join("");
@@ -267,7 +272,7 @@ function exe3(event) {
     xy = xprod(x, y);
     xy.forEach(V=>{
         document.querySelector(`.child-column-${V[1]}-row-${V[0]}`).style = "background-color: gray;"
-        document.querySelector(`.child-column-${V[1]}-row-${V[0]}`).innerText += document.querySelector(".names").lastElementChild.value;
+        document.querySelector(`.child-column-${V[1]}-row-${V[0]}`).innerText += document.querySelector(".names").lastElementChild.value + ",";
     });
 
     resultCss += `.${document.querySelector(".names").lastElementChild.value} {
@@ -286,9 +291,16 @@ ${resultHtml}
 </div>`;
 
     add();
+    document.querySelectorAll(".names > .name").forEach(V=>V.addEventListener("input",nameChange,false));
 
     document.querySelectorAll(`div[class*="child"]`).forEach(V=>V.removeEventListener("click", exe3 ,false));
     document.querySelectorAll(`div[class*="child"]`).forEach(V=>V.addEventListener("click", exe2 ,false));
 }
+
+function nameChange(event) {
+    document.querySelectorAll(".result > textarea").forEach(V=>V.value = V.value.replace(event.target.dataset.number, event.target.value));
+    document.querySelectorAll(`div[class*="child"]`).forEach(V=> V.innerText = V.innerText.replace(event.target.dataset.number, event.target.value));
+}
+
 </script>
 </html>
