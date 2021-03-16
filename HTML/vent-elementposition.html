@@ -10,14 +10,18 @@
     </style>
 </head>
 <body>
-    <input type="text" class="name" value="foo">
-    <select name="" class="column" onInput="exe()">
+    <!-- <button onClick="add()">add</button> -->
+
+    <div class="names">
+        <textarea type="text" class="name">zero</textarea>
+    </div>
+    <select class="column" onInput="exe()">
         <!-- <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
         <option value="4">4</option> -->
     </select>
-    <select name="" class="row" onInput="exe()">
+    <select class="row" onInput="exe()">
         <!-- <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -32,6 +36,112 @@
 </div>
 </body>
 <script>
+const numberEnglish = [
+    "zero",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "eleven",
+    "twelve",
+    "thirteen",
+    "fourteen",
+    "fifteen",
+    "sixteen",
+    "seventeen",
+    "eighteen",
+    "nineteen",
+    "twenty",
+    "twenty-one",
+    "twenty-two",
+    "twenty-three",
+    "twenty-four",
+    "twenty-five",
+    "twenty-six",
+    "twenty-seven",
+    "twenty-eight",
+    "twenty-nine",
+    "thirty",
+    "thirty-one",
+    "thirty-two",
+    "thirty-three",
+    "thirty-four",
+    "thirty-five",
+    "thirty-six",
+    "thirty-seven",
+    "thirty-eight",
+    "thirty-nine",
+    "forty",
+    "forty-one",
+    "forty-two",
+    "forty-three",
+    "forty-four",
+    "forty-five",
+    "forty-six",
+    "forty-seven",
+    "forty-eight",
+    "forty-nine",
+    "fifty",
+    "fifty-one",
+    "fifty-two",
+    "fifty-three",
+    "fifty-four",
+    "fifty-five",
+    "fifty-six",
+    "fifty-seven",
+    "fifty-eight",
+    "fifty-nine",
+    "sixty",
+    "sixty-one",
+    "sixty-two",
+    "sixty-three",
+    "sixty-four",
+    "sixty-five",
+    "sixty-six",
+    "sixty-seven",
+    "sixty-eight",
+    "sixty-nine",
+    "seventy",
+    "seventy-one",
+    "seventy-two",
+    "seventy-three",
+    "seventy-four",
+    "seventy-five",
+    "seventy-six",
+    "seventy-seven",
+    "seventy-eight",
+    "seventy-nine",
+    "eighty",
+    "eighty-one",
+    "eighty-two",
+    "eighty-three",
+    "eighty-four",
+    "eighty-five",
+    "eighty-six",
+    "eighty-seven",
+    "eighty-eight",
+    "eighty-nine",
+    "ninety",
+    "ninety-one",
+    "ninety-two",
+    "ninety-three",
+    "ninety-four",
+    "ninety-five",
+    "ninety-six",
+    "ninety-seven",
+    "ninety-eight",
+    "ninety-nine",
+]
+function add() {
+    document.querySelector(".names").insertAdjacentHTML("afterbegin", `<textarea type="text" class="name"></textarea>`, false)
+    document.querySelectorAll(".name").forEach((V,IDX)=>V.value = numberEnglish[IDX]);
+}
 
 const option = [...Array(100).keys()].map((V,IDX)=>`<option value="${IDX+1}">${IDX+1}</option>`).join("");
 document.querySelector(".column").insertAdjacentHTML("afterbegin", option);
@@ -43,10 +153,11 @@ function xprod(a,b){return a.reduce((A,aV,aIDX)=>{const RESULT=b.reduce((B,bV)=>
 let list;
 let res;
 
-let css = `
+let css =
+`
 .parent{
-    width: 300px;
-    height: 300px;
+    width: 100vw;
+    height: 100vh;
     background-color: tomato;
 
     display: grid;
@@ -105,9 +216,42 @@ function test() {
 }
 test();
 
+let foo;
+let bar;
+function take(n,list){return list.slice(0,n)};
+function takeLast(n,list){return list.slice(list.length - n, list.length)};
+
 function exe2(event) {
     event.target.style = "background-color: gray;";
-    event.target.innerText = document.querySelector(".name").value;
+    foo = [[Number(event.target.dataset.row)], [Number(event.target.dataset.column)]];
+    document.querySelectorAll(`div[class*="child"]`).forEach(V=>V.removeEventListener("click", exe2 ,false));
+    document.querySelectorAll(`div[class*="child"]`).forEach(V=>V.addEventListener("click", exe3 ,false));
+}
+let barFirst;
+let barLast;
+let x;
+let y;
+let xy;
+function range(from,to){return[...Array(to-from)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
+function exe3(event) {
+    foo[0].push(Number(event.target.dataset.row));
+    foo[1].push(Number(event.target.dataset.column));
+    bar = xprod(foo[0], foo[1]);
+    bar.sort((a,b)=>(a[0]+a[1]) - (b[0]+b[1]))
+    barFirst = take(1,bar)[0];
+    barLast = takeLast(1,bar)[0];
+    x = range(barFirst[0], barLast[0]+1);
+    y = range(barFirst[1], barLast[1]+1);
+    xy = xprod(x, y);
+    xy.forEach(V=>{
+        document.querySelector(`.child-${V[0]}-${V[1]}`).style = "background-color: gray;"
+        document.querySelector(`.child-${V[0]}-${V[1]}`).innerText = document.querySelector(".names").lastElementChild.value;
+    });
+    add();
+
+    // event.target.innerText = document.querySelector(".name").value;
+    document.querySelectorAll(`div[class*="child"]`).forEach(V=>V.removeEventListener("click", exe3 ,false));
+    document.querySelectorAll(`div[class*="child"]`).forEach(V=>V.addEventListener("click", exe2 ,false));
 }
 </script>
 </html>
