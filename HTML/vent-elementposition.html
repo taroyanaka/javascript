@@ -212,7 +212,14 @@ function getList() {
 
 function exe() {
     res = getList().map(V=> `<div class="child-column-${V[0]}-row-${V[1]}" data-column="${V[0]}" data-row="${V[1]}"></div>`).join("")
-    // res = getList().map(V=> `<div class="child-${V[0]}-${V[0]}" data-row="${V[0]}" data-column="${V[1]}"></div>`).join("")
+
+    resultCss = `
+.result{
+    display: grid;
+    grid-template-columns: repeat(${document.querySelector(".column").value}, 1fr);
+    grid-template-rows: repeat(${document.querySelector(".row").value}, 1fr);
+}
+`;
     css = makeCss();
     document.querySelector("style").innerText = css;
     document.querySelector(".parent").innerHTML = "";
