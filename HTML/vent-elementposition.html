@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>vent element position</title>
     <style>
-
+        .resultParent{height: 1rem;}
     </style>
 </head>
 <body>
     <button onclick="init();">clear</button>
+    <textarea name="" class="resultParent" rows="1" oninput="changeResultParent();">result</textarea>
     <div class="result">
         <textarea name="" class="resultCss" cols="30" rows="10"></textarea>
         <textarea name="" class="resultHtml" cols="30" rows="10"></textarea>
@@ -131,10 +132,11 @@ const numberEnglish = [
     "ninety-nine",
 ]
 function add() {
-    document.querySelector(".names").insertAdjacentHTML("afterbegin", `<textarea type="text" class="name"></textarea>`, false)
+    document.querySelector(".names").insertAdjacentHTML("afterbegin", `<textarea type="text" class="name" rows="1"></textarea>`, false)
     document.querySelectorAll(".name").forEach((V,IDX)=>{
             V.value = numberEnglish[IDX];
             V.dataset.number = numberEnglish[IDX];
+            V.style = "height: 1rem;";
     });
 }
 
@@ -149,7 +151,7 @@ let list;
 let res;
 let resultHtml = ``;
 let resultCss = `
-.result{
+.${document.querySelector(".resultParent").value}{
     display: grid;
     grid-template-columns: repeat(${document.querySelector(".column").value}, 1fr);
     grid-template-rows: repeat(${document.querySelector(".row").value}, 1fr);
@@ -207,7 +209,7 @@ function exe() {
     res = getList().map(V=> `<div class="child-column-${V[0]}-row-${V[1]}" data-column="${V[0]}" data-row="${V[1]}"></div>`).join("")
 
     resultCss = `
-.result{
+.${document.querySelector(".resultParent").value}{
     display: grid;
     grid-template-columns: repeat(${document.querySelector(".column").value}, 1fr);
     grid-template-rows: repeat(${document.querySelector(".row").value}, 1fr);
@@ -273,7 +275,7 @@ resultHtml += `    <div class="${document.querySelector(".names").lastElementChi
 `
 
     document.querySelector(".resultCss").value = resultCss;
-    document.querySelector(".resultHtml").value = `<div class="result">
+    document.querySelector(".resultHtml").value = `<div class="${document.querySelector(".resultParent").value}">
 ${resultHtml}
 </div>`;
 
@@ -287,6 +289,16 @@ ${resultHtml}
 function nameChange(event) {
     document.querySelectorAll(".result > textarea").forEach(V=>V.value = V.value.replace(event.target.dataset.number, event.target.value));
     document.querySelectorAll(`div[class*="child"]`).forEach(V=> V.innerText = V.innerText.replace(event.target.dataset.number, event.target.value));
+}
+
+function changeResultParent() {
+    resultCss = `
+.${document.querySelector(".resultParent").value}{
+    display: grid;
+    grid-template-columns: repeat(${document.querySelector(".column").value}, 1fr);
+    grid-template-rows: repeat(${document.querySelector(".row").value}, 1fr);
+}
+`    
 }
 
 exe();
