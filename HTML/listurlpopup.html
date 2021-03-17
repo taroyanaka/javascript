@@ -18,13 +18,13 @@
 <textarea name="" class="url-list"></textarea>
 </body>
 <script>
-function allTabOpen(params) {
+function tabOpen(params) {
     window.open(params, '_blank')
 };
 function exe() {
     Array.from(document.querySelector("textarea.url-list").value.split("\n"))
         .slice(0, Number(document.querySelector(".max-open-volume-of-number").value)).forEach(V=>
-            allTabOpen(V)
+            tabOpen(V)
         )
 }
 const option = [...Array(100).keys()].map((V, IDX) => `<option value="${IDX + 1}">${IDX + 1}</option>`).join("");
