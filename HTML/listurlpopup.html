@@ -23,7 +23,7 @@ function allTabOpen(params) {
 };
 function exe() {
     Array.from(document.querySelector("textarea.url-list").value.split("\n"))
-        .slice(0, Number(document.querySelector(".max-open-volume-of-number").value)).forEach(V =>
+        .slice(0, Number(document.querySelector(".max-open-volume-of-number").value)).forEach(V=>
             allTabOpen(V)
         )
 }
