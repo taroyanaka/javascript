@@ -101,16 +101,20 @@ let getHistory;
 
 function makeHistoryButton() {
     res = Array.from(document.querySelectorAll("p > button:not(button[data-counter=''])"))
-        .sort((a,b)=>Number(a.dataset.counter) - Number(b.dataset.counter))
+        .sort((a,b)=>
+            Number(a.dataset.counter) - Number(b.dataset.counter))
         .reverse()
-        .map(V=>V.innerText);
+        .map(V=>
+            V.innerText);
     uniqRes = uniq(res);
     return uniqRes
-        .map(V=>`<button data-counter="" onclick="insertTextFromHistory(event);">${V}</button>`)
+        .map(V=>
+            `<button data-counter="" onclick="insertTextFromHistory(event);">${V}</button>`)
         .join("")
 }
 function addHistory() {
-    document.querySelectorAll("#tm1 ~ .history > button").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelectorAll("#tm1 ~ .history > button").forEach(E=>
+        {E.parentNode.removeChild(E)});
     document.querySelector("#tm1 ~ .history").insertAdjacentHTML("afterbegin",
         makeHistoryButton()
     )
@@ -122,8 +126,10 @@ function insertTextWithAddHistory(event){
 }
 function countInHistoryBlock(text) {
     Array.from(document.querySelectorAll(":not(.history) > button"))
-        .filter(V=>V.innerText === text)
-        .forEach(V=> V.dataset.counter = Number(V.dataset.counter) + 1 )
+        .filter(V=>
+            V.innerText === text)
+        .forEach(V=>
+             V.dataset.counter = Number(V.dataset.counter) + 1 )
 }
 function insertTextFromHistory(event){
     countInHistoryBlock(event.target.innerText);
@@ -132,32 +138,39 @@ function insertTextFromHistory(event){
 }
 function init() {
     document.querySelector("#tm2 ~ .hiddentext").insertAdjacentHTML("afterbegin", 
-        engWords3000.split("\n").map(V=>`<button data-counter="" onclick="insertTextWithAddHistory(event);">${V}</button>`).join("")
+        engWords3000.split("\n").map(V=>
+            `<button data-counter="" onclick="insertTextWithAddHistory(event);">${V}</button>`).join("")
     )
 }
 function getNewButton() {
     newButton = document.querySelector(".newText").value.split("\n")
-        .sort((a,b)=>Number(a.split(" ")[1]) - Number(b.split(" ")[1]))
+        .sort((a,b)=>
+            Number(a.split(" ")[1]) - Number(b.split(" ")[1]))
         .reverse()
-        .map(V=>`<button data-counter="${V.split(" ")[1]}" onclick="insertTextWithAddHistory(event);">${V.split(" ")[0]}</button>`)
+        .map(V=>
+            `<button data-counter="${V.split(" ")[1]}" onclick="insertTextWithAddHistory(event);">${V.split(" ")[0]}</button>`)
         .join("")
 }
 function addNewButton() {
     getNewButton();
-    document.querySelectorAll("#tm3 ~ .newButton > button").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelectorAll("#tm3 ~ .newButton > button").forEach(E=>
+        {E.parentNode.removeChild(E)});
     document.querySelector("#tm3 ~ .newButton").insertAdjacentHTML("afterbegin", newButton);
 }
 function getHistoryData() {
     getHistory = Array.from(document.querySelectorAll("p > :not(button[data-counter=''])"))
-        .map(V=>`${V.innerText} ${V.dataset.counter}`)
-        .sort((a,b)=>Number(a.split(" ")[1]) - Number(b.split(" ")[1]))
+        .map(V=>
+            `${V.innerText} ${V.dataset.counter}`)
+        .sort((a,b)=>
+            Number(a.split(" ")[1]) - Number(b.split(" ")[1]))
         .reverse()
         .join("\n")
     const historyWithTextAreaTag = `<textarea class="historyText" cols="30" rows="10">${getHistory}</textarea>`;
     return historyWithTextAreaTag;
 }
 function addHistoryDataToTextArea() {
-    document.querySelectorAll("#tm4 ~ .getHistory > textarea").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelectorAll("#tm4 ~ .getHistory > textarea").forEach(E=>
+        {E.parentNode.removeChild(E)});
     document.querySelector("#tm4 ~ .getHistory").insertAdjacentHTML("afterbegin", getHistoryData() );
 }
 
