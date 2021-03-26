@@ -41,8 +41,8 @@ input#tm4{
 </head>
 <body>
 <textarea class="newText" cols="30" rows="10" onchange="addNewButton();"></textarea>
-
 <textarea class="text" cols="30" rows="10"></textarea>
+
 <div class="container">
     <div class="accordion">
     <label for="tm1" class="accordionitem">
@@ -78,6 +78,16 @@ input#tm4{
     <p class="getHistory"></p>
     </div>
 </div>
+
+<!-- <div class="container">
+    <div class="accordion">
+    <label for="tm5" class="accordionitem">
+    <h2>text button</h2></label>
+    <input type="checkbox" id="tm5"/>
+    <p class="textButton"></p>
+    </div>
+</div> -->
+
 </body>
 <script>
 // declarationUtilityFunction
@@ -95,23 +105,29 @@ function makeHistoryButton() {
         .reverse()
         .map(V=>V.innerText);
     uniqRes = uniq(res);
+    return uniqRes
+        .map(V=>`<button data-counter="" onclick="insertTextFromHistory(event);">${V}</button>`)
+        .join("")
 }
 function addHistory() {
-    makeHistoryButton();
     document.querySelectorAll("#tm1 ~ .history > button").forEach(E=>{E.parentNode.removeChild(E)});
-    document.querySelector("#tm1 ~ .history").insertAdjacentHTML("afterbegin", 
-        uniqRes
-        .map(V=>`<button data-counter="" onclick="insertText(event);">${V}</button>`)
-        .join("")
+    document.querySelector("#tm1 ~ .history").insertAdjacentHTML("afterbegin",
+        makeHistoryButton()
     )
 }
 function insertTextWithAddHistory(event){
     document.querySelector(".text").value += event.target.innerText + " ";
     event.target.dataset.counter = Number(event.target.dataset.counter) + 1;
-    console.log(event.target.dataset.counter);
     addHistory();
 }
-function insertText(event){
+function countInHistoryBlock(text) {
+    Array.from(document.querySelectorAll(":not(.history) > button"))
+        .filter(V=>V.innerText === text)
+        .forEach(V=> V.dataset.counter = Number(V.dataset.counter) + 1 )
+}
+function insertTextFromHistory(event){
+    countInHistoryBlock(event.target.innerText);
+    addHistory();
     document.querySelector(".text").value += event.target.innerText + " ";
 }
 function init() {
@@ -119,11 +135,6 @@ function init() {
         engWords3000.split("\n").map(V=>`<button data-counter="" onclick="insertTextWithAddHistory(event);">${V}</button>`).join("")
     )
 }
-
-document.querySelector(".newText").value = `sampleabc 100
-sampleaabc 2
-sampleaaaabc 4`
-
 function getNewButton() {
     newButton = document.querySelector(".newText").value.split("\n")
         .sort((a,b)=>Number(a.split(" ")[1]) - Number(b.split(" ")[1]))
@@ -136,7 +147,6 @@ function addNewButton() {
     document.querySelectorAll("#tm3 ~ .newButton > button").forEach(E=>{E.parentNode.removeChild(E)});
     document.querySelector("#tm3 ~ .newButton").insertAdjacentHTML("afterbegin", newButton);
 }
-
 function getHistoryData() {
     getHistory = Array.from(document.querySelectorAll("p > :not(button[data-counter=''])"))
         .map(V=>`${V.innerText} ${V.dataset.counter}`)
@@ -151,14 +161,12 @@ function addHistoryDataToTextArea() {
     document.querySelector("#tm4 ~ .getHistory").insertAdjacentHTML("afterbegin", getHistoryData() );
 }
 
-
-
+document.querySelector(".newText").value = `sampleabc 100
+sampleaabc 2
+sampleaaaabc 4`
 
 init();
 getNewButton();
 addNewButton();
-
-
-
 </script>
 </html>
