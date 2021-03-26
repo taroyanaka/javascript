@@ -40,7 +40,7 @@ input#tm4{
     </style>
 </head>
 <body>
-<textarea class="newText" cols="30" rows="10" oninput="addNewButton();"></textarea>
+<textarea class="newText" cols="30" rows="10" onchange="addNewButton();"></textarea>
 
 <textarea class="text" cols="30" rows="10"></textarea>
 <div class="container">
@@ -132,6 +132,7 @@ function getNewButton() {
         .join("")
 }
 function addNewButton() {
+    getNewButton();
     document.querySelectorAll("#tm3 ~ .newButton > button").forEach(E=>{E.parentNode.removeChild(E)});
     document.querySelector("#tm3 ~ .newButton").insertAdjacentHTML("afterbegin", newButton);
 }
