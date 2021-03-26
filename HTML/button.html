@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="engWords3000.js"></script>
+    <!-- http://vizua.net/simple-pure-css-accordion -->
+    <style>
+.container{
+  width: 400px;
+  height: auto;
+  margin: 0 auto;
+}
+.accordion label{
+  display:block;
+  background-color: #eeeeee;
+}
+.accordion p{
+  visibility: hidden;
+  opacity: 0;
+  display: none;
+}
+#tm1:checked ~ .history,
+#tm2:checked ~ .hiddentext,
+#tm3:checked ~ .newButton,
+#tm4:checked ~ .getHistory{
+  display: block;
+  visibility: visible;
+  opacity: 1;
+}
+input#tm1,
+input#tm2,
+input#tm3,
+input#tm4{
+  display: none;
+  position: relative;
+}
+    </style>
+</head>
+<body>
+<textarea class="newText" cols="30" rows="10" oninput="addNewButton();"></textarea>
+
+<textarea class="text" cols="30" rows="10"></textarea>
+<div class="container">
+    <div class="accordion">
+    <label for="tm1" class="accordionitem">
+    <h2>History</h2></label>
+    <input type="checkbox" id="tm1"/>
+    <p class="history"></p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="accordion">
+    <label for="tm3" class="accordionitem">
+    <h2>New button</h2></label>
+    <input type="checkbox" id="tm3"/>
+    <p class="newButton"></p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="accordion">
+    <label for="tm2" class="accordionitem">
+    <h2>English button</h2></label>
+    <input type="checkbox" id="tm2"/>
+    <p class="hiddentext"></p>
+    </div>
+</div>
+
+<div class="container" onclick="addHistoryDataToTextArea()">
+    <div class="accordion">
+    <label for="tm4" class="accordionitem">
+    <h2>Get history</h2></label>
+    <input type="checkbox" id="tm4"/>
+    <p class="getHistory"></p>
+    </div>
+</div>
+</body>
+<script>
+// declarationUtilityFunction
+function uniq(list){list=list.map(V=>{return JSON.stringify(V)});return[...new Set(list)].map(V=>{return JSON.parse(V)})};
+
+// declarationUtilityValue
+let res;
+let uniqRes;
+let newButton;
+let getHistory;
+
+function makeHistoryButton() {
+    res = Array.from(document.querySelectorAll("p > button:not(button[data-counter=''])"))
+        .sort((a,b)=>Number(a.dataset.counter) - Number(b.dataset.counter))
+        .reverse()
+        .map(V=>V.innerText);
+    uniqRes = uniq(res);
+}
+function addHistory() {
+    makeHistoryButton();
+    document.querySelectorAll("#tm1 ~ .history > button").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector("#tm1 ~ .history").insertAdjacentHTML("afterbegin", 
+        uniqRes
+        .map(V=>`<button data-counter="" onclick="insertText(event);">${V}</button>`)
+        .join("")
+    )
+}
+function insertTextWithAddHistory(event){
+    document.querySelector(".text").value += event.target.innerText + " ";
+    event.target.dataset.counter = Number(event.target.dataset.counter) + 1;
+    console.log(event.target.dataset.counter);
+    addHistory();
+}
+function insertText(event){
+    document.querySelector(".text").value += event.target.innerText + " ";
+}
+function init() {
+    document.querySelector("#tm2 ~ .hiddentext").insertAdjacentHTML("afterbegin", 
+        engWords3000.split("\n").map(V=>`<button data-counter="" onclick="insertTextWithAddHistory(event);">${V}</button>`).join("")
+    )
+}
+
+document.querySelector(".newText").value = `sampleabc 100
+sampleaabc 2
+sampleaaaabc 4`
+
+function getNewButton() {
+    newButton = document.querySelector(".newText").value.split("\n")
+        .sort((a,b)=>Number(a.split(" ")[1]) - Number(b.split(" ")[1]))
+        .reverse()
+        .map(V=>`<button data-counter="${V.split(" ")[1]}" onclick="insertTextWithAddHistory(event);">${V.split(" ")[0]}</button>`)
+        .join("")
+}
+function addNewButton() {
+    document.querySelectorAll("#tm3 ~ .newButton > button").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector("#tm3 ~ .newButton").insertAdjacentHTML("afterbegin", newButton);
+}
+
+function getHistoryData() {
+    getHistory = Array.from(document.querySelectorAll("p > :not(button[data-counter=''])"))
+        .map(V=>`${V.innerText} ${V.dataset.counter}`)
+        .sort((a,b)=>Number(a.split(" ")[1]) - Number(b.split(" ")[1]))
+        .reverse()
+        .join("\n")
+    const historyWithTextAreaTag = `<textarea class="historyText" cols="30" rows="10">${getHistory}</textarea>`;
+    return historyWithTextAreaTag;
+}
+function addHistoryDataToTextArea() {
+    document.querySelectorAll("#tm4 ~ .getHistory > textarea").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector("#tm4 ~ .getHistory").insertAdjacentHTML("afterbegin", getHistoryData() );
+}
+
+
+
+
+init();
+getNewButton();
+addNewButton();
+
+
+
+</script>
+</html>
