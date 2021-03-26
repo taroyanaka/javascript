@@ -145,10 +145,10 @@ function init() {
 function getNewButton() {
     newButton = document.querySelector(".newText").value.split("\n")
         .sort((a,b)=>
-            Number(a.split(" ")[1]) - Number(b.split(" ")[1]))
+            Number(a.split(" ")[0]) - Number(b.split(" ")[0]))
         .reverse()
         .map(V=>
-            `<button data-counter="${V.split(" ")[1]}" onclick="insertTextWithAddHistory(event);">${V.split(" ")[0]}</button>`)
+            `<button data-counter="${V.split(" ")[0]}" onclick="insertTextWithAddHistory(event);">${V.split(" ")[1]}</button>`)
         .join("")
 }
 function addNewButton() {
@@ -160,9 +160,9 @@ function addNewButton() {
 function getHistoryData() {
     getHistory = Array.from(document.querySelectorAll("p > :not(button[data-counter=''])"))
         .map(V=>
-            `${V.innerText} ${V.dataset.counter}`)
+            `${V.dataset.counter} ${V.innerText}`)
         .sort((a,b)=>
-            Number(a.split(" ")[1]) - Number(b.split(" ")[1]))
+            Number(a.split(" ")[0]) - Number(b.split(" ")[0]))
         .reverse()
         .join("\n")
     const historyWithTextAreaTag = `<textarea class="historyText" cols="30" rows="10">${getHistory}</textarea>`;
@@ -174,9 +174,9 @@ function addHistoryDataToTextArea() {
     document.querySelector("#tm4 ~ .getHistory").insertAdjacentHTML("afterbegin", getHistoryData() );
 }
 
-document.querySelector(".newText").value = `sampleabc 100
-sampleaabc 2
-sampleaaaabc 4`
+document.querySelector(".newText").value = `100 sampleabc
+2 sampleaabc
+4 sampleaaaabc`
 
 init();
 getNewButton();
