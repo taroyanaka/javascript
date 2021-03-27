@@ -54,10 +54,13 @@ function disassembly() {
                     V.map(VAL=>
                         VAL.split(xSeparator)
                     )
-                    .map(VAL=>[
+                    .map(VAL=>{
+                            VAL[1] = decodeURIComponent(VAL[1]);
+                            return [
                                     Number(VAL[0]),
                                     VAL[1]
-                                ]
+                                    ]
+                            }
                         )
                     );
     return tmp
@@ -138,8 +141,13 @@ function insertTextFromButton(event){
     document.querySelector(".target").value += event.target.innerText;
 }
 function copy() {
+    let tmp = document.querySelector(".target").value;
+    if(document.querySelector(".target").value.includes("\n")){
+        tmp = encodeURIComponent(document.querySelector(".target").value);
+    }
     document.querySelector(".copy").value = document.querySelector(".copy").value.replace("\n"+ySeparator+ "\n","");
-    document.querySelector(".copy").value += `1${xSeparator}${document.querySelector(".target").value}
+    // document.querySelector(".copy").value += `1${xSeparator}${document.querySelector(".target").value}
+    document.querySelector(".copy").value += `1${xSeparator}${tmp}
 ` + "\n" + ySeparator + "\n";
 }
 function hide() {
