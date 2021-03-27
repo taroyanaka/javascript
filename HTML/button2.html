@@ -17,6 +17,7 @@
 <button onclick="hide();">hide</button>
 <textarea cols="30" rows="10" class="target"></textarea>
 <button class="toCopyFromTarget" onclick="copy()">copy</button>
+<button onclick="(()=>document.querySelector('.target').value='')();">clear</button>
 <textarea cols="30" rows="10" class="copy"></textarea>
 <div class="buttonsBox"></div>
 
@@ -133,10 +134,6 @@ function insertTextFromButton(event){
     openTargetBox(Number(event.target.dataset.category));
     document.querySelector(".target").value += event.target.innerText;
 }
-
-// test();
-exe();
-
 function copy() {
     document.querySelector(".copy").value = document.querySelector(".copy").value.replace("\n"+ySeparator+ "\n","");
     document.querySelector(".copy").value += `1${xSeparator}${document.querySelector(".target").value}
