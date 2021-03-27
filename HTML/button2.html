@@ -43,8 +43,8 @@ function test() {
 1|baz3`
 }
 
-const xSeparator = document.querySelector(".xSeparator").value;
-const ySeparator = document.querySelector(".ySeparator").value;
+let xSeparator = document.querySelector(".xSeparator").value;
+let ySeparator = document.querySelector(".ySeparator").value;
 
 function disassembly() {
     let tmp = document.querySelector(".original").value.split("\n"+ySeparator+"\n");
@@ -109,6 +109,8 @@ function addStyle() {
     document.querySelector("style.myStyle").innerText = originalStyle + addStyle;
 }
 function exe() {
+    xSeparator = document.querySelector(".xSeparator").value;
+    ySeparator = document.querySelector(".ySeparator").value;
     document.querySelectorAll(".container").forEach(E=>
         {E.parentNode.removeChild(E)});
     res2 = disassembly();
