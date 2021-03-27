@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>button2</title>
+    <!-- http://vizua.net/simple-pure-css-accordion -->
+    <style class="myStyle">
+    </style>
+</head>
+<body>
+<input type="text" value="|" class="xSeparator canHidden">
+<input type="text" value="---" class="ySeparator canHidden">
+<textarea cols="30" rows="10" class="original canHidden" oninput="exe()"></textarea>
+<button onclick="test();exe();">test</button>
+<button onclick="hide();">hide</button>
+<textarea cols="30" rows="10" class="target"></textarea>
+<button class="toCopyFromTarget" onclick="copy()">copy</button>
+<textarea cols="30" rows="10" class="copy"></textarea>
+<div class="buttonsBox"></div>
+
+</body>
+<script>
+function rangePlus(from,to){return[...Array(to-from+1)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
+function groupWith(fn,list){let idx=0;return list.reduce((A,V)=>{while(idx<list.length){let nextidx=idx+1;while(nextidx<list.length&&fn(list[nextidx-1],list[nextidx])){nextidx+=1};A.push(list.slice(idx,nextidx));idx=nextidx};return A},A=[])};
+
+let res2;
+let res3;
+
+function test() {
+    document.querySelector(".original").value = `10|foo1
+5|bar1
+3|baz1
+---
+30|foo2
+5|bar2 ba ba bazzz
+1|baz2
+---
+6|foo3
+3|bar3
+1|baz3`    
+}
+
+const xSeparator = document.querySelector(".xSeparator").value;
+const ySeparator = document.querySelector(".ySeparator").value;
+
+function disassembly() {
+    let tmp = document.querySelector(".original").value.split("\n"+ySeparator+"\n");
+    tmp = tmp.map(V=>V.split("\n"));
+    tmp = tmp.map(V=>
+                    V.map(VAL=>
+                        VAL.split(xSeparator)
+                    )
+                    .map(VAL=>[
+                                    Number(VAL[0]),
+                                    VAL[1]
+                                ]
+                        )
+                    );
+    return tmp
+}
+function assemble() {
+    let tmp = groupWith((a, b)=> a.dataset.category === b.dataset.category,
+                        Array.from(document.querySelectorAll("p > button"))
+                    )
+    return tmp.map(V=>
+                        V.map(VAL=>
+                                [
+                                    VAL.dataset.counter,
+                                    VAL.innerText
+                                ]
+                                .join(xSeparator)
+                            )
+                            .sort((a,b)=>
+                                Number(a.split(xSeparator)[0]) - Number(b.split(xSeparator)[0]))
+                            .reverse()
+                        .join("\n")
+                    )
+                    .join("\n"+ySeparator+"\n")
+}
+function addStyle() {
+    const originalStyle = `.container{
+    width: 400px;
+    height: auto;
+    margin: 0 auto;
+    }
+    .accordion label{
+    display:block;
+    background-color: #eeeeee;
+    }
+    .accordion p{
+    visibility: hidden;
+    opacity: 0;
+    display: none;
+    }`
+    const addStyle = res2.map((V,IDX)=>
+        `#tm${IDX+1}:checked ~ .buttons-${IDX+1}{
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        }
+        input#tm${IDX+1}{
+        display: none;
+        position: relative;
+        }`)
+        .join("")
+    document.querySelector("style.myStyle").innerText = originalStyle + addStyle;
+}
+function exe() {
+    document.querySelectorAll(".container").forEach(E=>
+        {E.parentNode.removeChild(E)});
+    res2 = disassembly();
+    res3 = res2.map((V,IDX)=>`<div class="container">
+        <div class="accordion">
+        <label for="tm${IDX+1}" class="accordionitem">
+        <h2>buttons-${IDX+1}</h2></label>
+        <input type="checkbox" id="tm${IDX+1}"/>
+        <p class="buttons-${IDX+1}">
+            ${V.map(VAL=>`<button data-category="${IDX+1}" data-counter="${VAL[0]}" onclick="insertTextFromButton(event);">${VAL[1]}</button>`).join("")}
+        </p>
+        </div>
+    </div>
+    `).join("")
+    document.querySelector(".buttonsBox").insertAdjacentHTML("afterbegin", res3);
+    addStyle();
+}
+function openTargetBox(num) { document.querySelectorAll(".container > div > input")[num - 1].click() }
+function insertTextFromButton(event){
+    event.target.dataset.counter = Number(event.target.dataset.counter) + 1;
+    document.querySelector(".original").value = assemble();
+    exe();
+    openTargetBox(Number(event.target.dataset.category));
+    document.querySelector(".target").value += event.target.innerText;
+}
+
+// test();
+exe();
+
+function copy() {
+    document.querySelector(".copy").value = document.querySelector(".copy").value.replace("\n"+ySeparator+ "\n","");
+    document.querySelector(".copy").value += `1${xSeparator}${document.querySelector(".target").value}
+` + "\n" + ySeparator + "\n";
+}
+function hide() {
+    document.querySelectorAll(".canHidden").forEach(V=>V.style.display = V.style.display === "none" ? "inline" : "none")
+}
+</script>
+</html>
