@@ -73,7 +73,7 @@ function assemble() {
                         V.map(VAL=>
                                 [
                                     VAL.dataset.counter,
-                                    VAL.innerText
+                                    encodeURIComponent(VAL.innerText)
                                 ]
                                 .join(xSeparator)
                             )
