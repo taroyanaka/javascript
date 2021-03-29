@@ -11,6 +11,21 @@
 </head>
 
 <body>
+
+<!-- https://codepen.io/thetallweeks/pen/uAEGr   -->
+<style>
+.long-press{
+  background-color:gray;
+  width: 100px;
+  height: 100px;
+}
+.long-press-selected{
+  background-color: white;
+}
+</style>
+<input type="button" value="1 second long press button" class="long-press">
+<input type="button" value="1 second long press button2" class="long-press">
+
 <textarea cols="30" rows="10" class="original canHidden" oninput="exe()"></textarea>
 <button onclick="test();disassemble();exe();">set test data and disassemble</button>
 <button onclick="disassemble();exe();">disassemble</button>
@@ -30,6 +45,22 @@
 <script>
 function rangePlus(from,to){return[...Array(to-from+1)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
 function groupWith(fn,list){let idx=0;return list.reduce((A,V)=>{while(idx<list.length){let nextidx=idx+1;while(nextidx<list.length&&fn(list[nextidx-1],list[nextidx])){nextidx+=1};A.push(list.slice(idx,nextidx));idx=nextidx};return A},A=[])};
+
+function setLongPressButtonMilliSeconds(longPressMilliSeconds) {
+    let delay;
+    document.querySelectorAll('.long-press').forEach(ELM=>{
+        ELM.addEventListener('mousedown', ()=>{
+            function check(){ ELM.classList.add('long-press-selected') };
+            delay = setTimeout(check, longPressMilliSeconds);
+        }, true);
+        ELM.addEventListener('mouseup', ()=>{ clearTimeout(delay) });
+        ELM.addEventListener('mouseout', ()=>{ clearTimeout(delay) });
+    })
+}
+setLongPressButtonMilliSeconds(1000);
+
+
+
 
 let testStr = `foo2
   bar2 bar3
@@ -135,10 +166,8 @@ function hide() {
     document.querySelectorAll(".canHidden").forEach(V=>V.style.display = V.style.display === "none" ? "inline" : "none")
 }
 function create() {
-    tmp2 = [];
-    tmp2.unshift([1, document.querySelector(".copy").value]);
     tmp3 = JSON.parse(json1);
-    tmp3.unshift(tmp2);
+    tmp3.unshift([[1, document.querySelector(".copy").value]]);
     json1 = JSON.stringify(tmp3, null, 2);
     disassemble();
     exe();

@@ -50,19 +50,7 @@ let ySeparator = document.querySelector(".ySeparator").value;
 function disassembly() {
     let tmp = document.querySelector(".original").value.split("\n"+ySeparator+"\n");
     tmp = tmp.map(V=>V.split("\n"));
-    tmp = tmp.map(V=>
-                    V.map(VAL=>
-                        VAL.split(xSeparator)
-                    )
-                    .map(VAL=>{
-                            VAL[1] = decodeURIComponent(VAL[1]);
-                            return [
-                                    Number(VAL[0]),
-                                    VAL[1]
-                                    ]
-                            }
-                        )
-                    );
+    tmp = tmp.map(V=>V.map(VAL=>VAL.split(xSeparator)).map(VAL=>{VAL[1] = decodeURIComponent(VAL[1]);return [Number(VAL[0]),VAL[1]]}));
     return tmp
 }
 function assemble() {
