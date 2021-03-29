@@ -46,6 +46,7 @@
 function rangePlus(from,to){return[...Array(to-from+1)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
 function groupWith(fn,list){let idx=0;return list.reduce((A,V)=>{while(idx<list.length){let nextidx=idx+1;while(nextidx<list.length&&fn(list[nextidx-1],list[nextidx])){nextidx+=1};A.push(list.slice(idx,nextidx));idx=nextidx};return A},A=[])};
 
+// https://codepen.io/thetallweeks/pen/uAEGr
 function setLongPressButtonMilliSeconds(longPressMilliSeconds) {
     let delay;
     document.querySelectorAll('.long-press').forEach(ELM=>{
