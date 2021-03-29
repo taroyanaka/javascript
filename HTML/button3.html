@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>button3</title>
+    <!-- http://vizua.net/simple-pure-css-accordion -->
+    <style class="myStyle">
+    </style>
+</head>
+
+<body>
+<textarea cols="30" rows="10" class="original canHidden" oninput="exe()"></textarea>
+<button onclick="test();disassemble();exe();">set test data and disassemble</button>
+<button onclick="disassemble();exe();">disassemble</button>
+<button onclick="hide();">hide</button>
+
+<textarea cols="30" rows="10" class="target"></textarea>
+<button class="toCopyFromTarget" onclick="copy();">copy</button>
+<button onclick="(()=>document.querySelector('.target').value='')();">clear</button>
+<textarea cols="30" rows="10" class="copy"></textarea>
+
+<button onclick="create();">create</button>
+<button onclick="add();">add</button>
+
+<div class="buttonsBox"></div>
+</body>
+
+<script>
+function rangePlus(from,to){return[...Array(to-from+1)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
+function groupWith(fn,list){let idx=0;return list.reduce((A,V)=>{while(idx<list.length){let nextidx=idx+1;while(nextidx<list.length&&fn(list[nextidx-1],list[nextidx])){nextidx+=1};A.push(list.slice(idx,nextidx));idx=nextidx};return A},A=[])};
+
+let testStr = `foo2
+  bar2 bar3
+
+ bar2 bar3
+
+
+ bar2 bar3
+`
+let testAry = [
+    [[10,"foo1"], [3,testStr], [2,"foo1"]],
+    [[5,"foo2"], [3,"foo2"], [2,"foo2"]],
+    [[7,"foo3"], [6,"foo3"], [5,"foo3"]]
+]
+
+let res2;
+let res3;
+let json1;
+let tmp;
+let tmp2;
+let tmp3;
+
+// https://stackoverflow.com/a/7220510/9740478
+// var str = JSON.stringify(obj, null, 2); // spacing level = 2
+
+function test() {
+    json1 = JSON.stringify(testAry, null, 2);
+}
+
+function disassemble() {
+    document.querySelector(".original").value = json1;
+    tmp = JSON.parse(json1);
+    return tmp;
+}
+function assemble() {
+    tmp = groupWith((a, b)=> a.dataset.category === b.dataset.category,
+                        Array.from(document.querySelectorAll("p > button"))
+                    )
+    tmp = tmp.map(V=>V.map(VAL=>[VAL.dataset.counter,VAL.textContent]).sort((a,b)=>a[0] - b[0]).reverse())
+    json1 = JSON.stringify(tmp, null, 2);
+    document.querySelector(".original").value = json1;
+    return tmp;
+}
+function addStyle() {
+    const originalStyle = `.container{
+    width: 400px;
+    height: auto;
+    margin: 0 auto;
+    }
+    .accordion label{
+    display:block;
+    background-color: #eeeeee;
+    }
+    .accordion p{
+    visibility: hidden;
+    opacity: 0;
+    display: none;
+    }`
+    const addStyle = res2.map((V,IDX)=>
+        `#tm${IDX+1}:checked ~ .buttons-${IDX+1}{
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        }
+        input#tm${IDX+1}{
+        display: none;
+        position: relative;
+        }`)
+        .join("")
+    document.querySelector("style.myStyle").textContent = originalStyle + addStyle;
+}
+function exe() {
+    document.querySelectorAll(".container").forEach(E=>
+        {E.parentNode.removeChild(E)});
+    res2 = disassemble();
+    res3 = res2.map((V,IDX)=>`<div class="container">
+        <div class="accordion">
+        <label for="tm${IDX+1}" class="accordionitem">
+        <h2>buttons-${IDX+1}</h2></label>
+        <input type="checkbox" id="tm${IDX+1}"/>
+        <p class="buttons-${IDX+1}">
+            ${V.map(VAL=>`<button data-category="${IDX+1}" data-counter="${VAL[0]}" onclick="insertTextFromButton(event);">${VAL[1]}</button>`).join("")}
+        </p>
+        </div>
+    </div>
+    `).join("")
+    document.querySelector(".buttonsBox").insertAdjacentHTML("afterbegin", res3);
+    addStyle();
+    // assemble();
+}
+function openTargetBox(num) { document.querySelectorAll(".container > div > input")[num - 1].click() }
+function insertTextFromButton(event){
+    event.target.dataset.counter = Number(event.target.dataset.counter) + 1;
+    assemble();
+    exe();
+    openTargetBox(Number(event.target.dataset.category));
+    document.querySelector(".target").value += event.target.textContent;
+}
+function copy() {
+    document.querySelector(".copy").value = document.querySelector(".target").value;
+}
+function hide() {
+    document.querySelectorAll(".canHidden").forEach(V=>V.style.display = V.style.display === "none" ? "inline" : "none")
+}
+function create() {
+    tmp2 = [];
+    tmp2.unshift([1, document.querySelector(".copy").value]);
+    tmp3 = JSON.parse(json1);
+    tmp3.unshift(tmp2);
+    json1 = JSON.stringify(tmp3, null, 2);
+    disassemble();
+    exe();
+}
+function add() {
+    tmp3 = JSON.parse(json1);
+    tmp3[0].unshift([1, document.querySelector(".copy").value]);
+    json1 = JSON.stringify(tmp3, null, 2);
+    disassemble();
+    exe();
+}
+</script>
+</html>
