@@ -49,7 +49,9 @@ function setLongPressButtonMilliSeconds(longPressMilliSeconds, cssselector) {
 setLongPressButtonMilliSeconds(1000, '.long-press');
 
 function removeAll() {
-    document.querySelectorAll(`[data-buttonid='1']`).forEach(E=>{E.parentNode.removeChild(E)});
+    if (window.confirm("Do you really want to remove all?")) {
+        document.querySelectorAll(`[data-buttonid='1']`).forEach(E=>{E.parentNode.removeChild(E)});
+    }
 }
 </script>
 </html>
