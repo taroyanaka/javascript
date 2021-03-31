@@ -50,6 +50,13 @@ function groupWith(fn,list){let idx=0;return list.reduce((A,V)=>{while(idx<list.
 function setLongPressButtonMilliSeconds(longPressMilliSeconds) {
     let delay;
     document.querySelectorAll('.long-press').forEach(ELM=>{
+        ELM.addEventListener('touchstart', ()=>{
+            function check(){ ELM.classList.add('long-press-selected') };
+            delay = setTimeout(check, longPressMilliSeconds);
+        }, true);
+        ELM.addEventListener('touchend', ()=>{ clearTimeout(delay) });
+
+        
         ELM.addEventListener('mousedown', ()=>{
             function check(){ ELM.classList.add('long-press-selected') };
             delay = setTimeout(check, longPressMilliSeconds);
