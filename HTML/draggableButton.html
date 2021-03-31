@@ -9,6 +9,9 @@
     <!-- https://codepen.io/dior1726/pen/MWwwboY -->
     <!-- https://github.com/timruffles/mobile-drag-drop -->
     <!-- // https://qiita.com/boushi-bird@github/items/ce720122fd0c15abe036 -->
+    <link rel="stylesheet" href="draggable/default.css">
+    <script src="draggable/index.js"></script>
+    <script src="draggable/scroll-behaviour.js"></script>
     <style>
 *, *::before, *::after {
     box-sizing: border-box;
@@ -48,10 +51,6 @@
     <li class="cell"></li>
 </ul>
 </body>
-
-<link rel="stylesheet" href="draggable/default.css">
-<script src="draggable/index.js"></script>
-<script src="draggable/scroll-behaviour.js"></script>
 <script>
 MobileDragDrop.polyfill({
     dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
@@ -107,7 +106,6 @@ const dragAndDrop = () => {
         cell.addEventListener('dragleave', dragLeave);
         cell.addEventListener('drop', dragDrop);
     });
-
 
     card.addEventListener('dragstart', dragStart);
     card.addEventListener('dragend', dragEnd);
