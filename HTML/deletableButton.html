@@ -48,6 +48,10 @@
 </div>
 </body>
 <script>
+function vib(msec) {
+    window.navigator.vibrate([msec]);
+}
+
 // https://codepen.io/thetallweeks/pen/uAEGr
 function setLongPressButtonMilliSeconds(longPressMilliSeconds, cssselector) {
     let delay1;
@@ -58,7 +62,7 @@ function setLongPressButtonMilliSeconds(longPressMilliSeconds, cssselector) {
              };
             delay1 = setTimeout(removeChildElm, longPressMilliSeconds);
         });
-        ELM.addEventListener('touchend', ()=>{ clearTimeout(delay1) });
+        ELM.addEventListener('touchend', ()=>{ clearTimeout(delay1); vib(200); });
 
         ELM.addEventListener('mousedown', ()=>{
             function removeChildElm(){ 
