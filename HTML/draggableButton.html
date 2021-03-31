@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>draggableButton</title>
+    <!-- https://developer.mozilla.org/ja/docs/Web/API/HTML_Drag_and_Drop_API -->
+    <!-- https://codepen.io/dior1726/pen/MWwwboY -->
+    <style>
+*, *::before, *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+.list{
+    display: flex;
+    justify-content: space-between;
+}
+.cell{
+    flex-basis: calc(25% - 40px);
+    min-height: 150px;
+    list-style: none;
+    background-color:#f0f2f5;;
+}
+.card{
+    min-height: 100%;
+    background-color: gray;
+}
+.hovered{
+    background-color: #d1d8e2;
+}
+.hide{
+    display: none;
+}
+    </style>
+</head>
+<body>
+<!-- <div class="hero"> -->
+    <ul class="list">
+        <li class="cell">
+            <div class="card" draggable="true"></div>
+        </li>
+        <li class="cell"></li>
+        <li class="cell"></li>
+        <li class="cell"></li>
+    </ul>
+<!-- </div> -->
+</body>
+<script>
+const dragAndDrop = () => {
+    const card = document.querySelector('.card');
+    const cells = document.querySelectorAll('.cell');
+
+    const dragStart = function () {
+        setTimeout(() => {
+            this.classList.add('hide');
+        }, 0);
+    };
+    
+    const dragEnd = function () {
+        this.classList.remove('hide');
+    };
+
+    const dragOver = function (evt) {
+        evt.preventDefault();
+    };
+
+    const dragEnter = function (evt) {
+        evt.preventDefault();
+        this.classList.add('hovered');
+    };
+
+    const dragLeave = function () {
+        this.classList.remove('hovered');
+    };
+
+    const dragDrop = function () {
+        this.append(card);
+        this.classList.remove('hovered');
+    };
+
+    cells.forEach(cell => {
+        cell.addEventListener('dragover', dragOver);
+        cell.addEventListener('dragenter', dragEnter);
+        cell.addEventListener('dragleave', dragLeave);
+        cell.addEventListener('drop', dragDrop);
+    });
+
+
+    card.addEventListener('dragstart', dragStart);
+    card.addEventListener('dragend', dragEnd);
+};
+
+dragAndDrop();
+</script>
+</html>
