@@ -7,10 +7,10 @@
     <title>deletableButton</title>
     <style>
         .parent{
-            background-color: black;
             width: 300px;
             height: 300px;
             color: white;
+            margin: 10px;
         }
         .long-press{
           background-color:gray;
@@ -20,15 +20,25 @@
         .child-long-press-selected{
           background-color: white;
         }
-        
+        .parent[data-buttonid="1"]{
+            background-color: gold;
+        }
+        .parent[data-buttonid="2"]{
+            background-color: yellowgreen;
+        }
     </style>
 </head>
 <body>
 <div data-buttonid="1" class="parent">
     <input type="button" value="1 second press button" class="long-press" data-buttonid="1-1">
     <input type="button" value="1 second press button2" class="long-press" data-buttonid="1-2">
+    <input type="button" class="removeAll" value="removeAll">
+</div>
 
-    <input type="button" value="removeAll" onclick="removeAll()">
+<div data-buttonid="2" class="parent">
+    <input type="button" value="1 second press button" class="long-press" data-buttonid="2-1">
+    <input type="button" value="1 second press button2" class="long-press" data-buttonid="2-2">
+    <input type="button" class="removeAll" value="removeAll">
 </div>
 </body>
 <script>
@@ -48,10 +58,13 @@ function setLongPressButtonMilliSeconds(longPressMilliSeconds, cssselector) {
 }
 setLongPressButtonMilliSeconds(1000, '.long-press');
 
-function removeAll() {
+function removeAll(event) {
+    // console.log(event.target.parentNode.dataset.buttonid);
     if (window.confirm("Do you really want to remove all?")) {
-        document.querySelectorAll(`[data-buttonid='1']`).forEach(E=>{E.parentNode.removeChild(E)});
+        // document.querySelectorAll(`[data-buttonid='1']`).forEach(E=>{E.parentNode.removeChild(E)});
+        document.querySelectorAll(`[data-buttonid='${event.target.parentNode.dataset.buttonid}']`).forEach(E=>{E.parentNode.removeChild(E)});
     }
 }
+document.querySelectorAll('.removeAll').forEach(V=>V.addEventListener("click", removeAll))
 </script>
 </html>
