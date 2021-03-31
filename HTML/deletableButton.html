@@ -63,7 +63,7 @@ function setLongPressButtonMilliSeconds(longPressMilliSeconds, cssselector) {
              };
             delay1 = setTimeout(removeChildElm, longPressMilliSeconds);
         });
-        ELM.addEventListener('touchend', ()=>{ vib(200); clearTimeout(delay1); });
+        ELM.addEventListener('touchend', ()=>{ vib(100); clearTimeout(delay1); });
 
         ELM.addEventListener('mousedown', ()=>{
             function removeChildElm(){ 
