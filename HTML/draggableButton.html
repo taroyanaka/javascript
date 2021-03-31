@@ -21,14 +21,14 @@
     flex-basis: calc(25% - 40px);
     min-height: 150px;
     list-style: none;
-    background-color:#f0f2f5;;
+    background-color: gray;
 }
 .card{
     min-height: 100%;
-    background-color: gray;
+    background-color: black;
 }
 .hovered{
-    background-color: #d1d8e2;
+    background-color: yellowgreen;
 }
 .hide{
     display: none;
@@ -36,16 +36,14 @@
     </style>
 </head>
 <body>
-<!-- <div class="hero"> -->
-    <ul class="list">
-        <li class="cell">
-            <div class="card" draggable="true"></div>
-        </li>
-        <li class="cell"></li>
-        <li class="cell"></li>
-        <li class="cell"></li>
-    </ul>
-<!-- </div> -->
+<ul class="list">
+    <li class="cell">
+        <div class="card" draggable="true"></div>
+    </li>
+    <li class="cell"></li>
+    <li class="cell"></li>
+    <li class="cell"></li>
+</ul>
 </body>
 <script>
 const dragAndDrop = () => {
@@ -53,29 +51,35 @@ const dragAndDrop = () => {
     const cells = document.querySelectorAll('.cell');
 
     const dragStart = function () {
+        console.log("dragStart");
         setTimeout(() => {
             this.classList.add('hide');
         }, 0);
     };
     
     const dragEnd = function () {
+        console.log("dragEnd");
         this.classList.remove('hide');
     };
 
     const dragOver = function (evt) {
+        // console.log("dragOver");
         evt.preventDefault();
     };
 
     const dragEnter = function (evt) {
+        console.log("dragEnter");
         evt.preventDefault();
         this.classList.add('hovered');
     };
 
     const dragLeave = function () {
+        // console.log("dragLeave");
         this.classList.remove('hovered');
     };
 
     const dragDrop = function () {
+        console.log("dragDrop");
         this.append(card);
         this.classList.remove('hovered');
     };
