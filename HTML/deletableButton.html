@@ -52,6 +52,14 @@
 function setLongPressButtonMilliSeconds(longPressMilliSeconds, cssselector) {
     let delay1;
     document.querySelectorAll(cssselector).forEach(ELM=>{
+        ELM.addEventListener('touchstart', ()=>{
+            function removeChildElm(){ 
+                document.querySelectorAll(`[data-buttonid='${ELM.dataset.buttonid}']`).forEach(E=>{E.parentNode.removeChild(E)});
+             };
+            delay1 = setTimeout(removeChildElm, longPressMilliSeconds);
+        });
+        ELM.addEventListener('touchend', ()=>{ clearTimeout(delay1) });
+
         ELM.addEventListener('mousedown', ()=>{
             function removeChildElm(){ 
                 document.querySelectorAll(`[data-buttonid='${ELM.dataset.buttonid}']`).forEach(E=>{E.parentNode.removeChild(E)});
