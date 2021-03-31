@@ -11,11 +11,18 @@
             height: 300px;
             color: white;
             margin: 10px;
+            border: black 1px solid;
         }
         .long-press{
           background-color:gray;
-          width: 150px;
+          width: 200px;
           height: 150px;
+          border: 1px solid black;
+          border-bottom: none;
+          border-left: none;
+        }
+        .long-press:first-child{
+            border-top:none;
         }
         .child-long-press-selected{
           background-color: white;
@@ -30,14 +37,13 @@
 </head>
 <body>
 <div data-buttonid="1" class="parent">
-    <input type="button" value="1 second press button" class="long-press" data-buttonid="1-1">
-    <input type="button" value="1 second press button2" class="long-press" data-buttonid="1-2">
+    <input type="button" value="1 second press button1-1" class="long-press" data-buttonid="1-1">
+    <input type="button" value="1 second press button1-2" class="long-press" data-buttonid="1-2">
     <input type="button" class="removeAll" value="removeAll">
 </div>
-
 <div data-buttonid="2" class="parent">
-    <input type="button" value="1 second press button" class="long-press" data-buttonid="2-1">
-    <input type="button" value="1 second press button2" class="long-press" data-buttonid="2-2">
+    <input type="button" value="1 second press button2-1" class="long-press" data-buttonid="2-1">
+    <input type="button" value="1 second press button2-2" class="long-press" data-buttonid="2-2">
     <input type="button" class="removeAll" value="removeAll">
 </div>
 </body>
@@ -59,9 +65,7 @@ function setLongPressButtonMilliSeconds(longPressMilliSeconds, cssselector) {
 setLongPressButtonMilliSeconds(1000, '.long-press');
 
 function removeAll(event) {
-    // console.log(event.target.parentNode.dataset.buttonid);
-    if (window.confirm("Do you really want to remove all?")) {
-        // document.querySelectorAll(`[data-buttonid='1']`).forEach(E=>{E.parentNode.removeChild(E)});
+    if(window.confirm("Do you really want to remove all?")){
         document.querySelectorAll(`[data-buttonid='${event.target.parentNode.dataset.buttonid}']`).forEach(E=>{E.parentNode.removeChild(E)});
     }
 }
