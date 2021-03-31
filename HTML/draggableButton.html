@@ -46,7 +46,10 @@
 </ul>
 </body>
 
-<script src="https://cdn.jsdelivr.net/npm/mobile-drag-drop@2.3.0-rc.2/index.min.js"></script>
+<link rel="stylesheet" href="draggable/default.css">
+<script src="draggable/index.js"></script>
+<script src="draggable/scroll-behaviour.js"></script>
+
 <script>
     // options are optional ;)
     MobileDragDrop.polyfill({
@@ -59,6 +62,14 @@
 
 
 <script>
+    // https://qiita.com/boushi-bird@github/items/ce720122fd0c15abe036
+    // options are optional ;)
+    MobileDragDrop.polyfill({
+        // use this to make use of the scroll behaviour
+        dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride
+    });
+    window.addEventListener( 'touchmove', function() {});
+
 const dragAndDrop = () => {
     const card = document.querySelector('.card');
     const cells = document.querySelectorAll('.cell');
@@ -81,6 +92,7 @@ const dragAndDrop = () => {
     };
 
     const dragEnter = function (evt) {
+        event.preventDefault();
         console.log("dragEnter");
         evt.preventDefault();
         this.classList.add('hovered');
