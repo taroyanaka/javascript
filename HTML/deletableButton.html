@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>deletableButton</title>
+    <style>
+        .parent{
+            background-color: black;
+            width: 300px;
+            height: 300px;
+            color: white;
+        }
+        .long-press{
+          background-color:gray;
+          width: 100px;
+          height: 100px;
+        }
+        .child-long-press-selected{
+          background-color: white;
+        }
+        
+    </style>
+</head>
+<body>
+<div data-buttonid="1" class="parent">
+    <input type="button" value="1 second long press button" class="long-press" data-buttonid="1-1">
+    <input type="button" value="1 second long press button2" class="long-press" data-buttonid="1-2">
+
+    <input type="button" value="removeAll" onclick="removeAll()">
+</div>
+</body>
+<script>
+// https://codepen.io/thetallweeks/pen/uAEGr
+function setLongPressButtonMilliSeconds(longPressMilliSeconds, cssselector) {
+    let delay1;
+    document.querySelectorAll(cssselector).forEach(ELM=>{
+        ELM.addEventListener('mousedown', ()=>{
+            function removeChildElm(){ 
+                document.querySelectorAll(`[data-buttonid='${ELM.dataset.buttonid}']`).forEach(E=>{E.parentNode.removeChild(E)});
+             };
+            delay1 = setTimeout(removeChildElm, longPressMilliSeconds);
+        });
+        ELM.addEventListener('mouseup', ()=>{ clearTimeout(delay1) });
+        ELM.addEventListener('mouseout', ()=>{ clearTimeout(delay1) });
+    })
+}
+setLongPressButtonMilliSeconds(1000, '.long-press');
+
+function removeAll() {
+    document.querySelectorAll(`[data-buttonid='1']`).forEach(E=>{E.parentNode.removeChild(E)});
+}
+</script>
+</html>
