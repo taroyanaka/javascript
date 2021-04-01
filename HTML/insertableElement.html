@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<textarea class="jsText" cols="30" rows="10" oninput="exe()"></textarea>
+<div>↓
+<input type="text" class="toWhere" value="body">
+<input type="text" class="outerText1" value="script">
+<input type="text" class="outerText2" value="/script">
+<textarea type="text" class="valueText" cols="30" rows="10">this is test value</textarea>
+</div>
+<textarea class="resultJsText" cols="30" rows="10"></textarea>
+<button class="one" onclick="one()">test button one</button>
+<button class="two" onclick="two()">test button two</button>
+</body>
+<script>
+function insertValueData(text) {
+    document.querySelector(".jsText").value = text;
+}
+function exe() {
+    const inner = document.querySelector(".jsText").value;
+    const outerText1 = document.querySelector(".outerText1").value;
+    const outerText2 = document.querySelector(".outerText2").value;
+    const outerArray = [`<${outerText1}>`, `<${outerText2}>`];
+
+    document.querySelector(".resultJsText").value = `document.querySelector("${document.querySelector(".toWhere").value}").insertAdjacentHTML("beforeend", \`${outerArray[0]}${inner}${outerArray[1]}\`);`
+}
+
+function one() {
+    document.querySelector(".outerText1").value = "textarea  class='foo'";
+    document.querySelector(".outerText2").value = "/textarea";
+    document.querySelector(".valueText").textContent = `document.querySelector(".foo").value = "foo"`;
+    insertValueData(document.querySelector(".valueText").value);
+    exe();
+}
+function two() {
+    document.querySelector(".toWhere").value = "head";
+    document.querySelector(".outerText1").value = "style";
+    document.querySelector(".outerText2").value = "/style";
+
+    document.querySelector(".valueText").textContent = `body{
+background-color:gray;
+}
+`;
+    insertValueData(document.querySelector(".valueText").value);
+    exe();
+}
+
+exe();
+</script>
+</html>
