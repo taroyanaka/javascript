@@ -77,10 +77,7 @@ function test() {
 }
 
 function disassembleButton() {
-    // if(document.querySelector(".original").value){
-        json1 = document.querySelector(".original").value
-    // }
-    // document.querySelector(".original").value = json1;
+    json1 = document.querySelector(".original").value
     tmp = JSON.parse(json1);
     return tmp;
 }
