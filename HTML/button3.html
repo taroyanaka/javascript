@@ -10,6 +10,7 @@
 </head>
 <body>
 <div class="wrapper">
+<div class="innerWrapper">
 <textarea cols="30" rows="10" class="original canHidden" oninput="exe()"></textarea>
 <button onclick="test();disassemble();exe();">set test data and disassemble</button>
 <button onclick="disassemble();exe();">disassemble</button>
@@ -24,9 +25,12 @@
 <button onclick="add();">add</button>
 <div class="buttonsBox"></div>
 
-<button onclick="scriptCopy('.myScript', '.scriptArea');">scriptCopy</button>
+<button onclick="scriptCopy('.myScript', '.scriptArea');">HTMLAndScriptCopy</button>
+</div>
 </div>
 </body>
+
+
 <script class="myScript">
 document.querySelector("head").insertAdjacentHTML("beforeend", `<style class="myStyle"></style>`);
 
@@ -131,6 +135,9 @@ function insertTextFromButton(event){
 }
 function copy() {
     document.querySelector(".copy").value = document.querySelector(".target").value;
+    if(document.querySelector("#form_editor > div.ace_scroller > div")){
+        document.querySelector("#form_editor > div.ace_scroller > div").innerText += document.querySelector(".target").value;
+    }
 }
 function hide() {
     document.querySelectorAll(".canHidden").forEach(V=>V.style.display = V.style.display === "none" ? "inline" : "none")
