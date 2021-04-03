@@ -9,21 +9,27 @@
 <body>
 <textarea class="jsText" cols="30" rows="10" oninput="exe()"></textarea>
 <div>↓
-<input type="text" class="toWhere" value="body">
-<input type="text" class="outerText1" value="script">
-<input type="text" class="outerText2" value="/script">
-<textarea type="text" class="valueText" cols="30" rows="10">this is test value</textarea>
+<input type="text" class="toWhere" value="head" oninput="exe()">
+<input type="text" class="outerText1" value="style" oninput="exe()">
+<input type="text" class="outerText2" value="/style" oninput="exe()">
+<textarea type="text" class="valueText" cols="30" rows="10" oninput="exe()">this is test value</textarea>
 </div>
 <textarea class="resultJsText" cols="30" rows="10"></textarea>
 <button class="one" onclick="one()">test button one</button>
 <button class="two" onclick="two()">test button two</button>
+<button class="three" onclick="three()">test button three</button>
+<button class="copy" onclick="copyThat('.resultJsText')">copy</button>
+
 </body>
 <script>
 function insertValueData(text) {
     document.querySelector(".jsText").value = text;
 }
 function exe() {
-    const inner = document.querySelector(".jsText").value;
+    insertValueData(document.querySelector(".valueText").value);
+
+    // document.querySelector(".jsText").value = document.querySelector(".jsText").value.replace("`", "/`")
+    const inner = document.querySelector(".jsText").value.replace("`", "\`");
     const outerText1 = document.querySelector(".outerText1").value;
     const outerText2 = document.querySelector(".outerText2").value;
     const outerArray = [`<${outerText1}>`, `<${outerText2}>`];
@@ -32,7 +38,7 @@ function exe() {
 }
 
 function one() {
-    document.querySelector(".outerText1").value = "textarea  class='foo'";
+    document.querySelector(".outerText1").value = "textarea class='foo'";
     document.querySelector(".outerText2").value = "/textarea";
     document.querySelector(".valueText").textContent = `document.querySelector(".foo").value = "foo"`;
     insertValueData(document.querySelector(".valueText").value);
@@ -52,5 +58,47 @@ background-color:gray;
 }
 
 exe();
+
+const theHTML = `
+<textarea cols="30" rows="10" class="original canHidden" oninput="exe()"></textarea>
+<button onclick="test();disassemble();exe();">set test data and disassemble</button>
+<button onclick="disassemble();exe();">disassemble</button>
+<button onclick="hide();">hide</button>
+
+<textarea cols="30" rows="10" class="target"></textarea>
+<button class="toCopyFromTarget" onclick="copy();">copy</button>
+<button onclick="(()=>document.querySelector('.target').value='')();">clear</button>
+<textarea cols="30" rows="10" class="copy"></textarea>
+
+<button onclick="create();">create</button>
+<button onclick="add();">add</button>
+<div class="buttonsBox"></div>
+
+<button onclick="scriptCopy();">scriptCopy</button>
+`
+
+
+
+
+function three() {
+    document.querySelector(".toWhere").value = "html";
+    document.querySelector(".outerText1").value = "body";
+    document.querySelector(".outerText2").value = "/body";
+    document.querySelector(".valueText").textContent = theHTML;
+    insertValueData(document.querySelector(".valueText").value);
+    exe();
+}
+
+
+function copyThat(copyFromWhere) {
+    document.querySelector(copyFromWhere).select();
+    document.querySelector(copyFromWhere).setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("Copy!!" + document.querySelector(copyFromWhere).value);
+}
+
+
+
+
 </script>
 </html>

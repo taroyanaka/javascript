@@ -6,26 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>button3</title>
     <!-- http://vizua.net/simple-pure-css-accordion -->
-    <style class="myStyle">
-    </style>
-</head>
-
-<body>
-
 <!-- https://codepen.io/thetallweeks/pen/uAEGr   -->
-<style>
-.long-press{
-  background-color:gray;
-  width: 100px;
-  height: 100px;
-}
-.long-press-selected{
-  background-color: white;
-}
-</style>
-<!-- <input type="button" value="1 second long press button" class="long-press"> -->
-<!-- <input type="button" value="1 second long press button2" class="long-press"> -->
-
+</head>
+<body>
 <textarea cols="30" rows="10" class="original canHidden" oninput="exe()"></textarea>
 <button onclick="test();disassemble();exe();">set test data and disassemble</button>
 <button onclick="disassemble();exe();">disassemble</button>
@@ -38,45 +21,22 @@
 
 <button onclick="create();">create</button>
 <button onclick="add();">add</button>
-
 <div class="buttonsBox"></div>
-</body>
 
-<script>
+<button onclick="scriptCopy();">scriptCopy</button>
+</body>
+<script class="myScript">
+document.querySelector("head").insertAdjacentHTML("beforeend", `<style class="myStyle"></style>`);
+
 function rangePlus(from,to){return[...Array(to-from+1)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
 function groupWith(fn,list){let idx=0;return list.reduce((A,V)=>{while(idx<list.length){let nextidx=idx+1;while(nextidx<list.length&&fn(list[nextidx-1],list[nextidx])){nextidx+=1};A.push(list.slice(idx,nextidx));idx=nextidx};return A},A=[])};
-
-// https://codepen.io/thetallweeks/pen/uAEGr
-function setLongPressButtonMilliSeconds(longPressMilliSeconds) {
-    let delay;
-    document.querySelectorAll('.long-press').forEach(ELM=>{
-        ELM.addEventListener('touchstart', ()=>{
-            function check(){ ELM.classList.add('long-press-selected') };
-            delay = setTimeout(check, longPressMilliSeconds);
-        }, true);
-        ELM.addEventListener('touchend', ()=>{ clearTimeout(delay) });
-
-        
-        ELM.addEventListener('mousedown', ()=>{
-            function check(){ ELM.classList.add('long-press-selected') };
-            delay = setTimeout(check, longPressMilliSeconds);
-        }, true);
-        ELM.addEventListener('mouseup', ()=>{ clearTimeout(delay) });
-        ELM.addEventListener('mouseout', ()=>{ clearTimeout(delay) });
-    })
-}
-setLongPressButtonMilliSeconds(1000);
-
-
-
-
 let testStr = `foo2
-  bar2 bar3
+    bar2 bar3
 
- bar2 bar3
+    bar2 bar3
 
 
- bar2 bar3
+    bar2 bar3
 `
 let testAry = [
     [[10,"foo1"], [3,testStr], [2,"foo1"]],
@@ -187,5 +147,18 @@ function add() {
     disassemble();
     exe();
 }
+
+function scriptCopy() {
+    document.querySelector("body").insertAdjacentHTML("beforeend", `<textarea class="scriptArea" cols="30" rows="10"></textarea>`);
+    document.querySelector(".scriptArea").value = document.querySelector(".myScript").textContent;
+    function copyThat() {
+        document.querySelector(".scriptArea").select();
+        document.querySelector(".scriptArea").setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        alert("Copied the text: " + document.querySelector(".scriptArea").value);
+    }
+    copyThat();
+}
+
 </script>
 </html>
