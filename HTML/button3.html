@@ -9,6 +9,7 @@
 <!-- https://codepen.io/thetallweeks/pen/uAEGr   -->
 </head>
 <body>
+<div class="wrapper">
 <textarea cols="30" rows="10" class="original canHidden" oninput="exe()"></textarea>
 <button onclick="test();disassemble();exe();">set test data and disassemble</button>
 <button onclick="disassemble();exe();">disassemble</button>
@@ -24,6 +25,7 @@
 <div class="buttonsBox"></div>
 
 <button onclick="scriptCopy('.myScript', '.scriptArea');">scriptCopy</button>
+</div>
 </body>
 <script class="myScript">
 document.querySelector("head").insertAdjacentHTML("beforeend", `<style class="myStyle"></style>`);
@@ -148,25 +150,13 @@ function add() {
     exe();
 }
 
-const fullText = `document.querySelector("html").insertAdjacentHTML("beforeend", \`\<body\>
-\<textarea cols="30" rows="10" class="original canHidden" oninput="exe()"\>\</textarea\>
-\<button onclick="test();disassemble();exe();"\>set test data and disassemble\</button\>
-\<button onclick="disassemble();exe();"\>disassemble\</button\>
-\<button onclick="hide();"\>hide\</button\>
 
-\<textarea cols="30" rows="10" class="target"\>\</textarea\>
-\<button class="toCopyFromTarget" onclick="copy();"\>copy\</button\>
-\<button onclick="(()=\>document.querySelector('.target').value='')();"\>clear\</button\>
-\<textarea cols="30" rows="10" class="copy"\>\</textarea\>
-
-\<button onclick="create();"\>create\</button\>
-\<button onclick="add();"\>add\</button\>
-\<div class="buttonsBox"\>\</div\>
-
-\<button onclick="scriptCopy();"\>scriptCopy\</button\>
-\</body\>\`);`
 
 function scriptCopy(fromCssSelectorString, toCssSelectorString, option) {
+    let wrapperStr = document.querySelector(".wrapper").innerHTML.toString().replace("<","\<").replace(">","\>").replace('"','\"');
+
+    let fullText = `document.querySelector("html").insertAdjacentHTML("beforeend",` + '`' + wrapperStr + '`' + `)`;
+
     option = fullText || "";
     // console.log(fromCssSelectorString);
     // console.log(toCssSelectorString);
