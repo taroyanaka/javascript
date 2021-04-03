@@ -12,6 +12,7 @@
 <div class="wrapper">
 <div class="innerWrapper">
 <textarea cols="30" rows="10" class="original canHidden" oninput="exe()"></textarea>
+<button onclick="copyOriginal();">copyOriginal</button>
 <button onclick="test();disassemble();exe();">set test data and disassemble</button>
 <button onclick="disassemble();exe();">disassemble</button>
 <button onclick="hide();">hide</button>
@@ -23,6 +24,7 @@
 
 <button onclick="create();">create</button>
 <button onclick="add();">add</button>
+<button onclick="splitAdd();">splitAdd</button>
 <div class="buttonsBox"></div>
 
 <button onclick="scriptCopy('.myScript', '.scriptArea');">HTMLAndScriptCopy</button>
@@ -36,6 +38,15 @@ document.querySelector("head").insertAdjacentHTML("beforeend", `<style class="my
 
 function rangePlus(from,to){return[...Array(to-from+1)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
 function groupWith(fn,list){let idx=0;return list.reduce((A,V)=>{while(idx<list.length){let nextidx=idx+1;while(nextidx<list.length&&fn(list[nextidx-1],list[nextidx])){nextidx+=1};A.push(list.slice(idx,nextidx));idx=nextidx};return A},A=[])};
+
+function copyOriginal() {
+    document.querySelector(".original").select();
+    document.querySelector(".original").setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("Copy!!" + document.querySelector(".original").value);
+}
+
+
 let testStr = `foo2
     bar2 bar3
 
@@ -149,12 +160,19 @@ function create() {
     disassemble();
     exe();
 }
-function add() {
+function add(params) {
+    const buttonStr = params || document.querySelector(".copy").value || "you need to set to textarea";
+
     tmp3 = JSON.parse(json1);
-    tmp3[0].unshift([1, document.querySelector(".copy").value]);
+    tmp3[0].unshift([1, buttonStr]);
     json1 = JSON.stringify(tmp3, null, 2);
     disassemble();
     exe();
+}
+function splitAdd() {
+    document.querySelector(".copy").value.split("\n").forEach(V=>{
+        add(V)
+    })
 }
 
 function scriptCopy(fromCssSelectorString, toCssSelectorString, option) {
