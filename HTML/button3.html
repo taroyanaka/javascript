@@ -11,10 +11,11 @@
 <body>
 <div class="wrapper">
 <div class="innerWrapper">
-<textarea cols="30" rows="10" class="original canHidden" oninput="exe()"></textarea>
+<!-- <textarea cols="30" rows="10" class="original canHidden" oninput="exe()"></textarea> -->
+<textarea cols="30" rows="10" class="original canHidden"></textarea>
 <button onclick="copyOriginal();">copyOriginal</button>
 <button onclick="test();disassemble();exe();">set test data and disassemble</button>
-<button onclick="disassemble();exe();">disassemble</button>
+<button onclick="disassembleButton();exe();">disassemble</button>
 <button onclick="hide();">hide</button>
 
 <textarea cols="30" rows="10" class="target"></textarea>
@@ -75,10 +76,15 @@ function test() {
     json1 = JSON.stringify(testAry, null, 2);
 }
 
-function disassemble() {
-    if(document.querySelector(".original").value){
+function disassembleButton() {
+    // if(document.querySelector(".original").value){
         json1 = document.querySelector(".original").value
-    }
+    // }
+    // document.querySelector(".original").value = json1;
+    tmp = JSON.parse(json1);
+    return tmp;
+}
+function disassemble() {
     document.querySelector(".original").value = json1;
     tmp = JSON.parse(json1);
     return tmp;
