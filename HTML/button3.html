@@ -150,14 +150,14 @@ function add() {
     exe();
 }
 
-
-
 function scriptCopy(fromCssSelectorString, toCssSelectorString, option) {
     let wrapperStr = document.querySelector(".wrapper").innerHTML.toString().replace("<","\<").replace(">","\>").replace('"','\"');
 
     let fullText = `document.querySelector("html").insertAdjacentHTML("beforeend",` + '`' + wrapperStr + '`' + `)`;
 
-    option = fullText || "";
+    if(wrapperStr){
+        option = fullText || "";
+    }
     // console.log(fromCssSelectorString);
     // console.log(toCssSelectorString);
 
