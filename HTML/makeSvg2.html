@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vent make svg 2</title>
+    <style class="overLay">
+        /* .preParent{
+            position: relative;
+        }
+        .resultRender{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        .parent{
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 10%;
+        } */
+    </style>
+    <style></style>
+    <style class="overLay2"></style>
+</head>
+<body>
+<div class="outer">
+<button onclick="init();">clear</button>
+<textarea name="" class="resultParent" rows="1">result</textarea>
+<div class="result">
+    <textarea name="" class="resultSvg" cols="30" rows="10"></textarea>
+</div>
+<div class="names"></div>
+<select class="column" onInput="exe()"></select>
+<select class="row" onInput="exe()"></select>
+</div>
+
+<div class="preParent">
+    <div class="resultRender"></div>
+    <div class="parent">
+        <div class="child"></div>
+    </div>
+</div>
+
+
+</body>
+<script>
+const numberEnglish = [
+    "zero",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "eleven",
+    "twelve",
+    "thirteen",
+    "fourteen",
+    "fifteen",
+    "sixteen",
+    "seventeen",
+    "eighteen",
+    "nineteen",
+    "twenty",
+    "twenty-one",
+    "twenty-two",
+    "twenty-three",
+    "twenty-four",
+    "twenty-five",
+    "twenty-six",
+    "twenty-seven",
+    "twenty-eight",
+    "twenty-nine",
+    "thirty",
+    "thirty-one",
+    "thirty-two",
+    "thirty-three",
+    "thirty-four",
+    "thirty-five",
+    "thirty-six",
+    "thirty-seven",
+    "thirty-eight",
+    "thirty-nine",
+    "forty",
+    "forty-one",
+    "forty-two",
+    "forty-three",
+    "forty-four",
+    "forty-five",
+    "forty-six",
+    "forty-seven",
+    "forty-eight",
+    "forty-nine",
+    "fifty",
+    "fifty-one",
+    "fifty-two",
+    "fifty-three",
+    "fifty-four",
+    "fifty-five",
+    "fifty-six",
+    "fifty-seven",
+    "fifty-eight",
+    "fifty-nine",
+    "sixty",
+    "sixty-one",
+    "sixty-two",
+    "sixty-three",
+    "sixty-four",
+    "sixty-five",
+    "sixty-six",
+    "sixty-seven",
+    "sixty-eight",
+    "sixty-nine",
+    "seventy",
+    "seventy-one",
+    "seventy-two",
+    "seventy-three",
+    "seventy-four",
+    "seventy-five",
+    "seventy-six",
+    "seventy-seven",
+    "seventy-eight",
+    "seventy-nine",
+    "eighty",
+    "eighty-one",
+    "eighty-two",
+    "eighty-three",
+    "eighty-four",
+    "eighty-five",
+    "eighty-six",
+    "eighty-seven",
+    "eighty-eight",
+    "eighty-nine",
+    "ninety",
+    "ninety-one",
+    "ninety-two",
+    "ninety-three",
+    "ninety-four",
+    "ninety-five",
+    "ninety-six",
+    "ninety-seven",
+    "ninety-eight",
+    "ninety-nine",
+]
+function add() {
+    document.querySelector(".names").insertAdjacentHTML("afterbegin", `<textarea type="text" class="name" rows="1"></textarea>`, false)
+    document.querySelectorAll(".name").forEach((V,IDX)=>{
+            V.value = numberEnglish[IDX];
+            V.dataset.number = numberEnglish[IDX];
+            V.style = "height: 1rem;";
+    });
+}
+
+const option = [...Array(100).keys()].map((V,IDX)=>`<option value="${IDX+1}">${IDX+1}</option>`).join("");
+document.querySelector(".column").insertAdjacentHTML("afterbegin", option);
+document.querySelector(".row").insertAdjacentHTML("afterbegin", option);
+
+function xprod(a,b){return a.reduce((A,aV,aIDX)=>{const RESULT=b.reduce((B,bV)=>{B.push([a[aIDX],bV]);return B},B=[]);A.push(...RESULT);return A},A=[])};
+
+let res;
+let resultHtml = ``;
+let resultSvg = `
+.${document.querySelector(".resultParent").value}{
+    display: grid;
+    grid-template-columns: repeat(${document.querySelector(".column").value}, 1fr);
+    grid-template-rows: repeat(${document.querySelector(".row").value}, 1fr);
+}
+`;
+
+
+function makeCss() {
+    return `
+.parent{
+    width: 100vw;
+    height: 100vh;
+    background-color: tomato;
+
+    display: grid;
+    grid-template-columns: repeat(${document.querySelector(".column").value}, 1fr);
+    grid-template-rows: repeat(${document.querySelector(".row").value}, 1fr);
+    column-gap: 1px;
+    row-gap: 1px;
+}
+div[class*="child"]{
+    width: 100%;
+    height: 100%;
+    background-color: greenyellow;
+}
+`
+}
+
+function getList() {
+    column = Number(document.querySelector(".column").value);
+    row = Number(document.querySelector(".row").value);
+    return xprod([...Array(row).keys()], [...Array(column).keys()]);
+}
+
+function exe() {
+    res = getList().map(V=> `<div class="child-column-${V[0]}-row-${V[1]}" data-column="${V[0]}" data-row="${V[1]}"></div>`).join("")
+
+    css = makeCss();
+    document.querySelector("style").innerText = css;
+    document.querySelector(".parent").innerHTML = "";
+    document.querySelector(".parent").insertAdjacentHTML("afterbegin", res);
+    document.querySelectorAll(`div[class*="child"]`).forEach(V=>V.addEventListener("click", exe2 ,false));
+}
+
+function init() {
+    document.querySelector(".column").value = 100;
+    document.querySelector(".row").value = 100;
+    exe();
+    document.querySelectorAll(`div[class*="child"]`).forEach(V=>V.addEventListener("click", exe2 ,false));
+    document.querySelectorAll(".name").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector(".names").insertAdjacentHTML("afterbegin",`        <textarea type="text" class="name">zero</textarea>`);
+}
+
+let foo=[];
+
+function exe2(event) {
+    event.target.style = "background-color: gray;";
+    foo.push([Number(event.target.dataset.row), Number(event.target.dataset.column)]);
+    let foo2 = foo.join(" ")
+    resultSvg = `<svg class="thesvg" viewBox="0 0 ${document.querySelector(".column").value} ${document.querySelector(".row").value}">
+    <polyline points="${foo2}" fill="white" stroke="black">
+</svg>`
+    document.querySelector(".resultSvg").value = resultSvg;
+    changeResultParent();
+    document.querySelector("style.overLay2").innerText = "";
+    document.querySelector("style.overLay2").innerText += `.preParent{
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+        }
+        .resultRender{
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+        }
+        .parent{
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 10%;
+        }`
+
+}
+
+function changeResultParent(){
+    document.querySelectorAll(".thesvg").forEach(E=>{E.parentNode.removeChild(E)});
+    document.querySelector(".resultRender").insertAdjacentHTML("afterbegin", document.querySelector(".resultSvg").value);
+    document.querySelector(".parent").insertAdjacentHTML("afterbegin", document.querySelector(".resultSvg").value);
+}
+
+exe();
+init();
+</script>
+</html>
