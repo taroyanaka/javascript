@@ -4,36 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>vent make svg 2</title>
-    <style class="overLay">
-        /* .preParent{
-            position: relative;
-        }
-        .resultRender{
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
-        .parent{
-            position: absolute;
-            top: 0;
-            left: 0;
-            opacity: 10%;
-        } */
-    </style>
+    <title>vent make svg</title>
+    <style class="overLay"></style>
     <style></style>
     <style class="overLay2"></style>
 </head>
 <body>
 <div class="outer">
 <button onclick="init();">clear</button>
-<textarea name="" class="resultParent" rows="1">result</textarea>
+<!-- <textarea name="" class="resultParent" rows="1">result</textarea> -->
 <div class="result">
     <textarea name="" class="resultSvg" cols="30" rows="10"></textarea>
 </div>
-<div class="names"></div>
+<!-- <div class="names"></div> -->
 <select class="column" onInput="exe()"></select>
 <select class="row" onInput="exe()"></select>
 </div>
@@ -167,14 +150,6 @@ function xprod(a,b){return a.reduce((A,aV,aIDX)=>{const RESULT=b.reduce((B,bV)=>
 
 let res;
 let resultHtml = ``;
-let resultSvg = `
-.${document.querySelector(".resultParent").value}{
-    display: grid;
-    grid-template-columns: repeat(${document.querySelector(".column").value}, 1fr);
-    grid-template-rows: repeat(${document.querySelector(".row").value}, 1fr);
-}
-`;
-
 
 function makeCss() {
     return `
@@ -220,6 +195,12 @@ function init() {
     document.querySelectorAll(`div[class*="child"]`).forEach(V=>V.addEventListener("click", exe2 ,false));
     document.querySelectorAll(".name").forEach(E=>{E.parentNode.removeChild(E)});
     document.querySelector(".names").insertAdjacentHTML("afterbegin",`        <textarea type="text" class="name">zero</textarea>`);
+    resultSvg = `<svg class="thesvg" viewBox="0 0 ${document.querySelector(".column").value} ${document.querySelector(".row").value}">
+    <polyline points="" fill="white" stroke="black">
+</svg>`
+    document.querySelector(".resultSvg").value = resultSvg;
+    document.querySelectorAll(".thesvg").forEach(E=>{E.parentNode.removeChild(E)});
+    foo = [];
 }
 
 let foo=[];
