@@ -1,4 +1,5 @@
 const dvd_rental = `
+-- https://github.com/Shrsh/DVD_Rental-Database
 -- https://raw.githubusercontent.com/Shrsh/DVD_Rental-Database/master/dvd_rental.sql
 create table actor
 (
@@ -99,7 +100,7 @@ city_id smallint(5),
 postal_code varchar(20), 
 phone varchar(20) not null, 
 last_update timestamp not null, 
-primary key(address_id) ,
+primary key(address_id),
 foreign key(city_id) references city(city_id)
 );
 
@@ -109,9 +110,9 @@ shop_id tinyint(3) not null auto_increment,
 manager_staff_id tinyint(3),
 address_id smallint(5),
 last_update timestamp,
-primary key(shop_id)
--- foreign key(manager_staff_id) references staff(staff_id),
--- foreign key(address_id) references address(address_id)
+primary key(shop_id),
+foreign key(manager_staff_id) references staff(staff_id),
+foreign key(address_id) references address(address_id)
 );
 
 create table staff
@@ -127,9 +128,9 @@ active tinyint(3) not null,
 username varchar(16) not null, 
 password varchar(40), 
 last_update timestamp, 
-primary key(staff_id)
--- foreign key(shop_id) references shop(shop_id),
--- foreign key(address_id) references address(address_id)
+primary key(staff_id),
+foreign key(shop_id) references shop(shop_id),
+foreign key(address_id) references address(address_id)
 );
 
 create table inventory
@@ -138,9 +139,9 @@ inventory_id mediumint(4) not null auto_increment,
 film_id smallint(5) not null, 
 shop_id tinyint(3) not null, 
 last_update timestamp,
-primary key(inventory_id)
--- foreign key(shop_id) references shop(shop_id),
--- foreign key(film_id) references film(film_id)
+primary key(inventory_id),
+foreign key(shop_id) references shop(shop_id),
+foreign key(film_id) references film(film_id)
 );
 
 create table customer
@@ -168,10 +169,10 @@ customer_id smallint(5) not null,
 return_date datetime,
 staff_id tinyint(3), 
 last_update timestamp,
-primary key(rental_id)
--- foreign key(inventory_id) references inventory(inventory_id),
--- foreign key(customer_id) references customer(customer_id),
--- foreign key(staff_id) references staff(staff_id)
+primary key(rental_id),
+foreign key(inventory_id) references inventory(inventory_id),
+foreign key(customer_id) references customer(customer_id),
+foreign key(staff_id) references staff(staff_id)
 );
 
 create table payment

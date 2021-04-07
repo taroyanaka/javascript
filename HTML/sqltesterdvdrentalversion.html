@@ -20,6 +20,8 @@
     <!-- https://dev.mysql.com/doc/sakila/en/ -->
     <!-- https://github.com/Shrsh/DVD_Rental-Database -->
     <script src="dvd_rental.sql.js"></script>
+    <script src="sqlTestQuery.js"></script>
+    <script src="insertIntoActorCountryCategory.js"></script>
     <!-- http://vizua.net/simple-pure-css-accordion -->
 <!-- https://codepen.io/thetallweeks/pen/uAEGr   -->
 </head>
@@ -79,6 +81,12 @@ function oneClickTest() {
     document.querySelector(".target").value = "";
     document.querySelector(".target").value = `SHOW TABLES;`;
     insertSQLResult(JSON.stringify(alasql(document.querySelector(".target").value)));
+    document.querySelector(".copy").value = sqlTestQuery;
+    splitAdd();
+    document.querySelector(".copy").value = "";
+    document.querySelector(".target").value = insertIntoActorCountryCategory;
+    insertSQLResult(JSON.stringify(alasql(document.querySelector(".target").value)));
+    document.querySelector(".target").value = "SELECT * FROM actor;";
     document.querySelector(".oneClickTest").outerHTML = "";
 }
 
