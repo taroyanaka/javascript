@@ -1,0 +1,416 @@
+[
+    [
+      [
+        1,
+        "SHOW COLUMNS FROM actor;"
+      ],
+      [
+        "1",
+        "SELECT * FROM actor;\n"
+      ],
+      [
+        "1",
+        "SELECT * FROM table_name;"
+      ]
+    ],
+    [
+      [
+        "2",
+        "SHOW COLUMNS FROM actor;"
+      ],
+      [
+        "2",
+        "SELECT * FROM table_name;"
+      ],
+      [
+        "1",
+        ");"
+      ],
+      [
+        "1",
+        "column4 datatype, "
+      ],
+      [
+        "1",
+        "column3 datatype, "
+      ],
+      [
+        "1",
+        "column2 datatype, "
+      ],
+      [
+        "1",
+        "column1 datatype, "
+      ],
+      [
+        "1",
+        "CREATE TABLE table_name ( "
+      ],
+      [
+        "1",
+        "ALTER TABLE table_name DROP COLUMN column_name;"
+      ],
+      [
+        "1",
+        "ALTER TABLE table_name MODIFY column_name column_type;"
+      ],
+      [
+        "1",
+        "ALTER TABLE table_name ADD column_name column_definition;"
+      ],
+      [
+        "1",
+        "DROP VIEW view_name;"
+      ],
+      [
+        "1",
+        "SELECT * FROM view_name;"
+      ],
+      [
+        "1",
+        "CREATE VIEW view_name AS SELECT column1, column2 FROM table_name WHERE condition;"
+      ],
+      [
+        "1",
+        "SELECT column_names FROM table1 T1, table1 T2 WHERE condition;"
+      ],
+      [
+        "1",
+        "SELECT column_names FROM table1 FULL OUTER JOIN table2 ON table1.column_name=table2.column_name;"
+      ],
+      [
+        "1",
+        "SELECT column_names FROM table1 RIGHT JOIN table2 ON table1.column_name=table2.column_name;"
+      ],
+      [
+        "1",
+        "SELECT column_names FROM table1 LEFT JOIN table2 ON table1.column_name=table2.column_name;"
+      ],
+      [
+        "1",
+        "SELECT table1.column_name1, table2.column_name2, table3.column_name3 FROM ((table1 INNER JOIN table2 ON relationship) INNER JOIN table3 ON relationship);"
+      ],
+      [
+        "1",
+        "SELECT column_names FROM table1 INNER JOIN table2 ON table1.column_name=table2.column_name;"
+      ],
+      [
+        "1",
+        "SELECT SUM (column_name) FROM table_name WHERE condition;"
+      ],
+      [
+        "1",
+        "SELECT AVG (column_name) FROM table_name WHERE condition;"
+      ],
+      [
+        "1",
+        "SELECT MAX (column_names) FROM table_name WHERE condition;"
+      ],
+      [
+        "1",
+        "SELECT MIN (column_names) FROM table_name WHERE condition;"
+      ],
+      [
+        "1",
+        "SELECT COUNT (DISTINCT column_name);"
+      ],
+      [
+        "1",
+        "DELETE * FROM table_name;"
+      ],
+      [
+        "1",
+        "DELETE FROM table_name WHERE condition;"
+      ],
+      [
+        "1",
+        "UPDATE table_name SET column_name = value;"
+      ],
+      [
+        "1",
+        "UPDATE table_name SET column1 = value1, column2 = value2 WHERE condition;"
+      ],
+      [
+        "1",
+        "INSERT INTO table_name VALUES (value1, value2 …);"
+      ],
+      [
+        "1",
+        "INSERT INTO table_name (column1, column2) VALUES (value1, value2);"
+      ],
+      [
+        "1",
+        "FROM cte"
+      ],
+      [
+        "1",
+        "SELECT *"
+      ],
+      [
+        "1",
+        ")"
+      ],
+      [
+        "1",
+        "  SELECT c1.* FROM categories AS c1 JOIN cte ON c1.parent_category_id = cte.id"
+      ],
+      [
+        "1",
+        "  UNION ALL"
+      ],
+      [
+        "1",
+        "  SELECT c0.* FROM categories AS c0 WHERE id = 1 # Starting point"
+      ],
+      [
+        "1",
+        "WITH RECURSIVE cte AS ("
+      ],
+      [
+        "1",
+        "SELECT COUNT(column_name1), column_name2 FROM table GROUP BY column_name2 HAVING COUNT(column_name1) > 5;"
+      ],
+      [
+        "1",
+        "SELECT column_name1, COUNT(column_name2) FROM table_name WHERE condition GROUP BY column_name1 ORDER BY COUNT(column_name2) DESC;"
+      ],
+      [
+        "1",
+        "SELECT columns_names FROM table1 WHERE column_name operator (ANY|ALL) (SELECT column_name FROM table_name WHERE condition);"
+      ],
+      [
+        "1",
+        "The ALL operator returns true if all subquery values meet the condition"
+      ],
+      [
+        "1",
+        "The ANY operator returns true if any subquery values meet the condition"
+      ],
+      [
+        "1",
+        "SELECT columns_names FROM table1 EXCEPT SELECT column_name FROM table2;"
+      ],
+      [
+        "1",
+        "Generally used the same way as UNION above"
+      ],
+      [
+        "1",
+        "SELECT columns_names FROM table1 INTERSECT SELECT column_name FROM table2;"
+      ],
+      [
+        "1",
+        "Generally used the same way as UNION above"
+      ],
+      [
+        "1",
+        "UNION operator only selects distinct values, UNION ALL will allow duplicates"
+      ],
+      [
+        "1",
+        "SELECT columns_names FROM table1 UNION SELECT column_name FROM table2;"
+      ],
+      [
+        "1",
+        "The columns in each SELECT statement must also be in the same order"
+      ],
+      [
+        "1",
+        "The columns must have similar data types"
+      ],
+      [
+        "1",
+        "Each SELECT statement within UNION must have the same number of columns"
+      ],
+      [
+        "1",
+        "SELECT column_name1, column_name2 + ', ' + column_name3 AS alias_name;"
+      ],
+      [
+        "1",
+        "SELECT column_name AS alias_name1, column_name2 AS alias_name2;"
+      ],
+      [
+        "1",
+        "SELECT column_name FROM table_name AS alias_name;"
+      ],
+      [
+        "1",
+        "SELECT column_name AS alias_name FROM table_name;"
+      ],
+      [
+        "1",
+        "SELECT * FROM table_name WHERE column_name IS NOT NULL;"
+      ],
+      [
+        "1",
+        "SELECT * FROM table_name WHERE column_name IS NULL;"
+      ],
+      [
+        "1",
+        "SELECT * FROM Products WHERE column_name BETWEEN #01/07/1999# AND #03/12/1999#;"
+      ],
+      [
+        "1",
+        "SELECT * FROM Products WHERE (column_name BETWEEN value1 AND value2) AND NOT column_name2 IN (value3, value4);"
+      ],
+      [
+        "1",
+        "SELECT column_names FROM table_name WHERE column_name BETWEEN value1 AND value2;"
+      ],
+      [
+        "1",
+        "SELECT column_names FROM table_name WHERE column_name IN (SELECT STATEMENT);"
+      ],
+      [
+        "1",
+        "SELECT column_names FROM table_name WHERE column_name IN (value1, value2, …);"
+      ],
+      [
+        "1",
+        "essentially the IN operator is shorthand for multiple OR conditions"
+      ],
+      [
+        "1",
+        "LIKE '[a-c]%' (find any values starting with \"a\", \"b\", or \"c\""
+      ],
+      [
+        "1",
+        "LIKE 'a_%_%' (find any values that start with \"a\" and are at least 3 characters in length)"
+      ],
+      [
+        "1",
+        "LIKE '_r%' (find any values that have \"r\" in the second position)"
+      ],
+      [
+        "1",
+        "LIKE '%or%' (find any values that have \"or\" in any position)"
+      ],
+      [
+        "1",
+        "LIKE '%a' (find any values that end with \"a\")"
+      ],
+      [
+        "1",
+        "LIKE 'a%' (find any values that start with \"a\")"
+      ],
+      [
+        "1",
+        "SELECT column_names FROM table_name WHERE column_name LIKE pattern;"
+      ],
+      [
+        "1",
+        "_ (underscore) is a wildcard character that represents a single character"
+      ],
+      [
+        "1",
+        "% (percent sign) is a wildcard character that represents zero, one, or multiple characters"
+      ],
+      [
+        "1",
+        "SELECT column_names FROM table_name LIMIT offset, count;"
+      ],
+      [
+        "1",
+        "Not all database systems support SELECT TOP. The MySQL equivalent is the LIMIT clause"
+      ],
+      [
+        "1",
+        "SELECT TOP percent columns_names FROM table_name WHERE condition;"
+      ],
+      [
+        "1",
+        "SELECT TOP number columns_names FROM table_name WHERE condition;"
+      ],
+      [
+        "1",
+        "SELECT * FROM table_name ORDER BY column1 ASC, column2 DESC;"
+      ],
+      [
+        "1",
+        "SELECT * FROM table_name ORDER BY column DESC;"
+      ],
+      [
+        "1",
+        "SELECT * FROM table_name ORDER BY column;"
+      ],
+      [
+        "1",
+        "SELECT * FROM table_name WHERE EXISTS (SELECT column_name FROM table_name WHERE condition);"
+      ],
+      [
+        "1",
+        "SELECT * FROM table_name WHERE condition1 AND (condition2 OR condition3);"
+      ],
+      [
+        "1",
+        "SELECT * FROM table_name WHERE NOT condition;"
+      ],
+      [
+        "1",
+        "SELECT * FROM table_name WHERE condition1 OR condition2;"
+      ],
+      [
+        "1",
+        "SELECT * FROM table_name WHERE condition1 AND condition2;"
+      ],
+      [
+        "1",
+        "SELECT column1, column2 FROM table_name WHERE condition;"
+      ],
+      [
+        "1",
+        "SELECT DISTINCT column_name;"
+      ],
+      [
+        "1",
+        "SHOW TABLES;"
+      ],
+      [
+        "1",
+        "foo0"
+      ]
+    ],
+    [
+      [
+        "10",
+        "foo1"
+      ],
+      [
+        "3",
+        "foo2\n    bar2 bar3\n\n    bar2 bar3\n\n\n    bar2 bar3\n"
+      ],
+      [
+        "2",
+        "foo1"
+      ]
+    ],
+    [
+      [
+        "5",
+        "foo2"
+      ],
+      [
+        "3",
+        "foo2"
+      ],
+      [
+        "2",
+        "foo2"
+      ]
+    ],
+    [
+      [
+        "7",
+        "foo3"
+      ],
+      [
+        "6",
+        "foo3"
+      ],
+      [
+        "5",
+        "foo3"
+      ]
+    ]
+  ]
