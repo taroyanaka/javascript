@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sql tester dvd rental version</title>
+    <style class="origin">
+    .enableSQL{
+        width: 100px;
+        height: 100px;
+    }
+    .oneClickTest{
+        width: 500px;
+        height: 500px;
+        background-color: chartreuse;
+    }
+    </style>
+    <script src="alasql.js"></script>
+    <!-- https://dev.mysql.com/doc/sakila/en/ -->
+    <!-- https://github.com/Shrsh/DVD_Rental-Database -->
+    <script src="dvd_rental.sql.js"></script>
+    <!-- http://vizua.net/simple-pure-css-accordion -->
+<!-- https://codepen.io/thetallweeks/pen/uAEGr   -->
+</head>
+<body>
+<div class="wrapper">
+<div class="innerWrapper">
+<!-- <textarea cols="30" rows="10" class="original canHidden" oninput="exe()"></textarea> -->
+<textarea cols="30" rows="10" class="original canHidden"></textarea>
+<button onclick="copyOriginal();">copyOriginal</button>
+<button onclick="oneClickTest();" class="oneClickTest">oneClickTestButton!!!</button>
+<button onclick="test();disassemble();exe();">set test data and disassemble</button>
+<button onclick="disassembleButton();exe();">disassemble</button>
+<button onclick="hide();">hide</button>
+
+<textarea cols="30" rows="10" class="target" oninput="alasqlMode();"></textarea>
+<textarea cols="30" rows="10" class="result">sql result is here</textarea>
+<input type="checkbox" cols="30" rows="10" class="enableSQL" checked></input>
+<button cols="30" rows="10" onclick="testSQLData();">testSQLData</button>
+<button class="toCopyFromTarget" onclick="copy();">copy</button>
+<button onclick="(()=>document.querySelector('.target').value='')();">clear</button>
+<textarea cols="30" rows="10" class="copy"></textarea>
+
+<button onclick="create();">create</button>
+<button onclick="add();">add</button>
+<button onclick="splitAdd();">splitAdd</button>
+<div class="buttonsBox"></div>
+
+<button onclick="scriptCopy('.myScript', '.scriptArea');">HTMLAndScriptCopy</button>
+</div>
+</div>
+</body>
+
+
+<script class="myScript">
+function insertSQLResult(res) {
+    document.querySelector(".result").value = res
+}
+// insertSQLResult();
+let sqlText = dvd_rental;
+function testSQLData() {
+    document.querySelector(".target").value = sqlText;
+    alasql(document.querySelector(".target").value)
+    console.table(alasql);
+}
+function alasqlMode() {
+    if(document.querySelector(".enableSQL").checked){
+        // console.table(alasql(document.querySelector(".target").value))
+        insertSQLResult(JSON.stringify(alasql(document.querySelector(".target").value)))
+    }
+}
+// alasqlMode();
+function oneClickTest() {
+    test();disassemble();exe();
+    testSQLData();
+    insertSQLResult();
+    hide();
+    document.querySelector(".target").value = "";
+    document.querySelector(".target").value = `SHOW TABLES;`;
+    insertSQLResult(JSON.stringify(alasql(document.querySelector(".target").value)));
+    document.querySelector(".oneClickTest").outerHTML = "";
+}
+
+
+document.querySelector("head").insertAdjacentHTML("beforeend", `<style class="myStyle"></style>`);
+
+function rangePlus(from,to){return[...Array(to-from+1)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
+function groupWith(fn,list){let idx=0;return list.reduce((A,V)=>{while(idx<list.length){let nextidx=idx+1;while(nextidx<list.length&&fn(list[nextidx-1],list[nextidx])){nextidx+=1};A.push(list.slice(idx,nextidx));idx=nextidx};return A},A=[])};
+
+function copyOriginal() {
+    document.querySelector(".original").select();
+    document.querySelector(".original").setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    alert("Copy!!" + document.querySelector(".original").value);
+}
+
+
+let testStr = `foo2
+    bar2 bar3
+
+    bar2 bar3
+
+
+    bar2 bar3
+`
+let testAry = [
+    [[1,"SHOW TABLES;"], [1,"SHOW COLUMNS FROM actor;"], [1,"foo0"]],
+    [[10,"foo1"], [3,testStr], [2,"foo1"]],
+    [[5,"foo2"], [3,"foo2"], [2,"foo2"]],
+    [[7,"foo3"], [6,"foo3"], [5,"foo3"]]
+]
+
+let res2;
+let res3;
+let json1;
+let tmp;
+let tmp2;
+let tmp3;
+
+// https://stackoverflow.com/a/7220510/9740478
+// var str = JSON.stringify(obj, null, 2); // spacing level = 2
+
+function test() {
+    json1 = JSON.stringify(testAry, null, 2);
+}
+
+function disassembleButton() {
+    json1 = document.querySelector(".original").value
+    tmp = JSON.parse(json1);
+    return tmp;
+}
+function disassemble() {
+    document.querySelector(".original").value = json1;
+    tmp = JSON.parse(json1);
+    return tmp;
+}
+function assemble() {
+    tmp = groupWith((a, b)=> a.dataset.category === b.dataset.category,
+                        Array.from(document.querySelectorAll("p > button"))
+                    )
+    tmp = tmp.map(V=>V.map(VAL=>[VAL.dataset.counter,VAL.textContent]).sort((a,b)=>a[0] - b[0]).reverse())
+    json1 = JSON.stringify(tmp, null, 2);
+    document.querySelector(".original").value = json1;
+    return tmp;
+}
+function addStyle() {
+    const originalStyle = `.container{
+    width: 400px;
+    height: auto;
+    margin: 0 auto;
+    }
+    .accordion label{
+    display:block;
+    background-color: #eeeeee;
+    }
+    .accordion p{
+    visibility: hidden;
+    opacity: 0;
+    display: none;
+    }`
+    const addStyle = res2.map((V,IDX)=>
+        `#tm${IDX+1}:checked ~ .buttons-${IDX+1}{
+        display: block;
+        visibility: visible;
+        opacity: 1;
+        }
+        input#tm${IDX+1}{
+        display: none;
+        position: relative;
+        }`)
+        .join("")
+    document.querySelector("style.myStyle").textContent = originalStyle + addStyle;
+}
+function exe() {
+    document.querySelectorAll(".container").forEach(E=>
+        {E.parentNode.removeChild(E)});
+    res2 = disassemble();
+    res3 = res2.map((V,IDX)=>`<div class="container">
+        <div class="accordion">
+        <label for="tm${IDX+1}" class="accordionitem">
+        <h2>buttons-${IDX+1}</h2></label>
+        <input type="checkbox" id="tm${IDX+1}"/>
+        <p class="buttons-${IDX+1}">
+            ${V.map(VAL=>`<button data-category="${IDX+1}" data-counter="${VAL[0]}" onclick="insertTextFromButton(event);">${VAL[1]}</button>`).join("")}
+        </p>
+        </div>
+    </div>
+    `).join("")
+    document.querySelector(".buttonsBox").insertAdjacentHTML("afterbegin", res3);
+    addStyle();
+    // assemble();
+}
+function openTargetBox(num) { document.querySelectorAll(".container > div > input")[num - 1].click() }
+function insertTextFromButton(event){
+    event.target.dataset.counter = Number(event.target.dataset.counter) + 1;
+    assemble();
+    exe();
+    openTargetBox(Number(event.target.dataset.category));
+    document.querySelector(".target").value += event.target.textContent;
+}
+function copy() {
+    document.querySelector(".copy").value = document.querySelector(".target").value;
+    if(document.querySelector("#form_editor > div.ace_scroller > div")){
+        document.querySelector("#form_editor > div.ace_scroller > div").innerText += document.querySelector(".target").value;
+    }
+}
+function hide() {
+    document.querySelectorAll(".canHidden").forEach(V=>V.style.display = V.style.display === "none" ? "inline" : "none")
+}
+function create() {
+    tmp3 = JSON.parse(json1);
+    tmp3.unshift([[1, document.querySelector(".copy").value]]);
+    json1 = JSON.stringify(tmp3, null, 2);
+    disassemble();
+    exe();
+}
+function add(params) {
+    const buttonStr = params || document.querySelector(".copy").value || "you need to set to textarea";
+
+    tmp3 = JSON.parse(json1);
+    tmp3[0].unshift([1, buttonStr]);
+    json1 = JSON.stringify(tmp3, null, 2);
+    disassemble();
+    exe();
+}
+function splitAdd() {
+    document.querySelector(".copy").value.split("\n").forEach(V=>{
+        add(V)
+    })
+}
+
+function scriptCopy(fromCssSelectorString, toCssSelectorString, option) {
+    let wrapperStr = document.querySelector(".wrapper").innerHTML.toString().replace("<","\<").replace(">","\>").replace('"','\"');
+
+    let fullText = `document.querySelector("html").insertAdjacentHTML("beforeend",` + '`' + wrapperStr + '`' + `)`;
+
+    if(wrapperStr){
+        option = fullText || "";
+    }
+    // console.log(fromCssSelectorString);
+    // console.log(toCssSelectorString);
+
+    toCssSelectorStringWithoutDot = toCssSelectorString.replace(".","");
+    // console.log(toCssSelectorStringWithoutDot);
+    document.querySelector("body").insertAdjacentHTML("beforeend", `<textarea class="${toCssSelectorStringWithoutDot}" cols="30" rows="10"></textarea>`);
+    document.querySelector(toCssSelectorString).value = option + document.querySelector(fromCssSelectorString).textContent;
+    function copyThat() {
+        document.querySelector(toCssSelectorString).select();
+        document.querySelector(toCssSelectorString).setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        alert("Copy!!" + document.querySelector(toCssSelectorString).value);
+    }
+    copyThat();
+}
+</script>
+</html>
