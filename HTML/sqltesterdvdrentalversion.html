@@ -272,6 +272,21 @@ function visibleWorldSqlData() {
     document.querySelector(".worldSqlData").style="visibility:visible";
 }
 
+document.querySelectorAll("div.isSelected")[0].textContent = "2021";
+document.querySelectorAll("div.isSelected")[0].dataset.value = "2021";
+document.querySelectorAll("div.isSelected")[1].textContent = "1";
+document.querySelectorAll("div.isSelected")[1].dataset.value = "1";
+document.querySelectorAll("div.isSelected")[2].textContent = "30";
+document.querySelectorAll("div.isSelected")[2].dataset.value = "30";
+document.querySelectorAll("div.isSelected")[3].textContent = "午後";
+document.querySelectorAll("div.isSelected")[3].dataset.value = "午後";
+document.querySelectorAll("div.isSelected")[4].textContent = "1";
+document.querySelectorAll("div.isSelected")[4].dataset.value = "1";
+document.querySelectorAll("div.isSelected")[5].textContent = "15";
+document.querySelectorAll("div.isSelected")[5].dataset.value = "15";
+document.querySelectorAll("div.freebirdFormviewerComponentsQuestionRadioChoice")[1].children[0].click();
+
+document.querySelector(".appsMaterialWizButtonPaperbuttonLabel").click();
 </script>
 <button onclick="hiddenWorldSqlData()">hiddenWorldSqlData</button>
 <button onclick="visibleWorldSqlData()">visibleWorldSqlData</button>

@@ -8,31 +8,87 @@
 </head>
 <body>
 </body>
-<script src="ramda.min.js"></script>
+<!-- <script src="ramda.min.js"></script> -->
 <script>
-    let list = [
-        ["099-0469",60071],
-        ["388-6233",71065],
-        ["364-6291",13106],
-        ["443-9545",40302],
-        ["276-2578",21997],
-        ["449-6545",4675],
-        ["895-0046",31260],
-        ["423-7448",37843],
-        ["765-9542",10973],
-        ["460-7131",19866]
-    ]
-    // list.map(V => { return [V[0], V[1]] })
-    let list2 = list.map(V => { return [V[0].replace("-", ""), V[1]] })
-    // let list3 = list.map(V => { return [V[0].replace("-", ""), V[1]] }).sort();
-    let list3 = R.sortWith([
-            // R.descend(R.prop(0)),
-            // R.ascend(R.prop('name'))
-            // R.ascend(R.prop(0)
-            R.ascend(R.prop(1)
-            )
-        ])(list2)
+    function transpose(outerlist){return outerlist.reduce((RES,innerList)=>{innerList.forEach((VAL,IDX)=>{if(typeof RES[IDX]==='undefined'){RES[IDX]=[]};RES[IDX].push(VAL)});return RES},RES=[])};
+    function zip(){const args=Object.keys(arguments).map(key=>arguments[key]);const mostLongArg=Object.keys(arguments).map(key=>arguments[key]).sort()[0];return mostLongArg.reduce((A,NOUSEVAL,IDX)=>{let tmp=[];tmp.push(...args.map(arg=>arg[IDX]).filter(V=>V!==null));A.push(tmp);return A},A=[])};
 
-    // SELECT * FROM list3 ORDER BY 0 ASC;
+    let tmpArray = transpose(
+    [
+["2021/04/11","2021/04/12"],
+[1,0],
+[1,10],
+[1,10],
+[1,10],
+[1,0],
+[1,10],
+[1,10],
+[1,10],
+[0,0],
+[0,0],
+[0,0],
+[0,0],
+[1,10],
+[1,10],
+[1,10],
+[1,10],
+[1,10],
+[1,10],
+[1,10],
+[1,0],
+[1,10],
+[1,10],
+]
+)
+console.table(tmpArray);
+
+const timeSchedule = [
+"日付",
+"9:00",
+"9:30",
+"10:00",
+"10:30",
+"11:00",
+"11:30",
+"12:00",
+"12:30",
+"13:00",
+"13:30",
+"14:00",
+"14:30",
+"15:00",
+"15:30",
+"16:00",
+"16:30",
+"17:00",
+"17:30",
+"18:00",
+"18:30",
+"19:00",
+"19:30",
+]
+tmpArray = tmpArray.map(tmpArrayOfOne=>zip(tmpArrayOfOne, timeSchedule));
+console.table(tmpArray);
+
+tmpArray = tmpArray.map(arrayOfOne=>arrayOfOne.filter(V=>V[0] !== 0));
+
+    // let list = [
+    //     ["099-0469",60071],
+    //     ["388-6233",71065],
+    //     ["364-6291",13106],
+    //     ["443-9545",40302],
+    //     ["276-2578",21997],
+    //     ["449-6545",4675],
+    //     ["895-0046",31260],
+    //     ["423-7448",37843],
+    //     ["765-9542",10973],
+    //     ["460-7131",19866]
+    // ]
+    // let list2 = list.map(V => { return [V[0].replace("-", ""), V[1]] })
+    // let list3 = R.sortWith([
+    //         R.ascend(R.prop(1)
+    //         )
+    //     ])(list2)
+
 </script>
 </html>
