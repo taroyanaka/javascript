@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>get JSON from google spreadsheet via GAS endpoint</title>
+</head>
+<body>
+</body>
+<script>
+// in GAS editor
+// function doGet(event) {
+//     const sheet = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1s6PrnmIs2nHENE4MSyJTM9hISunUZdUF7iSs-eqfTCI/edit").getSheetByName("sheetBar");
+//   let result = sheet.getRange('C1:X11').getValues();
+//   return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+// }
+</script>
+<script>
+    let testMode = true;
+
+    let bar;
+    function foo(){
+        const url = 
+            `https://script.google.com/macros/s/AKfycbyl4JtFMI33sqdRs3JSyxnLgZioBky052vbaYmaR4dmwLISicqKWZ3LSGWc99XKwe7j/exec`;
+        if(testMode){
+            bar = [["9:00","9:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30"],[1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1],[10,10,10,10,10,10,10,10,0,0,0,0,10,10,10,10,10,10,10,10,10,10],[1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,0,0,0,0,2,2,2,2,2,2,2,2,2,2],[1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1],[1,0,1,0,1,0,1,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],[1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1],[100,100,100,100,100,100,100,100,0,0,0,0,100,100,100,100,100,100,100,100,100,100]]
+        }else{
+            fetch(url).then(v=>{return v.json()}).then(V=>{bar = V;console.table(bar)})
+        }
+    }
+    foo();
+</script>
+</html>
