@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>figma css</title>
+    <style class="originalStyle"></style>
+</head>
+<body>
+    <input type="button" value="execute" onclick="exe();">
+    <textarea name="" class="figmaCss" cols="30" rows="10"></textarea>
+    <textarea name="" class="css" cols="30" rows="10"></textarea>
+    <textarea name="" class="html" cols="30" rows="10"></textarea>
+    <div class="sandBox"></div>
+    <script>
+function setTestData() {
+    document.querySelector(".figmaCss").value = `/* Frame 1 */
+
+position: relative;
+width: 247px;
+height: 226px;
+
+background: #FFFFFF;
+
+
+/* Rectangle 1 */
+
+position: absolute;
+width: 226px;
+height: 117px;
+left: 85px;
+top: 33px;
+
+background: #C4C4C4;
+
+
+/* Vector 1 */
+
+position: absolute;
+width: 545px;
+height: 611px;
+left: -213px;
+top: -169px;
+
+border: 1px solid #000000;
+
+
+/* ccc */
+
+position: absolute;
+width: 19px;
+height: 14px;
+left: 24px;
+top: 136px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 12px;
+line-height: 14px;
+/* identical to box height */
+
+color: #000000;
+
+
+
+/* bbb */
+
+position: absolute;
+width: 21px;
+height: 14px;
+left: 55px;
+top: 96px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 12px;
+line-height: 14px;
+/* identical to box height */
+
+color: #000000;
+
+
+
+/* abc */
+
+position: absolute;
+width: 20px;
+height: 28px;
+left: 24px;
+top: 0px;
+
+font-family: Roboto;
+font-style: normal;
+font-weight: normal;
+font-size: 12px;
+line-height: 14px;
+
+color: #000000;
+
+`;
+}
+
+function figmaCssToResultCss() {
+    const figmaCss = document.querySelector(".figmaCss").value;
+    const tmpCss = figmaCss
+                        .replaceAll("/* ","}\n.")
+                        .replaceAll("*/","{")
+                        .replace("}","") + "}";
+    const resultCss = tmpCss.replaceAll(/(\.\w+)\s(\d)\s(\{)/gm,"$1-$2$3");
+    return resultCss;
+}
+
+function makeHtml() {
+    const html = [...figmaCssToResultCss().matchAll(/\..+{/gm)].map(V=>V[0].replaceAll(" ","").replaceAll(".","").replaceAll("{","") ).map(V=>`<div class="${V}"></div>`).join("");
+    return html;
+}
+
+function dataSet() {
+    // init
+    document.querySelector(".sandBox").innerHTML = "";
+    document.querySelector(".originalStyle").innerText = `.sandBox{
+            position: absolute; top:300px; left:300px;
+        }`
+    // set
+    document.querySelector(".sandBox").insertAdjacentHTML("afterbegin", makeHtml());
+    document.querySelector(".originalStyle").innerText = figmaCssToResultCss();
+}
+
+function exe() {
+    document.querySelector(".css").value = figmaCssToResultCss();
+    document.querySelector(".html").value = makeHtml();
+    dataSet();
+}
+
+setTestData();
+</script>
+</body>
+</html>
