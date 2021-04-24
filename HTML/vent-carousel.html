@@ -223,12 +223,14 @@ function outputCss() {
 }
 
 // init
-document.querySelector("#carouselVolume").value = 3;
-carouselVolume = Number(document.querySelector("#carouselVolume").value);
-setHtml();
-setCss();
-outputHtml();
-outputCss();
+function initCarousel() {
+    document.querySelector("#carouselVolume").value = 3;
+    carouselVolume = Number(document.querySelector("#carouselVolume").value);
+    setHtml();
+    setCss();
+    outputHtml();
+    outputCss();
+}
 
 function makeCarousel() {
     carouselVolume = Number(document.querySelector("#carouselVolume").value);
@@ -237,6 +239,8 @@ function makeCarousel() {
     outputHtml();
     outputCss();
 }
+
+initCarousel();
 document.querySelector("#carouselVolume").addEventListener("change",makeCarousel,false);
 
 </script>
