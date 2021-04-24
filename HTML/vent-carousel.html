@@ -84,6 +84,8 @@ html, body {
     <textarea name="" class="outputHtml" cols="30" rows="10"></textarea>
     <textarea name="" class="outputCss" cols="30" rows="10"></textarea>
     <input type="number" name="" id="carouselVolume" value="3">
+    <button onclick="setImageList()">setImage</button>
+    <div class="imageList"></div>
 <script>
 let carouselVolume;
 
@@ -179,6 +181,11 @@ function outputCss() {
         + document.querySelector("style.additional").innerText;
 }
 
+function getImageList() {
+    const imageListHtml = Array.from(document.querySelectorAll("img")).map((V,IDX)=>`<input type="url" class="imageListOfOne" name="image-number-${IDX+1}" value="${V.src}">`).join("")
+    document.querySelector(".imageList").innerHTML = imageListHtml;
+}
+
 function initCarousel() {
     document.querySelector("#carouselVolume").value = 3;
     carouselVolume = Number(document.querySelector("#carouselVolume").value);
@@ -186,6 +193,7 @@ function initCarousel() {
     setCss();
     outputHtml();
     outputCss();
+    getImageList();
 }
 
 function makeCarousel() {
@@ -194,7 +202,17 @@ function makeCarousel() {
     setCss();
     outputHtml();
     outputCss();
+    getImageList();
 }
+
+function setImageList() {
+    const imageListOfOne = Array.from(document.querySelectorAll(".imageListOfOne")).map(V=>V.value)
+    document.querySelectorAll(".carousel-item > img").forEach((V,IDX)=>V.src = imageListOfOne[IDX]);
+    outputHtml();
+    outputCss();
+    getImageList();
+}
+
 
 initCarousel();
 document.querySelector("#carouselVolume").addEventListener("change",makeCarousel,false);
