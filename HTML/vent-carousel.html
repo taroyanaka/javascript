@@ -87,37 +87,6 @@ html, body {
 <script>
 let carouselVolume;
 
-let htmlOne = `<input class="carousel-open" type="radio" id="carousel-1" name="carousel" aria-hidden="false" hidden="" checked="checked">
-<div class="carousel-item">
-    <img src="http://fakeimg.pl/2000x800/0079D8/fff/?text=1">
-</div>
-<input class="carousel-open" type="radio" id="carousel-2" name="carousel" aria-hidden="true" hidden="">
-<div class="carousel-item">
-    <img src="http://fakeimg.pl/2000x800/DA5930/fff/?text=JavaScript">
-</div>
-<input class="carousel-open" type="radio" id="carousel-3" name="carousel" aria-hidden="true" hidden="">
-<div class="carousel-item">
-    <img src="http://fakeimg.pl/2000x800/F90/fff/?text=Carousel">
-</div>`
-let htmlTwo = `
-<label for="carousel-3" class="carousel-control prev control-1">‹</label>
-<label for="carousel-2" class="carousel-control next control-1">›</label>
-<label for="carousel-1" class="carousel-control prev control-2">‹</label>
-<label for="carousel-3" class="carousel-control next control-2">›</label>
-<label for="carousel-2" class="carousel-control prev control-3">‹</label>
-<label for="carousel-1" class="carousel-control next control-3">›</label>`
-let htmlThree =
-    `<ol class="carousel-indicators">
-    <li>
-        <label for="carousel-1" class="carousel-bullet">•</label>
-    </li>
-    <li>
-        <label for="carousel-2" class="carousel-bullet">•</label>
-    </li>
-    <li>
-        <label for="carousel-3" class="carousel-bullet">•</label>
-    </li>
-    </ol>`
 function makeHtmlOne() {
     return [...Array(carouselVolume).keys()]
         .map((V,IDX)=>{
@@ -169,18 +138,6 @@ function setHtml() {
     document.querySelector(".carousel-inner").innerHTML += makeHtmlOne() + makeHtmlTwo() + makeHtmlThree();
 }
 
-let cssOne = `
-    #carousel-1:checked ~ .control-1 ~ .carousel-indicators li:nth-child(1) .carousel-bullet,
-    #carousel-2:checked ~ .control-2 ~ .carousel-indicators li:nth-child(2) .carousel-bullet,
-    #carousel-3:checked ~ .control-3 ~ .carousel-indicators li:nth-child(3) .carousel-bullet,{
-        color: black;
-    }`
-let cssTwo = `
-    #carousel-1:checked ~ .control-1,
-    #carousel-2:checked ~ .control-2,
-    #carousel-3:checked ~ .control-3{
-        display: block;
-    }`
 
 function makeCssOne() {
     let tmpCss = [...Array(carouselVolume).keys()]
@@ -244,6 +201,51 @@ document.querySelector("#carouselVolume").addEventListener("change",makeCarousel
 
 </script>
 
+<script class="referenceCode">
+//     let htmlOne = `<input class="carousel-open" type="radio" id="carousel-1" name="carousel" aria-hidden="false" hidden="" checked="checked">
+// <div class="carousel-item">
+//     <img src="http://fakeimg.pl/2000x800/0079D8/fff/?text=1">
+// </div>
+// <input class="carousel-open" type="radio" id="carousel-2" name="carousel" aria-hidden="true" hidden="">
+// <div class="carousel-item">
+//     <img src="http://fakeimg.pl/2000x800/DA5930/fff/?text=JavaScript">
+// </div>
+// <input class="carousel-open" type="radio" id="carousel-3" name="carousel" aria-hidden="true" hidden="">
+// <div class="carousel-item">
+//     <img src="http://fakeimg.pl/2000x800/F90/fff/?text=Carousel">
+// </div>`
+// let htmlTwo = `
+// <label for="carousel-3" class="carousel-control prev control-1">‹</label>
+// <label for="carousel-2" class="carousel-control next control-1">›</label>
+// <label for="carousel-1" class="carousel-control prev control-2">‹</label>
+// <label for="carousel-3" class="carousel-control next control-2">›</label>
+// <label for="carousel-2" class="carousel-control prev control-3">‹</label>
+// <label for="carousel-1" class="carousel-control next control-3">›</label>`
+// let htmlThree =
+//     `<ol class="carousel-indicators">
+//     <li>
+//         <label for="carousel-1" class="carousel-bullet">•</label>
+//     </li>
+//     <li>
+//         <label for="carousel-2" class="carousel-bullet">•</label>
+//     </li>
+//     <li>
+//         <label for="carousel-3" class="carousel-bullet">•</label>
+//     </li>
+//     </ol>`
+//     let cssOne = `
+//     #carousel-1:checked ~ .control-1 ~ .carousel-indicators li:nth-child(1) .carousel-bullet,
+//     #carousel-2:checked ~ .control-2 ~ .carousel-indicators li:nth-child(2) .carousel-bullet,
+//     #carousel-3:checked ~ .control-3 ~ .carousel-indicators li:nth-child(3) .carousel-bullet,{
+//         color: black;
+//     }`
+// let cssTwo = `
+//     #carousel-1:checked ~ .control-1,
+//     #carousel-2:checked ~ .control-2,
+//     #carousel-3:checked ~ .control-3{
+//         display: block;
+//     }`
+</script>
 
 <!-- learning for label tag -->
 <!-- <label><input type="checkbox" name="confirm">label type 1</label>
