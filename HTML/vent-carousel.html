@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>vent-carousel</title>
     <!-- https://codepen.io/andrewchaika/pen/mEqRPz -->
-    <style>
+<style class="original">
 html, body {
     margin: 0px;
     padding: 0px;
@@ -72,133 +72,182 @@ html, body {
 .carousel-bullet:hover {
     color: gray;
 }
-#carousel-1:checked ~ .control-1 ~ .carousel-indicators li:nth-child(1) .carousel-bullet,
-#carousel-2:checked ~ .control-2 ~ .carousel-indicators li:nth-child(2) .carousel-bullet,
-#carousel-3:checked ~ .control-3 ~ .carousel-indicators li:nth-child(3) .carousel-bullet {
-    color: black;
-}
-#carousel-1:checked ~ .control-1,
-#carousel-2:checked ~ .control-2,
-#carousel-3:checked ~ .control-3 {
-    display: block;
-}
+</style>
+<style class="additional"></style>
 
-    </style>
 </head>
 <body>
     <div class="carousel">
         <div class="carousel-inner">
-            <!-- A part -->
-            <!-- <input class="carousel-open" type="radio" id="carousel-1" name="carousel" aria-hidden="false" hidden="" checked="checked">
-            <div class="carousel-item">
-                <img src="http://fakeimg.pl/2000x800/0079D8/fff/?text=1">
-            </div>
-            <input class="carousel-open" type="radio" id="carousel-2" name="carousel" aria-hidden="true" hidden="">
-            <div class="carousel-item">
-                <img src="http://fakeimg.pl/2000x800/DA5930/fff/?text=JavaScript">
-            </div>
-            <input class="carousel-open" type="radio" id="carousel-3" name="carousel" aria-hidden="true" hidden="">
-            <div class="carousel-item">
-                <img src="http://fakeimg.pl/2000x800/F90/fff/?text=Carousel">
-            </div> -->
         </div>
     </div>
-<!-- 
-    <label><input type="checkbox" name="confirm">label type 1</label>
-    <input type="checkbox" name="agreement" id="agreement" value="yes">
-    <div>no use</div>
-    <div>no use</div>
-    <label for="agreement">label type 2(with for attribute)</label> -->
-    <script>
-        
-        // const IDX = 0;
-        // let one =  `<input class="carousel-open" type="radio" id="carousel-${IDX+1}" name="carousel" aria-hidden="false" hidden="">
-        //     <div class="carousel-item">
-        //         <img src="http://fakeimg.pl/2000x800/0079D8/fff/?text=${IDX+1}">
-        //     </div>
-        //     <input class="carousel-open" type="radio" id="carousel-${IDX+2}" name="carousel" aria-hidden="true" hidden="">
-        //     <div class="carousel-item">
-        //         <img src="http://fakeimg.pl/2000x800/DA5930/fff/?text=${IDX+2}">
-        //     </div>
-        //     <input class="carousel-open" type="radio" id="carousel-${IDX+3}" name="carousel" aria-hidden="true" hidden="">
-        //     <div class="carousel-item">
-        //         <img src="http://fakeimg.pl/2000x800/F90/fff/?text=${IDX+3}">
-        //     </div>`
-            let one = `<input class="carousel-open" type="radio" id="carousel-1" name="carousel" aria-hidden="false" hidden="" checked="checked">
-            <div class="carousel-item">
-                <img src="http://fakeimg.pl/2000x800/0079D8/fff/?text=1">
-            </div>
-            <input class="carousel-open" type="radio" id="carousel-2" name="carousel" aria-hidden="true" hidden="">
-            <div class="carousel-item">
-                <img src="http://fakeimg.pl/2000x800/DA5930/fff/?text=JavaScript">
-            </div>
-            <input class="carousel-open" type="radio" id="carousel-3" name="carousel" aria-hidden="true" hidden="">
-            <div class="carousel-item">
-                <img src="http://fakeimg.pl/2000x800/F90/fff/?text=Carousel">
-            </div>`
-            one = [...Array(3).keys()]
-                        .map((V,IDX)=>{
-                            return `<input class="carousel-open" type="radio" id="carousel-${IDX+1}" name="carousel" aria-hidden="false" hidden="">
-                                    <div class="carousel-item">
-                                        <img src="http://fakeimg.pl/2000x800/0079D8/fff/?text=${IDX+1}">
-                                    </div>`
-                        })
-                        .map((V,IDX)=>{
-                            if(IDX===0){
-                                V = V.replace('hidden=""','hidden="" checked="checked"');
-                            };
-                            return V;})
-                        .join("");
-            let two = `
-            <label for="carousel-3" class="carousel-control prev control-1">‹</label>
-            <label for="carousel-2" class="carousel-control next control-1">›</label>
-            <label for="carousel-1" class="carousel-control prev control-2">‹</label>
-            <label for="carousel-3" class="carousel-control next control-2">›</label>
-            <label for="carousel-2" class="carousel-control prev control-3">‹</label>
-            <label for="carousel-1" class="carousel-control next control-3">›</label>`
-            two = [...Array(3).keys()]
-                    .reduce((A,V,IDX,sourceArray)=>{
-                        switch (IDX) {
-                            case 0:
-                                A.push(`<label for="carousel-${sourceArray.length}" class="carousel-control prev control-${IDX+1}">‹</label>
-                                <label for="carousel-${IDX+2}" class="carousel-control next control-${IDX+1}">›</label>`)
-                            break;
-                            case (sourceArray.length - 1):
-                                A.push(`<label for="carousel-${IDX}" class="carousel-control prev control-${IDX+1}">‹</label>
-                                <label for="carousel-${1}" class="carousel-control next control-${IDX+1}">›</label>`)
-                            break;
-                            default:
-                                A.push(`<label for="carousel-${IDX}" class="carousel-control prev control-${IDX+1}">‹</label>
-                                <label for="carousel-${IDX+2}" class="carousel-control next control-${IDX+1}">›</label>`)
-                            break;
-                        }
-                    return A;},A=[])
-                    .join("");
-            let three =
-                `<ol class="carousel-indicators">
-                <li>
-                    <label for="carousel-1" class="carousel-bullet">•</label>
-                </li>
-                <li>
-                    <label for="carousel-2" class="carousel-bullet">•</label>
-                </li>
-                <li>
-                    <label for="carousel-3" class="carousel-bullet">•</label>
-                </li>
-                </ol>`
-            three = 
-                    `<ol class="carousel-indicators">`
-                        +
-                        [...Array(3).keys()]
-                            .map((V,IDX)=>
-                                `<li><label for="carousel-${IDX+1}" class="carousel-bullet">•</label></li>`)
-                            .join("");
-                        +
-                    `</ol>`;
+    <textarea name="" class="outputHtml" cols="30" rows="10"></textarea>
+    <textarea name="" class="outputCss" cols="30" rows="10"></textarea>
+    <input type="number" name="" id="carouselVolume" value="3">
+<script>
+let carouselVolume;
 
-            document.querySelector(".carousel-inner").innerHTML += one;
-            document.querySelector(".carousel-inner").innerHTML += two;
-            document.querySelector(".carousel-inner").innerHTML += three;
-    </script>
+let htmlOne = `<input class="carousel-open" type="radio" id="carousel-1" name="carousel" aria-hidden="false" hidden="" checked="checked">
+<div class="carousel-item">
+    <img src="http://fakeimg.pl/2000x800/0079D8/fff/?text=1">
+</div>
+<input class="carousel-open" type="radio" id="carousel-2" name="carousel" aria-hidden="true" hidden="">
+<div class="carousel-item">
+    <img src="http://fakeimg.pl/2000x800/DA5930/fff/?text=JavaScript">
+</div>
+<input class="carousel-open" type="radio" id="carousel-3" name="carousel" aria-hidden="true" hidden="">
+<div class="carousel-item">
+    <img src="http://fakeimg.pl/2000x800/F90/fff/?text=Carousel">
+</div>`
+let htmlTwo = `
+<label for="carousel-3" class="carousel-control prev control-1">‹</label>
+<label for="carousel-2" class="carousel-control next control-1">›</label>
+<label for="carousel-1" class="carousel-control prev control-2">‹</label>
+<label for="carousel-3" class="carousel-control next control-2">›</label>
+<label for="carousel-2" class="carousel-control prev control-3">‹</label>
+<label for="carousel-1" class="carousel-control next control-3">›</label>`
+let htmlThree =
+    `<ol class="carousel-indicators">
+    <li>
+        <label for="carousel-1" class="carousel-bullet">•</label>
+    </li>
+    <li>
+        <label for="carousel-2" class="carousel-bullet">•</label>
+    </li>
+    <li>
+        <label for="carousel-3" class="carousel-bullet">•</label>
+    </li>
+    </ol>`
+function makeHtmlOne() {
+    return [...Array(carouselVolume).keys()]
+        .map((V,IDX)=>{
+            return `<input class="carousel-open" type="radio" id="carousel-${IDX+1}" name="carousel" aria-hidden="false" hidden="">
+                    <div class="carousel-item">
+                        <img src="http://fakeimg.pl/2000x800/0079D8/fff/?text=${IDX+1}">
+                    </div>`
+        })
+        .map((V,IDX)=>{
+            if(IDX===0){
+                V = V.replace('hidden=""','hidden="" checked="checked"');
+            };
+            return V;})
+        .join("");
+}
+function makeHtmlTwo() {
+    return [...Array(carouselVolume).keys()]
+        .reduce((A,V,IDX,sourceArray)=>{
+            switch (IDX) {
+                case 0:
+                    A.push(`<label for="carousel-${sourceArray.length}" class="carousel-control prev control-${IDX+1}">‹</label>
+                    <label for="carousel-${IDX+2}" class="carousel-control next control-${IDX+1}">›</label>`)
+                break;
+                case (sourceArray.length - 1):
+                    A.push(`<label for="carousel-${IDX}" class="carousel-control prev control-${IDX+1}">‹</label>
+                    <label for="carousel-${1}" class="carousel-control next control-${IDX+1}">›</label>`)
+                break;
+                default:
+                    A.push(`<label for="carousel-${IDX}" class="carousel-control prev control-${IDX+1}">‹</label>
+                    <label for="carousel-${IDX+2}" class="carousel-control next control-${IDX+1}">›</label>`)
+                break;
+            }
+        return A;},A=[])
+        .join("");
+}
+function makeHtmlThree() {
+    return `<ol class="carousel-indicators">`
+        +
+        [...Array(carouselVolume).keys()]
+            .map((V,IDX)=>
+                `<li><label for="carousel-${IDX+1}" class="carousel-bullet">•</label></li>`)
+            .join("");
+        +
+    `</ol>`;
+}
+function setHtml() {
+    document.querySelector(".carousel-inner").innerHTML = "";
+    // document.querySelector(".carousel-inner").innerHTML += htmlOne + htmlTwo + htmlThree;
+    document.querySelector(".carousel-inner").innerHTML += makeHtmlOne() + makeHtmlTwo() + makeHtmlThree();
+}
+
+let cssOne = `
+    #carousel-1:checked ~ .control-1 ~ .carousel-indicators li:nth-child(1) .carousel-bullet,
+    #carousel-2:checked ~ .control-2 ~ .carousel-indicators li:nth-child(2) .carousel-bullet,
+    #carousel-3:checked ~ .control-3 ~ .carousel-indicators li:nth-child(3) .carousel-bullet,{
+        color: black;
+    }`
+let cssTwo = `
+    #carousel-1:checked ~ .control-1,
+    #carousel-2:checked ~ .control-2,
+    #carousel-3:checked ~ .control-3{
+        display: block;
+    }`
+
+function makeCssOne() {
+    let tmpCss = [...Array(carouselVolume).keys()]
+            .map((V,IDX)=>{
+                    return `#carousel-${IDX+1}:checked ~ .control-${IDX+1} ~ .carousel-indicators li:nth-child(${IDX+1}) .carousel-bullet,`
+                })
+            .join("")
+            + `{
+                    color: black;
+                }`;
+    tmpCss = tmpCss.replace(/bullet\,\{/gm,"bullet{");
+    return tmpCss;
+}
+
+function makeCssTwo() {
+    return [...Array(carouselVolume).keys()]
+        .map((V,IDX)=>{
+            return `#carousel-${IDX+1}:checked ~ .control-${IDX+1},`
+        })
+        .join("")
+        .slice(0, -1)
+        + `{
+            display: block;
+        }`;
+}
+
+function setCss() {
+    document.querySelector("style.additional").innerText = "";
+    // document.querySelector("style.additional").innerText = cssOne + cssTwo;
+    document.querySelector("style.additional").innerText += makeCssOne() + makeCssTwo();
+}
+
+function outputHtml() {
+    document.querySelector(".outputHtml").value = document.querySelector(".carousel").outerHTML;
+}
+function outputCss() {
+    document.querySelector(".outputCss").value = 
+        document.querySelector("style.original").innerText
+        + document.querySelector("style.additional").innerText;
+}
+
+// init
+document.querySelector("#carouselVolume").value = 3;
+carouselVolume = Number(document.querySelector("#carouselVolume").value);
+setHtml();
+setCss();
+outputHtml();
+outputCss();
+
+function makeCarousel() {
+    carouselVolume = Number(document.querySelector("#carouselVolume").value);
+    setHtml();
+    setCss();
+    outputHtml();
+    outputCss();
+}
+document.querySelector("#carouselVolume").addEventListener("change",makeCarousel,false);
+
+</script>
+
+
+<!-- learning for label tag -->
+<!-- <label><input type="checkbox" name="confirm">label type 1</label>
+<input type="checkbox" name="agreement" id="agreement" value="yes">
+<div>no use</div>
+<div>no use</div>
+<label for="agreement">label type 1</label> -->
+
 </body>
 </html>
