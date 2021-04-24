@@ -84,7 +84,7 @@ html, body {
     <textarea name="" class="outputHtml" cols="30" rows="10"></textarea>
     <textarea name="" class="outputCss" cols="30" rows="10"></textarea>
     <input type="number" name="" id="carouselVolume" value="3">
-    <button onclick="setImageList()">setImage</button>
+    <button onclick="changeCarouselImage()">changeCarouselImage</button>
     <div class="imageList"></div>
 <script>
 let carouselVolume;
@@ -205,7 +205,7 @@ function makeCarousel() {
     getImageList();
 }
 
-function setImageList() {
+function changeCarouselImage() {
     const imageListOfOne = Array.from(document.querySelectorAll(".imageListOfOne")).map(V=>V.value)
     document.querySelectorAll(".carousel-item > img").forEach((V,IDX)=>V.src = imageListOfOne[IDX]);
     outputHtml();
