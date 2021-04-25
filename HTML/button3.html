@@ -62,8 +62,6 @@ let testAry = [
     [[7,"foo3"], [6,"foo3"], [5,"foo3"]]
 ]
 
-let res2;
-let res3;
 let json1;
 let tmp;
 let tmp2;
@@ -78,22 +76,25 @@ function test() {
 
 function disassembleButton() {
     json1 = document.querySelector(".original").value
-    tmp = JSON.parse(json1);
-    return tmp;
+    // tmp = JSON.parse(json1);
+    return JSON.parse(json1);
 }
 function disassemble() {
     document.querySelector(".original").value = json1;
-    tmp = JSON.parse(json1);
-    return tmp;
+    // tmp = JSON.parse(json1);
+    return JSON.parse(json1);
+}
+function preAssemble() {
+    return groupWith((a, b) => a.dataset.category === b.dataset.category,
+        Array.from(document.querySelectorAll("p > button"))
+    )
+        .map(V=>
+            V.map(VAL => [VAL.dataset.counter, VAL.textContent]).sort((a, b) => a[0] - b[0]).reverse()
+        )
 }
 function assemble() {
-    tmp = groupWith((a, b)=> a.dataset.category === b.dataset.category,
-                        Array.from(document.querySelectorAll("p > button"))
-                    )
-    tmp = tmp.map(V=>V.map(VAL=>[VAL.dataset.counter,VAL.textContent]).sort((a,b)=>a[0] - b[0]).reverse())
-    json1 = JSON.stringify(tmp, null, 2);
-    document.querySelector(".original").value = json1;
-    return tmp;
+    document.querySelector(".original").value = JSON.stringify(preAssemble(), null, 2);
+    return JSON.stringify(preAssemble(), null, 2);
 }
 function addStyle() {
     const originalStyle = `.container{
@@ -110,7 +111,7 @@ function addStyle() {
     opacity: 0;
     display: none;
     }`
-    const addStyle = res2.map((V,IDX)=>
+    const addStyle = disassemble().map((V,IDX)=>
         `#tm${IDX+1}:checked ~ .buttons-${IDX+1}{
         display: block;
         visibility: visible;
@@ -123,25 +124,28 @@ function addStyle() {
         .join("")
     document.querySelector("style.myStyle").textContent = originalStyle + addStyle;
 }
-function exe() {
-    document.querySelectorAll(".container").forEach(E=>
-        {E.parentNode.removeChild(E)});
-    res2 = disassemble();
-    res3 = res2.map((V,IDX)=>`<div class="container">
-        <div class="accordion">
-        <label for="tm${IDX+1}" class="accordionitem">
-        <h2>buttons-${IDX+1}</h2></label>
-        <input type="checkbox" id="tm${IDX+1}"/>
-        <p class="buttons-${IDX+1}">
-            ${V.map(VAL=>`<button data-category="${IDX+1}" data-counter="${VAL[0]}" onclick="insertTextFromButton(event);">${VAL[1]}</button>`).join("")}
-        </p>
-        </div>
-    </div>
-    `).join("")
-    document.querySelector(".buttonsBox").insertAdjacentHTML("afterbegin", res3);
-    addStyle();
-    // assemble();
+
+function preExe() {
+    return disassemble()
+                .map((V, IDX) => `<div class="container">
+                    <div class="accordion">
+                    <label for="tm${IDX + 1}" class="accordionitem">
+                    <h2>buttons-${IDX + 1}</h2></label>
+                    <input type="checkbox" id="tm${IDX + 1}"/>
+                    <p class="buttons-${IDX + 1}">
+                        ${V.map(VAL => `<button data-category="${IDX + 1}" data-counter="${VAL[0]}" onclick="insertTextFromButton(event);">${VAL[1]}</button>`).join("")}
+                    </p>
+                    </div>
+                </div>
+                `)
+                .join("");
 }
+
+function exe() {
+    document.querySelector(".buttonsBox").innerHTML = preExe();
+    addStyle();
+}
+
 function openTargetBox(num) { document.querySelectorAll(".container > div > input")[num - 1].click() }
 function insertTextFromButton(event){
     event.target.dataset.counter = Number(event.target.dataset.counter) + 1;
@@ -189,11 +193,8 @@ function scriptCopy(fromCssSelectorString, toCssSelectorString, option) {
     if(wrapperStr){
         option = fullText || "";
     }
-    // console.log(fromCssSelectorString);
-    // console.log(toCssSelectorString);
 
     toCssSelectorStringWithoutDot = toCssSelectorString.replace(".","");
-    // console.log(toCssSelectorStringWithoutDot);
     document.querySelector("body").insertAdjacentHTML("beforeend", `<textarea class="${toCssSelectorStringWithoutDot}" cols="30" rows="10"></textarea>`);
     document.querySelector(toCssSelectorString).value = option + document.querySelector(fromCssSelectorString).textContent;
     function copyThat() {
