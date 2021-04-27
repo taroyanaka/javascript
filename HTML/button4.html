@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>button4</title>
     <script src="alasql.js"></script>
+    <script src="sqlTestQuery.js"></script>
     <!-- http://vizua.net/simple-pure-css-accordion -->
     <!-- https://codepen.io/thetallweeks/pen/uAEGr   -->
 </head>
@@ -17,7 +18,7 @@
 
 
 
-<textarea name="" class="sqlSchema" cols="30" rows="10">
+<textarea name="" class="sqlSchema" cols="10" rows="5">
 CREATE TABLE actor (
 actor_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
 first_name VARCHAR(45) NOT NULL,
@@ -333,7 +334,7 @@ FOREIGN KEY (address_id) REFERENCES `address` (address_id) ----ON DELETE RESTRIC
 );
 </textarea>
 
-<textarea name="" class="sqlData-1" cols="30" rows="10">
+<textarea name="" class="sqlData-1" cols="10" rows="5">
     INSERT INTO actor VALUES (1,'PENELOPE','GUINESS','2006-02-15 04:34:33'),
     (2,'NICK','WAHLBERG','2006-02-15 04:34:33'),
     (3,'ED','CHASE','2006-02-15 04:34:33'),
@@ -1746,7 +1747,7 @@ FOREIGN KEY (address_id) REFERENCES `address` (address_id) ----ON DELETE RESTRIC
     (605,'1325 Fukuyama Street','','Heilongjiang',537,'27107','288241215394',/*!50705
     0x00000000010100000017540A70700160401E1C47077F7D4740,*/'2014-09-25 22:30:44');
 </textarea>
-<textarea name="" class="sqlData-2" cols="30" rows="10">
+<textarea name="" class="sqlData-2" cols="10" rows="5">
 INSERT INTO category VALUES (1,'Action','2006-02-15 04:46:27'),
 (2,'Animation','2006-02-15 04:46:27'),
 (3,'Children','2006-02-15 04:46:27'),
@@ -1764,7 +1765,7 @@ INSERT INTO category VALUES (1,'Action','2006-02-15 04:46:27'),
 (15,'Sports','2006-02-15 04:46:27'),
 (16,'Travel','2006-02-15 04:46:27');
 </textarea>
-<textarea name="" class="sqlData-3" cols="5" rows="5">INSERT INTO city VALUES (1,'A Corua (La Corua)',87,'2006-02-15 04:45:25'),
+<textarea name="" class="sqlData-3" cols="10" rows="5">INSERT INTO city VALUES (1,'A Corua (La Corua)',87,'2006-02-15 04:45:25'),
 (2,'Abha',82,'2006-02-15 04:45:25'),
 (3,'Abu Dhabi',101,'2006-02-15 04:45:25'),
 (4,'Acua',60,'2006-02-15 04:45:25'),
@@ -2364,7 +2365,7 @@ INSERT INTO category VALUES (1,'Action','2006-02-15 04:46:27'),
 (598,'Zhezqazghan',51,'2006-02-15 04:45:25'),
 (599,'Zhoushan',23,'2006-02-15 04:45:25'),
 (600,'Ziguinchor',83,'2006-02-15 04:45:25');</textarea>
-<textarea name="" class="sqlData-4" cols="5" rows="5">INSERT INTO country VALUES (1,'Afghanistan','2006-02-15 04:44:00'),
+<textarea name="" class="sqlData-4" cols="10" rows="5">INSERT INTO country VALUES (1,'Afghanistan','2006-02-15 04:44:00'),
 (2,'Algeria','2006-02-15 04:44:00'),
 (3,'American Samoa','2006-02-15 04:44:00'),
 (4,'Angola','2006-02-15 04:44:00'),
@@ -2473,7 +2474,7 @@ INSERT INTO category VALUES (1,'Action','2006-02-15 04:46:27'),
 (107,'Yemen','2006-02-15 04:44:00'),
 (108,'Yugoslavia','2006-02-15 04:44:00'),
 (109,'Zambia','2006-02-15 04:44:00');</textarea>
-<textarea name="" class="sqlData-5" cols="5" rows="5">INSERT INTO customer VALUES (1,1,'MARY','SMITH','MARY.SMITH@sakilacustomer.org',5,1,'2006-02-14 22:04:36','2006-02-15
+<textarea name="" class="sqlData-5" cols="10" rows="5">INSERT INTO customer VALUES (1,1,'MARY','SMITH','MARY.SMITH@sakilacustomer.org',5,1,'2006-02-14 22:04:36','2006-02-15
 04:57:20'),
 (2,1,'PATRICIA','JOHNSON','PATRICIA.JOHNSON@sakilacustomer.org',6,1,'2006-02-14 22:04:36','2006-02-15 04:57:20'),
 (3,1,'LINDA','WILLIAMS','LINDA.WILLIAMS@sakilacustomer.org',7,1,'2006-02-14 22:04:36','2006-02-15 04:57:20'),
@@ -3080,7 +3081,7 @@ INSERT INTO category VALUES (1,'Action','2006-02-15 04:46:27'),
 (597,1,'FREDDIE','DUGGAN','FREDDIE.DUGGAN@sakilacustomer.org',603,1,'2006-02-14 22:04:37','2006-02-15 04:57:20'),
 (598,1,'WADE','DELVALLE','WADE.DELVALLE@sakilacustomer.org',604,1,'2006-02-14 22:04:37','2006-02-15 04:57:20'),
 (599,2,'AUSTIN','CINTRON','AUSTIN.CINTRON@sakilacustomer.org',605,1,'2006-02-14 22:04:37','2006-02-15 04:57:20');</textarea>
-<textarea name="" class="sqlData-6" cols="5" rows="5">INSERT INTO film VALUES (1,'ACADEMY DINOSAUR','A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher
+<textarea name="" class="sqlData-6" cols="10" rows="5">INSERT INTO film VALUES (1,'ACADEMY DINOSAUR','A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher
 in The Canadian Rockies',2006,1,NULL,6,'0.99',86,'20.99','PG','Deleted Scenes,Behind the Scenes','2006-02-15 05:03:42'),
 (2,'ACE GOLDFINGER','A Astounding Epistle of a Database Administrator And a Explorer who must Find a Car in Ancient
 China',2006,1,NULL,3,'4.99',48,'12.99','G','Trailers,Deleted Scenes','2006-02-15 05:03:42'),
@@ -5191,7 +5192,7 @@ Rockies',2006,1,NULL,6,'0.99',105,'10.99','NC-17','Deleted Scenes','2006-02-15 0
 China',2006,1,NULL,5,'2.99',101,'28.99','R','Trailers,Deleted Scenes','2006-02-15 05:03:42'),
 (1000,'ZORRO ARK','A Intrepid Panorama of a Mad Scientist And a Boy who must Redeem a Boy in A
 Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind the Scenes','2006-02-15 05:03:42');</textarea>
-<textarea name="" class="sqlData-7" cols="5" rows="5">INSERT INTO film_actor VALUES (1,1,'2006-02-15 05:05:03'),
+<textarea name="" class="sqlData-7" cols="10" rows="5">INSERT INTO film_actor VALUES (1,1,'2006-02-15 05:05:03'),
 (1,23,'2006-02-15 05:05:03'),
 (1,25,'2006-02-15 05:05:03'),
 (1,106,'2006-02-15 05:05:03'),
@@ -10653,7 +10654,7 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
 (200,945,'2006-02-15 05:05:03'),
 (200,958,'2006-02-15 05:05:03'),
 (200,993,'2006-02-15 05:05:03');</textarea>
-<textarea name="" class="sqlData-8" cols="5" rows="5">INSERT INTO film_category VALUES (1,6,'2006-02-15 05:07:09'),
+<textarea name="" class="sqlData-8" cols="10" rows="5">INSERT INTO film_category VALUES (1,6,'2006-02-15 05:07:09'),
 (2,11,'2006-02-15 05:07:09'),
 (3,6,'2006-02-15 05:07:09'),
 (4,11,'2006-02-15 05:07:09'),
@@ -11653,7 +11654,7 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
 (998,11,'2006-02-15 05:07:09'),
 (999,3,'2006-02-15 05:07:09'),
 (1000,5,'2006-02-15 05:07:09');</textarea>
-<textarea name="" class="sqlData-9" cols="5" rows="5">INSERT INTO inventory VALUES (1,1,1,'2006-02-15 05:09:17'),
+<textarea name="" class="sqlData-9" cols="10" rows="5">INSERT INTO inventory VALUES (1,1,1,'2006-02-15 05:09:17'),
 (2,1,1,'2006-02-15 05:09:17'),
 (3,1,1,'2006-02-15 05:09:17'),
 (4,1,1,'2006-02-15 05:09:17'),
@@ -16234,13 +16235,13 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
 (4579,1000,2,'2006-02-15 05:09:17'),
 (4580,1000,2,'2006-02-15 05:09:17'),
 (4581,1000,2,'2006-02-15 05:09:17');</textarea>
-<textarea name="" class="sqlData-10" cols="5" rows="5">INSERT INTO language VALUES (1,'English','2006-02-15 05:02:19'),
+<textarea name="" class="sqlData-10" cols="10" rows="5">INSERT INTO language VALUES (1,'English','2006-02-15 05:02:19'),
 (2,'Italian','2006-02-15 05:02:19'),
 (3,'Japanese','2006-02-15 05:02:19'),
 (4,'Mandarin','2006-02-15 05:02:19'),
 (5,'French','2006-02-15 05:02:19'),
 (6,'German','2006-02-15 05:02:19');</textarea>
-<textarea name="" class="sqlData-11" cols="5" rows="5">INSERT INTO payment VALUES (1,1,1,76,'2.99','2005-05-25 11:30:37','2006-02-15 22:12:30'),
+<textarea name="" class="sqlData-11" cols="10" rows="5">INSERT INTO payment VALUES (1,1,1,76,'2.99','2005-05-25 11:30:37','2006-02-15 22:12:30'),
 (2,1,1,573,'0.99','2005-05-28 10:35:23','2006-02-15 22:12:30'),
 (3,1,1,1185,'5.99','2005-06-15 00:54:12','2006-02-15 22:12:30'),
 (4,1,2,1422,'0.99','2005-06-15 18:02:53','2006-02-15 22:12:30'),
@@ -31125,7 +31126,7 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
 (14883,555,2,11747,'2.99','2005-08-17 09:03:31','2006-02-15 22:21:52'),
 (14884,555,2,12091,'4.99','2005-08-17 22:22:50','2006-02-15 22:21:52'),
 (14885,555,2,12150,'2.99','2005-08-18 00:13:55','2006-02-15 22:21:53');</textarea>
-<textarea name="" class="sqlData-12" cols="5" rows="5">INSERT INTO payment VALUES (14886,555,2,12182,'2.99','2005-08-18 01:30:19','2006-02-15 22:21:53'),
+<textarea name="" class="sqlData-12" cols="10" rows="5">INSERT INTO payment VALUES (14886,555,2,12182,'2.99','2005-08-18 01:30:19','2006-02-15 22:21:53'),
 (14887,555,1,12388,'2.99','2005-08-18 08:48:09','2006-02-15 22:21:53'),
 (14888,555,1,12883,'4.99','2005-08-19 03:33:47','2006-02-15 22:21:53'),
 (14889,555,2,15102,'6.99','2005-08-22 11:58:58','2006-02-15 22:21:53'),
@@ -32289,7 +32290,7 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
 (16047,599,2,15590,'8.99','2005-08-23 06:09:44','2006-02-15 22:24:12'),
 (16048,599,2,15719,'2.99','2005-08-23 11:08:46','2006-02-15 22:24:13'),
 (16049,599,2,15725,'2.99','2005-08-23 11:25:00','2006-02-15 22:24:13');</textarea>
-<textarea name="" class="sqlData-13" cols="5" rows="5">    INSERT INTO rental VALUES (1,'2005-05-24 22:53:30',367,130,'2005-05-26 22:04:30',1,'2006-02-15 21:30:53'),
+<textarea name="" class="sqlData-13" cols="10" rows="5">    INSERT INTO rental VALUES (1,'2005-05-24 22:53:30',367,130,'2005-05-26 22:04:30',1,'2006-02-15 21:30:53'),
     (2,'2005-05-24 22:54:33',1525,459,'2005-05-28 19:40:33',1,'2006-02-15 21:30:53'),
     (3,'2005-05-24 23:03:39',1711,408,'2005-06-01 22:12:39',1,'2006-02-15 21:30:53'),
     (4,'2005-05-24 23:04:41',2452,333,'2005-06-03 01:43:41',2,'2006-02-15 21:30:53'),
@@ -44666,7 +44667,7 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
     (12379,'2005-08-18 08:26:48',2879,99,'2005-08-19 10:08:48',2,'2006-02-15 21:30:53'),
     (12380,'2005-08-18 08:27:28',55,215,'2005-08-25 02:58:28',2,'2006-02-15 21:30:53'),
     (12381,'2005-08-18 08:31:43',3651,190,'2005-08-23 12:24:43',2,'2006-02-15 21:30:53');</textarea>
-<textarea name="" class="sqlData-14" cols="5" rows="5">INSERT INTO rental VALUES (12382,'2005-08-18 08:32:33',3049,566,'2005-08-26 03:45:33',2,'2006-02-15 21:30:53'),
+<textarea name="" class="sqlData-14" cols="10" rows="5">INSERT INTO rental VALUES (12382,'2005-08-18 08:32:33',3049,566,'2005-08-26 03:45:33',2,'2006-02-15 21:30:53'),
 (12383,'2005-08-18 08:36:03',1641,295,'2005-08-23 03:30:03',2,'2006-02-15 21:30:53'),
 (12384,'2005-08-18 08:36:58',2557,193,'2005-08-23 05:08:58',1,'2006-02-15 21:30:53'),
 (12385,'2005-08-18 08:39:33',3143,146,'2005-08-21 14:22:33',1,'2006-02-15 21:30:53'),
@@ -48333,11 +48334,13 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
 (16047,'2005-08-23 22:42:48',2088,114,'2005-08-25 02:48:48',2,'2006-02-15 21:30:53'),
 (16048,'2005-08-23 22:43:07',2019,103,'2005-08-31 21:33:07',1,'2006-02-15 21:30:53'),
 (16049,'2005-08-23 22:50:12',2666,393,'2005-08-30 01:01:12',2,'2006-02-15 21:30:53');</textarea>
-<!-- <textarea name="" class="sqlData-15" cols="5" rows="5"></textarea> -->
+<!-- <textarea name="" class="sqlData-15" cols="10" rows="5"></textarea> -->
 <input type="checkbox" cols="30" rows="10" class="enableSQL" checked></input>
 <button cols="30" rows="10" onclick="testSQLData1();ary14Loop()">testSQLData</button>
+<textarea name="" class="sqlSample" cols="30" rows="10"></textarea>
 <!-- <button cols="30" rows="10" onclick="testSQLData2();">testSQLData</button> -->
 <script>
+    document.querySelector(".sqlSample").value = sqlTestQuery;
     let res;
     let resAry = [];
     function testSQLData1() {
@@ -48416,17 +48419,17 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
     <div class="wrapper">
         <div class="innerWrapper">
 
-            <textarea cols="30" rows="10" class="original canHidden"></textarea>
+            <textarea cols="10" rows="5" class="original canHidden"></textarea>
             <button onclick="copyOriginal();">copyOriginal</button>
             <button class="test-disassemble-exe" onclick="test();disassemble();exe();">set test data and
                 disassemble</button>
             <button onclick="disassembleButton();exe();">disassemble</button>
             <button onclick="hide();">hide</button>
 
-            <textarea cols="30" rows="10" class="target"></textarea>
+            <textarea cols="10" rows="5" class="target"></textarea>
             <button class="toCopyFromTarget" onclick="copy();">copy</button>
             <button onclick="(()=>document.querySelector('.target').value='')();">clear</button>
-            <textarea cols="30" rows="10" class="copy"></textarea>
+            <textarea cols="10" rows="5" class="copy"></textarea>
 
             <button class="create" onclick="create();">create</button>
             <button class="add" onclick="add();">add</button>
@@ -48617,7 +48620,7 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
             option = fullText || "";
         }
 
-        document.querySelector("body").insertAdjacentHTML("beforeend", `<textarea class="${toCssSelectorString.replace(".", "")}" cols="30" rows="10"></textarea>`);
+        document.querySelector("body").insertAdjacentHTML("beforeend", `<textarea class="${toCssSelectorString.replace(".", "")}" cols="10" rows="5"></textarea>`);
         document.querySelector(toCssSelectorString).value = option + document.querySelector(fromCssSelectorString).textContent;
         function copyThat() {
             document.querySelector(toCssSelectorString).select();
