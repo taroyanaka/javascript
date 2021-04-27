@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>button3</title>
     <!-- http://vizua.net/simple-pure-css-accordion -->
-<!-- https://codepen.io/thetallweeks/pen/uAEGr   -->
+    <!-- https://codepen.io/thetallweeks/pen/uAEGr   -->
 </head>
 <body>
 <div class="wrapper">
 <div class="innerWrapper">
-<!-- <textarea cols="30" rows="10" class="original canHidden" oninput="exe()"></textarea> -->
+
 <textarea cols="30" rows="10" class="original canHidden"></textarea>
 <button onclick="copyOriginal();">copyOriginal</button>
-<button onclick="test();disassemble();exe();">set test data and disassemble</button>
+<button class="test-disassemble-exe" onclick="test();disassemble();exe();">set test data and disassemble</button>
 <button onclick="disassembleButton();exe();">disassemble</button>
 <button onclick="hide();">hide</button>
 
@@ -23,9 +23,9 @@
 <button onclick="(()=>document.querySelector('.target').value='')();">clear</button>
 <textarea cols="30" rows="10" class="copy"></textarea>
 
-<button onclick="create();">create</button>
-<button onclick="add();">add</button>
-<button onclick="splitAdd();">splitAdd</button>
+<button class="create" onclick="create();">create</button>
+<button class="add" onclick="add();">add</button>
+<button class="splitAdd" onclick="splitAdd();">splitAdd</button>
 <div class="buttonsBox"></div>
 
 <button onclick="scriptCopy('.myScript', '.scriptArea');">HTMLAndScriptCopy</button>
@@ -37,9 +37,31 @@
 <script class="myScript">
 document.querySelector("head").insertAdjacentHTML("beforeend", `<style class="myStyle"></style>`);
 
-function rangePlus(from,to){return[...Array(to-from+1)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
-function groupWith(fn,list){let idx=0;return list.reduce((A,V)=>{while(idx<list.length){let nextidx=idx+1;while(nextidx<list.length&&fn(list[nextidx-1],list[nextidx])){nextidx+=1};A.push(list.slice(idx,nextidx));idx=nextidx};return A},A=[])};
-
+function rangePlus(from, to) {
+    return [...Array(to - from + 1)].reduce((A, V, IDX) => {
+        A.push(from + IDX);
+        return A
+    }, A = [])
+};
+function groupWith(fn, list) {
+    let idx = 0;
+    return list.reduce((A, V) => {
+        while (idx < list.length) {
+            let nextidx = idx + 1;
+            while (nextidx < list.length && fn(list[nextidx - 1], list[nextidx])) {
+                nextidx += 1
+            };
+            A.push(list.slice(idx, nextidx));
+            idx = nextidx
+        };
+        return A
+    }, A = [])
+};
+function insert(idx, elm, list) {
+    let res = list.slice(0);
+    res.splice(idx, 0, elm);
+    return res;
+};
 function copyOriginal() {
     document.querySelector(".original").select();
     document.querySelector(".original").setSelectionRange(0, 99999);
@@ -48,7 +70,10 @@ function copyOriginal() {
 }
 
 
-let testStr = `foo2
+let json1;
+
+function returnTestAry() {
+    const testStr = `foo2
     bar2 bar3
 
     bar2 bar3
@@ -56,32 +81,22 @@ let testStr = `foo2
 
     bar2 bar3
 `
-let testAry = [
-    [[10,"foo1"], [3,testStr], [2,"foo1"]],
-    [[5,"foo2"], [3,"foo2"], [2,"foo2"]],
-    [[7,"foo3"], [6,"foo3"], [5,"foo3"]]
-]
-
-let json1;
-let tmp;
-let tmp2;
-let tmp3;
-
-// https://stackoverflow.com/a/7220510/9740478
-// var str = JSON.stringify(obj, null, 2); // spacing level = 2
-
-function test() {
-    json1 = JSON.stringify(testAry, null, 2);
+    return [
+        [[10, "baz"], [3, testStr], [2, "foo1"]],
+        [[5, "foo2"], [3, "foo2"], [2, "foofoofoo2"]],
+        [[7, "foo3"], [6, "foo3"], [5, "foo3"]]
+    ]
 }
 
+function test() {
+    json1 = JSON.stringify(returnTestAry(), null, 2);
+}
 function disassembleButton() {
-    json1 = document.querySelector(".original").value
-    // tmp = JSON.parse(json1);
+    json1 = document.querySelector(".original").value;
     return JSON.parse(json1);
 }
 function disassemble() {
     document.querySelector(".original").value = json1;
-    // tmp = JSON.parse(json1);
     return JSON.parse(json1);
 }
 function preAssemble() {
@@ -89,40 +104,47 @@ function preAssemble() {
         Array.from(document.querySelectorAll("p > button"))
     )
         .map(V=>
-            V.map(VAL => [VAL.dataset.counter, VAL.textContent]).sort((a, b) => a[0] - b[0]).reverse()
+            V.map(VAL => [VAL.dataset.counter, VAL.textContent])
+            .sort((a, b) => b[0]- a[0])
+            // .reverse()
         )
 }
 function assemble() {
+    json1 = JSON.stringify(preAssemble(), null, 2);
     document.querySelector(".original").value = JSON.stringify(preAssemble(), null, 2);
     return JSON.stringify(preAssemble(), null, 2);
 }
-function addStyle() {
-    const originalStyle = `.container{
-    width: 400px;
-    height: auto;
-    margin: 0 auto;
-    }
-    .accordion label{
-    display:block;
-    background-color: #eeeeee;
-    }
-    .accordion p{
-    visibility: hidden;
-    opacity: 0;
-    display: none;
-    }`
-    const addStyle = disassemble().map((V,IDX)=>
-        `#tm${IDX+1}:checked ~ .buttons-${IDX+1}{
+function returnOriginalStyle() {
+    return `.container{
+        width: 400px;
+        height: auto;
+        margin: 0 auto;
+        }
+        .accordion label{
+        display:block;
+        background-color: #eeeeee;
+        }
+        .accordion p{
+        visibility: hidden;
+        opacity: 0;
+        display: none;
+        }`
+}
+function returnAddStyle() {
+    return disassemble().map((V, IDX) =>
+        `#tm${IDX + 1}:checked ~ .buttons-${IDX + 1}{
         display: block;
         visibility: visible;
         opacity: 1;
         }
-        input#tm${IDX+1}{
+        input#tm${IDX + 1}{
         display: none;
         position: relative;
         }`)
         .join("")
-    document.querySelector("style.myStyle").textContent = originalStyle + addStyle;
+}
+function addStyle() {
+    document.querySelector("style.myStyle").textContent = returnOriginalStyle() + returnAddStyle();
 }
 
 function preExe() {
@@ -146,13 +168,12 @@ function exe() {
     addStyle();
 }
 
-function openTargetBox(num) { document.querySelectorAll(".container > div > input")[num - 1].click() }
 function insertTextFromButton(event){
     event.target.dataset.counter = Number(event.target.dataset.counter) + 1;
     assemble();
-    exe();
-    openTargetBox(Number(event.target.dataset.category));
     document.querySelector(".target").value += event.target.textContent;
+    exe();
+    document.querySelector(`button[data-category='${event.target.dataset.category}']`).parentElement.parentElement.querySelector("label").click()
 }
 function copy() {
     document.querySelector(".copy").value = document.querySelector(".target").value;
@@ -163,19 +184,21 @@ function copy() {
 function hide() {
     document.querySelectorAll(".canHidden").forEach(V=>V.style.display = V.style.display === "none" ? "inline" : "none")
 }
+
+function makeJson(param, idxZero) {
+    let ary = JSON.parse(json1);
+    (idxZero ? ary[0] : ary).splice(0, 0, param);
+    return JSON.stringify(ary , null, 2);
+}
+
 function create() {
-    tmp3 = JSON.parse(json1);
-    tmp3.unshift([[1, document.querySelector(".copy").value]]);
-    json1 = JSON.stringify(tmp3, null, 2);
+    json1 = makeJson([[1, document.querySelector(".copy").value]], false);
     disassemble();
     exe();
 }
 function add(params) {
     const buttonStr = params || document.querySelector(".copy").value || "you need to set to textarea";
-
-    tmp3 = JSON.parse(json1);
-    tmp3[0].unshift([1, buttonStr]);
-    json1 = JSON.stringify(tmp3, null, 2);
+    json1 = makeJson([1, buttonStr], true);
     disassemble();
     exe();
 }
@@ -186,16 +209,15 @@ function splitAdd() {
 }
 
 function scriptCopy(fromCssSelectorString, toCssSelectorString, option) {
-    let wrapperStr = document.querySelector(".wrapper").innerHTML.toString().replace("<","\<").replace(">","\>").replace('"','\"');
+    const wrapperStr = document.querySelector(".wrapper").innerHTML.toString().replace("<","\<").replace(">","\>").replace('"','\"');
 
-    let fullText = `document.querySelector("html").insertAdjacentHTML("beforeend",` + '`' + wrapperStr + '`' + `)`;
+    const fullText = `document.querySelector("html").insertAdjacentHTML("beforeend",` + '`' + wrapperStr + '`' + `)`;
 
     if(wrapperStr){
         option = fullText || "";
     }
 
-    toCssSelectorStringWithoutDot = toCssSelectorString.replace(".","");
-    document.querySelector("body").insertAdjacentHTML("beforeend", `<textarea class="${toCssSelectorStringWithoutDot}" cols="30" rows="10"></textarea>`);
+    document.querySelector("body").insertAdjacentHTML("beforeend", `<textarea class="${toCssSelectorString.replace(".", "")}" cols="30" rows="10"></textarea>`);
     document.querySelector(toCssSelectorString).value = option + document.querySelector(fromCssSelectorString).textContent;
     function copyThat() {
         document.querySelector(toCssSelectorString).select();
@@ -205,5 +227,16 @@ function scriptCopy(fromCssSelectorString, toCssSelectorString, option) {
     }
     copyThat();
 }
+function testEach() {
+    document.querySelector("button.test-disassemble-exe").click();
+    document.querySelector("body > div > div > div > div:nth-child(1) > div > label").click();
+    document.querySelector("body > div > div > div > div:nth-child(1) > div > p > button:nth-child(1)").click();
+    document.querySelector("body > div > div > div > div:nth-child(1) > div > p > button:nth-child(3)").click();
+    document.querySelector(".toCopyFromTarget").click();
+    document.querySelector(".create").click();
+    document.querySelector(".add").click();
+    document.querySelector("body > div > div > div > div:nth-child(1) > div > label").click();
+}
+// testEach();
 </script>
 </html>
