@@ -57,11 +57,6 @@ function groupWith(fn, list) {
         return A
     }, A = [])
 };
-function insert(idx, elm, list) {
-    let res = list.slice(0);
-    res.splice(idx, 0, elm);
-    return res;
-};
 function copyOriginal() {
     document.querySelector(".original").select();
     document.querySelector(".original").setSelectionRange(0, 99999);
