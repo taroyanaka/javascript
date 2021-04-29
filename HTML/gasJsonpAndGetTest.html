@@ -8,7 +8,7 @@
     <!-- https://kigiri.github.io/fetch/ -->
 </head>
 <body>
-    <input type="url" name="" class="gasUrl">
+    <input type="url" name="" class="gasUrl" placeholder="https://script.google.com/macros/s/************************************************************************/exec">
     <input type="text" name="" class="gasId">
     <!-- <input type="text" name="" class="gasStr"> -->
 <textarea name="" class="gasStr" cols="30" rows="10"></textarea>
@@ -82,11 +82,24 @@ document.querySelector(".gasUrl").value = gasUrl;
 document.querySelector(".gasId").value = "100";
 document.querySelector(".gasStr").value = "foobar";
 
+function getNow() {
+	const now = new Date();
+	const year = now.getFullYear();
+	const mon = now.getMonth()+1;
+	const day = now.getDate();
+	const hour = now.getHours();
+	const min = now.getMinutes();
+	const sec = now.getSeconds();
+	const msec = now.getMilliseconds();
+	return (year + "/" + mon + "/" + day + " " + hour + ":" + min + ":" + sec + ":" + msec);
+}
+
 function exe() {
-    const option = `?id=${document.querySelector(".gasId").value}&str=${document.querySelector(".gasStr").value}`
-    const fullUrl = document.querySelector(".gasUrl").value + option;
-    fetch(fullUrl);
-    // fetch(url).then(v=>{return v.json()}).then(V=>{bar = V;console.table(bar)})
+  document.querySelector(".gasId").value = getNow();
+  const option = `?id=${document.querySelector(".gasId").value}&str=${JSON.stringify(document.querySelector(".gasStr").value)}`
+  const fullUrl = document.querySelector(".gasUrl").value + option;
+  fetch(fullUrl);
+  // fetch(url).then(v=>{return v.json()}).then(V=>{bar = V;console.table(bar)})
 }
 </script>
 </body>
