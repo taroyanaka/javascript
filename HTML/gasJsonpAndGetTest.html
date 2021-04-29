@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gasJsonpAndGetTest</title>
+    <!-- https://kigiri.github.io/fetch/ -->
+</head>
+<body>
+    <input type="url" name="" class="gasUrl">
+    <input type="text" name="" class="gasId">
+    <!-- <input type="text" name="" class="gasStr"> -->
+<textarea name="" class="gasStr" cols="30" rows="10"></textarea>
+    <button onclick="exe();">execute</button>
+<script>
+
+// https://webird-programming.tech/archives/518#toc3
+</script>
+
+<!-- gas side -->
+<!-- function doGet(e) {
+    var json = {};
+    json.item1 = e.parameter.item1;
+    json.item2 = e.parameter.item2;
+  
+    var callback = e.parameter.callback;
+    
+    var res = ContentService.createTextOutput(callback + '(' + JSON.stringify(json) + ')');
+    res = res.setMimeType(ContentService.MimeType.JAVASCRIPT);
+    
+    return res
+  }
+  
+  function doPost(e) {
+    var jsonString = e.postData.getDataAsString();
+    var data = JSON.parse(jsonString);
+  
+    var id = data.id;
+    var str = data.str;
+  
+    var callback = e.parameter.callback;
+    
+  
+    var ss = SpreadsheetApp.openByUrl(
+      'https://docs.google.com/spreadsheets/d/1s6PrnmIs2nHENE4MSyJTM9hISunUZdUF7iSs-eqfTCI/edit#gid=104130673');
+    var sheet = ss.getSheetByName("sheetFoo");
+    sheet.appendRow([id, str]);
+  } -->
+
+
+<!-- use jsonp -->
+<!-- <div id="response"></div>
+<script>
+function myCallback(json) {
+    document.getElementById('response').innerHTML = JSON.stringify(json);
+}
+</script>
+<script src="https://script.google.com/macros/s/AKfycbyHL8yhB_4PzhJ07j5-Vok9s9BhOquL-bczsMmrafOmTEd7pjRRseA6q6j0dpYHBML1/exec?item1=hoge&item2=fuga&callback=myCallback"></script> -->
+
+
+
+
+
+<!-- 
+function doGet(e) {
+  
+  const id = e.parameter.id;
+  const str = e.parameter.str;
+  var ss = SpreadsheetApp.openByUrl(
+    'https://docs.google.com/spreadsheets/d/1s6PrnmIs2nHENE4MSyJTM9hISunUZdUF7iSs-eqfTCI/edit#gid=104130673');
+  var sheet = ss.getSheetByName("sheetFoo");
+  Logger.log(
+    sheet.appendRow([id, str])
+  )
+}
+-->
+<script>
+// https://script.google.com/home/projects/1X1V2p4TpIlC55r9ypR601j73FNfiPZDdPITBLlq_OAoQ3FoScMM66WuG/edit
+const gasUrl = ``;
+document.querySelector(".gasUrl").value = gasUrl;
+document.querySelector(".gasId").value = "100";
+document.querySelector(".gasStr").value = "foobar";
+
+function exe() {
+    const option = `?id=${document.querySelector(".gasId").value}&str=${document.querySelector(".gasStr").value}`
+    const fullUrl = document.querySelector(".gasUrl").value + option;
+    fetch(fullUrl);
+    // fetch(url).then(v=>{return v.json()}).then(V=>{bar = V;console.table(bar)})
+}
+</script>
+</body>
+</html>
