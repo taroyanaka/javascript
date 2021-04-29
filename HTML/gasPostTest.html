@@ -11,7 +11,11 @@
     <input type="text" name="" class="gasId">
     <input type="text" name="" class="gasStr">
     <button onclick="exe();">execute</button>
+
+    <div id='twitterFeed'></div>
 <script>
+
+
     // https://script.google.com/home/projects/1X1V2p4TpIlC55r9ypR601j73FNfiPZDdPITBLlq_OAoQ3FoScMM66WuG/edit
     // POST メソッドの実装の例
 async function postData(url = '', data = {}) {
@@ -35,18 +39,22 @@ document.querySelector(".gasUrl").value = 'https://script.google.com/macros/s/AK
 document.querySelector(".gasId").value = "100";
 document.querySelector(".gasStr").value = "foobar";
 
-function exe() {
-    const gasId = document.querySelector(".gasId").value;
-    const gasStr = document.querySelector(".gasStr").value;
-    const data = {id:gasId, str:gasStr};
-    postData(document.querySelector(".gasUrl").value, data)
-  .then(data => {
-    console.log(data); // `data.json()` の呼び出しで解釈された JSON データ
-  });
-}
+
+// https://webird-programming.tech/archives/518#toc3
+        </script>
+        <!-- <script type="text/javascript" src="http://twitter.com/status/user_timeline/padraicb.json?count=10&callback=myCallback"></script> -->
 
 
+        <div id="response"></div>
+        <script>
+        function myCallback(json) {
+          document.getElementById('response').innerHTML = JSON.stringify(json);
+        }
+        </script>
+        
+        <!-- 先ほどメモしたURLをsrcに挿入 -->
+        <script src="https://script.google.com/macros/s/AKfycbyHL8yhB_4PzhJ07j5-Vok9s9BhOquL-bczsMmrafOmTEd7pjRRseA6q6j0dpYHBML1/exec?item1=hoge&item2=fuga&callback=myCallback"></script>
+      </body>
 
-</script>
-</body>
+    </body>
 </html>
