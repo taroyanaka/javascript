@@ -10,6 +10,8 @@
 <body>
     <input type="url" name="" class="gasUrl" placeholder="https://script.google.com/macros/s/************************************************************************/exec">
     <input type="text" name="" class="gasId">
+    <input type="text" name="" class="spreadsheetUrl">
+    <input type="text" name="" class="sheet">
     <!-- <input type="text" name="" class="gasStr"> -->
 <textarea name="" class="gasStr" cols="30" rows="10"></textarea>
     <button onclick="exe();">execute</button>
@@ -64,21 +66,34 @@ function myCallback(json) {
 
 <!-- 
 function doGet(e) {
+  if(e.parameter.getJson === "true"){
+    const resultSheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1s6PrnmIs2nHENE4MSyJTM9hISunUZdUF7iSs-eqfTCI/edit#gid=104130673').getSheetByName("datastore1");
+
+    // Logger.log(resultSheet.getDataRange().getValues());
+    const result = resultSheet.getDataRange().getValues();
+
+    return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+  }
+
   
   const id = e.parameter.id;
   const str = e.parameter.str;
-  var ss = SpreadsheetApp.openByUrl(
-    'https://docs.google.com/spreadsheets/d/1s6PrnmIs2nHENE4MSyJTM9hISunUZdUF7iSs-eqfTCI/edit#gid=104130673');
-  var sheet = ss.getSheetByName("sheetFoo");
-  Logger.log(
-    sheet.appendRow([id, str])
-  )
+  const spreadsheetUrl = e.parameter.spreadsheetUrl;
+  const sheet = e.parameter.sheet;
+
+  // var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1s6PrnmIs2nHENE4MSyJTM9hISunUZdUF7iSs-eqfTCI/edit#gid=104130673');
+  var ss = SpreadsheetApp.openByUrl(decodeURIComponent(spreadsheetUrl));
+  // var sheet = ss.getSheetByName("datastore1");
+  var targetSheet = ss.getSheetByName(sheet);
+  targetSheet.appendRow([id, str])
 }
 -->
 <script>
 // https://script.google.com/home/projects/1X1V2p4TpIlC55r9ypR601j73FNfiPZDdPITBLlq_OAoQ3FoScMM66WuG/edit
-const gasUrl = ``;
+const gasUrl = `https://script.google.com/macros/s/AKfycbxaaWIKjt9E5Tl6nKPHlPBqUBez00-jpSJNqrsrgajYAGNrj1LsiotG1BKLBc11ZR3Y/exec`;
 document.querySelector(".gasUrl").value = gasUrl;
+document.querySelector(".spreadsheetUrl").value = `https://docs.google.com/spreadsheets/d/1s6PrnmIs2nHENE4MSyJTM9hISunUZdUF7iSs-eqfTCI/edit#gid=104130673`;
+document.querySelector(".sheet").value = `datastore1`;
 document.querySelector(".gasId").value = "100";
 document.querySelector(".gasStr").value = "foobar";
 
@@ -96,10 +111,15 @@ function getNow() {
 
 function exe() {
   document.querySelector(".gasId").value = getNow();
-  const option = `?id=${document.querySelector(".gasId").value}&str=${JSON.stringify(document.querySelector(".gasStr").value)}`
+  const option = `?id=${document.querySelector(".gasId").value}&str=${JSON.stringify(document.querySelector(".gasStr").value)}&spreadsheetUrl=${encodeURIComponent(document.querySelector(".spreadsheetUrl").value)}&sheet=${document.querySelector(".sheet").value}`
   const fullUrl = document.querySelector(".gasUrl").value + option;
   fetch(fullUrl);
   // fetch(url).then(v=>{return v.json()}).then(V=>{bar = V;console.table(bar)})
+}
+
+let res;
+function getJson() {
+    res = fetch("https://script.google.com/macros/s/AKfycbyDJrHIV3FwB6hslprGRg94PMnqi1J56GcTnIEbXedqNnKT6X-tCH9tt8xFj4zNZWt-/exec?getJson=true").then(v=>{return v.json()}).then(V=>{res = V;console.table(res)})
 }
 </script>
 </body>
