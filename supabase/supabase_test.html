@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>supabase_test</title>
+</head>
+<body>
+<!-- https://github.com/supabase/supabase/discussions/278#discussioncomment-122938 -->
+<script type="module">
+    import { createClient } from "https://cdn.skypack.dev/@supabase/supabase-js";
+
+    const supabase = createClient(
+        "https://djhupqmcmcbjzshlclvh.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyMDEwNTk1MiwiZXhwIjoxOTM1NjgxOTUyfQ.dWSNd32JmaceJP35Hgwn2Ib9iKviNiAYu4Fvw2eOSjs"
+    );
+
+    (async () => {
+      const { error, data } = await supabase.from("your_table").select();
+      if (error) {
+        document.body.innerHTML = `<pre>${JSON.stringify(
+          error,
+          null,
+          2
+        )}</pre>`;
+      } else {
+        document.body.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      }
+    })();
+
+    (async () => {
+        const { user, session, error } = await supabase.auth.signUp({
+            email: 'example@email.com',
+            password: 'example-password',
+        })
+    })();
+  </script>
+</body>
+</html>

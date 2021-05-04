@@ -68,28 +68,26 @@ function myCallback(json) {
 <!-- 
 function doGet(e) {
 
+if(e.parameter.password === PropertiesService.getUserProperties().getProperty('password')){
 const id = e.parameter.id;
 const str = e.parameter.str;
 const spreadsheetUrl = e.parameter.spreadsheetUrl;
 const sheet = e.parameter.sheet;
-const password = e.parameter.password;
 
-if(password === PropertiesService.getUserProperties().getProperty('password')){
+  if(e.parameter.getJson === "true"){
+    return ContentService.createTextOutput(
+            JSON.stringify(
+                SpreadsheetApp.openByUrl(spreadsheetUrl)
+                .getSheetByName(sheet)
+                .getDataRange()
+                .getValues()
+            ))
+            .setMimeType(ContentService.MimeType.JSON);
+  }
 
-      if(e.parameter.getJson === "true"){
-        return ContentService.createTextOutput(
-                JSON.stringify(
-                    SpreadsheetApp.openByUrl(spreadsheetUrl)
-                    .getSheetByName(sheet)
-                    .getDataRange()
-                    .getValues()
-                ))
-                .setMimeType(ContentService.MimeType.JSON);
-      }
-
-      var ss = SpreadsheetApp.openByUrl(decodeURIComponent(spreadsheetUrl));
-      var targetSheet = ss.getSheetByName(sheet);
-      targetSheet.appendRow([id, str]);
+  var ss = SpreadsheetApp.openByUrl(decodeURIComponent(spreadsheetUrl));
+  var targetSheet = ss.getSheetByName(sheet);
+  targetSheet.appendRow([id, str]);
 
 }
 
