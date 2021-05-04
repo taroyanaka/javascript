@@ -12,6 +12,7 @@
     <input type="text" name="" class="gasId">
     <input type="text" name="" class="spreadsheetUrl">
     <input type="text" name="" class="sheet">
+    <input type="password" name="" class="password" placeholder="password">
     <!-- <input type="text" name="" class="gasStr"> -->
 <textarea name="" class="gasStr" cols="30" rows="10"></textarea>
     <button onclick="exe();">execute</button>
@@ -66,33 +67,37 @@ function myCallback(json) {
 
 <!-- 
 function doGet(e) {
-  if(e.parameter.getJson === "true"){
-    return ContentService.createTextOutput(
-            JSON.stringify(
-                SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1s6PrnmIs2nHENE4MSyJTM9hISunUZdUF7iSs-eqfTCI/edit#gid=104130673')
-                .getSheetByName("datastore1")
-                .getDataRange()
-                .getValues()
-            ))
-            .setMimeType(ContentService.MimeType.JSON);
-  }
 
-  const id = e.parameter.id;
-  const str = e.parameter.str;
-  const spreadsheetUrl = e.parameter.spreadsheetUrl;
-  const sheet = e.parameter.sheet;
+const id = e.parameter.id;
+const str = e.parameter.str;
+const spreadsheetUrl = e.parameter.spreadsheetUrl;
+const sheet = e.parameter.sheet;
+const password = e.parameter.password;
 
-  // var ss = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1s6PrnmIs2nHENE4MSyJTM9hISunUZdUF7iSs-eqfTCI/edit#gid=104130673');
-  var ss = SpreadsheetApp.openByUrl(decodeURIComponent(spreadsheetUrl));
-  // var sheet = ss.getSheetByName("datastore1");
-  var targetSheet = ss.getSheetByName(sheet);
-  targetSheet.appendRow([id, str])
+if(password === PropertiesService.getUserProperties().getProperty('password')){
+
+      if(e.parameter.getJson === "true"){
+        return ContentService.createTextOutput(
+                JSON.stringify(
+                    SpreadsheetApp.openByUrl(spreadsheetUrl)
+                    .getSheetByName(sheet)
+                    .getDataRange()
+                    .getValues()
+                ))
+                .setMimeType(ContentService.MimeType.JSON);
+      }
+
+      var ss = SpreadsheetApp.openByUrl(decodeURIComponent(spreadsheetUrl));
+      var targetSheet = ss.getSheetByName(sheet);
+      targetSheet.appendRow([id, str]);
+
 }
 
+}
 -->
 <script>
 // https://script.google.com/home/projects/1X1V2p4TpIlC55r9ypR601j73FNfiPZDdPITBLlq_OAoQ3FoScMM66WuG/edit
-const gasUrl = `https://script.google.com/macros/s/AKfycbwGP4VhXr8Bp2hDf2eHGuw8jVkOO4AEhT65pscZ4WSnYIiZAd3ubyD4B8U8vM9_TPIm/exec`;
+const gasUrl = `https://script.google.com/macros/s/AKfycbwWpzW6vyGIBJRWL-thUyqEOMEhe7Hb6nW8kXU8av_QFsoZIuU-UU7scFIdZTzDbXo/exec`;
 document.querySelector(".gasUrl").value = gasUrl;
 document.querySelector(".spreadsheetUrl").value = `https://docs.google.com/spreadsheets/d/1s6PrnmIs2nHENE4MSyJTM9hISunUZdUF7iSs-eqfTCI/edit#gid=104130673`;
 document.querySelector(".sheet").value = `datastore1`;
@@ -113,7 +118,7 @@ function getNow() {
 
 function exe() {
   document.querySelector(".gasId").value = getNow();
-  const option = `?id=${document.querySelector(".gasId").value}&str=${JSON.stringify(document.querySelector(".gasStr").value)}&spreadsheetUrl=${encodeURIComponent(document.querySelector(".spreadsheetUrl").value)}&sheet=${document.querySelector(".sheet").value}`
+  const option = `?password=${document.querySelector(".password").value}&id=${document.querySelector(".gasId").value}&str=${JSON.stringify(document.querySelector(".gasStr").value)}&spreadsheetUrl=${encodeURIComponent(document.querySelector(".spreadsheetUrl").value)}&sheet=${document.querySelector(".sheet").value}`
   const fullUrl = document.querySelector(".gasUrl").value + option;
   fetch(fullUrl);
   // fetch(url).then(v=>{return v.json()}).then(V=>{bar = V;console.table(bar)})
@@ -121,7 +126,10 @@ function exe() {
 
 let res;
 function getJson() {
-    res = fetch(`${gasUrl}?getJson=true`).then(v=>{return v.json()}).then(V=>{res = V;console.table(res)})
+    const option = `?password=${document.querySelector(".password").value}&getJson=true&spreadsheetUrl=${encodeURIComponent(document.querySelector(".spreadsheetUrl").value)}&sheet=${document.querySelector(".sheet").value}`
+    const fullUrl = document.querySelector(".gasUrl").value + option;
+
+    res = fetch(fullUrl).then(v=>{return v.json()}).then(V=>{res = V;console.table(res)})
 }
 getJson();
 </script>
