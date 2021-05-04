@@ -169,7 +169,19 @@ var firebaseConfig = {
   messagingSenderId: "73327428587",
   appId: "1:73327428587:web:ee2e66a52c9d7860174fae"
 };
-firebase.initializeApp(firebaseConfig);
+
+// auth2
+var firebaseConfig2 = {
+  apiKey: "AIzaSyDEuDrAAXiOK3ZMwIsPfvAQ-I20hzp-j1w",
+  authDomain: "auth2-e271b.firebaseapp.com",
+  projectId: "auth2-e271b",
+  storageBucket: "auth2-e271b.appspot.com",
+  messagingSenderId: "749680438817",
+  appId: "1:749680438817:web:527f363056ebdd17de3d60"
+};
+
+// firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig2);
 var provider = new firebase.auth.GoogleAuthProvider();
 // firebase.auth().signInWithRedirect(provider);
   firebase.auth().onAuthStateChanged(function (user) {
@@ -191,6 +203,7 @@ function signOut() {
   
 }
 // firebase.auth().currentUser.uid
+
   </script>
 </body>
 </html>
