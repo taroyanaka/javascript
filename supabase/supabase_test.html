@@ -170,18 +170,8 @@ var firebaseConfig = {
   appId: "1:73327428587:web:ee2e66a52c9d7860174fae"
 };
 
-// auth2
-var firebaseConfig2 = {
-  apiKey: "AIzaSyDEuDrAAXiOK3ZMwIsPfvAQ-I20hzp-j1w",
-  authDomain: "auth2-e271b.firebaseapp.com",
-  projectId: "auth2-e271b",
-  storageBucket: "auth2-e271b.appspot.com",
-  messagingSenderId: "749680438817",
-  appId: "1:749680438817:web:527f363056ebdd17de3d60"
-};
 
-// firebase.initializeApp(firebaseConfig);
-firebase.initializeApp(firebaseConfig2);
+firebase.initializeApp(firebaseConfig);
 var google = new firebase.auth.GoogleAuthProvider();
 var github = new firebase.auth.GithubAuthProvider();
 // firebase.auth().signInWithRedirect(google);
