@@ -7,16 +7,22 @@
     <title>supabase_test</title>
 </head>
 <body>
+  <script>
+    let supabase;
+    let foo;
+  </script>
 <!-- https://github.com/supabase/supabase/discussions/278#discussioncomment-122938 -->
 <script type="module">
     import { createClient } from "https://cdn.skypack.dev/@supabase/supabase-js";
 
-    const supabase = createClient(
+    supabase = createClient(
         "https://djhupqmcmcbjzshlclvh.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyMDEwNTk1MiwiZXhwIjoxOTM1NjgxOTUyfQ.dWSNd32JmaceJP35Hgwn2Ib9iKviNiAYu4Fvw2eOSjs"
     );
 
     (async () => {
-      const { error, data } = await supabase.from("your_table").select();
+      // const { error, data } = await supabase.from("your_table").select();
+      const { error, data } = await supabase.from("countries").select();
+      foo = data;
       if (error) {
         document.body.innerHTML = `<pre>${JSON.stringify(
           error,
@@ -28,12 +34,12 @@
       }
     })();
 
-    (async () => {
-        const { user, session, error } = await supabase.auth.signUp({
-            email: 'example@email.com',
-            password: 'example-password',
-        })
-    })();
+    // (async () => {
+    //     const { user, session, error } = await supabase.auth.signUp({
+    //         email: 'example@email.com',
+    //         password: 'example-password',
+    //     })
+    // })();
   </script>
 </body>
 </html>
