@@ -101,6 +101,7 @@ column4 datatype,
   <script>
     let supabase;
     let foo;
+    let bar;
   </script>
 <!-- https://github.com/supabase/supabase/discussions/278#discussioncomment-122938 -->
 <script type="module">
@@ -110,7 +111,13 @@ column4 datatype,
         "https://djhupqmcmcbjzshlclvh.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyMDEwNTk1MiwiZXhwIjoxOTM1NjgxOTUyfQ.dWSNd32JmaceJP35Hgwn2Ib9iKviNiAYu4Fvw2eOSjs"
     );
 
+  // "https://djhupqmcmcbjzshlclvh.supabase.co/auth/v1/callback"
     (async () => {
+
+      // const { user, session, errorAuth } = await supabase.auth.signIn({
+      //   provider: 'github'
+      // });
+      // bar = user;
 
       // await supabase
       //   .from('jsontable')
@@ -141,15 +148,6 @@ column4 datatype,
         //     email: 'example@email.com',
         //     password: 'example-password',
         // })
-
-
-      const { user, session, error } = await supabase.auth.signUp({
-        provider: 'google'
-      }
-      // , {
-      //   redirectTo: 'https://yahoo.com'
-      // }
-      )
 
     })();
 
