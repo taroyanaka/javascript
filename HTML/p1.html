@@ -53,7 +53,7 @@ let resAry;
 const gasUrl = "https://script.google.com/macros/s/AKfycbxNcLQggWQGiGQyzDpLdCnROA7Me6YMEnu-r54z4ogfILxXi2x44TaCoJnBGVilaglJOQ/exec";
 function loadText() {
     if (!firebase.auth().currentUser) {
-        document.querySelector(".loginrResult").innerText = "you need to login";
+        document.querySelector(".loginrResult").innerText = "you need to login or wait few seconds";
     }
     const option =
         `?uid=${firebase.auth().currentUser.uid}`
