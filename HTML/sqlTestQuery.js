@@ -1,7 +1,15 @@
 // https://paiza.io/en/projects/new?language=mysql
 // browser console
 
-const sqlTestQuery = `SELECT * FROM table_name;
+const sqlTestQuery = `select * from actor;
+SELECT * FROM category;
+SELECT * FROM city;
+SELECT * FROM country;
+SELECT * FROM film;
+SELECT * FROM film_actor;
+SELECT * FROM film_category;
+SELECT * FROM language;
+SELECT * FROM table_name;
 SELECT DISTINCT column_name;
 SELECT column1, column2 FROM table_name WHERE condition;
 SELECT * FROM table_name WHERE condition1 AND condition2;

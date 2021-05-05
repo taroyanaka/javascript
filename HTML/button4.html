@@ -48368,11 +48368,17 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
             }
         }
     }
+    function exeAlasql() {
+        res = alasql(document.querySelector(`.target`).value);
+        console.table(
+            res
+        )
+    }
 
 
     const numAry14 = [...Array(14).keys()].map(V => V + 1);
     function ary14Loop() {
-        [...Array(30).keys()].forEach(V =>
+        [...Array(3).keys()].forEach(V =>
             numAry14.forEach(VAL => testSQLData2(VAL))
         )
     }
@@ -48437,7 +48443,7 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
             <button onclick="disassembleButton();exe();">disassemble</button>
             <button onclick="hide();">hide</button>
 
-            <textarea cols="10" rows="5" class="target"></textarea>
+            <textarea cols="10" rows="5" class="target" oninput="exeAlasql();"></textarea>
             <button class="toCopyFromTarget" onclick="copy();">copy</button>
             <button onclick="(()=>document.querySelector('.target').value='')();">clear</button>
             <textarea cols="10" rows="5" class="copy"></textarea>
