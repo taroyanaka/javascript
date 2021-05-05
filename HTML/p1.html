@@ -16,7 +16,7 @@
     <input type="button" name="" class="login" value="login" onclick="login();">
     <input type="button" name="" class="login" value="logout" onclick="signOut();">
     
-    <input type="button" name="" class="exe" value="exe" onclick="exe();">
+    <input type="button" name="" class="updateText" value="updateText" onclick="updateText();">
     <input type="button" name="" class="loadText" value="loadText" onclick="loadText();">
     <h2 class="loadList"></h2>
 
@@ -46,6 +46,32 @@ function signOut() {
 // firebase.auth().currentUser.uid
 </script>
 
+<script class="gasSideScript">
+    // function doGet(e) {
+    //     hashCode = s => s.split('').reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0)
+
+    //     if (e.parameter.getjson === "true") {
+    //         return ContentService.createTextOutput(
+    //             JSON.stringify(
+    //                 SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1VKAvPrWH5gJ7Dhurhl1QlNMcpDqy_8rAvcf6M2qduy8/edit#gid=0")
+    //                     .getSheetByName("Sheet1")
+    //                     .getDataRange()
+    //                     .getValues()
+    //                     .filter(V => V[0] === hashCode(e.parameter.uid))
+    //                     .map(V => V[1])
+    //             ))
+    //             .setMimeType(ContentService.MimeType.JSON);
+    //     }
+
+    //     SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1VKAvPrWH5gJ7Dhurhl1QlNMcpDqy_8rAvcf6M2qduy8/edit#gid=0")
+    //         .getSheetByName("Sheet1")
+    //         .appendRow([hashCode(e.parameter.uid), e.parameter.text]);
+    //     // .appendRow(["test", "test2"]);
+    //     return ContentService
+    //         .createTextOutput(JSON.stringify({ "result": "upload success" }))
+    //         .setMimeType(ContentService.MimeType.JSON);
+    // }
+</script>
 
 <script>
 let tmp;
@@ -91,7 +117,7 @@ function timer(str) {
 function timerFunc() {
     document.querySelector(".loginrResult").innerText = "";
 }
-function exe() {
+function updateText() {
     if(!firebase.auth().currentUser){
         document.querySelector(".loginrResult").innerText = "not login";
     }
