@@ -17,8 +17,47 @@
 <textarea name="" class="gasStr" cols="30" rows="10"></textarea>
     <button onclick="exe();">execute</button>
 <script>
-
 // https://webird-programming.tech/archives/518#toc3
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-auth.js"></script>
+<script>
+var firebaseConfig = {
+  apiKey: "AIzaSyAq8AdLgTrKEnckBnECNkkipo7NCQyq9wo",
+  authDomain: "auth-e15c5.firebaseapp.com",
+  projectId: "auth-e15c5",
+  storageBucket: "auth-e15c5.appspot.com",
+  messagingSenderId: "73327428587",
+  appId: "1:73327428587:web:ee2e66a52c9d7860174fae"
+};
+
+
+firebase.initializeApp(firebaseConfig);
+var google = new firebase.auth.GoogleAuthProvider();
+var github = new firebase.auth.GithubAuthProvider();
+// firebase.auth().signInWithRedirect(google);
+// firebase.auth().signInWithRedirect(github);
+function showUid(params) {
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      console.log(user.uid);
+      // User is signed in.
+    } else {
+      // No user is signed in.
+    }
+  });
+}
+function signOut() {
+  firebase.auth().signOut().then(() => {
+    console.log(`Sign-out successful.`);
+  }).catch((error) => {
+    console.log(`Sign-out successful.`);
+    // An error happened.
+  });
+
+}
+// firebase.auth().currentUser.uid
 </script>
 
 <!-- gas side -->
