@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p1</title>
+</head>
+<body>
+    <input type="button" name="" class="replaceUrlToLocalhost" onclick="replaceUrlToLocalhost();" value="replaceUrlToLocalhost">
+
+    <h2 class="loginrResult"></h2>
+    <!-- <input type="url" name="" class="url"> -->
+    <!-- <input type="uid" name="" class="uid"> -->
+    <input type="text" name="" class="text">
+    <input type="button" name="" class="login" value="login" onclick="login();">
+    <input type="button" name="" class="login" value="logout" onclick="signOut();">
+    
+    <input type="button" name="" class="exe" value="exe" onclick="exe();">
+    <input type="button" name="" class="loadText" value="loadText" onclick="loadText();">
+    <h2 class="loadList"></h2>
+
+
+<script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-auth.js"></script>
+<script>
+const firebaseConfig = {
+    apiKey: "AIzaSyAq8AdLgTrKEnckBnECNkkipo7NCQyq9wo",
+    authDomain: "auth-e15c5.firebaseapp.com",
+    projectId: "auth-e15c5",
+    storageBucket: "auth-e15c5.appspot.com",
+    messagingSenderId: "73327428587",
+    appId: "1:73327428587:web:ee2e66a52c9d7860174fae"
+};
+
+firebase.initializeApp(firebaseConfig);
+const google = new firebase.auth.GoogleAuthProvider();
+const github = new firebase.auth.GithubAuthProvider();
+function signOut() {
+    firebase.auth().signOut().then(() => {
+        console.log(`Sign-out successful`);
+    }).catch((error) => {
+        console.log(`Sign-out error`);
+    });
+}
+// firebase.auth().currentUser.uid
+</script>
+
+
+<script>
+let tmp;
+let resAry;
+const gasUrl = "https://script.google.com/macros/s/AKfycbxNcLQggWQGiGQyzDpLdCnROA7Me6YMEnu-r54z4ogfILxXi2x44TaCoJnBGVilaglJOQ/exec";
+function loadText() {
+    if (!firebase.auth().currentUser) {
+        document.querySelector(".loginrResult").innerText = "you need to login";
+    }
+    const option =
+        `?uid=${firebase.auth().currentUser.uid}`
+        + `&getjson=true`
+        ;
+    const fullUrl = gasUrl + option;
+    fetch(fullUrl).then(v => { return v.json() }).then(V => {
+        document.querySelector(".loadList").innerText = V;
+        resAry = V;
+    })
+}
+
+
+function replaceUrlToLocalhost(params) {
+    window.location.replace("http://localhost:5502/HTML/p1.html");
+}
+function checkLogin() {
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            document.querySelector(".loginrResult").innerText = "login success";
+        } else {
+            document.querySelector(".loginrResult").innerText = "not login yet";
+        }
+    })
+}
+
+function login() {
+    firebase.auth().signInWithRedirect(google);
+}
+
+function timer(str) {
+    document.querySelector(".loginrResult").innerText = str;
+    tmp = setTimeout(timerFunc, 3000);
+}
+function timerFunc() {
+    document.querySelector(".loginrResult").innerText = "";
+}
+function exe() {
+    if(!firebase.auth().currentUser){
+        document.querySelector(".loginrResult").innerText = "not login";
+    }
+
+    const option =
+        `?uid=${firebase.auth().currentUser.uid}`
+        + `&text=${document.querySelector(".text").value}`
+        ;
+    const fullUrl = gasUrl + option;
+
+    fetch(fullUrl).then(v=>{return v.json()}).then(V=>{
+        timer(V["result"])
+    })
+}
+
+checkLogin();
+loadText();
+
+</script>
+</body>
+</html>
