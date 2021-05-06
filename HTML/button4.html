@@ -16241,7 +16241,7 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
 (4,'Mandarin','2006-02-15 05:02:19'),
 (5,'French','2006-02-15 05:02:19'),
 (6,'German','2006-02-15 05:02:19');</textarea>
-<textarea name="" class="sqlData-11" cols="10" rows="5">INSERT INTO payment VALUES (1,1,1,76,'2.99','2005-05-25 11:30:37','2006-02-15 22:12:30'),
+<!-- <textarea name="" class="sqlData-11" cols="10" rows="5">INSERT INTO payment VALUES (1,1,1,76,'2.99','2005-05-25 11:30:37','2006-02-15 22:12:30'),
 (2,1,1,573,'0.99','2005-05-28 10:35:23','2006-02-15 22:12:30'),
 (3,1,1,1185,'5.99','2005-06-15 00:54:12','2006-02-15 22:12:30'),
 (4,1,2,1422,'0.99','2005-06-15 18:02:53','2006-02-15 22:12:30'),
@@ -32290,6 +32290,7 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
 (16047,599,2,15590,'8.99','2005-08-23 06:09:44','2006-02-15 22:24:12'),
 (16048,599,2,15719,'2.99','2005-08-23 11:08:46','2006-02-15 22:24:13'),
 (16049,599,2,15725,'2.99','2005-08-23 11:25:00','2006-02-15 22:24:13');</textarea>
+
 <textarea name="" class="sqlData-13" cols="10" rows="5">    INSERT INTO rental VALUES (1,'2005-05-24 22:53:30',367,130,'2005-05-26 22:04:30',1,'2006-02-15 21:30:53'),
     (2,'2005-05-24 22:54:33',1525,459,'2005-05-28 19:40:33',1,'2006-02-15 21:30:53'),
     (3,'2005-05-24 23:03:39',1711,408,'2005-06-01 22:12:39',1,'2006-02-15 21:30:53'),
@@ -48333,7 +48334,13 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
 (16046,'2005-08-23 22:26:47',4364,74,'2005-08-27 18:02:47',2,'2006-02-15 21:30:53'),
 (16047,'2005-08-23 22:42:48',2088,114,'2005-08-25 02:48:48',2,'2006-02-15 21:30:53'),
 (16048,'2005-08-23 22:43:07',2019,103,'2005-08-31 21:33:07',1,'2006-02-15 21:30:53'),
-(16049,'2005-08-23 22:50:12',2666,393,'2005-08-30 01:01:12',2,'2006-02-15 21:30:53');</textarea>
+(16049,'2005-08-23 22:50:12',2666,393,'2005-08-30 01:01:12',2,'2006-02-15 21:30:53');</textarea> -->
+
+
+
+
+
+
 <!-- <textarea name="" class="sqlData-15" cols="10" rows="5"></textarea> -->
 <input type="checkbox" cols="30" rows="10" class="enableSQL" checked></input>
 <button cols="30" rows="10" onclick="testSQLData1();ary14Loop()">testSQLData</button>
@@ -48369,10 +48376,17 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
         }
     }
     function exeAlasql() {
+        document.querySelectorAll("[class*=sqlData]").forEach(V => V.style = "display:none;");
         res = alasql(document.querySelector(`.target`).value);
         console.table(
             res
-        )
+        );
+        document.querySelector(".target").focus();
+        // Object.entries(res).forEach(([key, value]) => {
+        //     let result = [];
+        //     if (value) { result.push(value) } else { result.push("") }
+        //     return result;
+        // })
     }
 
 
@@ -48443,7 +48457,8 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
             <button onclick="disassembleButton();exe();">disassemble</button>
             <button onclick="hide();">hide</button>
 
-            <textarea cols="10" rows="5" class="target" oninput="exeAlasql();"></textarea>
+            <textarea cols="100" rows="20" class="target"></textarea>
+            <button class="exeAlasql" onclick="exeAlasql();">exeAlasql</button>
             <button class="toCopyFromTarget" onclick="copy();">copy</button>
             <button onclick="(()=>document.querySelector('.target').value='')();">clear</button>
             <textarea cols="10" rows="5" class="copy"></textarea>
@@ -48657,6 +48672,9 @@ Monastery',2006,1,NULL,3,'4.99',50,'18.99','NC-17','Trailers,Commentaries,Behind
         document.querySelector(".add").click();
         document.querySelector("body > div > div > div > div:nth-child(1) > div > label").click();
     }
+
+
+
 // testEach();
 </script>
 
