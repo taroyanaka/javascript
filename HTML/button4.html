@@ -33,18 +33,19 @@
 
 <body class="result">
     <div class="zero">
+
+    <button cols="30" rows="10" onclick="testSQLData1();ary14Loop();selectActorData();displayNoneSqlIframe();hide();document.querySelector('.target').focus();">testSQLData</button>
+
         <img src="SampleSakila.png" alt="" srcset="" style="width: 100%;height: 300px;">
 
 <iframe src="iframetest.html" frameborder="0" id="elem"></iframe>
 
 <!-- <textarea name="" class="sqlData-15" cols="10" rows="5"></textarea> -->
 <input type="checkbox" cols="30" rows="10" class="enableSQL" checked></input>
-<button cols="30" rows="10" onclick="testSQLData1();ary14Loop();selectActorData();">testSQLData</button>
-<textarea name="" class="sqlSample" cols="30" rows="10"></textarea>
+
+
 <!-- <button cols="30" rows="10" onclick="testSQLData2();">testSQLData</button> -->
 <script>
-
-    document.querySelector(".sqlSample").value = sqlTestQuery;
     let res;
     let resAry = [];
     function testSQLData1() {
@@ -94,13 +95,12 @@
 
 
     function exeAlasql() {
-        document.querySelectorAll("[class*=sqlData]").forEach(V => V.style = "display:none;");
         res = alasql(document.querySelector(`.target`).value);
         console.table(
             res
         );
         document.querySelector(".target").focus();
-        document.querySelector(".one").innerHTML = makeTable(res);
+        document.querySelector(".sqlResult").innerHTML = makeTable(res);
     }
 
 
@@ -112,6 +112,9 @@
     }
     function selectActorData() {
         document.querySelector(".target").value = `SELECT * FROM actor;`;
+    }
+    function displayNoneSqlIframe() {
+        document.querySelector("#elem").style = "display:none;";
     }
 
     // [1,2,3,4,6,10].forEach(V=> testSQLData2(V))
@@ -183,7 +186,13 @@
     </div>
 </div>
 </div>
-    <div class="one">sql result</div>
+    <div class="one">
+        <textarea name="" class="sqlSample" cols="30" rows="10"></textarea>
+        <div class="sqlResult">sql result</div>
+    </div>
+    <script>
+        document.querySelector(".sqlSample").value = sqlTestQuery;
+    </script>
 </body>
 
 
