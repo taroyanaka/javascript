@@ -34,7 +34,7 @@
 <body class="result">
     <div class="zero">
 
-    <button cols="30" rows="10" onclick="testSQLData1();ary14Loop();selectActorData();displayNoneSqlIframe();hide();document.querySelector('.target').focus();exeAlasql();">testSQLData</button>
+    <button cols="30" rows="10" onclick="testSQLData1();ary14Loop();selectActorData();displayNoneSqlIframe();hide();document.querySelector('.target').focus();exeAlasql();document.querySelector('.testSQLData').outerHTML=''"  style="width: 100px;height: 100px;background-color: darkmagenta;" class="testSQLData">testSQLData</button>
 
         <img src="SampleSakila.png" alt="" srcset="" style="width: 100%;height: 300px;">
 
@@ -172,7 +172,7 @@
         <button onclick="hide();">hide</button>
 
         <textarea cols="50" rows="20" class="target"></textarea>
-        <button class="exeAlasql" onclick="exeAlasql();">exeAlasql</button>
+        <button class="exeAlasql" onclick="exeAlasql();" style="width: 100px;height: 100px;background-color: darkmagenta;">exeAlasql</button>
         <button class="toCopyFromTarget" onclick="copy();">copy</button>
         <button onclick="(()=>document.querySelector('.target').value='')();">clear</button>
         <textarea cols="10" rows="5" class="copy"></textarea>
