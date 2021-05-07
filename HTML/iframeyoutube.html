@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <!-- https://github.com/lacymorrow/movie-trailer -->
+        <script type="text/javascript" src="https://unpkg.com/movie-trailer"></script>
+<style>
+    .result{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(1, 1fr);
+}
+.zero {
+    grid-column: 1 / 2;
+    grid-row: 1 / 1;
+}
+.one {
+    grid-column: 3 / 4;
+    grid-row: 1 / 1;
+}
+table{
+    width: 100%;
+    overflow-wrap: break-word;
+}
+
+</style>
+</head>
+<body class="result">
+
+<div class="zero">
+<div class="youtube"></div>
+<input type="button" value="execute" onclick="getJson()">
+
+<!-- https://developers.themoviedb.org/3/discover/movie-discover -->
+<input type="url" name="" class="endpoint" value="https://api.themoviedb.org/3/discover/movie">
+<ul class="">
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="api_key" readonly=""><input type="text" class="f-1" placeholder="String"
+            value="<<api_key>>"><span class="fw-b">required</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="language" readonly=""><input type="text" class="f-1" placeholder="String"
+            value="en-US"><span class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="region" readonly=""><input type="text" class="f-1" placeholder="String"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="sort_by" readonly=""><select class="f-1" placeholder="String">
+            <option value=""></option>
+            <option value="popularity.asc">popularity.asc</option>
+            <option value="popularity.desc">popularity.desc</option>
+            <option value="release_date.asc">release_date.asc</option>
+            <option value="release_date.desc">release_date.desc</option>
+            <option value="revenue.asc">revenue.asc</option>
+            <option value="revenue.desc">revenue.desc</option>
+            <option value="primary_release_date.asc">primary_release_date.asc</option>
+            <option value="primary_release_date.desc">primary_release_date.desc</option>
+            <option value="original_title.asc">original_title.asc</option>
+            <option value="original_title.desc">original_title.desc</option>
+            <option value="vote_average.asc">vote_average.asc</option>
+            <option value="vote_average.desc">vote_average.desc</option>
+            <option value="vote_count.asc">vote_count.asc</option>
+            <option value="vote_count.desc">vote_count.desc</option>
+            <option></option>
+        </select><span class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="certification_country" readonly=""><input type="text" class="f-1"
+            placeholder="String"><span class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="certification" readonly=""><input type="text" class="f-1" placeholder="String"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="certification.lte" readonly=""><input type="text" class="f-1" placeholder="value"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="certification.gte" readonly=""><input type="text" class="f-1" placeholder="value"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="include_adult" readonly=""><input type="text" class="f-1" placeholder="Boolean"
+            value="false"><span class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="include_video" readonly=""><input type="text" class="f-1" placeholder="Boolean"
+            value="false"><span class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="page" readonly=""><input type="text" class="f-1" placeholder="Integer" value="1"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="primary_release_year" readonly=""><input type="text" class="f-1"
+            placeholder="Integer"><span class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="primary_release_date.gte" readonly=""><input type="text" class="f-1"
+            placeholder="value"><span class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="primary_release_date.lte" readonly=""><input type="text" class="f-1"
+            placeholder="value"><span class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="release_date.gte" readonly=""><input type="text" class="f-1" placeholder="value"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="release_date.lte" readonly=""><input type="text" class="f-1" placeholder="value"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="with_release_type" readonly=""><input type="text" class="f-1" placeholder="Integer"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="year" readonly=""><input type="text" class="f-1" placeholder="Integer"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="vote_count.gte" readonly=""><input type="text" class="f-1" placeholder="value"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="vote_count.lte" readonly=""><input type="text" class="f-1" placeholder="value"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="vote_average.gte" readonly=""><input type="text" class="f-1" placeholder="value"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="vote_average.lte" readonly=""><input type="text" class="f-1" placeholder="value"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="with_cast" readonly=""><input type="text" class="f-1" placeholder="String"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="with_crew" readonly=""><input type="text" class="f-1" placeholder="String"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="with_people" readonly=""><input type="text" class="f-1" placeholder="String"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="with_companies" readonly=""><input type="text" class="f-1" placeholder="String"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="with_genres" readonly=""><input type="text" class="f-1" placeholder="String"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="without_genres" readonly=""><input type="text" class="f-1" placeholder="String"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="with_keywords" readonly=""><input type="text" class="f-1" placeholder="String"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="without_keywords" readonly=""><input type="text" class="f-1" placeholder="String"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="with_runtime.gte" readonly=""><input type="text" class="f-1" placeholder="value"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="with_runtime.lte" readonly=""><input type="text" class="f-1" placeholder="value"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="with_original_language" readonly=""><input type="text" class="f-1"
+            placeholder="String"><span class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="with_watch_providers" readonly=""><input type="text" class="f-1" placeholder="String"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="watch_region" readonly=""><input type="text" class="f-1" placeholder="String"><span
+            class="c-muted">optional</span></li>
+    <li class=""><input type="text" class="f-0" placeholder="name"
+            value="with_watch_monetization_types" readonly=""><select class="f-1" placeholder="String">
+            <option value="flatrate">flatrate</option>
+            <option value="free">free</option>
+            <option value="ads">ads</option>
+            <option value="rent">rent</option>
+            <option value="buy">buy</option>
+            <option></option>
+        </select><span class="c-muted">optional</span></li>
+</ul>
+</div>
+    <div class="one">
+        <div class="movieResult"></div>
+    </div>
+
+</body>
+<script>
+// movieTrailer('Oceans Eleven', { id: false, multi: true }).then(response => console.log(response))
+
+// https://github.com/lacymorrow/movie-trailer#tmdbid
+// movieTrailer( null, { tmdbId: 161 }  , { id: false, multi: true }).then(response => console.log(response))
+
+function collectApiParameter() {
+    const paramUrl =
+        Array.from(document.querySelectorAll(".f-0")).reduce((A, V, IDX) => {
+            if (V.nextElementSibling.value) { A.push(
+                "&" + V.value + "=" + V.nextElementSibling.value
+            ) };
+            return A;
+        }, A = [])
+        .join("");
+    const withoutHeadUrl = paramUrl.slice(1);
+    return "?" + withoutHeadUrl;
+}
+function makeRequestUrl() {
+    return document.querySelector(".endpoint").value + collectApiParameter();
+}
+
+function makeIframe(srcUrl) {
+    return `<iframe width="560" height="315" src="${srcUrl}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+    // return `<iframe src="${srcUrl}" frameborder="0"></iframe>`
+}
+function insertYoutube(srcUrl) {
+    document.querySelector(".youtube").innerHTML = makeIframe(srcUrl);
+}
+
+let youtbePlayerId;
+function getYoutubeFromTmdbId(idFromJson) {
+    movieTrailer(null, { tmdbId: idFromJson }, { id: false, multi: false })
+    .then(response =>{
+        console.log(response);
+        insertYoutube(response);
+        // youtbePlayerId = response.replace("https://www.youtube.com/watch?v=", "");
+    });
+}
+
+let json;
+let tmp = [];
+
+function makeImgTag(val) {
+    return `<img src="http://image.tmdb.org/t/p/w500${value}" alt="" srcset="">`;
+}
+function makeTd(obj) {
+    return Array.from(Object.entries(obj)).map(([key, value]) => {
+        let result = [];
+        // value = value.includes(".jpg") ? `<img src="http://image.tmdb.org/t/p/w500${value}" alt="" srcset="">` : value;
+        // value = value.includes(".jpg") ? makeImgTag(value) : value;
+        // tmp.push(value);
+        if (value) { result.push("<td>" + value + "</td>") } else { result.push("<td></td>") }
+        ;
+        return result.join("");
+    })
+}
+function makeTable(result) {
+    return "<table>" + result.map(obj => {
+        return "<tr>" + makeTd(obj).join("") + "</tr>"
+    }).join("") + "</table>";
+}
+
+function getJson() {
+    fetch(makeRequestUrl())
+    .then(V => { return V.json() })
+    .then(resultJson => {
+        json = resultJson;
+        getYoutubeFromTmdbId(json.results[0].id);
+        console.table(
+            resultJson
+        );
+        
+        document.querySelector(".movieResult").innerHTML = makeTable(json.results);
+        return resultJson;
+    })
+
+}
+
+
+document.querySelector(".f-1").value = "151cd0d2079e83877bdc24a4ded387fd";
+
+// https://github.com/bumptech/glide
+// https://stackoverflow.com/a/31319362
+// "http://image.tmdb.org/t/p/w500/o4I5sHdjzs29hBWzHtS2MKD3JsM.jpg"
+// const imgUrl = "http://image.tmdb.org/t/p/w500";
+
+getJson();
+// let bdpurl = imgUrl + json.results[0].backdrop_path;
+
+</script>
+
+
+
+
+
+</html>
