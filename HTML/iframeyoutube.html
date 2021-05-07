@@ -31,7 +31,13 @@ table{
 <body class="result">
 
 <div class="zero">
-<div class="youtube"></div>
+<input type="text" name="" id="id">
+<iframe id="ytplayer" type="text/html" width="320" height="180" src="https://www.youtube.com/embed/oGTVoX7AaRc?vq=small"></iframe>
+<!-- <iframe id="ytplayer" type="text/html" width="320" height="180" src="https://www.youtube.com/embed/oGTVoX7AaRc?autoplay=1&start=865&vq=small" allow="autoplay"></iframe> -->
+<script>
+const YOUTUBEPLAYERSRCUPDATE = (id) => document.querySelector("#ytplayer").src = `https://www.youtube.com/embed/${id}?vq=small`;
+</script>
+
 <input type="button" value="execute" onclick="getJson()">
 
 <!-- https://developers.themoviedb.org/3/discover/movie-discover -->
@@ -209,8 +215,9 @@ function getYoutubeFromTmdbId(idFromJson) {
     movieTrailer(null, { tmdbId: idFromJson }, { id: false, multi: false })
     .then(response =>{
         console.log(response);
-        insertYoutube(response);
-        // youtbePlayerId = response.replace("https://www.youtube.com/watch?v=", "");
+        // insertYoutube(response);
+        youtbePlayerId = response.replace("https://www.youtube.com/watch?v=", "");
+        YOUTUBEPLAYERSRCUPDATE(youtbePlayerId);
     });
 }
 
@@ -242,15 +249,15 @@ function getJson() {
     .then(V => { return V.json() })
     .then(resultJson => {
         json = resultJson;
-        getYoutubeFromTmdbId(json.results[0].id);
+        getYoutubeFromTmdbId(json.results[1].id);
         console.table(
             resultJson
         );
-        
         document.querySelector(".movieResult").innerHTML = makeTable(json.results);
         return resultJson;
-    })
-
+ json   })
+// 
+YOUTUBEPLAYERSRCUPDATE(results);
 }
 
 
@@ -263,6 +270,15 @@ document.querySelector(".f-1").value = "151cd0d2079e83877bdc24a4ded387fd";
 
 getJson();
 // let bdpurl = imgUrl + json.results[0].backdrop_path;
+
+
+
+
+
+
+
+
+
 
 </script>
 
