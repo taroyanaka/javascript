@@ -12,7 +12,9 @@
     <style>
 #infinite-list {
 width: 200px;
+/* width: 90%; */
 height: 300px;
+/* height: 50%; */
 /* overflow: auto; */
 overflow-y: scroll;
 
@@ -38,7 +40,7 @@ const listVolume = 50;
 const listElm = document.querySelector('#infinite-list');
 
 function addHtml(jsonDataArray){
-    listElm.innerHTML += jsonDataArray.map(data => ("<li>" + `${data.firstname} ${data.lastname}` + "</li>")).join("")
+    listElm.innerHTML += jsonDataArray.map(data => ("<li>" + "<span>" + `${data.firstname} ${data.lastname}` + "</span>" +  "</li>")).join("")
 };
 
 async function getJson(quantity) {
@@ -69,5 +71,7 @@ function scrollMore(){
 
 scrollMore();
 </script>
+
 </body>
+
 </html>
