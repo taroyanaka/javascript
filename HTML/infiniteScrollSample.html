@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Scroll Sample</title>
+    <!-- Infinite Scroll (pure JS) -->
+    <!-- https://codepen.io/wernight/pen/YyvNoW -->
+
+    <!-- https://fakerapi.it/en -->
+    <style>
+#infinite-list {
+width: 200px;
+height: 300px;
+/* overflow: auto; */
+overflow-y: scroll;
+
+/* margin: 30px; */
+/* padding: 20px; */
+border: 3px solid gray;
+}
+
+li {
+/* padding: 10px; */
+/* list-style-type: none; */
+}
+li:hover {
+background: #ccc;
+}
+    </style>
+</head>
+<body>
+<ul id='infinite-list' onscroll="scrollMore();"></ul>
+<script>
+let sampleJson;
+const listVolume = 50;
+const listElm = document.querySelector('#infinite-list');
+
+function addHtml(jsonDataArray){
+    listElm.innerHTML += jsonDataArray.map(data => ("<li>" + `${data.firstname} ${data.lastname}` + "</li>")).join("")
+};
+
+async function getJson(quantity) {
+    return fetch(`https://fakerapi.it/api/v1/users?_quantity=${quantity}`)
+            .then(V => { return V.json() })
+            .then(json => {
+                sampleJson = json;
+                return json.data;
+            });
+}
+
+async function loadMore(){
+    addHtml(await getJson(listVolume))
+};
+
+function showValue() {
+    console.table({
+        "listElm.scrollTop" : listElm.scrollTop,
+        "listElm.clientHeight" : listElm.clientHeight,
+        "listElm.scrollHeight" : listElm.scrollHeight
+    })
+}
+
+function scrollMore(){
+    showValue();
+    if(listElm.scrollTop + listElm.clientHeight >= listElm.scrollHeight) {loadMore()};
+};
+
+scrollMore();
+</script>
+</body>
+</html>
