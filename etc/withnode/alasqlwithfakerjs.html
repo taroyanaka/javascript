@@ -101,7 +101,7 @@ function makeList() {
     LIST = [];
     const times = Number(document.querySelector("input.nTimes").value);
     [...Array(times).keys()].forEach(NOUSE => {
-        LIST.push(collectChoosedMethods().map(V => { return V[0] }));
+        LIST.push(collectChoosedMethods().map(V => { return V[1] }));
     })
     return LIST;
 }
