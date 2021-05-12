@@ -44,7 +44,7 @@ function addHtml(jsonDataArray){
 };
 
 async function getJson(quantity) {
-    return fetch(`https://fakerapi.it/api/v1/users?_quantity=${quantity}`)
+    return await fetch(`https://fakerapi.it/api/v1/users?_quantity=${quantity}`)
             .then(V => { return V.json() })
             .then(json => {
                 sampleJson = json;

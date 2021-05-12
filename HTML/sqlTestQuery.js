@@ -2,7 +2,33 @@
 // browser console
 
 const sqlTestQuery = `SELECT * FROM actor;
-select flm.title, count(*) number_of_actors from film flm inner join film_actor fim_act on flm.film_id = fim_act.film_id group by flm.title order by number_of_actors desc;
+SELECT film.title,film_actor.actor_id
+FROM film
+join film_actor
+on film.film_id = film_actor.film_id
+limit 50;
+SELECT * FROM actor where actor_id >
+(SELECT AVG(actor_id) FROM actor where actor.last_name like '%vi%' or first_name like '%se%');
+select film.title, count(*)
+from film
+inner join film_actor
+on film.film_id = film_actor.film_id
+group by film.title
+order by count(*) desc;
+select rating,count(rating) from film
+group by rating
+order by count(rating) ASC;
+SELECT * FROM (
+SELECT * FROM actor where actor_id <= 5
+union
+SELECT * FROM actor where actor_id >= 500
+)
+ORDER BY actor_id ASC;
+select rating,count(rating) from film
+where rating like "%G%"
+group by rating
+having count(rating) < 400
+order by count(rating) DESC;
 SELECT * FROM category;
 SELECT * FROM city;
 SELECT * FROM country;
