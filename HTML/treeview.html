@@ -8,6 +8,24 @@
     <!-- https://codepen.io/rstrangh/pen/dGweRo -->
     <style>
 
+.result{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+}
+.zero {
+    grid-column: 1 / 4;
+    grid-row: 1 / 1;
+}
+.one {
+    grid-column: 1 / 2;
+    grid-row: 2 / 4;
+}
+.two {
+    grid-column: 3 / 4;
+    grid-row: 2 / 4;
+}
+
 
 @keyframes open {
   0% {
@@ -68,6 +86,8 @@
     </style>
 </head>
 <body>
+<div class="result">
+<div class="zero">
 <ul class="tree">
     <li>Child 1</li>
     <li>Child 2</li>
@@ -99,11 +119,18 @@
     </li>
     <li>Child 4</li>
 </ul>
-
+</div>
+<div class="one">
+<textarea name="" id="treeStrArray" cols="10" rows="50"></textarea>
+</div>
+<div class="two">
 <div class="test"></div>
+</div>
+
+</div>
 </body>
 <script>
-
+    // https://gist.github.com/taroyanaka/a970d2f813a7339fe1b887ea7bd4ae30
     // https://stackoverflow.com/a/7065175/9740478
     // https://stackoverflow.com/a/8511350/9740478
     const recursiveMap = function myself(fn, list) {
@@ -151,14 +178,7 @@
     console.table(
         JSON.stringify(recursiveMapTestArray2)
     )
-    // => [1,[{"foo":100},3],[4,[5,6]],[7,{"bar":[8,{"baz":9}]}]]
-    console.table(
-        JSON.stringify(recursiveMapTestArrayResult)
-    )
-// => [2,[{"foo":101},4],[5,[6,7]],[8,{"bar":[9,{"baz":10}]}]]
 
-// let testStr = `["<li>1</li>",["<li>2</li>","<li>3</li>"],["<li>4</li>",["<li>5</li>","<li>6</li>"]],["<li>7</li>",["<li>8</li>",["<li>9</li>","<li>10</li>","<li>11</li>"]],"<li>12</li>"]]`;
-// testStr = JSON.stringify(recursiveMapTestArrayResult).toString().replaceAll(/\\/g, "");
 const testStr = 
             JSON.stringify(
                 recursiveMapTestArrayResult
@@ -176,7 +196,7 @@ console.table(
     forceStrReplaceToUlLi(testStr)
 )
 document.querySelector(".test").innerHTML = forceStrReplaceToUlLi(testStr);
-// document.querySelector(".test").innerHTML = forceStrReplaceToUlLi(testStr);
+
 document.querySelectorAll(".test > ul").forEach(V => {
         V.className = "tree";
     })
@@ -194,6 +214,8 @@ document.querySelectorAll(".test > ul ul").forEach(V=>{
 })
 document.querySelectorAll(".tree-toggle").forEach((V, IDX) => V.id = `tree-toggle-${IDX}`)
 document.querySelectorAll(".tree-toggle-label").forEach((V, IDX) => V.setAttribute("for", `tree-toggle-${IDX}`) )
+
+document.querySelector("#treeStrArray").value = JSON.stringify(recursiveMapTestArray2, null, 2);
 </script>
 
 </html>
