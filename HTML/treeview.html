@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree View Sample</title>
+    <!-- https://codepen.io/rstrangh/pen/dGweRo -->
+    <style>
+
+
+@keyframes open {
+  0% {
+    max-height: 0;
+    opacity: 0;
+  }
+
+  100% {
+    max-height: auto;
+    opacity: 1;
+  }
+}
+
+@keyframes close {
+  0% {
+    height: auto;
+    opacity: 1;
+  }
+
+  100% {
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.tree,
+.subtree {
+  list-style-type: none;
+}
+
+.subtree {
+  overflow: hidden;
+}
+
+.tree-toggle-label:after {
+    content: "+";
+}
+
+.tree-toggle {
+  position: absolute;
+  opacity: 0;
+  z-index: 1;
+}
+
+.tree-toggle:checked + .tree-toggle-label:after {
+  content: "-";
+}
+
+.tree-toggle + .tree-toggle-label + .subtree {
+    animation: 1s ease-in-out both close;
+}
+
+.tree-toggle:checked + .tree-toggle-label + .subtree {
+    animation: 1s ease-in-out both open;
+}
+
+
+    </style>
+</head>
+<body>
+<ul class="tree">
+    <li>Child 1</li>
+    <li>Child 2</li>
+    <li>
+        <input class="tree-toggle" type="checkbox" id="tree-toggle-01" />
+        <label class="tree-toggle-label" for="tree-toggle-01">Child 3</label>
+        <ul class="subtree">
+            <li>Subchild 1</li>
+            <li>Subchild 2</li>
+            <li>
+                <input class="tree-toggle" type="checkbox" id="tree-toggle-02" />
+                <label class="tree-toggle-label" for="tree-toggle-02">Subchild 3</label>
+                <ul class="subtree">
+                    <li>SubSubChild 1</li>
+                    <li>SubSubChild 2</li>
+                </ul>
+            </li>
+            <li>
+                <input class="tree-toggle" type="checkbox" id="tree-toggle-03" />
+                <label class="tree-toggle-label" for="tree-toggle-03">Subchild 4</label>
+                <ul class="subtree">
+                    <li>SubSubChild 1</li>
+                    <li>SubSubChild 2</li>
+                    <li>SubSubChild 3</li>
+                </ul>
+            </li>
+            <li>Subchild 5</li>
+        </ul>
+    </li>
+    <li>Child 4</li>
+</ul>
+
+<div class="test"></div>
+</body>
+<script>
+
+    // https://stackoverflow.com/a/7065175/9740478
+    // https://stackoverflow.com/a/8511350/9740478
+    const recursiveMap = function myself(fn, list) {
+        const isNotNullArray = (list) => Array.isArray(list) && list.length !== 0;
+        const isNotNullObject = (list) => typeof list === 'object' && list !== null;
+        if (isNotNullArray(list)) {
+            return list.map(VAL => (isNotNullArray(VAL) || isNotNullObject(VAL)) ? myself(fn, VAL) : fn(VAL));
+        }
+        if (isNotNullObject(list)) {
+            return Object.entries(list).reduce((A, [KEY, VAL]) => {
+                if (list.hasOwnProperty(KEY)) {
+                    A[KEY] = (isNotNullArray(VAL) || isNotNullObject(VAL)) ? myself(fn, VAL) : fn(VAL);
+                };
+                return A;
+            }, A = {});
+        }
+    }
+    // const recursiveMapTestArray =
+    //     [1,
+    //         [{ foo: 100 }, 3],
+    //         [4, [5, 6]],
+    //         [7, { bar: [8, { baz: 9 }] }],
+    //     ];
+    const recursiveMapTestArray2 =
+        [
+            1,
+            2.1,
+            [2.5, [2, 3, 3.5]],
+            4,
+            [4.5, 4.7, [5, 6, 6.5], 4.9],
+            5.5,
+            7,
+            [7.5, [8, [8.5, [9, 10, 11]]], 7.9],
+            12,
+            13
+        ];
+
+    const toLi = (n) => `<li>${n.toString()}</li>`;
+    const recursiveMapTestArrayResult =
+        recursiveMap(
+            toLi,
+            recursiveMapTestArray2
+        )
+
+    console.table(
+        JSON.stringify(recursiveMapTestArray2)
+    )
+    // => [1,[{"foo":100},3],[4,[5,6]],[7,{"bar":[8,{"baz":9}]}]]
+    console.table(
+        JSON.stringify(recursiveMapTestArrayResult)
+    )
+// => [2,[{"foo":101},4],[5,[6,7]],[8,{"bar":[9,{"baz":10}]}]]
+
+// let testStr = `["<li>1</li>",["<li>2</li>","<li>3</li>"],["<li>4</li>",["<li>5</li>","<li>6</li>"]],["<li>7</li>",["<li>8</li>",["<li>9</li>","<li>10</li>","<li>11</li>"]],"<li>12</li>"]]`;
+// testStr = JSON.stringify(recursiveMapTestArrayResult).toString().replaceAll(/\\/g, "");
+const testStr = 
+            JSON.stringify(
+                recursiveMapTestArrayResult
+            )
+            // .toString();
+function forceStrReplaceToUlLi(str) {
+    return str
+        .replaceAll(',[', '<li><ul>')
+        .replaceAll(']', '</ul></li>')
+        .replaceAll('[', '<ul>')
+        .replaceAll('"', '')
+        .replaceAll(',', '');
+}
+console.table(
+    forceStrReplaceToUlLi(testStr)
+)
+document.querySelector(".test").innerHTML = forceStrReplaceToUlLi(testStr);
+// document.querySelector(".test").innerHTML = forceStrReplaceToUlLi(testStr);
+document.querySelectorAll(".test > ul").forEach(V => {
+        V.className = "tree";
+    })
+document.querySelectorAll(".test > ul ul").forEach(V=>{
+        V.className = "subtree";
+    })
+function makeInputHtml(str) {
+    return `<input class="tree-toggle" type="checkbox" id="" />
+    <label class="tree-toggle-label">${str}</label>`
+}
+
+document.querySelectorAll(".test > ul ul").forEach(V=>{
+    V.parentElement.insertAdjacentHTML("afterbegin", makeInputHtml(V.children[0].innerText));
+    V.children[0].remove();
+})
+document.querySelectorAll(".tree-toggle").forEach((V, IDX) => V.id = `tree-toggle-${IDX}`)
+document.querySelectorAll(".tree-toggle-label").forEach((V, IDX) => V.setAttribute("for", `tree-toggle-${IDX}`) )
+</script>
+
+</html>
