@@ -184,7 +184,8 @@ function forceStrReplaceToUlLi(str) {
         .replaceAll(']', '</ul></li>')
         .replaceAll('[', '<ul>')
         .replaceAll('"', '')
-        .replaceAll(',', '');
+        .replaceAll(',', '')
+        .replace(/<\/li>$/, "");
 }
 console.table(
     forceStrReplaceToUlLi(testStr)
