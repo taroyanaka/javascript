@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p2</title>
+</head>
+
+<body>
+    <input type="button" name="" class="replaceUrlToLocalhost" onclick="replaceUrlToLocalhost();"
+        value="replaceUrlToLocalhost">
+
+    <h2 class="loginrResult"></h2>
+    <!-- <input type="url" name="" class="url"> -->
+    <!-- <input type="uid" name="" class="uid"> -->
+    <input type="text" name="" class="text">
+    <input type="button" name="" class="login" value="login" onclick="login();">
+    <input type="button" name="" class="logout" value="logout" onclick="signOut();">
+
+    <input type="button" name="" class="updateText" value="updateText" onclick="updateText();">
+    <input type="button" name="" class="loadText" value="loadText" onclick="loadText();">
+    <h2 class="loadList"></h2>
+
+
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js"></script> -->
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-auth.js"></script>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBcOlIDP2KWbJuKM0WeMHNp-WvjTVfLt9Y",
+            authDomain: "p2auth-ea50a.firebaseapp.com",
+            projectId: "p2auth-ea50a",
+            storageBucket: "p2auth-ea50a.appspot.com",
+            messagingSenderId: "796225429484",
+            appId: "1:796225429484:web:ece56ef2fc0be28cd6eac9"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const google = new firebase.auth.GoogleAuthProvider();
+        const github = new firebase.auth.GithubAuthProvider();
+        function signOut() {
+            firebase.auth().signOut().then(() => {
+                console.log(`Sign-out successful`);
+            }).catch((error) => {
+                console.log(`Sign-out error`);
+            });
+        }
+// firebase.auth().currentUser.uid
+    </script>
+
+<script class="gasSideScript">
+    // function doGet(e) {
+    //         hashCode = s => s.split('').reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0)
+
+    //         if (e.parameter.getjson === "true") {
+    //             return ContentService.createTextOutput(
+    //                 JSON.stringify(
+    //                     SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1YXeiRUqdpwTQxBosrOugOQO1WmJhpY-Qp0kkP7B-QoU/edit#gid=0")
+    //                         .getSheetByName("Sheet1")
+    //                         .getDataRange()
+    //                         .getValues()
+    //                         .filter(V => V[0] === hashCode(e.parameter.uid))
+    //                         .map(V => V[1])
+    //                 ))
+    //                 .setMimeType(ContentService.MimeType.JSON);
+    //         }
+
+    //         SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1YXeiRUqdpwTQxBosrOugOQO1WmJhpY-Qp0kkP7B-QoU/edit#gid=0")
+    //             .getSheetByName("Sheet1")
+    //             .appendRow([hashCode(e.parameter.uid), e.parameter.text]);
+    //         // .appendRow(["test", "test2"]);
+    //         return ContentService
+    //             .createTextOutput(JSON.stringify({ "result": "upload success" }))
+    //             .setMimeType(ContentService.MimeType.JSON);
+    //     }
+</script>
+
+    <script>
+        let tmp;
+        let resAry;
+        const gasUrl = "https://script.google.com/macros/s/AKfycbzkGo5cnpyEZQNCPMUBshCys7Wag0AB8mev7z-TvmzAiHArrHnUj_eHnBf_aECoKSWwCw/exec";
+        function loadText() {
+            if (!firebase.auth().currentUser) {
+                document.querySelector(".loginrResult").innerText = "you need to login or wait few seconds";
+            }
+            const option =
+                `?uid=${firebase.auth().currentUser.uid}`
+                + `&getjson=true`
+                ;
+            const fullUrl = gasUrl + option;
+            fetch(fullUrl).then(v => { return v.json() }).then(V => {
+                document.querySelector(".loadList").innerText = V;
+                resAry = V;
+            })
+        }
+
+
+        function replaceUrlToLocalhost(params) {
+            window.location.replace("http://localhost:5502/HTML/p2.html");
+        }
+        function checkLogin() {
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    document.querySelector(".loginrResult").innerText = "login success";
+                    document.querySelector(".login").style = "display:none";
+                    document.querySelector(".logout").style = "display:inline";
+                } else {
+                    document.querySelector(".loginrResult").innerText = "not login yet";
+                    document.querySelector(".logout").style = "display:none";
+                    document.querySelector(".login").style = "display:inline";
+                }
+            })
+        }
+
+        function login() {
+            // firebase.auth().signInWithRedirect(google);
+            firebase.auth().signInWithRedirect(github);
+        }
+
+        function timer(str) {
+            document.querySelector(".loginrResult").innerText = str;
+            tmp = setTimeout(timerFunc, 3000);
+        }
+        function timerFunc() {
+            document.querySelector(".loginrResult").innerText = "";
+        }
+        function updateText() {
+            if (!firebase.auth().currentUser) {
+                document.querySelector(".loginrResult").innerText = "not login";
+            }
+
+            const option =
+                `?uid=${firebase.auth().currentUser.uid}`
+                + `&text=${document.querySelector(".text").value}`
+                ;
+            const fullUrl = gasUrl + option;
+
+            fetch(fullUrl).then(v => { return v.json() }).then(V => {
+                timer(V["result"])
+            })
+        }
+
+        checkLogin();
+        loadText();
+
+    </script>
+</body>
+
+</html>
