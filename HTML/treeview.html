@@ -186,8 +186,8 @@ function composeUlLiNest(targetCssSelector, nestAry) {
     document.querySelectorAll(`${targetCssSelector} > ul`).forEach(V => V.className = "tree")
     document.querySelectorAll(`${targetCssSelector} > ul ul`).forEach(V => V.className = "subtree")
     document.querySelectorAll(`${targetCssSelector} > ul ul`).forEach(V => V.previousElementSibling.insertAdjacentHTML("afterEnd", makeInputHtml(V.children[0].innerText)))
-    document.querySelectorAll(".tree-toggle").forEach((V, IDX) => V.id = `tree-toggle-${IDX}`)
-    document.querySelectorAll(".tree-toggle-label").forEach((V, IDX) => V.setAttribute("for", `tree-toggle-${IDX}`))
+    document.querySelectorAll(`${targetCssSelector} .tree-toggle`).forEach((V, IDX) => V.id = `tree-toggle-${IDX}`)
+    document.querySelectorAll(`${targetCssSelector} .tree-toggle-label`).forEach((V, IDX) => V.setAttribute("for", `tree-toggle-${IDX}`))
 }
 composeUlLiNest(".test", testNestAry);
 
