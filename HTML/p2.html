@@ -42,6 +42,8 @@
         firebase.initializeApp(firebaseConfig);
         const google = new firebase.auth.GoogleAuthProvider();
         const github = new firebase.auth.GithubAuthProvider();
+        const twitter = new firebase.auth.TwitterAuthProvider();
+
         function signOut() {
             firebase.auth().signOut().then(() => {
                 console.log(`Sign-out successful`);
@@ -121,8 +123,10 @@
 
             // https://p2auth-ea50a.firebaseapp.com/__/auth/handler
 
-            // https://tina.io/guides/nextjs/github/github-oauth-app/
-            firebase.auth().signInWithRedirect(github);
+            // firebase.auth().signInWithRedirect(github);
+
+            // https://qiita.com/sl2/items/2815e62aaf2baea2f589
+            firebase.auth().signInWithRedirect(twitter);
         }
 
         function timer(str) {
