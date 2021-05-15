@@ -130,19 +130,20 @@
 </div>
 </body>
 <script>
-const testNestAry =
-        [
-            1,
-            2.1,
-            [2.5, [2, 3, 3.5]],
-            4,
-            [4.5, 4.7, [5, 6, 6.5], 4.9],
-            5.5,
-            7,
-            [7.5, [8, "", [8.5, [9, 10, 11]]], 7.9],
-            12,
-            13,
-        ];
+const testAry =
+    [
+        1,
+        2.1,
+        [2.5, [2, 3, 3.5]],
+        4,
+        [4.5, 4.7, [5, 6, 6.5], 4.9],
+        5.5,
+        7,
+        [7.5, [8, "", [8.5, [9, 10, 11]]], 7.9],
+        12,
+        13,
+    ]
+
 
 const wrapUl = (ary) => { let tmpAry = ary; tmpAry.unshift("<ul>"); tmpAry.push("</ul>"); return tmpAry; }
 // https://gist.github.com/taroyanaka/a970d2f813a7339fe1b887ea7bd4ae30
@@ -150,9 +151,6 @@ const wrapUl = (ary) => { let tmpAry = ary; tmpAry.unshift("<ul>"); tmpAry.push(
 // https://stackoverflow.com/a/8511350/9740478
 const deepMap = function myself(fn, list) {
     const isNotNullArray = (list) => Array.isArray(list) && list.length !== 0;
-    // if (isNotNullArray(list)) {
-    //     return wrapUl(list).map(VAL => isNotNullArray(VAL) ? myself(fn, VAL) : fn(VAL));
-    // }
     return wrapUl(list).map(VAL => isNotNullArray(VAL) ? myself(fn, VAL) : fn(VAL));
 }
 const toLiIfNotUl = (n) => (n.toString() === "<ul>"|| n.toString() === "</ul>") ? n.toString() : `<li>${n.toString()}</li>`;
@@ -183,19 +181,27 @@ function composeUlLiNest(targetCssSelector, nestAry) {
                 nestAry
             )
         );
-    document.querySelectorAll(`${targetCssSelector} > ul`).forEach(V => V.className = "tree")
-    document.querySelectorAll(`${targetCssSelector} > ul ul`).forEach(V => V.className = "subtree")
-    document.querySelectorAll(`${targetCssSelector} > ul ul`).forEach(V => V.previousElementSibling.insertAdjacentHTML("afterEnd", makeInputHtml(V.children[0].innerText)))
-    document.querySelectorAll(`${targetCssSelector} .tree-toggle`).forEach((V, IDX) => V.id = `tree-toggle-${IDX}`)
-    document.querySelectorAll(`${targetCssSelector} .tree-toggle-label`).forEach((V, IDX) => V.setAttribute("for", `tree-toggle-${IDX}`))
+    document.querySelectorAll(`${targetCssSelector} > ul`).forEach(V => V.className = "tree");
+    document.querySelectorAll(`${targetCssSelector} > ul ul`).forEach(V => V.className = "subtree");
+    document.querySelectorAll(`${targetCssSelector} > ul ul`).forEach(V =>V.previousElementSibling.insertAdjacentHTML("afterEnd", makeInputHtml(V.children[0].innerText)));
+    document.querySelectorAll(`.subtree`).forEach(V => V.children[0].remove());
+    document.querySelectorAll(`${targetCssSelector} .tree-toggle`).forEach((V, IDX) => V.id = `tree-toggle-${IDX}`);
+    document.querySelectorAll(`${targetCssSelector} .tree-toggle-label`).forEach((V, IDX) => V.setAttribute("for", `tree-toggle-${IDX}`));
 }
-composeUlLiNest(".test", testNestAry);
 
-function forDebug() {
-    console.table(testNestAry);
-    document.querySelector("#treeStrArray").value = JSON.stringify(testNestAry, null, 2);
+// composeUlLiNest(".test", testAry);
+
+document.querySelector("#treeStrArray").value = JSON.stringify(testAry, null, 2);
+
+const composeUlLiNestFromTextAreaValue = () => composeUlLiNest(".test", JSON.parse(document.querySelector("#treeStrArray").value));
+document.querySelector('#treeStrArray').addEventListener('input', composeUlLiNestFromTextAreaValue, false);
+
+composeUlLiNestFromTextAreaValue()
+
+function forDebug(ary) {
+    console.table(ary);
 }
-forDebug();
+forDebug(JSON.parse(document.querySelector("#treeStrArray").value));
 </script>
 
 </html>
