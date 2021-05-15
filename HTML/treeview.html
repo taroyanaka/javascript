@@ -25,8 +25,55 @@
     grid-column: 3 / 4;
     grid-row: 2 / 4;
 }
+</style>
+<style class="add"></style>
+</head>
+<body>
+<div class="result">
+<div class="zero">
+<ul class="tree">
+    <li>Child 1</li>
+    <li>Child 2</li>
+    <li>
+        <input class="tree-toggle" type="checkbox" id="tree-toggle-01" />
+        <label class="tree-toggle-label" for="tree-toggle-01">Child 3</label>
+        <ul class="subtree">
+            <li>Subchild 1</li>
+            <li>Subchild 2</li>
+            <li>
+                <input class="tree-toggle" type="checkbox" id="tree-toggle-02" />
+                <label class="tree-toggle-label" for="tree-toggle-02">Subchild 3</label>
+                <ul class="subtree">
+                    <li>SubSubChild 1</li>
+                    <li>SubSubChild 2</li>
+                </ul>
+            </li>
+            <li>
+                <input class="tree-toggle" type="checkbox" id="tree-toggle-03" />
+                <label class="tree-toggle-label" for="tree-toggle-03">Subchild 4</label>
+                <ul class="subtree">
+                    <li>SubSubChild 1</li>
+                    <li>SubSubChild 2</li>
+                    <li>SubSubChild 3</li>
+                </ul>
+            </li>
+            <li>Subchild 5</li>
+        </ul>
+    </li>
+    <li>Child 4</li>
+</ul>
+</div>
+<div class="one">
+<textarea name="" id="treeStrArray" cols="10" rows="50"></textarea>
+</div>
+<div class="two">
+<div class="test"></div>
+</div>
 
-
+</div>
+</body>
+<script>
+document.querySelector("style.add").innerText = `
 @keyframes open {
   0% {
     max-height: 0;
@@ -81,69 +128,7 @@
 .tree-toggle:checked + .tree-toggle-label + .subtree {
     animation: 0.2s ease-in-out both open;
 }
-
-
-    </style>
-</head>
-<body>
-<div class="result">
-<div class="zero">
-<ul class="tree">
-    <li>Child 1</li>
-    <li>Child 2</li>
-    <li>
-        <input class="tree-toggle" type="checkbox" id="tree-toggle-01" />
-        <label class="tree-toggle-label" for="tree-toggle-01">Child 3</label>
-        <ul class="subtree">
-            <li>Subchild 1</li>
-            <li>Subchild 2</li>
-            <li>
-                <input class="tree-toggle" type="checkbox" id="tree-toggle-02" />
-                <label class="tree-toggle-label" for="tree-toggle-02">Subchild 3</label>
-                <ul class="subtree">
-                    <li>SubSubChild 1</li>
-                    <li>SubSubChild 2</li>
-                </ul>
-            </li>
-            <li>
-                <input class="tree-toggle" type="checkbox" id="tree-toggle-03" />
-                <label class="tree-toggle-label" for="tree-toggle-03">Subchild 4</label>
-                <ul class="subtree">
-                    <li>SubSubChild 1</li>
-                    <li>SubSubChild 2</li>
-                    <li>SubSubChild 3</li>
-                </ul>
-            </li>
-            <li>Subchild 5</li>
-        </ul>
-    </li>
-    <li>Child 4</li>
-</ul>
-</div>
-<div class="one">
-<textarea name="" id="treeStrArray" cols="10" rows="50"></textarea>
-</div>
-<div class="two">
-<div class="test"></div>
-</div>
-
-</div>
-</body>
-<script>
-const testAry =
-    [
-        1,
-        2.1,
-        [2.5, [2, 3, 3.5]],
-        4,
-        [4.5, 4.7, [5, 6, 6.5], 4.9],
-        5.5,
-        7,
-        [7.5, [8, "", [8.5, [9, 10, 11]]], 7.9],
-        12,
-        13,
-    ]
-
+`
 
 const wrapUl = (ary) => { let tmpAry = ary; tmpAry.unshift("<ul>"); tmpAry.push("</ul>"); return tmpAry; }
 // https://gist.github.com/taroyanaka/a970d2f813a7339fe1b887ea7bd4ae30
@@ -188,6 +173,20 @@ function composeUlLiNest(targetCssSelector, nestAry) {
     document.querySelectorAll(`${targetCssSelector} .tree-toggle`).forEach((V, IDX) => V.id = `tree-toggle-${IDX}`);
     document.querySelectorAll(`${targetCssSelector} .tree-toggle-label`).forEach((V, IDX) => V.setAttribute("for", `tree-toggle-${IDX}`));
 }
+
+const testAry =
+    [
+        1,
+        2.1,
+        [2.5, [2, 3, 3.5]],
+        4,
+        [4.5, 4.7, [5, 6, 6.5], 4.9],
+        5.5,
+        7,
+        [7.5, [8, "", [8.5, [9, 10, 11]]], 7.9],
+        12,
+        13,
+    ];
 
 // composeUlLiNest(".test", testAry);
 
