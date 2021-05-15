@@ -18,6 +18,7 @@
     <input type="text" name="" class="text">
     <input type="button" name="" class="login" value="googleLogin" onclick="googleLogin();">
     <input type="button" name="" class="login" value="twitterLogin" onclick="twitterLogin();">
+    <input type="button" name="" class="login" value="facebookLogin" onclick="facebookLogin();">
     <input type="button" name="" class="logout" value="logout" onclick="signOut();">
 
     <input type="button" name="" class="updateText" value="updateText" onclick="updateText();">
@@ -44,6 +45,7 @@
         const google = new firebase.auth.GoogleAuthProvider();
         const github = new firebase.auth.GithubAuthProvider();
         const twitter = new firebase.auth.TwitterAuthProvider();
+        const facebook = new firebase.auth.FacebookAuthProvider();
 
         function signOut() {
             firebase.auth().signOut().then(() => {
@@ -109,12 +111,12 @@
             firebase.auth().onAuthStateChanged(function (user) {
                 if (user) {
                     document.querySelector(".loginrResult").innerText = "login success";
-                    document.querySelector(".login").style = "display:none";
+                    document.querySelectorAll(".login").forEach(V=>V.style = "display:none")
                     document.querySelector(".logout").style = "display:inline";
                 } else {
                     document.querySelector(".loginrResult").innerText = "not login yet";
                     document.querySelector(".logout").style = "display:none";
-                    document.querySelector(".login").style = "display:inline";
+                    document.querySelectorAll(".login").forEach(V=>V.style = "display:inline")
                 }
             })
         }
@@ -127,6 +129,11 @@
             // https://p2auth-ea50a.firebaseapp.com/__/auth/handler
             // https://qiita.com/sl2/items/2815e62aaf2baea2f589
             firebase.auth().signInWithRedirect(twitter);
+        }
+        function facebookLogin() {
+            // https://p2auth-ea50a.firebaseapp.com/__/auth/handler
+            // https://blog.katsubemakito.net/firebase/firebase-authentication-facebook-web1
+            firebase.auth().signInWithRedirect(facebook);
         }
 
         function timer(str) {
