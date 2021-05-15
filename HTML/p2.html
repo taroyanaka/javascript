@@ -17,6 +17,7 @@
     <!-- <input type="uid" name="" class="uid"> -->
     <input type="text" name="" class="text">
     <input type="button" name="" class="login" value="googleLogin" onclick="googleLogin();">
+    <input type="button" name="" class="login" value="githubLogin" onclick="githubLogin();">
     <input type="button" name="" class="login" value="twitterLogin" onclick="twitterLogin();">
     <input type="button" name="" class="login" value="facebookLogin" onclick="facebookLogin();">
     <input type="button" name="" class="logout" value="logout" onclick="signOut();">
@@ -134,6 +135,9 @@
             // https://p2auth-ea50a.firebaseapp.com/__/auth/handler
             // https://blog.katsubemakito.net/firebase/firebase-authentication-facebook-web1
             firebase.auth().signInWithRedirect(facebook);
+        }
+        function githubLogin() {
+            firebase.auth().signInWithRedirect(github);
         }
 
         function timer(str) {
