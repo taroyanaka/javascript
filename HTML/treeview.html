@@ -130,25 +130,7 @@
 </div>
 </body>
 <script>
-    // https://gist.github.com/taroyanaka/a970d2f813a7339fe1b887ea7bd4ae30
-    // https://stackoverflow.com/a/7065175/9740478
-    // https://stackoverflow.com/a/8511350/9740478
-    const recursiveMap = function myself(fn, list) {
-        const isNotNullArray = (list) => Array.isArray(list) && list.length !== 0;
-        const isNotNullObject = (list) => typeof list === 'object' && list !== null;
-        if (isNotNullArray(list)) {
-            return list.map(VAL => (isNotNullArray(VAL) || isNotNullObject(VAL)) ? myself(fn, VAL) : fn(VAL));
-        }
-        if (isNotNullObject(list)) {
-            return Object.entries(list).reduce((A, [KEY, VAL]) => {
-                if (list.hasOwnProperty(KEY)) {
-                    A[KEY] = (isNotNullArray(VAL) || isNotNullObject(VAL)) ? myself(fn, VAL) : fn(VAL);
-                };
-                return A;
-            }, A = {});
-        }
-    }
-    const recursiveMapTestArray2 =
+const testNestAry =
         [
             1,
             2.1,
@@ -157,60 +139,63 @@
             [4.5, 4.7, [5, 6, 6.5], 4.9],
             5.5,
             7,
-            [7.5, [8, [8.5, [9, 10, 11]]], 7.9],
+            [7.5, [8, "", [8.5, [9, 10, 11]]], 7.9],
             12,
-            13
+            13,
         ];
 
-    const toLi = (n) => `<li>${n.toString()}</li>`;
-    const recursiveMapTestArrayResult =
-        recursiveMap(
-            toLi,
-            recursiveMapTestArray2
-        )
+const wrapUl = (ary) => { let tmpAry = ary; tmpAry.unshift("<ul>"); tmpAry.push("</ul>"); return tmpAry; }
+// https://gist.github.com/taroyanaka/a970d2f813a7339fe1b887ea7bd4ae30
+// https://stackoverflow.com/a/7065175/9740478
+// https://stackoverflow.com/a/8511350/9740478
+const deepMap = function myself(fn, list) {
+    const isNotNullArray = (list) => Array.isArray(list) && list.length !== 0;
+    // if (isNotNullArray(list)) {
+    //     return wrapUl(list).map(VAL => isNotNullArray(VAL) ? myself(fn, VAL) : fn(VAL));
+    // }
+    return wrapUl(list).map(VAL => isNotNullArray(VAL) ? myself(fn, VAL) : fn(VAL));
+}
+const toLiIfNotUl = (n) => (n.toString() === "<ul>"|| n.toString() === "</ul>") ? n.toString() : `<li>${n.toString()}</li>`;
+// https://ramdajs.com/docs/#flatten
+function flatten(list) {
+    return list.reduce((A, V, IDX) => {
+        if (Array.isArray(V)) {
+            flatten(V).forEach((VAL, IDX) => {
+                A.push(VAL)
+            })
+        } else {
+            A.push(V)
+        };
+        return A
+    }, A = [])
+};
+const flattenAndJoin = (ary) => flatten(ary).join("");
+const makeInputHtml = (str) => `<input class="tree-toggle" type="checkbox" id="" /><label class="tree-toggle-label">${str}</label>`
 
-    console.table(
-        JSON.stringify(recursiveMapTestArray2)
-    )
-
-const testStr = 
-            JSON.stringify(
-                recursiveMapTestArrayResult
+function composeUlLiNest(targetCssSelector, nestAry) {
+    if(flatten(nestAry).includes(null) || flatten(nestAry).includes(undefined)){
+        return "error cause null or undefined contamination in array"
+    }
+    document.querySelector(`${targetCssSelector}`).innerHTML =
+        flattenAndJoin(
+            deepMap(
+                toLiIfNotUl,
+                nestAry
             )
-            // .toString();
-function forceStrReplaceToUlLi(str) {
-    return str
-        .replaceAll(',[', '<li><ul>')
-        .replaceAll(']', '</ul></li>')
-        .replaceAll('[', '<ul>')
-        .replaceAll('"', '')
-        .replaceAll(',', '')
-        .replace(/<\/li>$/, "");
+        );
+    document.querySelectorAll(`${targetCssSelector} > ul`).forEach(V => V.className = "tree")
+    document.querySelectorAll(`${targetCssSelector} > ul ul`).forEach(V => V.className = "subtree")
+    document.querySelectorAll(`${targetCssSelector} > ul ul`).forEach(V => V.previousElementSibling.insertAdjacentHTML("afterEnd", makeInputHtml(V.children[0].innerText)))
+    document.querySelectorAll(".tree-toggle").forEach((V, IDX) => V.id = `tree-toggle-${IDX}`)
+    document.querySelectorAll(".tree-toggle-label").forEach((V, IDX) => V.setAttribute("for", `tree-toggle-${IDX}`))
 }
-console.table(
-    forceStrReplaceToUlLi(testStr)
-)
-document.querySelector(".test").innerHTML = forceStrReplaceToUlLi(testStr);
+composeUlLiNest(".test", testNestAry);
 
-document.querySelectorAll(".test > ul").forEach(V => {
-        V.className = "tree";
-    })
-document.querySelectorAll(".test > ul ul").forEach(V=>{
-        V.className = "subtree";
-    })
-function makeInputHtml(str) {
-    return `<input class="tree-toggle" type="checkbox" id="" />
-    <label class="tree-toggle-label">${str}</label>`
+function forDebug() {
+    console.table(testNestAry);
+    document.querySelector("#treeStrArray").value = JSON.stringify(testNestAry, null, 2);
 }
-
-document.querySelectorAll(".test > ul ul").forEach(V=>{
-    V.parentElement.insertAdjacentHTML("afterbegin", makeInputHtml(V.children[0].innerText));
-    V.children[0].remove();
-})
-document.querySelectorAll(".tree-toggle").forEach((V, IDX) => V.id = `tree-toggle-${IDX}`)
-document.querySelectorAll(".tree-toggle-label").forEach((V, IDX) => V.setAttribute("for", `tree-toggle-${IDX}`) )
-
-document.querySelector("#treeStrArray").value = JSON.stringify(recursiveMapTestArray2, null, 2);
+forDebug();
 </script>
 
 </html>
