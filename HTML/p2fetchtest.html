@@ -32,6 +32,10 @@ function fetchFullUrl(fullUrl) {
     })
 }
 
+// what = "read";
+// what = "delete";
+// what = "upsert";
+
 function setParamAndExe() {
     document.querySelector(".what").value = "read";
     whatParam = what ? `?what=${document.querySelector(".what").value}` : "?what=read";
