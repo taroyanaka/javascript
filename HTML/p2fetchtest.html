@@ -4,43 +4,38 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>p2 fetchtest</title>
 </head>
 <body>
-<h1>test</h1>
-<select name="what" class="what" onInput="setParamAndExe();">
+<h1>read data</h1>
+<select name="what" class="what">
     <option value="read">read</option>
     <option value="delete">delete</option>
     <option value="upsert">upsert</option>
 </select>
-<input type="text" class="uid" value="taro" onInput="setParamAndExe();">
-<textarea name="text" class="text" cols="30" rows="10" onInput="setParamAndExe();">["foo",[100, "bar"], 3]</textarea>
+<input type="text" class="uid" value="taro">
+<textarea name="text" class="text" cols="30" rows="10">["foo",[100, "bar"], 3]</textarea>
 
 <button onclick="setParamAndExe();">execute</button>
 <script>
-    
-    
-const url = "https://script.google.com/macros/s/AKfycbzYDOEkm13faoaQs_ntAbVh64_G2Kl23Yg1efWrZUvNNa3eTbsGDq8b-IDCY5yMOU_AxA/exec";
 
-let what,whatParam,uid,uidParam,text,textParam;
+const url = "https://script.google.com/macros/s/AKfycbxGYQ5JbDkGBcnF_cz2DlPgGgbtIqug0el1NS8wfV8ZR3o-jQA_-v2Z9n-a93w9Lq7ObQ/exec";
+
+let whatParam, uidParam, textParam;
 let tmp;
 
 function fetchFullUrl(fullUrl) {
     fetch(fullUrl).then(v => { return v.json() }).then(V => {
         tmp = V;
+        console.log("fetch success");
         document.querySelector("h1").innerText = V;
     })
 }
 
-// what = "read";
-// what = "delete";
-// what = "upsert";
-
 function setParamAndExe() {
-    document.querySelector(".what").value = "read";
-    whatParam = what ? `?what=${document.querySelector(".what").value}` : "?what=read";
-    uidParam = uid ? `&uid=${document.querySelector(".uid").value}` : "";
-    textParam = text ? `&text=${JSON.stringify(document.querySelector(".text").value)}` : "";
+    whatParam = `?what=${document.querySelector(".what").value}`;
+    uidParam = `&uid=${document.querySelector(".uid").value}`;
+    textParam = `&text=${JSON.stringify(document.querySelector(".text").value)}`;
 
     const fullUrl = url +
                     whatParam +
