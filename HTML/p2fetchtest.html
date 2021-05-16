@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h1>test</h1>
+<script>
+const url = "https://script.google.com/macros/s/AKfycbxT_keJJXxu14GG5OcBJZKoywcKJV6Z8klkjz0TroklJjK_OagSRkpvBSYsTJdvXrD3mQ/exec";
+const what = "read";
+const whatParam = what ? `?what=${what}`: "?what=read";
+const uid = "hoge5"
+const uidParam = uid ? `&uid=${uid}` : "";
+const text = JSON.stringify(["foo",[100, "bar"], 3]);
+const textParam = text ? `&text=${text}` : "";
+
+const fullUrl = url +
+                whatParam +
+                uidParam +
+                textParam;
+
+let tmp;
+fetch(fullUrl).then(v => { return v.json() }).then(V => {
+    tmp = V;
+    document.querySelector("h1").innerText = V;
+})
+</script>
+</body>
+</html>
