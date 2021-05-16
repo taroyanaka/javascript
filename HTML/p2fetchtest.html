@@ -8,25 +8,42 @@
 </head>
 <body>
 <h1>test</h1>
+<select name="what" class="what" onInput="setParamAndExe();">
+    <option value="read">read</option>
+    <option value="delete">delete</option>
+    <option value="upsert">upsert</option>
+</select>
+<input type="text" class="uid" value="taro" onInput="setParamAndExe();">
+<textarea name="text" class="text" cols="30" rows="10" onInput="setParamAndExe();">["foo",[100, "bar"], 3]</textarea>
+
+<button onclick="setParamAndExe();">execute</button>
 <script>
-const url = "https://script.google.com/macros/s/AKfycbxT_keJJXxu14GG5OcBJZKoywcKJV6Z8klkjz0TroklJjK_OagSRkpvBSYsTJdvXrD3mQ/exec";
-const what = "read";
-const whatParam = what ? `?what=${what}`: "?what=read";
-const uid = "hoge5"
-const uidParam = uid ? `&uid=${uid}` : "";
-const text = JSON.stringify(["foo",[100, "bar"], 3]);
-const textParam = text ? `&text=${text}` : "";
+    
+    
+const url = "https://script.google.com/macros/s/AKfycbyOcUYtSlNVRJ-70LFEiINGZ5opKmDnA4NlofV4_gO17Fb1qsiz8KiyAlyrTfclikbzgg/exec";
 
-const fullUrl = url +
-                whatParam +
-                uidParam +
-                textParam;
-
+let what,whatParam,uid,uidParam,text,textParam;
 let tmp;
-fetch(fullUrl).then(v => { return v.json() }).then(V => {
-    tmp = V;
-    document.querySelector("h1").innerText = V;
-})
+
+function fetchFullUrl(fullUrl) {
+    fetch(fullUrl).then(v => { return v.json() }).then(V => {
+        tmp = V;
+        document.querySelector("h1").innerText = V;
+    })
+}
+
+function setParamAndExe() {
+    document.querySelector(".what").value = "read";
+    whatParam = what ? `?what=${document.querySelector(".what").value}` : "?what=read";
+    uidParam = uid ? `&uid=${document.querySelector(".uid").value}` : "";
+    textParam = text ? `&text=${JSON.stringify(document.querySelector(".text").value)}` : "";
+
+    const fullUrl = url +
+                    whatParam +
+                    uidParam +
+                    textParam;
+    fetchFullUrl(fullUrl);
+}
 </script>
 </body>
 </html>
