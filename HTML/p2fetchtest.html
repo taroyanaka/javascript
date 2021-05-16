@@ -44,5 +44,104 @@ function setParamAndExe() {
     fetchFullUrl(fullUrl);
 }
 </script>
+
+<script class="gas">
+// function doGet(e) {
+// let res;
+// const spreadsheetUrl = "";
+
+// if(!e){
+//   e = {};
+//   e.parameter = {};
+//   e.parameter.what = "read";
+//   e.parameter.uid = "taro";
+//   e.parameter.text = "yanaka";
+// }
+
+// let what = e.parameter.what;
+// let uid = e.parameter.uid;
+// let text = e.parameter.text;
+
+// const hashCode = s => s.split('').reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0)
+
+
+// const hashingId = hashCode(uid);
+
+// const textFinder = SpreadsheetApp.openByUrl(spreadsheetUrl)
+//   .getSheetByName("Sheet1")
+//   .createTextFinder(hashingId);
+
+// const searchedText = textFinder
+//                   .findAll()
+//                   .map(V=>V.offset(0, 1).getValues())
+//                   .slice(-1);
+
+// function searchTextAndShowIfFound(){
+//   if(searchedText.length > 0){
+//     res = textFinder
+//       .findAll()
+//       .map(V=>V.offset(0, 1).getValues())
+//       .slice(-1)
+//       .flat()
+//       .flat();
+//   }
+// }
+
+// function searchTextAndAppendIfNoFound(){
+//   if(searchedText.length > 0){
+//     textFinder
+//       .findAll()
+//       .map(V=>V.offset(0, 1).setValue(text))
+//   }
+
+//   if(searchedText.length === 0){
+//       SpreadsheetApp.openByUrl(spreadsheetUrl)
+//         .getSheetByName("Sheet1")
+//         .appendRow([hashingId, text])
+//   }
+// }
+
+// function searchTextAndRemoveRowIfFound(){
+//   if(searchedText.length > 0){
+//       SpreadsheetApp.openByUrl(spreadsheetUrl)
+//         .getSheetByName("Sheet1")
+//         .deleteRows(
+//           textFinder.findAll().map(V=>V.getRow()).slice(0, 1)
+//         );
+//   }
+// }
+
+// function doWhat(){
+//   switch (what) {
+//       case "read":
+//         return searchTextAndShowIfFound();
+//           break;
+//       case "upsert":
+//         return searchTextAndAppendIfNoFound();
+//           break;
+//       case "delete":
+//         return searchTextAndRemoveRowIfFound();
+//           break;
+//       default:
+//           break;
+//   }
+// }
+
+// doWhat(what);
+
+// Logger.log(
+//   res
+// );
+
+// if(what === "read"){
+//   return ContentService.createTextOutput(
+//       JSON.stringify(
+//         res
+//       ))
+//       .setMimeType(ContentService.MimeType.JSON);
+// }
+
+// }
+</script>
 </body>
 </html>
