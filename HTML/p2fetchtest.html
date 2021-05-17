@@ -28,14 +28,15 @@ function fetchFullUrl(fullUrl) {
     fetch(fullUrl).then(v => { return v.json() }).then(V => {
         tmp = V;
         console.log("fetch success");
-        // document.querySelector("h1").innerText = V;
+        document.querySelector("h1").innerText = V;
     })
 }
 
 function setParamAndExe() {
     whatParam = `?what=${document.querySelector(".what").value}`;
     uidParam = `&uid=${document.querySelector(".uid").value}`;
-    textParam = `&text=${JSON.stringify(document.querySelector(".text").value)}`;
+    textParam = `&text=${encodeURIComponent(JSON.stringify(document.querySelector(".text").value))}`;
+    // textParam = `&text=${JSON.stringify(document.querySelector(".text").value)}`;
 
     const fullUrl = url +
                     whatParam +
