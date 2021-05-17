@@ -27,6 +27,9 @@
     grid-column: 3 / 4;
     grid-row: 1 / 1;
 }
+h1{
+    font-size: 0.1px;
+}
 
     </style>
 </head>
@@ -187,6 +190,68 @@
 </div>
 </div>
     <div class="one">
+
+
+
+<h1>read data</h1>
+<select name="what" class="what">
+    <option value="read">read</option>
+    <option value="delete">delete</option>
+    <option value="upsert">upsert</option>
+</select>
+<input type="text" class="uid" value="taro">
+<textarea name="text" class="text" cols="30" rows="10">["foo",[100, "bar"], 3]</textarea>
+
+<button onclick="setParamAndExe();">execute</button>
+<script>
+
+    const url = "https://script.google.com/macros/s/AKfycbzCvo3usGNF14D3VJEddV_-AVIXd2FhBQZJ2dS1LDTSXfxGAcLWf7RrRODpFVGlouF_vQ/exec";
+
+    let whatParam, uidParam, textParam;
+    let tmp;
+
+    function fetchFullUrl(fullUrl) {
+        fetch(fullUrl).then(v => { return v.json() }).then(V => {
+            tmp = V;
+            console.log("fetch success");
+            document.querySelector("h1").innerText = V;
+            document.querySelector(".original").value = V;
+        })
+    }
+
+    function encodeTextForGetParamUrl() {
+        // https://stackoverflow.com/a/17342786
+        return encodeURIComponent(
+            JSON.stringify(
+                // document.querySelector(".text").value
+                document.querySelector(".original").value
+                    .replaceAll("%", "%25")
+            )
+        )
+    }
+
+    function setParamAndExe() {
+        whatParam = `?what=${document.querySelector(".what").value}`;
+        uidParam = `&uid=${document.querySelector(".uid").value}`;
+        const encodedText = encodeTextForGetParamUrl();
+        textParam = `&text=${encodedText}`;
+        // textParam = `&text=${JSON.stringify(document.querySelector(".text").value)}`;
+
+        const fullUrl = url +
+            whatParam +
+            uidParam +
+            textParam;
+        fetchFullUrl(fullUrl);
+    }
+</script>
+
+
+
+
+
+
+
+
         <textarea name="" class="sqlSample" cols="30" rows="10"></textarea>
         <div class="sqlResult">sql result</div>
     </div>

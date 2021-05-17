@@ -19,7 +19,7 @@
 <button onclick="setParamAndExe();">execute</button>
 <script>
 
-const url = "https://script.google.com/macros/s/AKfycbznjH8ruq_IYrHRFayD4DAO66LGAtf2QkDkNy4ZO5qqZQItxlhIsjUH4pKxmAojnODcjA/exec";
+const url = "https://script.google.com/macros/s/AKfycbzCvo3usGNF14D3VJEddV_-AVIXd2FhBQZJ2dS1LDTSXfxGAcLWf7RrRODpFVGlouF_vQ/exec";
 
 let whatParam, uidParam, textParam;
 let tmp;
@@ -32,10 +32,21 @@ function fetchFullUrl(fullUrl) {
     })
 }
 
+function encodeTextForGetParamUrl() {
+    // https://stackoverflow.com/a/17342786
+    return encodeURIComponent(
+        JSON.stringify(
+            document.querySelector(".text").value
+            .replaceAll("%", "%25")
+        )
+    )
+}
+
 function setParamAndExe() {
     whatParam = `?what=${document.querySelector(".what").value}`;
     uidParam = `&uid=${document.querySelector(".uid").value}`;
-    textParam = `&text=${encodeURIComponent(JSON.stringify(document.querySelector(".text").value))}`;
+    const encodedText = encodeTextForGetParamUrl();
+    textParam = `&text=${encodedText}`;
     // textParam = `&text=${JSON.stringify(document.querySelector(".text").value)}`;
 
     const fullUrl = url +
@@ -48,99 +59,104 @@ function setParamAndExe() {
 
 <script class="gas">
 // function doGet(e) {
-// let res;
-// const spreadsheetUrl = "";
+//     // Logger.log(
+//     //   e.parameter
+//     // )
+//     let res;
+//     const spreadsheetUrl = "https://docs.google.com/spreadsheets/d/1YXeiRUqdpwTQxBosrOugOQO1WmJhpY-Qp0kkP7B-QoU/edit#gid=0";
 
-// if(!e){
-//   e = {};
-//   e.parameter = {};
-//   e.parameter.what = "read";
-//   e.parameter.uid = "taro";
-//   e.parameter.text = "yanaka";
-// }
+//     if (!e) {
+//         e = {};
+//         e.parameter = {};
+//         e.parameter.what = "upsert";
+//         e.parameter.uid = "taro";
+//         e.parameter.text = "yanaka";
+//     }
 
-// let what = e.parameter.what;
-// let uid = e.parameter.uid;
-// let text = e.parameter.text;
+//     // Logger.log(e.parameter.uid);
+//     let what = e.parameter.what;
+//     let uid = e.parameter.uid;
 
-// const hashCode = s => s.split('').reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0)
+//     let text = JSON.parse(decodeURIComponent(e.parameter.text));
+
+//     const hashCode = s => s.split('').reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0)
 
 
-// const hashingId = hashCode(uid);
+//     const hashingId = hashCode(uid);
 
-// const textFinder = SpreadsheetApp.openByUrl(spreadsheetUrl)
-//   .getSheetByName("Sheet1")
-//   .createTextFinder(hashingId);
-
-// const searchedText = textFinder
-//                   .findAll()
-//                   .map(V=>V.offset(0, 1).getValues())
-//                   .slice(-1);
-
-// function searchTextAndShowIfFound(){
-//   if(searchedText.length > 0){
-//     res = textFinder
-//       .findAll()
-//       .map(V=>V.offset(0, 1).getValues())
-//       .slice(-1)
-//       .flat()
-//       .flat();
-//   }
-// }
-
-// function searchTextAndAppendIfNoFound(){
-//   if(searchedText.length > 0){
-//     textFinder
-//       .findAll()
-//       .map(V=>V.offset(0, 1).setValue(text))
-//   }
-
-//   if(searchedText.length === 0){
-//       SpreadsheetApp.openByUrl(spreadsheetUrl)
+//     const textFinder = SpreadsheetApp.openByUrl(spreadsheetUrl)
 //         .getSheetByName("Sheet1")
-//         .appendRow([hashingId, text])
-//   }
-// }
+//         .createTextFinder(hashingId);
 
-// function searchTextAndRemoveRowIfFound(){
-//   if(searchedText.length > 0){
-//       SpreadsheetApp.openByUrl(spreadsheetUrl)
-//         .getSheetByName("Sheet1")
-//         .deleteRows(
-//           textFinder.findAll().map(V=>V.getRow()).slice(0, 1)
-//         );
-//   }
-// }
+//     const searchedText = textFinder
+//         .findAll()
+//         .map(V => V.offset(0, 1).getValues())
+//         .slice(-1);
 
-// function doWhat(){
-//   switch (what) {
-//       case "read":
-//         return searchTextAndShowIfFound();
-//           break;
-//       case "upsert":
-//         return searchTextAndAppendIfNoFound();
-//           break;
-//       case "delete":
-//         return searchTextAndRemoveRowIfFound();
-//           break;
-//       default:
-//           break;
-//   }
-// }
+//     function searchTextAndShowIfFound() {
+//         if (searchedText.length > 0) {
+//             res = textFinder
+//                 .findAll()
+//                 .map(V => V.offset(0, 1).getValues())
+//                 .slice(-1)
+//                 .flat()
+//                 .flat();
+//         }
+//     }
 
-// doWhat(what);
+//     function searchTextAndAppendIfNoFound() {
+//         if (searchedText.length > 0) {
+//             textFinder
+//                 .findAll()
+//                 .map(V => V.offset(0, 1).setValue(text))
+//         }
 
-// Logger.log(
-//   res
-// );
+//         if (searchedText.length === 0) {
+//             SpreadsheetApp.openByUrl(spreadsheetUrl)
+//                 .getSheetByName("Sheet1")
+//                 .appendRow([hashingId, text])
+//         }
+//     }
 
-// if(what === "read"){
-//   return ContentService.createTextOutput(
-//       JSON.stringify(
+//     function searchTextAndRemoveRowIfFound() {
+//         if (searchedText.length > 0) {
+//             SpreadsheetApp.openByUrl(spreadsheetUrl)
+//                 .getSheetByName("Sheet1")
+//                 .deleteRows(
+//                     textFinder.findAll().map(V => V.getRow()).slice(0, 1)
+//                 );
+//         }
+//     }
+
+//     function doWhat() {
+//         switch (what) {
+//             case "read":
+//                 return searchTextAndShowIfFound();
+//                 break;
+//             case "upsert":
+//                 return searchTextAndAppendIfNoFound();
+//                 break;
+//             case "delete":
+//                 return searchTextAndRemoveRowIfFound();
+//                 break;
+//             default:
+//                 break;
+//         }
+//     }
+
+//     doWhat(what);
+
+//     Logger.log(
 //         res
-//       ))
-//       .setMimeType(ContentService.MimeType.JSON);
-// }
+//     );
+
+//     if (what === "read") {
+//         return ContentService.createTextOutput(
+//             JSON.stringify(
+//                 res
+//             ))
+//             .setMimeType(ContentService.MimeType.JSON);
+//     }
 
 // }
 </script>
