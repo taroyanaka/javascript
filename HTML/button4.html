@@ -193,7 +193,7 @@ h1{
 
 
 
-<h1>read data</h1>
+<!-- <h1>read data</h1> -->
 <select name="what" class="what">
     <option value="read">read</option>
     <option value="delete">delete</option>
@@ -214,7 +214,7 @@ h1{
         fetch(fullUrl).then(v => { return v.json() }).then(V => {
             tmp = V;
             console.log("fetch success");
-            document.querySelector("h1").innerText = V;
+            // document.querySelector("h1").innerText = V;
             document.querySelector(".original").value = V;
         })
     }
