@@ -28,7 +28,7 @@ function fetchFullUrl(fullUrl) {
     fetch(fullUrl).then(v => { return v.json() }).then(V => {
         tmp = V;
         console.log("fetch success");
-        document.querySelector("h1").innerText = V;
+        // document.querySelector("h1").innerText = V;
     })
 }
 

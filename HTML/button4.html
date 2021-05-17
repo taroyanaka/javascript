@@ -244,9 +244,71 @@
             [[7, "foo3"], [6, "foo3"], [5, "foo3"]]
         ]
     }
+const jsonTxt = JSON.stringify(
+    [
+        [
+            [
+                1,
+                "select * from film\nwhere length(film.title) = (select max(length(film.title)) from film);"
+            ],
+            [
+                1,
+                "SELECT *\nFROM actor\nwhere actor_id > (SELECT AVG(actor_id) FROM actor where actor.last_name like '%vi%' or first_name like '%se%');"
+            ],
+            [
+                1,
+                "SELECT *\nFROM actor\nwhere actor.last_name like '%vi%' or first_name like '%se%';"
+            ]
+        ],
+        [
+            [
+                10,
+                "baz"
+            ],
+            [
+                3,
+                "foo2\n    bar2 bar3\n\n    bar2 bar3\n\n\n    bar2 bar3\n"
+            ],
+            [
+                2,
+                "foo1"
+            ]
+        ],
+        [
+            [
+                5,
+                "foo2"
+            ],
+            [
+                3,
+                "foo2"
+            ],
+            [
+                2,
+                "foofoofoo2"
+            ]
+        ],
+        [
+            [
+                7,
+                "foo3"
+            ],
+            [
+                6,
+                "foo3"
+            ],
+            [
+                5,
+                "foo3"
+            ]
+        ]
+    ]
+)
 
     function test() {
-        json1 = JSON.stringify(returnTestAry(), null, 2);
+        // json1 = JSON.stringify(returnTestAry(), null, 2);
+        json1 = jsonTxt;
+        // json1 = JSON.stringify(jsonTxt);
     }
     function disassembleButton() {
         json1 = document.querySelector(".original").value;
