@@ -18,6 +18,7 @@
 </style>
 </head>
 <body>
+<input type="password" name="password" class="password" placeholder="password is 42">
 <!-- <button onclick="encDecp()">encDecp</button> -->
 <button onclick="exetextNumberIncrement()">exetextNumberIncrement</button>
 <button onclick="exetextNumberDecrement()">exetextNumberDecrement</button>
@@ -31,12 +32,6 @@
 <br>
 <label>actualMessage</label>
 <div id="actualMessage"></div> -->
-
-
-
-
-
-
 
 <div>
     <!-- <a href="https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder">from https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder</a> -->
@@ -156,32 +151,27 @@ async function fromUrlBase64txtSetToAudioTag() {
 // await fromUrlBase64txtSetToAudioTag();
 </script>
 
-
-
-
-<!-- https://www.jsdelivr.com/package/npm/crypto-js -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/index.min.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+<script>
+    const secretKey = "foo";
+    function encDecp() {
+        const encryptedAES = CryptoJS.AES.encrypt(document.querySelector("#mp3String").value, secretKey);
+        const decryptedBytes = CryptoJS.AES.decrypt(encryptedAES, secretKey);
+        const plaintext = decryptedBytes.toString(CryptoJS.enc.Utf8);
+        document.querySelector(".encryptedMp3String").value = encryptedAES;
+        document.getElementById("decrypted").innerText = decryptedBytes;
+    }
+</script> -->
+
 
 <script>
-const secretKey = "foo";
-
-function encDecp() {
-    const encryptedAES = CryptoJS.AES.encrypt(document.querySelector("#mp3String").value, secretKey);
-    const decryptedBytes = CryptoJS.AES.decrypt(encryptedAES, secretKey);
-    // const plaintext = decryptedBytes.toString(CryptoJS.enc.Utf8);
-    document.querySelector(".encryptedMp3String").value = encryptedAES;
-    // document.getElementById("decrypted").innerText = decryptedBytes;
-}
-
-
 function textNumberIncrement(text) {
     return text
         .split("")
         .map(V =>{
-            let tmp = RegExp(/[0-9]/).test(V) ? (Number(V)+1).toString() : V;
-            if(tmp==="10"){tmp = "0"}
+            let tmp = RegExp(/[0-9]/).test(V) ? (Number(V) + Number(document.querySelector(".password").value)).toString() : V;
+            if(tmp==="10"){tmp = "0"};
             return tmp;
         })
         .join("");
@@ -190,16 +180,16 @@ function textNumberDecrement(text) {
     return text
         .split("")
         .map(V =>{
-            let tmp = RegExp(/[1-9]/).test(V) ? (Number(V) - 1).toString() : V;
+            let tmp = RegExp(/[1-9]/).test(V) ? (Number(V) - Number(document.querySelector(".password").value)).toString() : V;
             if (V === "0") { tmp = "9" };
             return tmp;
         })
         .join("");
 }
 const sampleText = "A8AiqAAe3UA0A12C0B09QcLD9A8SF0";
+textNumberIncrement(sampleText)
+// => "A9AiqAAe4UA1A23C1B10QcLD0A9SF1"
 sampleText === textNumberDecrement(textNumberIncrement(sampleText));
-
-
 // => true
 
 function exetextNumberIncrement() {
