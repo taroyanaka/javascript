@@ -10,14 +10,14 @@
 <!-- https://www.gitlab.jp/blog/2020/06/29/how-to-use-gitlab-pages/ -->
 <!-- https://gitlab.com/taroyanaka/taroayanaka/-/tree/master/public -->
 <style>
-    button.base64mp3SetToAudioTag, button.asyncBase64mp3SetToAudioTag{
+    button.base64mp3SetToAudioTag, button.fromUrlBase64txtSetToAudioTag{
         width: 300px;
         height: 300px;
     }
 </style>
 </head>
 <body>
-<p>Example of using the Web Audio API to load a sound file as an ArrayBuffer, encode and decode the ArrayBuffer
+<a href="https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder">from https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder</a><p>Example of using the Web Audio API to load a sound file as an ArrayBuffer, encode and decode the ArrayBuffer
   and start playing audio on user-click.</p>
 <input type="file" accept="audio/*">
 <button onclick="playSound()" disabled>Start</button>
@@ -29,7 +29,7 @@
 <button class="base64mp3SetToAudioTag" onclick="base64mp3SetToAudioTag();">base64mp3SetToAudioTag</button>
 <!-- <input type="url" class="url" placeholder="base64txturl"> -->
 <input type="url" class="url" placeholder="https://*****.gitlab.io/*****/****.txt">
-<button class="asyncBase64mp3SetToAudioTag" onclick="asyncBase64mp3SetToAudioTag();">asyncBase64mp3SetToAudioTag</button>
+<button class="fromUrlBase64txtSetToAudioTag" onclick="fromUrlBase64txtSetToAudioTag();">fromUrlBase64txtSetToAudioTag</button>
 
 </div>
 <script>
@@ -125,7 +125,7 @@ function base64mp3SetToAudioTag() {
 
 
     // console.log(data);
-    async function asyncBase64mp3SetToAudioTag() {
+    async function fromUrlBase64txtSetToAudioTag() {
         const url1 = await document.querySelector(".url").value;
         const response = await fetch(url1);
         const data = await response.text();
@@ -133,7 +133,7 @@ function base64mp3SetToAudioTag() {
         //    let base64Str = await `data:audio/ogg;base64,` + data;
         document.querySelector("audio").src = await `data:audio/ogg;base64,` + data;
     }
-    // await asyncBase64mp3SetToAudioTag();
+    // await fromUrlBase64txtSetToAudioTag();
 </script>
 
 </body>
