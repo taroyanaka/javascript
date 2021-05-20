@@ -8,7 +8,7 @@
 <!-- https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder -->
 <!-- http://www.iandevlin.com/blog/2012/09/html5/html5-media-and-data-uri/ -->
 <style>
-    button.base64mp3SetToAudioTag{
+    button.base64mp3SetToAudioTag, button.asyncBase64mp3SetToAudioTag{
         width: 300px;
         height: 300px;
     }
@@ -25,6 +25,9 @@
 <textarea id="mp3String" cols="100" rows="10">
 </textarea>
 <button class="base64mp3SetToAudioTag" onclick="base64mp3SetToAudioTag();">base64mp3SetToAudioTag</button>
+<input type="url" class="url" placeholder="base64txturl">
+<button class="asyncBase64mp3SetToAudioTag" onclick="asyncBase64mp3SetToAudioTag();">asyncBase64mp3SetToAudioTag</button>
+
 </div>
 <script>
 var context = new AudioContext();
@@ -116,6 +119,18 @@ function base64mp3SetToAudioTag() {
     let base64Str = `data:audio/ogg;base64,` + document.querySelector("#mp3String").value;
     document.querySelector("audio").src = base64Str;
 }
+
+
+    // console.log(data);
+    async function asyncBase64mp3SetToAudioTag() {
+        const url1 = await document.querySelector(".url").value;
+        const response = await fetch(url1);
+        const data = await response.text();
+
+        //    let base64Str = await `data:audio/ogg;base64,` + data;
+        document.querySelector("audio").src = await `data:audio/ogg;base64,` + data;
+    }
+    // await asyncBase64mp3SetToAudioTag();
 </script>
 
 </body>
