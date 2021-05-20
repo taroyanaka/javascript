@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-<title>Web Audio API: Converting audio files from and to base64 string</title>
+<title>mp3tobase64sample</title>
 <!-- https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder -->
 <!-- http://www.iandevlin.com/blog/2012/09/html5/html5-media-and-data-uri/ -->
 <!-- https://www.gitlab.jp/blog/2020/06/29/how-to-use-gitlab-pages/ -->
@@ -17,13 +17,11 @@
 </style>
 </head>
 <body>
-<a href="https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder">from https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder</a><p>Example of using the Web Audio API to load a sound file as an ArrayBuffer, encode and decode the ArrayBuffer
-  and start playing audio on user-click.</p>
+<a href="https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder">from https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder</a>
 <input type="file" accept="audio/*">
 <button onclick="playSound()" disabled>Start</button>
 <button onclick="stopSound()" disabled>Stop</button>
 <div>
-<p>This will be the output of a base64 string representation of your sound file.</p>
 <textarea id="mp3String" cols="100" rows="10">
 </textarea>
 <button class="base64mp3SetToAudioTag" onclick="base64mp3SetToAudioTag();">base64mp3SetToAudioTag</button>
@@ -123,18 +121,14 @@ function base64mp3SetToAudioTag() {
     document.querySelector("audio").src = base64Str;
 }
 
-
-    // console.log(data);
-    async function fromUrlBase64txtSetToAudioTag() {
-        const url1 = await document.querySelector(".url").value;
-        const response = await fetch(url1);
-        const data = await response.text();
-
-        //    let base64Str = await `data:audio/ogg;base64,` + data;
-        document.querySelector("audio").src = await `data:audio/ogg;base64,` + data;
-    }
-    // await fromUrlBase64txtSetToAudioTag();
+async function fromUrlBase64txtSetToAudioTag() {
+    const url1 = await document.querySelector(".url").value;
+    const response = await fetch(url1);
+    const data = await response.text();
+    //    let base64Str = await `data:audio/ogg;base64,` + data;
+    document.querySelector("audio").src = await `data:audio/ogg;base64,` + data;
+}
+// await fromUrlBase64txtSetToAudioTag();
 </script>
-
 </body>
 </html>
