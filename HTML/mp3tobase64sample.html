@@ -19,6 +19,8 @@
 </head>
 <body>
 <input type="password" name="password" class="password" placeholder="password is 42">
+
+<input type="password" name="abracadabra" class="abracadabra" placeholder="abracadabra">
 <!-- <button onclick="encDecp()">encDecp</button> -->
 <button onclick="exetextNumberIncrement()">exetextNumberIncrement</button>
 <button onclick="exetextNumberDecrement()">exetextNumberDecrement</button>
@@ -167,7 +169,6 @@ async function fromUrlBase64txtSetToAudioTag() {
 
 <script>
 // https://gist.github.com/taroyanaka/5e20dd686c205f3cb73c8a53d9a4a759
-
 function textNumberIncrement(text) {
     return text
         .split("")
@@ -176,6 +177,7 @@ function textNumberIncrement(text) {
             if(tmp==="10"){tmp = "0"};
             return tmp;
         })
+        .reverse()
         .join("");
 }
 function textNumberDecrement(text) {
@@ -186,6 +188,7 @@ function textNumberDecrement(text) {
             if (V === "0") { tmp = "9" };
             return tmp;
         })
+        [document.querySelector(".abracadabra").value]()
         .join("");
 }
 const sampleText = "A8AiqAAe3UA0A12C0B09QcLD9A8SF0";
@@ -193,6 +196,18 @@ textNumberIncrement(sampleText)
 // => "A9AiqAAe4UA1A23C1B10QcLD0A9SF1"
 sampleText === textNumberDecrement(textNumberIncrement(sampleText));
 // => true
+
+// https://stackoverflow.com/a/12504061
+// function nnextChar(c, n) {
+//     return String.fromCharCode(c.charCodeAt(0) + n);
+// }
+// function nprevChar(c, n) {
+//     return String.fromCharCode(c.charCodeAt(0) - n);
+// }
+// nextChar('a', 1);
+// => 'b'
+
+
 
 function exetextNumberIncrement() {
     document.querySelector(".encryptedMp3String").value =
