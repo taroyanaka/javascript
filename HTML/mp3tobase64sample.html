@@ -19,7 +19,8 @@
 </head>
 <body>
 <button onclick="encDecp()">encDecp</button>
-
+<button onclick="exetextNumberIncrement()">exetextNumberIncrement</button>
+<button onclick="exetextNumberDecrement()">exetextNumberDecrement</button>
 <br>
 <textarea class="encryptedMp3String" cols="100" rows="10"></textarea>
 <br>
@@ -175,6 +176,45 @@ function encDecp() {
     // document.getElementById("decrypted").innerText = decryptedBytes;
 }
 
+
+function textNumberIncrement(text) {
+    return text
+        .split("")
+        .map(V =>{
+            let tmp = RegExp(/[0-9]/).test(V) ? (Number(V)+1).toString() : V;
+            if(tmp==="10"){tmp = "0"}
+            return tmp;
+        })
+        .join("");
+}
+function textNumberDecrement(text) {
+    return text
+        .split("")
+        .map(V =>{
+            let tmp = RegExp(/[1-9]/).test(V) ? (Number(V) - 1).toString() : V;
+            if (V === "0") { tmp = "9" };
+            return tmp;
+        })
+        .join("");
+}
+const sampleText = "A8AiqAAe3UA0A12C0B09QcLD9A8SF0";
+sampleText === textNumberDecrement(textNumberIncrement(sampleText));
+
+
+// => true
+
+function exetextNumberIncrement() {
+    document.querySelector(".encryptedMp3String").value =
+        textNumberIncrement(
+            document.querySelector("#mp3String").value
+        )
+}
+function exetextNumberDecrement() {
+    document.querySelector(".encryptedMp3String").value =
+        textNumberDecrement(
+            document.querySelector(".encryptedMp3String").value
+        )
+}
 
 </script>
 
