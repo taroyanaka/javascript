@@ -20,7 +20,7 @@
 <body>
 <input type="password" name="password" class="password" placeholder="password is 42">
 
-<input type="password" name="abracadabra" class="abracadabra" placeholder="abracadabra">
+<!-- <input type="password" name="abracadabra" class="abracadabra" placeholder="abracadabra"> -->
 <!-- <button onclick="encDecp()">encDecp</button> -->
 <button onclick="exetextNumberIncrement()">exetextNumberIncrement</button>
 <button onclick="exetextNumberDecrement()">exetextNumberDecrement</button>
@@ -168,12 +168,21 @@ async function fromUrlBase64txtSetToAudioTag() {
 
 
 <script>
+// https://stackoverflow.com/a/12504061
+// function nnextChar(c, n) {
+//     return String.fromCharCode(c.charCodeAt(0) + n);
+// }
+// function nprevChar(c, n) {
+//     return String.fromCharCode(c.charCodeAt(0) - n);
+// }
+
 // https://gist.github.com/taroyanaka/5e20dd686c205f3cb73c8a53d9a4a759
 function textNumberIncrement(text) {
     return text
         .split("")
         .map(V =>{
             let tmp = RegExp(/[0-9]/).test(V) ? (Number(V) + Number(document.querySelector(".password").value)).toString() : V;
+            // tmp = RegExp(/[a-z]/).test(V) ? V.toUpperCase() : RegExp(/[A-Z]/).test(V) ? V.toLowerCase() : V;
             if(tmp==="10"){tmp = "0"};
             return tmp;
         })
@@ -185,10 +194,12 @@ function textNumberDecrement(text) {
         .split("")
         .map(V =>{
             let tmp = RegExp(/[1-9]/).test(V) ? (Number(V) - Number(document.querySelector(".password").value)).toString() : V;
+            // tmp = RegExp(/[a-z]/).test(V) ? V.toUpperCase() : RegExp(/[A-Z]/).test(V) ? V.toLowerCase() : V;
             if (V === "0") { tmp = "9" };
             return tmp;
         })
-        [document.querySelector(".abracadabra").value]()
+        // [document.querySelector(".cipherword").value]()
+        .reverse()
         .join("");
 }
 const sampleText = "A8AiqAAe3UA0A12C0B09QcLD9A8SF0";
