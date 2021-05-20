@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Does not work in IE, has restrictions on the length.</p>
+    <button onclick="zipDl();" id="data_uri" class="btn btn-primary">click to download</button>
+<!-- <input type="file" name="filefield" multiple="multiple"  accept="audio/mpeg3" onchange="exe()"> -->
+<!-- <input type="file" name="filefield" accept="audio/mpeg3" onchange="exe()"> -->
+<button onclick="exe()">execute</button>
+<input type="file" accept="audio/*" multiple="multiple">
+<textarea name="mp3String" class="mp3String" cols="30" rows="10"></textarea>
+</body>
+<audio controls src="data:audio/ogg;base64,">
+
+<script>
+let tmp0 = null;
+let audioBuffer = [];
+
+var bufferToBase64 = function (buffer) {
+    var bytes = new Uint8Array(buffer);
+    var binary = "";
+    // tmp = buffer.byteLength;
+    len = buffer.byteLength;
+    for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+};
+
+function initSound(arrayBuffer) {
+    document.querySelector(".mp3String").value = bufferToBase64(arrayBuffer);
+    audioBuffer.push(bufferToBase64(arrayBuffer));
+}
+
+// https://stackoverflow.com/a/9815648
+function setupReader(file) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+        initSound(e.target.result);
+    }
+    reader.readAsArrayBuffer(file);
+}
+function exe() {
+    for (var i = 0; i < document.querySelector('input[type="file"]').files.length; i++) {
+        setupReader(
+            document.querySelector('input[type="file"]').files[i]
+        );
+    }
+}
+
+function base64mp3SetToAudioTag2(IDX) {
+    const base64Str = `data:audio/ogg;base64,` + audioBuffer[IDX];
+    document.querySelector("audio").src = base64Str;
+}
+
+
+
+</script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.6.0/dist/jszip.js"></script>
+<script>
+
+    const content = "foobar";
+    // const uriContent = "data:application/octet-stream," + encodeURIComponent(content);
+    // var zip = new JSZip();
+    // const zipped = zip.file("hello.txt", audioBuffer[0]);
+    // const zipped = zip.file("hello.txt", "testfile");
+    // const uriContent = "data:application/octet-stream," + encodeURIComponent(zipped);
+
+    // window.open(uriContent, 'neuesDokument')
+
+
+
+    // https://stuk.github.io/jszip/documentation/examples.html
+    // https://stuk.github.io/jszip/documentation/examples/download-zip-file.html
+    function zipDl() {
+        var zip = new JSZip();
+
+        audioBuffer.forEach((V, IDX) =>
+            zip.file(`${IDX}.txt`, V)
+        )
+
+        // https://gist.github.com/tchiayan/d629ea1d1868f55cfd706e6f4c5357ae#file-index-js
+        zip.generateAsync({ type: 'blob' }).then((blobdata) => {
+            // create zip blob file
+            let zipblob = new Blob([blobdata])
+
+            // For development and testing purpose
+            // Download the zipped file 
+            var elem = window.document.createElement("a")
+            elem.href = window.URL.createObjectURL(zipblob)
+            elem.download = 'compressed.zip'
+            elem.click()
+        })
+    }
+    function otherZipDl() {
+        audioBuffer.forEach((V, IDX) =>{
+            const content = V;
+            const uriContent = "data:application/octet-stream," + encodeURIComponent(content);
+            window.open(uriContent, 'neuesDokument')
+        })
+
+    }
+
+    // });
+
+
+    // newWindow = window.open(uriContent, 'neuesDokument');
+
+</script>
+</html>

@@ -110,11 +110,14 @@ function initSound(arrayBuffer) {
     });
 }
 
+let whatIsThis;
 // User selects file, read it as an ArrayBuffer and pass to the API.
 var fileInput = document.querySelector('input[type="file"]');
 fileInput.addEventListener('change', function (e) {
     var reader = new FileReader();
     reader.onload = function (e) {
+        // initSound(this.result);
+        whatIsThis = this;
         initSound(this.result);
     };
     reader.readAsArrayBuffer(this.files[0]);
@@ -194,7 +197,7 @@ function textNumberDecrement(text) {
         .split("")
         .map(V =>{
             let tmp = RegExp(/[1-9]/).test(V) ? (Number(V) - Number(document.querySelector(".password").value)).toString() : V;
-            // tmp = RegExp(/[a-z]/).test(V) ? V.toUpperCase() : RegExp(/[A-Z]/).test(V) ? V.toLowerCase() : V;
+            tmp = RegExp(/[a-z]/).test(V) ? V.toUpperCase() : RegExp(/[A-Z]/).test(V) ? V.toLowerCase() : V;
             if (V === "0") { tmp = "9" };
             return tmp;
         })
