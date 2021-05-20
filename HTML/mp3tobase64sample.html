@@ -18,6 +18,25 @@
 </style>
 </head>
 <body>
+<button onclick="encDecp()">encDecp</button>
+
+<br>
+<textarea class="encryptedMp3String" cols="100" rows="10"></textarea>
+<br>
+<!-- 
+<label>decrypted</label>
+<div id="decrypted"></div>
+
+<br>
+<label>actualMessage</label>
+<div id="actualMessage"></div> -->
+
+
+
+
+
+
+
 <div>
     <a href="https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder">from
     https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder</a>
@@ -136,5 +155,28 @@ async function fromUrlBase64txtSetToAudioTag() {
 }
 // await fromUrlBase64txtSetToAudioTag();
 </script>
+
+
+
+
+<!-- https://www.jsdelivr.com/package/npm/crypto-js -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/index.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+
+<script>
+const secretKey = "foo";
+
+function encDecp() {
+    const encryptedAES = CryptoJS.AES.encrypt(document.querySelector("#mp3String").value, secretKey);
+    const decryptedBytes = CryptoJS.AES.decrypt(encryptedAES, secretKey);
+    // const plaintext = decryptedBytes.toString(CryptoJS.enc.Utf8);
+    document.querySelector(".encryptedMp3String").value = encryptedAES;
+    // document.getElementById("decrypted").innerText = decryptedBytes;
+}
+
+
+</script>
+
 </body>
 </html>
