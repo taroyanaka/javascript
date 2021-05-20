@@ -9,6 +9,7 @@
 <!-- http://www.iandevlin.com/blog/2012/09/html5/html5-media-and-data-uri/ -->
 <!-- https://www.gitlab.jp/blog/2020/06/29/how-to-use-gitlab-pages/ -->
 <!-- https://gitlab.com/taroyanaka/taroayanaka/-/tree/master/public -->
+<!-- https://stackoverflow.com/a/63131670 -->
 <style>
     button.base64mp3SetToAudioTag, button.fromUrlBase64txtSetToAudioTag{
         width: 300px;
@@ -124,6 +125,7 @@ function base64mp3SetToAudioTag() {
     document.querySelector("audio").src = base64Str;
 }
 
+// https://stackoverflow.com/a/63131670
 async function fromUrlBase64txtSetToAudioTag() {
     const url1 = await document.querySelector(".url").value;
     const response = await fetch(url1);
