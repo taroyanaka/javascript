@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>capture window</title>
+    <!-- https://stackoverflow.com/a/32344765 -->
+    <!-- https://stackoverflow.com/a/65529298 -->
+</head>
+<body>
+
+    <button onclick="recordstart();">recordstart</button>
+    <button onclick="recordstop();">recordstop</button>
+
+<style>
+</style>
+<div>
+    <label for="newlocalFILE" class="btn" style="display: block;width: 100px;height: 100px;border-radius: 10%;background-color: gray;">Select Video File</label>
+    <input id="newlocalFILE" name="localfile" size="50" maxlength="100000" accept="video/*" type="file" onchange="playlocalVID();"  style="visibility:hidden;" >
+</div>
+    <video muted controls id="videoPlayer" width="300px" height="300px">
+        <source id="currentVID" src="./test.mp4">
+    </video>
+<script>
+
+function playlocalVID() {
+    var player = document.getElementById("videoPlayer");
+    var currentVID = document.getElementById("currentVID");
+    var selectedLocalVID = document.getElementById("newlocalFILE").files[0];
+    currentVID.setAttribute("src", URL.createObjectURL(selectedLocalVID));
+    player.load();
+    player.play();
+}
+async function startRecording() {
+    stream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: true
+    });
+    recorder = new MediaRecorder(stream);
+
+    const chunks = [];
+    recorder.ondataavailable = e => chunks.push(e.data);
+    recorder.onstop = e => {
+        const blob = new Blob(chunks, { type: chunks[0].type });
+        console.log(blob);
+        stream.getVideoTracks()[0].stop();
+
+        filename = "test.mp4"
+        if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveBlob(blob, filename);
+        }
+        else {
+            var elem = window.document.createElement('a');
+            elem.href = window.URL.createObjectURL(blob);
+            elem.download = filename;
+            document.body.appendChild(elem);
+            elem.click();
+            document.body.removeChild(elem);
+        }
+    };
+    recorder.start();
+}
+function recordstart(params) {
+    startRecording();
+}
+function recordstop(params) {
+    recorder.stop();
+}
+</script>
+</body>
+</html>

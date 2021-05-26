@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- <p>Does not work in IE, has restrictions on the length.</p> -->
-    <button onclick="zipDl();" id="data_uri" class="btn btn-primary">click to download</button>
+<button onclick="zipDl();" class="zipDl" style="display:none;">click to download</button>
 <!-- <input type="file" name="filefield" multiple="multiple"  accept="audio/mpeg3" onchange="exe()"> -->
 <!-- <input type="file" name="filefield" accept="audio/mpeg3" onchange="exe()"> -->
 <button onclick="exe()">execute</button>
@@ -51,6 +51,7 @@ function exe() {
             document.querySelector('input[type="file"]').files[i]
         );
     }
+    document.querySelector(".zipDl").style="display: inline;"
 }
 
 function base64mp3SetToAudioTag2(IDX) {
@@ -64,7 +65,7 @@ function base64mp3SetToAudioTag2(IDX) {
 <script src="https://cdn.jsdelivr.net/npm/jszip@3.6.0/dist/jszip.js"></script>
 <script>
 
-    const content = "foobar";
+    // const content = "foobar";
     // const uriContent = "data:application/octet-stream," + encodeURIComponent(content);
     // var zip = new JSZip();
     // const zipped = zip.file("hello.txt", audioBuffer[0]);
