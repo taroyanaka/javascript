@@ -9,9 +9,9 @@
     <!-- https://stackoverflow.com/a/65529298 -->
 </head>
 <body>
-
-    <button onclick="recordstart();">recordstart</button>
-    <button onclick="recordstop();">recordstop</button>
+<p>record is only PC</p>
+<button onclick="recordstart();">recordstart</button>
+<button onclick="recordstop();">recordstop</button>
 
 <style>
 </style>
@@ -22,6 +22,10 @@
     <video controls id="videoPlayer" width="300px" height="300px">
         <source id="currentVID" src="./test.mp4">
     </video>
+
+        
+
+
 <script>
 
 function playlocalVID() {
@@ -71,5 +75,27 @@ function recordstop(params) {
 
 
 </script>
+
+
+<!-- <form>
+    <input type="text" class="txt">
+    <div class="controls">
+        <button id="play" type="submit">Play</button>
+    </div>
+</form>
+
+<script>
+var synth = window.speechSynthesis;
+var inputForm = document.querySelector('form');
+var inputTxt = document.querySelector('.txt');
+var voices = [];
+inputForm.onsubmit = function (event) {
+    event.preventDefault();
+    var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
+    utterThis.voice = synth.getVoices()[0];
+    synth.speak(utterThis);
+    inputTxt.blur();
+}
+</script> -->
 </body>
 </html>

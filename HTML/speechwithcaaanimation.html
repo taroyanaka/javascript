@@ -7,36 +7,99 @@
     <title>Document</title>
 </head>
 <body>
+<form>
+    <input type="text" class="txt">
+    <div>
+        <!-- <label for="rate">Rate</label><input type="range" min="0.5" max="2" value="1" step="0.1" id="rate"> -->
+        <!-- <div class="rate-value">1</div> -->
+        <!-- <div class="clearfix"></div> -->
+    </div>
+    <div>
+        <!-- <label for="pitch">Pitch</label><input type="range" min="0" max="2" value="1" step="0.1" id="pitch"> -->
+        <!-- <div class="pitch-value">1</div> -->
+        <div class="clearfix"></div>
+    </div>
+    <!-- <select>
+    </select> -->
+    <div class="controls">
+        <button id="play" type="submit">Play</button>
+    </div>
+</form>
+
     <script>
-    const synth = window.speechSynthesis;
-    let voices;
 
-    function foo(phrase) {
-        if (!voices) {
-            console.log("Waiting 01", voices);
+    var synth = window.speechSynthesis;
 
-            synth.addEventListener('voiceschanged', function (ev) {
-                voices = voices || synth.getVoices();
-                foo(phrase);
-            });
-        } else {
-            let msg = new SpeechSynthesisUtterance();
+    var inputForm = document.querySelector('form');
+    var inputTxt = document.querySelector('.txt');
+    // var voiceSelect = document.querySelector('select');
 
-            console.log("How many voices", voices.length);
+    // var pitch = document.querySelector('#pitch');
+    // var pitchValue = document.querySelector('.pitch-value');
+    // var rate = document.querySelector('#rate');
+    // var rateValue = document.querySelector('.rate-value');
 
-            // the voices are ready and could be changed here,
-            // but since each system is different, so it won't be
-            // changed here:
-            // msg.voice = voices[0];
-            msg.text = phrase;
-            synth.speak(msg);
+    var voices = [];
+
+function populateVoiceList() {
+    voices = synth.getVoices();
+
+    for (i = 0; i < voices.length; i++) {
+        var option = document.createElement('option');
+        option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
+
+        if (voices[i].default) {
+            option.textContent += ' -- DEFAULT';
         }
-    }
 
-    foo("Hello");
-    foo("World");
-    foo("a third line");
-    // foo("著作権、特許、そして商標。三者三様の別個の法律に関係している三者三様の別個の概念について、それらをひとつの大鍋に放り込んで「知的財産」などと称するのが流行になっている。このいびつで混乱した語は偶然に現れたわけではない。その混乱から利益を引き出そうという企業のしかけたことなのだ。混乱から抜け出すいちばんの方法は、この語をきっぱりと拒否することだ。")
-    </script>
+        option.setAttribute('data-lang', voices[i].lang);
+        option.setAttribute('data-name', voices[i].name);
+        voiceSelect.appendChild(option);
+    }
+}
+
+// populateVoiceList();
+// if (speechSynthesis.onvoiceschanged !== undefined) {
+//     speechSynthesis.onvoiceschanged = populateVoiceList;
+// }
+
+inputForm.onsubmit = function (event) {
+    event.preventDefault();
+
+    var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
+    // var selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
+    // for (i = 0; i < voices.length; i++) {
+    //     if (voices[i].name === selectedOption) {
+    //         utterThis.voice = voices[i];
+    //     }
+    // }
+    // utterThis.pitch = pitch.value;
+    // utterThis.rate = rate.value;
+    utterThis.voice = synth.getVoices()[0];
+    synth.speak(utterThis);
+
+    inputTxt.blur();
+}
+
+
+    // https://github.com/enricoaleandri/text-to-mp3
+    // var txtomp3 = require("text-to-mp3");
+
+    // txtomp3.getMp3("Ciao Mondo", function (err, binaryStream) {
+    //     if (err) {
+    //         console.log(err);
+    //         return;
+    //     }
+    //     var file = fs.createWriteStream("FileName.mp3"); // write it down the file
+    //     file.write(binaryStream);
+    //     file.end();
+    // });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/talkify-tts@3.8.0/dist/talkify.min.js"></script>
+<script>
+// var player = new talkify.Html5Player();
+// player.playText('Hello world');
+</script>
 </body>
 </html>
