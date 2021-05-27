@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>test glitch.com rest api</h1>
+    <h2>https://spectrum-whip-sulfur.glitch.me/test?id=NUMBER</h2>
+    <h3></h3>
+    <button onclick="execute();">execute fetch</button>
+    <script>
+function execute() {
+        fetch(`https://spectrum-whip-sulfur.glitch.me/test?id=420`)
+        .then((response) => {
+            return response.json();
+        }).then(json => {
+            document.querySelector("h3").innerText = json;
+        })
+}
+    </script>
+</body>
+</html>
