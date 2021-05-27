@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    const synth = window.speechSynthesis;
+    let voices;
+
+    function foo(phrase) {
+        if (!voices) {
+            console.log("Waiting 01", voices);
+
+            synth.addEventListener('voiceschanged', function (ev) {
+                voices = voices || synth.getVoices();
+                foo(phrase);
+            });
+        } else {
+            let msg = new SpeechSynthesisUtterance();
+
+            console.log("How many voices", voices.length);
+
+            // the voices are ready and could be changed here,
+            // but since each system is different, so it won't be
+            // changed here:
+            // msg.voice = voices[0];
+            msg.text = phrase;
+            synth.speak(msg);
+        }
+    }
+
+    foo("Hello");
+    foo("World");
+    foo("a third line");
+    // foo("著作権、特許、そして商標。三者三様の別個の法律に関係している三者三様の別個の概念について、それらをひとつの大鍋に放り込んで「知的財産」などと称するのが流行になっている。このいびつで混乱した語は偶然に現れたわけではない。その混乱から利益を引き出そうという企業のしかけたことなのだ。混乱から抜け出すいちばんの方法は、この語をきっぱりと拒否することだ。")
+    </script>
+</body>
+</html>

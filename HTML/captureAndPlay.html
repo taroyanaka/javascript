@@ -19,7 +19,7 @@
     <label for="newlocalFILE" class="btn" style="display: block;width: 100px;height: 100px;border-radius: 10%;background-color: gray;">Select Video File</label>
     <input id="newlocalFILE" name="localfile" size="50" maxlength="100000" accept="video/*" type="file" onchange="playlocalVID();"  style="visibility:hidden;" >
 </div>
-    <video muted controls id="videoPlayer" width="300px" height="300px">
+    <video controls id="videoPlayer" width="300px" height="300px">
         <source id="currentVID" src="./test.mp4">
     </video>
 <script>
@@ -67,6 +67,9 @@ function recordstart(params) {
 function recordstop(params) {
     recorder.stop();
 }
+
+
+
 </script>
 </body>
 </html>
