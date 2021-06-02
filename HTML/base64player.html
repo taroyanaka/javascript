@@ -34,10 +34,10 @@
 </head>
 <body>
 <div>
+<div class="error"></div>
 <a href="https://taroyanaka.github.io/javascript/HTML/selectMultipleZippedBase64FilesFromMultipleMp3.html">https://taroyanaka.github.io/javascript/HTML/selectMultipleZippedBase64FilesFromMultipleMp3.html</a>
-
-<textarea type="url" class="url">https://taroyanaka.gitlab.io/taroayanaka/freesound_org__571132.txt
-https://taroyanaka.gitlab.io/taroayanaka/freesound_org__571132.txt</textarea>
+<button class="useSample" onclick="useSample()" style="width: 50px;height: 10px;">useSample</button>
+<textarea type="url" class="url"></textarea>
 <!-- <textarea type="url" class="url">https://taroyanaka.github.io/asset/12152131427714.txt?version=079f315
 https://taroyanaka.github.io/asset/12152131427714.txt?version=079f315
 </textarea> -->
@@ -64,6 +64,7 @@ function textNumberDecrement(text) {
 
 // https://stackoverflow.com/a/63131670
 async function dataFetchAndPlay() {
+    try {
     url1 = await document.querySelector(".url").value.split("\n")[musicIndex];
     const response = await fetch(url1);
     const data = await response.text();
@@ -74,6 +75,10 @@ async function dataFetchAndPlay() {
 
     musicIndex += await 1;
     await document.querySelector("audio").play();
+    } catch (error) {
+        document.querySelector(".error").textContent += (error + "\n");
+    }
+
 }
 
 // https://stackoverflow.com/a/39330684
@@ -83,6 +88,14 @@ function setIfTrackEnd() {
     });
 }
 setIfTrackEnd();
+
+function useSample() {
+document.querySelector("textarea").value = `https://taroyanaka.gitlab.io/taroayanaka/freesound_org__571132.txt
+https://taroyanaka.gitlab.io/taroayanaka/freesound_org__571132.txt`;
+document.querySelector("input[type=checkbox]").checked = false;
+document.querySelector(".useSample").style="display:none";
+}
+
 </script>
 </body>
 </html>
