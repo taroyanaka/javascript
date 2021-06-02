@@ -21,6 +21,20 @@
 let tmp0 = null;
 let audioBuffer = [];
 
+function textNumberIncrement(text) {
+    return text
+        .split("")
+        .map(V =>{
+            let tmp = RegExp(/[0-9]/).test(V) ? (Number(V) + 1).toString() : V;
+            // tmp = RegExp(/[a-z]/).test(V) ? V.toUpperCase() : RegExp(/[A-Z]/).test(V) ? V.toLowerCase() : V;
+            if(tmp==="10"){tmp = "0"};
+            return tmp;
+        })
+        // .reverse()
+        .join("");
+}
+
+
 var bufferToBase64 = function (buffer) {
     var bytes = new Uint8Array(buffer);
     var binary = "";
@@ -34,7 +48,8 @@ var bufferToBase64 = function (buffer) {
 
 function initSound(arrayBuffer) {
     document.querySelector(".mp3String").value = bufferToBase64(arrayBuffer);
-    audioBuffer.push(bufferToBase64(arrayBuffer));
+    // audioBuffer.push(bufferToBase64(arrayBuffer));
+    audioBuffer.push(textNumberIncrement(bufferToBase64(arrayBuffer)));
 }
 
 // https://stackoverflow.com/a/9815648
@@ -81,9 +96,22 @@ function base64mp3SetToAudioTag2(IDX) {
     function zipDl() {
         var zip = new JSZip();
 
-        audioBuffer.forEach((V, IDX) =>
-            zip.file(`${IDX}.txt`, V)
-        )
+        audioBuffer.forEach((V, IDX) =>{
+            var date = new Date();
+            var components = [
+                date.getYear(),
+                date.getMonth(),
+                date.getDate(),
+                date.getHours(),
+                date.getMinutes(),
+                date.getSeconds(),
+                date.getMilliseconds()
+            ];
+            var id = components.join("");
+
+            // zip.file(`${IDX}.txt`, V)
+            zip.file(`${id}.txt`, V)
+        })
 
         // https://gist.github.com/tchiayan/d629ea1d1868f55cfd706e6f4c5357ae#file-index-js
         zip.generateAsync({ type: 'blob' }).then((blobdata) => {

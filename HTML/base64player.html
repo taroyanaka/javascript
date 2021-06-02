@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="chrome=1" />
+<title>base64player</title>
+<!-- https://github.com/dondido/MP3-to-Base64-Encoder-and-Decoder -->
+<!-- http://www.iandevlin.com/blog/2012/09/html5/html5-media-and-data-uri/ -->
+<!-- https://www.gitlab.jp/blog/2020/06/29/how-to-use-gitlab-pages/ -->
+<!-- https://gitlab.com/taroyanaka/taroayanaka/-/tree/master/public -->
+<!-- https://stackoverflow.com/a/63131670 -->
+<style>
+    a,
+    a:visited{
+        font-size: 1px;
+        color: gray;
+        opacity: 0.2;
+    }
+    button.dataFetchAndPlay
+    {
+        width: 200px;
+        height: 200px;
+        overflow: scroll;
+    }
+    textarea{
+        width: 500px;
+        height: 300px;
+    }
+    audio{
+        width: 600px;
+    }
+</style>
+<!-- <script src="samplebase64.js"></script> -->
+</head>
+<body>
+<div>
+<a href="https://taroyanaka.github.io/javascript/HTML/selectMultipleZippedBase64FilesFromMultipleMp3.html">https://taroyanaka.github.io/javascript/HTML/selectMultipleZippedBase64FilesFromMultipleMp3.html</a>
+<textarea type="url" class="url">https://taroyanaka.gitlab.io/taroayanaka/freesound_org__571132.txt
+https://taroyanaka.gitlab.io/taroayanaka/freesound_org__571132.txt</textarea>
+<button class="dataFetchAndPlay" onclick="dataFetchAndPlay();">PLAY</button>
+<input type="checkbox" name="textNumberDecrementCheck" class="textNumberDecrementCheck" checked>
+<audio controls src="data:audio/ogg;base64," id="music" />
+</div>
+
+<script>
+let musicIndex = 0;
+let url1;
+
+// https://gist.github.com/taroyanaka/5e20dd686c205f3cb73c8a53d9a4a759
+function textNumberDecrement(text) {
+    return text
+        .split("")
+        .map(V =>{
+            let tmp = RegExp(/[1-9]/).test(V) ? (Number(V) - 1).toString() : V;
+            if (V === "0") { tmp = "9" };
+            return tmp;
+        })
+        .join("");
+}
+
+// https://stackoverflow.com/a/63131670
+async function dataFetchAndPlay() {
+    url1 = await document.querySelector(".url").value.split("\n")[musicIndex];
+    const response = await fetch(url1);
+    const data = await response.text();
+
+    // document.querySelector("audio").src = await `data:audio/ogg;base64,` + textNumberDecrement(samplebase64);
+    const base64data = document.querySelector(".textNumberDecrementCheck").checked ? textNumberDecrement(data) : data;
+    document.querySelector("audio").src = await `data:audio/ogg;base64,` + base64data;
+
+    musicIndex += await 1;
+    await document.querySelector("audio").play();
+}
+
+// https://stackoverflow.com/a/39330684
+function setIfTrackEnd() {
+    document.querySelector("#music").addEventListener('ended',function(){
+        dataFetchAndPlay();
+    });
+}
+setIfTrackEnd();
+</script>
+</body>
+</html>

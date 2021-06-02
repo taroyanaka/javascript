@@ -48,7 +48,17 @@
 <button class="base64mp3SetToAudioTag" onclick="base64mp3SetToAudioTag();">base64mp3SetToAudioTag</button>
 <!-- <input type="url" class="url" placeholder="base64txturl"> -->
 <input type="url" class="url" placeholder="https://taroyanaka.gitlab.io/taroayanaka/freesound_org__571132.txt">
+<input type="url" class="url" placeholder="https://taroyanaka.gitlab.io/taroayanaka/freesound_org__571132.txt">
 <button class="fromUrlBase64txtSetToAudioTag" onclick="fromUrlBase64txtSetToAudioTag();">fromUrlBase64txtSetToAudioTag</button>
+
+https://taroyanaka.gitlab.io/taroayanaka/public/base64-0/2.txt
+https://taroyanaka.gitlab.io/taroayanaka/public/base64-0/3.txt
+https://taroyanaka.gitlab.io/taroayanaka/public/base64-0/4.txt
+https://taroyanaka.gitlab.io/taroayanaka/public/base64-0/5.txt
+https://taroyanaka.gitlab.io/taroayanaka/public/base64-0/6.txt
+https://taroyanaka.gitlab.io/taroayanaka/public/base64-0/7.txt
+https://taroyanaka.gitlab.io/taroayanaka/public/base64-0/8.txt
+https://taroyanaka.gitlab.io/taroayanaka/public/base64-0/9.txt
 
 </div>
 <script>
@@ -189,7 +199,7 @@ function textNumberIncrement(text) {
             if(tmp==="10"){tmp = "0"};
             return tmp;
         })
-        .reverse()
+        // .reverse()
         .join("");
 }
 function textNumberDecrement(text) {
@@ -197,12 +207,12 @@ function textNumberDecrement(text) {
         .split("")
         .map(V =>{
             let tmp = RegExp(/[1-9]/).test(V) ? (Number(V) - Number(document.querySelector(".password").value)).toString() : V;
-            tmp = RegExp(/[a-z]/).test(V) ? V.toUpperCase() : RegExp(/[A-Z]/).test(V) ? V.toLowerCase() : V;
+            // tmp = RegExp(/[a-z]/).test(V) ? V.toUpperCase() : RegExp(/[A-Z]/).test(V) ? V.toLowerCase() : V;
             if (V === "0") { tmp = "9" };
             return tmp;
         })
         // [document.querySelector(".cipherword").value]()
-        .reverse()
+        // .reverse()
         .join("");
 }
 const sampleText = "A8AiqAAe3UA0A12C0B09QcLD9A8SF0";
