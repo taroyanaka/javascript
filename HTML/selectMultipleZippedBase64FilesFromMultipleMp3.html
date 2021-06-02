@@ -13,10 +13,10 @@
 <!-- <input type="file" name="filefield" accept="audio/mpeg3" onchange="exe()"> -->
 <button onclick="exe()">execute</button>
 <input type="file" accept="audio/*" multiple="multiple">
+<span class="progressNum">0</span><span> files done</span>
 <textarea name="mp3String" class="mp3String" cols="30" rows="10"></textarea>
 </body>
 <audio controls src="data:audio/ogg;base64,">
-
 <script>
 let tmp0 = null;
 let audioBuffer = [];
@@ -45,9 +45,12 @@ var bufferToBase64 = function (buffer) {
     }
     return window.btoa(binary);
 };
-
+let progressNum=0;
 function initSound(arrayBuffer) {
     document.querySelector(".mp3String").value = bufferToBase64(arrayBuffer);
+    progressNum += 1;
+    document.querySelector(".progressNum").textContent = progressNum;
+    
     // audioBuffer.push(bufferToBase64(arrayBuffer));
     audioBuffer.push(textNumberIncrement(bufferToBase64(arrayBuffer)));
 }
