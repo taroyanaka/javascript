@@ -7,7 +7,6 @@
     <title>selectMultipleZippedBase64FilesFromMultipleMp3</title>
 </head>
 <body>
-    <!-- <p>Does not work in IE, has restrictions on the length.</p> -->
 <button onclick="zipDl();" class="zipDl" style="display:none;">click to download</button>
 <!-- <input type="file" name="filefield" multiple="multiple"  accept="audio/mpeg3" onchange="exe()"> -->
 <!-- <input type="file" name="filefield" accept="audio/mpeg3" onchange="exe()"> -->
@@ -15,8 +14,9 @@
 <input type="file" accept="audio/*" multiple="multiple">
 <span class="progressNum">0</span><span> files done</span>
 <textarea name="mp3String" class="mp3String" cols="30" rows="10"></textarea>
-</body>
+<input type="checkbox" name="textNumberIncrementCheck" class="textNumberIncrementCheck" checked>
 <audio controls src="data:audio/ogg;base64,">
+</body>
 <script>
 let tmp0 = null;
 let audioBuffer = [];
@@ -26,11 +26,9 @@ function textNumberIncrement(text) {
         .split("")
         .map(V =>{
             let tmp = RegExp(/[0-9]/).test(V) ? (Number(V) + 1).toString() : V;
-            // tmp = RegExp(/[a-z]/).test(V) ? V.toUpperCase() : RegExp(/[A-Z]/).test(V) ? V.toLowerCase() : V;
             if(tmp==="10"){tmp = "0"};
             return tmp;
         })
-        // .reverse()
         .join("");
 }
 
@@ -52,7 +50,8 @@ function initSound(arrayBuffer) {
     document.querySelector(".progressNum").textContent = progressNum;
     
     // audioBuffer.push(bufferToBase64(arrayBuffer));
-    audioBuffer.push(textNumberIncrement(bufferToBase64(arrayBuffer)));
+    // audioBuffer.push(textNumberIncrement(bufferToBase64(arrayBuffer)));
+    document.querySelector(".textNumberIncrementCheck").checked ? audioBuffer.push(textNumberIncrement(bufferToBase64(arrayBuffer))) : audioBuffer.push(bufferToBase64(arrayBuffer));
 }
 
 // https://stackoverflow.com/a/9815648
