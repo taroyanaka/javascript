@@ -15,22 +15,20 @@
     <script src="alasql.js"></script>
 </head>
 <body>
+<button onclick="buttonTest()">buttonTest</button>
 <textarea name="textarea-0" cols="10" rows="10" class="textarea-0"
 onclick=""></textarea>
 <textarea name="textarea-1" cols="10" rows="10" class="textarea-1" oninput="testComparingTextare();"></textarea>
 <textarea name="textarea-2" cols="10" rows="10" class="textarea-2" oninput="testComparingTextare();"></textarea>
 <textarea name="textarea-3" cols="10" rows="10" class="textarea-3" onclick=""></textarea>
-<div class="div-0" onclick=""></div>
-<div class="div-1" onclick=""></div>
-<div class="div-2" onclick=""></div>
-<div class="div-3" onclick=""></div>
+<div><span>textarea-0, textarea-1 same comparing: </span><span class="div-0"></span></div>
 <!-- <input type="text" class="input-0" onclick=""></input> -->
 <select name="select-0" id="select-0" onchange="insertOption(event);"></select>
 <select name="select-1" id="select-1" onchange="insertOption(event);"></select>
 <select name="select-2" id="select-2" onchange="insertOption(event);"></select>
 <button class="addCommaAndCR" onclick="addCommaAndCR();">+</button>
-<input type="text" class="input-1" oninput="makeTableText()" value="foo"></input>
-<!-- <input type="text" class="input-2" onclick=""></input> -->
+<input type="text" class="input-0" oninput="makeTableText()" value="foo"></input>
+<!-- <input type="text" class="input-0" onclick=""></input> -->
 <script>
 let list_0, list_1, list_2;
 function setData() {
@@ -75,19 +73,18 @@ function insertOptionForTest(num) {
     }
 }
 function addCommaAndCR() {
-    document.querySelector(".textarea-2").value = document.querySelector(".textarea-2").value.slice(0, -2);
+    document.querySelector(".textarea-2").value = document.querySelector(".textarea-2").value.slice(0, -1);
     document.querySelector(".textarea-2").value += ",\n";
 }
 
 function makeTableText() {
-    document.querySelector(".textarea-3").value = `CREATE TABLE ${document.querySelector(".input-1").value}(
+    document.querySelector(".textarea-3").value = `CREATE TABLE ${document.querySelector(".input-0").value}(
 ${document.querySelector(".textarea-2").value}
-)`
+);`
 }
 
 function testComparingTextare() {
-    document.querySelector(".div-2").innerText = (document.querySelector(".textarea-0").value === document.querySelector(".textarea-1").value);
-
+    document.querySelector(".div-0").innerText = (document.querySelector(".textarea-0").value === document.querySelector(".textarea-1").value);
 }
 
 function makeTestData() {
@@ -104,7 +101,7 @@ last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMES
 PRIMARY KEY(category_id)
 );`;
 }
-makeTestData();
+
 
 function buttonTest() {
     document.querySelector("#select-0").value = "category_id"; insertOptionForTest(0);
@@ -119,8 +116,26 @@ function buttonTest() {
     document.querySelector("#select-2").value = "NOT NULL"; insertOptionForTest(2);
     document.querySelector(".addCommaAndCR").click();
 
+    document.querySelector("#select-0").value = "last_update"; insertOptionForTest(0);
+    document.querySelector("#select-1").value = "TIMESTAMP"; insertOptionForTest(1);
+    document.querySelector("#select-2").value = "NOT NULL"; insertOptionForTest(2);
+    document.querySelector("#select-2").value = "DEFAULT"; insertOptionForTest(2);
+    document.querySelector("#select-2").value = "CURRENT_TIMESTAMP"; insertOptionForTest(2);
+    document.querySelector("#select-2").value = "ON"; insertOptionForTest(2);
+    document.querySelector("#select-2").value = "UPDATE"; insertOptionForTest(2);
+    document.querySelector("#select-2").value = "CURRENT_TIMESTAMP"; insertOptionForTest(2);
+    document.querySelector(".addCommaAndCR").click();
+
+    document.querySelector("#select-0").value = "PRIMARY KEY(category_id)"; insertOptionForTest(0);
+    document.querySelector(".textarea-2").value = document.querySelector(".textarea-2").value.slice(0, -1);
+    document.querySelector(".input-0").value = "category";
     makeTableText();
 }
+
+
+testComparingTextare();
+makeTestData();
+
 
 // document.querySelector(".div-3").innerText = alasql(`CREATE TABLE category(
 // category_id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
