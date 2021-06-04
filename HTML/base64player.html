@@ -35,6 +35,8 @@
 <body>
 <div>
 <div class="error"></div>
+<input type="password" class="input-1" placeholder="reloadFromGistRawUrl" alt="reloadFromGistRawUrl"></input>
+<button onclick="reloadFromGistRawUrl()">reloadFromGistRawUrl</button>
 <div><a href="https://taroyanaka.github.io/javascript/HTML/selectMultipleZippedBase64FilesFromMultipleMp3.html">https://taroyanaka.github.io/javascript/HTML/selectMultipleZippedBase64FilesFromMultipleMp3.html</a></div>
 <div><a href="https://taroyanaka.github.io/javascript/HTML/base64playerasseturlcomposer.html">https://taroyanaka.github.io/javascript/HTML/base64playerasseturlcomposer.html</a></div>
 <button class="useSample" onclick="useSample()" style="width: 50px;height: 10px;">useSample</button>
@@ -97,6 +99,11 @@ document.querySelector("input[type=checkbox]").checked = false;
 document.querySelector(".useSample").style="display:none";
 }
 
+async function reloadFromGistRawUrl() {
+    const response = await fetch(document.querySelector(".input-1").value);
+    const data = await response.text();
+    document.querySelector(".url").value = await data;
+}
 </script>
 </body>
 </html>
