@@ -91,56 +91,56 @@ function base64mp3SetToAudioTag2(IDX) {
 
     // window.open(uriContent, 'neuesDokument')
 
+function makeNowStr() {
+    var date = new Date();
+    var components = [
+        date.getYear(),
+        date.getMonth(),
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+        date.getMilliseconds()
+    ];
+    var id = components.join("");
+    return id;
+}
+
+// https://stuk.github.io/jszip/documentation/examples.html
+// https://stuk.github.io/jszip/documentation/examples/download-zip-file.html
+function zipDl() {
+    var zip = new JSZip();
+
+    audioBuffer.forEach((V, IDX) =>{
+        zip.file(`${IDX}`, V)
+    })
+
+    // https://gist.github.com/tchiayan/d629ea1d1868f55cfd706e6f4c5357ae#file-index-js
+    zip.generateAsync({ type: 'blob' }).then((blobdata) => {
+        // create zip blob file
+        let zipblob = new Blob([blobdata])
+
+        // For development and testing purpose
+        // Download the zipped file 
+        var elem = window.document.createElement("a")
+        elem.href = window.URL.createObjectURL(zipblob)
+        elem.download = `${makeNowStr()}.zip`
+        elem.click()
+    })
+}
+function otherZipDl() {
+    audioBuffer.forEach((V, IDX) =>{
+        const content = V;
+        const uriContent = "data:application/octet-stream," + encodeURIComponent(content);
+        window.open(uriContent, 'neuesDokument')
+    })
+
+}
+
+// });
 
 
-    // https://stuk.github.io/jszip/documentation/examples.html
-    // https://stuk.github.io/jszip/documentation/examples/download-zip-file.html
-    function zipDl() {
-        var zip = new JSZip();
-
-        audioBuffer.forEach((V, IDX) =>{
-            var date = new Date();
-            var components = [
-                date.getYear(),
-                date.getMonth(),
-                date.getDate(),
-                date.getHours(),
-                date.getMinutes(),
-                date.getSeconds(),
-                date.getMilliseconds()
-            ];
-            var id = components.join("");
-
-            // zip.file(`${IDX}.txt`, V)
-            zip.file(`${id}_${IDX}.txt`, V)
-        })
-
-        // https://gist.github.com/tchiayan/d629ea1d1868f55cfd706e6f4c5357ae#file-index-js
-        zip.generateAsync({ type: 'blob' }).then((blobdata) => {
-            // create zip blob file
-            let zipblob = new Blob([blobdata])
-
-            // For development and testing purpose
-            // Download the zipped file 
-            var elem = window.document.createElement("a")
-            elem.href = window.URL.createObjectURL(zipblob)
-            elem.download = 'compressed.zip'
-            elem.click()
-        })
-    }
-    function otherZipDl() {
-        audioBuffer.forEach((V, IDX) =>{
-            const content = V;
-            const uriContent = "data:application/octet-stream," + encodeURIComponent(content);
-            window.open(uriContent, 'neuesDokument')
-        })
-
-    }
-
-    // });
-
-
-    // newWindow = window.open(uriContent, 'neuesDokument');
+// newWindow = window.open(uriContent, 'neuesDokument');
 
 </script>
 </html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>base64playerasseturlcomposer</title>
+    <!-- https://taroyanaka.github.io/web-platform-2ra6jd/ -->
+    <style>
+textarea{
+    width: 300px;
+    height: 300px;
+}
+    </style>
+</head>
+<body>
+    <input type="text" class="input-1" onclick=""></input>
+<input type="text" class="input-2" onclick=""></input>
+<input type="number" class="input-3" onclick=""></input>
+
+<button onclick="makeUrlList();sortByNumber();">makeUrlList</button>
+
+<textarea name="textarea-0" class="textarea-0" oninput="sortByNumber();"></textarea>
+<input type="text" name="" class="input-0" value="(.+/\d+\/)" oninput="sortByNumber();">
+<textarea name="textarea-1" class="textarea-1" onclick=""></textarea>
+<button onclick="testSortByNumber();">testSortByNumber</button>
+
+<input type="password" class="input-4" oninput="makeMyDataStoreUrl()" placeholder="makeMyDataStoreUrl" alt="makeMyDataStoreUrl"></input>
+
+
+<script>
+function sortByNumber(params) {
+    const str = document.querySelector(".textarea-0").value.split("\n")[0];
+    // var prereplace = document.querySelector(".input-0").value.replaceAll("\\",'\\\');
+    var replace = document.querySelector(".input-0").value;
+    // https://stackoverflow.com/a/494046
+    var re = new RegExp(replace,"g");
+    const foo = [...str.matchAll(re)][0][0];
+    const bar = document.querySelector(".textarea-0").value.replaceAll(foo,"");
+
+    numArray = bar.split("\n")
+        .map(V=>Number(V))
+        .sort(function(a, b) {
+            return a - b;
+        })
+        .map(V=>foo + V)
+        .map(V=>V + "\n")
+        .join("");
+
+    document.querySelector(".textarea-1").value = numArray;
+}
+// sortByNumber();
+
+document.querySelector(".input-1").value = "https://taroyanaka.github.io/asset/";
+document.querySelector(".input-2").value = 12152173540278;
+document.querySelector(".input-3").value = 8;
+function makeUrlList() {
+    document.querySelector(".textarea-0").value =
+        [...Array(Number(document.querySelector(".input-3").value) + 1).keys()]
+            .map((V,IDX)=>{
+                return (document.querySelector(".input-1").value + document.querySelector(".input-2").value + "/" + IDX);
+            })
+            .join("\n")
+}
+
+function makeMyDataStoreUrl() {
+    const myUrl = document.querySelector(".input-4").value;
+    const HTMLStr = `<a href="${myUrl}">${myUrl}</a>`;
+    document.querySelector("body").insertAdjacentHTML("beforeend", HTMLStr);
+}
+
+function testSortByNumber() {
+    document.querySelector(".textarea-0").value = `https://taroyanaka.github.io/asset/12152173513941/18
+https://taroyanaka.github.io/asset/12152173513941/9
+https://taroyanaka.github.io/asset/12152173513941/0
+https://taroyanaka.github.io/asset/12152173513941/11
+https://taroyanaka.github.io/asset/12152173513941/7
+https://taroyanaka.github.io/asset/12152173513941/16
+https://taroyanaka.github.io/asset/12152173513941/6
+https://taroyanaka.github.io/asset/12152173513941/17
+https://taroyanaka.github.io/asset/12152173513941/1
+https://taroyanaka.github.io/asset/12152173513941/10
+https://taroyanaka.github.io/asset/12152173513941/19
+https://taroyanaka.github.io/asset/12152173513941/8
+https://taroyanaka.github.io/asset/12152173513941/4
+https://taroyanaka.github.io/asset/12152173513941/15
+https://taroyanaka.github.io/asset/12152173513941/3
+https://taroyanaka.github.io/asset/12152173513941/12
+https://taroyanaka.github.io/asset/12152173513941/2
+https://taroyanaka.github.io/asset/12152173513941/13
+https://taroyanaka.github.io/asset/12152173513941/5
+https://taroyanaka.github.io/asset/12152173513941/14`;
+    sortByNumber();
+}
+</script>
+</body>
+</html>
