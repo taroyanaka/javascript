@@ -37,7 +37,7 @@
 <div class="error"></div>
 
 <input type="password" class="input-1" placeholder="reloadFromUrlListTxt" alt="reloadFromUrlListTxt"></input>
-<button onclick="reloadFromUrlListTxt()">reloadFromUrlListTxt</button>
+<button onclick="reloadFromUrlListTxt();">reloadFromUrlListTxt</button>
 
 <div><a href="https://taroyanaka.github.io/javascript/HTML/selectMultipleZippedBase64FilesFromMultipleMp3.html">https://taroyanaka.github.io/javascript/HTML/selectMultipleZippedBase64FilesFromMultipleMp3.html</a></div>
 <div><a href="https://taroyanaka.github.io/javascript/HTML/base64playerasseturlcomposer.html">https://taroyanaka.github.io/javascript/HTML/base64playerasseturlcomposer.html</a></div>
@@ -48,6 +48,11 @@ https://taroyanaka.github.io/asset/12152131427714.txt?version=079f315
 </textarea> -->
 <button class="dataFetchAndPlay" onclick="dataFetchAndPlay();">PLAY</button>
 <input type="checkbox" name="textNumberDecrementCheck" class="textNumberDecrementCheck" checked>
+
+
+<select name="getTrackNumber" id="getTrackNumber" onchange="changeTrack(event);">
+</select>
+
 <audio controls src="data:audio/ogg;base64," id="music" />
 </div>
 
@@ -84,6 +89,7 @@ async function dataFetchAndPlay() {
         document.querySelector(".error").textContent += (error + "\n");
     }
 
+    await getTrackNumber();
 }
 
 // https://stackoverflow.com/a/39330684
@@ -105,6 +111,21 @@ async function reloadFromUrlListTxt() {
     const response = await fetch(document.querySelector(".input-1").value);
     const data = await response.text();
     document.querySelector(".url").value = await data;
+}
+
+function getTrackNumber() {
+    if(document.querySelector("textarea").value.split("\n").length >= 2){
+        document.querySelector("#getTrackNumber").innerHTML = 
+            Array.from(document.querySelector("textarea").value.split("\n"))
+                .map((V,IDX)=> `<option value="${IDX}" data-id="${IDX}">${IDX + 1}: ${V}</option>` )
+                .join("")
+    }
+    document.querySelectorAll("option")[musicIndex - 1].selected = true;
+}
+
+function changeTrack(event) {
+    musicIndex = Number(event.target.value);
+    dataFetchAndPlay();
 }
 </script>
 </body>
