@@ -31,8 +31,8 @@
 </head>
 <body class="result">
 <div class="left">
-<button onclick="withTableName();">withTableName</button>
-<button onclick="withoutTableName();">withoutTableName</button>
+<button class="withTableName" onclick="withTableName();">withTableName</button>
+<button class="withoutTableName" onclick="withoutTableName();">withoutTableName</button>
 <textarea name="textarea-4" cols="10" rows="10" class="textarea-4" onclick=""></textarea>
 <textarea name="textarea-5" cols="10" rows="10" class="textarea-5" onclick="">
 TINYINT
@@ -58,29 +58,23 @@ UPDATE</textarea>
 <select name="select-0" id="select-0" onchange="insertOption(event);"></select>
 <select name="select-1" id="select-1" onchange="insertOption(event);"></select>
 <select name="select-2" id="select-2" onchange="insertOption(event);"></select>
-<select name="select-3" id="select-3" onchange="insertOption(event);"></select>
+PRIMARY KEY: <select name="select-3" id="select-3" onchange="insertOption(event);"></select>
 
 <button class="addCommaAndCR" onclick="addCommaAndCR();">+</button>
 <input type="text" class="input-0" oninput="makeTableText()" value="foo"></input>
 <!-- <input type="text" class="input-0" onclick=""></input> -->
 </div>
 <script>
-let list_0, list_1, list_2;
-function setData() {
-document.querySelector(".textarea-4").value = `
+function preSetData(params) {
+    document.querySelector(".textarea-4").value = `
 id
 name
-last_update
-PRIMARY KEY(category_id)`;
-list_0 = document.querySelector(".textarea-4").value.split("\n");
-
-document.querySelector(".textarea-5").value = `
+last_update`;
+    document.querySelector(".textarea-5").value = `
 TINYINT
 VARCHAR(25)
 TIMESTAMP`;
-list_1 = document.querySelector(".textarea-5").value.split("\n");
-
-document.querySelector(".textarea-6").value = `
+    document.querySelector(".textarea-6").value = `
 UNSIGNED
 NOT NULL
 AUTO_INCREMENT
@@ -88,6 +82,12 @@ DEFAULT
 CURRENT_TIMESTAMP
 ON
 UPDATE`;
+}
+preSetData();
+let list_0, list_1, list_2;
+function setData() {
+list_0 = document.querySelector(".textarea-4").value.split("\n");
+list_1 = document.querySelector(".textarea-5").value.split("\n");
 list_2 = document.querySelector(".textarea-6").value.split("\n");
 
 document.querySelector("#select-0").innerHTML = list_0.map((V,IDX)=>`<option name="${V}" value="${V}">${V}</option>`);
@@ -111,6 +111,9 @@ function insertOptionForTest(num) {
         document.querySelector(".textarea-2").value += document.querySelector(`#select-${num.toString()}`).value + " ";
     }
 }
+function insertOptionForTestOnPrimaryKey() {
+    document.querySelector(".textarea-2").value += `PRIMARY KEY(${document.querySelector('#select-3').value})` + " ";
+}
 function addCommaAndCR() {
     document.querySelector(".textarea-2").value = document.querySelector(".textarea-2").value.slice(0, -1);
     document.querySelector(".textarea-2").value += ",\n";
@@ -133,17 +136,22 @@ name VARCHAR(25) NOT NULL,
 last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 PRIMARY KEY(category_id)
 );`;
-    document.querySelector(".textarea-1").value = `CREATE TABLE category(
-category_id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
-name VARCHAR(25) NOT NULL,
-last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-PRIMARY KEY(category_id)
-);`;
+//     document.querySelector(".textarea-1").value = 
+// `CREATE TABLE category(
+// category_id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+// name VARCHAR(25) NOT NULL,
+// last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+// PRIMARY KEY(category_id)
+// );`;
 }
 
 
 function buttonTest() {
+    document.querySelector(".input-0").value = "category";
+    document.querySelector(".withTableName").click();
     document.querySelector("#select-0").value = "category_id"; insertOptionForTest(0);
+    document.querySelector(".withoutTableName").click();
+
     document.querySelector("#select-1").value = "TINYINT"; insertOptionForTest(1);
     document.querySelector("#select-2").value = "UNSIGNED"; insertOptionForTest(2);
     document.querySelector("#select-2").value = "NOT NULL"; insertOptionForTest(2);
@@ -165,9 +173,12 @@ function buttonTest() {
     document.querySelector("#select-2").value = "CURRENT_TIMESTAMP"; insertOptionForTest(2);
     document.querySelector(".addCommaAndCR").click();
 
-    document.querySelector("#select-0").value = "PRIMARY KEY(category_id)"; insertOptionForTest(0);
+    document.querySelector(".withTableName").click();
+    document.querySelector("#select-3").value = "category_id"; insertOptionForTestOnPrimaryKey();
+    document.querySelector(".withoutTableName").click();
+
     document.querySelector(".textarea-2").value = document.querySelector(".textarea-2").value.slice(0, -1);
-    document.querySelector(".input-0").value = "category";
+
     makeTableText();
 }
 
@@ -183,12 +194,14 @@ function withTableName(){
                 }
             })
             .join("");
+    setData();
 }
 function withoutTableName(){
     document.querySelector(".textarea-4").value =
         Array.from(document.querySelector(".textarea-4").value.split("\n"))
             .map(V => V.replaceAll((document.querySelector(".input-0").value+"_"),"") )
             .join("\n");
+    setData();
 }
 
 testComparingTextare();
