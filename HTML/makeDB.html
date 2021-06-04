@@ -7,6 +7,21 @@
     <title>makeDB</title>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/alasql/0.6.2/alasql.min.js"></script> -->
     <style>
+
+.result{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+}
+.left {
+    grid-column: 1 / 2;
+    grid-row: 1 / 10;
+}
+.right {
+    grid-column: 3 / 4;
+    grid-row: 1 / 10;
+}
+
         .textarea-1,
         .textarea-2{
             width: 300px;
@@ -14,10 +29,27 @@
     </style>
     <script src="alasql.js"></script>
 </head>
-<body>
+<body class="result">
+<div class="left">
+<button onclick="withTableName();">withTableName</button>
+<button onclick="withoutTableName();">withoutTableName</button>
+<textarea name="textarea-4" cols="10" rows="10" class="textarea-4" onclick=""></textarea>
+<textarea name="textarea-5" cols="10" rows="10" class="textarea-5" onclick="">
+TINYINT
+VARCHAR(25)
+TIMESTAMP</textarea>
+<textarea name="textarea-6" cols="10" rows="10" class="textarea-6" onclick="">
+UNSIGNED
+NOT NULL
+AUTO_INCREMENT
+DEFAULT
+CURRENT_TIMESTAMP
+ON
+UPDATE</textarea>
+</div>
+<div class="right">
 <button onclick="buttonTest()">buttonTest</button>
-<textarea name="textarea-0" cols="10" rows="10" class="textarea-0"
-onclick=""></textarea>
+<textarea name="textarea-0" cols="10" rows="10" class="textarea-0" onclick=""></textarea>
 <textarea name="textarea-1" cols="10" rows="10" class="textarea-1" oninput="testComparingTextare();"></textarea>
 <textarea name="textarea-2" cols="10" rows="10" class="textarea-2" oninput="testComparingTextare();"></textarea>
 <textarea name="textarea-3" cols="10" rows="10" class="textarea-3" onclick=""></textarea>
@@ -29,16 +61,16 @@ onclick=""></textarea>
 <button class="addCommaAndCR" onclick="addCommaAndCR();">+</button>
 <input type="text" class="input-0" oninput="makeTableText()" value="foo"></input>
 <!-- <input type="text" class="input-0" onclick=""></input> -->
+</div>
 <script>
 let list_0, list_1, list_2;
 function setData() {
-list_0 = [
-"",
-"category_id",
-"name",
-"last_update",
-"PRIMARY KEY(category_id)",
-];
+    document.querySelector(".textarea-4").value = `
+id
+name
+last_update
+PRIMARY KEY(category_id)`;
+list_0 = document.querySelector(".textarea-4").value.split("\n");
 list_1 = [
 "",
 "TINYINT",
@@ -132,6 +164,18 @@ function buttonTest() {
     makeTableText();
 }
 
+function withTableName(){
+    document.querySelector(".textarea-4").value = 
+        Array.from(document.querySelector(".textarea-4").value.split("\n"))
+        .map(V=> (document.querySelector(".input-0").value + "_" + V + "\n"))
+        .join("");
+}
+function withoutTableName(){
+    document.querySelector(".textarea-4").value =
+        Array.from(document.querySelector(".textarea-4").value.split("\n"))
+            .map(V => V.replaceAll((document.querySelector(".input-0").value+"_"),"") )
+            .join("\n");
+}
 
 testComparingTextare();
 makeTestData();
