@@ -21,8 +21,14 @@
     grid-row: 1 / 10;
 }
 .textarea-1,
-.textarea-2{
+.textarea-2,
+.textarea-3{
     width: 300px;
+}
+.textarea-0,
+.textarea-1{
+    width: 0;
+    height: 0;
 }
 </style>
 <script src="alasql.js"></script>
@@ -143,6 +149,11 @@ setData();
 testComparingTextare();
 
 function buttonTest() {
+    document.querySelector("style").innerText += `.textarea-0,
+.textarea-1{
+    width: 200px;
+    height: 300px;
+}`;
     document.querySelector(".input-0").value = "category";
     document.querySelector(".withTableName").click();
     document.querySelector("#select-0").value = "category_id"; insertOptionForTest(0);
