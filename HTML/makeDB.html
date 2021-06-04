@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>makeDB</title>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/alasql/0.6.2/alasql.min.js"></script> -->
+    <style>
+        .textarea-1,
+        .textarea-2{
+            width: 300px;
+        }
+    </style>
+    <script src="alasql.js"></script>
+</head>
+<body>
+<textarea name="textarea-0" cols="10" rows="10" class="textarea-0"
+onclick=""></textarea>
+<textarea name="textarea-1" cols="10" rows="10" class="textarea-1" oninput="testComparingTextare();"></textarea>
+<textarea name="textarea-2" cols="10" rows="10" class="textarea-2" oninput="testComparingTextare();"></textarea>
+<textarea name="textarea-3" cols="10" rows="10" class="textarea-3" onclick=""></textarea>
+<div class="div-0" onclick=""></div>
+<div class="div-1" onclick=""></div>
+<div class="div-2" onclick=""></div>
+<div class="div-3" onclick=""></div>
+<!-- <input type="text" class="input-0" onclick=""></input> -->
+<select name="select-0" id="select-0" onchange="insertOption(event);"></select>
+<select name="select-1" id="select-1" onchange="insertOption(event);"></select>
+<select name="select-2" id="select-2" onchange="insertOption(event);"></select>
+<button class="addCommaAndCR" onclick="addCommaAndCR();">+</button>
+<input type="text" class="input-1" oninput="makeTableText()" value="foo"></input>
+<!-- <input type="text" class="input-2" onclick=""></input> -->
+<script>
+let list_0, list_1, list_2;
+function setData() {
+list_0 = [
+"",
+"category_id",
+"name",
+"last_update",
+"PRIMARY KEY(category_id)",
+];
+list_1 = [
+"",
+"TINYINT",
+"VARCHAR(25)",
+"TIMESTAMP",
+];
+list_2 = [
+"",
+"UNSIGNED",
+"NOT NULL",
+"AUTO_INCREMENT",
+"DEFAULT",
+"CURRENT_TIMESTAMP",
+"ON",
+"UPDATE",
+];
+
+document.querySelector("#select-0").innerHTML = list_0.map((V,IDX)=>`<option name="${V}" value="${V}">${V}</option>`)
+document.querySelector("#select-1").innerHTML = list_1.map((V,IDX)=>`<option name="${V}" value="${V}">${V}</option>`)
+document.querySelector("#select-2").innerHTML = list_2.map((V,IDX)=>`<option name="${V}" value="${V}">${V}</option>`)
+}
+setData();
+
+
+function insertOption(event) {
+    document.querySelector(".textarea-2").value += event.target.value + " ";
+    // if (!event) { document.querySelector(".textarea-2").value += document.querySelector("#select-0").value + " " };
+}
+function insertOptionForTest(num) {
+    if(num.toString()){
+        document.querySelector(".textarea-2").value += document.querySelector(`#select-${num.toString()}`).value + " ";
+    }
+}
+function addCommaAndCR() {
+    document.querySelector(".textarea-2").value = document.querySelector(".textarea-2").value.slice(0, -2);
+    document.querySelector(".textarea-2").value += ",\n";
+}
+
+function makeTableText() {
+    document.querySelector(".textarea-3").value = `CREATE TABLE ${document.querySelector(".input-1").value}(
+${document.querySelector(".textarea-2").value}
+)`
+}
+
+function testComparingTextare() {
+    document.querySelector(".div-2").innerText = (document.querySelector(".textarea-0").value === document.querySelector(".textarea-1").value);
+
+}
+
+function makeTestData() {
+    document.querySelector(".textarea-0").value = `CREATE TABLE category(
+category_id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+name VARCHAR(25) NOT NULL,
+last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+PRIMARY KEY(category_id)
+);`;
+    document.querySelector(".textarea-1").value = `CREATE TABLE category(
+category_id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+name VARCHAR(25) NOT NULL,
+last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+PRIMARY KEY(category_id)
+);`;
+}
+makeTestData();
+
+function buttonTest() {
+    document.querySelector("#select-0").value = "category_id"; insertOptionForTest(0);
+    document.querySelector("#select-1").value = "TINYINT"; insertOptionForTest(1);
+    document.querySelector("#select-2").value = "UNSIGNED"; insertOptionForTest(2);
+    document.querySelector("#select-2").value = "NOT NULL"; insertOptionForTest(2);
+    document.querySelector("#select-2").value = "AUTO_INCREMENT"; insertOptionForTest(2);
+    document.querySelector(".addCommaAndCR").click();
+
+    document.querySelector("#select-0").value = "name"; insertOptionForTest(0);
+    document.querySelector("#select-1").value = "VARCHAR(25)"; insertOptionForTest(1);
+    document.querySelector("#select-2").value = "NOT NULL"; insertOptionForTest(2);
+    document.querySelector(".addCommaAndCR").click();
+
+    makeTableText();
+}
+
+// document.querySelector(".div-3").innerText = alasql(`CREATE TABLE category(
+// category_id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+// name VARCHAR(25) NOT NULL,
+// last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+// PRIMARY KEY(category_id)
+// );`);
+
+
+
+
+// document.querySelector(".div-1").innerText = alasql(`insert into category (name) values ("foobarname")`);
+// document.querySelector(".div-2").innerText = JSON.stringify(alasql(`select * from category;`));
+
+    // document.querySelector(".div-1").value = "";
+</script>
+<script>
+    // CREATE TABLE category(
+    //     category_id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    //     name VARCHAR(25) NOT NULL,
+    //     last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    //     PRIMARY KEY(category_id)
+    // );
+
+
+
+
+    // CREATE TABLE film_category(
+    //     film_id SMALLINT UNSIGNED NOT NULL,
+    //     category_id TINYINT UNSIGNED NOT NULL,
+    //     last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    //     PRIMARY KEY(film_id, category_id),
+    //     FOREIGN KEY(film_id) REFERENCES film(film_id), --ON DELETE RESTRICT ON UPDATE CASCADE,
+    //     FOREIGN KEY(category_id) REFERENCES category(category_id)--ON DELETE RESTRICT ON UPDATE CASCADE
+    // );
+
+
+
+
+
+    // CREATE TABLE language(
+    //     language_id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    //     name CHAR(20) NOT NULL,
+    //     last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    //     PRIMARY KEY(language_id)
+    // );
+
+
+
+    // CREATE TABLE actor(
+    //     actor_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    //     first_name VARCHAR(45) NOT NULL,
+    //     last_name VARCHAR(45) NOT NULL,
+    //     last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    //     PRIMARY KEY(actor_id)
+    // );
+
+
+
+
+    // CREATE TABLE film_actor(
+    //     actor_id SMALLINT UNSIGNED NOT NULL,
+    //     film_id SMALLINT UNSIGNED NOT NULL,
+    //     last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    //     PRIMARY KEY(actor_id, film_id),
+    //     FOREIGN KEY(actor_id) REFERENCES actor(actor_id), --ON DELETE RESTRICT ON UPDATE CASCADE,
+    //     FOREIGN KEY(film_id) REFERENCES film(film_id)--ON DELETE RESTRICT ON UPDATE CASCADE
+    // );
+
+
+
+    // CREATE TABLE film(
+    //     film_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    //     title VARCHAR(128) NOT NULL,
+    //     description TEXT DEFAULT NULL,
+    //     release_year YEAR DEFAULT NULL,
+    //     language_id TINYINT UNSIGNED NOT NULL,
+    //     original_language_id TINYINT UNSIGNED DEFAULT NULL,
+    //     rental_duration TINYINT UNSIGNED NOT NULL DEFAULT 3,
+    //     rental_rate DECIMAL(4, 2) NOT NULL DEFAULT 4.99,
+    //     length SMALLINT UNSIGNED DEFAULT NULL,
+    //     replacement_cost DECIMAL(5, 2) NOT NULL DEFAULT 19.99,
+    //     rating ENUM('G', 'PG', 'PG-13', 'R', 'NC-17') DEFAULT 'G',
+    //     --special_features SET('Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes') DEFAULT NULL,
+    //     last_update TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    //     PRIMARY KEY(film_id),
+    //     FOREIGN KEY(language_id) REFERENCES language(language_id), --ON DELETE RESTRICT ON UPDATE CASCADE,
+    //     FOREIGN KEY(original_language_id) REFERENCES language(language_id)--ON DELETE RESTRICT ON UPDATE CASCADE
+    // );
+</script>
+</body>
+</html>

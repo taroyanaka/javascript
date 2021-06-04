@@ -117,7 +117,7 @@ function getTrackNumber() {
     if(document.querySelector("textarea").value.split("\n").length >= 2){
         document.querySelector("#getTrackNumber").innerHTML = 
             Array.from(document.querySelector("textarea").value.split("\n"))
-                .map((V,IDX)=> `<option value="${IDX}" data-id="${IDX}">${IDX + 1}: ${V}</option>` )
+                .map((V,IDX)=> `<option value="${IDX}">${IDX + 1}: ${V}</option>` )
                 .join("")
     }
     document.querySelectorAll("option")[musicIndex - 1].selected = true;
