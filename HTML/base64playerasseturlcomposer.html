@@ -11,10 +11,16 @@ textarea{
     width: 300px;
     height: 300px;
 }
+a.player,
+a.player:visited{
+    font-size: 1px;
+    color: gray;
+    opacity: 0.2;
+}
     </style>
 </head>
 <body>
-    <input type="text" class="input-1" onclick=""></input>
+<input type="text" class="input-1" onclick=""></input>
 <input type="text" class="input-2" onclick=""></input>
 <input type="number" class="input-3" onclick=""></input>
 
@@ -27,7 +33,7 @@ textarea{
 
 <input type="password" class="input-4" oninput="makeMyDataStoreUrl()" placeholder="makeMyDataStoreUrl" alt="makeMyDataStoreUrl"></input>
 
-
+<a class="player" href="https://taroyanaka.github.io/javascript/HTML/base64player.html">https://taroyanaka.github.io/javascript/HTML/base64player.html</a>
 <script>
 function sortByNumber(params) {
     const str = document.querySelector(".textarea-0").value.split("\n")[0];
