@@ -15,6 +15,9 @@
 <span class="progressNum">0</span><span> files done</span>
 <textarea name="mp3String" class="mp3String" cols="30" rows="10"></textarea>
 <input type="checkbox" name="textNumberIncrementCheck" class="textNumberIncrementCheck" checked>
+
+<textarea name="textarea-0" cols="30" rows="30" class="textarea-0" onclick=""></textarea>
+
 <audio controls src="data:audio/ogg;base64,">
 </body>
 <script>
@@ -62,7 +65,11 @@ function setupReader(file) {
     }
     reader.readAsArrayBuffer(file);
 }
+function showFileName() {
+    document.querySelector(".textarea-0").value = Array.from(document.querySelector('input[type="file"]').files).map((V,IDX)=>V.name).join("\n");
+}
 function exe() {
+    showFileName();
     for (var i = 0; i < document.querySelector('input[type="file"]').files.length; i++) {
         setupReader(
             document.querySelector('input[type="file"]').files[i]
