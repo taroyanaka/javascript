@@ -18,7 +18,7 @@
 <textarea name="text" class="text" cols="30" rows="10"></textarea>
 <button onclick="testSave();">testSave</button>
 <button onclick="testLoad();">testLoad</button>
-<button onclick="clear();">clear localForage</button>
+<button onclick="localforage.clear().then(function () {console.log('Database is now empty.')}).catch(function (err) {console.log(err)});">clear localForage</button>
 <button onclick="other();">localForage other function</button>
 <script>
     localforage.config({
@@ -53,13 +53,9 @@ try {
     console.log(err);
     }
 }
-function clear() {
-    localforage.clear().then(function () {
-    console.log('Database is now empty.');
-    }).catch(function (err) {
-    console.log(err);
-    });
-}
+// function clear() {
+    // localforage.clear().then(function () {console.log('Database is now empty.')}).catch(function (err) {console.log(err)});
+// }
 function other() {
     localforage.length().then(function (numberOfKeys) {
     document.querySelector(".text").value += numberOfKeys + "\n";
