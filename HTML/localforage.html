@@ -28,21 +28,20 @@
     });
 </script>
 <script>
-
 const url = "https://raw.githubusercontent.com/taroyanaka/asset/main/12152173513941/0";
 
+// test error url
+// const url = "https://raw.githubusercontent.com/taroyanaka/asset/main/12152173513e941/0";
+
+// https://qiita.com/akameco/items/cc73afcdb5ac5d0774bc
 async function getData(url) {
-    const response = await fetch(url);
-    return await response.text();
+    // const res = await fetch(url).then(response=>response.text()).catch(err=> document.querySelector(".text").value = err);
+    // return res;
+    return await fetch(url).then(response=>response.text()).catch(err=> document.querySelector(".text").value = err);
 }
 async function testSave(url){
-try {
     const data = await getData(url);
-    await localforage.setItem(url, JSON.stringify(data));
-    document.querySelector(".text").value = JSON.parse(JSON.stringify(data));
-    } catch (err) {
-    console.log(err);
-    }
+    await localforage.setItem(url, JSON.stringify(data)).then(res=> document.querySelector(".text").value = JSON.parse(res)).catch(err=> document.querySelector(".text").value = err);
 }
 async function testLoad(url){
 try {
@@ -50,7 +49,7 @@ try {
     const res = value ? JSON.parse(value) : "db is null";
     document.querySelector(".text").value = res;
     } catch (err) {
-    console.log(err);
+    document.querySelector(".text").value = err;
     }
 }
 // function clear() {
