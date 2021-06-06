@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>localForage</title>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/localforage@1.9.0/dist/localforage.min.js"></script> -->
+        <script src="localforage.js"></script>
+        <!-- https://github.com/localForage/localForage -->
+        <!-- https://localforage.github.io/localForage/ -->
+
+        <!-- https://github.com/taroyanaka/asset/blob/main/12152173513941/0 -->
+
+        <!-- <script>console.log('localforage is: ', localforage);</script> -->
+</head>
+<body>
+<textarea name="text" class="text" cols="30" rows="10"></textarea>
+<button onclick="testSave();">testSave</button>
+<button onclick="testLoad();">testLoad</button>
+<button onclick="clear();">clear localForage</button>
+<button onclick="other();">localForage other function</button>
+<script>
+    localforage.config({
+        size: 524288000
+    });
+</script>
+<script>
+// const data = JSON.stringify("fooooooooooooooooooooooooooooooooooooooo");
+const key = url = "https://raw.githubusercontent.com/taroyanaka/asset/main/12152173513941/0";
+let data;
+async function getData(url) {
+    const response = await fetch(url);
+    data = await response.text();
+}
+
+async function testSave(){
+try {
+    await getData(url);
+    await localforage.setItem(key, JSON.stringify(data));
+    console.log(data);
+    } catch (err) {
+    console.log(err);
+    }
+}
+async function testLoad(){
+try {
+        const value = await localforage.getItem(key);
+        document.querySelector(".text").value = JSON.parse(value);
+        console.log(value);
+    } catch (err) {
+        console.log(err);
+    }
+}
+function clear() {
+    localforage.clear().then(function () {
+        console.log('Database is now empty.');
+    }).catch(function (err) {
+        console.log(err);
+    });
+}
+function other() {
+    localforage.length().then(function (numberOfKeys) {
+        // Outputs the length of the database.
+        document.querySelector(".text").value += numberOfKeys + "\n";
+    }).catch(function (err) {
+        // This code runs if there were any errors
+        document.querySelector(".text").value += err + "\n";
+    });
+
+    localforage.keys().then(function (keys) {
+        // An array of all the key names.
+        document.querySelector(".text").value += keys + "\n";
+    }).catch(function (err) {
+        // This code runs if there were any errors
+        document.querySelector(".text").value += err + "\n";
+    });
+}
+
+</script>
+</body>
+</html>
