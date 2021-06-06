@@ -39,7 +39,7 @@ async function testSave(url){
 try {
     const data = await getData(url);
     await localforage.setItem(url, JSON.stringify(data));
-    document.querySelector(".text").value = JSON.stringify(data);
+    document.querySelector(".text").value = JSON.parse(JSON.stringify(data));
     } catch (err) {
     console.log(err);
     }
