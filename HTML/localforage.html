@@ -35,7 +35,6 @@ async function getData(url) {
     const response = await fetch(url);
     data = await response.text();
 }
-
 async function testSave(){
 try {
     await getData(url);
@@ -47,38 +46,33 @@ try {
 }
 async function testLoad(){
 try {
-        const value = await localforage.getItem(key);
-        document.querySelector(".text").value = JSON.parse(value);
-        console.log(value);
+    const value = await localforage.getItem(key);
+    document.querySelector(".text").value = JSON.parse(value);
+    console.log(value);
     } catch (err) {
-        console.log(err);
+    console.log(err);
     }
 }
 function clear() {
     localforage.clear().then(function () {
-        console.log('Database is now empty.');
+    console.log('Database is now empty.');
     }).catch(function (err) {
-        console.log(err);
+    console.log(err);
     });
 }
 function other() {
     localforage.length().then(function (numberOfKeys) {
-        // Outputs the length of the database.
-        document.querySelector(".text").value += numberOfKeys + "\n";
+    document.querySelector(".text").value += numberOfKeys + "\n";
     }).catch(function (err) {
-        // This code runs if there were any errors
-        document.querySelector(".text").value += err + "\n";
+    document.querySelector(".text").value += err + "\n";
     });
 
     localforage.keys().then(function (keys) {
-        // An array of all the key names.
-        document.querySelector(".text").value += keys + "\n";
+    document.querySelector(".text").value += keys + "\n";
     }).catch(function (err) {
-        // This code runs if there were any errors
-        document.querySelector(".text").value += err + "\n";
+    document.querySelector(".text").value += err + "\n";
     });
 }
-
 </script>
 </body>
 </html>
