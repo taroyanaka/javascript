@@ -15,39 +15,106 @@
     grid-template-rows: repeat(10, 1fr);
 }
 .zero {
-    grid-column: 1 / 2;
+    grid-column: 1 / 3;
     grid-row: 1 / 10;
 }
 .one {
-    grid-column: 3 / 4;
+    grid-column: 3 / 5;
     grid-row: 1 / 10;
 }
 textarea{
-    width: 200%;
+    width: 100%;
 }
 button{
     width: 100px;
     height: 50px;
 }
+
+.with0{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+}
+.left-with0 {
+    grid-column: 1 / 10;
+    grid-row: 1 / 10;
+}
+.right-with0 {
+    grid-column: 10 / 10;
+    grid-row: 1 / 10;
+}
+
+.with1{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+}
+.left-with1 {
+    grid-column: 1 / 10;
+    grid-row: 1 / 10;
+}
+.right-top-with1 {
+    grid-column: 10 / 10;
+    grid-row: 1 / 5;
+}
+.left-bottom-with1 {
+    grid-column: 10 / 10;
+    grid-row: 6 / 10;
+}
+
+.with2{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+}
+.left-with2 {
+    grid-column: 1 / 10;
+    grid-row: 1 / 10;
+}
+.right-with2 {
+    grid-column: 10 / 10;
+    grid-row: 1 / 10;
+}
+
+.with0 > div > button, .with1 > div > button, .with2 > div > button{
+    height: 100%;
+}
     </style>
 </head>
 <body class="result">
 <div class="zero">
-<button class="button-2" onclick="settest();exe()">settestandexe</button>
+<button class="button-2" onclick="settest();exe([0,1,2])">settestandexe</button>
 
 <button class="button-0" onclick="settest();" value="settest">settest</button>
 
-<textarea name="textarea-0" cols="50" rows="10" class="textarea-0" onclick=""></textarea>
-<textarea name="textarea-1" cols="50" rows="10" class="textarea-1" onclick=""></textarea>
-<textarea name="textarea-2" cols="50" rows="10" class="textarea-2" onclick=""></textarea>
-<button class="button-1" onclick="exe();" value="exe">exe</button>
+<button class="button-1" onclick="exe([0, 1, 2]);" value="exe">exe[0, 1, 2]</button>
+
+
+<div class="with0">
+<div class="left-with0"><textarea name="textarea-0" cols="50" rows="10" class="textarea-0" onclick=""></textarea>
+</div>
+<div class="right-with0"><button onclick="exe([0]);">exe[0]</button></div>
+</div>
+
+<div class="with1">
+<div class="left-with1"><textarea name="textarea-1" cols="50" rows="10" class="textarea-1" onclick=""></textarea></div>
+<div class="right-top-with1"><button onclick="exe([1]);">exe[1]</button></div>
+<div class="left-bottom-with1"><button onclick="exe([1,2]);focusTextarea2();">exe[1,2]</button>
+</div>
+</div>
+<div class="with2">
+<div class="left-with2"><textarea name="textarea-2" cols="50" rows="10" class="textarea-2" onclick=""></textarea>
+</div>
+<div class="right-with2"><button onclick="exe([2]);focusTextarea2();">exe[2]</button></div>
+</div>
+
 
 <button onclick="testSave();">testSave</button>
 <button onclick="testLoad();">testLoad</button>
 
-<button
-    onclick="localforage.clear().then(function () {console.log('Database is now empty.')}).catch(function (err) {console.log(err)});">clear
-    localForage</button>
+
+
+<button onclick="localforage.clear().then(function () {console.log('Database is now empty.')}).catch(function (err) {console.log(err)});">clearSaveData</button>
     <span class="err"></span>
 <!-- <textarea name="textarea-3" cols="50" rows="10" class="textarea-3" onclick=""></textarea> -->
 </div>
@@ -126,44 +193,44 @@ button{
 
 function setDataToTextarea() {
 document.querySelector(".textarea-0").value =
-`
+`CREATE TABLE IF NOT EXISTS foo (
+foo_id TINYINT NOT NULL AUTO_INCREMENT,
+bar_id TINYINT NOT NULL,
+foo_txt VARCHAR(50) not null,
+PRIMARY KEY (foo_id),
+FOREIGN KEY (bar_id) REFERENCES bar (bar_id)
+);
 CREATE TABLE IF NOT EXISTS bar (
 bar_id TINYINT NOT NULL,
 bar_txt VARCHAR(50) NOT NULL,
 PRIMARY KEY (bar_id)
 );
-CREATE TABLE IF NOT EXISTS foo (
-foo_id TINYINT NOT NULL AUTO_INCREMENT,
-bar_id TINYINT NOT NULL,
-foo_txt VARCHAR(50) not null,
-PRIMARY KEY (foo_id),
-FOREIGN KEY (foo_id) REFERENCES bar (bar_id)
-);
-`;
-document.querySelector(".textarea-1").value =
-`
 insert into bar (bar_id, bar_txt) values (1, "bar1");
 insert into bar (bar_id, bar_txt) values (2, "bar2");
 insert into bar (bar_id, bar_txt) values (3, "bar3");
 insert into bar (bar_id, bar_txt) values (4, "bar4");
-insert into bar (bar_id, bar_txt) values (5, "bar5");
-
-insert into foo (bar_id, foo_txt) values (1, 'baz');
+insert into bar (bar_id, bar_txt) values (5, "bar5");`;
+document.querySelector(".textarea-1").value =
+`insert into foo (bar_id, foo_txt) values (1, 'baz');
 insert into foo (bar_id, foo_txt) values (2, 'bazbaz');
-insert into foo (bar_id, foo_txt) values (3, 'bazbazbaz');
-`;
+insert into foo (bar_id, foo_txt) values (3, 'bazbazbaz');`;
 document.querySelector(".textarea-2").value =
-`
-select * from foo join bar on foo.bar_id = bar.bar_id;
-`;
+`select * from foo join bar on foo.bar_id = bar.bar_id;`;
 }
-// document.querySelector(".textarea-3").value =`select * from foo join bar on foo.bar_id = bar.bar_id;`;
 
-function setTextareaToAlasqlAndReturnData() {
-    alasql(document.querySelector(".textarea-0").value);
-    alasql(document.querySelector(".textarea-1").value);
-    return alasql(document.querySelector(".textarea-2").value);
-    // return alasql(document.querySelector(".textarea-3").value);
+function focusTextarea2() {
+    document.querySelector(".textarea-2").focus()
+}
+
+function exeTextArea(indexArray) {
+    indexArray.forEach(V=>
+        alasql(
+            document.querySelector(`.textarea-${V.toString()}`).value.split("\n").join("")
+        )
+    );
+    if(indexArray.includes(2)){
+        return alasql(document.querySelector(".textarea-2").value);
+    }
 }
 
 function makeTrTdHeader(data) {
@@ -190,8 +257,8 @@ function makeTableHtml(data) {
 function settest() {
     setDataToTextarea();
 }
-function exe() {
-    document.querySelector('.app').innerHTML = makeTableHtml(setTextareaToAlasqlAndReturnData());
+function exe(indexArray) {
+    document.querySelector('.app').innerHTML = makeTableHtml(exeTextArea(indexArray));
 }
 
 
@@ -204,12 +271,10 @@ async function testSave() {
         document.querySelector(".err").value = err
         );
 }
-let tmp;
 async function testLoad() {
     try {
         const preData = await localforage.getItem("textAreaData");
         const data = JSON.parse(preData);
-        tmp = await data;
         document.querySelectorAll(".textarea-0, .textarea-1, .textarea-2").forEach((V,IDX)=> V.value = data[IDX] );
     } catch (err) {
         document.querySelector(".err").value = err;
