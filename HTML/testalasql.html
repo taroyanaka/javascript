@@ -220,8 +220,8 @@ insert into bar (bar_id, bar_txt) values (4, "bar4");
 insert into bar (bar_id, bar_txt) values (5, "bar5");`;
 document.querySelector(".textarea-1").value =
 `insert into foo (bar_id, foo_txt) values (1, 'baz');
-insert into foo (bar_id, foo_txt) values (2, 'bazbaz');
-insert into foo (bar_id, foo_txt) values (3, 'bazbazbaz');`;
+insert into foo (bar_id, foo_txt) values (3, 'bazbaz');
+insert into foo (bar_id, foo_txt) values (5, 'bazbazbaz');`;
 document.querySelector(".textarea-2").value =
 `select * from foo join bar on foo.bar_id = bar.bar_id;`;
 }
