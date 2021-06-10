@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sendgetparamtest</title>
+    <!-- https://stackoverflow.com/a/198031 -->
+</head>
+<body>
+<span id="bar"></span>
+
+<h1>this is h1 str</h1>
+fn:<textarea name="fn" class="fn" cols="30" rows="10" oninput="makeGetParamUrl();"></textarea>
+url:<textarea name="input_url" class="input_url" cols="30" rows="10" oninput="makeGetParamUrl();"></textarea>
+<a class="sendFn" href=""></a>
+<script>
+function receiver() {
+    if ((new URL(document.location)).searchParams.get('fnparam')) {
+        const param1_fn = new Function("param0_str",
+            JSON.parse(
+                (new URL(document.location)).searchParams.get('fnparam')
+            )
+        );
+        const param0_str = (new URL(document.location)).searchParams.get('param0');
+
+        param1_fn(param0_str);
+    }
+}
+
+    function showreceiver() {
+        document.querySelector("#bar").innerText = receiver.toString();
+    }
+showreceiver();
+
+function init() {
+    document.querySelector(".fn").value = `document.querySelector("h1").textContent = param0_str;`;
+    document.querySelector(".input_url").value = 
+        `${window.location.href}?param0=THISISPARAM0STRING&fnparam=`;
+}
+
+function makeGetParamUrl() {
+    const fnUrl = 
+        document.querySelector(".input_url").value
+        +
+        JSON.stringify(document.querySelector(".fn").value)
+    ;
+    document.querySelector(".sendFn").href = fnUrl
+    document.querySelector(".sendFn").textContent = fnUrl;
+}
+
+receiver();
+init();
+makeGetParamUrl();
+</script>
+</body>
+</html>
