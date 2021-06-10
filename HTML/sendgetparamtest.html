@@ -8,6 +8,10 @@
     <!-- https://stackoverflow.com/a/198031 -->
 </head>
 <body>
+<div>
+<button onclick="init0()">init0</button>
+<button onclick="init1()">init1</button>
+</div>
 <span id="bar"></span>
 
 <h1>this is h1 str</h1>
@@ -33,27 +37,35 @@ function receiver() {
 function showreceiver() {
     document.querySelector("#bar").innerText = receiver.toString();
 }
-showreceiver();
-
-function init() {
-    document.querySelector(".fn").value = `document.querySelector("h1").textContent = param0_str;`;
-    document.querySelector(".input_url").value = 
-        `${window.location.href}?param0=THISISPARAM0STRING&fnparam=`;
-}
 
 function makeGetParamUrl() {
-    const fnUrl = 
+    const fnUrl =
         document.querySelector(".input_url").value
         +
         JSON.stringify(document.querySelector(".fn").value)
-    ;
+        ;
     document.querySelector(".sendFn").href = fnUrl
     document.querySelector(".sendFn").textContent = fnUrl;
 }
 
+
+function init0() {
+    document.querySelector(".fn").value = `document.querySelector("h1").textContent = param0_str;`;
+    document.querySelector(".input_url").value = 
+        `${window.location.href}?param0=THISISPARAM0STRING&fnparam=`;
+    makeGetParamUrl();
+}
+function init1() {
+    document.querySelector(".fn").value =
+        `document.querySelector("h1").textContent = JSON.parse(param0_str).map(V=>V*100);`;
+    document.querySelector(".input_url").value = 
+        `${window.location.href}?param0=[1,2,3]&fnparam=`;
+    makeGetParamUrl()
+}
+
+showreceiver();
 receiver();
-init();
-makeGetParamUrl();
+init0();
 </script>
 </body>
 </html>
