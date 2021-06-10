@@ -11,9 +11,11 @@
 <span id="bar"></span>
 
 <h1>this is h1 str</h1>
+
 fn:<textarea name="fn" class="fn" cols="30" rows="10" oninput="makeGetParamUrl();"></textarea>
 url:<textarea name="input_url" class="input_url" cols="30" rows="10" oninput="makeGetParamUrl();"></textarea>
 <a class="sendFn" href=""></a>
+
 <script>
 function receiver() {
     if ((new URL(document.location)).searchParams.get('fnparam')) {
@@ -28,9 +30,9 @@ function receiver() {
     }
 }
 
-    function showreceiver() {
-        document.querySelector("#bar").innerText = receiver.toString();
-    }
+function showreceiver() {
+    document.querySelector("#bar").innerText = receiver.toString();
+}
 showreceiver();
 
 function init() {
