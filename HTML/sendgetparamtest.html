@@ -23,11 +23,11 @@ url:<textarea name="input_url" class="input_url" cols="30" rows="10" oninput="ma
 <script>
 function receiver() {
     if ((new URL(document.location)).searchParams.get('fnparam')) {
-        const param1_fn = new Function("param0_str",
-            JSON.parse(
-                (new URL(document.location)).searchParams.get('fnparam')
-            )
-        );
+        // const param1_fn = new Function("param0_str",
+        //     JSON.parse(
+        //         (new URL(document.location)).searchParams.get('fnparam')
+        //     )
+        // );
         const param0_str = (new URL(document.location)).searchParams.get('param0');
 
         param1_fn(param0_str);
