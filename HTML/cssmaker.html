@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style class="style0"></style>
+</head>
+<body>
+<span class="app">
+<input type="text" name="" id="input-0" placeholder="input-0" value="">
+</span>
+<button class="plus" onclick="plus();">+</button>
+
+<textarea name="foo" id="foo" cols="30" rows="10"></textarea>
+<textarea name="bar" id="bar" cols="30" rows="10"></textarea>
+<button onclick="execute();">execute</button>
+</body>
+<script>
+function execute() {
+document.querySelector("#foo").textContent = `div.square{
+width: 100px;
+height: 100px;
+background-color: red;
+position: relative;
+animation-name: foo;
+animation-duration: 4s;
+animation-timing-function: linear;
+animation-delay: 2s;
+animation-iteration-count: infinite;
+animation-direction: alternate;
+animation-fill-mode: backwards;
+animation-play-state: running;
+}`;
+document.querySelector("#bar").textContent = `@keyframes foo{
+0% {background-color: red;left:0px;top:0px;}
+25% {background-color: lime;left:500px;top:0px;}
+50% {background-color: dodgerblue;left:500px;top:500px;border-radius: 50%;}
+75% {background-color: orangered;left:0px;top:500px;}
+100% {background-color: blue;left:0px;top:0px;border-radius: 0px;}
+}`;
+document.querySelector("style.style0").textContent += document.querySelector("#foo").textContent;
+document.querySelector("style.style0").textContent += document.querySelector("#bar").textContent;
+
+
+document.querySelector("body").innerHTML += `<div class="square"></div>`;
+
+
+// document.querySelector(".app").innerHTML +=
+// `<input type="text" name="" id="input-0" placeholder="input-0" value="">`;
+
+}
+
+
+
+// [0,1,2].map((V, IDX) => `<input type="text" name="" id="input-0" placeholder="input-0" value="">`).join("");
+
+
+
+function plus() {
+document.querySelector(".app").innerHTML +=
+`<input type="text" name="" id="input-${document.querySelectorAll("input").length}" placeholder="input-${document.querySelectorAll("input").length}" value="">`;
+
+}
+
+function test(params) {
+    document.querySelector("#input-0").value = `animation-duration: 4s;`;
+    document.querySelector("#input-1").value = `animation-timing-function: linear;`;
+}
+
+document.querySelector("button").click();
+
+test();
+
+
+</script>
+
+</html>
