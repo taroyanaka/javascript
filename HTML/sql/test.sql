@@ -17,4 +17,3 @@ PRIMARY KEY (actor_id, film_id),
 FOREIGN KEY (actor_id) REFERENCES actor (actor_id),
 FOREIGN KEY (film_id) REFERENCES film (film_id)
 );
-
