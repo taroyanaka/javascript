@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>replacesql</title>
 </head>
 <body>
-    <button onclick="exe();">exe</button>
-<textarea name="" id="textarea-1" cols="30" rows="10">
+<button onclick="exe();">exe</button>
+<button onclick="testSchema();makeFromSchema();">testSchema makeFromSchema</button>
+<textarea name="" id="textarea-1" cols="30" rows="10" oninput="makeFromSchema();">
 </textarea>
 <textarea name="" id="textarea-2" cols="30" rows="10">
 SELECT * FROM table_name1;
@@ -101,7 +102,8 @@ function exe() {
     exe2();
 }
 
-document.querySelector("#textarea-1").textContent = `CREATE TABLE actor (
+function testSchema() {
+    document.querySelector("#textarea-1").textContent = `CREATE TABLE actor (
 actor_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 actor_name TEXT NOT NULL,
 PRIMARY KEY (actor_id)
@@ -120,6 +122,7 @@ PRIMARY KEY (actor_id, film_id),
 FOREIGN KEY (actor_id) REFERENCES actor (actor_id),
 FOREIGN KEY (film_id) REFERENCES film (film_id)
 );`
+}
 function getTableName() {
     return document.querySelector("#textarea-1").textContent.split("\n")
         .filter(V => V.includes("CREATE TABLE"))
@@ -143,19 +146,19 @@ function getColumnName() {
                 .replaceAll(" ", "")
         })
         .filter(V => V !== "")
-        .filter(V => V.slice(-1) !== "_");
+        .filter(V => V.slice(-1) !== "_")
+        .sort();
 }
 
 function anyOptionTagString(anyFunc) {
     return `<option value=""></option>` + anyFunc().map(V => `<option value="${V}">${V}</option>`).join("")
 }
 
-document.querySelector(".table_name").innerHTML = `<select name="" id="tableName">${anyOptionTagString(getTableName)}</select>`;
-document.querySelector(".column_name").innerHTML = `<select name="" id="tableName">${anyOptionTagString(getColumnName)}</select>`;
-
-
-//.map(V=>V.replaceAll(/\/.+\//gm, "").replaceAll(" ", ""))
-
+function makeFromSchema() {
+    document.querySelector(".table_name").innerHTML = `<select name="" id="tableName">${anyOptionTagString(getTableName)}</select>`;
+    document.querySelector(".column_name").innerHTML = `<select name="" id="tableName">${anyOptionTagString(getColumnName)}</select>`;
+}
+// makeFromSchema();
 </script>
 
 </body>
