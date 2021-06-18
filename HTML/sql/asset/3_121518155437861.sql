@@ -1,0 +1,1 @@
+SELECT * FROM actor LEFT JOIN film_actor ON film_actor.actor_id = actor.actor_id LEFT JOIN film ON film.film_id = film_actor.film_id;
