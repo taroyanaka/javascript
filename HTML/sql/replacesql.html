@@ -17,24 +17,24 @@ SELECT column_name1, column_name2 FROM table_name1 WHERE condition1;
 SELECT * FROM table_name1 WHERE condition1 AND condition2;
 SELECT * FROM table_name1 WHERE condition1 OR condition2;
 SELECT * FROM table_name1 WHERE NOT condition1;
-SELECT * FROM table_name1 WHERE condition1 AND (condition2 OR condition13);
+SELECT * FROM table_name1 WHERE condition1 AND (condition2 OR condition3);
 SELECT * FROM table_name1 WHERE EXISTS (SELECT column_name1 FROM table_name1 WHERE condition1);
 SELECT * FROM table_name1 ORDER BY column_name1;
 SELECT * FROM table_name1 ORDER BY column_name1 DESC;
 SELECT * FROM table_name1 ORDER BY column_name1 ASC, column_name2 DESC;
-SELECT TOP number columns_names FROM table_name1 WHERE condition1;
+SELECT TOP number column_names FROM table_name1 WHERE condition1;
 SELECT * FROM Products WHERE (column_name1 BETWEEN value1 AND value2) AND NOT column_name2 IN (value3, value4);
 SELECT * FROM Products WHERE column_name1 BETWEEN value1 AND value2;
 SELECT * FROM table_name1 WHERE column_name1 IS NULL;
 SELECT * FROM table_name1 WHERE column_name1 IS NOT NULL;
-SELECT column_name1 AS alias_name FROM table_name1;
-SELECT column_name1 FROM table_name1 AS alias_name;
+SELECT column_name1 AS alias_name1 FROM table_name1;
+SELECT column_name1 FROM table_name1 AS alias_name1;
 SELECT column_name1 AS alias_name1, column_name2 AS alias_name2;
-SELECT column_name1, column_name2 + ', ' + column_name3 AS alias_name;
+SELECT column_name1, column_name2 + ', ' + column_name3 AS alias_name1;
 SELECT column_name1, COUNT(column_name2) FROM table_name1 WHERE condition1 GROUP BY column_name1 ORDER BY
 COUNT(column_name2) DESC;
 UPDATE table_name1 SET column_name1 = value1, column_name2 = value2 WHERE condition1;
-UPDATE table_name1 SET column_name1 = value;
+UPDATE table_name1 SET column_name1 = value1;
 DELETE FROM table_name1 WHERE condition1;
 DELETE * FROM table_name1;
 SELECT COUNT (DISTINCT column_name1);
@@ -43,47 +43,120 @@ SELECT SUM (column_name1) FROM table_name1 WHERE condition1;
 SELECT column_names FROM table_name1 WHERE column_name1 IN (value1, value2, …);
 SELECT column_names FROM table_name1 WHERE column_name1 IN (SELECT STATEMENT);
 SELECT column_names FROM table_name1 WHERE column_name1 BETWEEN value1 AND value2;
-SELECT MIN (column_names) FROM table_name1 WHERE condition;
-SELECT MAX (column_names) FROM table_name1 WHERE condition;
+SELECT MIN (column_names) FROM table_name1 WHERE condition1;
+SELECT MAX (column_names) FROM table_name1 WHERE condition1;
 SELECT column_names FROM table_name1 INNER JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
 SELECT column_names FROM table_name1 LEFT JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
 SELECT column_names FROM table_name1 RIGHT JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
 SELECT column_names FROM table_name1 FULL OUTER JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
-SELECT column_names FROM table_name1 T1, table_name1 T2 WHERE condition;
+SELECT column_names FROM table_name1 T1, table_name1 T2 WHERE condition1;
+SELECT table_name1.column_name1, table_name2.column_name2, table_name3.column_name3 FROM ((table_name1 INNER JOIN table_name2
+ON relationship) INNER JOIN table_name3 ON relationship);
 </textarea>
     <textarea class="upper" cols="30" rows="10"></textarea>
     <textarea class="lower" cols="30" rows="10"></textarea>
-
+<div>
+table_name:<div class="table_name"></div>
+column_name:<div class="column_name"></div>
+</div>
 <script>
-    function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
-    // https://stackoverflow.com/a/1027234
-    function exe() {
-        let ary =
-            document.querySelector("#textarea-2")
-            .textContent.replaceAll("("," ")
-            .replaceAll(")", " ")
-            .replaceAll("=", " ")
-            .replaceAll(";", " ")
-            .replaceAll(";", " ")
-            .replaceAll(".", " ")
-            .replaceAll(",", " ")
-            .split(" ");
-        document.querySelector(".upper").textContent =
-            uniq(
-                ary
-                .filter(character => character == character.toUpperCase()))
-            .sort()
+function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
+
+function replaceTxt(txt) {
+        return txt.replaceAll("(", " ")
+        .replaceAll(")", " ")
+        .replaceAll("=", " ")
+        .replaceAll(";", " ")
+        .replaceAll(";", " ")
+        .replaceAll(".", " ")
+        .replaceAll(",", " ")
+        .replaceAll("'", " ")
+}
+function arrayUniqSortJoin(ary) {
+    return uniq(ary).sort().join("\n");
+}
+function exe2() {
+    document.querySelector(".upper").textContent =
+        uniq(document.querySelector(".upper").textContent
+            .split("\n"))
+            .filter(character => character !== "*")
             .join("\n");
-        document.querySelector(".lower").textContent = 
-            uniq(
-                ary
-                .filter(character=> character == character.toLowerCase()))
-            .sort()
+    document.querySelector(".lower").textContent =
+        uniq(document.querySelector(".lower").textContent.split("\n"))
+            .filter(character => character !== "+")
+            .filter(character => character !== "…")
             .join("\n");
-        document.querySelector(".upper").textContent = uniq(document.querySelector(".upper").textContent.split("\n")).join("\n");
-        document.querySelector(".lower").textContent = uniq(document.querySelector(".lower").textContent.split("\n")).join("\n");
-    }
+}
+
+// https://stackoverflow.com/a/1027234
+function exe() {
+    const ary =
+        replaceTxt(document.querySelector("#textarea-2").textContent).split(" ");
+    document.querySelector(".upper").textContent =
+        arrayUniqSortJoin(
+            ary.filter(character => character == character.toUpperCase()) );
+    document.querySelector(".lower").textContent =
+        arrayUniqSortJoin(
+            ary.filter(character => character == character.toLowerCase()) );
+    exe2();
+}
+
+document.querySelector("#textarea-1").textContent = `CREATE TABLE actor (
+actor_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+actor_name TEXT NOT NULL,
+PRIMARY KEY (actor_id)
+);
+
+CREATE TABLE film (
+film_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+film_title TEXT NOT NULL,
+PRIMARY KEY (film_id)
+);
+
+CREATE TABLE film_actor (
+actor_id INT UNSIGNED NOT NULL,
+film_id INT UNSIGNED NOT NULL,
+PRIMARY KEY (actor_id, film_id),
+FOREIGN KEY (actor_id) REFERENCES actor (actor_id),
+FOREIGN KEY (film_id) REFERENCES film (film_id)
+);`
+function getTableName() {
+    return document.querySelector("#textarea-1").textContent.split("\n")
+        .filter(V => V.includes("CREATE TABLE"))
+        .map(V => {
+            const matchStr = [...V.matchAll(/TABLE (.+) \(/gm)];
+            const tableName = matchStr[0][1];
+            return tableName;
+        })
+}
+
+function getColumnName() {
+    return document.querySelector("#textarea-1").textContent.split("\n")
+        .map(V => V.split("")
+            .filter(character => character == character.toLowerCase()))
+        .map(V => V.join(""))
+        .filter(V => !V.includes("("))
+        .filter(V => !V.includes(")"))
+        .map(V => {
+            return V
+                .replaceAll(",", "")
+                .replaceAll(" ", "")
+        })
+        .filter(V => V !== "")
+        .filter(V => V.slice(-1) !== "_");
+}
+
+function anyOptionTagString(anyFunc) {
+    return `<option value=""></option>` + anyFunc().map(V => `<option value="${V}">${V}</option>`).join("")
+}
+
+document.querySelector(".table_name").innerHTML = `<select name="" id="tableName">${anyOptionTagString(getTableName)}</select>`;
+document.querySelector(".column_name").innerHTML = `<select name="" id="tableName">${anyOptionTagString(getColumnName)}</select>`;
+
+
+//.map(V=>V.replaceAll(/\/.+\//gm, "").replaceAll(" ", ""))
 
 </script>
+
 </body>
 </html>
