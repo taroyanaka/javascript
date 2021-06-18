@@ -1,0 +1,10 @@
+SELECT column_names FROM table_name1 WHERE column_name1 IN (value1, value2, …);
+SELECT column_names FROM table_name1 WHERE column_name1 IN (SELECT STATEMENT);
+SELECT column_names FROM table_name1 WHERE column_name1 BETWEEN value1 AND value2;
+SELECT MIN (column_names) FROM table_name1 WHERE condition;
+SELECT MAX (column_names) FROM table_name1 WHERE condition;
+SELECT column_names FROM table_name1 INNER JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
+SELECT column_names FROM table_name1 LEFT JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
+SELECT column_names FROM table_name1 RIGHT JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
+SELECT column_names FROM table_name1 FULL OUTER JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
+SELECT column_names FROM table_name1 T1, table_name1 T2 WHERE condition;

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="exe();">exe</button>
+<textarea name="" id="textarea-1" cols="30" rows="10">
+</textarea>
+<textarea name="" id="textarea-2" cols="30" rows="10">
+SELECT * FROM table_name1;
+SELECT DISTINCT column_name1;
+SELECT column_name1, column_name2 FROM table_name1 WHERE condition1;
+SELECT * FROM table_name1 WHERE condition1 AND condition2;
+SELECT * FROM table_name1 WHERE condition1 OR condition2;
+SELECT * FROM table_name1 WHERE NOT condition1;
+SELECT * FROM table_name1 WHERE condition1 AND (condition2 OR condition13);
+SELECT * FROM table_name1 WHERE EXISTS (SELECT column_name1 FROM table_name1 WHERE condition1);
+SELECT * FROM table_name1 ORDER BY column_name1;
+SELECT * FROM table_name1 ORDER BY column_name1 DESC;
+SELECT * FROM table_name1 ORDER BY column_name1 ASC, column_name2 DESC;
+SELECT TOP number columns_names FROM table_name1 WHERE condition1;
+SELECT * FROM Products WHERE (column_name1 BETWEEN value1 AND value2) AND NOT column_name2 IN (value3, value4);
+SELECT * FROM Products WHERE column_name1 BETWEEN value1 AND value2;
+SELECT * FROM table_name1 WHERE column_name1 IS NULL;
+SELECT * FROM table_name1 WHERE column_name1 IS NOT NULL;
+SELECT column_name1 AS alias_name FROM table_name1;
+SELECT column_name1 FROM table_name1 AS alias_name;
+SELECT column_name1 AS alias_name1, column_name2 AS alias_name2;
+SELECT column_name1, column_name2 + ', ' + column_name3 AS alias_name;
+SELECT column_name1, COUNT(column_name2) FROM table_name1 WHERE condition1 GROUP BY column_name1 ORDER BY
+COUNT(column_name2) DESC;
+UPDATE table_name1 SET column_name1 = value1, column_name2 = value2 WHERE condition1;
+UPDATE table_name1 SET column_name1 = value;
+DELETE FROM table_name1 WHERE condition1;
+DELETE * FROM table_name1;
+SELECT COUNT (DISTINCT column_name1);
+SELECT AVG (column_name1) FROM table_name1 WHERE condition1;
+SELECT SUM (column_name1) FROM table_name1 WHERE condition1;
+SELECT column_names FROM table_name1 WHERE column_name1 IN (value1, value2, …);
+SELECT column_names FROM table_name1 WHERE column_name1 IN (SELECT STATEMENT);
+SELECT column_names FROM table_name1 WHERE column_name1 BETWEEN value1 AND value2;
+SELECT MIN (column_names) FROM table_name1 WHERE condition;
+SELECT MAX (column_names) FROM table_name1 WHERE condition;
+SELECT column_names FROM table_name1 INNER JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
+SELECT column_names FROM table_name1 LEFT JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
+SELECT column_names FROM table_name1 RIGHT JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
+SELECT column_names FROM table_name1 FULL OUTER JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
+SELECT column_names FROM table_name1 T1, table_name1 T2 WHERE condition;
+</textarea>
+    <textarea class="upper" cols="30" rows="10"></textarea>
+    <textarea class="lower" cols="30" rows="10"></textarea>
+
+<script>
+    function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
+    // https://stackoverflow.com/a/1027234
+    function exe() {
+        let ary =
+            document.querySelector("#textarea-2")
+            .textContent.replaceAll("("," ")
+            .replaceAll(")", " ")
+            .replaceAll("=", " ")
+            .replaceAll(";", " ")
+            .replaceAll(";", " ")
+            .replaceAll(".", " ")
+            .replaceAll(",", " ")
+            .split(" ");
+        document.querySelector(".upper").textContent =
+            uniq(
+                ary
+                .filter(character => character == character.toUpperCase()))
+            .sort()
+            .join("\n");
+        document.querySelector(".lower").textContent = 
+            uniq(
+                ary
+                .filter(character=> character == character.toLowerCase()))
+            .sort()
+            .join("\n");
+        document.querySelector(".upper").textContent = uniq(document.querySelector(".upper").textContent.split("\n")).join("\n");
+        document.querySelector(".lower").textContent = uniq(document.querySelector(".lower").textContent.split("\n")).join("\n");
+    }
+
+</script>
+</body>
+</html>
