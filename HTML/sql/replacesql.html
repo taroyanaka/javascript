@@ -60,6 +60,47 @@ ON relationship) INNER JOIN table_name3 ON relationship);
 table_name:<div class="table_name"></div>
 column_name:<div class="column_name"></div>
 </div>
+
+<div>
+<span class="sqltext">SELECT * FROM table_name1;</span>
+</div>
+<div>
+<span class="sqltext">SELECT * FROM <select name="" id="">
+        <option value=""></option>
+        <option value="table_name1">table_name1</option>
+        <option value="table_name2">table_name2</option>
+        <option value="table_name3">table_name3</option>
+    </select>;</span>
+</div>
+
+<div>
+<span>SELECT column_name1, column_name2 FROM table_name1 WHERE condition1;</span>
+</div>
+<div>
+<span class="sqltext">SELECT <select name="" id="">
+        <option value=""></option>
+        <option value="column_name1">column_name1</option>
+        <option value="column_name2">column_name2</option>
+        <option value="column_name3">column_name3</option>
+    </select>, <select name="" id="">
+        <option value=""></option>
+        <option value="column_name1">column_name1</option>
+        <option value="column_name2">column_name2</option>
+        <option value="column_name3">column_name3</option>
+    </select> FROM <select name="" id="">
+        <option value=""></option>
+        <option value="table_name1">table_name1</option>
+        <option value="table_name2">table_name2</option>
+        <option value="table_name3">table_name3</option>
+    </select> WHERE <select name="" id="">
+        <option value=""></option>
+        <option value="condition1">condition1</option>
+        <option value="condition2">condition2</option>
+        <option value="condition3">condition3</option>
+    </select>;</span>
+</div>
+<div>
+
 <script>
 function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
 
