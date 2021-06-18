@@ -7,6 +7,7 @@
     <title>testalasql</title>
     <script src="alasql.js"></script>
     <script src="localforage.js"></script>
+    <!-- https://www.mockaroo.com/ -->
     <style>
 
 .result{
@@ -25,13 +26,13 @@
 /* https://stackoverflow.com/a/59858506 */
 .fixed {
     /* position: sticky; */
-    position: fixed;
-    top: 0;
+    /* position: fixed; */
+    /* top: 0; */
     /* scroll-behavior: auto; */
 }
 textarea{
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
 }
 button{
     width: 100px;
@@ -115,6 +116,7 @@ button{
 </div>
 <div class="right-with2"><button onclick="exe([2]);focusTextarea2();">exe[2]</button></div>
 </div>
+<textarea name="textarea-3" cols="50" rows="10" class="textarea-3" placeholder="memo area" onclick=""></textarea>
 
 
 <button onclick="testSave();">testSave</button>
@@ -126,6 +128,21 @@ button{
     <span class="err"></span>
 <!-- <textarea name="textarea-3" cols="50" rows="10" class="textarea-3" onclick=""></textarea> -->
 </div>
+
+<textarea name="textarea-4" cols="50" rows="10" class="textarea-4" placeholder="resource url area" onclick=""></textarea>
+<div>
+<!-- <button onclick="reloadFromUrl();">reloadFromUrl</button> -->
+<button onclick="loadFromWeb();">loadFromWeb</button>
+<button onclick="setSampleUrl();">setSampleUrl</button>
+<button onclick="setFormedUrlFromId();">setFormedUrlFromId</button>
+<input type="number" name="idNumber" class="idNumber" placeholder="121518155437861">
+</div>
+
+
+
+
+
+
 <div class="one">
 <table class="app fixed"></table>
 </div>
@@ -271,22 +288,62 @@ function exe(indexArray) {
 
 
 async function testSave() {
-    const data = Array.from(document.querySelectorAll(".textarea-0, .textarea-1, .textarea-2")).map(V=>V.value);
+    const data = Array.from(document.querySelectorAll(".textarea-0, .textarea-1, .textarea-2, .textarea-3")).map(V=>V.value);
     await localforage.setItem("textAreaData", JSON.stringify(data))
         .then(res =>
-        document.querySelector(".err").value = "success"
+        document.querySelector(".err").textContent = "success"
         ).catch(err =>
-        document.querySelector(".err").value = err
+        document.querySelector(".err").textContent = err
         );
 }
 async function testLoad() {
     try {
         const preData = await localforage.getItem("textAreaData");
         const data = JSON.parse(preData);
-        document.querySelectorAll(".textarea-0, .textarea-1, .textarea-2").forEach((V,IDX)=> V.value = data[IDX] );
+        document.querySelectorAll(".textarea-0, .textarea-1, .textarea-2, .textarea-3").forEach((V,IDX)=> V.value = data[IDX] );
     } catch (err) {
-        document.querySelector(".err").value = err;
+        document.querySelector(".err").textContent = err;
     }
+}
+
+function makeNowStr() {
+    var date = new Date();
+    var components = [
+        date.getYear(),
+        date.getMonth(),
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+        date.getMilliseconds()
+    ];
+    var id = components.join("");
+    return id;
+}
+
+async function reloadFromUrl(url, IDX) {
+    const response = await fetch(url);
+    const data = await response.text();
+    document.querySelector(`.textarea-${IDX}`).textContent = await data;
+}
+
+function loadFromWeb() {
+    document.querySelector(".textarea-4").textContent.split("\n").forEach((V,IDX)=>reloadFromUrl(V,IDX));
+    // console.log()
+}
+function setSampleUrl() {
+    document.querySelector(".textarea-4").textContent = `https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/sql/asset/0_121518155437861.sql
+https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/sql/asset/1_121518155437861.sql
+https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/sql/asset/2_121518155437861.sql
+https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/sql/asset/3_121518155437861.sql`;
+
+}
+function setFormedUrlFromId() {
+    const id = document.querySelector(".idNumber").value || "121518155437861";
+    console.log(id);
+    document.querySelector(".textarea-4").textContent = 
+    [0,1,2,3].map((V,IDX)=>
+    `https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/sql/asset/${V.toString()}_${id}.sql`).join("\n");
 }
 
 </script>
