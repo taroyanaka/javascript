@@ -5,8 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>replacesql</title>
-    <!-- https://codesandbox.io/s/m16q2?file=/select.js -->
-    <!-- <script src="select.js"></script> -->
+    <!-- https://docs.oracle.com/cd/B19306_01/server.102/b14195/sqlqr04.htm -->
+    <style>
+.selectableTextarea{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+    </style>
 </head>
 <body>
 <button onclick="exe();">exe</button>
@@ -212,27 +218,48 @@ function makeFromSchema() {
 }
 // makeFromSchema();
 
-function makeSelectableTextarea() {
+function setColumnsNamesMultipleSelectbox() {
     // Array.from(document.querySelector(".columns_names").selectedOptions)[0].value
-    document.querySelector(".selectableTextarea").innerHTML += `<select name="" class="columns_names" multiple>` + getColumnName().map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`;
-    // `<textarea name="" class="columns_names" cols="30" rows="10" oninput="" placeholder="columns_names"></textarea>`;
+    document.querySelector(".selectableTextarea").innerHTML += `columns_names:<select name="" class="columns_names" multiple>` + getColumnName().map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`;
+}
+function makeTableAAndAIDBBndBID() {
+    return `<select name="" class=""tableA relationship">` + getTableName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
+    +
+    `<select name="" class="tableAID relationship">` + getColumnName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
+    +
+    `<select name="" class=""tableB relationship">` + getTableName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
+    +
+    `<select name="" class=""tableBID relationship">` + getColumnName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
+}
+function setRelationshipMultipleSelectbox() {
+    // Array.from(document.querySelector(".columns_names").selectedOptions)[0].value
+    document.querySelector(".selectableTextarea").innerHTML += `relationship:` + makeTableAAndAIDBBndBID();
+}
+function setData() {
+    document.querySelector(".alias_name").value =
+        range(1, 10).map(V => "A" + V.toString() + "\n").join("");
+    document.querySelector(".column_name").value =
+        getColumnName().map(V => V.toString() + "\n").join("");
+    document.querySelector(".condition").value = 
+        ["=", "!=", "^=", "<>", ">", "<", ">=", "<=", "ANY", "SOME", "ALL" ,"LIKE", "NOT", "OR", "AND", "CASE WHEN condition1 THEN result1 WHEN conditionN THEN resultN ELSE result END", "IS NULL", "IS NOT NULL", "LIKE", "BETWEEN AND", "NOT BETWEEN", "IN ( expression_list | subquery )", "NOT IN ( expression_list | subquery )", "EXISTS (subquery)", "IS OF type", "IS EMPTY", "IS NOT EMPTY"].join("\n");
+    document.querySelector(".number").value = 
+         ["10", "30", "50", "100"].join("\n");
+
+    document.querySelector(".table_name").value =      getTableName().map(V => V.toString() + "\n").join("");
+    document.querySelector(".value").value;
+}
+
+function makeSelectableTextarea() {
+    setColumnsNamesMultipleSelectbox();
+    setRelationshipMultipleSelectbox();
     document.querySelector(".selectableTextarea").innerHTML += `alias_name
 column_name
 condition
 number
-relationship
 table_name
-value`.split("\n").map(V=>`<textarea name="" class="${V}" cols="30" rows="10" oninput="" placeholder="${V}"></textarea>`).join("");
-document.querySelector(".alias_name").value = range(1,10).map(V=>"A"+V.toString()+"\n" ).join("");
-document.querySelector(".column_name").value = getColumnName().map(V => V.toString() + "\n").join("");
-// document.querySelector(".columns_names").value;
-document.querySelector(".condition").value;
-document.querySelector(".number").value;
-document.querySelector(".relationship").value;
-document.querySelector(".table_name").value = getTableName().map(V => V.toString() + "\n").join("");
-document.querySelector(".value").value;
+value`.split("\n").map(V=>`<div><div>${V}:</div><textarea name="" class="${V}" cols="30" rows="10" oninput="" placeholder="${V}"></textarea></div>`).join("");
 
-
+    setData();
 }
 
 function exe3() {
