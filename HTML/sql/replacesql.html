@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>replacesql</title>
+    <!-- https://codesandbox.io/s/m16q2?file=/select.js -->
+    <!-- <script src="select.js"></script> -->
 </head>
 <body>
 <button onclick="exe();">exe</button>
@@ -12,97 +14,101 @@
 <textarea name="" id="textarea-1" cols="30" rows="10" oninput="makeFromSchema();">
 </textarea>
 <textarea name="" id="textarea-2" cols="30" rows="10">
-SELECT * FROM table_name1;
-SELECT DISTINCT column_name1;
-SELECT column_name1, column_name2 FROM table_name1 WHERE condition1;
-SELECT * FROM table_name1 WHERE condition1 AND condition2;
-SELECT * FROM table_name1 WHERE condition1 OR condition2;
-SELECT * FROM table_name1 WHERE NOT condition1;
-SELECT * FROM table_name1 WHERE condition1 AND (condition2 OR condition3);
-SELECT * FROM table_name1 WHERE EXISTS (SELECT column_name1 FROM table_name1 WHERE condition1);
-SELECT * FROM table_name1 ORDER BY column_name1;
-SELECT * FROM table_name1 ORDER BY column_name1 DESC;
-SELECT * FROM table_name1 ORDER BY column_name1 ASC, column_name2 DESC;
-SELECT TOP number column_names FROM table_name1 WHERE condition1;
-SELECT * FROM Products WHERE (column_name1 BETWEEN value1 AND value2) AND NOT column_name2 IN (value3, value4);
-SELECT * FROM Products WHERE column_name1 BETWEEN value1 AND value2;
-SELECT * FROM table_name1 WHERE column_name1 IS NULL;
-SELECT * FROM table_name1 WHERE column_name1 IS NOT NULL;
-SELECT column_name1 AS alias_name1 FROM table_name1;
-SELECT column_name1 FROM table_name1 AS alias_name1;
-SELECT column_name1 AS alias_name1, column_name2 AS alias_name2;
-SELECT column_name1, column_name2 + ', ' + column_name3 AS alias_name1;
-SELECT column_name1, COUNT(column_name2) FROM table_name1 WHERE condition1 GROUP BY column_name1 ORDER BY
-COUNT(column_name2) DESC;
-UPDATE table_name1 SET column_name1 = value1, column_name2 = value2 WHERE condition1;
-UPDATE table_name1 SET column_name1 = value1;
-DELETE FROM table_name1 WHERE condition1;
-DELETE * FROM table_name1;
-SELECT COUNT (DISTINCT column_name1);
-SELECT AVG (column_name1) FROM table_name1 WHERE condition1;
-SELECT SUM (column_name1) FROM table_name1 WHERE condition1;
-SELECT column_names FROM table_name1 WHERE column_name1 IN (value1, value2, …);
-SELECT column_names FROM table_name1 WHERE column_name1 IN (SELECT STATEMENT);
-SELECT column_names FROM table_name1 WHERE column_name1 BETWEEN value1 AND value2;
-SELECT MIN (column_names) FROM table_name1 WHERE condition1;
-SELECT MAX (column_names) FROM table_name1 WHERE condition1;
-SELECT column_names FROM table_name1 INNER JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
-SELECT column_names FROM table_name1 LEFT JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
-SELECT column_names FROM table_name1 RIGHT JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
-SELECT column_names FROM table_name1 FULL OUTER JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
-SELECT column_names FROM table_name1 T1, table_name1 T2 WHERE condition1;
-SELECT table_name1.column_name1, table_name2.column_name2, table_name3.column_name3 FROM ((table_name1 INNER JOIN table_name2
-ON relationship) INNER JOIN table_name3 ON relationship);
+SELECT * FROM table_name;
+SELECT DISTINCT column_name;
+SELECT column_name, column_name FROM table_name WHERE condition;
+SELECT * FROM table_name WHERE condition AND condition;
+SELECT * FROM table_name WHERE condition OR condition;
+SELECT * FROM table_name WHERE NOT condition;
+SELECT * FROM table_name WHERE condition AND (condition OR condition);
+SELECT * FROM table_name WHERE EXISTS (SELECT column_name FROM table_name WHERE condition);
+SELECT * FROM table_name ORDER BY column_name;
+SELECT * FROM table_name ORDER BY column_name DESC;
+SELECT * FROM table_name ORDER BY column_name ASC, column_name DESC;
+SELECT TOP number columns_names FROM table_name WHERE condition;
+SELECT * FROM Products WHERE (column_name BETWEEN value AND value) AND NOT column_name IN (value, value);
+SELECT * FROM Products WHERE column_name BETWEEN value AND value;
+SELECT * FROM table_name WHERE column_name IS NULL;
+SELECT * FROM table_name WHERE column_name IS NOT NULL;
+SELECT column_name AS alias_name FROM table_name;
+SELECT column_name FROM table_name AS alias_name;
+SELECT column_name AS alias_name, column_name AS alias_name;
+SELECT column_name, column_name + ', ' + column_name AS alias_name;
+SELECT column_name, COUNT(column_name) FROM table_name WHERE condition GROUP BY column_name ORDER BY
+COUNT(column_name) DESC;
+UPDATE table_name SET column_name = value, column_name = value WHERE condition;
+UPDATE table_name SET column_name = value;
+DELETE FROM table_name WHERE condition;
+DELETE * FROM table_name;
+SELECT COUNT (DISTINCT column_name);
+SELECT AVG (column_name) FROM table_name WHERE condition;
+SELECT SUM (column_name) FROM table_name WHERE condition;
+SELECT columns_names FROM table_name WHERE column_name IN (value, value, …);
+SELECT columns_names FROM table_name WHERE column_name IN (SELECT STATEMENT);
+SELECT columns_names FROM table_name WHERE column_name BETWEEN value AND value;
+SELECT MIN (columns_names) FROM table_name WHERE condition;
+SELECT MAX (columns_names) FROM table_name WHERE condition;
+SELECT columns_names FROM table_name INNER JOIN table_name ON table_name.column_name=table_name.column_name;
+SELECT columns_names FROM table_name LEFT JOIN table_name ON table_name.column_name=table_name.column_name;
+SELECT columns_names FROM table_name RIGHT JOIN table_name ON table_name.column_name=table_name.column_name;
+SELECT columns_names FROM table_name FULL OUTER JOIN table_name ON table_name.column_name=table_name.column_name;
+SELECT columns_names FROM table_name T1, table_name T2 WHERE condition;
+SELECT table_name.column_name, table_name.column_name, table_name.column_name FROM ((table_name INNER JOIN table_name
+ON relationship) INNER JOIN table_name ON relationship);
 </textarea>
     <textarea class="upper" cols="30" rows="10"></textarea>
     <textarea class="lower" cols="30" rows="10"></textarea>
 <div>
-table_name:<div class="table_name"></div>
-column_name:<div class="column_name"></div>
+table_name:<div class="table_name_list"></div>
+column_name:<div class="column_name_list"></div>
 </div>
 
 <div>
-<span class="sqltext">SELECT * FROM table_name1;</span>
+<span class="sqltext">SELECT * FROM table_name;</span>
 </div>
 <div>
 <span class="sqltext">SELECT * FROM <select name="" id="">
         <option value=""></option>
-        <option value="table_name1">table_name1</option>
-        <option value="table_name2">table_name2</option>
-        <option value="table_name3">table_name3</option>
+        <option value="table_name">table_name</option>
+        <option value="table_name">table_name</option>
+        <option value="table_name">table_name</option>
     </select>;</span>
 </div>
+<div class="res"></div>
+<div class="selectableTextarea"></div>
 
-<div>
-<span>SELECT column_name1, column_name2 FROM table_name1 WHERE condition1;</span>
+<!-- <div>
+<span>SELECT column_name, column_name FROM table_name WHERE condition;</span>
 </div>
 <div>
 <span class="sqltext">SELECT <select name="" id="">
         <option value=""></option>
-        <option value="column_name1">column_name1</option>
-        <option value="column_name2">column_name2</option>
-        <option value="column_name3">column_name3</option>
+        <option value="column_name">column_name</option>
+        <option value="column_name">column_name</option>
+        <option value="column_name">column_name</option>
     </select>, <select name="" id="">
         <option value=""></option>
-        <option value="column_name1">column_name1</option>
-        <option value="column_name2">column_name2</option>
-        <option value="column_name3">column_name3</option>
+        <option value="column_name">column_name</option>
+        <option value="column_name">column_name</option>
+        <option value="column_name">column_name</option>
     </select> FROM <select name="" id="">
         <option value=""></option>
-        <option value="table_name1">table_name1</option>
-        <option value="table_name2">table_name2</option>
-        <option value="table_name3">table_name3</option>
+        <option value="table_name">table_name</option>
+        <option value="table_name">table_name</option>
+        <option value="table_name">table_name</option>
     </select> WHERE <select name="" id="">
         <option value=""></option>
-        <option value="condition1">condition1</option>
-        <option value="condition2">condition2</option>
-        <option value="condition3">condition3</option>
+        <option value="condition">condition</option>
+        <option value="condition">condition</option>
+        <option value="condition">condition</option>
     </select>;</span>
 </div>
-<div>
+<div> -->
 
 <script>
 function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
+
+function range(from, to) { return [...Array(to - from)].reduce((A, V, IDX) => { A.push(from + IDX); return A }, A = []) };
 
 function replaceTxt(txt) {
         return txt.replaceAll("(", " ")
@@ -117,17 +123,20 @@ function replaceTxt(txt) {
 function arrayUniqSortJoin(ary) {
     return uniq(ary).sort().join("\n");
 }
-function exe2() {
-    document.querySelector(".upper").textContent =
-        uniq(document.querySelector(".upper").textContent
-            .split("\n"))
-            .filter(character => character !== "*")
-            .join("\n");
-    document.querySelector(".lower").textContent =
-        uniq(document.querySelector(".lower").textContent.split("\n"))
+function getUpper() {
+    return uniq(document.querySelector(".upper").textContent
+        .split("\n"))
+        .filter(character => character !== "*");
+}
+function getLower() {
+    return uniq(document.querySelector(".lower").textContent.split("\n"))
             .filter(character => character !== "+")
             .filter(character => character !== "…")
-            .join("\n");
+            .filter(character => character !== "*");
+}
+function exe2() {
+    document.querySelector(".upper").textContent = getUpper().join("\n");
+    document.querySelector(".lower").textContent = getLower().join("\n");
 }
 
 // https://stackoverflow.com/a/1027234
@@ -141,6 +150,8 @@ function exe() {
         arrayUniqSortJoin(
             ary.filter(character => character == character.toLowerCase()) );
     exe2();
+    makeSelectableTextarea();
+    exe3();
 }
 
 function testSchema() {
@@ -196,11 +207,62 @@ function anyOptionTagString(anyFunc) {
 }
 
 function makeFromSchema() {
-    document.querySelector(".table_name").innerHTML = `<select name="" id="tableName">${anyOptionTagString(getTableName)}</select>`;
-    document.querySelector(".column_name").innerHTML = `<select name="" id="tableName">${anyOptionTagString(getColumnName)}</select>`;
+    document.querySelector(".table_name_list").innerHTML = `<select name="" id="tableName">${anyOptionTagString(getTableName)}</select>`;
+    document.querySelector(".column_name_list").innerHTML = `<select name="" id="tableName">${anyOptionTagString(getColumnName)}</select>`;
 }
 // makeFromSchema();
-</script>
 
+function makeSelectableTextarea() {
+
+    // document.querySelector(".selectableTextarea").innerHTML += `<textarea name="" class="columns_names" cols="30" rows="10" oninput="" placeholder="columns_names"></textarea>`;
+    document.querySelector(".selectableTextarea").innerHTML = `` + `alias_name
+column_name
+condition
+number
+relationship
+table_name
+value`.split("\n").map(V=>`<textarea name="" class="${V}" cols="30" rows="10" oninput="" placeholder="${V}"></textarea>`).join("");
+document.querySelector(".alias_name").value = range(1,10).map(V=>"A"+V.toString()+"\n" ).join("");
+document.querySelector(".column_name").value = getColumnName().map(V => V.toString() + "\n").join("");
+document.querySelector(".columns_names").value;
+document.querySelector(".condition").value;
+document.querySelector(".number").value;
+document.querySelector(".relationship").value;
+document.querySelector(".table_name").value = getTableName().map(V => V.toString() + "\n").join("");
+document.querySelector(".value").value;
+
+
+}
+
+function exe3() {
+    document.querySelector(".res").textContent =
+        document.querySelector(".sqltext").textContent
+            .replaceAll(";", " ;")
+            .split(" ")
+            .map(V => {
+                    return getLower().slice(1).includes(V) ? "FOO" :  V;
+            })
+            .join(" ")
+            .replaceAll(" ;", ";")
+        ;
+}
+
+// window["FOO"]();
+function FOO() {
+    console.log("FOO");
+}
+
+testSchema();
+makeFromSchema();
+
+exe();
+
+
+</script>
+<select name="" id="testselect" multiple>
+    <option value="a">columns_names aaaaaaaaaaa</option>
+    <option value="b">columns_names bbbbbbbbbbb</option>
+    <option value="c">columns_names ccccccccccc</option>
+</select>
 </body>
 </html>

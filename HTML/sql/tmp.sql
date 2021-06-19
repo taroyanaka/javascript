@@ -15,7 +15,7 @@ SELECT * FROM Products WHERE column_name1 BETWEEN value1 AND value2;
 SELECT * FROM table_name1 WHERE column_name1 IS NULL;
 SELECT * FROM table_name1 WHERE column_name1 IS NOT NULL;
 SELECT column_name1 AS alias_name1 FROM table_name1;
-SELECT column_name1 FROM table_name1 AS alias_name;
+SELECT column_name1 FROM table_name1 AS alias_name1;
 SELECT column_name1 AS alias_name1, column_name2 AS alias_name2;
 SELECT column_name1, column_name2 + ', ' + column_name3 AS alias_name1;
 SELECT column_name1, COUNT(column_name2) FROM table_name1 WHERE condition1 GROUP BY column_name1 ORDER BY
@@ -37,4 +37,5 @@ SELECT column_names FROM table_name1 LEFT JOIN table_name2 ON table_name1.column
 SELECT column_names FROM table_name1 RIGHT JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
 SELECT column_names FROM table_name1 FULL OUTER JOIN table_name2 ON table_name1.column_name1=table_name2.column_name1;
 SELECT column_names FROM table_name1 T1, table_name1 T2 WHERE condition1;
-SELECT table_name1.column_name1, table_name2.column_name2, table3.column_name3 FROM ((table_name1 INNER JOIN table_name2 ON relationship) INNER JOIN table3 ON relationship);
+SELECT table_name1.column_name1, table_name2.column_name2, table_name3.column_name3 FROM ((table_name1 INNER JOIN table_name2
+ON relationship) INNER JOIN table_name3 ON relationship);
