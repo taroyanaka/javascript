@@ -213,9 +213,10 @@ function makeFromSchema() {
 // makeFromSchema();
 
 function makeSelectableTextarea() {
-
-    // document.querySelector(".selectableTextarea").innerHTML += `<textarea name="" class="columns_names" cols="30" rows="10" oninput="" placeholder="columns_names"></textarea>`;
-    document.querySelector(".selectableTextarea").innerHTML = `` + `alias_name
+    // Array.from(document.querySelector(".columns_names").selectedOptions)[0].value
+    document.querySelector(".selectableTextarea").innerHTML += `<select name="" class="columns_names" multiple>` + getColumnName().map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`;
+    // `<textarea name="" class="columns_names" cols="30" rows="10" oninput="" placeholder="columns_names"></textarea>`;
+    document.querySelector(".selectableTextarea").innerHTML += `alias_name
 column_name
 condition
 number
@@ -224,7 +225,7 @@ table_name
 value`.split("\n").map(V=>`<textarea name="" class="${V}" cols="30" rows="10" oninput="" placeholder="${V}"></textarea>`).join("");
 document.querySelector(".alias_name").value = range(1,10).map(V=>"A"+V.toString()+"\n" ).join("");
 document.querySelector(".column_name").value = getColumnName().map(V => V.toString() + "\n").join("");
-document.querySelector(".columns_names").value;
+// document.querySelector(".columns_names").value;
 document.querySelector(".condition").value;
 document.querySelector(".number").value;
 document.querySelector(".relationship").value;
@@ -259,10 +260,5 @@ exe();
 
 
 </script>
-<select name="" id="testselect" multiple>
-    <option value="a">columns_names aaaaaaaaaaa</option>
-    <option value="b">columns_names bbbbbbbbbbb</option>
-    <option value="c">columns_names ccccccccccc</option>
-</select>
 </body>
 </html>
