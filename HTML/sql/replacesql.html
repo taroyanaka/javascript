@@ -121,8 +121,6 @@ const jsonparseAnyParam = (param) => JSON.parse((new URL(document.location)).sea
 
 const setDataToTextarea0 = () => document.querySelector(`#textarea-0`).value = (jsonparseAnyParam("table") || presetData[0] ).join("\n");
 const setDataToTextarea1 = () => document.querySelector(`#textarea-1`).value = (jsonparseAnyParam("column") || presetData[1] ).join("\n");
-setDataToTextarea0();
-setDataToTextarea1();
 const tableName = () => document.querySelector(`#textarea-0`).value.split("\n");
 const columnName = () => document.querySelector(`#textarea-1`).value.split("\n");
 
@@ -249,6 +247,8 @@ function FOO() {
 
 const initHrefForschematablecolumn = () => {document.querySelector(".getParamFromschematablecolumn").textContent = window.location.origin + "/HTML/sql/schematablecolumn.html"; document.querySelector(".getParamFromschematablecolumn").href = window.location.origin + "/HTML/sql/schematablecolumn.html" }
 
+setDataToTextarea0();
+setDataToTextarea1();
 
 makeFromSchema();
 exe();

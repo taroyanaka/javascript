@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<!-- <span>SELECT * FROM table_name ORDER BY column_name ASC, column_name DESC;</span> -->
+<span>SELECT * FROM Products WHERE (column_name BETWEEN value AND value) AND NOT column_name IN (value, value);</span>
+<!-- <textarea class="res"></textarea> -->
+<textarea name="" class="res" cols="30" rows="10"></textarea>
+<textarea name="" class="res2" cols="30" rows="10"></textarea>
+<div name="" class="res3"></div>
+<script>
+const ary = [
+"alias_name",
+"column_name",
+"columns_names",
+"condition",
+"number",
+"relationship",
+"table_name",
+"value"
+]
+// let ary = [];
+let tmp = document.querySelector(`.res`).value = document.querySelector(`span`).textContent.split(/(\s|;|\(|\))/);
+document.querySelector(`.res2`).value = document.querySelector(`span`).textContent === tmp.join("");
+const htmlStr = (param) => `<ul>
+    <li>${param}0</li>
+    <li>${param}1</li>
+    <li>${param}2</li>
+    <li>${param}3</li>
+    <li>${param}4</li>
+</ul>`;
+
+function alias_name(alias_name){return htmlStr(alias_name)};
+function column_name(column_name){return htmlStr(column_name)};
+function columns_names(columns_names){return htmlStr(columns_names)};
+function condition(condition){return htmlStr(condition)};
+function number(number){return htmlStr(number)};
+function relationship(relationship){return htmlStr(relationship)};
+function table_name(table_name){return htmlStr(table_name)};
+function value(value){return htmlStr(value)};
+
+const func = () => tmp.map(V => {
+        return ary.includes(V) ? window[V](V) : V;
+    }).join("");
+
+document.querySelector(`.res3`).innerHTML = func();
+
+
+</script>
+
+</body>
+</html>
