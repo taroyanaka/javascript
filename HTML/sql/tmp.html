@@ -7,9 +7,54 @@
     <title>Document</title>
 </head>
 <body>
+<div class="selectline">
 <span>SELECT * FROM table_name ORDER BY column_name ASC, column_name DESC;</span>
+</div>
 <!-- <span>SELECT * FROM Products WHERE (column_name BETWEEN value AND value) AND NOT column_name IN (value, value);</span> -->
 <!-- <textarea class="res"></textarea> -->
+<textarea name="" class="res0" cols="30" rows="10">
+SELECT * FROM table_name;
+SELECT DISTINCT column_name;
+SELECT column_name, column_name FROM table_name WHERE condition;
+SELECT * FROM table_name WHERE condition AND condition;
+SELECT * FROM table_name WHERE condition OR condition;
+SELECT * FROM table_name WHERE NOT condition;
+SELECT * FROM table_name WHERE condition AND (condition OR condition);
+SELECT * FROM table_name WHERE EXISTS (SELECT column_name FROM table_name WHERE condition);
+SELECT * FROM table_name ORDER BY column_name;
+SELECT * FROM table_name ORDER BY column_name DESC;
+SELECT * FROM table_name ORDER BY column_name ASC, column_name DESC;
+SELECT TOP number columns_names FROM table_name WHERE condition;
+SELECT * FROM Products WHERE (column_name BETWEEN value AND value) AND NOT column_name IN (value, value);
+SELECT * FROM Products WHERE column_name BETWEEN value AND value;
+SELECT * FROM table_name WHERE column_name IS NULL;
+SELECT * FROM table_name WHERE column_name IS NOT NULL;
+SELECT column_name AS alias_name FROM table_name;
+SELECT column_name FROM table_name AS alias_name;
+SELECT column_name AS alias_name, column_name AS alias_name;
+SELECT column_name, column_name + ', ' + column_name AS alias_name;
+SELECT column_name, COUNT(column_name) FROM table_name WHERE condition GROUP BY column_name ORDER BY
+COUNT(column_name) DESC;
+UPDATE table_name SET column_name = value, column_name = value WHERE condition;
+UPDATE table_name SET column_name = value;
+DELETE FROM table_name WHERE condition;
+DELETE * FROM table_name;
+SELECT COUNT (DISTINCT column_name);
+SELECT AVG (column_name) FROM table_name WHERE condition;
+SELECT SUM (column_name) FROM table_name WHERE condition;
+SELECT columns_names FROM table_name WHERE column_name IN (value, value, …);
+SELECT columns_names FROM table_name WHERE column_name IN (SELECT STATEMENT);
+SELECT columns_names FROM table_name WHERE column_name BETWEEN value AND value;
+SELECT MIN (columns_names) FROM table_name WHERE condition;
+SELECT MAX (columns_names) FROM table_name WHERE condition;
+SELECT columns_names FROM table_name INNER JOIN table_name ON table_name.column_name=table_name.column_name;
+SELECT columns_names FROM table_name LEFT JOIN table_name ON table_name.column_name=table_name.column_name;
+SELECT columns_names FROM table_name RIGHT JOIN table_name ON table_name.column_name=table_name.column_name;
+SELECT columns_names FROM table_name FULL OUTER JOIN table_name ON table_name.column_name=table_name.column_name;
+SELECT columns_names FROM table_name T1, table_name T2 WHERE condition;
+SELECT table_name.column_name, table_name.column_name, table_name.column_name FROM ((table_name INNER JOIN table_name
+ON relationship) INNER JOIN table_name ON relationship);
+</textarea>
 <textarea name="" class="res" cols="30" rows="10"></textarea>
 <textarea name="" class="res2" cols="30" rows="10"></textarea>
 <div name="" class="res3"></div>
