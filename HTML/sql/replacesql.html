@@ -15,10 +15,9 @@
     </style>
 </head>
 <body>
+<a href="" class="getParamFromschematablecolumn"></a>
 <button onclick="exe();">exe</button>
-<button onclick="testSchema();makeFromSchema();">testSchema makeFromSchema</button>
-<textarea name="" id="textarea-1" cols="30" rows="10" oninput="makeFromSchema();">
-</textarea>
+<button onclick="makeFromSchema();">testSchema makeFromSchema</button>
 <textarea name="" id="textarea-2" cols="30" rows="10">
 SELECT * FROM table_name;
 SELECT DISTINCT column_name;
@@ -112,6 +111,11 @@ column_name:<div class="column_name_list"></div>
 <div> -->
 
 <script>
+const jsonparseAnyParam = (param) => JSON.parse((new URL(document.location)).searchParams.get(param))
+    const tableName =
+        jsonparseAnyParam("tabel") || ["actor", "film"];
+    const columnName = 
+        jsonparseAnyParam("column") || ["actor_name", "actor_id", "film_id"];
 function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
 
 function range(from, to) { return [...Array(to - from)].reduce((A, V, IDX) => { A.push(from + IDX); return A }, A = []) };
@@ -160,76 +164,28 @@ function exe() {
     exe3();
 }
 
-function testSchema() {
-    document.querySelector("#textarea-1").textContent = `CREATE TABLE actor (
-actor_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-actor_name TEXT NOT NULL,
-PRIMARY KEY (actor_id)
-);
-
-CREATE TABLE film (
-film_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-film_title TEXT NOT NULL,
-PRIMARY KEY (film_id)
-);
-
-CREATE TABLE film_actor (
-actor_id INT UNSIGNED NOT NULL,
-film_id INT UNSIGNED NOT NULL,
-PRIMARY KEY (actor_id, film_id),
-FOREIGN KEY (actor_id) REFERENCES actor (actor_id),
-FOREIGN KEY (film_id) REFERENCES film (film_id)
-);`
-}
-function getTableName() {
-    return document.querySelector("#textarea-1").textContent.split("\n")
-        .filter(V => V.includes("CREATE TABLE"))
-        .map(V => {
-            const matchStr = [...V.matchAll(/TABLE (.+) \(/gm)];
-            const tableName = matchStr[0][1];
-            return tableName;
-        })
-}
-
-function getColumnName() {
-    return document.querySelector("#textarea-1").textContent.split("\n")
-        .map(V => V.split("")
-            .filter(character => character == character.toLowerCase()))
-        .map(V => V.join(""))
-        .filter(V => !V.includes("("))
-        .filter(V => !V.includes(")"))
-        .map(V => {
-            return V
-                .replaceAll(",", "")
-                .replaceAll(" ", "")
-        })
-        .filter(V => V !== "")
-        .filter(V => V.slice(-1) !== "_")
-        .sort();
-}
-
-function anyOptionTagString(anyFunc) {
-    return `<option value=""></option>` + anyFunc().map(V => `<option value="${V}">${V}</option>`).join("")
+function anyOptionTagString(anyAry) {
+    return `<option value=""></option>` + anyAry.map(V => `<option value="${V}">${V}</option>`).join("")
 }
 
 function makeFromSchema() {
-    document.querySelector(".table_name_list").innerHTML = `<select name="" id="tableName">${anyOptionTagString(getTableName)}</select>`;
-    document.querySelector(".column_name_list").innerHTML = `<select name="" id="tableName">${anyOptionTagString(getColumnName)}</select>`;
+    document.querySelector(".table_name_list").innerHTML = `<select name="" id="tableName">${anyOptionTagString(tableName)}</select>`;
+    document.querySelector(".column_name_list").innerHTML = `<select name="" id="tableName">${anyOptionTagString(columnName)}</select>`;
 }
 // makeFromSchema();
 
 function setColumnsNamesMultipleSelectbox() {
     // Array.from(document.querySelector(".columns_names").selectedOptions)[0].value
-    document.querySelector(".selectableTextarea").innerHTML += `columns_names:<select name="" class="columns_names" multiple>` + getColumnName().map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`;
+    document.querySelector(".selectableTextarea").innerHTML += `columns_names:<select name="" class="columns_names" multiple>` + columnName.map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`;
 }
 function makeTableAAndAIDBBndBID() {
-    return `<select name="" class=""tableA relationship">` + getTableName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
+    return `<select name="" class=""tableA relationship">` + tableName.map(V => `<option value="${V}">${V}</option>`) + `</select>`
     +
-    `<select name="" class="tableAID relationship">` + getColumnName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
+    `<select name="" class="tableAID relationship">` + columnName.map(V => `<option value="${V}">${V}</option>`) + `</select>`
     +
-    `<select name="" class=""tableB relationship">` + getTableName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
+    `<select name="" class=""tableB relationship">` + tableName.map(V => `<option value="${V}">${V}</option>`) + `</select>`
     +
-    `<select name="" class=""tableBID relationship">` + getColumnName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
+    `<select name="" class=""tableBID relationship">` + columnName.map(V => `<option value="${V}">${V}</option>`) + `</select>`
 }
 function setRelationshipMultipleSelectbox() {
     // Array.from(document.querySelector(".columns_names").selectedOptions)[0].value
@@ -239,13 +195,14 @@ function setData() {
     document.querySelector(".alias_name").value =
         range(1, 10).map(V => "A" + V.toString() + "\n").join("");
     document.querySelector(".column_name").value =
-        getColumnName().map(V => V.toString() + "\n").join("");
+        columnName.map(V => V.toString() + "\n").join("");
     document.querySelector(".condition").value = 
         ["=", "!=", "^=", "<>", ">", "<", ">=", "<=", "ANY", "SOME", "ALL" ,"LIKE", "NOT", "OR", "AND", "CASE WHEN condition1 THEN result1 WHEN conditionN THEN resultN ELSE result END", "IS NULL", "IS NOT NULL", "LIKE", "BETWEEN AND", "NOT BETWEEN", "IN ( expression_list | subquery )", "NOT IN ( expression_list | subquery )", "EXISTS (subquery)", "IS OF type", "IS EMPTY", "IS NOT EMPTY"].join("\n");
     document.querySelector(".number").value = 
          ["10", "30", "50", "100"].join("\n");
 
-    document.querySelector(".table_name").value =      getTableName().map(V => V.toString() + "\n").join("");
+    document.querySelector(".table_name").value = 
+        tableName.map(V => V.toString() + "\n").join("");
     document.querySelector(".value").value;
 }
 
@@ -280,12 +237,12 @@ function FOO() {
     console.log("FOO");
 }
 
-testSchema();
+
 makeFromSchema();
-
 exe();
+const initHrefForschematablecolumn = () => {    document.querySelector(".getParamFromschematablecolumn").textContent = window.location.origin + "/HTML/sql/schematablecolumn.html"; document.querySelector(".getParamFromschematablecolumn").href = window.location.origin + "/HTML/sql/schematablecolumn.html"}
 
-
+initHrefForschematablecolumn();
 </script>
 </body>
 </html>
