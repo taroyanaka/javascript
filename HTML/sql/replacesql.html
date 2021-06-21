@@ -113,19 +113,19 @@ column_name:<div class="column_name_list"></div>
 <div> -->
 
 <script>
-
+const presetData = [
+    ["actor", "film"],
+    ["actor_name", "actor_id", "film_id"]
+]
 const jsonparseAnyParam = (param) => JSON.parse((new URL(document.location)).searchParams.get(param));
 
-const setDataToTextarea0 = () => document.querySelector(`#textarea-0`).value = (jsonparseAnyParam("table") || ["actor", "film"]).join("\n");
-const setDataToTextarea1 = () => document.querySelector(`#textarea-1`).value = (jsonparseAnyParam("column") || ["actor_name", "actor_id", "film_id"]).join("\n");
+const setDataToTextarea0 = () => document.querySelector(`#textarea-0`).value = (jsonparseAnyParam("table") || presetData[0] ).join("\n");
+const setDataToTextarea1 = () => document.querySelector(`#textarea-1`).value = (jsonparseAnyParam("column") || presetData[1] ).join("\n");
 setDataToTextarea0();
 setDataToTextarea1();
 const tableName = () => document.querySelector(`#textarea-0`).value.split("\n");
 const columnName = () => document.querySelector(`#textarea-1`).value.split("\n");
-    // let tableName =
-    //     jsonparseAnyParam("tabel") || ["actor", "film"];
-    // let columnName() = 
-    //     jsonparseAnyParam("column") || ["actor_name", "actor_id", "film_id"];
+
 function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
 
 function range(from, to) { return [...Array(to - from)].reduce((A, V, IDX) => { A.push(from + IDX); return A }, A = []) };
