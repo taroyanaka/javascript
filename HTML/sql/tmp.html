@@ -7,12 +7,13 @@
     <title>Document</title>
 </head>
 <body>
-<!-- <span>SELECT * FROM table_name ORDER BY column_name ASC, column_name DESC;</span> -->
-<span>SELECT * FROM Products WHERE (column_name BETWEEN value AND value) AND NOT column_name IN (value, value);</span>
+<span>SELECT * FROM table_name ORDER BY column_name ASC, column_name DESC;</span>
+<!-- <span>SELECT * FROM Products WHERE (column_name BETWEEN value AND value) AND NOT column_name IN (value, value);</span> -->
 <!-- <textarea class="res"></textarea> -->
 <textarea name="" class="res" cols="30" rows="10"></textarea>
 <textarea name="" class="res2" cols="30" rows="10"></textarea>
 <div name="" class="res3"></div>
+<div class="selectableTextarea"></div>
 <script>
 const ary = [
 "alias_name",
@@ -25,31 +26,64 @@ const ary = [
 "value"
 ]
 // let ary = [];
-let tmp = document.querySelector(`.res`).value = document.querySelector(`span`).textContent.split(/(\s|;|\(|\))/);
+let tmp = document.querySelector(`.res`).value = document.querySelector(`span`).textContent.split(/(\s|;|\(|\)|,)/);
 document.querySelector(`.res2`).value = document.querySelector(`span`).textContent === tmp.join("");
-const htmlStr = (param) => `<ul>
-    <li>${param}0</li>
-    <li>${param}1</li>
-    <li>${param}2</li>
-    <li>${param}3</li>
-    <li>${param}4</li>
-</ul>`;
+const makeOption = (ary) => ary.map(V=>`<option value="${V}">${V}</option>`).join("");
+const htmlStr = (ary) => `<select name="" class="">
+        <option value=""></option>
+        ${makeOption(ary)}
+    </select>`;
 
-function alias_name(alias_name){return htmlStr(alias_name)};
-function column_name(column_name){return htmlStr(column_name)};
-function columns_names(columns_names){return htmlStr(columns_names)};
-function condition(condition){return htmlStr(condition)};
-function number(number){return htmlStr(number)};
-function relationship(relationship){return htmlStr(relationship)};
-function table_name(table_name){return htmlStr(table_name)};
-function value(value){return htmlStr(value)};
+
+// document.querySelector(".").value
+function alias_name(alias_name){return htmlStr(document.querySelector(".alias_name").value.split("\n"))};
+function column_name(column_name){return htmlStr(document.querySelector(".column_name").value.split("\n"))};
+// function columns_names(columns_names){return htmlStr(document.querySelector(".columns_names").value.split("\n"))};
+function condition(condition){return htmlStr(document.querySelector(".condition").value.split("\n"))};
+function number(number){return htmlStr(document.querySelector(".number").value.split("\n"))};
+function relationship(relationship){return htmlStr(document.querySelector(".relationship").value.split("\n"))};
+function table_name(table_name){return htmlStr(document.querySelector(".table_name").value.split("\n"))};
+function value(value){return htmlStr(document.querySelector(".value").value.split("\n"))};
 
 const func = () => tmp.map(V => {
         return ary.includes(V) ? window[V](V) : V;
     }).join("");
 
-document.querySelector(`.res3`).innerHTML = func();
 
+document.querySelector(".selectableTextarea").innerHTML += `alias_name
+column_name
+condition
+number
+table_name
+value`.split("\n").map(V => `<div><div>${V}:</div><textarea name="" class="${V}" cols="30" rows="10" oninput="" placeholder="${V}"></textarea></div>`).join("");
+
+function setData() {
+    document.querySelector(".alias_name").value =
+        // range(1, 10).map(V => "A" + V.toString() + "\n").join("");
+        [1,2,3,4,5].map(V => "A" + V.toString() + "\n").join("");
+    document.querySelector(".column_name").value =
+        // columnName().map(V => V.toString() + "\n").join("");
+[
+"actor_name",
+"actor_id",
+"film_id",
+"film_title"
+].map(V => V.toString() + "\n").join("");
+    document.querySelector(".condition").value =
+        ["=", "!=", "^=", "<>", ">", "<", ">=", "<=", "ANY", "SOME", "ALL", "LIKE", "NOT", "OR", "AND", "CASE WHEN condition1 THEN result1 WHEN conditionN THEN resultN ELSE result END", "IS NULL", "IS NOT NULL", "LIKE", "BETWEEN AND", "NOT BETWEEN", "IN ( expression_list | subquery )", "NOT IN ( expression_list | subquery )", "EXISTS (subquery)", "IS OF type", "IS EMPTY", "IS NOT EMPTY"].join("\n");
+    document.querySelector(".number").value =
+        ["10", "30", "50", "100"].join("\n");
+
+    document.querySelector(".table_name").value =
+        // tableName().map(V => V.toString() + "\n").join("");
+[
+"actor",
+"film"
+].map(V => V.toString() + "\n").join("");
+    document.querySelector(".value").value = `FOO\nBAR\nBAZ`;
+}
+setData();
+    document.querySelector(`.res3`).innerHTML = func();
 
 </script>
 
