@@ -15,6 +15,7 @@
     </style>
 </head>
 <body>
+    <select name="" id="" class="sqllineofonechoose" onchange="func2();"></select>
     <div name="" class="res3"></div>
 
 <a href="" class="getParamFromschematablecolumn"></a>
@@ -65,8 +66,8 @@ SELECT columns_names FROM table_name T1, table_name T2 WHERE condition;
 SELECT table_name.column_name, table_name.column_name, table_name.column_name FROM ((table_name INNER JOIN table_name
 ON relationship) INNER JOIN table_name ON relationship);
 </textarea>
-<textarea name="" class="res" cols="30" rows="10"></textarea>
-<textarea name="" class="res2" cols="30" rows="10"></textarea>
+<!-- <textarea name="" class="res" cols="30" rows="10"></textarea> -->
+<!-- <textarea name="" class="res2" cols="30" rows="10"></textarea> -->
 <div class="selectableTextarea"></div>
 
 
@@ -235,7 +236,7 @@ value`.split("\n").map(V=>`<div><div>${V}:</div><textarea name="" class="${V}" c
 }
 
 function exe3() {
-    document.querySelector(".res").textContent =
+    // document.querySelector(".res").textContent =
         document.querySelector(".sqltext").textContent
             .replaceAll(";", " ;")
             .split(" ")
@@ -281,18 +282,20 @@ function htmlStr(ary){return `<select name="" class="" onchange="getOptionValue(
     function table_name(table_name) { return htmlStr(document.querySelector(".table_name").value.split("\n")) };
     function value(value) { return htmlStr(document.querySelector(".value").value.split("\n")) };
 
-    let tmp = document.querySelector(`.res`).value = document.querySelector(`span`).textContent.split(/(\s|;|\(|\)|,)/);
+    // let tmp = document.querySelector(`.res`).value
+    // let tmp = document.querySelector(`span`).textContent.split(/(\s|;|\(|\)|,)/);
 
-    document.querySelector(`.res2`).value = document.querySelector(`span`).textContent === tmp.join("");
+    // document.querySelector(`.res2`).value = document.querySelector(`span`).textContent === tmp.join("");
 
-// document.querySelector(`.lower`).value.split("\n")
-
-    const func = () => tmp.map((V, IDX) => {
-        return document.querySelector(`.lower`).value.split("\n").slice(1).includes(V) ? `<span class="idx-${IDX}" data-txt="">${window[V](V)}</span>` : `<span class="idx-${IDX}" data-txt="${V}">${V}</span>`;
-    }).join("");
-
-    document.querySelector(`.res3`).innerHTML = func();
+const func0 = () => document.querySelector(`#textarea-2`).value.split("\n").map(V=>`<option value="${V}">${V}</option>`).join("");
+const func0_1 = () => document.querySelector(`.sqllineofonechoose`).innerHTML = func0();
+func0_1();
+const func1 = () => document.querySelector(`.sqllineofonechoose`).value.split(/(\s|;|\(|\)|,)/).map((V, IDX) => {
+    return document.querySelector(`.lower`).value.split("\n").slice(1).includes(V) ? `<span class="idx-${IDX}" data-txt="">${window[V](V)}</span>` : `<span class="idx-${IDX}" data-txt="${V}">${V}</span>`;
+}).join("");
+const func2 = () => document.querySelector(`.res3`).innerHTML = func1();
 
 </script>
+
 </body>
 </html>
