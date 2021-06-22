@@ -157,7 +157,7 @@ function makeFromSchema() {
 
 function setColumnsNamesMultipleSelectbox() {
     // Array.from(document.querySelector(".columns_names").selectedOptions)[0].value
-    document.querySelector(".selectableTextarea").innerHTML += `columns_names:<select name="" class="columns_names" multiple>` + columnName().map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`;
+    document.querySelector(".selectableTextarea").innerHTML += `columns_names:<select name="" class="columns_names" onchange="getMultipleOptionValue(event);" multiple>` + columnName().map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`;
 }
 function makeTableAAndAIDBBndBID() {
     return `<select name="" class=""tableA relationship">` + tableName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
@@ -224,6 +224,8 @@ const initHrefForschematablecolumn = () => {document.querySelector(".getParamFro
 
 
 const getOptionValue = (event) => { event.target.parentElement.dataset.txt = event.target.value };
+
+const getMultipleOptionValue = (event) => { event.target.parentElement.dataset.txt = Array.from(event.target).map((V,IDX)=>selectedOptions[IDX].value).join(", ") };
 
 function makeOption(ary){return ary.map(V => `<option value="${V}">${V}</option>`).join("")}
 function htmlStr(ary){return `<select name="" class="" onchange="getOptionValue(event);"><option value=""></option>${makeOption(ary)}</select>`}
