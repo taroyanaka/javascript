@@ -15,8 +15,10 @@
     </style>
 </head>
 <body>
-    <select name="" id="" class="sqllineofonechoose" onchange="func2();"></select>
+    <select name="" id="" class="sqllineofonechoose" onchange="fn2();"></select>
     <div name="" class="res3"></div>
+<button onclick="fn4()">fn4</button>
+<textarea name="" id="textarea-3" cols="30" rows="10"></textarea>
 
 <a href="" class="getParamFromschematablecolumn"></a>
 <button onclick="exe();">exe</button>
@@ -63,8 +65,7 @@ SELECT columns_names FROM table_name LEFT JOIN table_name ON table_name.column_n
 SELECT columns_names FROM table_name RIGHT JOIN table_name ON table_name.column_name=table_name.column_name;
 SELECT columns_names FROM table_name FULL OUTER JOIN table_name ON table_name.column_name=table_name.column_name;
 SELECT columns_names FROM table_name T1, table_name T2 WHERE condition;
-SELECT table_name.column_name, table_name.column_name, table_name.column_name FROM ((table_name INNER JOIN table_name
-ON relationship) INNER JOIN table_name ON relationship);
+SELECT table_name.column_name, table_name.column_name, table_name.column_name FROM ((table_name INNER JOIN table_name ON relationship) INNER JOIN table_name ON relationship);
 </textarea>
 <div class="selectableTextarea"></div>
     <textarea class="upper" cols="30" rows="10"></textarea>
@@ -235,7 +236,7 @@ function column_name(column_name) { return htmlStr(document.querySelector(".colu
 function columns_names(columns_names){return `columns_names:<select name="" class="columns_names" multiple>` + columnName().map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`};
 function condition(condition) { return htmlStr(document.querySelector(".condition").value.split("\n")) };
 function number(number) { return htmlStr(document.querySelector(".number").value.split("\n")) };
-function relationship(relationship) { return htmlStr(document.querySelector(".relationship").value.split("\n")) };
+function relationship(relationship) { return makeTableAAndAIDBBndBID() };
 function table_name(table_name) { return htmlStr(document.querySelector(".table_name").value.split("\n")) };
 function value(value) { return htmlStr(document.querySelector(".value").value.split("\n")) };
 
@@ -251,14 +252,16 @@ function value(value) { return htmlStr(document.querySelector(".value").value.sp
     initHrefForschematablecolumn();
 
 
-const func0 = () => document.querySelector(`#textarea-2`).value.split("\n").map(V=>`<option value="${V}">${V}</option>`).join("");
-const func0_1 = () => document.querySelector(`.sqllineofonechoose`).innerHTML = func0();
-func0_1();
-const func1 = () => document.querySelector(`.sqllineofonechoose`).value.split(/(\s|;|\(|\)|,)/).map((V, IDX) => {
+const fn0 = () => document.querySelector(`#textarea-2`).value.split("\n").map(V=>`<option value="${V}">${V}</option>`).join("");
+const fn0_1 = () => document.querySelector(`.sqllineofonechoose`).innerHTML = fn0();
+fn0_1();
+const fn1 = () => document.querySelector(`.sqllineofonechoose`).value.split(/(\s|;|\(|\)|,)/).map((V, IDX) => {
     return document.querySelector(`.lower`).value.split("\n").slice(1).includes(V) ? `<span class="idx-${IDX}" data-txt="">${window[V](V)}</span>` : `<span class="idx-${IDX}" data-txt="${V}">${V}</span>`;
 }).join("");
-const func2 = () => document.querySelector(`.res3`).innerHTML = func1();
+const fn2 = () => document.querySelector(`.res3`).innerHTML = fn1();
 
+const fn3 = () => Array.from(document.querySelectorAll(`.res3 > span`)).map(V=>V.dataset.txt).join("");
+const fn4 = () => document.querySelector(`#textarea-3`).value += fn3();
 </script>
 
 </body>
