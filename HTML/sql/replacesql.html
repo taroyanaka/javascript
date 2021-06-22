@@ -66,11 +66,7 @@ SELECT columns_names FROM table_name T1, table_name T2 WHERE condition;
 SELECT table_name.column_name, table_name.column_name, table_name.column_name FROM ((table_name INNER JOIN table_name
 ON relationship) INNER JOIN table_name ON relationship);
 </textarea>
-<!-- <textarea name="" class="res" cols="30" rows="10"></textarea> -->
-<!-- <textarea name="" class="res2" cols="30" rows="10"></textarea> -->
 <div class="selectableTextarea"></div>
-
-
     <textarea class="upper" cols="30" rows="10"></textarea>
     <textarea class="lower" cols="30" rows="10"></textarea>
 <div>
@@ -88,37 +84,6 @@ column_name:<div class="column_name_list"></div>
         <option value="table_name">table_name</option>
         <option value="table_name">table_name</option>
     </select>;</span>
-<!-- </div> -->
-<!-- <div class="res"></div> -->
-<!-- <div class="selectableTextarea"></div> -->
-
-<!-- <div>
-<span>SELECT column_name, column_name FROM table_name WHERE condition;</span>
-</div>
-<div>
-<span class="sqltext">SELECT <select name="" id="">
-        <option value=""></option>
-        <option value="column_name">column_name</option>
-        <option value="column_name">column_name</option>
-        <option value="column_name">column_name</option>
-    </select>, <select name="" id="">
-        <option value=""></option>
-        <option value="column_name">column_name</option>
-        <option value="column_name">column_name</option>
-        <option value="column_name">column_name</option>
-    </select> FROM <select name="" id="">
-        <option value=""></option>
-        <option value="table_name">table_name</option>
-        <option value="table_name">table_name</option>
-        <option value="table_name">table_name</option>
-    </select> WHERE <select name="" id="">
-        <option value=""></option>
-        <option value="condition">condition</option>
-        <option value="condition">condition</option>
-        <option value="condition">condition</option>
-    </select>;</span>
-</div>
-<div> -->
 
 <script>
 const presetData = [
@@ -257,35 +222,32 @@ function FOO() {
 
 const initHrefForschematablecolumn = () => {document.querySelector(".getParamFromschematablecolumn").textContent = window.location.origin + "/HTML/sql/schematablecolumn.html"; document.querySelector(".getParamFromschematablecolumn").href = window.location.origin + "/javascript/HTML/sql/schematablecolumn.html" }
 
-setDataToTextarea0();
-setDataToTextarea1();
-
-makeFromSchema();
-exe();
-
-
-initHrefForschematablecolumn();
 
 const getOptionValue = (event) => { event.target.parentElement.dataset.txt = event.target.value };
 
 function makeOption(ary){return ary.map(V => `<option value="${V}">${V}</option>`).join("")}
-
-// const htmlStr = (ary) => `<select name="" class="" onchange="getOptionValue(event);"><option value=""></option>${makeOption(ary)}</select>`;
 function htmlStr(ary){return `<select name="" class="" onchange="getOptionValue(event);"><option value=""></option>${makeOption(ary)}</select>`}
 
-    function alias_name(alias_name) { return htmlStr(document.querySelector(".alias_name").value.split("\n")) };
-    function column_name(column_name) { return htmlStr(document.querySelector(".column_name").value.split("\n")) };
-    // function columns_names(columns_names){return htmlStr(document.querySelector(".columns_names").value.split("\n"))};
-    function condition(condition) { return htmlStr(document.querySelector(".condition").value.split("\n")) };
-    function number(number) { return htmlStr(document.querySelector(".number").value.split("\n")) };
-    function relationship(relationship) { return htmlStr(document.querySelector(".relationship").value.split("\n")) };
-    function table_name(table_name) { return htmlStr(document.querySelector(".table_name").value.split("\n")) };
-    function value(value) { return htmlStr(document.querySelector(".value").value.split("\n")) };
+function alias_name(alias_name) { return htmlStr(document.querySelector(".alias_name").value.split("\n")) };
+function column_name(column_name) { return htmlStr(document.querySelector(".column_name").value.split("\n")) };
+function columns_names(columns_names){return `columns_names:<select name="" class="columns_names" multiple>` + columnName().map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`};
+function condition(condition) { return htmlStr(document.querySelector(".condition").value.split("\n")) };
+function number(number) { return htmlStr(document.querySelector(".number").value.split("\n")) };
+function relationship(relationship) { return htmlStr(document.querySelector(".relationship").value.split("\n")) };
+function table_name(table_name) { return htmlStr(document.querySelector(".table_name").value.split("\n")) };
+function value(value) { return htmlStr(document.querySelector(".value").value.split("\n")) };
 
-    // let tmp = document.querySelector(`.res`).value
-    // let tmp = document.querySelector(`span`).textContent.split(/(\s|;|\(|\)|,)/);
 
-    // document.querySelector(`.res2`).value = document.querySelector(`span`).textContent === tmp.join("");
+
+    setDataToTextarea0();
+    setDataToTextarea1();
+
+    makeFromSchema();
+    exe();
+
+
+    initHrefForschematablecolumn();
+
 
 const func0 = () => document.querySelector(`#textarea-2`).value.split("\n").map(V=>`<option value="${V}">${V}</option>`).join("");
 const func0_1 = () => document.querySelector(`.sqllineofonechoose`).innerHTML = func0();
