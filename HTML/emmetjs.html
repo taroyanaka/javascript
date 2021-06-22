@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emmettextarea</title>
+    <!-- https://github.com/emmetio/textarea -->
+    <script src="emmet.min.js"></script>
+
+</head>
+<body>
+    <textarea name="" id="" cols="30" rows="10" placeholder="">div>div*3</textarea>
+    <button onclick="fn0()">fn0</button>
+    <button onclick="fn1()">fn1</button>
+    <button onclick="fn2()">fn2</button>
+</body>
+<script>
+
+// https://github.com/LightTable/Emmet/blob/master/emmet.keymap
+emmet.require('textarea').setup({
+	pretty_break: true, // enable formatted line breaks (when inserting 
+			            // between opening and closing tag) 
+	use_tab: true       // expand abbreviations by Tab key
+});
+const fn0 = () => document.querySelector(`textarea`).value = emmet.require('textarea').getInfo();
+const fn1 = () => document.querySelector(`textarea`).value = emmet.expandAbbreviation("div>div*3");
+const fn2 = () => document.querySelector(`textarea`).value = emmet.expandAbbreviation("div>div*3").replaceAll(/\$\{0\}/gm,"FOO");
+</script>
+</html>

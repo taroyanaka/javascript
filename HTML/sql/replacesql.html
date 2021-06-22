@@ -185,7 +185,8 @@ function setData() {
 
     document.querySelector(".table_name").value = 
         tableName().map(V => V.toString() + "\n").join("");
-    document.querySelector(".value").value;
+    document.querySelector(".value").value =
+        ["foo", "bar", "baz"].join("\n");
 }
 
 function makeSelectableTextarea() {
