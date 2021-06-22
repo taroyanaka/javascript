@@ -74,7 +74,7 @@ const ary = [
 let tmp = document.querySelector(`.res`).value = document.querySelector(`span`).textContent.split(/(\s|;|\(|\)|,)/);
 document.querySelector(`.res2`).value = document.querySelector(`span`).textContent === tmp.join("");
 const makeOption = (ary) => ary.map(V=>`<option value="${V}">${V}</option>`).join("");
-const htmlStr = (ary) => `<select name="" class="">
+const htmlStr = (ary) => `<select name="" class="" onchange="getOptionValue(event);">
         <option value=""></option>
         ${makeOption(ary)}
     </select>`;
@@ -90,8 +90,8 @@ function relationship(relationship){return htmlStr(document.querySelector(".rela
 function table_name(table_name){return htmlStr(document.querySelector(".table_name").value.split("\n"))};
 function value(value){return htmlStr(document.querySelector(".value").value.split("\n"))};
 
-const func = () => tmp.map(V => {
-        return ary.includes(V) ? window[V](V) : V;
+const func = () => tmp.map((V,IDX) => {
+        return ary.includes(V) ? `<span class="idx-${IDX}" data-txt="">${window[V](V)}</span>` : `<span class="idx-${IDX}" data-txt="${V}">${V}</span>`;
     }).join("");
 
 
@@ -128,9 +128,17 @@ function setData() {
     document.querySelector(".value").value = `FOO\nBAR\nBAZ`;
 }
 setData();
-    document.querySelector(`.res3`).innerHTML = func();
+document.querySelector(`.res3`).innerHTML = func();
 
+
+// const getOptionValue = (event) => {event.target.parentElement.value = "foooooooo"};
+const getOptionValue = (event) => {event.target.parentElement.dataset.txt = event.target.value};
+tmp = Array.from(document.querySelectorAll(`.res3 > span`)).map((V, IDX) => V.dataset.txt).join("");
 </script>
-
+<!-- <select name="" id="" onchange="foo(event);">
+    <option value="1x">1</option>
+    <option value="10">10</option>
+    <option value="100">100</option>
+</select> -->
 </body>
 </html>

@@ -15,6 +15,8 @@
     </style>
 </head>
 <body>
+    <div name="" class="res3"></div>
+
 <a href="" class="getParamFromschematablecolumn"></a>
 <button onclick="exe();">exe</button>
 <button onclick="makeFromSchema();">makeFromSchema</button>
@@ -63,6 +65,11 @@ SELECT columns_names FROM table_name T1, table_name T2 WHERE condition;
 SELECT table_name.column_name, table_name.column_name, table_name.column_name FROM ((table_name INNER JOIN table_name
 ON relationship) INNER JOIN table_name ON relationship);
 </textarea>
+<textarea name="" class="res" cols="30" rows="10"></textarea>
+<textarea name="" class="res2" cols="30" rows="10"></textarea>
+<div class="selectableTextarea"></div>
+
+
     <textarea class="upper" cols="30" rows="10"></textarea>
     <textarea class="lower" cols="30" rows="10"></textarea>
 <div>
@@ -80,9 +87,9 @@ column_name:<div class="column_name_list"></div>
         <option value="table_name">table_name</option>
         <option value="table_name">table_name</option>
     </select>;</span>
-</div>
-<div class="res"></div>
-<div class="selectableTextarea"></div>
+<!-- </div> -->
+<!-- <div class="res"></div> -->
+<!-- <div class="selectableTextarea"></div> -->
 
 <!-- <div>
 <span>SELECT column_name, column_name FROM table_name WHERE condition;</span>
@@ -232,8 +239,10 @@ function exe3() {
         document.querySelector(".sqltext").textContent
             .replaceAll(";", " ;")
             .split(" ")
-            .map(V => {
-                    return getLower().slice(1).includes(V) ? "FOO" :  V;
+            .map((V,IDX) => {
+                    // return getLower().slice(1).includes(V) ? "FOO" :  V;
+                    return getLower().slice(1).includes(V) ? `<span class="idx-${IDX}" data-txt="">${window[V](V)}</span>` : `<span class="idx-${IDX}" data-txt="${V}">${V}</span>`;
+                // return ary.includes(V) ? `<span class="idx-${IDX}" data-txt="">${window[V](V)}</span>` : `<span class="idx-${IDX}" data-txt="${V}">${V}</span>`;
             })
             .join(" ")
             .replaceAll(" ;", ";")
@@ -255,6 +264,35 @@ exe();
 
 
 initHrefForschematablecolumn();
+
+const getOptionValue = (event) => { event.target.parentElement.dataset.txt = event.target.value };
+
+function makeOption(ary){return ary.map(V => `<option value="${V}">${V}</option>`).join("")}
+
+// const htmlStr = (ary) => `<select name="" class="" onchange="getOptionValue(event);"><option value=""></option>${makeOption(ary)}</select>`;
+function htmlStr(ary){return `<select name="" class="" onchange="getOptionValue(event);"><option value=""></option>${makeOption(ary)}</select>`}
+
+    function alias_name(alias_name) { return htmlStr(document.querySelector(".alias_name").value.split("\n")) };
+    function column_name(column_name) { return htmlStr(document.querySelector(".column_name").value.split("\n")) };
+    // function columns_names(columns_names){return htmlStr(document.querySelector(".columns_names").value.split("\n"))};
+    function condition(condition) { return htmlStr(document.querySelector(".condition").value.split("\n")) };
+    function number(number) { return htmlStr(document.querySelector(".number").value.split("\n")) };
+    function relationship(relationship) { return htmlStr(document.querySelector(".relationship").value.split("\n")) };
+    function table_name(table_name) { return htmlStr(document.querySelector(".table_name").value.split("\n")) };
+    function value(value) { return htmlStr(document.querySelector(".value").value.split("\n")) };
+
+    let tmp = document.querySelector(`.res`).value = document.querySelector(`span`).textContent.split(/(\s|;|\(|\)|,)/);
+
+    document.querySelector(`.res2`).value = document.querySelector(`span`).textContent === tmp.join("");
+
+// document.querySelector(`.lower`).value.split("\n")
+
+    const func = () => tmp.map((V, IDX) => {
+        return document.querySelector(`.lower`).value.split("\n").slice(1).includes(V) ? `<span class="idx-${IDX}" data-txt="">${window[V](V)}</span>` : `<span class="idx-${IDX}" data-txt="${V}">${V}</span>`;
+    }).join("");
+
+    document.querySelector(`.res3`).innerHTML = func();
+
 </script>
 </body>
 </html>
