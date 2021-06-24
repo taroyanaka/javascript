@@ -10,7 +10,6 @@
 .selectableTextarea{
     display: flex;
     flex-wrap: wrap;
-
 }
     </style>
 </head>
@@ -21,7 +20,10 @@
 <textarea name="" id="textarea-3" cols="30" rows="10"></textarea>
 
 <a href="" class="getParamFromschematablecolumn"></a>
-<!-- <button onclick="exe();">exe</button> -->
+
+
+<button class="fn5" onclick="fn5()">fn5()</button>
+<div class="display">
 <textarea name="" id="textarea-2" cols="30" rows="10">
 SELECT * FROM table_name;
 SELECT DISTINCT column_name;
@@ -67,7 +69,10 @@ SELECT table_name.column_name, table_name.column_name, table_name.column_name FR
 <div class="selectableTextarea"></div>
 <textarea class="upper" cols="30" rows="10"></textarea>
 <textarea class="lower" cols="30" rows="10"></textarea>
-
+</div>
+<script>
+const fn5 = () => document.querySelector(`.display`).style.display === "none" ? document.querySelector(`.display`).style.display = "block" : document.querySelector(`.display`).style.display = "none";
+</script>
 
 <script>
 const presetData = [
@@ -145,9 +150,6 @@ const getRelationTableColumnOptionValue = (event) => {
 
 const getMultipleOptionValue = (event) => { event.target.parentElement.dataset.txt = Array.from(event.target).map((V,IDX)=>selectedOptions[IDX].value).join(", ") };
 
-function setColumnsNamesMultipleSelectbox() {
-    document.querySelector(".selectableTextarea").innerHTML += `columns_names:<select name="" class="columns_names" onchange="getMultipleOptionValue(event);" multiple>` + columnName().map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`;
-}
 function makeTableAAndAIDBBndBID() {
     return `<select name="" class=""tableA relationship" onchange="getRelationTableColumnOptionValue(event);">` + `<option value=""></option>` + tableName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
     +
@@ -157,9 +159,7 @@ function makeTableAAndAIDBBndBID() {
     +
     `<select name="" class=""tableBID relationship" onchange="getRelationTableColumnOptionValue(event);">` + `<option value=""></option>` + columnName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
 }
-function setRelationshipMultipleSelectbox() {
-    document.querySelector(".selectableTextarea").innerHTML += `relationship:` + makeTableAAndAIDBBndBID();
-}
+
 function setData() {
     document.querySelector(".alias_name").value =
         range(1, 10).map(V => "A" + V.toString() + "\n").join("");
@@ -177,8 +177,6 @@ function setData() {
 }
 
 function makeSelectableTextarea() {
-    setColumnsNamesMultipleSelectbox();
-    setRelationshipMultipleSelectbox();
     document.querySelector(".selectableTextarea").innerHTML += `alias_name
 column_name
 condition
@@ -197,18 +195,15 @@ const getOptionValue = (event) => { event.target.parentElement.dataset.txt = eve
 function makeOption(ary){return ary.map(V => `<option value="${V}">${V}</option>`).join("")}
 function htmlStr(ary){return `<select name="" class="" onchange="getOptionValue(event);"><option value=""></option>${makeOption(ary)}</select>`}
 
-function alias_name(alias_name) { return htmlStr(document.querySelector(".alias_name").value.split("\n")) };
-function column_name(column_name) { return htmlStr(document.querySelector(".column_name").value.split("\n")) };
+function alias_name() { return htmlStr(document.querySelector(".alias_name").value.split("\n")) };
+function column_name() { return htmlStr(document.querySelector(".column_name").value.split("\n")) };
 function columns_names(columns_names){return `columns_names:<select name="" class="columns_names" multiple>` + columnName().map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`};
-function condition(condition) { return htmlStr(document.querySelector(".condition").value.split("\n")) };
-function number(number) { return htmlStr(document.querySelector(".number").value.split("\n")) };
-function relationship(relationship) { return makeTableAAndAIDBBndBID() };
-function table_name(table_name) { return htmlStr(document.querySelector(".table_name").value.split("\n")) };
-function value(value) { return htmlStr(document.querySelector(".value").value.split("\n")) };
+function condition() { return htmlStr(document.querySelector(".condition").value.split("\n")) };
+function number() { return htmlStr(document.querySelector(".number").value.split("\n")) };
+function relationship() { return makeTableAAndAIDBBndBID() };
+function table_name() { return htmlStr(document.querySelector(".table_name").value.split("\n")) };
+function value() { return htmlStr(document.querySelector(".value").value.split("\n")) };
 
-exe();
-
-initHrefForschematablecolumn();
 
 const fn0 = () => document.querySelector(`#textarea-2`).value.split("\n").map(V=>`<option value="${V}">${V}</option>`).join("");
 const fn0_1 = () => document.querySelector(`.sqllineofonechoose`).innerHTML = fn0();
@@ -217,10 +212,14 @@ const fn1 = () => document.querySelector(`.sqllineofonechoose`).value.split(/(\s
     return document.querySelector(`.lower`).value.split("\n").slice(1).includes(V) ? `<span class="idx-${IDX}" data-txt="">${window[V](V)}</span>` : `<span class="idx-${IDX}" data-txt="${V}">${V}</span>`;
 }).join("");
 const fn2 = () => document.querySelector(`.res3`).innerHTML = fn1();
-
 const fn3 = () => Array.from(document.querySelectorAll(`.res3 > span`)).map(V=>V.dataset.txt).join("");
 const fn4 = () => document.querySelector(`#textarea-3`).value += fn3();
-</script>
 
+
+exe();
+initHrefForschematablecolumn();
+document.querySelector(".fn5").click();
+
+</script>
 </body>
 </html>
