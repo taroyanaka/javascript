@@ -22,7 +22,7 @@
 
 <a href="" class="getParamFromschematablecolumn"></a>
 <button onclick="exe();">exe</button>
-<button onclick="makeFromSchema();">makeFromSchema</button>
+<!-- <button onclick="makeFromSchema();">makeFromSchema</button> -->
 <textarea name="" id="textarea-0" cols="30" rows="10"></textarea>
 <textarea name="" id="textarea-1" cols="30" rows="10"></textarea>
 <textarea name="" id="textarea-2" cols="30" rows="10">
@@ -68,23 +68,9 @@ SELECT columns_names FROM table_name T1, table_name T2 WHERE condition;
 SELECT table_name.column_name, table_name.column_name, table_name.column_name FROM ((table_name INNER JOIN table_name ON relationship) INNER JOIN table_name ON relationship);
 </textarea>
 <div class="selectableTextarea"></div>
-    <textarea class="upper" cols="30" rows="10"></textarea>
-    <textarea class="lower" cols="30" rows="10"></textarea>
-<div>
-table_name:<div class="table_name_list"></div>
-column_name:<div class="column_name_list"></div>
-</div>
+<textarea class="upper" cols="30" rows="10"></textarea>
+<textarea class="lower" cols="30" rows="10"></textarea>
 
-<div>
-<span class="sqltext">SELECT * FROM table_name;</span>
-</div>
-<div>
-<span class="sqltext">SELECT * FROM <select name="" id="">
-        <option value=""></option>
-        <option value="table_name">table_name</option>
-        <option value="table_name">table_name</option>
-        <option value="table_name">table_name</option>
-    </select>;</span>
 
 <script>
 const presetData = [
@@ -143,21 +129,14 @@ function exe() {
             ary.filter(character => character == character.toLowerCase()) );
     exe2();
     makeSelectableTextarea();
-    exe3();
+    // exe3();
 }
 
 function anyOptionTagString(anyAry) {
     return `<option value=""></option>` + anyAry.map(V => `<option value="${V}">${V}</option>`).join("")
 }
 
-function makeFromSchema() {
-    document.querySelector(".table_name_list").innerHTML = `<select name="" id="tableName()">${anyOptionTagString(tableName())}</select>`;
-    document.querySelector(".column_name_list").innerHTML = `<select name="" id="tableName()">${anyOptionTagString(columnName())}</select>`;
-}
-// makeFromSchema();
-
 function setColumnsNamesMultipleSelectbox() {
-    // Array.from(document.querySelector(".columns_names").selectedOptions)[0].value
     document.querySelector(".selectableTextarea").innerHTML += `columns_names:<select name="" class="columns_names" onchange="getMultipleOptionValue(event);" multiple>` + columnName().map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`;
 }
 function makeTableAAndAIDBBndBID() {
@@ -202,26 +181,6 @@ value`.split("\n").map(V=>`<div><div>${V}:</div><textarea name="" class="${V}" c
     setData();
 }
 
-function exe3() {
-    // document.querySelector(".res").textContent =
-        document.querySelector(".sqltext").textContent
-            .replaceAll(";", " ;")
-            .split(" ")
-            .map((V,IDX) => {
-                    // return getLower().slice(1).includes(V) ? "FOO" :  V;
-                    return getLower().slice(1).includes(V) ? `<span class="idx-${IDX}" data-txt="">${window[V](V)}</span>` : `<span class="idx-${IDX}" data-txt="${V}">${V}</span>`;
-                // return ary.includes(V) ? `<span class="idx-${IDX}" data-txt="">${window[V](V)}</span>` : `<span class="idx-${IDX}" data-txt="${V}">${V}</span>`;
-            })
-            .join(" ")
-            .replaceAll(" ;", ";")
-        ;
-}
-
-// window["FOO"]();
-function FOO() {
-    console.log("FOO");
-}
-
 const initHrefForschematablecolumn = () => {document.querySelector(".getParamFromschematablecolumn").textContent = window.location.origin + "/HTML/sql/schematablecolumn.html"; document.querySelector(".getParamFromschematablecolumn").href = window.location.origin + "/javascript/HTML/sql/schematablecolumn.html" }
 
 
@@ -242,15 +201,12 @@ function table_name(table_name) { return htmlStr(document.querySelector(".table_
 function value(value) { return htmlStr(document.querySelector(".value").value.split("\n")) };
 
 
+setDataToTextarea0();
+setDataToTextarea1();
 
-    setDataToTextarea0();
-    setDataToTextarea1();
+exe();
 
-    makeFromSchema();
-    exe();
-
-
-    initHrefForschematablecolumn();
+initHrefForschematablecolumn();
 
 
 const fn0 = () => document.querySelector(`#textarea-2`).value.split("\n").map(V=>`<option value="${V}">${V}</option>`).join("");
