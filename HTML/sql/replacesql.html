@@ -21,10 +21,7 @@
 <textarea name="" id="textarea-3" cols="30" rows="10"></textarea>
 
 <a href="" class="getParamFromschematablecolumn"></a>
-<button onclick="exe();">exe</button>
-<!-- <button onclick="makeFromSchema();">makeFromSchema</button> -->
-<textarea name="" id="textarea-0" cols="30" rows="10"></textarea>
-<textarea name="" id="textarea-1" cols="30" rows="10"></textarea>
+<!-- <button onclick="exe();">exe</button> -->
 <textarea name="" id="textarea-2" cols="30" rows="10">
 SELECT * FROM table_name;
 SELECT DISTINCT column_name;
@@ -79,10 +76,9 @@ const presetData = [
 ]
 const jsonparseAnyParam = (param) => JSON.parse((new URL(document.location)).searchParams.get(param));
 
-const setDataToTextarea0 = () => document.querySelector(`#textarea-0`).value = (jsonparseAnyParam("table") || presetData[0] ).join("\n");
-const setDataToTextarea1 = () => document.querySelector(`#textarea-1`).value = (jsonparseAnyParam("column") || presetData[1] ).join("\n");
-const tableName = () => document.querySelector(`#textarea-0`).value.split("\n");
-const columnName = () => document.querySelector(`#textarea-1`).value.split("\n");
+
+const tableName = () => (jsonparseAnyParam("table") || presetData[0] );
+const columnName = () => (jsonparseAnyParam("column") || presetData[1] );
 
 function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
 
@@ -129,27 +125,39 @@ function exe() {
             ary.filter(character => character == character.toLowerCase()) );
     exe2();
     makeSelectableTextarea();
-    // exe3();
 }
 
 function anyOptionTagString(anyAry) {
     return `<option value=""></option>` + anyAry.map(V => `<option value="${V}">${V}</option>`).join("")
 }
 
+const getRelationTableColumnOptionValue = (event) => {
+    event.target.parentElement.dataset.txt =
+        Array.from(event.target.parentElement.children)
+            .map(V=>V.value)
+            .reduce((A,V,IDX,ARRAY)=>{
+                if(IDX===0){A.push(ARRAY[0])};
+                if(IDX===1){A.push("."+ARRAY[1])};
+                if(IDX===2){A.push(" = "+ARRAY[2])};
+                if(IDX===3){A.push("."+ARRAY[3])};return A;},A=[])
+            .join("")
+};
+
+const getMultipleOptionValue = (event) => { event.target.parentElement.dataset.txt = Array.from(event.target).map((V,IDX)=>selectedOptions[IDX].value).join(", ") };
+
 function setColumnsNamesMultipleSelectbox() {
     document.querySelector(".selectableTextarea").innerHTML += `columns_names:<select name="" class="columns_names" onchange="getMultipleOptionValue(event);" multiple>` + columnName().map(V => `<option value="${V}">${V}</option>`).join("") + `</select>`;
 }
 function makeTableAAndAIDBBndBID() {
-    return `<select name="" class=""tableA relationship">` + tableName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
+    return `<select name="" class=""tableA relationship" onchange="getRelationTableColumnOptionValue(event);">` + `<option value=""></option>` + tableName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
     +
-    `<select name="" class="tableAID relationship">` + columnName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
+    `<select name="" class="tableAID relationship" onchange="getRelationTableColumnOptionValue(event);">` + `<option value=""></option>` + columnName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
     +
-    `<select name="" class=""tableB relationship">` + tableName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
+    `<select name="" class=""tableB relationship" onchange="getRelationTableColumnOptionValue(event);">` + `<option value=""></option>` + tableName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
     +
-    `<select name="" class=""tableBID relationship">` + columnName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
+    `<select name="" class=""tableBID relationship" onchange="getRelationTableColumnOptionValue(event);">` + `<option value=""></option>` + columnName().map(V => `<option value="${V}">${V}</option>`) + `</select>`
 }
 function setRelationshipMultipleSelectbox() {
-    // Array.from(document.querySelector(".columns_names").selectedOptions)[0].value
     document.querySelector(".selectableTextarea").innerHTML += `relationship:` + makeTableAAndAIDBBndBID();
 }
 function setData() {
@@ -186,8 +194,6 @@ const initHrefForschematablecolumn = () => {document.querySelector(".getParamFro
 
 const getOptionValue = (event) => { event.target.parentElement.dataset.txt = event.target.value };
 
-const getMultipleOptionValue = (event) => { event.target.parentElement.dataset.txt = Array.from(event.target).map((V,IDX)=>selectedOptions[IDX].value).join(", ") };
-
 function makeOption(ary){return ary.map(V => `<option value="${V}">${V}</option>`).join("")}
 function htmlStr(ary){return `<select name="" class="" onchange="getOptionValue(event);"><option value=""></option>${makeOption(ary)}</select>`}
 
@@ -200,14 +206,9 @@ function relationship(relationship) { return makeTableAAndAIDBBndBID() };
 function table_name(table_name) { return htmlStr(document.querySelector(".table_name").value.split("\n")) };
 function value(value) { return htmlStr(document.querySelector(".value").value.split("\n")) };
 
-
-setDataToTextarea0();
-setDataToTextarea1();
-
 exe();
 
 initHrefForschematablecolumn();
-
 
 const fn0 = () => document.querySelector(`#textarea-2`).value.split("\n").map(V=>`<option value="${V}">${V}</option>`).join("");
 const fn0_1 = () => document.querySelector(`.sqllineofonechoose`).innerHTML = fn0();
