@@ -9,7 +9,8 @@
 </head>
 <body>
 <span class="app">
-<input type="text" name="" id="input-0" placeholder="input-0" value="">
+<input type="text" name="" class="item" placeholder="item-0" value="">
+<input type="text" name="" class="item" placeholder="item-1" value="">
 </span>
 <button class="plus" onclick="plus();">+</button>
 
@@ -19,61 +20,49 @@
 </body>
 <script>
 function execute() {
-document.querySelector("#foo").textContent = `div.square{
-width: 100px;
-height: 100px;
-background-color: red;
-position: relative;
-animation-name: foo;
-animation-duration: 4s;
-animation-timing-function: linear;
-animation-delay: 2s;
-animation-iteration-count: infinite;
-animation-direction: alternate;
-animation-fill-mode: backwards;
-animation-play-state: running;
-}`;
-document.querySelector("#bar").textContent = `@keyframes foo{
-0% {background-color: red;left:0px;top:0px;}
-25% {background-color: lime;left:500px;top:0px;}
-50% {background-color: dodgerblue;left:500px;top:500px;border-radius: 50%;}
-75% {background-color: orangered;left:0px;top:500px;}
-100% {background-color: blue;left:0px;top:0px;border-radius: 0px;}
-}`;
-document.querySelector("style.style0").textContent += document.querySelector("#foo").textContent;
-document.querySelector("style.style0").textContent += document.querySelector("#bar").textContent;
-
-
-document.querySelector("body").innerHTML += `<div class="square"></div>`;
-
-
-// document.querySelector(".app").innerHTML +=
-// `<input type="text" name="" id="input-0" placeholder="input-0" value="">`;
-
+    document.querySelector("#foo").textContent =
+        `div.square{
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: relative;
+        animation-name: foo;
+        animation-duration: 4s;
+        animation-timing-function: linear;
+        animation-delay: 2s;
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        animation-fill-mode: backwards;
+        animation-play-state: running;
+        }`;
+    document.querySelector("#bar").textContent =
+        `@keyframes foo{
+        0% {background-color: red;left:0px;top:0px;}
+        25% {background-color: lime;left:500px;top:0px;}
+        50% {background-color: dodgerblue;left:500px;top:500px;border-radius: 50%;}
+        75% {background-color: orangered;left:0px;top:500px;}
+        100% {background-color: blue;left:0px;top:0px;border-radius: 0px;}
+        }`;
+    document.querySelector("style.style0").textContent +=
+        document.querySelector("#foo").textContent;
+    document.querySelector("style.style0").textContent +=
+        document.querySelector("#bar").textContent;
+    document.querySelector("body").innerHTML +=
+        `<div class="square"></div>`;
 }
-
-
 
 // [0,1,2].map((V, IDX) => `<input type="text" name="" id="input-0" placeholder="input-0" value="">`).join("");
 
-
-
 function plus() {
-document.querySelector(".app").innerHTML +=
-`<input type="text" name="" id="input-${document.querySelectorAll("input").length}" placeholder="input-${document.querySelectorAll("input").length}" value="">`;
-
+    document.querySelector(".app").innerHTML +=
+        `<input type="text" name="" class="item" placeholder="item-${document.querySelectorAll(".item").length+1}" value="">`;
 }
-
 function test(params) {
-    document.querySelector("#input-0").value = `animation-duration: 4s;`;
-    document.querySelector("#input-1").value = `animation-timing-function: linear;`;
+    document.querySelectorAll(".item")[0].value = `animation-duration: 4s;`;
+    document.querySelectorAll(".item")[1].value = `animation-timing-function: linear;`;
 }
-
 document.querySelector("button").click();
-
 test();
-
-
 </script>
-
+<!-- <span class="app"><button class="item-1"></button><button class="item-2"></button><button class="item-3"></button></span> -->
 </html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>crud</title>
+</head>
+<body>
+    <div class="data"></div>
+    <button onclick="create(param);">create</button>
+    <button onclick="read(param);">read</button>
+    <button onclick="update(param);">update</button>
+    <button onclick="remove(param);">remove</button>
+
+    <button onclick="restcreate();">restcreate</button>
+</body>
+<script>
+    const endpoint = "https://marred-mint-art.glitch.me/";
+    const create = (param) => document.querySelector(".data").textContent = param;
+    const read = (param) => document.querySelector(".data").textContent;
+    const update = (param) => document.querySelector(".data").textContent = "bar";
+    const remove = (param) => document.querySelector(".data").textContent = "";
+    // fetch("https://marred-mint-art.glitch.me/").then(v=>{
+	// 		return v.text()
+	// 	}).then(v => { 
+    //         JSON.parse(v)
+	// 	}).then(v=>{
+    //         console.log(v);
+    //         create(v);
+	// 	});
+    const exe = async () => {
+        let foo = await fetch(endpoint);
+        let bar = await foo.json();
+        // return await JSON.parse(bar);
+        return await bar;
+    };
+    let res;
+    const restcreate = async () => {
+        res = await exe();
+        await create(res);
+    };
+
+</script>
+</html>
