@@ -26,4 +26,46 @@
     };
 
 </script>
+
+
+
+
+<script class="glitchcom_serverjs">
+// const express = require('express');
+// const app = express();
+// const https = require('https');
+// const fs = require('fs');
+// const sqlite3 = require('sqlite3').verbose();
+// const db = new sqlite3.Database('.data/tmp.sqlite3');
+// var HTTP_PORT = 8000
+// app.listen(HTTP_PORT, () => {
+//     console.log("Server running on port %PORT%".replace("%PORT%", HTTP_PORT))
+// });
+// app.get('/', function (req, res) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     res.json(
+//       "this is response text"
+//     )
+// });
+// app.get("/create", (req, res, next) => {
+//     const id = req.query.id;
+//     async function serialize() {
+//         new Promise(resolve => {
+//             db.serialize(() => {
+//                 db.run(`INSERT INTO lorem (info) values('foobar-${id}-1');`);
+//                 db.run(`INSERT INTO lorem (info) values('foobar-${id}-2');`);
+//                 db.run(`INSERT INTO lorem (info) values('foobar-${id}-3');`);
+//                 db.run(`INSERT INTO lorem (info) values('foobar-${id}-4');`, () => resolve());
+//             });
+//         });
+//     }
+//     serialize();
+//     res.json({
+//         "message": "success"
+//         ,
+//         "data": req.query.id
+//     })
+// });
+</script>
 </html>
