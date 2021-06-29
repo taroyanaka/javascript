@@ -11,33 +11,39 @@
     <input type="text" class="info" required>
     <button onclick="insert();">insert</button>
     <button onclick="readall();">readall</button>
+    <button onclick="dataList();">dataList</button>
+    <ul class="dataListParent"></ul>
+    
 </body>
 <script>
-    let endpoint = "https://marred-mint-art.glitch.me/";
+    const endpoint = "https://marred-mint-art.glitch.me/";
     const editLocalData = (param) => document.querySelector(".data").textContent = param;
 
     const exe = async (param) => {
-        const prm  = param ? param : "";
-        endpoint = endpoint + prm;
-        let foo = await fetch(endpoint);
+        const prm  = param || "";
+        const endpointWithPrm = endpoint + prm;
+        let foo = await fetch(endpointWithPrm);
         let bar = await foo.json();
         return await bar;
     };
     let res;
     const readall = async () => {
         res = await exe("readall");
-        await editLocalData(JSON.stringify(res));
+        await editLocalData(res);
     };
     const insert = async () => {
         if(document.querySelector(".info").value){
-            const info = document.querySelector(".info").value;
-            res = await exe(`insert?info=${info}`);
+            res = await exe(`insert?info=${document.querySelector(".info").value}`);
             await editLocalData(JSON.stringify(res));
         }else{
             throw new Error('💩');
         }
     };
-
+    const makeListHtml = async() => {
+        const tmp = await exe("readall");
+        return tmp.data.map(V=>`<li class="dataListChild">${V.info}</li>`).join("")
+    };
+    const dataList = async () => document.querySelector(".dataListParent").innerHTML = await makeListHtml();
 </script>
 
 
