@@ -11,17 +11,23 @@
     <button onclick="restRead();">restRead</button>
 </body>
 <script>
-    const endpoint = "https://marred-mint-art.glitch.me/";
+    let endpoint = "https://marred-mint-art.glitch.me/";
     const editLocalData = (param) => document.querySelector(".data").textContent = param;
 
-    const exe = async () => {
+    const exe = async (param) => {
+        const prm  = param ? param : "";
+        endpoint = endpoint + prm;
         let foo = await fetch(endpoint);
         let bar = await foo.json();
         return await bar;
     };
     let res;
+    // const restRead = async () => {
+    //     res = await exe();
+    //     await editLocalData(res);
+    // };
     const restRead = async () => {
-        res = await exe();
+        res = await exe("readall");
         await editLocalData(res);
     };
 
