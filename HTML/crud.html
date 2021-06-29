@@ -8,7 +8,9 @@
 </head>
 <body>
     <div class="data"></div>
-    <button onclick="restRead();">restRead</button>
+    <input type="text" class="info" required>
+    <button onclick="insert();">insert</button>
+    <button onclick="readall();">readall</button>
 </body>
 <script>
     let endpoint = "https://marred-mint-art.glitch.me/";
@@ -22,13 +24,18 @@
         return await bar;
     };
     let res;
-    // const restRead = async () => {
-    //     res = await exe();
-    //     await editLocalData(res);
-    // };
-    const restRead = async () => {
+    const readall = async () => {
         res = await exe("readall");
-        await editLocalData(res);
+        await editLocalData(JSON.stringify(res));
+    };
+    const insert = async () => {
+        if(document.querySelector(".info").value){
+            const info = document.querySelector(".info").value;
+            res = await exe(`insert?info=${info}`);
+            await editLocalData(JSON.stringify(res));
+        }else{
+            throw new Error('💩');
+        }
     };
 
 </script>
@@ -43,47 +50,35 @@
 // const fs = require('fs');
 // const Database = require('better-sqlite3');
 // const db = new Database('.data/tmp.sqlite3', { verbose: console.log });
-
 // var HTTP_PORT = 8000
 // app.listen(HTTP_PORT, () => {
 //     console.log("Server running on port %PORT%".replace("%PORT%", HTTP_PORT))
 // });
-// app.get('/', function (req, res) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-//     res.json(
-//       "this is response text"
-//     )
+// function allowOrigin(res){
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");  
+// }
+
+// app.get('/', function (req, res) {
+//   allowOrigin(res);
+//   res.json(
+//     "this is response text"
+//   )
 // });
 // app.get("/insert", (req, res, next) => {
+//     allowOrigin(res);
 //     const info = req.query.info;
-//   function serialize(){
-//       db.prepare('INSERT INTO lorem (info) values(?)').run(info);
-//   }
-//     serialize();
+//     db.prepare('INSERT INTO lorem (info) values(?)').run(info);
 //     res.json({
 //         "message": "success"
 //         ,
 //         "data": req.query.info
 //     })
 // });
-// app.get("/create", (req, res, next) => {
-//   function serialize(){
-//       db.prepare(`CREATE TABLE lorem(
-// info TEXT NOT NULL
-// )`).run();
-//   }
-//     serialize();
-//     res.json({
-//         "message": "success"
-//     })
-// });
 // app.get("/readall", (req, res, next) => {
-//   function serialize(){
-//     return db.prepare('SELECT * FROM lorem').get();
-//   }
-//     const table = serialize();
+//   allowOrigin(res);
+//   const table = db.prepare('SELECT * FROM lorem').all();
 //     res.json({
 //         "message": "success"
 //         ,
@@ -92,11 +87,17 @@
 // });
 </script>
 <script class="glitchcom_sqljs">
-// const Database = require('better-sqlite3');
+const Database = require('better-sqlite3');
 // const db = new Database('.data/tmp.sqlite3', { verbose: console.log });
-// function serialize(){
+// function CREATETABLE(){
+//     db.prepare(`CREATE TABLE lorem(
+// info TEXT NOT NULL
+// )`).run();
+// }
+// function DROPTABLE(){
 //     db.prepare(`DROP TABLE lorem`).run();
 // }
-// serialize();
+// const table = db.prepare('SELECT * FROM lorem').all();
+// console.log(table);
 <script>
 </html>
