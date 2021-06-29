@@ -35,8 +35,9 @@
 // const app = express();
 // const https = require('https');
 // const fs = require('fs');
-// const sqlite3 = require('sqlite3').verbose();
-// const db = new sqlite3.Database('.data/tmp.sqlite3');
+// const Database = require('better-sqlite3');
+// const db = new Database('.data/tmp.sqlite3', { verbose: console.log });
+
 // var HTTP_PORT = 8000
 // app.listen(HTTP_PORT, () => {
 //     console.log("Server running on port %PORT%".replace("%PORT%", HTTP_PORT))
@@ -44,28 +45,52 @@
 // app.get('/', function (req, res) {
 //     res.header("Access-Control-Allow-Origin", "*");
 //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
 //     res.json(
 //       "this is response text"
 //     )
 // });
-// app.get("/create", (req, res, next) => {
-//     const id = req.query.id;
-//     async function serialize() {
-//         new Promise(resolve => {
-//             db.serialize(() => {
-//                 db.run(`INSERT INTO lorem (info) values('foobar-${id}-1');`);
-//                 db.run(`INSERT INTO lorem (info) values('foobar-${id}-2');`);
-//                 db.run(`INSERT INTO lorem (info) values('foobar-${id}-3');`);
-//                 db.run(`INSERT INTO lorem (info) values('foobar-${id}-4');`, () => resolve());
-//             });
-//         });
-//     }
+// app.get("/insert", (req, res, next) => {
+//     const info = req.query.info;
+//   function serialize(){
+//       db.prepare('INSERT INTO lorem (info) values(?)').run(info);
+//   }
 //     serialize();
 //     res.json({
 //         "message": "success"
 //         ,
-//         "data": req.query.id
+//         "data": req.query.info
+//     })
+// });
+// app.get("/create", (req, res, next) => {
+//   function serialize(){
+//       db.prepare(`CREATE TABLE lorem(
+// info TEXT NOT NULL
+// )`).run();
+//   }
+//     serialize();
+//     res.json({
+//         "message": "success"
+//     })
+// });
+// app.get("/readall", (req, res, next) => {
+//   function serialize(){
+//     return db.prepare('SELECT * FROM lorem').get();
+//   }
+//     const table = serialize();
+//     res.json({
+//         "message": "success"
+//         ,
+//         "data": table
 //     })
 // });
 </script>
+<script class="glitchcom_sqljs">
+// const Database = require('better-sqlite3');
+// const db = new Database('.data/tmp.sqlite3', { verbose: console.log });
+// function serialize(){
+//     db.prepare(`DROP TABLE lorem`).run();
+// }
+// serialize();
+<script>
 </html>
