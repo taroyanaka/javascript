@@ -51,7 +51,7 @@
     };
     const makeListHtml = async() => {
         const tmp = await exe("readall");
-        const result = await tmp.data.map(V=>`<li class="dataListChild" data-id=${V.id} onclick="deleteid(event)">${V.info}</li>`).join("");
+        const result = await tmp.data.map(V=>`<li class="dataListChild">${V.id}: ${V.info} <button data-id=${V.id} onclick="deleteid(event)">delete</button></li>`).join("");
         return result;
     };
     const dataList = async() => document.querySelector(".dataListParent").innerHTML = await makeListHtml();
