@@ -39,18 +39,28 @@
             throw new Error('💩');
         }
     };
+    const deleteid = async (event) => {
+        if(event.target.dataset.id){
+            res = await exe(`deleteid?id=${event.target.dataset.id}`);
+            await dataList();
+            await editLocalData(JSON.stringify(res));
+        }else{
+            throw new Error('💩');
+        }
+    };
     const makeListHtml = async() => {
         const tmp = await exe("readall");
-        return tmp.data.map(V=>`<li class="dataListChild">${V.info}</li>`).join("")
+        const result = await tmp.data.map(V=>`<li class="dataListChild" data-id=${V.id} onclick="deleteid(event)">${V.info}</li>`).join("");
+        return result;
     };
-    const dataList = async () => document.querySelector(".dataListParent").innerHTML = await makeListHtml();
+    const dataList = async() => document.querySelector(".dataListParent").innerHTML = await makeListHtml();
 </script>
 
 
 
 
 <script class="glitchcom_serverjs">
-// const express = require('express');
+const express = require('express');
 // const app = express();
 // const https = require('https');
 // const fs = require('fs');
@@ -60,12 +70,10 @@
 // app.listen(HTTP_PORT, () => {
 //     console.log("Server running on port %PORT%".replace("%PORT%", HTTP_PORT))
 // });
-
 // function allowOrigin(res){
 //   res.header("Access-Control-Allow-Origin", "*");
 //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");  
 // }
-
 // app.get('/', function (req, res) {
 //   allowOrigin(res);
 //   res.json(
@@ -89,6 +97,18 @@
 //         "message": "success"
 //         ,
 //         "data": table
+//     })
+// });
+// app.get("/deleteid", (req, res, next) => {
+//     allowOrigin(res);
+//     const id = req.query.id;
+//     db.prepare('DELETE FROM lorem WHERE id = (?)').run(id);
+//     const table = db.prepare('SELECT * FROM lorem').all();
+//     res.json({
+//         "message": "success"
+//         ,
+//         "data": table
+//         // ,"deleteid": req.query.id
 //     })
 // });
 </script>
