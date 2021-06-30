@@ -8,10 +8,16 @@
 </head>
 <body>
     <div class="data"></div>
-    <input type="text" class="info" required>
+    <input type="text" class="info" required placeholder="insert any text">
     <button onclick="insert();">insert</button>
     <button onclick="readall();">readall</button>
     <button onclick="dataList();">dataList</button>
+
+    <input type="text" class="updateinfo" required placeholder="edit any text" data-id="">
+    <button onclick="updateinfo();">updateinfo</button>
+
+
+
     <ul class="dataListParent"></ul>
     
 </body>
@@ -40,6 +46,19 @@
             throw new Error('💩');
         }
     };
+    const editIdSetToEditInputTag = async (event) => {
+        document.querySelector(".updateinfo").dataset.id = event.target.dataset.id;
+        document.querySelector(".updateinfo").value = event.target.dataset.info;
+    }
+    const updateinfo = async () => {
+        if(document.querySelector(".updateinfo").dataset.id && document.querySelector(".updateinfo").value){
+            res = await exe(`update?id=${document.querySelector(".updateinfo").dataset.id}&info=${document.querySelector(".updateinfo").value}`);
+            await dataList();
+            await editLocalData(JSON.stringify(res));
+        }else{
+            throw new Error('💩');
+        }
+    };
     const deleteid = async (event) => {
         if(event.target.dataset.id){
             res = await exe(`deleteid?id=${event.target.dataset.id}`);
@@ -51,7 +70,7 @@
     };
     const makeListHtml = async() => {
         const tmp = await exe("readall");
-        const result = await tmp.data.map(V=>`<li class="dataListChild">${V.id}: ${V.info} <button data-id=${V.id} onclick="deleteid(event)">delete</button></li>`).join("");
+        const result = await tmp.data.map(V=>`<li class="dataListChild">${V.id}: ${V.info} <button data-id="${V.id}" data-info="${V.info}" onclick="editIdSetToEditInputTag(event)">edit</button> <button data-id=${V.id} onclick="deleteid(event)">delete</button></li>`).join("");
         return result;
     };
     const dataList = async() => document.querySelector(".dataListParent").innerHTML = await makeListHtml();
