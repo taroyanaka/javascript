@@ -8,18 +8,19 @@
 </head>
 <body>
     <div class="data"></div>
+<div>
     <input type="text" class="info" required placeholder="insert any text">
     <button onclick="insert();">insert</button>
-    <button onclick="readall();">readall</button>
-    <button onclick="dataList();">dataList</button>
-
+</div>
+<div>
+    <!-- <button onclick="readall();">readall</button> -->
+    <!-- <button onclick="dataList();">dataList</button> -->
+</div>
+<div>
     <input type="text" class="updateinfo" required placeholder="edit any text" data-id="">
     <button onclick="updateinfo();">updateinfo</button>
-
-
-
-    <ul class="dataListParent"></ul>
-    
+</div>
+<ul class="dataListParent"></ul>
 </body>
 <script>
     const endpoint = "https://marred-mint-art.glitch.me/";
@@ -105,10 +106,23 @@
 //     allowOrigin(res);
 //     const info = req.query.info;
 //     db.prepare('INSERT INTO lorem (info) values(?)').run(info);
+//     const table = db.prepare('SELECT * FROM lorem').all();
 //     res.json({
 //         "message": "success"
 //         ,
-//         "data": req.query.info
+//         "data": table
+//     })
+// });
+// app.get("/update", (req, res, next) => {
+//     allowOrigin(res);
+//     const info = req.query.info;
+//     const id = req.query.id;
+//     db.prepare('UPDATE lorem SET info = ? WHERE id = ?').run(info, id);
+//     const table = db.prepare('SELECT * FROM lorem').all();
+//     res.json({
+//         "message": "success"
+//         ,
+//         "data": table
 //     })
 // });
 // app.get("/readall", (req, res, next) => {
@@ -129,7 +143,6 @@
 //         "message": "success"
 //         ,
 //         "data": table
-//         // ,"deleteid": req.query.id
 //     })
 // });
 </script>
