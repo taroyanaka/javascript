@@ -34,6 +34,7 @@
     const insert = async () => {
         if(document.querySelector(".info").value){
             res = await exe(`insert?info=${document.querySelector(".info").value}`);
+            await dataList();
             await editLocalData(JSON.stringify(res));
         }else{
             throw new Error('💩');
@@ -54,6 +55,7 @@
         return result;
     };
     const dataList = async() => document.querySelector(".dataListParent").innerHTML = await makeListHtml();
+    dataList();
 </script>
 
 
