@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<textarea name="textarea-0" cols="10" rows="10" class="textarea-0" onclick=""></textarea>
+
+<div class="parentTmp"></div>
+
+<textarea name="textarea-2" cols="10" rows="10" class="textarea-2" onclick=""></textarea>
+<script>
+document.querySelector(".textarea-0").value = "foo";
+// document.querySelector(".textarea-1").value = "bar";
+document.querySelector(".textarea-2").value = "baz";
+
+document.querySelector(`.parentTmp`).innerHTML = [0,1,2].map((V,IDX)=> `<textarea name="textarea-1 tmp-${IDX}" cols="10" rows="10" class="textarea-1" onclick=""></textarea>`).join("");
+
+</script>
+</body>
+</html>
