@@ -18,16 +18,29 @@
 </head>
 <body>
 
-<div id="start">start</div>
-<div id="end">end</div>
+<div class="start">start</div>
+<div class="end">end</div>
 
 
     <script>
 
+const fn = () => {
+    var d = 1000;
+    for(var i=50; i<=100; i=i+0.1){
+        d += 10;
+        (function(ii,dd){
+            setTimeout(function(){
+                document.querySelector(".start").style.backgroundColor='hsl(0,100%,'+ii+'%)';
+            }, dd);    
+        })(i,d);
+    }
+};
+
+
 // Add new leader line from `start` to `end` (HTML/SVG element, basically).
 new LeaderLine(
-  document.getElementById('start'),
-  document.getElementById('end')
+  document.querySelector('.start'),
+  document.querySelector('.end')
 );
 
     </script>
