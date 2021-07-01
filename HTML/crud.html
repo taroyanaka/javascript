@@ -17,65 +17,64 @@
     <!-- <button onclick="dataList();">dataList</button> -->
 </div>
 <div>
-    <input type="text" class="updateinfo" required placeholder="edit any text" data-id="">
-    <button onclick="updateinfo();">updateinfo</button>
+<input type="text" class="updateinfo" required placeholder="edit any text" data-id="">
+<button onclick="updateinfo();">updateinfo</button>
 </div>
 <ul class="dataListParent"></ul>
 </body>
 <script>
-    const endpoint = "https://marred-mint-art.glitch.me/";
-    const editLocalData = (param) => document.querySelector(".data").textContent = param;
-
-    const exe = async (param) => {
-        const prm  = param || "";
-        const endpointWithPrm = endpoint + prm;
-        let foo = await fetch(endpointWithPrm);
-        let bar = await foo.json();
-        return await bar;
-    };
-    let res;
-    const readall = async () => {
-        res = await exe("readall");
-        await editLocalData(res);
-    };
-    const insert = async () => {
-        if(document.querySelector(".info").value){
-            res = await exe(`insert?info=${document.querySelector(".info").value}`);
-            await dataList();
-            await editLocalData(JSON.stringify(res));
-        }else{
-            throw new Error('💩');
-        }
-    };
-    const editIdSetToEditInputTag = async (event) => {
-        document.querySelector(".updateinfo").dataset.id = event.target.dataset.id;
-        document.querySelector(".updateinfo").value = event.target.dataset.info;
+const endpoint = "https://marred-mint-art.glitch.me/";
+const editLocalData = (param) => document.querySelector(".data").textContent = param;
+let res;
+const exe = async (param) => {
+    const prm  = param || "";
+    const endpointWithPrm = endpoint + prm;
+    let foo = await fetch(endpointWithPrm);
+    let bar = await foo.json();
+    return await bar;
+};
+const readall = async () => {
+    res = await exe("readall");
+    await editLocalData(res);
+};
+const insert = async () => {
+    if(document.querySelector(".info").value){
+        res = await exe(`insert?info=${document.querySelector(".info").value}`);
+        await dataList();
+        await editLocalData(JSON.stringify(res));
+    }else{
+        throw new Error('💩');
     }
-    const updateinfo = async () => {
-        if(document.querySelector(".updateinfo").dataset.id && document.querySelector(".updateinfo").value){
-            res = await exe(`update?id=${document.querySelector(".updateinfo").dataset.id}&info=${document.querySelector(".updateinfo").value}`);
-            await dataList();
-            await editLocalData(JSON.stringify(res));
-        }else{
-            throw new Error('💩');
-        }
-    };
-    const deleteid = async (event) => {
-        if(event.target.dataset.id){
-            res = await exe(`deleteid?id=${event.target.dataset.id}`);
-            await dataList();
-            await editLocalData(JSON.stringify(res));
-        }else{
-            throw new Error('💩');
-        }
-    };
-    const makeListHtml = async() => {
-        const tmp = await exe("readall");
-        const result = await tmp.data.map(V=>`<li class="dataListChild">${V.id}: ${V.info} <button data-id="${V.id}" data-info="${V.info}" onclick="editIdSetToEditInputTag(event)">edit</button> <button data-id=${V.id} onclick="deleteid(event)">delete</button></li>`).join("");
-        return result;
-    };
-    const dataList = async() => document.querySelector(".dataListParent").innerHTML = await makeListHtml();
-    dataList();
+};
+const editIdSetToEditInputTag = async (event) => {
+    document.querySelector(".updateinfo").dataset.id = event.target.dataset.id;
+    document.querySelector(".updateinfo").value = event.target.dataset.info;
+}
+const updateinfo = async () => {
+    if(document.querySelector(".updateinfo").dataset.id && document.querySelector(".updateinfo").value){
+        res = await exe(`update?id=${document.querySelector(".updateinfo").dataset.id}&info=${document.querySelector(".updateinfo").value}`);
+        await dataList();
+        await editLocalData(JSON.stringify(res));
+    }else{
+        throw new Error('💩');
+    }
+};
+const deleteid = async (event) => {
+    if(event.target.dataset.id){
+        res = await exe(`deleteid?id=${event.target.dataset.id}`);
+        await dataList();
+        await editLocalData(JSON.stringify(res));
+    }else{
+        throw new Error('💩');
+    }
+};
+const makeListHtml = async() => {
+    const tmp = await exe("readall");
+    const result = await tmp.data.map(V=>`<li class="dataListChild">${V.id}: ${V.info} <button data-id="${V.id}" data-info="${V.info}" onclick="editIdSetToEditInputTag(event)">edit</button> <button data-id=${V.id} onclick="deleteid(event)">delete</button></li>`).join("");
+    return result;
+};
+const dataList = async() => document.querySelector(".dataListParent").innerHTML = await makeListHtml();
+dataList();
 </script>
 
 
