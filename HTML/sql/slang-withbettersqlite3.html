@@ -20,8 +20,9 @@
 document.querySelector(".textarea-0").value = `db.prepare('`;
 document.querySelector(".textarea-2").value = `').run(info);`;
 
+const fn0 = () => document.querySelectorAll(".textarea-0, .textarea-2").forEach(V => {V.readOnly = true; V.style.backgroundColor = "gray"});
 const fn = () => {
-    document.querySelectorAll(".textarea-0, .textarea-2").forEach(V => {V.readOnly = true; V.style.backgroundColor = "gray"});
+    fn0();
     const length = document.querySelectorAll(".parentTmp-0 > .textarea-1").length;
     document.querySelector(`.parentTmp-0`).innerHTML =
     document.querySelector(`.parentTmp-1`).innerHTML += 
