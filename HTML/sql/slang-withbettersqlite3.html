@@ -8,16 +8,29 @@
 </head>
 <body>
 <textarea name="textarea-0" cols="10" rows="10" class="textarea-0" onclick=""></textarea>
+<button onclick="fn()">fn()</button>
 
-<div class="parentTmp"></div>
+<div class="parentTmp-0"></div>
 
 <textarea name="textarea-2" cols="10" rows="10" class="textarea-2" onclick=""></textarea>
+
+<div class="parentTmp-1"></div>
+
 <script>
 document.querySelector(".textarea-0").value = "foo";
-// document.querySelector(".textarea-1").value = "bar";
 document.querySelector(".textarea-2").value = "baz";
 
-document.querySelector(`.parentTmp`).innerHTML = [0,1,2].map((V,IDX)=> `<textarea name="textarea-1 tmp-${IDX}" cols="10" rows="10" class="textarea-1" onclick=""></textarea>`).join("");
+
+
+const fn = () => {
+    const length = document.querySelectorAll(".parentTmp-0 > .textarea-1").length;
+    document.querySelector(`.parentTmp-1`).innerHTML =
+    document.querySelector(`.parentTmp-0`).innerHTML += 
+        `<textarea name="textarea-1 tmp-${length}" cols="10" rows="10" class="textarea-1" onclick="">${length}</textarea>`;
+};
+    const fn1 = () => document.querySelector(".textarea-0").value + document.querySelector(".textarea-2").value;
+
+
 
 </script>
 </body>
