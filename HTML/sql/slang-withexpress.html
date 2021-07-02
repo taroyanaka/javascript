@@ -44,8 +44,7 @@ document.querySelector(".textarea-1").value = "db.prepare('SELECT * FROM lorem')
 const fn0_0 = () => document.querySelector(".textarea-0").value.split("\n").join(", ");
 const fn0_1 = () => document.querySelector(".textarea-0").value.split("\n").map(V => `req.query.${V}`).join(", ");
 const fn0_2 = () => `const [${fn0_0()}] = [${fn0_1()}];`;
-const fn1 = () => {
-    return `app.get("/${document.querySelector(".input-0").value}", (req, res, next) => {
+const fn1 = () => `app.get("/${document.querySelector(".input-0").value}", (req, res, next) => {
     ${fn0_2()}
     const table = ${document.querySelector(".textarea-1").value}
     res.json({
@@ -54,7 +53,6 @@ const fn1 = () => {
         "data": table
     })
 });`;
-};
 const fn2 = () => document.querySelector(".textarea-2").value = fn1();
 fn2();
 // document.querySelector(".button-0").value = "";
