@@ -41,13 +41,12 @@ document.querySelector(".textarea-1").value = "db.prepare('SELECT * FROM lorem')
 // document.querySelector(".textarea-2").value = "";
 // document.querySelector(".textarea-3").value = "";
 // document.querySelector(".textarea-4").value = "";
-
-const fn = () => {
-    const a = document.querySelector(".textarea-0").value.split("\n").join(", ");
-    const b = document.querySelector(".textarea-0").value.split("\n").map(V => `req.query.${V}`).join(", ");
-    const c = `const [${a}] = [${b}];`;
+const fn0_0 = () => document.querySelector(".textarea-0").value.split("\n").join(", ");
+const fn0_1 = () => document.querySelector(".textarea-0").value.split("\n").map(V => `req.query.${V}`).join(", ");
+const fn1 = () => {
+    const declarativeReqParamToVal = `const [${fn0_0()}] = [${fn0_1()}];`;
     return `app.get("/${document.querySelector(".input-0").value}", (req, res, next) => {
-    ${c}
+    ${declarativeReqParamToVal}
     const table = ${document.querySelector(".textarea-1").value}
     res.json({
         "message": "success"
@@ -56,7 +55,7 @@ const fn = () => {
     })
 });`;
 };
-const fn2 = () => document.querySelector(".textarea-2").value = fn();
+const fn2 = () => document.querySelector(".textarea-2").value = fn1();
 fn2();
 // document.querySelector(".button-0").value = "";
 // document.querySelector(".button-1").value = "";
