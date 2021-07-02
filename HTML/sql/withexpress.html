@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>witexpress</title>
+</head>
+<body>
+<div>
+<input type="text" class="input-0" onclick=""  oninput="fn2();"></input>
+<!-- <input type="text" class="input-1" onclick=""></input> -->
+<!-- <input type="text" class="input-2" onclick=""></input> -->
+<!-- <input type="text" class="input-3" onclick=""></input> -->
+<!-- <input type="text" class="input-4" onclick=""></input> -->
+<!-- <input type="text" class="input-5" onclick=""></input> -->
+</div>
+<textarea name="textarea-0" cols="10" rows="10" class="textarea-0" oninput="fn2();"></textarea>
+<textarea name="textarea-1" cols="10" rows="10" class="textarea-1" oninput="fn2();"></textarea>
+<textarea name="textarea-2" cols="50" rows="30"
+class="textarea-2" oninput="fn2();" placeholder="result text"></textarea>
+<!-- <textarea name="textarea-3" cols="10" rows="10" class="textarea-3"onclick=""></textarea> -->
+<!-- <textarea name="textarea-4" cols="10" rows="10" class="textarea-4" onclick=""></textarea> -->
+<!-- <textarea name="textarea-5" cols="10" rows="10" class="textarea-5" onclick=""></textarea> -->
+
+
+<!-- <button class="button-0" onclick="">button0</button> -->
+<!-- <button class="button-1" onclick="">button1</button> -->
+<script>
+document.querySelector(".input-0").value = "deleteid";
+// document.querySelector(".input-1").value = "";
+// document.querySelector(".input-2").value = "";
+// document.querySelector(".input-3").value = "";
+// document.querySelector(".input-4").value = "";
+// document.querySelector(".input-5").value = "";
+
+document.querySelector(".textarea-0").value = `foo
+bar
+baz`;
+document.querySelector(".textarea-1").value = "db.prepare('SELECT * FROM lorem').all();";
+// document.querySelector(".textarea-2").value = "";
+// document.querySelector(".textarea-3").value = "";
+// document.querySelector(".textarea-4").value = "";
+
+const fn = () => {
+    const a = document.querySelector(".textarea-0").value.split("\n").join(", ");
+    const b = document.querySelector(".textarea-0").value.split("\n").map(V => `req.query.${V}`).join(", ");
+    const c = `const [${a}] = [${b}];`;
+    return `app.get("/${document.querySelector(".input-0").value}", (req, res, next) => {
+    ${c}
+    const table = ${document.querySelector(".textarea-1").value}
+    res.json({
+        "message": "success"
+        ,
+        "data": table
+    })
+});`;
+};
+const fn2 = () => document.querySelector(".textarea-2").value = fn();
+fn2();
+// document.querySelector(".button-0").value = "";
+// document.querySelector(".button-1").value = "";
+</script>
+</body>
+</html>
