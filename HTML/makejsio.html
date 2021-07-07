@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>makejsio</title>
+</head>
+<body>
+    <textarea name="textarea-0" cols="15" rows="30" class="textarea-0" oninput="fn2()"></textarea>
+    <textarea name="textarea-1" cols="30" rows="30" class="textarea-1" oninput="fn2()"></textarea>
+    <textarea name="textarea-2" cols="15" rows="30" class="textarea-2" oninput="fn2()"></textarea>
+    <textarea name="textarea-3" cols="15" rows="30" class="textarea-3" oninput="fn2()"></textarea>
+    <textarea name="textarea-4" cols="15" rows="30" class="textarea-4" onclick=""></textarea>
+    <textarea name="textarea-5" cols="15" rows="30" class="textarea-5" onclick=""></textarea>
+<script>
+document.querySelector(".textarea-0").value = `foo
+bar
+baz`;
+document.querySelector(".textarea-2").value = `https://yanaka.dev`;
+
+const fn = () => document.querySelector(".textarea-2").value + "?" + document.querySelector(".textarea-0").value.split("\n").map(V=>`${V}=${V}`).join("&");
+
+const fn3 = () => document.querySelector(".textarea-2").value + "?" + document.querySelector(".textarea-0").value.split("\n").map(V=>`${V}=\$\{${V}\}`).join("&");
+
+const fn2 = () => {
+    document.querySelector(".textarea-1").value = document.querySelector(".textarea-0").value.split("\n").map(V=>`const ${V} = (new URL(document.location)).searchParams.get('${V}');`).join("\n");
+
+    document.querySelector(".textarea-3").value = fn();
+    document.querySelector(".textarea-4").value =
+    document.querySelector(".textarea-0").value.split("\n").map(V=>`const ${V} = "";`).join("\n")
+    document.querySelector(".textarea-5").value = fn3();
+};
+fn2();
+
+
+</script>
+</body>
+</html>
