@@ -7,12 +7,15 @@
     <title>makejsio</title>
 </head>
 <body>
+    <div class="res"></div>
+
     <textarea name="textarea-0" cols="15" rows="30" class="textarea-0" oninput="fn2()"></textarea>
     <textarea name="textarea-1" cols="30" rows="30" class="textarea-1" oninput="fn2()"></textarea>
     <textarea name="textarea-2" cols="15" rows="30" class="textarea-2" oninput="fn2()"></textarea>
     <textarea name="textarea-3" cols="15" rows="30" class="textarea-3" oninput="fn2()"></textarea>
     <textarea name="textarea-4" cols="15" rows="30" class="textarea-4" onclick=""></textarea>
     <textarea name="textarea-5" cols="15" rows="30" class="textarea-5" onclick=""></textarea>
+    <textarea name="textarea-6" cols="15" rows="30" class="textarea-6" onclick=""></textarea>
 <script>
 document.querySelector(".textarea-0").value = `foo
 bar
@@ -30,6 +33,9 @@ const fn2 = () => {
     document.querySelector(".textarea-4").value =
     document.querySelector(".textarea-0").value.split("\n").map(V=>`const ${V} = "";`).join("\n")
     document.querySelector(".textarea-5").value = fn3();
+    document.querySelector(".textarea-6").value = "`"+ `<a href="${fn3()}">${fn3()}</a>` + "`";
+
+    document.querySelector(`.res`).innerHTML = `<a href="${fn()}">${fn()}</a>`;
 };
 fn2();
 
