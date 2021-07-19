@@ -15,39 +15,39 @@
 <div class="res"></div>
 </body>
 <script>
-    function getTableName() {
-            return document.querySelector(".textarea-1").value.split("\n")
-                .filter(V => V.includes("CREATE TABLE"))
-                .map(V => {
-                    const matchStr = [...V.matchAll(/TABLE (.+) \(/gm)];
-                    const tableName = matchStr[0][1];
-                    return tableName;
-                })
-        }
+function getTableName() {
+    return document.querySelector(".textarea-1").value.split("\n")
+        .filter(V => V.includes("CREATE TABLE"))
+        .map(V => {
+            const matchStr = [...V.matchAll(/TABLE (.+) \(/gm)];
+            const tableName = matchStr[0][1];
+            return tableName;
+        })
+}
 
-        function getColumnName() {
-            return document.querySelector(".textarea-1").value
-                .replaceAll("AUTO_INCREMENT", "AUTOINCREMENT")
-                .split("\n")
-                // .filter(V=> !V.includes("PRIMARY KEY") )
-                .map(V => V.split("")
-                    .filter(character => character == character.toLowerCase()))
-                .map(V => V.join(""))
-                // .map(V => V.replaceAll("AUTO_INCREMENT", "AUTOINCREMENT") )
-                .filter(V => !V.includes("("))
-                .filter(V => !V.includes(")"))
-                .map(V => {
-                    return V
-                        .replaceAll(",", "")
-                        .replaceAll(" ", "")
-                })
-                .filter(V => V !== "")
-                // .filter(V => V.slice(-1) !== "_")
-                .sort();
-        }
+function getColumnName() {
+    return document.querySelector(".textarea-1").value
+        .replaceAll("AUTO_INCREMENT", "AUTOINCREMENT")
+        .split("\n")
+        // .filter(V=> !V.includes("PRIMARY KEY") )
+        .map(V => V.split("")
+            .filter(character => character == character.toLowerCase()))
+        .map(V => V.join(""))
+        // .map(V => V.replaceAll("AUTO_INCREMENT", "AUTOINCREMENT") )
+        .filter(V => !V.includes("("))
+        .filter(V => !V.includes(")"))
+        .map(V => {
+            return V
+                .replaceAll(",", "")
+                .replaceAll(" ", "")
+        })
+        .filter(V => V !== "")
+        // .filter(V => V.slice(-1) !== "_")
+        .sort();
+}
 
-    function testSchema() {
-        document.querySelector(".textarea-1").value = `CREATE TABLE actor (
+function testSchema() {
+    document.querySelector(".textarea-1").value = `CREATE TABLE actor (
 actor_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 actor_name TEXT NOT NULL,
 PRIMARY KEY (actor_id)
@@ -58,7 +58,7 @@ film_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
 film_title TEXT NOT NULL,
 PRIMARY KEY (film_id)
 );`
-    }
+}
 // `CREATE TABLE film_actor (
 // actor_id INT UNSIGNED NOT NULL,
 // film_id INT UNSIGNED NOT NULL,
@@ -68,8 +68,8 @@ PRIMARY KEY (film_id)
 // );`
 
 const func1 = () => {
-        document.querySelector(".textarea-2").value = getTableName().join("\n");
-        document.querySelector(".textarea-3").value = getColumnName().join("\n");
+    document.querySelector(".textarea-2").value = getTableName().join("\n");
+    document.querySelector(".textarea-3").value = getColumnName().join("\n");
 }
 const func2 = () =>  window.location.origin + "/javascript/HTML/sql/replacesql.html"; 
 const func3_0 = (cssSelector) => document.querySelector(`${cssSelector}`).value;
@@ -81,11 +81,5 @@ const func5 = () => {document.querySelector(".res").innerHTML = `<a href=${func4
 
 // const testDataSet = () => { func1() };
 const exe = () => {func1();func5()};
-
-
-
-
-
 </script>
-
 </html>

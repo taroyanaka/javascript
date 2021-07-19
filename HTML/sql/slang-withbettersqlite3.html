@@ -9,17 +9,12 @@
 <body>
 <textarea name="textarea-0" cols="10" rows="10" class="textarea-0"></textarea>
 <button onclick="fn()">fn()</button>
-
 <div class="parentTmp-0"></div>
-
 <textarea name="textarea-2" cols="10" rows="10" class="textarea-2"></textarea>
-
 <div class="parentTmp-1"></div>
-
 <script>
 document.querySelector(".textarea-0").value = `db.prepare('`;
 document.querySelector(".textarea-2").value = `').run(info);`;
-
 const fn0 = () => document.querySelectorAll(".textarea-0, .textarea-2").forEach(V => {V.readOnly = true; V.style.backgroundColor = "gray"});
 const fn = () => {
     fn0();
@@ -32,8 +27,6 @@ const fn1 = (id) => document.querySelector(".textarea-0").value +
             document.querySelector(`.parentTmp-0 > .textarea-1-${id}`).value +
             document.querySelector(".textarea-2").value;
 const fn2 = (event) => document.querySelector(`.parentTmp-1 > .textarea-1-${event.target.dataset.id}`).value = fn1(event.target.dataset.id);
-
-
 </script>
 </body>
 </html>
