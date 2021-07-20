@@ -58,6 +58,13 @@ const fn2 = () => document.querySelector(".textarea-2").value = fn1();
 fn2();
 // document.querySelector(".button-0").value = "";
 // document.querySelector(".button-1").value = "";
+
+document.querySelector("ul.parent").innerHTML = ["slang-replacesql.html",
+"slang-withbettersqlite3.html",
+"slang-schematablecolumn.html",
+"slang-withexpressjs.html",
+"slang-testalasql.html"].map(V=>`<li><a href="${location.origin}/javascript/HTML/sql/${V}">${location.origin}/javascript/HTML/sql/${V}</a></li>`).join("");
+
 </script>
 </body>
 </html>
