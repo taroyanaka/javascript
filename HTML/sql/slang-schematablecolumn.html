@@ -7,6 +7,7 @@
     <title>slang-schematablecolumn</title>
 </head>
 <body>
+<ul class="parent"></ul>
 <button onclick="testSchema();exe();">testSchema();exe();</button>
 <textarea name="" class="textarea-1" cols="30" rows="10" oninput="exe();"></textarea>
 <textarea name="" class="textarea-2" cols="30" rows="10" oninput="exe();"></textarea>
@@ -81,5 +82,11 @@ const func5 = () => {document.querySelector(".res").innerHTML = `<a href=${func4
 
 // const testDataSet = () => { func1() };
 const exe = () => {func1();func5()};
+
+document.querySelector("ul.parent").innerHTML = ["slang-replacesql.html",
+"slang-withbettersqlite3.html",
+"slang-schematablecolumn.html",
+"slang-withexpressjs.html",
+"slang-testalasql.html"].map(V=>`<li><a href="${location.origin}/javascript/HTML/sql/${V}">${location.origin}/javascript/HTML/sql/${V}</a></li>`).join("");
 </script>
 </html>
