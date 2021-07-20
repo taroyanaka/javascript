@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>replacesql</title>
+<title>slang-replacesql</title>
 <!-- https://docs.oracle.com/cd/B19306_01/server.102/b14195/sqlqr04.htm -->
 <style>
 .selectableTextarea{
@@ -212,11 +212,9 @@ const fn2 = () => document.querySelector(`.res3`).innerHTML = fn1();
 const fn3 = () => Array.from(document.querySelectorAll(`.res3 > span`)).map(V=>V.dataset.txt).join("");
 const fn4 = () => document.querySelector(`#textarea-3`).value += fn3();
 
-
 exe();
 initHrefForschematablecolumn();
 document.querySelector(".fn5").click();
-
 </script>
 </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>testalasql</title>
+    <title>slang-testalasql</title>
     <script src="alasql.js"></script>
     <script src="localforage.js"></script>
     <!-- https://www.mockaroo.com/ -->
@@ -88,10 +88,16 @@ button{
 .with0 > div > button, .with1 > div > button, .with2 > div > button{
     height: 100%;
 }
+ul.parent{
+    display: inline;
+}
     </style>
 </head>
 <body class="result">
+
 <div class="zero">
+<ul class="parent"></ul>
+
 <button class="button-2" onclick="settest();exe([0,1,2])">settestandexe</button>
 
 <button class="button-0" onclick="settest();" value="settest">settest</button>
@@ -122,8 +128,6 @@ button{
 <button onclick="testSave();">testSave</button>
 <button onclick="testLoad();">testLoad</button>
 
-
-
 <button onclick="localforage.clear().then(function () {console.log('Database is now empty.')}).catch(function (err) {console.log(err)});">clearSaveData</button>
     <span class="err"></span>
 <!-- <textarea name="textarea-3" cols="50" rows="10" class="textarea-3" onclick=""></textarea> -->
@@ -135,12 +139,10 @@ button{
 <button onclick="loadFromWeb();">loadFromWeb</button>
 <button onclick="setSampleUrl();">setSampleUrl</button>
 <button onclick="setFormedUrlFromId();">setFormedUrlFromId</button>
+
 <input type="number" name="idNumber" class="idNumber" placeholder="121518155437861">
+
 </div>
-
-
-
-
 
 
 <div class="one">
@@ -248,14 +250,14 @@ function focusTextarea2() {
 }
 
 function exeTextArea(indexArray) {
+    if(indexArray.includes(2)){
+        return alasql(document.querySelector(".textarea-2").value);
+    }
     indexArray.forEach(V=>
         alasql(
             document.querySelector(`.textarea-${V.toString()}`).value.split("\n").join("")
         )
     );
-    if(indexArray.includes(2)){
-        return alasql(document.querySelector(".textarea-2").value);
-    }
 }
 
 function makeTrTdHeader(data) {
@@ -352,6 +354,14 @@ function setFormedUrlFromId() {
 // var yyyy = today.getFullYear();
 // today = mm + dd + yyyy;
 // console.log(today);
+
+
+document.querySelector("ul.parent").innerHTML = ["slang-replacesql.html",
+"slang-withbettersqlite3.html",
+"slang-schematablecolumn.html",
+"slang-withexpressjs.html",
+"slang-testalasql.html"].map(V=>`<li><a href="${location.origin}/javascript/HTML/sql/${V}">${location.origin}/javascript/HTML/sql/${V}</a></li>`).join("");
+
 </script>
 </body>
 </html>
