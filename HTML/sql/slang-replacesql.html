@@ -14,6 +14,8 @@
 </style>
 </head>
 <body>
+<ul class="parent"></ul>
+
 <select name="" id="" class="sqllineofonechoose" onchange="fn2();"></select>
 <div name="" class="res3"></div>
 <button onclick="fn4()">fn4</button>
@@ -215,6 +217,12 @@ const fn4 = () => document.querySelector(`#textarea-3`).value += fn3();
 exe();
 initHrefForschematablecolumn();
 document.querySelector(".fn5").click();
+
+document.querySelector("ul.parent").innerHTML = ["slang-replacesql.html",
+"slang-withbettersqlite3.html",
+"slang-schematablecolumn.html",
+"slang-withexpressjs.html",
+"slang-testalasql.html"].map(V=>`<li><a href="${location.origin}/javascript/HTML/sql/${V}">${location.origin}/javascript/HTML/sql/${V}</a></li>`).join("");
 </script>
 </body>
 </html>
