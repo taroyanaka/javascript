@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <input type="text" class="input-2" oninput="exe();">
+
+    <h1 class="from"></h1>
+    <input type="text" class="input-0" oninput="exe();">
+    <input type="text" class="input-1" oninput="exe();">
+    <h1 class="to"></h1>
+<script>
+function init(){
+  document.querySelector(".input-2").value = "AaaBBBcCc";
+
+  document.querySelector(".input-0").value = "a";
+  document.querySelector(".input-1").value = "x";
+}
+
+function exe(){
+  document.querySelector("h1.to").textContent = 
+    document.querySelector(".input-2").value.replaceAll(
+        document.querySelector(".input-0").value,
+        document.querySelector(".input-1").value);
+}
+
+init();
+exe();
+</script>
+</body>
+</html>
