@@ -39,7 +39,6 @@
 
 <body>
 <script>
-
 const init = () =>{
     document.querySelector(".input-0").value = "CDEFGABCDEFGAB";
     document.querySelector(".input-1").value = "1";
@@ -48,24 +47,23 @@ const init = () =>{
     document.querySelector(".input-6").value = "CGAEFCFG";
 }
 const cordSet = (resArray, IDX) => document.querySelector(`.span-${IDX}`).textContent = resArray[IDX];
-// someday you'll watch prePrePrePrePrePrePrePrePrePreExe()
-const prePreExe = () => document.querySelector(".input-0").value
+const cordListStringToArrayCutOut = () => document.querySelector(".input-0").value
         .split("")
         .slice(
             (Number(document.querySelector(".input-1").value)-1),
             (Number(document.querySelector(".input-1").value)+6));
-const preExe = () => prePreExe().map((V,IDX)=> [1, 2, 5].includes(IDX) ? (V + "m") : V );
+const cutOutCordWithMinorArray = () => cordListStringToArrayCutOut().map((V,IDX)=> [1, 2, 5].includes(IDX) ? (V + "m") : V );
 const numberToCord = () => document.querySelector(".input-3").value
         .split("")
-        .map(V=> preExe()[ (Number(V)-1) ] )
+        .map(V=> cutOutCordWithMinorArray()[ (Number(V)-1) ] )
         .join(document.querySelector(".input-5").value);
 const cordToNumber = () => document.querySelector(".input-6").value
         .split("")
-        .map(V=> prePreExe().indexOf(V)+1 )
+        .map(V=> cordListStringToArrayCutOut().indexOf(V)+1 )
         .join("");
 const exe = () =>{
-    document.querySelector(".input-2").value = preExe().join("");
-    [...Array(6).keys()].forEach(NUM=>cordSet(preExe(), NUM));
+    document.querySelector(".input-2").value = cutOutCordWithMinorArray().join("");
+    [...Array(6).keys()].forEach(NUM=>cordSet(cutOutCordWithMinorArray(), NUM));
     document.querySelector(".input-4").value = numberToCord()
     document.querySelector(".input-7").value = cordToNumber();
 }
