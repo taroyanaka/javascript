@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scale</title>
+    <style>
+        .input-1{
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+<input type="text" class="input-0" oninput="exe();"></input>
+<input type="number" class="input-1" oninput="exe();" min="1" max="7"></input>
+<input type="text" class="input-2" oninput="exe();"></input>
+
+<div><span>1:</span><span class="span-0" onclick=""></span></div>
+<div><span>2:</span><span class="span-1" onclick=""></span></div>
+<div><span>3:</span><span class="span-2" onclick=""></span></div>
+<div><span>4:</span><span class="span-3" onclick=""></span></div>
+<div><span>5:</span><span class="span-4" onclick=""></span></div>
+<div><span>6:</span><span class="span-5" onclick=""></span></div>
+
+<textarea class="input-3" oninput="exe();" cols="30"  rows="10"></textarea>
+<textarea class="input-4" oninput="exe();" cols="30"  rows="10"></textarea>
+<input type="text" class="input-5" oninput="exe();" placeholder="default is a space char"></input>
+
+<textarea class="input-6" oninput="exe();" cols="30"  rows="10"></textarea>
+<textarea class="input-7" oninput="exe();" cols="30"  rows="10"></textarea>
+
+<body>
+<script>
+
+function init(){
+    document.querySelector(".input-0").value = "CDEFGABCDEFGAB";
+    document.querySelector(".input-1").value = "1";
+    document.querySelector(".input-3").value = 15634145;
+    document.querySelector(".input-5").value = " ";
+    document.querySelector(".input-6").value = "CGAEFCFG";
+}
+const cordSet = (resArray, IDX) => document.querySelector(`.span-${IDX}`).textContent = resArray[IDX];
+// someday you'll watch prePrePrePrePrePrePrePrePrePreExe()
+const prePreExe = () => document.querySelector(".input-0").value
+        .split("")
+        .slice(
+            (Number(document.querySelector(".input-1").value)-1),
+            (Number(document.querySelector(".input-1").value)+6));
+const preExe = () => prePreExe().map((V,IDX)=> [1, 2, 5].includes(IDX) ? (V + "m") : V );
+const numberToCord = () => document.querySelector(".input-3").value
+        .split("")
+        .map(V=> preExe()[ (Number(V)-1) ] )
+        .join(document.querySelector(".input-5").value);
+const cordToNumber = () => document.querySelector(".input-6").value
+        .split("")
+        .map(V=> prePreExe().indexOf(V)+1 )
+        .join("");
+
+        function exe(){
+    document.querySelector(".input-2").value = preExe().join("");
+    [...Array(6).keys()].forEach(NUM=>cordSet(preExe(), NUM));
+    document.querySelector(".input-4").value = numberToCord()
+    document.querySelector(".input-7").value = cordToNumber();
+}
+
+init();
+exe();
+</script>
+</body>
+</html>
