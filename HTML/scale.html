@@ -47,19 +47,19 @@ const init = () =>{
     document.querySelector(".input-6").value = "CGAEFCFG";
 }
 const cordSet = (resArray, IDX) => document.querySelector(`.span-${IDX}`).textContent = resArray[IDX];
-const cordListStringToArrayCutOut = () => document.querySelector(".input-0").value
+const cordListStringToArrayCutOutArray = () => document.querySelector(".input-0").value
         .split("")
         .slice(
             (Number(document.querySelector(".input-1").value)-1),
             (Number(document.querySelector(".input-1").value)+6));
-const cutOutCordWithMinorArray = () => cordListStringToArrayCutOut().map((V,IDX)=> [1, 2, 5].includes(IDX) ? (V + "m") : V );
+const cutOutCordWithMinorArray = () => cordListStringToArrayCutOutArray().map((V,IDX)=> [1, 2, 5].includes(IDX) ? (V + "m") : V );
 const numberToCord = () => document.querySelector(".input-3").value
         .split("")
         .map(V=> cutOutCordWithMinorArray()[ (Number(V)-1) ] )
         .join(document.querySelector(".input-5").value);
 const cordToNumber = () => document.querySelector(".input-6").value
         .split("")
-        .map(V=> cordListStringToArrayCutOut().indexOf(V)+1 )
+        .map(V=> cordListStringToArrayCutOutArray().indexOf(V)+1 )
         .join("");
 const exe = () =>{
     document.querySelector(".input-2").value = cutOutCordWithMinorArray().join("");
