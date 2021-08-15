@@ -33,7 +33,7 @@
 <body>
 <script>
 
-function init(){
+const init = () =>{
     document.querySelector(".input-0").value = "CDEFGABCDEFGAB";
     document.querySelector(".input-1").value = "1";
     document.querySelector(".input-3").value = 15634145;
@@ -56,8 +56,7 @@ const cordToNumber = () => document.querySelector(".input-6").value
         .split("")
         .map(V=> prePreExe().indexOf(V)+1 )
         .join("");
-
-        function exe(){
+const exe = () =>{
     document.querySelector(".input-2").value = preExe().join("");
     [...Array(6).keys()].forEach(NUM=>cordSet(preExe(), NUM));
     document.querySelector(".input-4").value = numberToCord()
