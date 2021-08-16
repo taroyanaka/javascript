@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>yukkuri</title>
+    <script src="localforage.js"></script>
+    <style>
+    .ytplayer{
+        width: 100vw;
+        height: calc(100vw*0.562);
+    }
+    .controller{
+        width: 15vw;
+        height: 5vh;
+    }
+    </style>
+    <script>
+        localforage.config({
+            // bytes
+            size: 10000
+            // => limit size 10kb
+        });
+    </script>    
+</head>
+<body>
+    <select class="controller" id="tag">
+        <option value="ゆっくり">your favorite tag is yukkuri?</option>
+    </select>
+    <button class="controller" onclick="watch();">watch</button>
+<textarea name="original" class="original" cols="15" rows="5" oninput="autoSaveTextarea();makeOriginalOption();" placeholder="猫"></textarea>
+<select class="controller" id="originalTag"></select>
+<button class="controller" onclick="watchOriginal();">watch original</button>
+
+<div class="parent"></div>
+
+<script>
+let res;
+const getWithRest = async (hashTagName) => {
+    const response = await fetch(`https://script.google.com/macros/s/AKfycbyKTGai9ZBAlBMuqW7ghBH9Ke7Ki8pUvP8Ikh5YntOpBabLGcZUqtEIblDdlsw4x5Igig/exec?hashTagName=${hashTagName}`);
+    const json = await response.json();
+    res = json;
+    return json;
+}
+const watch = async () =>{
+    await getWithRest(document.querySelector("#tag").value);
+    document.querySelector(".parent").innerHTML = res.map((V,IDX)=> `<iframe class="ytplayer" id="ytplayer-${IDX}" type="text/html" src="https://www.youtube.com/embed/${V}?vq=small"></iframe>`).join("");
+}
+const makeDefaultOption = () => document.querySelector("#tag").innerHTML += tagList.map(V=>`<option value="${V}">${V}</option>`);
+
+const watchOriginal = async () =>{
+    await getWithRest(document.querySelector("#originalTag").value);
+    document.querySelector(".parent").innerHTML = res.map((V,IDX)=> `<iframe class="ytplayer" id="ytplayer-${IDX}" type="text/html" src="https://www.youtube.com/embed/${V}?vq=small"></iframe>`).join("");
+}
+const makeOriginalOption = () => document.querySelector("#originalTag").innerHTML = document.querySelector(".original").value.split("\n").map(V=>`<option value="${V}">${V}</option>`);
+
+const autoLoadTextarea = () =>{
+    localforage.getItem('textData').then(function(loadTxt) {
+        document.querySelector(".original").value = loadTxt;
+        makeOriginalOption();
+        console.log(loadTxt);
+    }).catch(function(err) {
+        console.log(err);
+    });
+}
+const autoSaveTextarea = () =>{
+    localforage.setItem('textData', document.querySelector(".original").value).then(function (value) {
+        console.log(value);
+    }).catch(function(err) {
+        console.log(err);
+    });
+}
+
+const tagList = [
+    "ゲーム実況",
+    "音楽",
+    "女性",
+    "やってみた",
+    "芸能人",
+    "VTuber",
+    "バーチャルYouTuber",
+    "ゆっくり",
+    "企業",
+    "鉄道",
+    "商品レビュー",
+    "スポーツ",
+    "ゲーム",
+    "歌ってみた",
+    "お笑い芸人",
+    "料理",
+    "VOCALOID",
+    "車",
+    "グルメ",
+    "女性芸能人",
+    "動物",
+    "ファッション",
+    "アイドル",
+    "アニメ",
+    "釣り",
+    "旅",
+    "漫画",
+    "おもちゃ",
+    "バイク",
+    "社会",
+    "VLOG",
+    "UUUM",
+    "政治",
+    "猫",
+    "J-POP",
+    "ビジネス",
+    "ASMR",
+    "野球",
+    "切り抜き",
+    "投資",
+    "サブチャンネル",
+    "フォートナイト",
+    "子供",
+    "ピアノ",
+    "ガジェット",
+    "DIY",
+    "テレビ",
+    "マインクラフト",
+    "ゆっくり実況",
+    "カップル",
+    "メイク",
+    "勉強",
+    "格闘技",
+    "歌手",
+    "犬",
+    "ゆっくり茶番",
+    "キャンプ",
+    "薬剤師",
+    "パチンコ・パチスロ",
+    "歌い手",
+    "ギター",
+    "子供向け",
+    "ギャンブル",
+    "イラスト",
+    "雑学",
+    "ハウツー",
+    "グループ",
+    "ゲーム実況者",
+    "声優",
+    "サッカー",
+    "競馬",
+    "アダルト",
+    "TCG",
+    "ポケモン",
+    "にじさんじ",
+    "外国人",
+    "将棋",
+    "アクアリウム",
+    "行政",
+    "映画",
+    "物申す系",
+    "暮らし",
+    "家族",
+    "ゴルフ",
+    "韓国",
+    "踊ってみた",
+    "大食い",
+    "MMD",
+    "ゲーム配信",
+    "ボカロ",
+    "ニュース",
+    "健康",
+    "筋トレ",
+    "語学",
+    "ラジオ",
+    "バーチャルライバー",
+    "弾いてみた",
+    "AV女優",
+    "ドラム",
+    "旅行",
+    "ダンス",
+    "教育",
+    "美容",
+    "都市伝説",
+    "MINECRAFT",
+    "マイクラ",
+    "モデル",
+    "医療",
+    "apex",
+    "ディズニー",
+    "英語",
+    "日常",
+    "Kiii",
+    "コント",
+    "トーク",
+    "工作",
+    "心霊",
+    "恋愛",
+    "ライフハック",
+    "ツーリング",
+    "解説",
+    "歴史",
+    "飛行機",
+    "検証",
+    "AKB48",
+    "IT",
+    "ドッキリ",
+    "バンド",
+    "俳優",
+    "海外生活",
+    "あるある",
+    "アメリカ",
+    "音",
+    "TikTok",
+    "遊戯王",
+    "実況",
+    "プロレス",
+    "お笑い",
+    "総合格闘技",
+    "ダイエット",
+    "荒野行動",
+    "モトブログ",
+    "バイク屋",
+    "ツッコミ",
+    "受験",
+    "夫婦",
+    "卓球",
+    "子育て",
+    "ペット",
+    "プラモデル",
+    "登録者非公開",
+    "報道",
+    "北海道",
+    "NHKから国民を守る党",
+    "キックボクシング",
+    "公式アニメ",
+    "プラレール",
+    "東大",
+    "YouTuber",
+    "車中泊",
+    "番組",
+    "お菓子",
+    "ものまね",
+    "LINE",
+    "グラビアアイドル",
+    "新人YouTuber",
+    "医師",
+    "スマブラ",
+    "FORTNITE",
+    "アウトドア",
+    "大学生",
+    "ハンドメイド",
+    "芸能",
+    "1億再生記録持ち",
+    "雑談",
+    "麻雀",
+    "ホスト",
+    "保護猫",
+    "PUBG",
+    "ゆっくり実況者",
+    "日本",
+    "女優",
+    "ゆっくり解説",
+    "社長",
+    "魚",
+    "プログラミング",
+    "PC",
+    "風景",
+    "ブログ",
+    "ホラー",
+    "鉄道模型",
+    "カメラ",
+    "カラオケ",
+    "MAD",
+    "怪談",
+    "FPS",
+    "モンスト",
+    "千葉",
+    "活動休止",
+    "太鼓の達人"
+];
+
+makeOriginalOption();
+makeDefaultOption();
+autoLoadTextarea();
+
+</script>
+</body>
+</html>
