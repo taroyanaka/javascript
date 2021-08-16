@@ -78,9 +78,10 @@ table {
         <option value="ゆっくり">your favorite tag is yukkuri?</option>
     </select>
     <button class="controller" onclick="watch();">watch</button>
-<textarea name="original" class="original" cols="10" rows="5" oninput="autoSaveTextarea();makeOriginalOption();" placeholder="猫"></textarea>
+<!-- <textarea name="original" class="original" cols="10" rows="5" oninput="autoSaveTextarea();makeOriginalOption();" placeholder="猫"></textarea> -->
+<textarea name="original" class="original" oninput="autoSaveTextarea();makeOriginalOption();" placeholder="猫"></textarea>
 <select class="controller" id="originalTag"></select>
-<button class="controller" onclick="watchOriginal();">watch original</button>
+<button class="controller" onclick="watchOriginal();">originaltag</button>
 
 <div class="parent"></div>
 
