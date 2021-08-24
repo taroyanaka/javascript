@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fujirock vs train</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.1.1/dist/chart.min.js"></script>
+    <!-- <script src="./chartjs.filter.js"></script> -->
+</head>
+<body>
+<canvas id="myChart" width="400" height="400"></canvas>
+
+<script>
+const fujiRock2021Sum3days = [["フジロック(35449)", 35449]];
+
+// https://www.jreast.co.jp/passenger/index.html
+// 2020 best 50
+const kantoJRTrain2020Best50Sum1day = [
+["新宿(477073)", 477073],
+["池袋", 376350],
+["横浜", 290376],
+["東京", 271108],
+["渋谷", 222150],
+["品川", 220930],
+["大宮", 188576],
+["新橋", 175368],
+["北千住", 161271],
+["川崎", 159802],
+["秋葉原", 156102],
+["高田馬場", 139544],
+["立川", 122033],
+["上野", 114064],
+["大崎", 108842],
+["西船橋", 103947],
+["船橋", 103879],
+["有楽町", 103759],
+["蒲田", 103465],
+["中野", 103284],
+["田町", 102704],
+["浜松町", 102663],
+["吉祥寺", 99319],
+["柏", 94607],
+["恵比寿", 94002],
+["五反田", 92254],
+["武蔵小杉", 88994],
+["戸塚", 82817],
+["千葉", 81445],
+["藤沢", 81065],
+["国分寺", 78422],
+["町田", 77722],
+["日暮里", 77308],
+["津田沼", 76886],
+["松戸", 74813],
+["錦糸町", 74343],
+["浦和", 74053],
+["赤羽", 73842],
+["大船", 73636],
+["目黒", 72657],
+["西日暮里", 72214],
+["神田", 71872],
+["三鷹", 71399],
+["大井町", 70429],
+["大森", 69857],
+["荻窪", 67231],
+["御茶ノ水", 66530],
+["四ツ谷", 65040],
+["川口", 64428],
+["武蔵溝ノ口(63796)", 63796]
+]
+
+// kantoJRTrain2020Best50Sum1day.reduce((PV,CV,IDX)=>{PV+=CV[1];return PV;},PV=0);
+
+function pluck(p, list){return list.map(V=>{return V[p]})};
+
+const fujiAndTrain = kantoJRTrain2020Best50Sum1day.concat(fujiRock2021Sum3days);
+
+const config = {
+    type: 'doughnut',
+
+    data: {
+        labels: pluck(0, fujiAndTrain),
+        datasets: [{
+            label: '# of Label',
+            data: pluck(1, fujiAndTrain),
+            borderWidth: 1,
+            backgroundColor: 
+                fujiAndTrain
+                .map(V=> V[0].includes("フジロック") ? 'rgba(255, 0, 0, 1)' : 'rgba(211,211,211, 1)')
+                .map((V,IDX)=> (IDX === 0 || IDX === 49) ? 'rgba(0, 0, 0, 1)' : V )
+        }]
+    },
+
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top'
+                // display: true
+            },
+            title: {
+                display: true,
+                text: ["フジロック2021三日間の来場者数 対 JR東日本の一日の乗車数上位50駅(2020年)" ,"Fuji Rock Festival Visitor 2021 in 3 days VS. JR East Station User 2020 Best 50 in 1 day"]
+            }
+        }
+    },
+};
+
+
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx,config);
+
+
+</script>
+</body>
+</html>

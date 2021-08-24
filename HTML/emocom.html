@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="app0"></div>
+<textarea name="" class="app1" cols="30" rows="10"></textarea>
+<textarea name="" class="app2" cols="30" rows="10"></textarea>
+<input type="text" class="app3"></input>
+<script>
+document.querySelector('.app0').textContent = '12133311444111';
+document.querySelector('.app1').textContent = '🐱';
+
+function pluck(p, list) {
+  return list.map(V => {
+    return V[p];
+  });
+}
+
+const getCharCountList = () =>
+  document
+    .querySelector('.app0')
+    .textContent.split('')
+    .sort()
+    .reduce((A, V, IDX) => {
+      pluck(0, A).includes(V)
+        ? (A[pluck(0, A).indexOf(V)][1] += 1)
+        : A.push([V, 1]);
+      return A;
+    }, (A = []))
+    .sort((a, b) => a[1] - b[1])
+    .reverse()
+    .join('\n');
+
+document.querySelector('.app2').value = getCharCountList();
+
+document.querySelector('.app3').value = document
+  .querySelector('.app0')
+  .textContent.replaceAll(
+    document.querySelector('.app2').value,
+    document.querySelector('.app1').textContent
+  );
+
+</script>
+</body>
+</html>
