@@ -12,61 +12,61 @@
 <canvas id="myChart" width="400" height="400"></canvas>
 
 <script>
-const fujiRock2021Sum3days = [["フジロック(35449)", 35449]];
+const fujiRock2021Sum3days = [["Fuji Rock(35449)", "フジロック", 35449]];
 
 // https://www.jreast.co.jp/passenger/index.html
 // 2020 best 50
 const kantoJRTrain2020Best50Sum1day = [
-["新宿(477073)", 477073],
-["池袋", 376350],
-["横浜", 290376],
-["東京", 271108],
-["渋谷", 222150],
-["品川", 220930],
-["大宮", 188576],
-["新橋", 175368],
-["北千住", 161271],
-["川崎", 159802],
-["秋葉原", 156102],
-["高田馬場", 139544],
-["立川", 122033],
-["上野", 114064],
-["大崎", 108842],
-["西船橋", 103947],
-["船橋", 103879],
-["有楽町", 103759],
-["蒲田", 103465],
-["中野", 103284],
-["田町", 102704],
-["浜松町", 102663],
-["吉祥寺", 99319],
-["柏", 94607],
-["恵比寿", 94002],
-["五反田", 92254],
-["武蔵小杉", 88994],
-["戸塚", 82817],
-["千葉", 81445],
-["藤沢", 81065],
-["国分寺", 78422],
-["町田", 77722],
-["日暮里", 77308],
-["津田沼", 76886],
-["松戸", 74813],
-["錦糸町", 74343],
-["浦和", 74053],
-["赤羽", 73842],
-["大船", 73636],
-["目黒", 72657],
-["西日暮里", 72214],
-["神田", 71872],
-["三鷹", 71399],
-["大井町", 70429],
-["大森", 69857],
-["荻窪", 67231],
-["御茶ノ水", 66530],
-["四ツ谷", 65040],
-["川口", 64428],
-["武蔵溝ノ口(63796)", 63796]
+["Shinjuku(477073)", "新宿(477073)", 477073],
+["Ikebukuro", "池袋", 376350],
+["Yokohama", "横浜", 290376],
+["Tokyo", "東京", 271108],
+["Shibuya", "渋谷", 222150],
+["Shinagawa", "品川", 220930],
+["Omiya", "大宮", 188576],
+["Shinbashi", "新橋", 175368],
+["Kitasenju", "北千住", 161271],
+["Kawasaki", "川崎", 159802],
+["Akihabara", "秋葉原", 156102],
+["Takadanobaba", "高田馬場", 139544],
+["Tachikawa", "立川", 122033],
+["Ueno", "上野", 114064],
+["Osaki", "大崎", 108842],
+["Nishi Funabashi", "西船橋", 103947],
+["Funabashi", "船橋", 103879],
+["Yurakucho", "有楽町", 103759],
+["Kamata", "蒲田", 103465],
+["Nakano", "中野", 103284],
+["Tamachi", "田町", 102704],
+["Hamamatsucho", "浜松町", 102663],
+["Kichijoji", "吉祥寺", 99319],
+["Kashiwa", "柏", 94607],
+["Ebisu", "恵比寿", 94002],
+["Gotanda", "五反田", 92254],
+["Musashikosugi", "武蔵小杉", 88994],
+["Totsuka", "戸塚", 82817],
+["Chiba", "千葉", 81445],
+["Fujisawa", "藤沢", 81065],
+["Kokubunji", "国分寺", 78422],
+["Machida", "町田", 77722],
+["Nippori", "日暮里", 77308],
+["Tsudanuma", "津田沼", 76886],
+["Matsudo", "松戸", 74813],
+["Kinshicho", "錦糸町", 74343],
+["Urawa", "浦和", 74053],
+["Akabane", "赤羽", 73842],
+["Ofuna", "大船", 73636],
+["Meguro", "目黒", 72657],
+["Nishinippori", "西日暮里", 72214],
+["Kanda", "神田", 71872],
+["Mitaka", "三鷹", 71399],
+["Oimachi", "大井町", 70429],
+["Omori", "大森", 69857],
+["Ogikubo", "荻窪", 67231],
+["Ochanomizu", "御茶ノ水", 66530],
+["Yotsuya", "四ツ谷", 65040],
+["Kawaguchi", "川口", 64428],
+["Musashi Mizonokuchi", "武蔵溝ノ口", 63796]
 ]
 
 // kantoJRTrain2020Best50Sum1day.reduce((PV,CV,IDX)=>{PV+=CV[1];return PV;},PV=0);
@@ -75,19 +75,62 @@ function pluck(p, list){return list.map(V=>{return V[p]})};
 
 const fujiAndTrain = kantoJRTrain2020Best50Sum1day.concat(fujiRock2021Sum3days);
 
+Array.prototype.random = function () {
+  return this[Math.floor((Math.random()*this.length))];
+}
+
+function shuffle(array) {
+  var tmp, current, top = array.length;
+  if(top) while(--top) {
+    current = Math.floor(Math.random() * (top + 1));
+    tmp = array[current];
+    array[current] = array[top];
+    array[top] = tmp;
+  }
+  return array;
+}
+
+// https://www.color-hex.com/color-palette/111096
+// https://www.color-hex.com/color-palette/110331
+const color1 = ['rgba(9,255,0,1)',
+'rgba(20,20,20,1)',
+'rgba(240,240,240,1)',
+'rgba(187,187,187,1)',
+'rgba(170,170,170,1)',
+'rgba(51,19,59,1)',
+'rgba(33,6,36,1)',
+'rgba(186,238,76,1)',
+'rgba(206,145,216,1)',
+'rgba(132,66,143,1)',
+
+// 'rgba(121,0,206,1)',
+// 'rgba(0,0,0,1)',
+// 'rgba(255,255,255,1)',
+// 'rgba(0,159,51,1)',
+// 'rgba(249,26,26,1)',
+
+'rgba(253,255,242)',
+'rgba(54,74,255)',
+'rgba(255,0,187)',
+'rgba(255,181,0)',
+'rgba(20,20,20)'
+];
+
 const config = {
     type: 'doughnut',
 
     data: {
         labels: pluck(0, fujiAndTrain),
+        // labels: pluck(1, fujiAndTrain),
         datasets: [{
             label: '# of Label',
-            data: pluck(1, fujiAndTrain),
+            data: pluck(2, fujiAndTrain),
             borderWidth: 1,
             backgroundColor: 
                 fujiAndTrain
-                .map(V=> V[0].includes("フジロック") ? 'rgba(255, 0, 0, 1)' : 'rgba(211,211,211, 1)')
-                .map((V,IDX)=> (IDX === 0 || IDX === 49) ? 'rgba(0, 0, 0, 1)' : V )
+                .map(V=> V[1].includes("フジロック") ? 'rgba(255, 0, 0, 1)' : shuffle(color1)[0] )
+                // .map(V=> V[1].includes("フジロック") ? 'rgba(255, 0, 0, 1)' : 'rgba(211,211,211, 1)')
+                // .map((V,IDX)=> (IDX === 0 || IDX === 49) ? 'rgba(0, 0, 0, 1)' : V )
         }]
     },
 
