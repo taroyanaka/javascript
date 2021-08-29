@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>work bank money art</title>
+    <style>
+        button{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <button class="button-0" onclick="work();">🛠</button><button class="button-1" onclick="bank();">🏦</button><button class="button-2" onclick="art();">🖼</button>
+    <!-- <button class="button-3" onclick=""></button> -->
+    <textarea name="textarea-0" cols="100" rows="10" class="textarea-0" onclick=""></textarea>
+    <textarea name="textarea-1" cols="100" rows="3" class="textarea-1" onclick=""></textarea>
+    <!-- <textarea name="textarea-2" cols="100" rows="10" class="textarea-2" onclick=""></textarea> -->
+    <!-- <textarea name="textarea-3" cols="100" rows="10" class="textarea-3" onclick=""></textarea> -->
+    <script>
+function repeat(VAL,n){return[...Array(n)].reduce((A,V,IDX)=>{A.push(VAL);return A},A=[])};
+
+const money90add = () => document.querySelector(".textarea-0").value = repeat("💵", 90).join("");
+const money100add = () => document.querySelector(".textarea-0").value = repeat("💵", 100).join("");
+const money110add = () => document.querySelector(".textarea-0").value = repeat("💵", 110).join("");
+
+// document.querySelector(".button-1").value = "";
+// document.querySelector(".button-2").value = "";
+// document.querySelector(".button-3").value = "";
+// document.querySelector(".textarea-0").value = "";
+
+const work = () => document.querySelector(".textarea-0").value += "💵";
+const bank = () =>
+    document.querySelector(".textarea-0").value.length >= 10
+    ?
+        document.querySelector(".textarea-0").value += 
+        repeat("💵", Math.floor(((document.querySelector(".textarea-0").value.length/2)*0.1)) )
+        .join("")
+    :
+        document.querySelector(".textarea-0").value += ""
+    ;
+const art = () =>{
+    if(
+    document.querySelector(".textarea-0").value.length >= 200
+    ){
+        document.querySelector(".textarea-0").value =
+            repeat("💵", 
+                (document.querySelector(".textarea-0").value.length/2 - 100)
+            )
+            .join("");
+        document.querySelector(".textarea-1").value += "🖼"
+    }
+};
+</script>
+</body>
+</html>
