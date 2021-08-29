@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<textarea name="" class="app0" cols="30" rows="10" oninput="exe();"></textarea>
+<textarea name="" class="app1" cols="30" rows="10" oninput="exe();"></textarea>
+<textarea name="" class="app2" cols="30" rows="10" oninput="exe();"></textarea>
+<script>
+document.querySelector('.app0').textContent = '120122';
+document.querySelector('.app1').textContent = `🐱
+🐶
+🦢`;
+const replacer = (TXT,STR,IDX) => TXT.replaceAll(STR, document.querySelector('.app1').value.split("")[IDX]);
+
+
+const exe = ()=>{
+    document.querySelector('.app2').value = 
+  document.querySelector('.app0').value.split("").map(V=>
+    document.querySelector(".app1").value.split("\n")[Number(V)]
+  ).join("");
+};
+// document.querySelector('.app0').textContent = '12133311444111';
+// document.querySelector('.app1').textContent = '🐱';
+
+// document.querySelector('.app2').value = document
+//   .querySelector('.app0')
+//   .textContent.split('')
+//   .sort()
+//   .reduce((A, V, IDX) => {
+//     A.map(Val => 
+//       Val[0]).includes(V)
+//       ? 
+// A.map(Val=>{ if(Val[0]===V){[ [V[0], V[1]+=1] ]} })
+//       : 
+//       A.push([V, 1]);
+//     return A;
+//   }, (A = []));
+
+// document.querySelector('.app3').value = document
+//   .querySelector('.app0')
+//   .textContent.replaceAll(
+//     document.querySelector('.app2').value,
+//     document.querySelector('.app1').textContent
+//   );
+</script>
+</body>
+</html>
