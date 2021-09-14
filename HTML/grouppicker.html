@@ -10,14 +10,24 @@
             width: 30px;
             height: 30px;
         }
+        .exe{
+            width: 40px;
+            height: 40px;
+        }
     </style>
+    <script src="localforage.js"></script>
 </head>
 <body>
-<!-- <input type="number" min="3" max="4"> -->
+<script>
+    localforage.config({
+        size: 5000
+        // => limit size 5kb
+    });
+</script>
 
 volume:<div class="res"></div>
 shuffle:<input type="checkbox" class="checkbox-1" checked>
-<input type="button" value="🔄" onclick="exe()">
+<input type="button" value="🔄" class="exe" onclick="exe()">
 
 <div class="copy-parent">
 <textarea class="target textarea-1" cols="10" rows="5" oninput="addOption();"></textarea>
@@ -32,6 +42,26 @@ shuffle:<input type="checkbox" class="checkbox-1" checked>
 <div class="paste-parent">
 </div>
 <script>
+async function getData() {
+    return await fetch()
+        .then(response=>response.text())
+        // .catch(err=> document.querySelector(".text").value = err);
+}
+async function testSave(){
+    const data = await getData();
+    await localforage.setItem(memory, JSON.stringify(data))
+        // .then(res=> document.querySelector(".text").value = JSON.parse(res))
+        // .catch(err=> document.querySelector(".text").value = err);
+}
+async function testLoad(){
+// try {
+    const value = await localforage.getItem();
+    const res = value ? JSON.parse(value) : "db is null";
+    document.querySelector(".text").value = res;
+    // }
+    // catch (err) {    document.querySelector(".text").value = err    }
+}
+
 
 const addTextarea = () =>{
     let tmp=[];
