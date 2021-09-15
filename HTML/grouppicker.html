@@ -28,6 +28,8 @@
 volume:<div class="res"></div>
 shuffle:<input type="checkbox" class="checkbox-1" checked>
 <input type="button" value="🔄" class="exe" onclick="exe()">
+<input type="button" value="save" class="save" onclick="save()">
+<input type="button" value="load" class="load" onclick="load()">
 
 <div class="copy-parent">
 <textarea class="target textarea-1" cols="10" rows="5" oninput="addOption();"></textarea>
@@ -42,38 +44,40 @@ shuffle:<input type="checkbox" class="checkbox-1" checked>
 <div class="paste-parent">
 </div>
 <script>
-async function getData() {
-    return await fetch()
-        .then(response=>response.text())
-        // .catch(err=> document.querySelector(".text").value = err);
+async function save(){
+    localforage.setItem('somekey',
+        JSON.stringify(
+            [
+                document.querySelector(".copy-parent").innerHTML,
+                Array.from(document.querySelectorAll(".copy-parent > *")).map((V,IDX)=>V.value )
+            ]
+        )
+    ).then(function (value) {console.log(value)})
 }
-async function testSave(){
-    const data = await getData();
-    await localforage.setItem(memory, JSON.stringify(data))
-        // .then(res=> document.querySelector(".text").value = JSON.parse(res))
-        // .catch(err=> document.querySelector(".text").value = err);
-}
-async function testLoad(){
-// try {
-    const value = await localforage.getItem();
-    const res = value ? JSON.parse(value) : "db is null";
-    document.querySelector(".text").value = res;
-    // }
-    // catch (err) {    document.querySelector(".text").value = err    }
+async function load(){
+    localforage.getItem('somekey').then(function(res) {
+        let tmp = JSON.parse( res );
+        document.querySelector(".copy-parent").innerHTML = tmp[0];
+
+        document.querySelectorAll(".copy-parent > *").forEach((V,IDX)=>V.value = tmp[1][IDX]);
+    }).then(function (value) {console.log(value)});
 }
 
 
 const addTextarea = () =>{
-    let tmp=[];
-    Array.from(document.querySelectorAll(".copy-parent > *")).forEach((V,IDX)=>
-        tmp.push(V.value)
-    );
+    // let tmp = Array.from(document.querySelectorAll(".copy-parent > *")).map(V=>V.innerHTML);
+    let tmp = Array.from(document.querySelectorAll(".copy-parent > *")).map(V=>V.value);
+    // let tmp = [];
+    //     Array.from(document.querySelectorAll(".copy-parent > *")).forEach((V,IDX)=>
+    //         tmp.push(V.value)
+    //     );
     document.querySelector(".copy-parent").innerHTML += `<textarea class="target textarea-${(document.querySelectorAll(".copy-parent > .target").length + 1)}" cols="10" rows="5" oninput="addOption();"></textarea>`;
     addOption();
     tmp.forEach((V,IDX)=>
         document.querySelectorAll(".copy-parent > *")[IDX].value = V
     );
     addOption();
+    exe();
 }
 
 const init = () =>{
