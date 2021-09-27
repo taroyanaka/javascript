@@ -11,14 +11,6 @@
 </head>
 <body>
 <script>
-// function setup() {
-//   createCanvas(400, 400);
-// }
-
-// function draw() {
-//   background(220);
-// }
-
 // https://openprocessing.org/sketch/1251650
 let colors = ['#f42539', '#ff8119', '#ffc618', '#faea3e','#56ac51', '#48bc9f', '#39cced', '#4178f4', '#9819fa', '#fe84fe']
 
@@ -26,7 +18,7 @@ function range(from,to){return[...Array(to-from)].reduce((A,V,IDX)=>{A.push(from
 
 function setup() {
 	createCanvas(300, 200);
-	// background(255);
+	background(255);2
 	let seg = 3;
     let w = width / seg;
     range(0, 3).reduce((prevX,V,IDX)=>{
@@ -39,33 +31,19 @@ function setup() {
 function draw(){}
 
 function ponpon(x, y, w){
-	// let d = w*0.35;
 	let d = w*0.4;
 	let r = (w - d)/2;
-	// let pm = random() < 0.5 ? -1 : 1;
 	let count = 0;
 	push();
 	translate(x, y);
-	// rotate(random(PI));
-	// scale(pm, 1);
-	// strokeWeight(2);
-	// for(let a=0; a<TAU; a+=TAU/10){
 	for(let a=0; a<TAU; a+=TAU/8){
 		fill(colors[count]);
-        // https://qiita.com/bit0101/items/901ac85e1e8f11b18f76
-        // x, y, diameter
-		// circle(r * cos(a), r * sin(a), d);
         circle(r * cos(a), r * sin(a), d*(count*0.1));
 		count ++;
 	}
 	fill(colors[0]);
 
     circle(r * cos(0), r * sin(0), d*0.8);
-	// arc(r * cos(0), r * sin(0), d, d, PI, TAU);
-
-
-	// arc(r * cos(0), r * sin(0), d, d, 0.1*PI, 0.5*PI);
-	// fill('#ffffff');
 	pop();
 }
 </script>

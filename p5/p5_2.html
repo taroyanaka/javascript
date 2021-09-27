@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5_2</title>
+    <script src="./p5.js"></script>
+    <meta charset="utf-8" />
+</head>
+<body>
+<script>
+let colors = ['#f42539', '#ff8119', '#ffc618', '#faea3e','#56ac51', '#48bc9f', '#39cced', '#4178f4', '#9819fa', '#fe84fe']
+
+colors = ["#7454ec",
+"#8567f4",
+"#613f27",
+"#a4795c",
+"#94b4c4",
+"#40443c",];
+
+
+
+
+function setup() {
+    const static = 2160;
+
+    createCanvas(static, static);
+    // background(0);
+    background(colors[colors.length-1]);
+
+    const middle = (static/2);
+    const position = (static/colors.length);
+    // fill(colors[0]);
+    // ellipse(middle, middle, position, position);
+
+    colors.forEach((V,IDX)=>{
+        fill(colors[IDX]);
+        const num = IDX / colors.length;
+        ellipse(middle, middle, position/num, position/num);
+    });
+}
+
+
+function draw(){}
+</script>
+</body>
+</html>
