@@ -237,6 +237,33 @@ const fn = (STR) => `https://www.youtube.com/results?search_query=${encodeURICom
         res = json;
         return json;
     }
+
+
+
+// google apps script side
+// function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
+
+//     function doGet(e) {
+//         const newsList = UrlFetchApp.fetch("https://www.youtube.com/results?search_query=" + decodeURIComponent(e.parameter.url)).getContentText();
+//         ContentService.createTextOutput()
+//         var output = ContentService.createTextOutput();
+//         const regexp = /videoId.+?[a-zA-Z0-9]{14}?/gm;
+//         const array = [...newsList.matchAll(regexp)];
+//         const res = array;
+//         const uniqqedRes = uniq(res);
+
+//         const topHitUrl =
+//             "https://www.youtube.com/watch?v=" +
+//             uniqqedRes[0][0].slice(0, 27)
+//                 .replaceAll("videoId\\x22\:\\x22", "");
+
+//         Logger.log(topHitUrl);
+//         output.setMimeType(ContentService.MimeType.JSON);
+//         output.setContent(JSON.stringify(topHitUrl));
+//         return output;
+//     }
+// google apps script side
+
 </script>
 </body>
 </html>
