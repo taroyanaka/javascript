@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pixelit</title>
+    <style>
+        .scale{
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+    <!-- https://github.com/giventofly/pixelit -->
+</head>
+<body>
+    <select name="scale" class="scale" onchange="fn()"></select>
+    <!-- <img src="1.png" id="pixelitimg" alt=""> -->
+    <img src="100.png" id="pixelitimg" alt="">
+    <canvas id="pixelitcanvas"></canvas>
+    <script src="pixelit.js"></script>
+
+    <script>
+document.querySelector(".scale").innerHTML = [...Array(51).keys()].map(V => `<option value="${V}">${V}</option>`).join("");
+
+const fn = () =>{
+    const config = {
+        // to: elem,
+        //defaults to document.getElementById("pixelitcanvas")
+        // from: elem,
+        //defaults to document.getElementById("pixelitimg")
+        // scale: 6,
+        scale: Number(document.querySelector(".scale").value),
+        //from 0-50, defaults to 8
+        // palette: [[r, g, b]],
+        //defaults to a fixed pallete
+        // maxHeight: int,
+        //defaults to null
+        // maxWidth: int,
+        //defaults to null
+    }
+    const px = new pixelit(config);
+    px.draw().pixelate();
+};
+    </script>
+
+</body>
+</html>
