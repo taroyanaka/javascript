@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>predispatchplaylistapplemusic</title>
+<style>
+input{
+    width: 100%;
+}
+</style>
+</head>
+<body>
+<div><input type="button" onclick="init()" name="init" class="init" value="init"></div>
+<div><input type="button" onclick="exe()" name="exe" class="exe" value="exe"></div>
+<div><input type="text" name="splitter" class="splitter" placeholder="splitterString"></div>
+<div><input type="text" name="join" class="join" placeholder="joinString"></div>
+<!-- <textarea name="" class="url" cols="50" rows="30"></textarea> -->
+<!-- <button onclick="sample()">sample</button> -->
+<textarea name="" class="res" cols="50" rows="30"></textarea>
+<!-- <button onclick="exe()">exe</button> -->
+<textarea name="" class="textarea-1" cols="300" rows="100"></textarea>
+<!-- <script src="sampletext.js"></script> -->
+<script>
+document.querySelector(`.textarea-1`).value = `Sorry (Cueheat x FL!PPS Remix)    2:59    Justin Bieber    CLUBJERSEY Remixes    CLUBJERSEY    2    509
+Always (Classixx Remix)    5:32    Panama    Always (Deluxe Edition)    エレクトロニック    2    517
+Stand By Me    2:28    SLIME BALL    Slime Ball    Rock    2    495
+Derezzed    1:44    ダフト・パンク    TRON: Legacy    Soundtrack    2    447
+Giorgios Brother (Lack of Afro Remix)    5:12    Eddie Roberts Quintet    Record Kicks - Remixes & B-Sides    ジャズ    2    425
+Rockin' Cruise    2:27    Citrus    Pits Are The Pits (25 GOLD=RARE=DEBRIS 1992-2000)    J-Pop    2    411
+Beach    4:19    Qrion    Qrion - EP    ハウス    2    410
+The Lost You    4:44    Hood    The Lost You - EP    Alternative    2    379
+avril 14th last    0:27                0    379
+Sound System (2007 Remaster)    2:14    Operation Ivy    Operation Ivy (2007 Remaster)    オルタナティブ    0    369
+September (Live)    3:44    アース・ウィンド・アンド・ファイアー    Live In Rio    R&B／ソウル    2    366
+cream soda    3:29    スーパーカー    RE:SUPERCAR 1 -redesigned by nakamura koji-    ロック    2    361
+Elephant Stone (Edit)    3:03    ザ・ストーン・ローゼズ    The Stone Roses Collection (Remastered)    オルタナティブ    2    350
+I Want You Back    5:12    Jackson 5    Best Of The Jackson 5 Remix - Compiled By Soul Source Production    Pop    2    341
+Blood    5:25    The Middle East    ワンダーフォーゲル ~大自然のBGM~    ロック    2    337
+xtalacoustic    6:32                0    332
+Do Your Thing    4:20    Basement Jaxx    The Singles    エレクトロニック    2    330
+たまたまニュータウン (2DK session)    7:15    相対性理論    たまたまニュータウン (2DK session) - Single    J-Pop    2    320
+Celestial Blues (feat. Ange)    4:42    Uptown Funk Empire    The Empire Strikes Back    R&B／ソウル    2    310
+Because I Love It    4:51    GOING STEADY    東京少年 - Single    ロック    2    300
+Pay No Mind (feat. Passion Pit) [Yasutaka Nakata "CAPSULE" Remix]    4:04    Madeon    Pay No Mind (feat. Passion Pit) [Yasutaka Nakata "CAPSULE" Remix] - Single    ダンス    2    297
+Debaser (Live)    2:47    Pixies    Debaser (Live) - EP    オルタナティブ    2    291
+Sweltering Night    6:44    adukuf    Sweltering Night    ダンス    2    297
+I'M MILLIONAIRE    1:48    FULLSCRATCH    MARVELOUS    ロック    0    288
+Acid Shower(Remo-con Remix)    6:53    adukuf    Acid Shower    ダンス    2    140
+Hey Boy Hey Girl    4:50    ケミカル・ブラザーズ    Surrender    ブレイクビーツ    0    54
+Two Months Off    9:09    Underworld    A Hundred Days Off    ポップ    0    3
+ukigumo    3:35    ヒゲドライバー    ヒゲドライバー 10th Anniversary Best    ポップ    0    4
+Techy Techy (2008 Scot Attrill Remix)    6:51    Yoji    A Quarter Century of Yoji Biomehanika: The Era of Tech Dance 2007-2013    ダンス    0    2
+Perth    5:23    Kink    Perth - Single    エレクトロニック    0    4
+Yom Thorke    9:05    Kink    Playground    テクノ    0    3
+ダンスロボットダンス    3:11    ナユタン星人    ナユタン星からの物体Y    ロック    0    6
+It Just Won't Do    5:12    Tim Deluxe    The Little Ginger Club Kid    エレクトロニック    0    3
+SKYDIVER    4:03    Maika Loubte    SKYDIVER/LE GONG - Single    エレクトロニック    0    5
+Horse    2:54    Salvatore Ganacci    Horse - Single    ダンス    0    5
+FJK    4:46    CRANK SHAFT    FJK - Single    ダンス    0    3
+TIME TO GET SERIOUS (feat. ESKIMO)    7:36    DYNAMIC feat. ESKIMO    EXIT TRANCE #02 MIXED BY DJ UTO    ダンス    0    3
+ギガンティックO.T.N feat.鏡音レン    3:20    ギガP    EXIT TUNES PRESENTS Vocalosensation feat.初音ミク    アニメ    0    4
+かくしぇーむ    3:26    CY8ER    ハローニュージェネレーション    エレクトロニック    0    5
+Dancing    4:43    Mellow Fellow    Dancing - Single    シンガーソングライター    0    12
+Anticipation    2:00    LUSTBASS    The Warmth of Your Sun    ジャズ    0    16
+PROSPER    3:39    CIFIKA    PRISM - EP    エレクトロニック    0    16
+Gaut    1:48    Fauxe    Ikhlas    エレクトロニック    0    17
+A Long Dream    4:19    Sesoneon    Summer Plumage - EP    ロック    0    17
+Sunset    4:26    Lofibaby    N    エレクトロニック    0    18
+Poison Arrow    4:21    yeule    Serotonin II    オルタナティブ    0    51
+The Gate    4:56    Howie Lee    Mù Chè Shān Chū    エレクトロニック    0    21
+OUTTA MY MIND    3:46    Monsune    OUTTA MY MIND - Single    オルタナティブ    0    18
+Dazed    2:25    Heals    SPECTRUM    インディー・ロック    0    25
+Wet Dreams    5:00    Munir    Thursday    ハウス    0    14
+Arne    3:38    haruka nakamura    Grace    エレクトロニック    0    25
+Glass Flows (feat. Ravyn Lenae)    3:08    Smino    blkswn    ヒップホップ／ラップ    0    40
+Barbara (feat. Catia Sá, Ary, Batida & Alex Terrakota)    4:52    Octa Push    Lingua    エレクトロニック    0    21
+BB    6:32    Kornél Kovács    The Bells (Bonus Track Version)    ハウス    0    11
+Rastakraut    2:33    The Narcoleptic Dancers    Never Sleep    オルタナティブ    0    24
+Metamorphosis    5:48    Benjamin Shielden    Colt 45 (Bande originale du film)    サウンドトラック    0    25
+Won't Let You    3:26    MorMor    Won't Let You - Single    オルタナティブ    0    25
+Be Careful What You Wish For    3:50    Coil    Backwards    エレクトロニック    0    4
+5 On a Joyride    3:32    コーディ・チェスナット    The Headphone Masterpiece    ヒップホップ／ラップ    0    22
+Broken Bone    2:30    Iceage    New Brigade    オルタナティブ    0    10
+Native America (feat. The Internet)    2:53    midnight    0:00 - EP    R&B／ソウル    0    33
+Pressure Reprise    2:31    midnight & YLXR    Nocturne Reprise - Single    エレクトロニック    0    35
+Carry the Zero    5:44    Built to Spill    Keep It Like a Secret    オルタナティブ    0    13
+Crazy in Love (feat. Jay-Z)    3:56    Beyoncé    Dangerously in Love    ポップ    0    21
+Pacer    7:39    Jesper Ryom    Liquors, Vol. 1    エレクトロニック    0    13
+Homegirl (feat. Smino & Topaz Jones)    4:46    レヴィン・カリ    Homegirl (feat. Smino & Topaz Jones) - Single    R&B／ソウル    0    17
+10% (feat. Kali Uchis)    3:07    KAYTRANADA    BUBBA    エレクトロニック    0    12
+Someday (triple j Like A Version)    4:25    Julia Jacklin    Someday (triple j Like a Version) - Single    オルタナティブ    0    10
+953    5:21    black midi    Schlagenheim    オルタナティブ    0    4
+The List Of Cubes (Dominant Space Remix)    6:38    REMO-CON    The List Of Cubes (Dominant Space Remix) - Single    ダンス    0    8
+Sportstar    3:51    Alex G    Rocket    オルタナティブ    0    25
+Rose    3:46    Inner Wave    Rose - Single    オルタナティブ    0    16
+Productivity/Has It Been This Long    2:33    Enjoy    Small Car Big Wheels    オルタナティブ    0    10
+Spectra    4:37    KNEEBODY    Chapters    ジャズ    0    20
+Transcend (feat. Armi Millare)    3:38    Ovall    Ovall    オルタナティブ    0    7
+Avail    3:15    ザ・バッド・プラス    Activate Infinity    コンテンポラリー・ジャズ    0    12
+Walking with Jesus    5:13    Spacemen 3    Forged Prescriptions (Remastered)    オルタナティブ    0    8
+Cider Stream    3:37    Cola Splash    Cider Stream - Single    ダンス    0    74
+1234    3:04    ファイスト    The Reminder    ポップ    0    19
+Hometown Glory    4:31    アデル    19    ポップ    0    14
+Psykick Dance Hall    3:49    ザ・フォール    Dragnet (Deluxe Edition)    インディー・ロック    0    17
+Country Girl (Beans and Fatback Mix)    4:29    プライマル・スクリーム    Riot City Blues (Expanded Edition)    オルタナティブ    0    13
+Who Wants to Be a Millionaire?    2:55    Chinatown Slalom    Who Wants to Be a Millionaire?    オルタナティブ    0    19
+Music Is the Answer (feat. SLO)    4:59    ジョー・ガッダード    Electric Lines (Deluxe Version)    エレクトロニック    0    10
+Lost In Paris (feat. GoldLink)    3:14    Tom Misch    Geography    エレクトロニック    0    53
+Grip    1:56    テッサ・トンプソン    Creed (Original Motion Picture Soundtrack)    R&B／ソウル    0    28
+Know    3:35    Sydney Bennett    Fin    R&B／ソウル    0    121
+Pony Fly (feat. Steve Lacy)    4:42    Matthew Martin    The Last Party    R&B／ソウル    0    33
+Playground    3:34    Steve Lacy    Apollo XXI    ポップ    0    38
+Make It Out Alive (feat. SiR)    3:59    Nao    Saturn    R&B／ソウル    0    23
+'Til It's Over    3:22    アンダーソン・パーク    'Til It's Over - Single    R&B／ソウル    0    23
+Attraction    2:47    Lance Skiiiwalker    Introverted Intuition    オルタナティブ    0    20
+Get Your Life    3:49    Caught a Ghost    Dear White People (Original Motion Picture Soundtrack)    サウンドトラック    0    20
+Almeria    2:54    Everydayz & Phazz    Almeria    エレクトロニック    0    20
+Degrees of Light    2:48    Taylor McFerrin    Early Riser    エレクトロニック    0    25
+Mirror Memory    2:38    Teebs    Anicca    エレクトロニック    0    19
+Overload    3:58    Georgia Anne Muldrow    Overload    R&B／ソウル    0    21
+Aura    4:48    Photay    Onism    エレクトロニック    0    21
+The Holy Cave    2:53    Clap! Clap!    Tayi Bebba    エレクトロニック    0    33
+Motherless Child    5:12    Romare    Projections    エレクトロニック    0    22
+Frigid Air (feat. μ-Ziq)    4:42    FaltyDL    Heaven is for Quitters    エレクトロニック    0    14
+J Buyers    4:51    Dorian Concept    The Nature of Imitation    エレクトロニック    0    14
+TRY - A COLORS SHOW    3:51    Madison McFerrin    TRY - A COLORS SHOW - Single    R&B／ソウル    0    17
+Heavy Eyelids    4:08    Danny L Harle    1Ul - EP    ポップ    0    15
+About Her    3:32    Phazz    About Her - Single    エレクトロニック    0    18
+Sun Models (feat. Madelyn Grant)    2:40    ODESZA    In Return    エレクトロニック    0    16
+Clueless    3:00    REYNA    Clueless - Single    ポップ    0    29
+Purple Tuesday (feat. Joey Bada$$ & Jesse Boykins III)    4:50    Rejjie Snow    The Moon & You    ヒップホップ    0    18
+Take Off the Blues (feat. Darien Brockington)    4:06    The Foreign Exchange    Leave It All Behind    R&B／ソウル    0    45
+The Tea (Studio)    3:59    1    To Whom It May Concern    R&B／ソウル    0    26
+Tell Me Why    4:10    Conya Doss    Love Rain Down    R&B／ソウル    0    23
+Kama Sutra    2:55    イマン・オマーリ    Ihy    R&B／ソウル    0    19
+Sweet Holy Honey    3:45    Sango & Xavier Omär    Sweet Holy Honey - Single    エレクトロニック    0    21
+In Camera    3:24    Yumi Zouma    EP III    インディー・ロック    0    18
+Debold    2:44    Vegyn    Only Diamonds Cut Diamonds    エレクトロニック    0    18
+Shy    3:22    Hether    Hether Who? - EP    オルタナティブ    0    17
+Karaoke Bar    3:17    Nylon    Eine kleine Sehnsucht    ポップ    0    23
+Letter of Intent    5:19    ダックテイルズ    The Flower Lane    ロック    0    10
+Black Qualls (feat. Steve Lacy & Steve Arrington)    3:16    Thundercat    Black Qualls (feat. Steve Lacy & Steve Arrington) - Single    R&B／ソウル    0    14
+Dollar Bills (feat. Steve Lacy)    3:08    Sydney Bennett    Fin    R&B／ソウル    0    79
+Frame Of Reference    2:32    Drug Store Romeos    Frame Of Reference - Single    オルタナティブ    0    15
+Rare Thing    3:31    Frances Quinlan    Likewise    オルタナティブ    0    5
+Surface    4:37    Manu Dia    Surface - EP    エレクトロニック    0    95
+Jungle    3:46    Hurley Mower    Jungle - Single    ダンス    0    7
+Niet II (feat. maco marets)    4:45    Maika Loubte    Niet II (feat. maco marets) - Single    ダウンテンポ    0    44
+ウミユリ海底譚    3:56    n-buna    花と水飴、最終電車    アニメ    0    139
+Tokyo Inn    3:29    HYUKOH    23    ロック    0    39
+Somthing's Missing    6:21    The Internet    Ego Death (Japan Version)    R&B／ソウル    0    24
+flos    4:35    R Sound Design    Quartia    J-Pop    0    32
+People Get Up and Drive Your Funky Soul    3:40    ジェームス・ブラウン    Slaughter's Big Rip-Off    R&B／ソウル    0    12
+A-Punk    2:18    Vampire Weekend    Vampire Weekend    オルタナティブ    0    17
+スウィート・ソウル・レヴュー    4:17    ピチカート・ファイヴ    THE BAND OF 20TH CENTURY: Nippon Columbia Years 1991-2001    J-Pop    0    8
+シャルル    3:54    バルーン    Corridor    J-Pop    0    96
+ダイスキ with TeddyLoid    3:19    DAOKO    もしも僕らがGAMEの主役で / ダイスキ with TeddyLoid / BANG!    J-Pop    0    114
+Tears of Honey    4:13    Luminous Orange    luminousorangesuperplastic    ポップ    0    33
+Guns of Saxophone    4:29    TRI4TH    4th Rebellion    ジャズ    0    49
+Under the Moonlight    3:18    Tamuraryo    No Word - EP    オルタナティブ    0    94
+Sink    3:58    Qrion    Qrion - EP    ハウス    0    16
+Big Eater    3:53    ザ・バッド・プラス    These Are the Vistas    ジャズ    0    14
+開戦前夜    11:19    ZAZEN BOYS    Live At Shibuya    オルタナティブ    0    3
+Smooth Sailing    7:07    Kid606    Happiness    エレクトロニック    0    12
+Eva (George Clanton Remix)    2:58    yeule    Eva (George Clanton Remix) - Single    エレクトロニック    0    11
+方位    5:04    bloodthirsty butchers    荒野ニオケルbloodthirsty butchers    オルタナティブ    0    42
+Bye Bye Summer    3:34    Aseul    Slow Dance    エレクトロニック    0    13
+Sneaker Song!    3:43    Plus-Tech Squeeze Box    FAKEVOX    J-Pop    0    21
+ちゅうとはんぱはやめて (feat. 泉まくら) [Tomggg remix]    5:11    禁断の多数決    5years    ヒップホップ／ラップ    0    15
+mac teenage riot    3:19    Macdonald Duck Eclair    short short    J-Pop    0    3
+そらとぶひかり    4:43    COLTEMONIKHA    COLTEMONIKHA    J-Pop    0    14
+baby's star jam    5:23    DE DE MOUSE    tide of stars -Ultimate Edition-    エレクトロニック    0    20
+Owari No Kisetsu    3:19    レイ ハラカミ    [lust]    エレクトロニック    0    18
+FRUITS CLiPPER    4:09    CAPSULE    FRUITS CLiPPER    エレクトロニック    0    20
+jelly (album-edit)    5:06    CAPSULE    FRUITS CLiPPER    エレクトロニック    0    22
+ネイティブダンサー(rei harakami へっぽこre-arrange)    6:09    サカナクション    月の変容 ~Remix works~    ロック    0    21
+Spartacus    4:08    INO hidefumi    Satisfaction    エレクトロニック    0    24
+Money    3:54    The Drums    Money - Single    オルタナティブ    0    29
+The Chase    3:39    David Pastorius and Local 518    David Pastorius and Local 518    ジャズ    0    46
+Palmtree Hotel    4:17    SACRE    The Call - EP    エレクトロニック    0    5
+愛はかげろうのように (Re-Recorded Version)    3:58    シャーリーン    愛はかげろうのように - single    ヴォーカル    0    4
+Intervales Theme    3:38    Javelin    No Mas    オルタナティブ    0    7
+Dấu Lòng    3:50    Chiển Phu    Cắm trại đêm - EP    ジャズ    0    14
+super highway (Remo-con Remix)    7:06    REMO-CON    King Of Super Highway    エレクトロニック    0    3
+Feel    2:30    渡邉賢一 & novsemilong    PLANET    インストゥルメンタル    0    74
+Suicide Blades    3:06    Mura Masa    Soundtrack To A Death    エレクトロニック    0    14
+The Things You Do    3:31    Leanbacker    The Things You Do - Single    ヒップホップ／ラップ    0    30
+Let's Go Surfing    2:55    The Drums    The Drums    オルタナティブ    0    46
+Dntleave    1:41    Knxwledge    Anthology    ヒップホップ    0    18
+Honeypie    2:16    JAWNY    Honeypie - Single    オルタナティブ    0    38
+Clear (feat. Mothica)    3:57    Pusher    Majestic Casual - Chapter 3    エレクトロニック    0    3
+Let Me Know    3:16    Stupead    Majestic Casual - Chapter 3    エレクトロニック    2    6
+Incinerate    4:56    ソニック・ユース    Rather Ripped    ロック    0    17
+Holdin' It Down feat. Kev Brown (mabanua Remix)    3:32    mabanua    Free Soul origami PRODUCTIONS 〜Mellow Mellow Right On〜    R&B／ソウル    0    4
+First Impressions    5:46    Marley Carroll    Melanaster    ロック    0    13
+Everything Felt Right    3:43    Mark Redito    Everything Felt Right - Single    ダンス    0    7
+Fever Believer Feedback    3:58    ハヌマーン    RE DISTORTION    ロック    0    94
+Sweet Child O Mine    3:40    ヴィゴ・モーテンセン, ジョージ・マッケイ, Samantha Isler, アナリース・バッソ, ニコラス・ハミルトン, Kirk Ross & Philip Klein    Captain Fantastic (Original Motion Picture Soundtrack)    サウンドトラック    0    2
+6階の少女    4:09    hal    ブルー    ロック    0    43
+春嵐    2:42    john    ROSE    R&B／ソウル    0    8
+HALO HALO (feat. Chevy)    2:43    shawn wasabi    MANGOTALE    ポップ    0    6
+sunscreen    2:33    hirihiri    fake nostalgies - EP    エレクトロニック    0    22
+Procrastination    3:57    Kenny Segal    Majestic Casual - Chapter 3    エレクトロニック    0    1
+Something Soon    4:20    Car Seat Headrest    Teens of Style    オルタナティブ    0    4
+Bakadana~    2:44    toddle    I Dedicate D Chord    J-Pop    0    56
+Sunrise (Live)    3:34    ノラ・ジョーンズ    Live in 2007 - EP    ジャズ    0    18
+What Would I Change It To (feat. AlunaGeorge)    2:59    アヴィーチー    AVĪCI (01) - EP    ダンス    0    12`;
+// function pluck(p, list){return list.map(V=>{return V[p]})};
+function pickAllByArray(names, obj) { return names.reduce((A, V, IDX) => { A.push(obj[V]); return A }, A = []) };
+function multiPluck(p, list) { return list.map(V => { return pickAllByArray(p, V) }) };
+
+const fn0 = () => document.querySelector(`.textarea-1`).value.split("\n");
+const fn1 = (columnsKeyNumberArray, separateString) => multiPluck(
+        columnsKeyNumberArray
+        ,
+        fn0().map(V => V.split(document.querySelector(`.splitter`).value))
+    )
+    .map(V => V.join(separateString))
+    .join("\n");
+
+const init = () =>{
+    document.querySelector(`.splitter`).value = "    ";
+    document.querySelector(`.join`).value = " ";
+};
+
+const exe = () => document.querySelector(".res").value = fn1([0, 2], document.querySelector(`.join`).value);
+
+</script>
+</body>
+</html>
