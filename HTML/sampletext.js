@@ -18,7 +18,6 @@ Do Your Thing	Basement Jaxx
 たまたまニュータウン (2DK session)	相対性理論
 Celestial Blues (feat. Ange)	Uptown Funk Empire
 Because I Love It	GOING STEADY
-Pay No Mind (feat. Passion Pit) [Yasutaka Nakata "CAPSULE" Remix]	Madeon
 Debaser (Live)	Pixies
 Sweltering Night	adukuf
 I'M MILLIONAIRE	FULLSCRATCH
@@ -64,7 +63,6 @@ Carry the Zero	Built to Spill
 Crazy in Love (feat. Jay-Z)	Beyoncé
 Pacer	Jesper Ryom
 Homegirl (feat. Smino & Topaz Jones)	レヴィン・カリ
-10% (feat. Kali Uchis)	KAYTRANADA
 Someday (triple j Like A Version)	Julia Jacklin
 953	black midi
 The List Of Cubes (Dominant Space Remix)	REMO-CON
@@ -172,7 +170,6 @@ Holdin' It Down feat. Kev Brown (mabanua Remix)	mabanua
 First Impressions	Marley Carroll
 Everything Felt Right	Mark Redito
 Fever Believer Feedback	ハヌマーン
-Sweet Child O Mine	ヴィゴ・モーテンセン, ジョージ・マッケイ, Samantha Isler, アナリース・バッソ, ニコラス・ハミルトン, Kirk Ross & Philip Klein
 6階の少女	hal
 春嵐	john
 HALO HALO (feat. Chevy)	shawn wasabi
