@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>crud2</title>
+            <script src="localforage.js"></script>
+            <script>
+                localforage.config({
+                    // bytes
+                    size: 1000
+                    // => limit size 1kb
+                });
+            </script>
+
+</head>
+<body>
+<div class="res"></div>
+<textarea name="" class="editor" cols="30" rows="10" oninput="fn();"></textarea>
+<script>
+const fn = () => {
+    document.querySelector(".res").textContent = document.querySelector(".editor").value;
+    save();
+};
+
+async function save() {
+    localforage.setItem('somekey', document.querySelector(".editor").value
+    ).then(function (value) { console.log(value) })
+}
+async function load() {
+    localforage.getItem('somekey').then(function (res) {
+        // document.querySelector(".editor").value = JSON.parse(res);
+        document.querySelector(".editor").value = res;
+        fn();
+    }).then(function (value) { console.log(value) });
+}
+    load();
+
+</script>
+</body>
+</html>
