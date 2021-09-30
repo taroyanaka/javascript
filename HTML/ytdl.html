@@ -80,9 +80,7 @@ const endpoint = "https://spectrum-whip-sulfur.glitch.me/download";
 // https://stackoverflow.com/a/34349073
 const exe = async () => {
     for( const [IDX, URL] of document.querySelector(".url").value.split("\n").slice(0, limit).entries() ){
-        // const TITLE = encodeURIComponent(document.querySelector(".title").value.split("\n")[IDX]);
         const TITLE = document.querySelector(".title").value.split("\n")[IDX];
-        // console.log(`${endpoint}?title=${TITLE}&url=${URL}`);
         await progress(
             document.querySelector(".url").value.split("\n").slice(0, limit).length,
             IDX+1,
