@@ -29,7 +29,7 @@
 <a href="https://taroyanaka.github.io/javascript/HTML/dispatchplaylistapplemusic.html">https://taroyanaka.github.io/javascript/HTML/dispatchplaylistapplemusic.html</a>
 <script>
 // https://stackoverflow.com/a/42210346
-const titleReplaceForFilename = () => document.querySelector(".title").value = document.querySelector(".title").value.split("\n").map(LINE=>LINE.replaceAll(/[/\\?%*:|"<>\s\t]/g, '-')).join("\n");
+const titleReplaceForFilename = () => document.querySelector(".title").value = document.querySelector(".title").value.split("\n").map(LINE=>{LINE.replaceAll(/[/\\?%*:|"<>\s\t]/g, '-');if(LINE===""){LINE = "video"};return LINE;}).join("\n");
 
 
 const sample = () => {
