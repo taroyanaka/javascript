@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>oripoke</title>
+    <script src="poke.js"></script>
+    <style>
+        button {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <button onclick="fn();">⏯</button>
+    <div></div>
+
+
+    <script>
+        const shuffleArray = array => {
+            for (let i = array.length - 1; i > 0; i--) {
+                let r = Math.floor(Math.random() * (i + 1));
+                let tmp = array[i];
+                array[i] = array[r];
+                array[r] = tmp;
+            }
+            return array
+        }
+        // const pokeStr = poke.split("\n").map(V=>V.split(" "));
+        // allPoke = [].concat(...pokeStr);
+        // const pokeWord = allPoke.filter(V => !V.includes("（")).filter(V => !V.includes("）"));
+        // let pokeWord = allPoke.filter(V => !V.includes("（")).filter(V => !V.includes("）"));
+        // const shufflePokeWord = shuffleArray(pokeWord);
+        const fn = () => {
+            const shufflePokeWord = shuffleArray(pokeWord2);
+            let dotWord = [];
+            shufflePokeWord.forEach((V, IDX) => { V.includes("。") ? dotWord.push(IDX) : ""; });
+            let resTxt = [];
+            dotWord.forEach((V, IDX) => {
+                resTxt.push(
+                    shufflePokeWord.slice(dotWord[IDX] + 1, dotWord[IDX + 1] + 1).join(" ")
+                )
+            });
+            resTxt = resTxt.filter(V => V.includes(" "));
+            document.querySelector("div").innerHTML = "";
+            document.querySelector("div").innerHTML += resTxt.map(V => `<textarea name="" id="" cols="100" rows="1">${V}</textarea>`).join("");
+        };
+        fn();
+    </script>
+</body>
+
+</html>
