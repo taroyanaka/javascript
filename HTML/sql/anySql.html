@@ -34,7 +34,7 @@ const readAllButton = async () => {
     document.querySelector(".res").innerHTML = await json.data.map(DATA_OF_ONE=>`<div><span">${DATA_OF_ONE.rowid}: ${DATA_OF_ONE.txt}</span><span> </span><button data-id="${DATA_OF_ONE.rowid}" onclick="deleteButton(event);">delete</button></div>`).join("");
 }
 const insert = async (txt, service, deletekey) => {
-    const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/insert?txt=${txt}&service=${service}&deletekey=${deletekey}`).then(res => readAllButton());;
+    const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/insert?txt=${txt}&service=${service}&deletekey=${deletekey}`).then(response =>{readAllButton(); return response;});
     const json = tmp = await response.json();
     return json;
 }
@@ -107,8 +107,9 @@ const deleteButton = async (event) => {
 //     await allowOrigin(res);
 //     try {
 //         const any = db.prepare('DELETE FROM any WHERE rowid = ? AND deletekey = ?').run(req.query.rowid, req.query.deletekey);
-//         console.table(any);
-//         await res.status(200).json({ "status": "OK" });
+//         console.table(any.changes);
+//         if (any.changes === 0) { throw new Error('fail'); return; };
+//         if (any.changes >= 0) { res.status(200).json({ "status": "OK" }); return; };
 //         return;
 //     } catch (err) {
 //         await res.status(400).json({ "status": err.message });
