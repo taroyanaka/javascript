@@ -84,15 +84,10 @@ const deleteButton = async (event) => {
 //         const any = db.prepare('SELECT rowid,* FROM any WHERE service = ?').all(req.query.service);
 //         console.table(any);
 //         if (any.length === 0) { throw new Error('no row'); return };
-//         await res.status(200).json({
-//             "status": "OK",
-//             "data": any
-//         });
+//         await res.status(200).json({ "status": "OK", "data": any });
 //         return;
 //     } catch (err) {
-//         await res.status(400).json({
-//             "status": err.message
-//         });
+//         await res.status(400).json({ "status": err.message });
 //         return;
 //     }
 // });
@@ -102,14 +97,10 @@ const deleteButton = async (event) => {
 //     try {
 //         const any = db.prepare('INSERT INTO any (txt, service, deletekey) VALUES (?, ?, ?)').run(req.query.txt, req.query.service, req.query.deletekey);
 //         console.table(any);
-//         await res.status(200).json({
-//             "status": "OK"
-//         });
+//         await res.status(200).json({ "status": "OK" });
 //         return;
 //     } catch (err) {
-//         await res.status(400).json({
-//             "status": err.message
-//         });
+//         await res.status(400).json({ "status": err.message });
 //         return;
 //     }
 // });
@@ -119,14 +110,10 @@ const deleteButton = async (event) => {
 //     try {
 //         const any = db.prepare('DELETE FROM any WHERE rowid = ? AND deletekey = ?').run(req.query.rowid, req.query.deletekey);
 //         console.table(any);
-//         await res.status(200).json({
-//             "status": "OK"
-//         });
+//         await res.status(200).json({ "status": "OK" });
 //         return;
 //     } catch (err) {
-//         await res.status(400).json({
-//             "status": err.message
-//         });
+//         await res.status(400).json({ "status": err.message });
 //         return;
 //     }
 // });
