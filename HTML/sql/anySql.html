@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>any sql</title>
+</head>
+<body>
+<textarea name="txt" class="txt" placeholder="txt" cols="30" rows="10"></textarea>
+<textarea name="service" class="service" placeholder="service" cols="30" rows="10"></textarea>
+<input type="text" name="deletekey" class="deletekey" placeholder="deletekey1">
+
+<div class="message"></div>
+
+<button class="readAllButton" onclick="readAllButton()">readAllButton</button>
+<button class="insertButton" onclick="insertButton()">insertButton</button>
+<div class="res"></div>
+
+
+<script>
+let tmp="";
+document.querySelector(".txt").value = "sampletxt";
+document.querySelector(".service").value = "service1";
+document.querySelector(".deletekey").value = "deletekey1";
+
+const readAll = async (service) => {
+    const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/readall?service=${service}`);
+    const json = tmp = await response.json();
+    return json;
+}
+const readAllButton = async () => {
+    const json = await readAll(document.querySelector(".service").value);
+    document.querySelector(".res").innerHTML = await json.data.map(DATA_OF_ONE=>`<div><span">${DATA_OF_ONE.rowid}: ${DATA_OF_ONE.txt}</span><span> </span><button data-id="${DATA_OF_ONE.rowid}" onclick="deleteButton(event);">delete</button></div>`).join("");
+}
+const insert = async (txt, service, deletekey) => {
+    const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/insert?txt=${txt}&service=${service}&deletekey=${deletekey}`).then(res => readAllButton());;
+    const json = tmp = await response.json();
+    return json;
+}
+
+const insertButton = async () => {
+    const json = await insert(document.querySelector(".txt").value, document.querySelector(".service").value, document.querySelector(".deletekey").value);
+    document.querySelector(".message").textContent = await ("insert is " + json.status);
+}
+
+const deleteRow = async (rowid, deletekey) => {
+    const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/deleterow?rowid=${rowid}&deletekey=${deletekey}`)
+        .then(response =>{ readAllButton(); return response});
+    const json = tmp = await response.json();
+    return json;
+}
+const deleteButton = async (event) => {
+    const json = await deleteRow(event.target.dataset.id, document.querySelector(".deletekey").value);
+    document.querySelector(".message").textContent = await ("delete is " + json.status);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// glitch_com side
+// const express = require('express');
+// const app = express();
+// const https = require('https');
+// const Database = require('better-sqlite3');
+// const db = new Database('.data/tmp.sqlite3');
+
+// app.get('/db/readall', async function (req, res) {
+//     await allowOrigin(res);
+//     try {
+//         const any = db.prepare('SELECT rowid,* FROM any WHERE service = ?').all(req.query.service);
+//         console.table(any);
+//         if (any.length === 0) { throw new Error('no row'); return };
+//         await res.status(200).json({
+//             "status": "OK",
+//             "data": any
+//         });
+//         return;
+//     } catch (err) {
+//         await res.status(400).json({
+//             "status": err.message
+//         });
+//         return;
+//     }
+// });
+
+// app.get('/db/insert', async function (req, res) {
+//     await allowOrigin(res);
+//     try {
+//         const any = db.prepare('INSERT INTO any (txt, service, deletekey) VALUES (?, ?, ?)').run(req.query.txt, req.query.service, req.query.deletekey);
+//         console.table(any);
+//         await res.status(200).json({
+//             "status": "OK"
+//         });
+//         return;
+//     } catch (err) {
+//         await res.status(400).json({
+//             "status": err.message
+//         });
+//         return;
+//     }
+// });
+
+// app.get('/db/deleterow', async function (req, res) {
+//     await allowOrigin(res);
+//     try {
+//         const any = db.prepare('DELETE FROM any WHERE rowid = ? AND deletekey = ?').run(req.query.rowid, req.query.deletekey);
+//         console.table(any);
+//         await res.status(200).json({
+//             "status": "OK"
+//         });
+//         return;
+//     } catch (err) {
+//         await res.status(400).json({
+//             "status": err.message
+//         });
+//         return;
+//     }
+// });
+// glitch_com side
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// sample_better_sqlite3
+// const Database = require('better-sqlite3');
+// const db = new Database('.data/tmp.sqlite3');
+
+// const create = () => {
+// db.prepare(`CREATE TABLE IF NOT EXISTS any (
+// txt TEXT NOT NULL,
+// service TEXT NOT NULL,
+// deletekey TEXT NOT NULL,
+// created_at DATETIME DEFAULT (datetime('now', 'localtime'))
+// );`).run()
+// };
+
+// const insert = () => {
+// const stmt = db.prepare('INSERT INTO any (txt, service, deletekey) VALUES (?, ?, ?)');
+// stmt.run(
+//     "txt0",
+//     "service0",
+//     "deletekey0");
+// stmt.run(
+//     "txt1",
+//     "service0",
+//     "deletekey0");
+// stmt.run(
+//     "txt2",
+//     "service1",
+//     "deletekey1");
+// stmt.run(
+//     "txt3",
+//     "service1",
+//     "deletekey1");
+// };
+// const read = (service, deletekey) => {
+// const stmt = db.prepare('SELECT rowid,* FROM any WHERE service = ? AND deletekey = ?');
+// try {
+//     const any = stmt.all(service, deletekey);
+//     console.table(any);
+//     return any;
+// } catch (err) {
+//     throw err;
+//     return err;
+// }
+// };
+// const readAll = () => {
+// const stmt = db.prepare('SELECT rowid,* FROM any');
+// const any = stmt.all();
+// console.table(any);
+// };
+
+// create();
+// insert();
+// read("service1", "deletekey1");
+// readAll();
+// sample_better_sqlite3
+
+
+</script>
+</body>
+</html>
