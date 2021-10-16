@@ -7,10 +7,15 @@
     <title>any sql</title>
 </head>
 <body>
+<div>
+<button class="sample0" onclick="sample0();readAllButton();">sample0</button>
+<button class="sample1" onclick="sample1();readAllButton();">sample1</button>
+</div>
 <textarea name="txt" class="txt" placeholder="txt" cols="30" rows="10"></textarea>
-<textarea name="service" class="service" placeholder="service" cols="30" rows="10"></textarea>
+<div>
+<input type="text" name="service" class="service" placeholder="service" cols="30" rows="10">
 <input type="text" name="deletekey" class="deletekey" placeholder="deletekey1">
-
+</div>
 <div class="message"></div>
 
 <button class="readAllButton" onclick="readAllButton()">readAllButton</button>
@@ -20,18 +25,31 @@
 
 <script>
 let tmp="";
-document.querySelector(".txt").value = "sampletxt";
+
+const sample0 = () => {
+    document.querySelector(".txt").value = "sampletxt";
+    document.querySelector(".service").value = "service0";
+    document.querySelector(".deletekey").value = "deletekey0";
+};
+const sample1 = () => {document.querySelector(".txt").value = "sampletxt";
 document.querySelector(".service").value = "service1";
 document.querySelector(".deletekey").value = "deletekey1";
+};
 
-const readAll = async (service) => {
-    const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/readall?service=${service}`);
+
+const readAll = async (service, deletekey) => {
+    const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/readall?service=${service}&deletekey=${deletekey}`);
     const json = tmp = await response.json();
     return json;
 }
 const readAllButton = async () => {
-    const json = await readAll(document.querySelector(".service").value);
-    document.querySelector(".res").innerHTML = await json.data.map(DATA_OF_ONE=>`<div><span">${DATA_OF_ONE.rowid}: ${DATA_OF_ONE.txt}</span><span> </span><button data-id="${DATA_OF_ONE.rowid}" onclick="deleteButton(event);">delete</button></div>`).join("");
+    const json = await readAll(document.querySelector(".service").value, document.querySelector(".deletekey").value);
+    document.querySelector(".res").innerHTML = await json.data.map(DATA_OF_ONE=>`<div>
+<span">${DATA_OF_ONE.rowid}</span>
+<textarea data-rowid="${DATA_OF_ONE.rowid}" name="" class="result" cols="30" rows="10">${DATA_OF_ONE.txt}</textarea>
+<button data-rowid="${DATA_OF_ONE.rowid}" onclick="updateButton(event);">update</button>
+<button data-rowid="${DATA_OF_ONE.rowid}" onclick="deleteButton(event);">delete</button>
+</div>`).join("");
 }
 const insert = async (txt, service, deletekey) => {
     const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/insert?txt=${txt}&service=${service}&deletekey=${deletekey}`).then(response =>{readAllButton(); return response;});
@@ -42,6 +60,24 @@ const insertButton = async () => {
     const json = await insert(document.querySelector(".txt").value, document.querySelector(".service").value, document.querySelector(".deletekey").value);
     document.querySelector(".message").textContent = await ("insert is " + json.status);
 }
+
+const update = async (txt, service, rowid, deletekey) => {
+    const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/update?txt=${txt}&service=${service}&rowid=${rowid}&deletekey=${deletekey}`).then(response =>{readAllButton(); return response;});
+    const json = tmp = await response.json();
+    return json;
+}
+const updateButton = async (event) => {
+    const json = await update(
+        document.querySelector(`textarea[data-rowid='${event.target.dataset.rowid}'].result`).value,
+        document.querySelector(".service").value,
+        event.target.dataset.rowid,
+        document.querySelector(".deletekey").value
+    );
+    document.querySelector(".message").textContent = await ("update is " + json.status);
+}
+
+
+
 const deleteRow = async (rowid, deletekey) => {
     const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/deleterow?rowid=${rowid}&deletekey=${deletekey}`)
         .then(response =>{ readAllButton(); return response});
@@ -49,7 +85,7 @@ const deleteRow = async (rowid, deletekey) => {
     return json;
 }
 const deleteButton = async (event) => {
-    const json = await deleteRow(event.target.dataset.id, document.querySelector(".deletekey").value);
+    const json = await deleteRow(event.target.dataset.rowid, document.querySelector(".deletekey").value);
     document.querySelector(".message").textContent = await ("delete is " + json.status);
 }
 
@@ -150,8 +186,9 @@ const deleteButton = async (event) => {
 // const Database = require('better-sqlite3');
 // const db = new Database('.data/tmp.sqlite3');
 
+
 // const create = () => {
-// db.prepare(`CREATE TABLE IF NOT EXISTS any (
+//     db.prepare(`CREATE TABLE IF NOT EXISTS any (
 // txt TEXT NOT NULL,
 // service TEXT NOT NULL,
 // deletekey TEXT NOT NULL,
@@ -160,44 +197,68 @@ const deleteButton = async (event) => {
 // };
 
 // const insert = () => {
-// const stmt = db.prepare('INSERT INTO any (txt, service, deletekey) VALUES (?, ?, ?)');
-// stmt.run(
-//     "txt0",
-//     "service0",
-//     "deletekey0");
-// stmt.run(
-//     "txt1",
-//     "service0",
-//     "deletekey0");
-// stmt.run(
-//     "txt2",
-//     "service1",
-//     "deletekey1");
-// stmt.run(
-//     "txt3",
-//     "service1",
-//     "deletekey1");
+//     const stmt = db.prepare('INSERT INTO any (txt, service, deletekey) VALUES (?, ?, ?)');
+//     stmt.run(
+//         "txt0",
+//         "service0",
+//         "deletekey0");
+//     stmt.run(
+//         "txt1",
+//         "service0",
+//         "deletekey0");
+//     stmt.run(
+//         "txt2",
+//         "service1",
+//         "deletekey1");
+//     stmt.run(
+//         "txt3",
+//         "service1",
+//         "deletekey1");
+// };
+// const update = () => {
+//     const stmt = db.prepare(`UPDATE any
+// SET txt = ?
+// WHERE service = ? AND rowid = ? AND deletekey = ?;`);
+//     stmt.run(
+//         "txt100",
+//         "service0",
+//         2,
+//         "deletekey0");
 // };
 // const read = (service, deletekey) => {
-// const stmt = db.prepare('SELECT rowid,* FROM any WHERE service = ? AND deletekey = ?');
-// try {
-//     const any = stmt.all(service, deletekey);
-//     console.table(any);
-//     return any;
-// } catch (err) {
-//     throw err;
-//     return err;
-// }
+//     const stmt = db.prepare('SELECT rowid,* FROM any WHERE service = ? AND deletekey = ?');
+//     try {
+//         const any = stmt.all(service, deletekey);
+//         console.table(any);
+//         return any;
+//     } catch (err) {
+//         throw err;
+//         return err;
+//     }
 // };
 // const readAll = () => {
-// const stmt = db.prepare('SELECT rowid,* FROM any');
-// const any = stmt.all();
-// console.table(any);
+//     const stmt = db.prepare('SELECT rowid,* FROM any');
+//     const any = stmt.all();
+//     console.table(any);
 // };
+// const deleteAllRow = () => {
+//     const result = db.prepare("delete from any").run();
+//     console.table(result);
+// };
+
+// const reset = () => {
+//     const result = db.prepare("delete from any").run();
+//     console.table(result);
+//     create();
+//     insert();
+//     readAll();
+// };
+
 
 // create();
 // insert();
 // read("service1", "deletekey1");
+// update();
 // readAll();
 // sample_better_sqlite3
 
