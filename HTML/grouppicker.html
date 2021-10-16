@@ -43,6 +43,17 @@ shuffle:<input type="checkbox" class="checkbox-1" checked>
 
 <div class="paste-parent">
 </div>
+
+
+<div>
+<input type="text" name="deletekey" class="deletekey" placeholder="deletekey">
+</div>
+<div class="message"></div>
+<button class="readAllButton" onclick="readAllButton()">readAllButton</button>
+<button class="insertButton" onclick="insertButton()">insertButton</button>
+<div class="downloadList"></div>
+<div class="res"></div>
+
 <script>
 async function save(){
     localforage.setItem('somekey',
@@ -65,12 +76,7 @@ async function load(){
 
 
 const addTextarea = () =>{
-    // let tmp = Array.from(document.querySelectorAll(".copy-parent > *")).map(V=>V.innerHTML);
     let tmp = Array.from(document.querySelectorAll(".copy-parent > *")).map(V=>V.value);
-    // let tmp = [];
-    //     Array.from(document.querySelectorAll(".copy-parent > *")).forEach((V,IDX)=>
-    //         tmp.push(V.value)
-    //     );
     document.querySelector(".copy-parent").innerHTML += `<textarea class="target textarea-${(document.querySelectorAll(".copy-parent > .target").length + 1)}" cols="10" rows="5" oninput="addOption();"></textarea>`;
     addOption();
     tmp.forEach((V,IDX)=>
@@ -79,18 +85,6 @@ const addTextarea = () =>{
     addOption();
     exe();
 }
-
-const init = () =>{
-    document.querySelector('.textarea-1').value = `0-1
-0-2`;
-    document.querySelector('.textarea-2').value = `1-1
-1-2
-1-3`;
-    document.querySelector('.textarea-3').value = `2-1
-2-2`;
-}
-init();
-
 
 const addOption = () =>{
     document.querySelector('.res').innerHTML = 
@@ -107,7 +101,6 @@ const addOption = () =>{
 }
 addOption();
 
-// document.querySelector('.test').innerText = document.querySelectorAll(".num")[1].value;
 const shuffleArray = array => {
     for (let i = array.length - 1; i > 0; i--) {
     let r = Math.floor(Math.random() * (i + 1));
@@ -133,20 +126,84 @@ const exe = () =>{
                 )
                 .join("\n")
     )
+}
+exe();
 
-    // Array.from(document.querySelectorAll(".paste-parent > *"))[0].value =
-    //     Array.from(document.querySelectorAll(".num"))[0].value;
 
-    // document.querySelectorAll(".copy-parent > *").forEach((V,IDX)=>{
-    // document.querySelectorAll(".paste-parent > *")[IDX].value =
-    //     V.value
-    //         .split("\n")
-    //         .filter((V,INDEX)=>
-    //             INDEX<=Number(document.querySelectorAll(".num")[IDX].value) )
-    // });
+
+
+
+
+
+
+
+
+
+
+// server-to-client
+const insert = async (txt, deletekey) => {
+    const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/insert?txt=${txt}&service=${location.href.split('/').pop().replace(/\.html/g, '')}&deletekey=${deletekey}`).then(response => { readAllButton(); return response; });
+    const json = tmp = await response.json();
+    return json;
+}
+const insertButton = async () => {
+    const json = await insert(
+        JSON.stringify(Array.from(document.querySelectorAll(".copy-parent > .target")).map(V => V.value)),
+        document.querySelector(".deletekey").value);
+    document.querySelector(".message").textContent = await ("insert is " + json.status);
 }
 
-exe();
+const downloadButton = async (event) => {
+    const json = await readAll(
+        location.href.split('/').pop().replace(/\.html/g, ''),
+        document.querySelector(".deletekey").value);
+    const unparseTxt = await json.data.filter(ROW => ROW.rowid === Number(event.target.dataset.rowid))[0].txt;
+    const pasteAry = JSON.parse(unparseTxt);
+    document.querySelector(".copy-parent").innerHTML = 
+        pasteAry.map((V,IDX)=>`<textarea class="target textarea-${IDX+1}" cols="10" rows="5" oninput="addOption();"></textarea>`).join("");
+    pasteAry.forEach((V, IDX) => document.querySelectorAll(".copy-parent > .target")[IDX].value = V);
+    exe();
+}
+const readAll = async (service, deletekey) => {
+    const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/readall?service=${service}&deletekey=${deletekey}`);
+    const json = tmp = await response.json();
+    return json;
+}
+const readAllButton = async () => {
+    const json = await readAll(
+        location.href.split('/').pop().replace(/\.html/g, ''),
+        document.querySelector(".deletekey").value);
+    document.querySelector(".downloadList").innerHTML = await json.data.map(DATA_OF_ONE => `<div>
+<span">${DATA_OF_ONE.rowid}</span>
+<a>${DATA_OF_ONE.created_at}</a>
+<button data-rowid="${DATA_OF_ONE.rowid}" onclick="downloadButton(event);">download</button>
+<button data-rowid="${DATA_OF_ONE.rowid}" onclick="deleteButton(event);">delete</button>
+</div>`).join("");
+}
+
+const deleteRow = async (rowid, deletekey) => {
+        const response = await fetch(`https://spectrum-whip-sulfur.glitch.me/db/deleterow?rowid=${rowid}&deletekey=${deletekey}`)
+            .then(response => { readAllButton(); return response });
+        const json = tmp = await response.json();
+        return json;
+    }
+const deleteButton = async (event) => {
+    const json = await deleteRow(event.target.dataset.rowid, document.querySelector(".deletekey").value);
+    document.querySelector(".message").textContent = await ("delete is " + json.status);
+}
+
+const init = () => {
+    document.querySelector('.textarea-1').value = `0-1
+0-2`;
+    document.querySelector('.textarea-2').value = `1-1
+1-2
+1-3`;
+    document.querySelector('.textarea-3').value = `2-1
+2-2`;
+    document.querySelector(".deletekey").value = "public";
+}
+init();
+// server-to-client
 </script>
 </body>
 </html>
