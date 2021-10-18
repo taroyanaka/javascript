@@ -153,8 +153,9 @@ const insertButton = async () => {
     document.querySelector(".message").textContent = await ("insert is " + json.status);
 }
 
+let tmp;
 const downloadButton = async (event) => {
-    const json = await readAll(
+    const json = tmp = await readAll(
         location.href.split('/').pop().replace(/\.html/g, ''),
         document.querySelector(".deletekey").value);
     const unparseTxt = await json.data.filter(ROW => ROW.rowid === Number(event.target.dataset.rowid))[0].txt;

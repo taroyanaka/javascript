@@ -196,6 +196,8 @@ const deleteButton = async (event) => {
 
 
 // firebase auth
+const removeLoginResult = () => document.querySelector(".loginrResult").innerText = "";
+const removeLoginResultTimer = () => setTimeout("removeLoginResult()", 2000);
 async function replaceUrlToLocalhost() {
     await window.location.replace("http://localhost:5502/HTML/sql/anysql.html");
 }
@@ -205,10 +207,12 @@ function checkLogin() {
             document.querySelector(".loginrResult").innerText = "login success";
             document.querySelectorAll(".login").forEach(V => V.style = "display:none")
             document.querySelector(".logout").style = "display:inline";
+            removeLoginResultTimer();
         } else {
             document.querySelector(".loginrResult").innerText = "not login yet";
             document.querySelector(".logout").style = "display:none";
             document.querySelectorAll(".login").forEach(V => V.style = "display:inline")
+            removeLoginResultTimer();
         }
     })
 }
@@ -225,7 +229,6 @@ function signOut() {
         console.log(`Sign-out error`);
     });
 }
-
 checkLogin();
 // firebase auth
 
