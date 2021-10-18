@@ -5,9 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>anysql</title>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-auth.js"></script>
+    <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBcOlIDP2KWbJuKM0WeMHNp-WvjTVfLt9Y",
+        authDomain: "p2auth-ea50a.firebaseapp.com",
+        projectId: "p2auth-ea50a",
+        storageBucket: "p2auth-ea50a.appspot.com",
+        messagingSenderId: "796225429484",
+        appId: "1:796225429484:web:ece56ef2fc0be28cd6eac9"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const google = new firebase.auth.GoogleAuthProvider();
+        // const github = new firebase.auth.GithubAuthProvider();
+        // const twitter = new firebase.auth.TwitterAuthProvider();
+        // const facebook = new firebase.auth.FacebookAuthProvider();
+    </script>
 </head>
 <body>
 <div>
+<!-- <input type="button" name="" class="replaceUrlToLocalhost" onclick="replaceUrlToLocalhost();" value="replaceUrlToLocalhost"> -->
+<input type="button" name="" class="login" value="googleLogin" onclick="googleLogin();">
+ <!-- => google is localhost OK github pages OK -->
+<input type="button" name="" class="logout" value="logout" onclick="signOut();">
+<h2 class="loginrResult"></h2>
+
 <button class="sample0" onclick="sample0();readAllButton();">sample0</button>
 <button class="sample1" onclick="sample1();readAllButton();">sample1</button>
 </div>
@@ -172,8 +195,39 @@ const deleteButton = async (event) => {
 
 
 
+// firebase auth
+async function replaceUrlToLocalhost() {
+    await window.location.replace("http://localhost:5502/HTML/sql/anysql.html");
+}
+function checkLogin() {
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+            document.querySelector(".loginrResult").innerText = "login success";
+            document.querySelectorAll(".login").forEach(V => V.style = "display:none")
+            document.querySelector(".logout").style = "display:inline";
+        } else {
+            document.querySelector(".loginrResult").innerText = "not login yet";
+            document.querySelector(".logout").style = "display:none";
+            document.querySelectorAll(".login").forEach(V => V.style = "display:inline")
+        }
+    })
+}
+async function googleLogin() {
+    if(location.host !== 'taroyanaka.github.io'
+){ await replaceUrlToLocalhost() };
+    await firebase.auth().signInWithRedirect(google);
+    // https://p2auth-ea50a.firebaseapp.com/__/auth/handler
+}
+function signOut() {
+    firebase.auth().signOut().then(() => {
+        console.log(`Sign-out successful`);
+    }).catch((error) => {
+        console.log(`Sign-out error`);
+    });
+}
 
-
+checkLogin();
+// firebase auth
 
 
 
