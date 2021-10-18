@@ -26,10 +26,10 @@
 <body>
 <div>
 <!-- <input type="button" name="" class="replaceUrlToLocalhost" onclick="replaceUrlToLocalhost();" value="replaceUrlToLocalhost"> -->
-<input type="button" name="" class="login" value="googleLogin" onclick="googleLogin();">
+<input type="button" name="" class="SignIn" value="googleSignIn" onclick="googleSignIn();">
  <!-- => google is localhost OK github pages OK -->
 <input type="button" name="" class="logout" value="logout" onclick="signOut();">
-<h2 class="loginrResult"></h2>
+<h2 class="SignInrResult"></h2>
 
 <button class="sample0" onclick="sample0();readAllButton();">sample0</button>
 <button class="sample1" onclick="sample1();readAllButton();">sample1</button>
@@ -196,28 +196,28 @@ const deleteButton = async (event) => {
 
 
 // firebase auth
-const removeLoginResult = () => document.querySelector(".loginrResult").innerText = "";
-const removeLoginResultTimer = () => setTimeout("removeLoginResult()", 2000);
+const removeSignInResult = () => document.querySelector(".SignInrResult").innerText = "";
+const removeSignInResultTimer = () => setTimeout("removeSignInResult()", 2000);
 async function replaceUrlToLocalhost() {
     await window.location.replace("http://localhost:5502/HTML/sql/anysql.html");
 }
-function checkLogin() {
+function checkSignIn() {
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
-            document.querySelector(".loginrResult").innerText = "login success";
-            document.querySelectorAll(".login").forEach(V => V.style = "display:none")
+            document.querySelector(".SignInrResult").innerText = "SignIn success";
+            document.querySelectorAll(".SignIn").forEach(V => V.style = "display:none")
             document.querySelector(".logout").style = "display:inline";
-            removeLoginResultTimer();
+            removeSignInResultTimer();
         } else {
-            document.querySelector(".loginrResult").innerText = "not login yet";
+            document.querySelector(".SignInrResult").innerText = "not SignIn yet";
             document.querySelector(".logout").style = "display:none";
-            document.querySelectorAll(".login").forEach(V => V.style = "display:inline")
-            removeLoginResultTimer();
+            document.querySelectorAll(".SignIn").forEach(V => V.style = "display:inline")
+            removeSignInResultTimer();
         }
     })
 }
-async function googleLogin() {
-    if(location.host !== 'taroyanaka.github.io'
+async function googleSignIn() {
+    if(location.host !== "taroyanaka.github.io"
 ){ await replaceUrlToLocalhost() };
     await firebase.auth().signInWithRedirect(google);
     // https://p2auth-ea50a.firebaseapp.com/__/auth/handler
@@ -229,7 +229,7 @@ function signOut() {
         console.log(`Sign-out error`);
     });
 }
-checkLogin();
+checkSignIn();
 // firebase auth
 
 
