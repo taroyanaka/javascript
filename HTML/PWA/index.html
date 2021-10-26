@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pwa sw sample</title>
+    <link rel="manifest" href="manifest.json">
+    <script>
+        window.addEventListener('beforeinstallprompt', function (event) {
+            event.preventDefault();
+            defferedPrompt = event;
+            return false;
+        })
+
+        // イベントを意図的に発火
+        function pwaInstall() {
+            console.log('pwaInstall Click.');
+            if (defferedPrompt) {
+                defferedPrompt.prompt();
+                defferedPrompt.userChoice.then(function (choiceResult) {
+                    if (choiceResult.outcome === 'dismissed') {
+                        console.log('pwaInstall Click.');
+                    } else {
+                        window.alert('Thank You!');
+                    }
+                });
+                defferedPrompt = null;
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <button onclick="deleteSwAndCaches()">remove sw and cache</button>
+    <h1>service worker example</h1>
+    <h2>1</h2>
+    <button onclick="pwaInstall()">install button</button>
+
+    <script>
+        // navigator.serviceWorker.register('/sw.js').then(function() {
+
+
+        //         console.log('サービスワーカーの登録成功');
+
+
+        // }).catch(function(err) {
+
+
+        //         console.log('サービスワーカーの登録ができませんでした：', err);
+
+
+        // });
+
+        // https://lealog.hateblo.jp/entry/2018/11/07/141639
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').then(function (registration) {
+                // 登録成功
+                console.log('ServiceWorker の登録に成功しました。スコープ: ', registration.scope);
+            }).catch(function (err) {
+                // 登録失敗
+                console.log('ServiceWorker の登録に失敗しました。', err);
+            });
+        }
+
+        var worker = new Worker('sw.js');
+        worker.postMessage('Hello World');
+
+
+
+        let tmp1, tmp2, tmp3, tmp4, tmp5;
+        let ary = [];
+        async function deleteSwAndCaches() {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            Array.from(Object.entries(registrations)).forEach( ([key, registration], index) => registration.unregister() );
+            const cacheKeys = await caches.keys();
+            cacheKeys.forEach(cacheKeys=> caches.delete(cacheKeys))
+        }
+    </script>
+</body>
+
+</html>

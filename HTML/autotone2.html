@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>auto tone 2</title>
+    <meta name="viewport" content="width=device-width">
+    <script src="tone.14.8.32.js"></script>
+    <!-- <script src="tone.js.map"></script> -->
+</head>
+
+<body>
+    <!-- <div>
+  <button onclick="start();">start</button>
+  <button onclick="stop();">stop</button>
+</div> -->
+
+    <!-- <script>
+const synth = new Tone.Synth().toDestination();
+
+let tmp1,tmp2,tmp3;
+const score =
+[
+    "C4",
+    ["E4", "E4"],
+    "C3",
+    ["E3", "E3"]
+];
+const score2 =
+[
+    "C1",
+    "C1",
+    "C1",
+    "C1",
+];
+const score3 = [
+    { note: "E4", dur: "8n" },
+    { note: "F4", dur: "4n" },
+    [{ note: "G4", dur: "8n" }, { note: "G4", dur: "8n" }],
+    { note: "G4", dur: "4n" },
+
+    { note: "E4", dur: "8n" },
+    [{ note: "G4", dur: "8n" }, { note: "C5", dur: "8n" }],
+    { note: "C5", dur: "8n" },
+    [{ note: "C5", dur: "8n" }, { note: "D5", dur: "2n" }],
+
+    null,
+    { note: "E5", dur: "8n" },
+    { note: "E5", dur: "8n" },
+    { note: "D5", dur: "2n" },
+
+    null,
+    [{ note: "C5", dur: "8n" }, { note: "A4", dur: "8n" }],
+    [{ note: "C5", dur: "2n" }, { note: "C5", dur: "2n" }],
+];
+const setup = () => {
+    const seq = tmp1 = new Tone.Sequence((time, { note, dur }) => {
+        synth.triggerAttackRelease(note, dur, time);
+    // }, score3, "4n").start(0);
+    }, score3).start(0);
+    seq.loop = false;
+    Tone.Transport.bpm.value = 150;
+}
+
+const start = () => {
+    setup();
+    Tone.Transport.start();
+};
+const stop = () => Tone.Transport.stop();
+</script>
+
+ -->
+
+
+    <div>
+        <div>
+            <input type="checkbox" />
+            <input type="checkbox" />
+            <input type="checkbox" />
+            <input type="checkbox" />
+            <input type="checkbox" />
+            <input type="checkbox" />
+            <input type="checkbox" />
+            <input type="checkbox" />
+        </div>
+        <div>
+            <input type="checkbox" />
+            <input type="checkbox" />
+            <input type="checkbox" />
+            <input type="checkbox" />
+            <input type="checkbox" />
+            <input type="checkbox" />
+            <input type="checkbox" />
+            <input type="checkbox" />
+        </div>
+    </div>
+    <script>
+    // https://codepen.io/jakealbaugh/pen/qxjPMM/
+
+        console.clear();
+
+        // UPDATE: there is a problem in chrome with starting audio context
+        //  before a user gesture. This fixes it.
+        document.documentElement.addEventListener('mousedown', () => {
+            if (Tone.context.state !== 'running') Tone.context.resume();
+        });
+
+        const synths = [
+            new Tone.Synth(),
+            new Tone.Synth()
+        ];
+
+        synths[0].oscillator.type = 'triangle';
+        synths[1].oscillator.type = 'sine';
+        // synths[2].oscillator.type = 'sawtooth';
+
+        const gain = new Tone.Gain(0.6);
+        gain.toMaster();
+
+        synths.forEach(synth => synth.connect(gain));
+
+        const $rows = document.body.querySelectorAll('div > div'),
+            notes = ['G5', 'E4', 'C3'];
+        let index = 0;
+
+        Tone.Transport.scheduleRepeat(repeat, '8n');
+        Tone.Transport.start();
+
+        let tmp0, tmp10, tmp20, tmp30, tmp40, tmp50;
+
+        function repeat(time) {
+            tmp0 = index;
+            let step = index % 8;
+            tmp10 = step;
+            for (let i = 0; i < $rows.length; i++) {
+                let synth = synths[i],
+                    note = notes[i],
+                    $row = $rows[i],
+                    $input = $row.querySelector(`input:nth-child(${step + 1})`);
+                tmp20 = synth;
+                tmp30 = note;
+                tmp40 = $row;
+                tmp50 = $input;
+                if ($input.checked) synth.triggerAttackRelease(note, '8n', time);
+            }
+            index++;
+
+            console.table(
+                // tmp0, tmp10, tmp20, tmp30, tmp40, tmp50
+            )
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>auto tone</title>
+<meta name="viewport" content="width=device-width">
+<script src="tone.14.8.32.js"></script>
+<!-- <script src="tone.js.map"></script> -->
+</head>
+<body>
+<div>
+    <button onclick="devSample();">devSample</button>
+    <button onclick="devSample();start();">devSampleStart</button>
+</div>
+
+<select name="soundCount" id="soundCount" onInput="soundCount();">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+</select>
+
+<div class="test"></div>
+<div class="test2"></div>
+<div class="test3"></div>
+<div>
+  <button onclick="start();">start</button>
+  <button onclick="stop();">stop</button>
+</div>
+<div class="pair pair-pitch">pitch
+<button value="C" class="pitch pitch-C">C</button>
+<button value="D" class="pitch pitch-D">D</button>
+<button value="E" class="pitch pitch-E">E</button>
+<button value="F" class="pitch pitch-F">F</button>
+<button value="G" class="pitch pitch-G">G</button>
+<button value="A" class="pitch pitch-A">A</button>
+<button value="B" class="pitch pitch-B">B</button>
+</div>
+<div class="pair pair-octave">octave
+<button value="0" class="octave octave-0">0</button>
+<button value="1" class="octave octave-1">1</button>
+<button value="2" class="octave octave-2">2</button>
+<button value="3" class="octave octave-3">3</button>
+<button value="4" class="octave octave-4">4</button>
+<button value="5" class="octave octave-5">5</button>
+<button value="6" class="octave octave-6">6</button>
+<button value="7" class="octave octave-7">7</button>
+<button value="8" class="octave octave-8">8</button>
+<button value="9" class="octave octave-9">9</button>
+</div>
+<div class="pair pair-dur">dur
+<button value="1" class="dur dur-1">1</button>
+<button value="2" class="dur dur-2">2</button>
+<button value="4" class="dur dur-4">4</button>
+<button value="8" class="dur dur-8">8</button>
+<button value="16" class="dur dur-16">16</button>
+<button value="32" class="dur dur-32">32</button>
+<button value="64" class="dur dur-64">64</button>
+<button value="128" class="dur dur-128">128</button>
+</div>
+<div class="pair pair-chord">chord
+<button value="1" class="chord chord-1">1</button>
+<button value="2" class="chord chord-2">2</button>
+<button value="3" class="chord chord-3">3</button>
+<button value="4" class="chord chord-4">4</button>
+<button value="5" class="chord chord-5">5</button>
+<button value="6" class="chord chord-6">6</button>
+<button value="7" class="chord chord-7">7</button>
+<button value="8" class="chord chord-8">8</button>
+<button value="9" class="chord chord-9">9</button>
+</div>
+<div class="pair pair-withnull">withnull
+    <button value="withnull" class="withnull">withnull</button>
+</div>
+
+<textarea name="preset" class="preset" cols="30" rows="10" placeholder="preset"></textarea>
+
+
+<textarea name="" class="score" cols="30" rows="20">E4-8n
+F4-4n
+G4-8n G4-8n
+G4-4n
+E4-8n
+G4-8n C5-8n
+C5-8n
+C5-8n D5-2n
+
+E5-8n
+E5-8n
+D5-2n
+
+C5-8n A4-8n
+C5-2n C5-2n</textarea>
+<textarea name="" class="score2" cols="30" rows="20"></textarea>
+<script>
+const synth = new Tone.Synth().toDestination();
+
+let tmp1,tmp2,tmp3;
+const score =
+[
+    "C4",
+    ["E4", "E4"],
+    "C3",
+    ["E3", "E3"]
+];
+const score2 =
+[
+    "C1",
+    "C1",
+    "C1",
+    "C1",
+];
+const score3 = [
+    { note: "E4", dur: "8n" },
+    { note: "F4", dur: "4n" },
+    [{ note: "G4", dur: "8n" }, { note: "G4", dur: "8n" }],
+    { note: "G4", dur: "4n" },
+    { note: "E4", dur: "8n" },
+    [{ note: "G4", dur: "8n" }, { note: "C5", dur: "8n" }],
+    { note: "C5", dur: "8n" },
+    [{ note: "C5", dur: "8n" }, { note: "D5", dur: "2n" }],
+    null,
+    { note: "E5", dur: "8n" },
+    { note: "E5", dur: "8n" },
+    { note: "D5", dur: "2n" },
+    null,
+    [{ note: "C5", dur: "8n" }, { note: "A4", dur: "8n" }],
+    [{ note: "C5", dur: "2n" }, { note: "C5", dur: "2n" }],
+];
+
+
+
+const test = `E4-8n
+F4-4n
+G4-8n G4-8n
+G4-4n
+E4-8n
+G4-8n C5-8n
+C5-8n
+C5-8n D5-2n
+
+E5-8n
+E5-8n
+D5-2n
+
+C5-8n A4-8n
+C5-2n C5-2n`;
+const test2 = `{ note: 'E4', dur: '8n' },
+{ note: 'F4', dur: '4n' },
+[{ note: 'G4', dur: '8n' }, { note: 'G4', dur: '8n' }],
+{ note: 'G4', dur: '4n' },
+{ note: 'E4', dur: '8n' },
+[{ note: 'G4', dur: '8n' }, { note: 'C5', dur: '8n' }],
+{ note: 'C5', dur: '8n' },
+[{ note: 'C5', dur: '8n' }, { note: 'D5', dur: '2n' }],
+null,
+{ note: 'E5', dur: '8n' },
+{ note: 'E5', dur: '8n' },
+{ note: 'D5', dur: '2n' },
+null,
+[{ note: 'C5', dur: '8n' }, { note: 'A4', dur: '8n' }],
+[{ note: 'C5', dur: '2n' }, { note: 'C5', dur: '2n' }],`;
+
+
+let data, data2;
+
+const exfn = (nt, dr) => { return `{ note: '${nt}', dur: '${dr}' }` };
+const exe = () => {
+    data =
+        document.querySelector(".score2").value = document.querySelector(".score").value.split("\n").map(V => {
+            if (V === "") { return "null," };
+            const res = V.split(" ").map(ary =>
+                exfn(...ary.split("-"))
+            ).join(", ");
+            if (V.split(" ").length >= 2) { return "[" + res + "]," };
+            return res + ",";
+        }).join("\n");
+};
+
+exe();
+
+const fn = (nt, dr) => { return { note: nt, dur: dr } };
+const exe2 = () => {
+    return document.querySelector(".score").value.split("\n").map(V => {
+            if (V === "") { return null };
+            const res = V.split(" ").map(ary =>
+                fn(...ary.split("-"))
+            );
+            if (V.split(" ").length >= 2) { return res };
+            return res[0];
+        });
+};
+
+exe2();
+
+const setup = (SCORE) => {
+    const seq = new Tone.Sequence((time, { note, dur }) => {
+    // new Tone.Sequence((time, { note, dur }) => {
+        synth.triggerAttackRelease(note, dur, time);
+    }, SCORE).start(0);
+    seq.loop = false;
+    Tone.Transport.bpm.value = 80;
+}
+const start = () => {
+    // setup(score3);
+    setup(exe2());
+    Tone.Transport.start();
+};
+const stop = () => Tone.Transport.stop();
+
+
+
+const testFn = () => {
+    // https://stackoverflow.com/a/45683145
+    function isPrimitive(obj) {
+        return (obj !== Object(obj))
+    };
+    function deepEqual(obj1, obj2){
+        if (obj1 === obj2)
+            return true;
+        if (isPrimitive(obj1) && isPrimitive(obj2))
+            return obj1 === obj2;
+        if (Object.keys(obj1).length !== Object.keys(obj2).length)
+            return false;
+        for (let key in obj1) {
+            if (!(key in obj2)) return false;
+            if (!deepEqual(obj1[key], obj2[key])) return false;
+        }
+        return true;
+    };
+    if (
+        document.querySelector(".score").value === test
+    ) { document.querySelector(".test").innerText = "ok" };
+    if (
+        document.querySelector(".score2").value === test2
+    ) { document.querySelector(".test2").innerText = "ok" };
+    if (
+        deepEqual(score3, exe2())
+    ) { document.querySelector(".test3").innerText = "ok" };
+};
+testFn();
+const insertPreset = (SELECTOR) => Array.from(document.querySelectorAll(`${SELECTOR} > *`)).map(V=>V.value).join(" ");
+const setPreset = () => {
+    document.querySelector(".preset").value =
+        insertPreset(".pair-pitch") + "\n" +
+        insertPreset(".pair-octave") + "\n" +
+        insertPreset(".pair-dur") + "\n" +
+        insertPreset(".pair-chord");
+    };
+setPreset();
+const makeHarmony = () => {
+    return insertPreset(".pair-chord")[1].value
+};
+console.table(makeHarmony());
+
+function range(from, to) { return [...Array(to - from)].reduce((A, V, IDX) => { A.push(from + IDX); return A }, A = []) };
+const preMake = () =>{
+    document.querySelector("#soundCount").value = "3";
+
+    const chord = insertPreset(".pair-chord").split(" ")[1];
+    const pitch = insertPreset(".pair-pitch").split(" ")[1];
+    const octave = insertPreset(".pair-octave").split(" ")[1];
+    const dur = insertPreset(".pair-dur").split(" ")[1];
+
+    return range(0, Number(document.querySelector("#soundCount").value)).map(V =>
+                range(0, chord).map(VAL=>
+                    `${pitch}${octave}-${dur}n` ).join(" ")
+            ).join("\n");
+};
+
+const devSample = () => {
+    document.querySelector(".score").value =
+    document.querySelector(".preset").value =
+    preMake()
+};
+</script>
+</body>
+</html>
