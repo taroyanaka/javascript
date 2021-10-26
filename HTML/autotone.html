@@ -75,6 +75,7 @@
 
 <textarea name="preset" class="preset" cols="30" rows="10" placeholder="preset"></textarea>
 
+<button onclick="makeToneFormat();">makeToneFormat</button>
 
 <textarea name="" class="score" cols="30" rows="20">E4-8n
 F4-4n
@@ -165,7 +166,7 @@ null,
 let data, data2;
 
 const exfn = (nt, dr) => { return `{ note: '${nt}', dur: '${dr}' }` };
-const exe = () => {
+const makeToneFormat = () => {
     data =
         document.querySelector(".score2").value = document.querySelector(".score").value.split("\n").map(V => {
             if (V === "") { return "null," };
@@ -177,7 +178,7 @@ const exe = () => {
         }).join("\n");
 };
 
-exe();
+makeToneFormat();
 
 const fn = (nt, dr) => { return { note: nt, dur: dr } };
 const exe2 = () => {
