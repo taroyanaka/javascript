@@ -9,6 +9,9 @@
 </head>
 <body>
 <div>
+    <button onclick="test_addMenuToPick_and_pickToPreset()">test_addMenuToPick_and_pickToPreset();</button>
+</div>
+<div>
     <button onclick="devSample();">devSample</button>
     <button onclick="devSample();start();">devSampleStart</button>
 </div>
@@ -27,7 +30,8 @@
   <button onclick="start();">start</button>
   <button onclick="stop();">stop</button>
 </div>
-<div class="pair pair-pitch">pitch
+<div class="parent-menu">
+<div class="menu parent parent-pitch">pitch
 <button value="C" class="pitch pitch-C">C</button>
 <button value="D" class="pitch pitch-D">D</button>
 <button value="E" class="pitch pitch-E">E</button>
@@ -36,7 +40,7 @@
 <button value="A" class="pitch pitch-A">A</button>
 <button value="B" class="pitch pitch-B">B</button>
 </div>
-<div class="pair pair-octave">octave
+<div class="menu parent parent-octave">octave
 <button value="0" class="octave octave-0">0</button>
 <button value="1" class="octave octave-1">1</button>
 <button value="2" class="octave octave-2">2</button>
@@ -48,7 +52,7 @@
 <button value="8" class="octave octave-8">8</button>
 <button value="9" class="octave octave-9">9</button>
 </div>
-<div class="pair pair-dur">dur
+<div class="menu parent parent-dur">dur
 <button value="1" class="dur dur-1">1</button>
 <button value="2" class="dur dur-2">2</button>
 <button value="4" class="dur dur-4">4</button>
@@ -58,7 +62,7 @@
 <button value="64" class="dur dur-64">64</button>
 <button value="128" class="dur dur-128">128</button>
 </div>
-<div class="pair pair-chord">chord
+<div class="menu parent parent-chord">chord
 <button value="1" class="chord chord-1">1</button>
 <button value="2" class="chord chord-2">2</button>
 <button value="3" class="chord chord-3">3</button>
@@ -69,8 +73,17 @@
 <button value="8" class="chord chord-8">8</button>
 <button value="9" class="chord chord-9">9</button>
 </div>
-<div class="pair pair-withnull">withnull
+<div class="menu parent parent-withnull">withnull
     <button value="withnull" class="withnull">withnull</button>
+</div>
+</div>
+
+<div class="parent-pick">
+<div class="pick parent parent-pitch"></div>
+<div class="pick parent parent-octave"></div>
+<div class="pick parent parent-dur"></div>
+<div class="pick parent parent-chord"></div>
+<div class="pick parent parent-withnull"></div>
 </div>
 
 <textarea name="preset" class="preset" cols="30" rows="10" placeholder="preset"></textarea>
@@ -94,6 +107,36 @@ C5-8n A4-8n
 C5-2n C5-2n</textarea>
 <textarea name="" class="score2" cols="30" rows="20"></textarea>
 <script>
+const menuToPick = (EVENT) => document.querySelector(`.pick.parent-${EVENT.target.classList[0]}`).innerHTML += EVENT.target.outerHTML;
+const addMenuToPick = () => Array.from(document.querySelectorAll(".menu > *")).map(ELM => ELM.addEventListener("click", menuToPick));
+addMenuToPick();
+
+const test_addMenuToPick = () => {
+try {
+document.querySelectorAll(".menu > .pitch")[0].click();
+document.querySelectorAll(".menu > .pitch")[6].click();
+document.querySelectorAll(".menu > .octave")[0].click();
+document.querySelectorAll(".menu > .octave")[8].click();
+document.querySelectorAll(".menu > .dur")[0].click();
+document.querySelectorAll(".menu > .dur")[7].click();
+document.querySelectorAll(".menu > .chord")[0].click();
+document.querySelectorAll(".menu > .chord")[8].click();
+document.querySelectorAll(".withnull")[0].click();
+} catch (error) {
+    console.log(error);
+}
+};
+const pickToPreset = () => {
+    const pickValue = Array.from(document.querySelectorAll(".pick.parent"))
+            .map(V=>  Array.from(V.children).map(VAL => VAL.value)  );
+    const presetValue = pickValue.map(V => V.join(" ")).join("\n");
+    document.querySelector(".preset").value = presetValue;
+};
+const test_addMenuToPick_and_pickToPreset = () => {
+    test_addMenuToPick();
+    pickToPreset();
+};
+
 const synth = new Tone.Synth().toDestination();
 
 let tmp1,tmp2,tmp3;
@@ -196,15 +239,13 @@ exe2();
 
 const setup = (SCORE) => {
     const seq = new Tone.Sequence((time, { note, dur }) => {
-    // new Tone.Sequence((time, { note, dur }) => {
-        synth.triggerAttackRelease(note, dur, time);
+            synth.triggerAttackRelease(note, dur, time);
     }, SCORE).start(0);
     seq.loop = false;
     Tone.Transport.bpm.value = 80;
 }
 const start = () => {
-    // setup(score3);
-    setup(exe2());
+        setup(exe2());
     Tone.Transport.start();
 };
 const stop = () => Tone.Transport.stop();
@@ -212,8 +253,7 @@ const stop = () => Tone.Transport.stop();
 
 
 const testFn = () => {
-    // https://stackoverflow.com/a/45683145
-    function isPrimitive(obj) {
+        function isPrimitive(obj) {
         return (obj !== Object(obj))
     };
     function deepEqual(obj1, obj2){
@@ -243,25 +283,27 @@ testFn();
 const insertPreset = (SELECTOR) => Array.from(document.querySelectorAll(`${SELECTOR} > *`)).map(V=>V.value).join(" ");
 const setPreset = () => {
     document.querySelector(".preset").value =
-        insertPreset(".pair-pitch") + "\n" +
-        insertPreset(".pair-octave") + "\n" +
-        insertPreset(".pair-dur") + "\n" +
-        insertPreset(".pair-chord");
+        insertPreset(".parent-pitch") + "\n" +
+        insertPreset(".parent-octave") + "\n" +
+        insertPreset(".parent-dur") + "\n" +
+        insertPreset(".parent-chord");
     };
 setPreset();
 const makeHarmony = () => {
-    return insertPreset(".pair-chord")[1].value
+    return insertPreset(".parent-chord")[1].value
 };
-// console.table(makeHarmony());
+
+
+    test_addMenuToPick_and_pickToPreset();
 
 function range(from, to) { return [...Array(to - from)].reduce((A, V, IDX) => { A.push(from + IDX); return A }, A = []) };
 const preMake = () =>{
     document.querySelector("#soundCount").value = "3";
 
-    const chord = insertPreset(".pair-chord").split(" ")[1];
-    const pitch = insertPreset(".pair-pitch").split(" ")[1];
-    const octave = insertPreset(".pair-octave").split(" ")[1];
-    const dur = insertPreset(".pair-dur").split(" ")[1];
+    const chord = insertPreset(".pick.parent-chord").split(" ")[1];
+    const pitch = insertPreset(".pick.parent-pitch").split(" ")[1];
+    const octave = insertPreset(".pick.parent-octave").split(" ")[1];
+    const dur = insertPreset(".pick.parent-dur").split(" ")[1];
 
     return range(0, Number(document.querySelector("#soundCount").value)).map(V =>
                 range(0, chord).map(VAL=>
@@ -271,9 +313,11 @@ const preMake = () =>{
 
 const devSample = () => {
     document.querySelector(".score").value =
-    // document.querySelector(".preset").value =
-    preMake()
+        preMake()
 };
+
+
+
 </script>
 </body>
 </html>
