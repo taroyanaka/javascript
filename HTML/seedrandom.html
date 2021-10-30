@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>seed random</title>
+<style>
+input.numbers[type='checkbox']{
+    display: none;
+}
+/* button::before {
+  content: "♥";
+} */
+/* ::before + button */
+/* ::before + button{ */
+input#numbers0 + label,
+input#numbers1 + label,
+input#numbers2 + label,
+input#numbers3 + label,
+input#numbers4 + label,
+input#numbers5 + label
+{
+    background-color: white;
+}
+/* ::before + button + input:checked{ */
+/* button:has(+ input){ */
+input#numbers0:checked + label,
+input#numbers1:checked + label,
+input#numbers2:checked + label,
+input#numbers3:checked + label,
+input#numbers4:checked + label,
+input#numbers5:checked + label
+{
+    background-color: gray;
+}
+input{
+    width: 2rem;
+    height: 2rem;
+    font-size: 2rem;
+}
+label{
+    /* margin: 0.5rem; */
+    padding: 0.5rem;
+    border: olive 1px solid;
+    font-size: 1.5rem;
+}
+.exe{
+    width: 3rem;
+    height: 3rem;
+    font-size: 1rem;
+}
+</style>
+</head>
+<body>
+<button class="test1" onclick="test1();exe();">test1</button>
+<button class="test2" onclick="test2();exe();">test2</button>
+<button class="test3" onclick="test3();exe();">test3</button>
+<div>
+seedRandom:<input type="checkbox" name="" class="seedRandom" checked>
+</div>
+<div>
+seed:<input type="number" name="" class="seed" value="1">
+</div>
+
+<div class="parent-numbers"></div>
+
+<!-- <button value="1" class="numbers">1</button>
+<button value="2" class="numbers">2</button>
+<button value="3" class="numbers">3</button>
+<button value="4" class="numbers">4</button>
+<button value="5" class="numbers">5</button> -->
+<h1>0,1,2,3,4,5</h1>
+
+<button class="exe" onclick="exe()">exe</button>
+
+
+
+<script>
+// const makeGray = (EVENT) => EVENT.target.style = `background-color: gray;`
+const setNumbers = () => {
+    document.querySelector(".parent-numbers").innerHTML = [0,1,2,3,4,5].map(NUMBER=> `<input type="checkbox" class="numbers" id="numbers${NUMBER}" name="something" value="${NUMBER}"><label for="numbers${NUMBER}">${NUMBER}</label>`).join("")
+};
+    setNumbers();
+
+        const seedRandom = () => {
+                const x = Math.sin(Number(document.querySelector(".seed").value)) * 10000;
+                return x - Math.floor(x);
+            };
+        const shuffleArray = array => {
+            for (let i = array.length - 1; i > 0; i--) {
+                let r = document.querySelector(".seedRandom").checked ? Math.floor(seedRandom() * (i + 1)) : Math.floor(Math.random() * (i + 1));
+                // let r = Math.floor(Math.random(1) * (i + 1));
+                let tmp = array[i];
+                array[i] = array[r];
+                array[r] = tmp;
+            }
+            return array
+        }
+
+        // const numberArray = Array.from(document.querySelectorAll(".numbers")).map(V=>V.value);
+        const exe = () => document.querySelector("h1").innerText =
+            shuffleArray(
+                Array.from(document.querySelectorAll(".numbers:checked")).map(V => V.value)
+            );
+        
+        exe();
+
+const test1 = () => {
+    document.querySelector(".seed").value = "2";
+    document.querySelectorAll(".numbers")[0].click();
+    document.querySelectorAll(".numbers")[1].click();
+    document.querySelectorAll(".numbers")[3].click();
+    document.querySelectorAll(".numbers")[5].click();
+};
+const test2 = () => {
+    document.querySelector(".seed").value = "3";
+    document.querySelectorAll(".numbers")[0].click();
+    document.querySelectorAll(".numbers")[1].click();
+    document.querySelectorAll(".numbers")[3].click();
+    document.querySelectorAll(".numbers")[5].click();
+};
+const test3 = () => {
+    document.querySelector(".seed").value = "3";
+    document.querySelectorAll(".numbers")[1].click();
+    document.querySelectorAll(".numbers")[2].click();
+    document.querySelectorAll(".numbers")[3].click();
+    document.querySelectorAll(".numbers")[4].click();
+};
+</script>
+</body>
+</html>

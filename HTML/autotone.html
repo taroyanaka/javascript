@@ -297,18 +297,20 @@ const makeHarmony = () => {
     test_addMenuToPick_and_pickToPreset();
 
 function range(from, to) { return [...Array(to - from)].reduce((A, V, IDX) => { A.push(from + IDX); return A }, A = []) };
+
+const arrayWrap = (data, chord) => Number(chord) >= 1 ? [data] : data;
 const preMake = () =>{
     document.querySelector("#soundCount").value = "3";
 
-    const chord = insertPreset(".pick.parent-chord").split(" ")[1];
+    const chord = insertPreset(".pick.parent-chord").split(" ")[0];
     const pitch = insertPreset(".pick.parent-pitch").split(" ")[1];
     const octave = insertPreset(".pick.parent-octave").split(" ")[1];
     const dur = insertPreset(".pick.parent-dur").split(" ")[1];
-
     return range(0, Number(document.querySelector("#soundCount").value)).map(V =>
-                range(0, chord).map(VAL=>
-                    `${pitch}${octave}-${dur}n` ).join(" ")
-            ).join("\n");
+        arrayWrap(
+            range(0, chord).map(VAL=>`${pitch}${octave}-${dur}n`).join(" "),
+            chord)
+    ).join("\n");
 };
 
 const devSample = () => {
