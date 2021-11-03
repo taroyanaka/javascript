@@ -185,6 +185,19 @@ https://www.youtube.com/watch?v=AAaNKi4SJwo`;
 //         }).pipe(res);
 //     });
 // });
+
+// app.get("/audiodownload", (req, res) => {
+//     allowOrigin(res);
+//     // var TITLE = req.query.title || "video";
+//     var TITLE = "video";
+//     var URL = req.query.url || "https://www.youtube.com/watch?v=0p76bb9mNVk";
+//     var stream = ytdl(URL);
+//     stream.on('info', (info) => {
+//         res.header('Content-Disposition', `attachment; filename="${TITLE}.mp3"`);
+//         ytdl(URL, { filter: 'audioonly' }).pipe(res);
+//     });
+// });
+
 // glitch_com side
     </script>
 </body>
