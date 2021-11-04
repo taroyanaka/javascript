@@ -129,6 +129,9 @@ document.querySelectorAll(".menu > .pitch")[6].click();
 document.querySelectorAll(".menu > .octave")[0].click();
 document.querySelectorAll(".menu > .octave")[1].click();
 document.querySelectorAll(".menu > .octave")[2].click();
+document.querySelectorAll(".menu > .octave")[2].click();
+document.querySelectorAll(".menu > .octave")[4].click();
+document.querySelectorAll(".menu > .octave")[7].click();
 document.querySelectorAll(".menu > .dur")[0].click();
 document.querySelectorAll(".menu > .dur")[1].click();
 document.querySelectorAll(".menu > .dur")[2].click();
@@ -215,9 +218,10 @@ function mulberry32(a) {
         return ((t ^ t >>> 14) >>> 0) / 4294967296;
     }
 }
-const shuffleArray = array => {
+const shuffleArray = (array, SHUFFLERNUM) => {
+    const shuffler = SHUFFLERNUM || 1;
     for (let i = array.length - 1; i > 0; i--) {
-        let r = document.querySelector(".seedRandom").checked ? Math.floor(mulberry32(Number(document.querySelector(".seed").value))() * (i + 1)) : Math.floor(Math.random() * (i + 1));
+        let r = document.querySelector(".seedRandom").checked ? Math.floor(mulberry32(Number(document.querySelector(".seed").value) * shuffler )() * (i + 1)) : Math.floor(Math.random() * (i + 1));
         let tmp = array[i];
         array[i] = array[r];
         array[r] = tmp;
@@ -226,25 +230,48 @@ const shuffleArray = array => {
 }
 const getEachArray = (ARY) => ARY.map(V=> insertPreset(`.pick.parent-${V}`).split(" "));
 
-const preMake = () => {
-    const [chord, pitch, octave, dur] = getEachArray(["chord", "pitch", "octave", "dur"]);
-    // [tmp1, tmp2, tmp3, tmp4] = [chord, pitch, octave, dur];
+const makeChord = (CHORDTONEVOLUME) => {
+    return range(0, CHORDTONEVOLUME).map(V => {
+        const NUM = V*V;
+        const shuffledpitch = shuffleArray(insertPreset(".pick.parent-pitch").split(" "), NUM)[0];
+        const shuffledoctave = shuffleArray(insertPreset(".pick.parent-octave").split(" "), NUM)[0];
+        const shuffleddur = shuffleArray(insertPreset(".pick.parent-dur").split(" "), NUM)[0];
+        return [shuffledpitch, shuffledoctave, shuffleddur];
+    })
+};
+const shuffledArrayData = () => {
     const shuffledchord = shuffleArray(insertPreset(".pick.parent-chord").split(" "))[0];
     const shuffledpitch = shuffleArray(insertPreset(".pick.parent-pitch").split(" "))[0];
-    const shuffledoctave = tmp5 = shuffleArray(insertPreset(".pick.parent-octave").split(" "))[0];
-    const shuffleddur = shuffleArray(insertPreset(".pick.parent-dur").split(" "))[1];
+    const shuffledoctave = shuffleArray(insertPreset(".pick.parent-octave").split(" "))[0];
+    const shuffleddur = shuffleArray(insertPreset(".pick.parent-dur").split(" "))[0];
+    return [shuffledchord, shuffledpitch, shuffledoctave, shuffleddur];
+};
+const makeData = (shuffledchord, shuffledpitch, shuffledoctave, shuffleddur) => {
+    if(Number(shuffledchord)>=2){
+        const NUM = Number(shuffledchord);
+        const res = range(0, Number(shuffledchord)).map((VAL,IDX) => `${makeChord(NUM)[IDX][0]}${makeChord(NUM)[IDX][1]}-${makeChord(NUM)[IDX][2]}n`);
+        // console.table(res);
+        return res;
+    }
+    // console.table(Number(shuffledchord));
+    return range(0, Number(shuffledchord)).map(VAL => `${shuffledpitch}${shuffledoctave}-${shuffleddur}n`)
+};
+
+const preMake = () => {
+    // const [chord, pitch, octave, dur] = getEachArray(["chord", "pitch", "octave", "dur"]);
+    // [tmp1, tmp2, tmp3, tmp4] = [chord, pitch, octave, dur];
     return range(0, Number(document.querySelector("#soundCount").value)).map(V => {
-        // console.table(chord, pitch, octave, dur);
-        console.table( shuffledchord, shuffledpitch, shuffledoctave, shuffleddur );
+        console.table( ...shuffledArrayData() );
         return arrayWrap(
-            range(0, shuffledchord).map(VAL => `${shuffledpitch}${shuffledoctave}-${shuffleddur}n`).join(" "),
-            Number(shuffledchord))
+            makeData(...shuffledArrayData()).join(" "),
+            Number(makeData[0]))
     }).join("\n");
 };
 const devSample = () => {
-    document.querySelector("#soundCount").value = "2";
+    document.querySelector("#soundCount").value = "1";
     document.querySelector(".score").value = "";
-    [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map(V=>V.toString()).forEach(V=>{
+    // [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map(V=>V.toString()).forEach(V=>{
+    range(11, 25).map(V=>V.toString()).forEach(V=>{
         document.querySelector(".seed").value = V;
         document.querySelector(".score").value += preMake() + "\n";
     })
