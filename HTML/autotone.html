@@ -109,6 +109,12 @@ C5-8n A4-8n
 C5-2n C5-2n</textarea>
 <textarea name="" class="score2" cols="30" rows="20"></textarea>
 <script>
+
+
+// let data;
+// let tmp1, tmp2, tmp3, tmp4;
+
+
 const menuToPick = (EVENT) => document.querySelector(`.pick.parent-${EVENT.target.classList[0]}`).innerHTML += EVENT.target.outerHTML;
 const addMenuToPick = () => Array.from(document.querySelectorAll(".menu > *")).map(ELM => ELM.addEventListener("click", menuToPick));
 addMenuToPick();
@@ -144,14 +150,113 @@ const pickToPreset = () => {
     const presetValue = pickValue.map(V => V.join(" ")).join("\n");
     document.querySelector(".preset").value = presetValue;
 };
+
+
+
+
+
+const makeNoteDurObjectString = (nt, dr) => { return `{ note: '${nt}', dur: '${dr}' }` };
+const makeToneFormat = () => {
+    // data =
+        document.querySelector(".score2").value = document.querySelector(".score").value.split("\n").map(V => {
+            if (V === "") { return "null," };
+            const res = V.split(" ").map(ary =>
+                makeNoteDurObjectString(...ary.split("-"))
+            ).join(", ");
+            if (V.split(" ").length >= 2) { return "[" + res + "]," };
+            return res + ",";
+        }).join("\n");
+};
+
+const makeNoteDurObject = (nt, dr) => { return { note: nt, dur: dr } };
+const exe = () => {
+    return document.querySelector(".score").value.split("\n").map(V => {
+            if (V === "") { return null };
+            const res = V.split(" ").map(ary =>
+                makeNoteDurObject(...ary.split("-"))
+            );
+            if (V.split(" ").length >= 2) { return res };
+            return res[0];
+        });
+};
+
+const synth = new Tone.Synth().toDestination();
+const setup = (SCORE) => {
+    const seq = new Tone.Sequence((time, { note, dur }) => {
+            synth.triggerAttackRelease(note, dur, time);
+    }, SCORE).start(0);
+    seq.loop = false;
+    Tone.Transport.bpm.value = 80;
+}
+const start = () => {
+    setup(exe());
+    Tone.Transport.start();
+};
+const stop = () => Tone.Transport.stop();
+
+const insertPreset = (SELECTOR) => Array.from(document.querySelectorAll(`${SELECTOR} > *`)).map(V=>V.value).join(" ");
+const setPreset = () => {
+    document.querySelector(".preset").value =
+        insertPreset(".parent-pitch") + "\n" +
+        insertPreset(".parent-octave") + "\n" +
+        insertPreset(".parent-dur") + "\n" +
+        insertPreset(".parent-chord");
+};
+
+function range(from, to) { return [...Array(to - from)].reduce((A, V, IDX) => { A.push(from + IDX); return A }, A = []) };
+
+const arrayWrap = (data, chord) => Number(chord) >= 1 ? [data] : data;
+
+function mulberry32(a) {
+    return function () {
+        var t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+}
+const shuffleArray = array => {
+    for (let i = array.length - 1; i > 0; i--) {
+        let r = document.querySelector(".seedRandom").checked ? Math.floor(mulberry32(Number(document.querySelector(".seed").value))() * (i + 1)) : Math.floor(Math.random() * (i + 1));
+        let tmp = array[i];
+        array[i] = array[r];
+        array[r] = tmp;
+    }
+        return array
+}
+const getEachArray = (ARY) => ARY.map(V=> insertPreset(`.pick.parent-${V}`).split(" "));
+
+const preMake2 = () => {
+    const [chord, pitch, octave, dur] = getEachArray(["chord", "pitch", "octave", "dur"]);
+    // [tmp1, tmp2, tmp3, tmp4] = [chord, pitch, octave, dur];
+    const shuffledchord = shuffleArray(insertPreset(".pick.parent-chord").split(" "))[0];
+    const shuffledpitch = shuffleArray(insertPreset(".pick.parent-pitch").split(" "))[0];
+    const shuffledoctave = tmp5 = shuffleArray(insertPreset(".pick.parent-octave").split(" "))[0];
+    const shuffleddur = shuffleArray(insertPreset(".pick.parent-dur").split(" "))[1];
+    return range(0, Number(document.querySelector("#soundCount").value)).map(V => {
+        // console.table(chord, pitch, octave, dur);
+        console.table( shuffledchord, shuffledpitch, shuffledoctave, shuffleddur );
+        return arrayWrap(
+            range(0, shuffledchord).map(VAL => `${shuffledpitch}${shuffledoctave}-${shuffleddur}n`).join(" "),
+            Number(shuffledchord))
+    }).join("\n");
+};
+const devSample = () => {
+    document.querySelector("#soundCount").value = "2";
+    document.querySelector(".score").value = "";
+    [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map(V=>V.toString()).forEach(V=>{
+        document.querySelector(".seed").value = V;
+        document.querySelector(".score").value += preMake2() + "\n";
+    })
+    
+};
+// exe();
+// setPreset();
+// test
 const test_addMenuToPick_and_pickToPreset = () => {
     test_addMenuToPick();
     pickToPreset();
 };
-
-const synth = new Tone.Synth().toDestination();
-
-
 const score3 = [
     { note: "E4", dur: "8n" },
     { note: "F4", dur: "4n" },
@@ -169,8 +274,6 @@ const score3 = [
     [{ note: "C5", dur: "8n" }, { note: "A4", dur: "8n" }],
     [{ note: "C5", dur: "2n" }, { note: "C5", dur: "2n" }],
 ];
-
-
 
 const test = `E4-8n
 F4-4n
@@ -202,57 +305,11 @@ null,
 null,
 [{ note: 'C5', dur: '8n' }, { note: 'A4', dur: '8n' }],
 [{ note: 'C5', dur: '2n' }, { note: 'C5', dur: '2n' }],`;
-
-
-let data, data2;
-
-const exfn = (nt, dr) => { return `{ note: '${nt}', dur: '${dr}' }` };
-const makeToneFormat = () => {
-    data =
-        document.querySelector(".score2").value = document.querySelector(".score").value.split("\n").map(V => {
-            if (V === "") { return "null," };
-            const res = V.split(" ").map(ary =>
-                exfn(...ary.split("-"))
-            ).join(", ");
-            if (V.split(" ").length >= 2) { return "[" + res + "]," };
-            return res + ",";
-        }).join("\n");
-};
-
-makeToneFormat();
-
-const fn = (nt, dr) => { return { note: nt, dur: dr } };
-const exe2 = () => {
-    return document.querySelector(".score").value.split("\n").map(V => {
-            if (V === "") { return null };
-            const res = V.split(" ").map(ary =>
-                fn(...ary.split("-"))
-            );
-            if (V.split(" ").length >= 2) { return res };
-            return res[0];
-        });
-};
-
-exe2();
-
-const setup = (SCORE) => {
-    const seq = new Tone.Sequence((time, { note, dur }) => {
-            synth.triggerAttackRelease(note, dur, time);
-    }, SCORE).start(0);
-    seq.loop = false;
-    Tone.Transport.bpm.value = 80;
-}
-const start = () => {
-        setup(exe2());
-    Tone.Transport.start();
-};
-const stop = () => Tone.Transport.stop();
-
 const testFn = () => {
-        function isPrimitive(obj) {
+    function isPrimitive(obj) {
         return (obj !== Object(obj))
     };
-    function deepEqual(obj1, obj2){
+    function deepEqual(obj1, obj2) {
         if (obj1 === obj2)
             return true;
         if (isPrimitive(obj1) && isPrimitive(obj2))
@@ -272,128 +329,15 @@ const testFn = () => {
         document.querySelector(".score2").value === test2
     ) { document.querySelector(".test2").innerText = "ok" };
     if (
-        deepEqual(score3, exe2())
+        deepEqual(score3, exe())
     ) { document.querySelector(".test3").innerText = "ok" };
 };
-testFn();
-const insertPreset = (SELECTOR) => Array.from(document.querySelectorAll(`${SELECTOR} > *`)).map(V=>V.value).join(" ");
-const setPreset = () => {
-    document.querySelector(".preset").value =
-        insertPreset(".parent-pitch") + "\n" +
-        insertPreset(".parent-octave") + "\n" +
-        insertPreset(".parent-dur") + "\n" +
-        insertPreset(".parent-chord");
-    };
-setPreset();
-const makeHarmony = () => {
-    return insertPreset(".parent-chord")[1].value
-};
 
-function range(from, to) { return [...Array(to - from)].reduce((A, V, IDX) => { A.push(from + IDX); return A }, A = []) };
-
-const arrayWrap = (data, chord) => Number(chord) >= 1 ? [data] : data;
-
-// const seedRandom = () => {
-//     const x = Math.sin(Number(document.querySelector(".seed").value)) * 10000;
-//     return x - Math.floor(x);
-// }
-function mulberry32(a) {
-    return function () {
-        var t = a += 0x6D2B79F5;
-        t = Math.imul(t ^ t >>> 15, t | 1);
-        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
-        return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    }
-}
-const shuffleArray = array => {
-    for (let i = array.length - 1; i > 0; i--) {
-        let r = document.querySelector(".seedRandom").checked ? Math.floor(mulberry32(Number(document.querySelector(".seed").value))() * (i + 1)) : Math.floor(Math.random() * (i + 1));
-        let tmp = array[i];
-        array[i] = array[r];
-        array[r] = tmp;
-    }
-        return array
-}
-// const getIndex = (array) => array.map((V,IDX)=>IDX);
-
-// const ARRAY = [1, 2, 3, 4, 5];
-// const fn2 = (ARRAY) => {
-//     const idxValPair = ARRAY.map((V, IDX) => [IDX, V]);
-//     return ARRAY
-//             .map(VAL =>
-//                 idxValPair.map(V => {
-//                     if (V[1].includes(VAL[0])) { return V }
-//                 }))
-//             .map(V => V.filter(VAL => VAL !== undefined))
-//             .map(V => V[0]);
-// };
-
-// const idxValPair = ARRAY.map((V, IDX) => [IDX, V]);
-// const getFirstIndexValueArray = (PAIRARRAY) => PAIRARRAY.map(V => V[0]);
-
-// const getShuffleIdxValPairArray = ARRAY => {
-//     for (let i = ARRAY.length - 1; i > 0; i--) {
-//         let r = document.querySelector(".seedRandom").checked ? Math.floor(mulberry32(Number(document.querySelector(".seed").value))() * (i + 1)) : Math.floor(Math.random() * (i + 1));
-//         let tmp = ARRAY[i];
-//         ARRAY[i] = ARRAY[r];
-//         ARRAY[r] = tmp;
-//     }
-//     const resIdxValPair =
-//         ARRAY
-//             .map(VAL =>
-//                 idxValPair.map(V => {
-//                     if (V[1].includes(VAL[0])) { return V }
-//                 }))
-//             .map(V => V.filter(VAL => VAL !== undefined))
-//             .map(V => V[0]);
-//     return resIdxValPair;
-// }
-
-
-
-// const preMake = () => {
-//     document.querySelector("#soundCount").value = "3";
-//     const chord = shuffleArray(insertPreset(".pick.parent-chord").split(" "))[0];
-//     const pitch = shuffleArray(insertPreset(".pick.parent-pitch").split(" "))[0];
-//     const octave = shuffleArray(insertPreset(".pick.parent-octave").split(" "))[0];
-//     const dur = shuffleArray(insertPreset(".pick.parent-dur").split(" "))[1];
-//     return range(0, Number(document.querySelector("#soundCount").value)).map(V =>
-//         arrayWrap(
-//             range(0, chord).map(VAL=>`${pitch}${octave}-${dur}n`).join(" "),
-//             chord)
-//     ).join("\n");
-// };
-
-const getEachArray = (ARY) => ARY.map(V=> insertPreset(`.pick.parent-${V}`).split(" "));
-// let tmp1, tmp2, tmp3, tmp4;
-const preMake2 = () =>{
-    const [chord, pitch, octave, dur] = getEachArray(["chord", "pitch", "octave", "dur"]);
-    // [tmp1, tmp2, tmp3, tmp4] = [chord, pitch, octave, dur];
-    const shuffledchord = shuffleArray(insertPreset(".pick.parent-chord").split(" "))[0];
-    const shuffledpitch = shuffleArray(insertPreset(".pick.parent-pitch").split(" "))[0];
-    const shuffledoctave = tmp5 = shuffleArray(insertPreset(".pick.parent-octave").split(" "))[0];
-    const shuffleddur = shuffleArray(insertPreset(".pick.parent-dur").split(" "))[1];
-    return range(0, Number(document.querySelector("#soundCount").value)).map(V =>{
-    // console.table(chord, pitch, octave, dur);
-    // console.table( shuffledchord, shuffledpitch, shuffledoctave, shuffleddur );
-        return arrayWrap(
-            range(0, shuffledchord).map(VAL=>`${shuffledpitch}${shuffledoctave}-${shuffleddur}n`).join(" "),
-            Number(shuffledchord))
-    }).join("\n");
-};
-
-const devSample = () => {
-    document.querySelector("#soundCount").value = "2";
-    document.querySelector(".score").value = "";
-    [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20].map(V=>V.toString()).forEach(V=>{
-        document.querySelector(".seed").value = V;
-        document.querySelector(".score").value += preMake2() + "\n";
-    })
-    
-};
-
+// test
+// testFn();
 test_addMenuToPick_and_pickToPreset();
 devSample();
+makeToneFormat();
 </script>
 </body>
 </html>
