@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>memo</title>
+    <script src="localforage.js"></script>
+    <script>
+        localforage.config({
+            // bytes
+            size: 10000
+            // => limit size 10kb
+        });
+    </script>
+</head>
+<body>
+<div class="res"></div>
+
+<button onclick="add();">add</button>
+<!-- <button onclick="save();">save</button> -->
+<button onclick="load();">load</button>
+<button onclick="clear();">clear</button>
+<script>
+const add = () => {
+    const data = Array.from(document.querySelectorAll(".res > div > .memo")).map(V => V.value);
+    document.querySelector(".res").innerHTML += `<div><input type="text" name="" class="memo" oninput="save();"><span class="remove" onclick="remove(event)">-</span></div>`;
+    document.querySelectorAll(".memo").forEach((V, IDX) => V.value = data[IDX]? data[IDX] : "" );
+};
+
+
+
+// const remove = (event) => {event.target.parentElement = "";save();document.querySelector(".res").innerHTML = "";load();};
+const remove = (event) => {event.target.parentElement.innerHTML = "";save();};
+// const remove = (event) => document.querySelectorAll(".remove")[1].parentElement = "";save();load();;
+const clear = () => localforage.clear();
+
+
+
+
+async function save() {
+    const data = Array.from(document.querySelectorAll(".res > div > .memo")).map(V => V.value);
+    await localforage.setItem("memo", JSON.stringify(data))
+        // .then(res =>
+        //     document.querySelector(".err").textContent = "success"
+        // ).catch(err =>
+        //     document.querySelector(".err").textContent = err
+        // );
+}
+async function load() {
+    try {
+        const memo = await localforage.getItem("memo");
+        const data = JSON.parse(memo);
+        data.forEach(V => add());
+        document.querySelectorAll(".memo").forEach((V, IDX) => V.value = data[IDX]);
+    } catch (err) {
+        // document.querySelector(".err").textContent = err;
+        console.log(err);
+    }
+}
+</script>
+</body>
+</html>

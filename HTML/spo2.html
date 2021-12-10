@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>spo</title>
-    <script src="spo.js"></script>
+    <!-- <script src="spo.js"></script> -->
+    <script src="spo2.js"></script>
 </head>
 <body>
 </body>
@@ -15,39 +16,23 @@
 <textarea name="" class="test" cols="30" rows="10"></textarea>
 </h3>
 <script>
-// const str = `standalone-ellipsis-one-lineaaaaaaaaaa<span`;
 const str = spo;
-const regexp = /"standalone-ellipsis-one-line.+?span"/gm;
-// const regexp = /"artist.+?a"/gm;
-// const regexp = /"draggable.+?span"/gm;
-// const regexp = /"standalone-ellipsis-one-line.+?\>.+?\<\/a"/gm;
+const regexp = /track-name.+?dir.+?auto.+?<\/span/gm;
 const array = [...str.matchAll(regexp)]
                 .map(V=>V[0])
-                .filter(V=>V.match(/\<\/a\>/))
+                // .filter(V=>V.match(/\<\/a\>/))
 ;
-// const res = array.map(V => V.replaceAll('span.+', ""))
-
-
-// .replaceAll("videoId:", ""));
-// const regex = /\>.+\<\/a/g;
 const res = array.map(V=>V
-    .replace(/\<\/a.+/, "")
-    .replace(/.+tabindex="-1">/, "")
+    // .replace(/\<\/a.+/, "")
+    // .replace(/.+tabindex="-1">/, "")
 );
-// const res = array.map(V=>V);
-// document.querySelector("h1").innerText= array[10];
-// document.querySelector("h1").innerText= res;
-
-
-
-const regexp2 = /artist.+?span/gm;
+const regexp2 = /span dir.+?auto.+?\>.+?<\/span/gm;
 const array2 = [...str.matchAll(regexp2)]
     .map(V => V[0]);
 const res2 = array2.map(V=>V
-    .replace(/\<\/a.+/, "")
-    .replace(/.+tabindex="-1">/, "")
+    // .replace(/\<\/a.+/, "")
+    // .replace(/.+tabindex="-1">/, "")
 );
-// document.querySelector("h2").innerText = res2;
 
 function transpose(outerlist) { return outerlist.reduce((RES, innerList) => { innerList.forEach((VAL, IDX) => { if (typeof RES[IDX] === 'undefined') { RES[IDX] = [] }; RES[IDX].push(VAL) }); return RES }, RES = []) };
 
