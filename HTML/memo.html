@@ -73,7 +73,7 @@ const getTagParam = () => getParam("tag");
 const tagParamSplit = () => getTagParam().split(",");
 
 const test1 = () => document.querySelectorAll("div.res > *")[0].children[2].innerHTML = `<a href="${window.location.href}?tag=foo">foo</a>`;;
-const test2 = () => Array.from(document.querySelectorAll("div.res > *")).filter(V => tagParamSplit().includes(V.children[2].innerText)).forEach(V => V.outerHTML = "");
+const test2 = () => Array.from(document.querySelectorAll("div.res > *")).filter(V => true !== tagParamSplit().includes(V.children[2].innerText) ).forEach(V => V.outerHTML = "");
 
 </script>
 </body>
