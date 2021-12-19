@@ -61,6 +61,11 @@ async function load() {
         const data = JSON.parse(memo);
         data.forEach(V => add());
         document.querySelectorAll(".memo").forEach((V, IDX) => V.value = data[IDX]);
+        // test1();
+        test1_1(0, ["foo"]);
+        test1_1(1, ["foo","bar"]);
+        test1_1(2, ["baz"]);
+        test2();
     } catch (err) {
         // document.querySelector(".err").textContent = err;
         console.log(err);
@@ -72,8 +77,24 @@ const getParam = (KEY) => (new URL(document.location)).searchParams.get(KEY);
 const getTagParam = () => getParam("tag");
 const tagParamSplit = () => getTagParam().split(",");
 
-const test1 = () => document.querySelectorAll("div.res > *")[0].children[2].innerHTML = `<a href="${window.location.href}?tag=foo">foo</a>`;;
-const test2 = () => Array.from(document.querySelectorAll("div.res > *")).filter(V => true !== tagParamSplit().includes(V.children[2].innerText) ).forEach(V => V.outerHTML = "");
+const test1 = () => document.querySelectorAll("div.res > *")[0].children[2].innerHTML = `<a href="${window.location.href}?tag=foo">foo</a>`;
+const test1_1 = (NUM, TAG_ARY) => TAG_ARY.forEach(TAG_ARY_VAL=> document.querySelectorAll("div.res > *")[NUM].children[2].innerHTML += `<a href="${window.location.href}?tag=${TAG_ARY_VAL}">${TAG_ARY_VAL}</a>`);
+// const test2 = () => Array.from(document.querySelectorAll("div.res > * > a")).filter(V => true !== tagParamSplit().includes(V.children[0].innerText) ).forEach(V => V.outerHTML = "");
+let foo = [];
+const test2 = () => {
+    foo =
+    Array.from(document.querySelectorAll("div.res > div > span.tag > a"))
+    .filter(V => true === tagParamSplit().includes(V.innerText))
+    // .forEach(V => V.parentElement.parentElement.outerHTML = "");
+}
+
+
+foo;
+
+
+
+
+// const test2 = () => Array.from(document.querySelectorAll("div.res > div > span.tag > a")).filter(V => true !== tagParamSplit().includes(V.innerText) ).forEach(V => V.outerHTML = "");
 
 </script>
 </body>
