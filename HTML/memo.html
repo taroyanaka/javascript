@@ -33,7 +33,7 @@
 <script>
 const add = () => {
     const data = Array.from(document.querySelectorAll(".res > div > .memo")).map(V => V.value);
-    document.querySelector(".res").innerHTML += `<div><input type="text" name="" class="memo" oninput="save();"><span class="remove" onclick="remove(event)">-</span><span class="tag" onclick="tag(event)"></span></div>`;
+    document.querySelector(".res").innerHTML += `<div data-tag=""><input type="text" name="" class="memo" oninput="save();"><span class="remove" onclick="remove(event)">-</span><span class="tag" onclick="tag(event)"></span></div>`;
     document.querySelectorAll(".memo").forEach((V, IDX) => V.value = data[IDX]? data[IDX] : "" );
 };
 
@@ -77,15 +77,25 @@ const getParam = (KEY) => (new URL(document.location)).searchParams.get(KEY);
 const getTagParam = () => getParam("tag");
 const tagParamSplit = () => getTagParam().split(",");
 
-const test1 = () => document.querySelectorAll("div.res > *")[0].children[2].innerHTML = `<a href="${window.location.href}?tag=foo">foo</a>`;
-const test1_1 = (NUM, TAG_ARY) => TAG_ARY.forEach(TAG_ARY_VAL=> document.querySelectorAll("div.res > *")[NUM].children[2].innerHTML += `<a href="${window.location.href}?tag=${TAG_ARY_VAL}">${TAG_ARY_VAL}</a>`);
+// const test1 = () => document.querySelectorAll("div.res > *")[0].children[2].innerHTML = `<a href="${window.location.href}?tag=foo">foo</a>`;
+const test1_1 = (NUM, TAG_ARY) => {
+    document.querySelectorAll("div.res > *")[NUM].dataset.tag += TAG_ARY.join(",");
+    TAG_ARY.forEach(TAG_ARY_VAL => document.querySelectorAll("div.res > *")[NUM].children[2].innerHTML += `<a href="${window.location.href}?tag=${TAG_ARY_VAL}">${TAG_ARY_VAL}</a>`);
+}
 // const test2 = () => Array.from(document.querySelectorAll("div.res > * > a")).filter(V => true !== tagParamSplit().includes(V.children[0].innerText) ).forEach(V => V.outerHTML = "");
 let foo = [];
 const test2 = () => {
-    foo =
-    Array.from(document.querySelectorAll("div.res > div > span.tag > a"))
-    .filter(V => true === tagParamSplit().includes(V.innerText))
+    // foo =
+    // Array.from(document.querySelectorAll("div.res > div > span.tag > a"))
+    //     .filter(V => tagParamSplit().includes(V.innerText) )
     // .forEach(V => V.parentElement.parentElement.outerHTML = "");
+
+    document.querySelector("div.res").innerHTML = 
+        Array.from(document.querySelectorAll("div.res > div"))
+            .filter(V => V.dataset.tag.split(",").some(VAL => true === tagParamSplit().includes(VAL) ))
+            // .filter(V => V.dataset.tag.split(",").every(VAL => true === tagParamSplit().includes(VAL) ))
+            .map(V => V.outerHTML)
+            .join("");
 }
 
 
