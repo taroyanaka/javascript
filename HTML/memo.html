@@ -19,16 +19,41 @@
 <button class="load" onclick="load();">load</button>
 <button class="clear" onclick="clear();">clear</button>
 
-<div>
-<button class="test1" onclick="test1();">test1</button>
-<button class="test2" onclick="test2();">test2</button>
-</div>
+<!-- <div> -->
+<!-- <button class="test1" onclick="test1();">test1</button> -->
+<!-- <button class="test2" onclick="test2();">test2</button> -->
+<!-- </div> -->
 
 <script>
+const getParam = (KEY) => (new URL(document.location)).searchParams.get(KEY);
+const getTagParam = () => getParam("tag");
+const tagParamSplit = () => getTagParam().split(",");
+
+const test1_1 = (NUM, TAG_ARY) => {
+    document.querySelectorAll("div.res > *")[NUM].dataset.tag += TAG_ARY.join(",");
+    TAG_ARY.forEach(TAG_ARY_VAL =>
+        document.querySelectorAll("div.res > *")
+        [NUM]
+            .querySelector(".tag").innerHTML +=
+        `<a href='${window.location.href.includes("?tag=") ? window.location.href + "," + TAG_ARY_VAL : window.location.href + "?tag=" + TAG_ARY_VAL}'>${TAG_ARY_VAL}</a>`);
+}
+
+const test2 = () => {
+    document.querySelector("div.res").innerHTML =
+        Array.from(document.querySelectorAll("div.res > div"))
+            .filter(V =>
+                V.dataset.tag.split(",")
+                    .some(VAL =>
+                        tagParamSplit().includes(VAL)))
+            .map(V => V.outerHTML)
+            .join("");
+}
+
+const addIndex = () => document.querySelectorAll(".res > div").forEach((V, IDX) => V.dataset.index = IDX);
 const add = () => {
     const data = Array.from(document.querySelectorAll(".res > div > .memo")).map(V => V.value);
     document.querySelector(".res").innerHTML +=
-        `<div data-tag="">
+        `<div data-tag="" data-index="">
         <input type="text" name="" class="memo" oninput="save();">
         <span class="remove" onclick="remove(event)">delete</span>
         <input type="text" name="inputTag" class="inputTag">
@@ -37,28 +62,41 @@ const add = () => {
         </div>`;
     document.querySelectorAll(".memo").forEach((V, IDX)=>
         V.value = data[IDX]? data[IDX] : "" );
+    addIndex();
 };
 
+let tag;
+const addTag = (event) => {
+    console.log(tag = event.target)
+    test1_1(Number(event.target.parentElement.dataset.index), [event.target.previousElementSibling.value]);
+    save();
+};
 const remove = (event) => {
     event.target.parentElement.innerHTML = "";
     save();
 };
-const clear = () => localforage.clear();
+const clear = async () => await localforage.clear();
 
 async function save() {
-    const data = Array.from(document.querySelectorAll(".res > div > .memo")).map(V => V.value);
-    await localforage.setItem("memo", JSON.stringify(data))
+    // const data = Array.from(document.querySelectorAll(".res > div > .memo")).map(V => V.value);
+    const memoAndTag = Array.from(document.querySelectorAll(".res > div")).map(V => [V.querySelector(".memo").value, V.dataset.tag||"" ]);
+    await localforage.setItem("memoAndTag", JSON.stringify(memoAndTag))
 }
 async function load() {
     try {
-        const memo = await localforage.getItem("memo");
-        const data = JSON.parse(memo);
-        data.forEach(V => add());
-        document.querySelectorAll(".memo").forEach((V, IDX) => V.value = data[IDX]);
-    
-        test1_1(0, ["foo"]);
-        test1_1(1, ["foo","bar"]);
-        test1_1(2, ["baz"]);
+        const memoAndTag = await localforage.getItem("memoAndTag");
+        // const memo = JSON.parse(memoAndTag)[0];
+        const memo = JSON.parse(memoAndTag).map(V=>V[0]);
+        // const tag = JSON.parse(memoAndTag)[1];
+        const tag = JSON.parse(memoAndTag).map(V=>V[1]);
+        memo.forEach(V => add());
+        document.querySelectorAll(".memo").forEach((V, IDX) => V.value = memo[IDX]);
+
+        document.querySelectorAll(".res > div").forEach((V, IDX) => V.dataset.tag = tag[IDX]);
+        document.querySelectorAll(".res > div").forEach((V, IDX) => test1_1( IDX, tag[IDX].split(",") ) );
+        // test1_1(0, ["foo"]);
+        // test1_1(1, ["foo","bar"]);
+        // test1_1(2, ["baz"]);
         test2();
     } catch (err) {
         console.log(err);
@@ -66,29 +104,6 @@ async function load() {
 }
 document.querySelector(".load").click();
 
-const getParam = (KEY) => (new URL(document.location)).searchParams.get(KEY);
-const getTagParam = () => getParam("tag");
-const tagParamSplit = () => getTagParam().split(",");
-
-const test1_1 = (NUM, TAG_ARY) => {
-    document.querySelectorAll("div.res > *")[NUM].dataset.tag += TAG_ARY.join(",");
-    TAG_ARY.forEach(TAG_ARY_VAL=>
-        document.querySelectorAll("div.res > *")
-            [NUM]
-            .querySelector(".tag").innerHTML +=
-                `<a href='${window.location.href.includes("?tag=") ? window.location.href + "," + TAG_ARY_VAL : window.location.href + "?tag=" + TAG_ARY_VAL}'>${TAG_ARY_VAL}</a>`);
-}
-
-const test2 = () => {
-    document.querySelector("div.res").innerHTML = 
-        Array.from(document.querySelectorAll("div.res > div"))
-            .filter(V =>
-                V.dataset.tag.split(",")
-                    .some(VAL=>
-                        tagParamSplit().includes(VAL) ))
-            .map(V => V.outerHTML)
-            .join("");
-}
 </script>
 </body>
 </html>
