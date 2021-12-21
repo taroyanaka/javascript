@@ -8,9 +8,7 @@
     <script src="localforage.js"></script>
     <script>
         localforage.config({
-            // bytes
             size: 10000
-            // => limit size 10kb
         });
     </script>
 </head>
@@ -18,42 +16,38 @@
 <div class="res"></div>
 
 <button class="add" onclick="add();">add</button>
-<!-- <button class="save" onclick="save();">save</button> -->
 <button class="load" onclick="load();">load</button>
 <button class="clear" onclick="clear();">clear</button>
-
 
 <div>
 <button class="test1" onclick="test1();">test1</button>
 <button class="test2" onclick="test2();">test2</button>
 </div>
 
-<!-- <span class="tag" onclick="tag(event)">tag</span> -->
-
 <script>
 const add = () => {
     const data = Array.from(document.querySelectorAll(".res > div > .memo")).map(V => V.value);
-    document.querySelector(".res").innerHTML += `<div data-tag=""><input type="text" name="" class="memo" oninput="save();"><span class="remove" onclick="remove(event)">-</span><span class="tag" onclick="tag(event)"></span></div>`;
-    document.querySelectorAll(".memo").forEach((V, IDX) => V.value = data[IDX]? data[IDX] : "" );
+    document.querySelector(".res").innerHTML +=
+        `<div data-tag="">
+        <input type="text" name="" class="memo" oninput="save();">
+        <span class="remove" onclick="remove(event)">delete</span>
+        <input type="text" name="inputTag" class="inputTag">
+        <span class="addTag" onclick="addTag(event)">addTag</span>
+        <span class="tag"></span>
+        </div>`;
+    document.querySelectorAll(".memo").forEach((V, IDX)=>
+        V.value = data[IDX]? data[IDX] : "" );
 };
 
-
-
-// const remove = (event) => {event.target.parentElement = "";save();document.querySelector(".res").innerHTML = "";load();};
-const remove = (event) => {event.target.parentElement.innerHTML = "";save();};
-// const remove = (event) => document.querySelectorAll(".remove")[1].parentElement = "";save();load();;
+const remove = (event) => {
+    event.target.parentElement.innerHTML = "";
+    save();
+};
 const clear = () => localforage.clear();
-// const clear = () => localforage.clear();
-
 
 async function save() {
     const data = Array.from(document.querySelectorAll(".res > div > .memo")).map(V => V.value);
     await localforage.setItem("memo", JSON.stringify(data))
-        // .then(res =>
-        //     document.querySelector(".err").textContent = "success"
-        // ).catch(err =>
-        //     document.querySelector(".err").textContent = err
-        // );
 }
 async function load() {
     try {
@@ -61,13 +55,12 @@ async function load() {
         const data = JSON.parse(memo);
         data.forEach(V => add());
         document.querySelectorAll(".memo").forEach((V, IDX) => V.value = data[IDX]);
-        // test1();
+    
         test1_1(0, ["foo"]);
         test1_1(1, ["foo","bar"]);
         test1_1(2, ["baz"]);
         test2();
     } catch (err) {
-        // document.querySelector(".err").textContent = err;
         console.log(err);
     }
 }
@@ -77,36 +70,25 @@ const getParam = (KEY) => (new URL(document.location)).searchParams.get(KEY);
 const getTagParam = () => getParam("tag");
 const tagParamSplit = () => getTagParam().split(",");
 
-// const test1 = () => document.querySelectorAll("div.res > *")[0].children[2].innerHTML = `<a href="${window.location.href}?tag=foo">foo</a>`;
 const test1_1 = (NUM, TAG_ARY) => {
     document.querySelectorAll("div.res > *")[NUM].dataset.tag += TAG_ARY.join(",");
-    TAG_ARY.forEach(TAG_ARY_VAL => document.querySelectorAll("div.res > *")[NUM].children[2].innerHTML += `<a href='${window.location.href.includes("?tag=") ? window.location.href + "," + TAG_ARY_VAL : window.location.href + "?tag=" + TAG_ARY_VAL}'>${TAG_ARY_VAL}</a>`);
-    // TAG_ARY.forEach(TAG_ARY_VAL => document.querySelectorAll("div.res > *")[NUM].children[2].innerHTML += `<a href="${window.location.href}?tag=${TAG_ARY_VAL}">${TAG_ARY_VAL}</a>`);
+    TAG_ARY.forEach(TAG_ARY_VAL=>
+        document.querySelectorAll("div.res > *")
+            [NUM]
+            .querySelector(".tag").innerHTML +=
+                `<a href='${window.location.href.includes("?tag=") ? window.location.href + "," + TAG_ARY_VAL : window.location.href + "?tag=" + TAG_ARY_VAL}'>${TAG_ARY_VAL}</a>`);
 }
-// const test2 = () => Array.from(document.querySelectorAll("div.res > * > a")).filter(V => true !== tagParamSplit().includes(V.children[0].innerText) ).forEach(V => V.outerHTML = "");
-let foo = [];
-const test2 = () => {
-    // foo =
-    // Array.from(document.querySelectorAll("div.res > div > span.tag > a"))
-    //     .filter(V => tagParamSplit().includes(V.innerText) )
-    // .forEach(V => V.parentElement.parentElement.outerHTML = "");
 
+const test2 = () => {
     document.querySelector("div.res").innerHTML = 
         Array.from(document.querySelectorAll("div.res > div"))
-            .filter(V => V.dataset.tag.split(",").some(VAL => true === tagParamSplit().includes(VAL) ))
-            // .filter(V => V.dataset.tag.split(",").every(VAL => true === tagParamSplit().includes(VAL) ))
+            .filter(V =>
+                V.dataset.tag.split(",")
+                    .some(VAL=>
+                        tagParamSplit().includes(VAL) ))
             .map(V => V.outerHTML)
             .join("");
 }
-
-
-foo;
-
-
-
-
-// const test2 = () => Array.from(document.querySelectorAll("div.res > div > span.tag > a")).filter(V => true !== tagParamSplit().includes(V.innerText) ).forEach(V => V.outerHTML = "");
-
 </script>
 </body>
 </html>
