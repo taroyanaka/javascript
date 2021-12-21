@@ -80,7 +80,8 @@ const tagParamSplit = () => getTagParam().split(",");
 // const test1 = () => document.querySelectorAll("div.res > *")[0].children[2].innerHTML = `<a href="${window.location.href}?tag=foo">foo</a>`;
 const test1_1 = (NUM, TAG_ARY) => {
     document.querySelectorAll("div.res > *")[NUM].dataset.tag += TAG_ARY.join(",");
-    TAG_ARY.forEach(TAG_ARY_VAL => document.querySelectorAll("div.res > *")[NUM].children[2].innerHTML += `<a href="${window.location.href}?tag=${TAG_ARY_VAL}">${TAG_ARY_VAL}</a>`);
+    TAG_ARY.forEach(TAG_ARY_VAL => document.querySelectorAll("div.res > *")[NUM].children[2].innerHTML += `<a href='${window.location.href.includes("?tag=") ? window.location.href + "," + TAG_ARY_VAL : window.location.href + "?tag=" + TAG_ARY_VAL}'>${TAG_ARY_VAL}</a>`);
+    // TAG_ARY.forEach(TAG_ARY_VAL => document.querySelectorAll("div.res > *")[NUM].children[2].innerHTML += `<a href="${window.location.href}?tag=${TAG_ARY_VAL}">${TAG_ARY_VAL}</a>`);
 }
 // const test2 = () => Array.from(document.querySelectorAll("div.res > * > a")).filter(V => true !== tagParamSplit().includes(V.children[0].innerText) ).forEach(V => V.outerHTML = "");
 let foo = [];
