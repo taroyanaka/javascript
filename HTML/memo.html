@@ -13,8 +13,7 @@
     </script>
 </head>
 <body>
-<h1>wip on addTag func of test1_1() problem</h1>
-
+<!-- <textarea name="" class="area" cols="30" rows="10"></textarea> -->
 <div class="res"></div>
 
 <button class="add" onclick="add();">add</button>
@@ -31,31 +30,40 @@ const getParam = (KEY) => (new URL(document.location)).searchParams.get(KEY);
 const getTagParam = () => getParam("tag");
 const tagParamSplit = () => getTagParam().split(",");
 
+
 const test1_1 = (NUM, TAG_ARY) => {
-    document.querySelectorAll("div.res > *")[NUM].dataset.tag += TAG_ARY.join(",");
-    TAG_ARY.forEach(TAG_ARY_VAL =>
+    // document.querySelectorAll("div.res > *")[NUM].dataset.tag = document.querySelectorAll("div.res > *")[NUM].dataset.tag === '' ? TAG_ARY.join(",") : document.querySelectorAll("div.res > *")[NUM].dataset.tag + ',' + TAG_ARY.join(",");
+    console.log(TAG_ARY);
+
+    TAG_ARY.forEach(TAG_ARY_VAL =>{
+        console.log(TAG_ARY_VAL);
+        // if (TAG_ARY_VAL !== '') { return }
+        let tag = window.location.href.includes("?tag=") ? window.location.href + "," + TAG_ARY_VAL : window.location.href + "?tag=" + TAG_ARY_VAL;
+
         document.querySelectorAll("div.res > *")
         [NUM]
-            .querySelector(".tag").innerHTML +=
-        `<a href='${window.location.href.includes("?tag=") ? window.location.href + "," + TAG_ARY_VAL : window.location.href + "?tag=" + TAG_ARY_VAL}'>${TAG_ARY_VAL}</a>`);
+            .querySelector(".tag").innerHTML += `<a href='${tag}'>${TAG_ARY_VAL}</a>`;
+    })
 }
 
 const test2 = () => {
-    document.querySelector("div.res").innerHTML =
+    let data = 
         Array.from(document.querySelectorAll("div.res > div"))
             .filter(V =>
-                V.dataset.tag.split(",")
+                // V.dataset.tag.split(",")
+                Array.from(V.querySelectorAll(".tag > a")).map(V => V.innerText)
                     .some(VAL =>
                         tagParamSplit().includes(VAL)))
-            .map(V => V.outerHTML)
-            .join("");
+            .map(V => [V.outerHTML, V.querySelector(".memo").value]);
+    document.querySelector("div.res").innerHTML = data.map(V=>V[0]).join("");
+    document.querySelectorAll("div.res > div > .memo").forEach((V,IDX)=>V.value = data[IDX][1]);
 }
 
 const addIndex = () => document.querySelectorAll(".res > div").forEach((V, IDX) => V.dataset.index = IDX);
 const add = () => {
     const data = Array.from(document.querySelectorAll(".res > div > .memo")).map(V => V.value);
     document.querySelector(".res").innerHTML +=
-        `<div data-tag="" data-index="">
+        `<div data-index="">
         <input type="text" name="" class="memo" oninput="save();">
         <span class="remove" onclick="remove(event)">delete</span>
         <input type="text" name="inputTag" class="inputTag">
@@ -67,7 +75,7 @@ const add = () => {
     addIndex();
 };
 
-let tag;
+
 const addTag = (event) => {
     console.log(tag = event.target)
     test1_1(Number(event.target.parentElement.dataset.index), [event.target.previousElementSibling.value]);
@@ -81,9 +89,17 @@ const clear = async () => await localforage.clear();
 
 async function save() {
     // const data = Array.from(document.querySelectorAll(".res > div > .memo")).map(V => V.value);
-    const memoAndTag = Array.from(document.querySelectorAll(".res > div")).map(V => [V.querySelector(".memo").value, V.dataset.tag||"" ]);
+    // const memoAndTag = Array.from(document.querySelectorAll(".res > div")).map(V => [V.querySelector(".memo").value, V.dataset.tag||"" ]);
+    const memoAndTag = 
+        Array.from(document.querySelectorAll(".res > div")).map(V => 
+            [
+                V.querySelector(".memo").value,
+                Array.from(V.querySelectorAll(".tag > a")).map(V => V.innerText)
+            ]
+        );
     await localforage.setItem("memoAndTag", JSON.stringify(memoAndTag))
 }
+let foo;
 async function load() {
     try {
         const memoAndTag = await localforage.getItem("memoAndTag");
@@ -92,10 +108,12 @@ async function load() {
         // const tag = JSON.parse(memoAndTag)[1];
         const tag = JSON.parse(memoAndTag).map(V=>V[1]);
         memo.forEach(V => add());
+        foo = tag;
         document.querySelectorAll(".memo").forEach((V, IDX) => V.value = memo[IDX]);
 
-        document.querySelectorAll(".res > div").forEach((V, IDX) => V.dataset.tag = tag[IDX]);
-        document.querySelectorAll(".res > div").forEach((V, IDX) => test1_1( IDX, tag[IDX].split(",") ) );
+        // document.querySelectorAll(".res > div").forEach((V, IDX) => V.dataset.tag = tag[IDX]);
+        // document.querySelectorAll(".res > div").forEach((V, IDX) => test1_1( IDX, tag[IDX].split(",") ) );
+        document.querySelectorAll(".res > div").forEach((V, IDX) => test1_1( IDX, tag[IDX] ) );
         // test1_1(0, ["foo"]);
         // test1_1(1, ["foo","bar"]);
         // test1_1(2, ["baz"]);
