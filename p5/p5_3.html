@@ -6,12 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>p5_3</title>
     <script src="./p5.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script> -->
+
+
     <!-- <script src="./allColors.js"></script> -->
     <!-- <script src="./allColors_2.js"></script> -->
     <!-- <script src="./allColors_3.js"></script> -->
     <!-- <script src="./allColors_4.js"></script> -->
     <!-- <script src="./allColors_5.js"></script> -->
-    <script src="./allColors_6.js"></script>
+    <!-- <script src="./test.js"></script> -->
+    <!-- <script src="./allColors_7.js"></script> -->
+    <script src="./allColors_8.js"></script>
     <meta charset="utf-8" />
 </head>
 <body>
@@ -43,7 +48,8 @@ function setup() {
     // circle(middle, middle, position)
 
     // allColors.filter(ary=>5 <= ary.length).forEach((colors,colorsIDX)=>{
-    allColors.filter(ary=>7 <= ary.length).forEach((colors,colorsIDX)=>{
+    allColors.filter(ary=>{5 <= ary.length}).forEach((colors,colorsIDX)=>{
+        console.log("now making");
         const middle = (static/2);
         const position = (static/colors.length);
 
