@@ -31,9 +31,9 @@
     <!-- <script src="./allColors_8.js"></script> -->
     <!-- <script src="./allColors_9.js"></script> -->
     <!-- <script src="./allColors_10.js"></script> -->
-    <!-- <script src="./allColors_11.js"></script> -->
+    <script src="./allColors_11.js"></script>
     <!-- <script src="./allColors_12.js"></script> -->
-    <script src="./allColors_13.js"></script>
+    <!-- <script src="./allColors_13.js"></script> -->
     <meta charset="utf-8" />
 </head>
 <body>
@@ -41,8 +41,6 @@
 <input type="number" name="number" class="number" value="0">
 <button onclick="jump()">jump</button>
 <script>
-// const static = 21620;
-// const static = 600;
 const static = 1080;
 
 // allColors = [
@@ -52,64 +50,6 @@ const static = 1080;
 // ];
 // let allColors = [
 // ];
-
-
-// colors = allColors.filter(ary=>0 < ary.length)[0].reverse();
-// colors = allColors.filter(ary=>0 < ary.length)[0];
-
-function make(colors,middle,position) {
-    colors.forEach((V,IDX)=>{
-            // fill(colors[IDX]);
-            fill(V);
-            // const num = IDX / colors.length;
-            const num = IDX / V.length;
-            circle(middle, middle, position/num)
-        })
-}
-
-const exe = () => {
-    allColors.filter(ary => 6 <= ary.length).forEach((colors, colorsIDX) => {
-        const middle = (static / 2);
-        const position = (static / colors.length);
-
-        make(colors, middle, position);
-        saveCanvas(`${colors.join("")}_0.png`);
-        // saveCanvas(`${colorsIDX}_${colors.join("")}_0.png`);
-        createCanvas(static, static);
-        background(255);
-
-        const tmp = colors.reverse();
-        make(tmp, middle, position);
-        saveCanvas(`${colors.join("")}_1.png`);
-        // saveCanvas(`${colorsIDX}_${colors.join("")}_1.png`);
-        createCanvas(static, static);
-        background(255);
-    })
-};
-
-const exeDouble = () => {
-    // allColors.filter(ary => 6 <= ary.length).forEach((colors, colorsIDX) => {
-    allColors.forEach((colors, colorsIDX) => {
-        const doubleColors = colors.concat(colors);
-
-        const middle = (static / 2);
-        const position = (static / doubleColors.length);
-
-        make(doubleColors, middle, position);
-        // saveCanvas(`${doubleColors.join("")}_0.png`);
-        // saveCanvas(`${colorsIDX}_${doubleColors.join("")}_0.png`);
-        createCanvas(static, static);
-        background(255);
-
-        const reversedDoubleColors = doubleColors.reverse();
-        make(reversedDoubleColors, middle, position);
-        // saveCanvas(`${doubleColors.join("")}_1.png`);
-        // saveCanvas(`${colorsIDX}_${reversedDoubleColors.join("")}_1.png`);
-        createCanvas(static, static);
-        background(255);
-    })
-};
-
 
 // let ary = [
 //     [1, 2],
@@ -133,9 +73,11 @@ function setup() {
     createCanvas(static, static);
     background(255);
 
-    // let colors = allColors[0];
     let colors = allColors2[palletIDX];
+
+    document.querySelector(".number").value = palletIDX.toString();
     palletIDX++;
+
     doubleColors = colors.concat(colors);
     const middle = (static / 2);
     const position = (static / doubleColors.length);
