@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5_3</title>
+    <script src="./p5.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script> -->
+
+
+    <!-- <script src="./allColors.js"></script> -->
+    <!-- <script src="./allColors_2.js"></script> -->
+    <!-- <script src="./allColors_3.js"></script> -->
+    <!-- <script src="./allColors_4.js"></script> -->
+    <!-- <script src="./allColors_5.js"></script> -->
+    <script src="./test.js"></script>
+    <!-- <script src="./allColors_7.js"></script> -->
+    <!-- <script src="./allColors_8.js"></script> -->
+    <meta charset="utf-8" />
+</head>
+<body>
+<script>
+
+function make(colors,middle,position) {
+    colors.forEach((V,IDX)=>{
+            fill(V);
+            const num = IDX / V.length;
+            circle(middle, middle, position/num)
+        })
+}
+
+function setup() {
+    const static = 2160;
+
+    createCanvas(static, static);
+    background(255);
+// allColors.filter(ary=>{5 <= ary.length}).forEach((colors,colorsIDX)=>{
+
+const colors = allColors[0];
+
+        console.log("now making");
+        const middle = (static/2);
+        const position = (static/colors.length);
+
+        make(colors, middle, position);
+        // saveCanvas(`${colorsIDX}_0.png`);
+        createCanvas(static, static);
+        background(255);
+
+        // const tmp = colors.reverse();
+        // make(tmp, middle, position);
+        // saveCanvas(`${colorsIDX}_1.png`);
+        // createCanvas(static, static);
+        // background(255);
+
+// })
+
+
+}
+
+function draw(){}
+</script>
+</body>
+</html>

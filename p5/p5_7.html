@@ -4,7 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>p5_3</title>
+    <title>p5_7</title>
+    <style>
+        button{
+            width: 10rem;
+            height: 2rem;
+        }
+        input{
+            width: 10rem;
+            height: 2rem;
+        }
+    </style>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.27.0/ramda.min.js"></script>
+
     <script src="./p5.js"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script> -->
 
@@ -20,14 +32,24 @@
     <!-- <script src="./allColors_9.js"></script> -->
     <!-- <script src="./allColors_10.js"></script> -->
     <!-- <script src="./allColors_11.js"></script> -->
-    <script src="./allColors_12.js"></script>
+    <!-- <script src="./allColors_12.js"></script> -->
+    <script src="./allColors_13.js"></script>
     <meta charset="utf-8" />
 </head>
 <body>
+<button onclick="setupdrawsave()">setupdrawsave</button>
+<input type="number" name="number" class="number" value="0">
+<button onclick="jump()">jump</button>
 <script>
-const static = 2160;
+// const static = 21620;
+// const static = 600;
+const static = 1080;
 
-
+// allColors = [
+//     allColors[0],
+//     allColors[1],
+//     allColors[2],
+// ];
 // let allColors = [
 // ];
 
@@ -75,54 +97,67 @@ const exeDouble = () => {
 
         make(doubleColors, middle, position);
         // saveCanvas(`${doubleColors.join("")}_0.png`);
-        saveCanvas(`${colorsIDX}_${doubleColors.join("")}_0.png`);
+        // saveCanvas(`${colorsIDX}_${doubleColors.join("")}_0.png`);
         createCanvas(static, static);
         background(255);
 
         const reversedDoubleColors = doubleColors.reverse();
         make(reversedDoubleColors, middle, position);
         // saveCanvas(`${doubleColors.join("")}_1.png`);
-        saveCanvas(`${colorsIDX}_${reversedDoubleColors.join("")}_1.png`);
+        // saveCanvas(`${colorsIDX}_${reversedDoubleColors.join("")}_1.png`);
         createCanvas(static, static);
         background(255);
     })
 };
 
+
+// let ary = [
+//     [1, 2],
+//     [3, 4],
+//     [5, 6],
+// ];
+// let ary2 = [];
+// ary.reduce((A, V, IDX) => { ary2 = ary2.concat([V]); ary2 = ary2.concat([R.reverse(V)]); return A; }, A = []);
+// console.table(ary);
+// console.table(ary2);
+
+
+let allColors2 = [];
+allColors.reduce((A, V, IDX) => { allColors2 = allColors2.concat([V]); allColors2 = allColors2.concat([R.reverse(V)]); return A; }, A = []);
+// console.table(allColors);
+console.table(allColors2);
+
+let palletIDX = 0;
+let doubleColors;
 function setup() {
     createCanvas(static, static);
-    // background(0);
     background(255);
-    // background(colors[colors.length-1]);
-    // background(colors[colors.length-1]);
 
-    // fill(colors[0]);
-    // circle(middle, middle, position)
+    // let colors = allColors[0];
+    let colors = allColors2[palletIDX];
+    palletIDX++;
+    doubleColors = colors.concat(colors);
+    const middle = (static / 2);
+    const position = (static / doubleColors.length);
 
-    // allColors.filter(ary=>5 <= ary.length).forEach((colors,colorsIDX)=>{
-
-    // exe();
-    exeDouble();
-
-    // let c = createCanvas(100, 100);
-    // background(255, 0, 0);
-    // saveCanvas(c, 'myCanvas', 'png');
-
-
-    // allColors.filter(ary=>5 <= ary.length).forEach((colors,colorsIDX)=>{
-    //     const middle = (static/2);
-    //     const position = (static/colors.length);
-    //     const tmp = colors.reverse();
-    //     make(tmp, middle, position);
-    //     saveCanvas(`${colorsIDX}_1.png`);
-    //     createCanvas(static, static);
-    //     background(255);
-    // })
-
-
+    doubleColors.forEach((V, IDX) => {
+        fill(V);
+        const num = IDX / V.length;
+        circle(middle, middle, position / num)
+    })
 }
 
-
 function draw(){}
+
+const save = () => saveCanvas(`${palletIDX}_${doubleColors.join("")}.png`);
+
+const setupdrawsave = () => {
+    setup(); draw(); save();
+}
+const jump = () => {
+    palletIDX = Number(document.querySelector(".number").value);
+    setupdrawsave();
+}
 
 
 </script>
