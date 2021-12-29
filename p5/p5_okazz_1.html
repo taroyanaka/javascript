@@ -17,17 +17,10 @@
             height: 2rem;
         }
     </style>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"        integrity="sha512-nNOFtIS+H0lwgdUDaPn/g1ssw3uN9AkEM7zy2wLaTQeLQNeNiitUcLpEpDIh3Z4T22MdeTNru/SQbNM4ig2rng=="        crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-
-    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.27.0/ramda.min.js"></script> -->
     <script src="ramda.js"></script>
 
     <script src="p5.js"></script>
     <script src="p5.createloop.js"></script>
-
-    <!-- <script src="https://cdn.jsdelivr.net/npm/p5@1.4.0/lib/p5.js"></script> -->
-
-
     <!-- <script src="./allColors.js"></script> -->
     <!-- <script src="./allColors_2.js"></script> -->
     <!-- <script src="./allColors_3.js"></script> -->
@@ -51,44 +44,41 @@
     <script>
         const static = 1080;
 
-let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2;
+let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2,num;
 
-        // let colors = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF'];
     let movers = [];
     let colors = ['#ee2642', '#eda037', '#388da4', '#000000', '#111111', '#ee2642', '#ee2642'];
-    // let colors = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF'];
     let circles = [];
 
     let reader = [];
 
     function setup() {
         createCanvas(800, 800);
-        // let seg = 5;
-        // let seg = 3;
-        let seg = 1;
-        // let w = width / seg;
-        let w = width;
-        // for (let i = 0; i < seg; i++) {
-            for (let j = 0; j < seg; j++) {
-                // j = 1
-                // let x = i * w + w / 2;
-                let x = j * w + w / 2;
-                let y = j * w + w / 2;
-                // let d = random(0.5, 1) * w;
-                let d = random(0.9, 1) * w;
-                // let num = int(random(1, 4));
-                let num = int(random(100, 120));
-                let col = random(colors);
-                for (let k = 0; k < num; k++) {
-                    // circles.push({ x: x, y: y, d: d * 0.7, c: col });
+        // let seg = 1;
+        // let w = width;
+
+            // for (let j = 0; j < seg; j++) {
+            R.range(0, 2).forEach(element => {
+                // let x = j * w + w / 2;
+                let x = width/2;
+                // let y = j * w + w / 2;
+                let y = width/2;
+                let d = random(1, 1.2) * width;
+                // num = int(random(0, 30));
+                // num = 50;
+                // let col = random(colors);
+
+                console.log(num);
+
+                // for (let k = 0; k < num; k++) {
+                R.range(0, 2).forEach(element => {
                     movers.push(new Mover(x, y, d * 0.5));
                     movers.push(new Mover(x, y, d * 0.4));
                     movers.push(new Mover(x, y, d * 0.3));
-                    // movers.push(new Mover(x, y, d * 0.2));
-                    // movers.push(new Mover(x, y, d * 0.1));
-                }
-            }
-        // }
+                });
+                // }
+            // }
+            })
 
         frameRate(10);
         createLoop({ duration: 10, gif: true });
@@ -96,38 +86,16 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2;
 
     function draw() {
         translate(width / 2, height / 2);
-                scale(0.7);
+        scale(0.6);
         translate(-width / 2, -height / 2);
 
-        // scale(0.8);
-        // scale(1.5);
-
         background(255);
-        // background("black");
-
-        // for (let c of circles) {
-        //     fill(c.c);
-        //     circle(c.x, c.y, c.d);
-        // }
 
         for (let mv of movers) {
             mv.show();
             mv.move();
-
-            // console.table([
-            // {"cs": cs},
-            // {"cs0": cs0},
-            // {"t": t},
-            // {"off": off},
-            // {"tStep": tStep},
-            // {"ang": ang},
-            // {"aStep": aStep},
-            // {"col1": col1},
-            // {"col2": col2},
-            // ])
         }
         noStroke();
-
     }
 
     class Mover {
@@ -135,22 +103,20 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2;
             x = this.x = x;
             y = this.y = y;
             r = this.r = r;
-            // cs = this.cs = this.r * 0.4;
-            // cs = this.cs = this.r * 1;
             cs = this.cs = this.r * 0.1;
-            // cs0 = this.cs0 = this.r * 0.4;
             cs0 = this.cs0 = this.r * 1;
-            // t = this.t = random(100);
-            t = this.t = random(1);
-            // t = this.t = random(150);
+            // t = this.t = random(1);
+            // t = this.t = 0.1;
+            t = this.t = 10;
             off = this.off = 0;
-            // tStep = this.tStep = random(0.01, 0.05);
-            // tStep = this.tStep = random(0.1, 0.8);
-            tStep = this.tStep = random(1, 2);
+            // tStep = this.tStep = random(0.1, 0.3);
+            // tStep = this.tStep = random(0.1, 0.2);
+            tStep = this.tStep = 0.01;
             ang = this.ang = random(TAU);
-            // ang = this.ang = random(PI);
+            // ang = this.ang = 3;
+            // aStep = this.aStep = random(-1, 1) * 0.01;
+            // aStep = this.aStep = random(0, 1) * 0.2;
             aStep = this.aStep = random(-1, 1) * 0.01;
-            // aStep = this.aStep = random(-1, 1) * 0.5;
             col1 = this.col1 = random(colors);
             col2 = this.col2 = random(colors);
             while (this.col1 == this.col2) {
@@ -161,23 +127,34 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2;
         show() {
             push();
             translate(this.x, this.y);
-            // rotate(this.ang);
-            rotate(TAU);
+            // rotate(TAU);
+            rotate(this.ang);
             stroke(255);
             fill(this.col1);
-            if (this.cs0 * 0.15 < this.cs) {
+            // if (this.cs0 * 0.1 < this.cs) {
+                // console.log(this.off);
+                // console.table([x,y,r,cs,cs0,t,off,tStep,ang,]);
+                // console.table([cs,cs0,off]);
                 fill(this.col2);
-                circle(this.off, 0, this.cs);
-            }
+                // circle(this.off, 0, this.cs);
+                circle(this.off, this.off, this.cs);
+                // circle(0, 0, this.cs);
+                // circle(1, 0, this.cs);
+                // this.cs0 += this.cs0 * 0.1;
+            // }
             pop();
         }
 
         move() {
-            this.off = map(sin(this.t), -1, 1, -1, 1) * this.r;
+            // this.off = map(sin(this.t), -1, 1, -1, 1) * this.r;
+            this.off = map(sin(this.t), 0, 1, 0, 1) * this.r;
+            // this.off = 1;
             this.cs = map(cos(this.t), -1, 1, this.cs0, 0);
-            this.t += this.tStep;
-            reader.push(this.t);
-            this.ang += this.aStep;
+            // this.t += this.tStep;
+            this.t += 0.1;
+            // reader.push(this.t);
+            // this.ang += this.aStep;
+            this.ang += 0.01;
         }
 
     }
