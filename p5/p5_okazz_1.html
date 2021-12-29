@@ -30,7 +30,7 @@
     <!-- <script src="./allColors_7.js"></script> -->
     <!-- <script src="./allColors_8.js"></script> -->
     <!-- <script src="./allColors_9.js"></script> -->
-    <!-- <script src="./allColors_10.js"></script> -->
+    <script src="./allColors_10.js"></script>
     <!-- <script src="../..//allColors_11.js"></script> -->
     <!-- <script src="./allColors_12.js"></script> -->
     <!-- <script src="./allColors_13.js"></script> -->
@@ -47,23 +47,25 @@
 let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2,num;
 
     let movers = [];
-    let colors = ['#ee2642', '#eda037', '#388da4', '#000000', '#111111', '#ee2642', '#ee2642'];
+    // let colors = ['#ee2642', '#eda037', '#388da4', '#000000', '#111111', '#ee2642', '#ee2642'];
+    colors = allColors[0];
+    let IDX=1;
     let circles = [];
 
     let reader = [];
 
     function setup() {
-        createCanvas(800, 800);
+        createCanvas(1080, 1080);
         // let seg = 1;
         // let w = width;
 
             // for (let j = 0; j < seg; j++) {
-            R.range(0, 2).forEach(element => {
+            R.range(0, 3).forEach(element => {
                 // let x = j * w + w / 2;
                 let x = width/2;
                 // let y = j * w + w / 2;
                 let y = width/2;
-                let d = random(1, 1.2) * width;
+                let d = random(1, 1.1) * width;
                 // num = int(random(0, 30));
                 // num = 50;
                 // let col = random(colors);
@@ -71,7 +73,7 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2,num;
                 console.log(num);
 
                 // for (let k = 0; k < num; k++) {
-                R.range(0, 2).forEach(element => {
+                R.range(0, 10).forEach(element => {
                     movers.push(new Mover(x, y, d * 0.5));
                     movers.push(new Mover(x, y, d * 0.4));
                     movers.push(new Mover(x, y, d * 0.3));
@@ -81,7 +83,7 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2,num;
             })
 
         frameRate(10);
-        createLoop({ duration: 10, gif: true });
+        createLoop({ duration: 15, gif: true });
     }
 
     function draw() {
@@ -103,25 +105,26 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2,num;
             x = this.x = x;
             y = this.y = y;
             r = this.r = r;
-            cs = this.cs = this.r * 0.1;
-            cs0 = this.cs0 = this.r * 1;
+            cs = this.cs = this.r * 0.5;
+            cs0 = this.cs0 = this.r * 2;
             // t = this.t = random(1);
             // t = this.t = 0.1;
             t = this.t = 10;
             off = this.off = 0;
-            // tStep = this.tStep = random(0.1, 0.3);
+            tStep = this.tStep = random(0.05, 0.1);
             // tStep = this.tStep = random(0.1, 0.2);
-            tStep = this.tStep = 0.01;
-            ang = this.ang = random(TAU);
+            // tStep = this.tStep = 0.01;
+            ang = this.ang = random(1);
             // ang = this.ang = 3;
             // aStep = this.aStep = random(-1, 1) * 0.01;
             // aStep = this.aStep = random(0, 1) * 0.2;
             aStep = this.aStep = random(-1, 1) * 0.01;
             col1 = this.col1 = random(colors);
-            col2 = this.col2 = random(colors);
-            while (this.col1 == this.col2) {
-                this.col1 = random(colors);
-            }
+            // col2 = this.col2 = random(colors);
+            // while (this.col1 == this.col2) {
+            //     this.col1 = random(colors);
+            // }
+            colors = allColors[IDX++];
         }
 
         show() {
@@ -135,9 +138,10 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2,num;
                 // console.log(this.off);
                 // console.table([x,y,r,cs,cs0,t,off,tStep,ang,]);
                 // console.table([cs,cs0,off]);
-                fill(this.col2);
-                // circle(this.off, 0, this.cs);
-                circle(this.off, this.off, this.cs);
+                // fill(this.col2);
+                // fill(this.col1);
+                circle(this.off, 0, this.cs);
+                // circle(this.off, this.off, this.cs);
                 // circle(0, 0, this.cs);
                 // circle(1, 0, this.cs);
                 // this.cs0 += this.cs0 * 0.1;
@@ -153,8 +157,8 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2,num;
             // this.t += this.tStep;
             this.t += 0.1;
             // reader.push(this.t);
-            // this.ang += this.aStep;
-            this.ang += 0.01;
+            this.ang += this.aStep;
+            // this.ang += 0.01;
         }
 
     }

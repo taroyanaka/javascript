@@ -37,7 +37,7 @@
     <!-- <script src="./allColors_7.js"></script> -->
     <!-- <script src="./allColors_8.js"></script> -->
     <!-- <script src="./allColors_9.js"></script> -->
-    <!-- <script src="./allColors_10.js"></script> -->
+    <script src="./allColors_10.js"></script>
     <!-- <script src="../..//allColors_11.js"></script> -->
     <!-- <script src="./allColors_12.js"></script> -->
     <!-- <script src="./allColors_13.js"></script> -->
@@ -55,7 +55,8 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2;
 
         // let colors = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF'];
     let movers = [];
-    let colors = ['#ee2642', '#eda037', '#388da4', '#000000', '#111111', '#ee2642', '#ee2642'];
+    // let colors = ['#ee2642', '#eda037', '#388da4', '#000000', '#111111', '#ee2642', '#ee2642'];
+    colors = allColors[5];
     // let colors = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFFFFF'];
     let circles = [];
 
@@ -90,8 +91,8 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2;
             }
         // }
 
-        frameRate(10);
-        createLoop({ duration: 10, gif: true });
+        frameRate(30);
+        createLoop({ duration: 6, gif: true });
     }
 
     function draw() {
