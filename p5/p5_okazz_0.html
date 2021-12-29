@@ -82,8 +82,8 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2;
                 for (let k = 0; k < num; k++) {
                     // circles.push({ x: x, y: y, d: d * 0.7, c: col });
                     movers.push(new Mover(x, y, d * 0.5));
-                    movers.push(new Mover(x, y, d * 0.4));
-                    movers.push(new Mover(x, y, d * 0.3));
+                    // movers.push(new Mover(x, y, d * 0.4));
+                    // movers.push(new Mover(x, y, d * 0.3));
                     // movers.push(new Mover(x, y, d * 0.2));
                     // movers.push(new Mover(x, y, d * 0.1));
                 }
@@ -103,10 +103,10 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2;
         background(255);
         // background("black");
 
-        for (let c of circles) {
-            // fill(c.c);
-            circle(c.x, c.y, c.d);
-        }
+        // for (let c of circles) {
+        //     fill(c.c);
+        //     circle(c.x, c.y, c.d);
+        // }
 
         for (let mv of movers) {
             mv.show();
@@ -133,14 +133,18 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2;
             x = this.x = x;
             y = this.y = y;
             r = this.r = r;
-            cs = this.cs = this.r * 0.4;
-            cs0 = this.cs0 = this.r * 0.4;
+            // cs = this.cs = this.r * 0.4;
+            // cs = this.cs = this.r * 1;
+            cs = this.cs = this.r * 0.1;
+            // cs0 = this.cs0 = this.r * 0.4;
+            cs0 = this.cs0 = this.r * 1;
             // t = this.t = random(100);
             t = this.t = random(1);
             // t = this.t = random(150);
             off = this.off = 0;
             // tStep = this.tStep = random(0.01, 0.05);
-            tStep = this.tStep = random(0.1, 0.8);
+            // tStep = this.tStep = random(0.1, 0.8);
+            tStep = this.tStep = random(1, 2);
             ang = this.ang = random(TAU);
             // ang = this.ang = random(PI);
             aStep = this.aStep = random(-1, 1) * 0.01;
@@ -170,6 +174,7 @@ let x,y,r,cs,cs0,t,off,tStep,ang,aStep,col1,col2;
             this.off = map(sin(this.t), -1, 1, -1, 1) * this.r;
             this.cs = map(cos(this.t), -1, 1, this.cs0, 0);
             this.t += this.tStep;
+            reader.push(this.t);
             this.ang += this.aStep;
         }
 
