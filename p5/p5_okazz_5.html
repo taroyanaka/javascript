@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>p5</title>
-    <!-- https://openprocessing.org/sketch/1095388 -->
+    <!-- https://openprocessing.org/sketch/877402 -->
     <style>
         button {
             width: 10rem;
@@ -23,180 +23,88 @@
     <script src="p5.js"></script>
     <!-- <script src="p5.createloop.js"></script> -->
 
-    <script src="./allColors_10.js"></script>
+    <!-- <script src="./allColors_10.js"></script> -->
     <meta charset="utf-8" />
 </head>
 
 <body>
     <script>
 
-        const static = 1080;
+        const static = 800;
+    let palette = ["#99ffff", "#ff99ff", "#ffda00", "#000000"];
+
     function setup() {
         createCanvas(static, static);
+        noLoop();
+        noStroke();
     }
 
+
+            let cc = 30;
+            // let cc = 50;
     function draw() {
-        // colorMode(RGB);
-        background(255, 235, 130); // 背景を黄色に設定
+        background("#72b972");
 
-        beginShape();  // 閉矩形
-        vertex(30, 20);
-        vertex(85, 20);
-        vertex(85, 75);
-        vertex(30, 75);
-        endShape(CLOSE);
+        let w = width / cc;
+        for (let j = 0; j <= cc; j++) {
+            for (let i = 0; i <= cc; i++) {
+                let x = i * w;
+                let y = j * w;
+                fill(getCol());
+                // disEllipse(x, y, w * 0.95, w * 1.5);
+                disEllipse(x, y, w, w);
+                fill(getCol());
+                // disEllipse(x - w / 2, y - w * 1.4, w * 0.95, w * 1.5);
+                disEllipse(x, y, w, w);
+            }
+        }
+    }
 
-        beginShape(POINTS); // 点
-        vertex(100, 20);
-        vertex(155, 20);
-        vertex(155, 75);
-        vertex(100, 75);
-        endShape();
+let offAry=[];
+    function distort(x, y) {
+        let p = createVector(x, y);
+        let scl = 0.0006;
+        // scl = 0.001;
+        let ang = noise(p.x * scl, p.y * scl) * 10;
+        // let ang = random(p.x * scl, p.y * scl) * 10;
+        // ang = noise(p.x * scl, p.y * scl) * 200;
+        // let off = noise(p.x * scl, p.y * scl) * 100;
+        let off = random(p.x * scl, p.y * scl) * 100;
+        off = noise(p.x * scl, p.y * scl) * 100;
+        // p.x += cos(ang) * off;
+        // p.y += sin(ang) * off;
+        offAry.push(off);
+        p.x += cos(ang) * off;
+        p.y += sin(ang) * off;
+        // p.x += 1;
+        // p.y += 1;
+        return p;
+    }
 
-        beginShape(LINES); // 線
-        vertex(170, 20);
-        vertex(225, 20);
-        vertex(225, 75);
-        vertex(170, 75);
-        endShape();
-
-        beginShape(); // 開矩形
-        vertex(240, 20);
-        vertex(295, 20);
-        vertex(295, 75);
-        vertex(240, 75);
-        endShape();
-
+    function disEllipse(x, y, w, h) {
         beginShape();
-        vertex(310, 20);
-        vertex(365, 20);
-        vertex(365, 75);
-        vertex(310, 75);
-        endShape(CLOSE);
-
-        beginShape(TRIANGLES); // 三角形
-        vertex(380, 75);
-        vertex(390, 20);
-        vertex(400, 75);
-        vertex(410, 20);
-        vertex(420, 75);
-        vertex(430, 20);
-        endShape();
-
-        beginShape(TRIANGLE_STRIP); // 三角形(ストライプ)
-        vertex(450, 75);
-        vertex(460, 20);
-        vertex(470, 75);
-        vertex(480, 20);
-        vertex(490, 75);
-        vertex(500, 20);
-        vertex(510, 75);
-        endShape();
-
-        strokeWeight(6);
-
-        // 三角形(ストライプ)の頂点を描画する
-        stroke(255, 0, 0); // 赤色
-        point(450, 75);
-        stroke(255, 255, 0); // 黄色
-        point(460, 20);
-        stroke(0, 255, 0); // 緑色
-        point(470, 75);
-        stroke(0, 0, 255); // 青色
-        point(480, 20);
-        stroke(255, 165, 0); // オレンジ色
-        point(490, 75);
-        stroke(51, 255, 255);  // 水色
-        point(500, 20);
-        stroke(200, 0, 255); // 赤紫色
-        point(510, 75);
-
-        stroke(0);
-        strokeWeight(1);
-
-        beginShape(TRIANGLE_FAN); // 三角形(扇)
-        vertex(57.5, 130);
-        vertex(57.5, 95);
-        vertex(92, 130);
-        vertex(57.5, 165);
-        vertex(22, 130);
-        vertex(57.5, 95);
-        endShape();
-
-        strokeWeight(6);
-
-        // 三角形(扇)の頂点を描画する
-        stroke(255, 0, 0); // 赤色
-        point(57.5, 130);
-        stroke(255, 255, 0); // 黄色(水色で隠れている)
-        point(57.5, 95);
-        stroke(0, 255, 0); // 緑色
-        point(92, 130);
-        stroke(0, 0, 255); // 青色
-        point(57.5, 165);
-        stroke(255, 165, 0); // オレンジ色
-        point(22, 130);
-        stroke(51, 255, 255);  // 水色
-        point(57.5, 95);
-
-        stroke(0);
-        strokeWeight(1);
-
-        beginShape(QUADS); // 矩形を複数描画する
-        vertex(100, 100);
-        vertex(100, 155);
-        vertex(120, 155);
-        vertex(120, 100);
-        vertex(135, 100);
-        vertex(135, 155);
-        vertex(155, 155);
-        vertex(155, 100);
-        endShape();
-
-        beginShape(QUAD_STRIP); // 矩形(ストライプ)
-        vertex(170, 100);
-        vertex(170, 155);
-        vertex(190, 100);
-        vertex(190, 155);
-        vertex(205, 100);
-        vertex(205, 155);
-        vertex(225, 100);
-        vertex(225, 155);
-        endShape();
-
-        strokeWeight(6);
-
-        // 矩形(ストライプ)の頂点を描画する
-        stroke(255, 0, 0); // 赤色
-        point(170, 100);
-        stroke(255, 255, 0); // 黄色
-        point(170, 155);
-        stroke(0, 255, 0); // 緑色
-        point(190, 100);
-        stroke(0, 0, 255); // 青色
-        point(190, 155);
-        stroke(230, 190, 180); // オレンジ色
-        point(205, 100);
-        stroke(51, 255, 255);  // 水色
-        point(205, 155);
-        stroke(200, 0, 255); // 赤紫色
-        point(225, 100);
-        stroke(138, 43, 226); // 紫色
-        point(225, 155);
-
-        stroke(0);
-        strokeWeight(1);
-
-        beginShape(); // 変形図形
-        vertex(240, 100);
-        vertex(260, 100);
-        vertex(260, 120);
-        vertex(280, 120);
-        vertex(280, 140);
-        vertex(240, 140);
+        // for (let i = 0; i < TAU; i += TAU / 180) {
+        for (let i = 0; i < TAU; i += TAU / 100) {
+            let xx = x + w * 0.8 * cos(i);
+            xx = x + w * 0.2 * cos(i);
+            let yy = y + h * 0.8 * sin(i);
+            yy = y + h * 0.2 * sin(i);
+            let p = distort(xx, yy);
+            curveVertex(p.x, p.y);
+            // vertex(p.x, p.y);
+        }
         endShape(CLOSE);
     }
 
+    function getCol() {
+        let col = random(palette);
+        for (let i = 0; i < 5; i++) {
+            if (col != "#ffda00") {
+                col = random(palette);
+            }
+        }
+        return col;
+    }
     </script>
 </body>
 
