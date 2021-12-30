@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5</title>
+    <!-- https://openprocessing.org/sketch/1253988 -->
+    <style>
+        button {
+            width: 10rem;
+            height: 2rem;
+        }
+
+        input {
+            width: 10rem;
+            height: 2rem;
+        }
+    </style>
+    <script src="ramda.js"></script>
+
+    <script src="p5.js"></script>
+    <!-- <script src="p5.createloop.js"></script> -->
+
+    <script src="./allColors_10.js"></script>
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <button onclick="setupdrawsave()">setupdrawsave</button>
+    <button onclick="setupdraw()">setupdraw</button>
+    <input type="number" name="number" class="number" value="0">
+    <button onclick="jump()">jump</button>
+    <script>
+    const static = 1080;
+
+    let colors = ["#ed3441", "#ffb03b", "#36acf5", "#ffd630", "#084e86"];
+    const makeColors = () => allColors[Number(document.querySelector(".number").value)];
+
+    function setup() {
+        createCanvas(static, static);
+        pixelDensity(2);
+        // background(0);
+        background(255);
+        R.repeat(0, 1000).forEach(V => { V 
+            makeCircle(
+                random(-0.1, 1.1) * width,
+                random(-0.1, 1.1) * height,
+                random(5, 100)
+            );
+        })
+    }
+
+    function draw() { }
+
+    function makeCircle(x, y, d) {
+        fill(random(makeColors()));
+        noStroke();
+        circle(x, y, d);
+        fill(random(makeColors()));
+
+        noStroke();
+        circle(x - d * 0.1, y - d * 0.1, d);
+        circle(x, y, d);
+    }
+
+    const save = () => saveCanvas(`${document.querySelector(".number").value}_${makeColors().join("")}.png`);
+    const setupdraw= () => {
+        document.querySelector(".number").value = Number(document.querySelector(".number").value) + 1;
+        setup();
+        draw();
+        
+    }
+    
+    const setupdrawsave= () => {
+        setupdraw();
+        save();
+    }
+    
+    </script>
+</body>
+
+</html>

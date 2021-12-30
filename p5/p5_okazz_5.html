@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5</title>
+    <!-- https://openprocessing.org/sketch/1095388 -->
+    <style>
+        button {
+            width: 10rem;
+            height: 2rem;
+        }
+
+        input {
+            width: 10rem;
+            height: 2rem;
+        }
+    </style>
+    <script src="ramda.js"></script>
+
+    <script src="p5.js"></script>
+    <!-- <script src="p5.createloop.js"></script> -->
+
+    <script src="./allColors_10.js"></script>
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <script>
+
+        const static = 1080;
+    function setup() {
+        createCanvas(static, static);
+    }
+
+    function draw() {
+        // colorMode(RGB);
+        background(255, 235, 130); // 背景を黄色に設定
+
+        beginShape();  // 閉矩形
+        vertex(30, 20);
+        vertex(85, 20);
+        vertex(85, 75);
+        vertex(30, 75);
+        endShape(CLOSE);
+
+        beginShape(POINTS); // 点
+        vertex(100, 20);
+        vertex(155, 20);
+        vertex(155, 75);
+        vertex(100, 75);
+        endShape();
+
+        beginShape(LINES); // 線
+        vertex(170, 20);
+        vertex(225, 20);
+        vertex(225, 75);
+        vertex(170, 75);
+        endShape();
+
+        beginShape(); // 開矩形
+        vertex(240, 20);
+        vertex(295, 20);
+        vertex(295, 75);
+        vertex(240, 75);
+        endShape();
+
+        beginShape();
+        vertex(310, 20);
+        vertex(365, 20);
+        vertex(365, 75);
+        vertex(310, 75);
+        endShape(CLOSE);
+
+        beginShape(TRIANGLES); // 三角形
+        vertex(380, 75);
+        vertex(390, 20);
+        vertex(400, 75);
+        vertex(410, 20);
+        vertex(420, 75);
+        vertex(430, 20);
+        endShape();
+
+        beginShape(TRIANGLE_STRIP); // 三角形(ストライプ)
+        vertex(450, 75);
+        vertex(460, 20);
+        vertex(470, 75);
+        vertex(480, 20);
+        vertex(490, 75);
+        vertex(500, 20);
+        vertex(510, 75);
+        endShape();
+
+        strokeWeight(6);
+
+        // 三角形(ストライプ)の頂点を描画する
+        stroke(255, 0, 0); // 赤色
+        point(450, 75);
+        stroke(255, 255, 0); // 黄色
+        point(460, 20);
+        stroke(0, 255, 0); // 緑色
+        point(470, 75);
+        stroke(0, 0, 255); // 青色
+        point(480, 20);
+        stroke(255, 165, 0); // オレンジ色
+        point(490, 75);
+        stroke(51, 255, 255);  // 水色
+        point(500, 20);
+        stroke(200, 0, 255); // 赤紫色
+        point(510, 75);
+
+        stroke(0);
+        strokeWeight(1);
+
+        beginShape(TRIANGLE_FAN); // 三角形(扇)
+        vertex(57.5, 130);
+        vertex(57.5, 95);
+        vertex(92, 130);
+        vertex(57.5, 165);
+        vertex(22, 130);
+        vertex(57.5, 95);
+        endShape();
+
+        strokeWeight(6);
+
+        // 三角形(扇)の頂点を描画する
+        stroke(255, 0, 0); // 赤色
+        point(57.5, 130);
+        stroke(255, 255, 0); // 黄色(水色で隠れている)
+        point(57.5, 95);
+        stroke(0, 255, 0); // 緑色
+        point(92, 130);
+        stroke(0, 0, 255); // 青色
+        point(57.5, 165);
+        stroke(255, 165, 0); // オレンジ色
+        point(22, 130);
+        stroke(51, 255, 255);  // 水色
+        point(57.5, 95);
+
+        stroke(0);
+        strokeWeight(1);
+
+        beginShape(QUADS); // 矩形を複数描画する
+        vertex(100, 100);
+        vertex(100, 155);
+        vertex(120, 155);
+        vertex(120, 100);
+        vertex(135, 100);
+        vertex(135, 155);
+        vertex(155, 155);
+        vertex(155, 100);
+        endShape();
+
+        beginShape(QUAD_STRIP); // 矩形(ストライプ)
+        vertex(170, 100);
+        vertex(170, 155);
+        vertex(190, 100);
+        vertex(190, 155);
+        vertex(205, 100);
+        vertex(205, 155);
+        vertex(225, 100);
+        vertex(225, 155);
+        endShape();
+
+        strokeWeight(6);
+
+        // 矩形(ストライプ)の頂点を描画する
+        stroke(255, 0, 0); // 赤色
+        point(170, 100);
+        stroke(255, 255, 0); // 黄色
+        point(170, 155);
+        stroke(0, 255, 0); // 緑色
+        point(190, 100);
+        stroke(0, 0, 255); // 青色
+        point(190, 155);
+        stroke(230, 190, 180); // オレンジ色
+        point(205, 100);
+        stroke(51, 255, 255);  // 水色
+        point(205, 155);
+        stroke(200, 0, 255); // 赤紫色
+        point(225, 100);
+        stroke(138, 43, 226); // 紫色
+        point(225, 155);
+
+        stroke(0);
+        strokeWeight(1);
+
+        beginShape(); // 変形図形
+        vertex(240, 100);
+        vertex(260, 100);
+        vertex(260, 120);
+        vertex(280, 120);
+        vertex(280, 140);
+        vertex(240, 140);
+        endShape(CLOSE);
+    }
+
+    </script>
+</body>
+
+</html>

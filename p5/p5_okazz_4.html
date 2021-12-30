@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5</title>
+    <!-- https://openprocessing.org/sketch/1095388 -->
+    <style>
+        button {
+            width: 10rem;
+            height: 2rem;
+        }
+
+        input {
+            width: 10rem;
+            height: 2rem;
+        }
+    </style>
+    <script src="ramda.js"></script>
+
+    <script src="p5.js"></script>
+    <!-- <script src="p5.createloop.js"></script> -->
+
+    <script src="./allColors_2.js"></script>
+    <!-- <script src="./allColors_10.js"></script> -->
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <button onclick="setupdrawsave()">setupdrawsave</button>
+    <button onclick="save()">save</button>
+    <button onclick="setupdraw()">setupdraw</button>
+    <button onclick="resetup()">resetup</button>
+    <input type="number" name="number" class="number" value="0">
+    <button onclick="jump()">jump</button>
+    <script>
+    const static = 1080;
+
+    // let colors = ["#ed3441", "#ffb03b", "#36acf5", "#ffd630", "#084e86"];
+    const makeColors = () => allColors[Number(document.querySelector(".number").value)];
+
+
+
+
+    // let colors = ["#ffbe0b", "#fb5607", "#ff006e", "#8338ec", "#3a86ff", "#000000", "#ffffff"];
+
+
+function setup() {
+    createCanvas(static, static);
+    generate();
+}
+const resetup = () => setup();
+// function draw() { }
+
+function generate() {
+    colors = makeColors();
+    shuffle(colors, true);
+    background(colors[0]);
+    stroke(colors[0]);
+    // noStroke();
+    strokeWeight(3);
+    // colors.splice(0, 1);
+    colors = R.tail(colors);
+    // for (let i = 0; i < 1000; i++) {
+    R.repeat(0, int(random(1000, 2000)) ).forEach(INT => {
+        noiseCurve(random(-0.1, 1.1) * width, random(-0.1, 1.1) * height);
+    })
+}
+
+let pos1_1 = [];
+let pos2_1 = [];
+let y_scale = 10;
+let ang = Math.PI/2;
+// ang = Math.TAU;
+
+function noiseCurve(x, y) {
+    let pos1 = [];
+    let pos2 = [];
+    // pos1_1.push(pos1);
+    // pos2_1.push(pos1);
+    R.repeat(0, int(random(10, 1500))).forEach(INT=>{
+            let w = 30;
+            // let random_w = random(25, 35);
+            // let noised_w = noise(25, 35);
+            pos1.push(createVector(x, y));
+            pos2.push(createVector(x + w, y + w));
+            x += cos(ang);
+            y += sin(ang/y_scale);
+    })
+
+    fill(random(colors));
+    beginShape();
+    pos1.forEach(V=>{
+        vertex(V.x, V.y);
+    })
+    // pos2.forEach((V,IDX)=>{
+    //     vertex((pos2.length - IDX) - 1, (pos2.length - IDX) - 1);
+    // })
+    for (let i = 0; i < pos2.length; i++) {
+        const p = pos2[(pos2.length - i) - 1];
+        vertex(p.x, p.y);
+    }
+    endShape(CLOSE);
+}
+
+
+
+function draw(){}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const save = () => saveCanvas(`${document.querySelector(".number").value}_${makeColors().join("")}.png`);
+    const setupdraw= () => {
+        document.querySelector(".number").value = Number(document.querySelector(".number").value) + 1;
+        setup();
+        draw();
+        
+    }
+    
+    const setupdrawsave= () => {
+        setupdraw();
+        save();
+    }
+    
+    </script>
+</body>
+
+</html>
