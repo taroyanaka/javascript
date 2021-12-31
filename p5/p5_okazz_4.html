@@ -29,18 +29,28 @@
 </head>
 
 <body>
-    <button onclick="setupdrawsave()">setupdrawsave</button>
-    <button onclick="save()">save</button>
-    <button onclick="setupdraw()">setupdraw</button>
-    <button onclick="resetup()">resetup</button>
-    <input type="number" name="number" class="number" value="0">
-    <button onclick="jump()">jump</button>
-    <script>
-    const static = 1080;
+<button onclick="setupdrawsave()">setupdrawsave</button>
+<button onclick="save()">save</button>
+<button onclick="setupdraw()">setupdraw</button>
+<button onclick="resetup()">resetup</button>
+<input type="number" name="number" class="number" value="0">
+<button onclick="jump()">jump</button>
+<script>
+const static = 1080;
 
-    // let colors = ["#ed3441", "#ffb03b", "#36acf5", "#ffd630", "#084e86"];
-    const makeColors = () => allColors[Number(document.querySelector(".number").value)];
+const makeColors = () => allColors[Number(document.querySelector(".number").value)];
 
+const save = () => saveCanvas(`${document.querySelector(".number").value}_${makeColors().join("")}.png`);
+const setupdraw = () => {
+    document.querySelector(".number").value = Number(document.querySelector(".number").value) + 1;
+    setup();
+    draw();
+
+}
+const setupdrawsave = () => {
+    setupdraw();
+    save();
+}
 
 
 
@@ -125,19 +135,6 @@ function draw(){}
 
 
 
-    const save = () => saveCanvas(`${document.querySelector(".number").value}_${makeColors().join("")}.png`);
-    const setupdraw= () => {
-        document.querySelector(".number").value = Number(document.querySelector(".number").value) + 1;
-        setup();
-        draw();
-        
-    }
-    
-    const setupdrawsave= () => {
-        setupdraw();
-        save();
-    }
-    
     </script>
 </body>
 

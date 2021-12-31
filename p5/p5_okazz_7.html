@@ -19,10 +19,8 @@
         }
     </style>
     <script src="ramda.js"></script>
-
     <script src="p5.js"></script>
     <!-- <script src="p5.createloop.js"></script> -->
-
     <script src="./allColors_2.js"></script>
     <!-- <script src="./allColors_10.js"></script> -->
     <meta charset="utf-8" />
@@ -34,70 +32,58 @@
 <button onclick="setupdraw()">setupdraw</button>
 <button onclick="resetup()">resetup</button>
 <input type="number" name="number" class="number" value="0">
+<button onclick="jump()">jump</button>
 <script>
+const static = 1080;
+
+const makeColors = () => allColors[Number(document.querySelector(".number").value)];
+
 const save = () => saveCanvas(`${document.querySelector(".number").value}_${makeColors().join("")}.png`);
 const setupdraw = () => {
     document.querySelector(".number").value = Number(document.querySelector(".number").value) + 1;
     setup();
     draw();
+
 }
+
 const setupdrawsave = () => {
     setupdraw();
     save();
 }
 
-
-const static = 1080;
-const makeColors = () => allColors[Number(document.querySelector(".number").value)];
-
 function setup() {
     createCanvas(static, static);
     noLoop();
-    noStroke();
+    // const fr = 20;
+    // frameRate(fr);
+    // noStroke();
+    // noiseSeed(100);
 }
-const VOLUME = 300;
-const SIZE = 0.2;
-const GAIN = 1 + (1/VOLUME);
-const scale = (0.04 / VOLUME);
+
+const MAX = 100;
+const FLUCTUATION = (i) => noise(i * 1.000001);
+const makeVertex = (SIZE, X, Y, X_RATE, Y_RATE) => vertex((X_RATE * SIZE) + X, (Y_RATE * SIZE) + Y);
+const FLUCTUATION_RATE = 33;
+const SIZE = 250;
 
 function draw() {
-    // background(makeColors()[0]);
     background("F");
-    const from = VOLUME * -1.1;
-    const to = VOLUME * 1.1;
-    R.range(from,to).forEach(Y => {
-        R.range(from, to).forEach(X => {
-            fill(random(makeColors()));
-            disEllipse(
-                (X * (width / VOLUME)),
-                (Y * (height / VOLUME)),
-                (width / VOLUME),
-                (height / VOLUME)
-            );
-        })
-    });
-}
+    R.xprod(R.range(R.negate(MAX), MAX), R.range(R.negate(MAX), MAX)).forEach(NUM => {
+        // stroke(100);
+        strokeWeight(3);
+        beginShape();
+        fill(random(makeColors()));
 
-// let offsetAry=[];
-function distort(x, y) {
-    let p = createVector(x, y);
-    let angle = noise(p.x * scale, p.y * scale) * 10 * GAIN;
-    let offset = noise(p.x * scale, p.y * scale) * 100 * GAIN;
-    p.x += cos(angle) * offset;
-    p.y += sin(angle) * offset;
-    return p;
-}
+        const NEWNUM_X = NUM[0] * 100 * FLUCTUATION(random(R.negate(FLUCTUATION_RATE), FLUCTUATION_RATE));
+        const NEWNUM_Y = NUM[1] * 100 * FLUCTUATION(random(R.negate(FLUCTUATION_RATE), FLUCTUATION_RATE));
+        // const NEWNUM_Y = NUM[1] * 80;
 
-function disEllipse(x, y, w, h) {
-    beginShape();
-    [...Array(100).keys()].reduce((A, V, IDX) => { A.push(TAU / 100 * IDX); return A; }, []).forEach(INT=>{
-        let p = distort(
-            x + w * SIZE * cos(INT),
-            y + h * SIZE * sin(INT)
-        );
-        curveVertex(p.x, p.y);
+        makeVertex(SIZE, NEWNUM_X, NEWNUM_Y, 1, 1);
+        makeVertex(SIZE, NEWNUM_X, NEWNUM_Y, 1.2, 1);
+        makeVertex(SIZE, NEWNUM_X, NEWNUM_Y, 1.2, 1.2);
+        makeVertex(SIZE, NEWNUM_X, NEWNUM_Y, 1, 1.2);
+        endShape(CLOSE);
     })
-    endShape(CLOSE);
 }
 </script>
 </body>
