@@ -5,8 +5,127 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>p5</title>
+    <script src="p5.js"></script>
+    <script src="ramda.js"></script>
+    <script src="allColors_8.js"></script>
 </head>
 <body>
 <h1>p5 index</h1>
+<script>
+function setup() {
+    // createCanvas(2160, 2160);
+    createCanvas(2160, 2160);
+    strokeWeight(10);
+    noLoop();
+}
+
+    const [x1, y1,
+        x2, y2,
+        x3, y3,
+        x4, y4] =
+        [
+            100, 100,
+            100, 600,
+            600, 600,
+            600, 100
+        ];
+
+function manyBezierCurve(
+        [x1, y1,
+        x2, y2,
+        x3, y3,
+        x4, y4], colorArray, originX, originY, scaleX, scaleY){
+    strokeWeight(10);
+    noFill();
+    R.range(1, 1000).forEach(element => {
+        stroke(random(colorArray));
+        originX *= scaleX;
+        originY *= scaleY;
+        bezier(
+            x1 * originX, y1 * originY,
+            x2 * originX, y2 * originY,
+            x3 * originX, y3 * originY,
+            x4 * originX, y4 * originY,
+        );
+    });
+
+}
+
+function draw() {
+
+    // line( 100, 100, 200, 100);
+    // line( 200, 100, 200, 200);
+    // line( 200, 200, 100, 200);
+    // line( 100, 200, 100, 100);
+    // rect(100, 100, 200, 200);
+    // ellipse(200, 200, 300, 100);
+
+    // strokeWeight(5);
+    // beginShape();
+    // bezierVertex(100, 100);
+    // bezierVertex(100, 300);
+    // bezierVertex(600, 600);
+    // bezierVertex(600, 100);
+    // endShape(); 
+
+    // strokeWeight(5);
+    // stroke("blue");
+    // point(30, 20);
+    // point(80, 20);
+    // point(80, 75);
+    // point(30, 75);
+
+    // strokeWeight(1);
+    // noFill();
+    // beginShape();
+    // stroke("pink");
+    // vertex(30, 20);
+    // bezierVertex(80, 20, 80, 75, 30, 75);
+    // endShape();
+
+    // strokeWeight(5);
+    // stroke("green");
+    // point(x1, y1);
+    // point(x2, y2);
+    // point(x3, y3);
+    // point(x4, y4);
+
+    // strokeWeight(1);
+    // noFill();
+    // beginShape();
+    // stroke("red");
+    // vertex(x1, y1);
+    // bezierVertex(
+    //     x2, y2,
+    //     x3, y3,
+    //     x4, y4
+    // );
+    // endShape();
+
+    // stroke("purple");
+    // bezier(
+    // x1*1.2, y1*1.2,
+    // x2*1.2, y2*1.2,
+    // x3*1.2, y3*1.2,
+    // x4*1.2, y4*1.2,
+    // );
+
+    manyBezierCurve(
+        [
+        100, 100,
+        100, 600,
+        600, 600,
+        600, 100
+        ], allColors[0], 1, 1, 1.002, 1);
+    manyBezierCurve(
+        [
+        50, 50,
+        50, 600,
+        600, 600,
+        600, 50
+        ], allColors[1], 1, 1, 1.001, 1);
+
+}
+</script>
 </body>
 </html>
