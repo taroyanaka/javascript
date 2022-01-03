@@ -7,28 +7,24 @@
     <title>p5</title>
     <script src="p5.js"></script>
     <script src="ramda.js"></script>
-    <script src="allColors_8.js"></script>
+    <!-- <script src="allColors_8.js"></script> -->
+    <script src="allColors_10.js"></script>
 </head>
 <body>
 <h1>p5 index</h1>
 <script>
+const pallet = [
+    allColors[100],
+    allColors[10],
+    // allColors[4]
+];
+
 function setup() {
     // createCanvas(2160, 2160);
     createCanvas(2160, 2160);
     strokeWeight(10);
     noLoop();
 }
-
-    const [x1, y1,
-        x2, y2,
-        x3, y3,
-        x4, y4] =
-        [
-            100, 100,
-            100, 600,
-            600, 600,
-            600, 100
-        ];
 
 function manyBezierCurve(
         [x1, y1,
@@ -48,8 +44,17 @@ function manyBezierCurve(
             x4 * originX, y4 * originY,
         );
     });
-
 }
+
+const firstManyBezierCurve = (a,b,c,d) =>  {
+        manyBezierCurve(
+                [
+                    0+a, 0+a,
+                    0+a, 540,
+                    540, 540,
+                    540, 0+a
+                ], pallet[-1+b], 1, 1, 1.001+c, 1+d);
+};
 
 function draw() {
 
@@ -110,20 +115,25 @@ function draw() {
     // x4*1.2, y4*1.2,
     // );
 
-    manyBezierCurve(
-        [
-        100, 100,
-        100, 600,
-        600, 600,
-        600, 100
-        ], allColors[0], 1, 1, 1.002, 1);
-    manyBezierCurve(
-        [
-        50, 50,
-        50, 600,
-        600, 600,
-        600, 50
-        ], allColors[1], 1, 1, 1.001, 1);
+let [a, b, c, d]=[10, 1, 0.0001, 0.0004];
+R.range(1, pallet.length+1).forEach(NUM => {
+    let [_a, _b, _c, _d] = [a*NUM, b*NUM, c*NUM, d*NUM];
+    firstManyBezierCurve(_a, _b, _c, _d);
+});
+    // manyBezierCurve(
+    //     [
+    //         100, 100,
+    //         100, 600,
+    //         600, 2160,
+    //         600, 100
+    //     ], allColors[1], 1, 1, 1.002, 1);
+    // manyBezierCurve(
+    //     [
+    //         150, 150,
+    //         150, 600,
+    //         600, 2160,
+    //         600, 150
+    //     ], allColors[2], 1, 1, 1.003, 1);
 
 }
 </script>
