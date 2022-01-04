@@ -21,8 +21,9 @@
     <script src="ramda.js"></script>
     <script src="p5.js"></script>
     <!-- <script src="p5.createloop.js"></script> -->
-    <!-- <script src="./allColors_2.js"></script> -->
-    <script src="./allColors_10.js"></script>
+    <script src="./allColors_14.js"></script>
+    <!-- <script src="./allColors_14_2.js"></script> -->
+    <!-- <script src="./allColors_14_3.js"></script> -->
     <meta charset="utf-8" />
 </head>
 
@@ -32,8 +33,8 @@
 <button onclick="setupdraw()">setupdraw</button>
 <button onclick="resetup()">resetup</button>
 <input type="number" name="number" class="number" value="0">
-<input type="number" name="SEGMENT" class="SEGMENT" value="8">
-<input type="number" name="SCALE" class="SCALE" value="1.1">
+<input type="number" name="SEGMENT" class="SEGMENT" value="12">
+<input type="number" name="SCALE" class="SCALE" value="2">
 <span>random rotate <input type="checkbox" name="" class="randomrotate"></span>
 <span>random color <input type="checkbox" name="" class="randomcolor"></span>
 <span>background black <input type="checkbox" name="" class="backgroundblack"></span>
@@ -44,11 +45,12 @@ const STATIC = 1080;
 const CIRCLE_SCALE = 1.2;
 const SIZE = 0.3;
 
-const makeColors = () => {
-    let tmp = allColors[Number(document.querySelector(".number").value)];
-    return tmp.length <= 6 ? tmp.concat(tmp) : tmp;
-}
-const save = () => saveCanvas(`${document.querySelector(".number").value}_${makeColors().join("")}.png`);
+// const makeColors = () => {
+//     let tmp = allColors[Number(document.querySelector(".number").value)];
+//     return tmp.length <= 6 ? tmp.concat(tmp) : tmp;
+// }
+const chooseOneColorArray = () => allColorsOneList;
+const save = () => saveCanvas(`${document.querySelector(".number").value}_${chooseOneColorArray()[Number(document.querySelector(".number").value)]}.png`);
 const setupdraw = () => {
     document.querySelector(".number").value = Number(document.querySelector(".number").value) + 1;
     setup();
@@ -86,9 +88,14 @@ function ponponRemix(x, y, w) {
     push();
     translate(x, y);
     strokeWeight(5);
+    rotate(PI*0.5);
     document.querySelector(".randomrotate").checked ? rotate(random(PI)) : false;
-    makeRadianArray(10).forEach((RADIAN,IDX) => {
-        document.querySelector(".randomcolor").checked ? fill(random(makeColors())) : fill(makeColors()[IDX]);
+    makeRadianArray(9).forEach((RADIAN,IDX) => {
+        // if(document.querySelector(".randomcolor").checked){
+            fill(chooseOneColorArray()[Number(document.querySelector(".number").value)])
+        // }else{
+            // fill(random(chooseOneColorArray()))
+        // };
         circle(
             ((w * SIZE) / CIRCLE_SCALE) * cos(RADIAN),
             ((w * SIZE) / CIRCLE_SCALE) * sin(RADIAN),
@@ -96,14 +103,15 @@ function ponponRemix(x, y, w) {
         );
     });
     // arc(
-    //     ((w * SIZE) / CIRCLE_SCALE) * cos(0), 
-    //     ((w * SIZE) / CIRCLE_SCALE) * sin(0),
-    //     (w * SIZE), (w * SIZE),
+    //     ((w * SIZE) / CIRCLE_SCALE) * cos(RADIAN-1),
+    //     ((w * SIZE) / CIRCLE_SCALE) * sin(RADIAN-1),
+    //     (w * SIZE),
+    //     (w * SIZE),
     //     PI,
     //     TAU
     // );
+    // fill(chooseOneColorArray()[Number(document.querySelector(".number").value)]);
     // fill("F");
-    // fill(makeColors()[0]);
     pop();
 }
 </script>
