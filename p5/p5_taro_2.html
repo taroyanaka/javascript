@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5</title>
+    <!-- https://openprocessing.org/sketch/1251650 -->
+    <style>
+        button {
+            width: 10rem;
+            height: 2rem;
+        }
+
+        input {
+            width: 10rem;
+            height: 2rem;
+        }
+    </style>
+    <script src="ramda.js"></script>
+    <script src="p5.js"></script>
+    <!-- <script src="p5.createloop.js"></script> -->
+    <script src="./allColors_14.js"></script>
+    <!-- <script src="./allColors_14_2.js"></script> -->
+    <!-- <script src="./allColors_14_3.js"></script> -->
+    <meta charset="utf-8" />
+</head>
+
+<body>
+<script>
+    const STATIC = 540;
+    // const setup = () => { createCanvas(STATIC, STATIC)};
+    function setup(){
+        background("0");
+        createCanvas(STATIC, STATIC, WEBGL);
+        // noloop();
+    }
+    const [X,Y,W] = [100,100,100];
+const makeSomething = (X, Y, W) => {
+    fill(0);
+    circle(X, Y, W);
+}
+    // const draw = () => ;
+    // function draw(){
+    //     push();
+    //     translate(150, 150);
+    //     strokeWeight(5);
+    //     makeSomething(X, Y, W * 1.3);
+    //     pop();
+    // }
+
+        function draw() {
+            translate(0, 0);
+            // background(205, 105, 94);
+            background(0);
+            // background(255);
+            // rotateX(frameCount * 0.01);
+            // rotateZ(frameCount * 0.01);
+            rotateX(width);
+            // rotateY(width/2);
+            rotateY(10);
+            rotateZ(180);
+            // lights();
+            // pointLight(color(255), 0, 0, -100);
+            noStroke();
+            // 円柱を描画(半径20、高さ50、x方向分割数6、y方向分割数3、円柱の上部を描画しない)
+            fill("gray")
+            // cylinder(width/3, height/2, 6, 6, true, true);
+              cylinder(40, 70, 24, 1, false);
+
+        }
+</script>
+</body>
+
+</html>
