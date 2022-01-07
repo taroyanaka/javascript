@@ -23,8 +23,9 @@
     <script src="p5.js"></script>
     <!-- <script src="p5.createloop.js"></script> -->
 
-    <script src="./allColors_2.js"></script>
-    <!-- <script src="./allColors_10.js"></script> -->
+    <!-- <script src="./allColors_2.js"></script> -->
+    <script src="./allColors_10.js"></script>
+    <!-- <script src="./nippon_allColors.js"></script> -->
     <meta charset="utf-8" />
 </head>
 
@@ -38,9 +39,85 @@
 <script>
 const static = 1080;
 
+const shuffleArray = array => {
+    for (let i = array.length - 1; i > 0; i--) {
+        let r = Math.floor(Math.random() * (i + 1));
+        let tmp = array[i];
+        array[i] = array[r];
+        array[r] = tmp;
+    }
+    return array
+}
+
 const makeColors = () => allColors[Number(document.querySelector(".number").value)];
 
-const save = () => saveCanvas(`${document.querySelector(".number").value}_${makeColors().join("")}.png`);
+const makeColors2 = () => {
+    return shuffleArray(
+        allColors[Number(document.querySelector(".number").value)]
+            .concat(
+                allColors[Number(document.querySelector(".number").value) + 100]
+            )
+            .concat(['#ffffff'])
+            .concat(['#ffffff'])
+            .concat(['#000000'])
+            .concat(['#000000'])
+    );
+}
+const makeColors3 = () => {
+    return shuffleArray(
+        allColors[Number(document.querySelector(".number").value)]
+            .concat(
+                allColors[Number(document.querySelector(".number").value) + 100]
+            )
+            .concat(
+                allColors[Number(document.querySelector(".number").value) + 200]
+            )
+            // .concat(['#ffffff'])
+            // .concat(['#ffffff'])
+            // .concat(['#ffffff'])
+            // .concat(['#ffffff'])
+            // .concat(['#ffffff'])
+            // .concat(['#ffffff'])
+            // .concat(['#ffffff'])
+            // .concat(['#ffffff'])
+            // .concat(['#ffffff'])
+            // .concat(['#ffffff'])
+            // .concat(['#ffffff'])
+            // .concat(['#000000'])
+            // .concat(['#000000'])
+            // .concat(['#000000'])
+
+            // .concat(['#e3e8ea'])
+            // .concat(['#bccad0'])
+            // .concat(['#9ba8ae'])
+            // .concat(['#707a7e'])
+            // .concat(['#495054'])
+
+    )
+    .slice(0, 5)
+    .concat(['#ffffff'])
+    .concat(['#000000'])
+    ;
+}
+
+const nipponMakeColors = () => {
+    allColors = shuffleArray(allColors);
+    return shuffleArray(
+        R.range(
+            Number(document.querySelector(".number").value), Number(document.querySelector(".number").value)+10)
+                .map(V=> allColors[V])
+                .concat(['#ffffff'])
+                .concat(['#ffffff'])
+                .concat(['#ffffff'])
+                .concat(['#000000'])
+                .concat(['#000000'])
+                .concat(['#000000'])
+    );
+}
+
+
+
+const save = () => saveCanvas(`${document.querySelector(".number").value}_${makeColors3().join("")}.png`);
 const setupdraw = () => {
     document.querySelector(".number").value = Number(document.querySelector(".number").value) + 1;
     setup();
@@ -65,14 +142,16 @@ const resetup = () => setup();
 // function draw() { }
 
 function generate() {
-    colors = makeColors();
+    colors = makeColors3();
+    // colors = makeColors2();
     shuffle(colors, true);
     background(colors[0]);
-    stroke(colors[0]);
+    // stroke(colors[0]);
+    stroke('#000000');
     // noStroke();
-    strokeWeight(3);
+    strokeWeight(2);
     // colors.splice(0, 1);
-    colors = R.tail(colors);
+    // colors = R.tail(colors);
     // for (let i = 0; i < 1000; i++) {
     R.repeat(0, int(random(1000, 2000)) ).forEach(INT => {
         noiseCurve(random(-0.1, 1.1) * width, random(-0.1, 1.1) * height);
