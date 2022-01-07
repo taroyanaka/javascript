@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>p5_taro_0</title>
+    <script src="p5.js"></script>
+    <script src="ramda.js"></script>
+    <!-- <script src="allColors_8.js"></script> -->
+    <script src="allColors_10.js"></script>
+</head>
+
+<body>
+    <h1>bundle</h1>
+    <textarea name="" class="palletNumber" cols="30" rows="10" oninput="exe()"></textarea>
+    <button onclick="setupdrawsave()">setupdrawsave</button>
+    <button onclick="save()">save</button>
+    <button onclick="setupdraw()">setupdraw</button>
+    <!-- <button onclick="resetup()">resetup</button> -->
+<!-- <input type="number" name="number" class="number" value="0"> -->
+<input type="number" name="FINENESS" class="FINENESS" value="50" oninput="exe()">
+<input type="number" name="VOLUME" class="VOLUME" value="3000" oninput="exe()">
+<input type="number" name="RATE_A" class="RATE_A" value="10" oninput="exe()">
+<input type="number" name="RATE_B" class="RATE_B" value="2" oninput="exe()">
+<input type="number" name="START_X" class="START_X" value="100" oninput="exe()">
+<input type="number" name="START_Y" class="START_Y" value="100" oninput="exe()">
+<span>aggregate_thickness_rate: <input type="checkbox" name="aggregate_thickness_rate" class="aggregate_thickness_rate"></span>
+    <script>
+        const save = () => saveCanvas(`${document.querySelector("h1").textContent}_${document.querySelector(".palletNumber").value}_${changePallet().join("").replaceAll(",", "")}.png`);
+        const setupdraw = () => {
+            document.querySelector(".palletNumber").value = document.querySelector(".palletNumber").value.split("\n").map(NUM => Number(NUM) + 1).join("\n");
+            setup();
+            draw();
+        }
+        const setupdrawsave = () => {
+            setupdraw();
+            save();
+        }
+
+        const changePallet = () => {
+            return document.querySelector(".palletNumber").value.split("\n").map(NUM => allColors[Number(NUM)]);
+        };
+        const exe = () => { setup(); draw(); }
+
+        // const initChangePallet = () => document.querySelector(".palletNumber").value = "10\n100\n1000";
+        const initChangePallet = () => document.querySelector(".palletNumber").value = "10\n100";
+        initChangePallet();
+
+        function setup() {
+            // createCanvas(2160, 2160);
+            createCanvas(1080, 1080);
+            noLoop();
+            // stroke("black");
+            // strokeWeight(200);
+            // background("gray");
+            background(255);
+        }
+
+
+    const getNum = (NUM) => [NUM * 3, NUM * 2, NUM * 1.5];
+    const makeColors = () => {
+        const res = 
+            // allColors[Number(document.querySelector(".palletNumber").value.split("\n")[0])]
+            // .concat(
+            //     allColors[Number(document.querySelector(".palletNumber").value.split("\n")[1])]
+            // )
+            document.querySelector(".palletNumber").value.split("\n").map(V=> allColors[Number(V)])
+            .flat()
+            .concat(
+                [
+                    '#ffffff', '#000000',
+                    '#ffffff', '#000000',
+                    '#ffffff', '#000000',
+                    '#ffffff', '#000000',
+                    '#ffffff', '#000000',
+                ]
+            )
+        return res;
+    };
+        function draw() {
+
+            const FINENESS = Number(document.querySelector(".FINENESS").value);
+            const VOLUME = Number(document.querySelector(".VOLUME").value);
+            const RATE_A = Number(document.querySelector(".RATE_A").value);
+            const RATE_B = Number(document.querySelector(".RATE_B").value);
+            const START_X = Number(document.querySelector(".START_X").value);
+            const START_Y = Number(document.querySelector(".START_Y").value);
+let = aggregate_thickness_rate=0;
+R.repeat(1,VOLUME).forEach((VAL, IDX) => {
+            const [a, b, c] = getNum(VAL);
+            // strokeWeight(width / b);
+            // stroke(random(makeColors()));
+            // line( width / a, width / a, width / c, width / c);
+            // strokeWeight(random(100,110));
+            // strokeWeight(random(width/10,width/12));
+            // strokeWeight((width /10)*noise(width*1000));
+
+    aggregate_thickness_rate += VAL/ Number(document.querySelector(".VOLUME").value);
+const weight = document.querySelector(".aggregate_thickness_rate").checkd ? width * (1 / FINENESS) : width * (1 / FINENESS) - aggregate_thickness_rate;
+            // strokeWeight();
+            strokeWeight(weight);
+            stroke(random(makeColors()));
+            // line(
+            //     a * random(width / 10, width / 2),
+            //     a * random(width / 10, width / 2),
+            //     c * random(width / 10, width / 2),
+            //     c * random(width / 10, width / 2)
+            // );
+            line(
+                // a * width/50,
+                // a * width/50,
+                START_X,
+                START_Y,
+                c * random(width*(1/RATE_A),width*(1/RATE_B)),
+                c * random(width*(1/RATE_A),width*(1/RATE_B))
+            );
+            // line(
+            //     a * width/50,
+            //     a * width/50,
+            //     c * width/50,
+            //     c * width/50
+            // );
+
+});
+
+            // line( 200, 100, 200, 200);
+            // line( 200, 200, 100, 200);
+            // line( 100, 200, 100, 100);
+            // rect(100, 100, 200, 200);
+            // ellipse(200, 200, 300, 100);
+
+            // strokeWeight(5);
+            // beginShape();
+            // bezierVertex(100, 100);
+            // bezierVertex(100, 300);
+            // bezierVertex(600, 600);
+            // bezierVertex(600, 100);
+            // endShape(); 
+
+            // strokeWeight(5);
+            // stroke("blue");
+            // point(30, 20);
+            // point(80, 20);
+            // point(80, 75);
+            // point(30, 75);
+
+            // strokeWeight(1);
+            // noFill();
+            // beginShape();
+            // stroke("pink");
+            // vertex(30, 20);
+            // bezierVertex(80, 20, 80, 75, 30, 75);
+            // endShape();
+
+            // strokeWeight(5);
+            // stroke("green");
+            // point(x1, y1);
+            // point(x2, y2);
+            // point(x3, y3);
+            // point(x4, y4);
+
+            // strokeWeight(1);
+            // noFill();
+            // beginShape();
+            // stroke("red");
+            // vertex(x1, y1);
+            // bezierVertex(
+            //     x2, y2,
+            //     x3, y3,
+            //     x4, y4
+            // );
+            // endShape();
+
+            // stroke("purple");
+            // bezier(
+            // x1*1.2, y1*1.2,
+            // x2*1.2, y2*1.2,
+            // x3*1.2, y3*1.2,
+            // x4*1.2, y4*1.2,
+            // );
+
+
+        }
+    </script>
+</body>
+
+</html>
