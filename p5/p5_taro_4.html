@@ -23,9 +23,9 @@
     <script src="p5.js"></script>
     <!-- <script src="p5.createloop.js"></script> -->
 
-    <!-- <script src="./allColors_10.js"></script> -->
+    <script src="./allColors_10.js"></script>
     <!-- <script src="./nippon_allColors.js"></script> -->
-    <script src="./nippon_allColors3.js"></script>
+    <!-- <script src="./nippon_allColors3.js"></script> -->
     <meta charset="utf-8" />
 </head>
 
@@ -60,9 +60,9 @@
             );
             // ary = [ary[0], ary[1]];
             return ary
-                .slice(0,2)
-                .concat(['#ffffff'])
-                .concat(['#000000'])
+                // .slice(0, 1)
+                // .concat(['#ffffff'])
+                // .concat(['#000000'])
 
         }
         const makeColors2 = () => {
@@ -89,7 +89,7 @@
                 allColors[Number(document.querySelector(".number").value)]
                     .concat(
                         allColors[Number(document.querySelector(".number").value) + 100]
-                    )
+                   )
                     .concat(
                         allColors[Number(document.querySelector(".number").value) + 200]
                     )
@@ -127,19 +127,137 @@
             createCanvas(static, static);
             // pixelDensity(2);
             // background(255);
-            background(random(makeColor1())[0]);
-            R.repeat(0, 100000).forEach(V => {
-                V
-                makeCircle(
-                    random(-0.1, 1.1) * width,
-                    random(-0.1, 1.1) * height,
-                    random(5, 20)
-                    // 100 - noise(1, 100)
-                );
-            })
+            // background(random(makeColor1())[0]);
+            // background("black");
+            // background("#ffffff");
+            background(random(makeColor1()));
+            noLoop();
+            // noStroke();
+            strokeWeight(1);
+            // R.repeat(0, 100000).forEach(V => {
+            //     V
+            //     makeCircle(
+            //         random(-0.1, 1.1) * width,
+            //         random(-0.1, 1.1) * height,
+            //         random(5, 20)
+            //     );
+            // })
         }
 
-        function draw() { }
+        function makeQuad(NUM0, NUM1){
+            // const x1 = 10;
+            // const y1 = 10;
+            // const x2 = 100;
+            // const y2 = 10;
+            // const x3 = 100;
+            // const y3 = 100;
+            // const x4 = 10;
+            // const y4 = 100;
+
+            fill(random(makeColor1()));
+            // fill("white");
+
+            // strokeWeight(10);
+            // strokeWeight(random(25, 35)  / NUM );
+            // stroke("white");
+            const x1 = NUM0 + random(5, 6);
+            const y1 = NUM1 + random(5, 6);
+            const x2 = NUM0 + random(5, 6);
+            const y2 = NUM1 + random(5, 6);
+            const x3 = NUM0 + random(5, 6);
+            const y3 = NUM1 + random(5, 6);
+            const x4 = NUM0 + random(5, 6);
+            const y4 = NUM1 + random(5, 6);
+            // quad(x1, y1, x2, y2, x3, y3, x4, y4);
+
+            circle(NUM0, NUM1, random(4, 7));
+            // circle(NUM0, NUM1, random(10, 100));
+            // circle(NUM0, NUM1, random(1, 6));
+
+
+            // push();
+            // stroke('purple');
+            // strokeWeight(30);
+            // point(x1, y1);
+            // pop();
+
+            // push();
+            // stroke('green');
+            // strokeWeight(30);
+            // point(x2, y2);
+            // pop();
+
+            // push();
+            // stroke('yellow');
+            // strokeWeight(30);
+            // point(x3, y3);
+            // pop();
+
+            // push();
+            // stroke('gray');
+            // strokeWeight(30);
+            // point(x4, y4);
+            // pop();
+        }
+
+        function draw() { 
+
+            R.range(0, 110).forEach(X => {
+            R.range(0, 110).forEach(Y => {
+                makeQuad(X*10, Y*10);
+                // translate(100, 100)
+            });
+            });
+                // background(220);
+                // noFill();
+                // rect(0, 150, 150, 100);
+                // rect(width - 150, 150, 150, 100);
+                // rect(150, 150, 100, 100);
+                // rect(0, 100, 100, 200);
+                // beginShape();
+                // vertex(100, 100);
+                // vertex(150, 150);
+                // vertex(150, height - 150);
+                // vertex(100, height - 100);
+                // endShape();
+                // rect(width - 100, 100, 100, 200);
+                // beginShape();
+                // vertex(width - 100, 100);
+                // vertex(width - 150, 150);
+                // vertex(width - 150, height - 150);
+                // vertex(width - 100, height - 100);
+                // endShape();
+                // rect(100, 100, 200, 200);
+                // rect(0, 50, 50, 300);
+                // beginShape();
+                // vertex(50, 50);
+                // vertex(100, 100);
+                // vertex(100, height - 100);
+                // vertex(50, height - 50);
+                // endShape();
+                // noFill();
+                // rect(width - 50, 50, 50, 300);
+                // beginShape();
+                // vertex(width - 50, 50);
+                // vertex(width - 100, 100);
+                // vertex(width - 100, height - 100);
+                // vertex(width - 50, height - 50);
+                // endShape();
+                // rect(50, 50, 300, 300);
+                // beginShape();
+                // vertex(0, 0);
+                // vertex(50, 50);
+                // vertex(50, height - 50);
+                // vertex(0, height);
+                // endShape();
+                // beginShape();
+                // vertex(width, 0);
+                // vertex(width - 50, 50);
+                // vertex(width - 50, height - 50);
+                // vertex(width, height);
+                // endShape();
+
+        }
 
 
         function makeCircle(x, y, d) {
