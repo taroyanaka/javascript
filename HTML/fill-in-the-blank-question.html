@@ -11,10 +11,10 @@
 
 <body>
 <textarea name="question" class="question" cols="100" rows="10" oninput="changer();checker();"></textarea>
-<textarea name="changer" class="changer" cols="100" rows="10"></textarea>
+<textarea name="changer" class="changer" cols="100" rows="10" oninput="changer();checker();"></textarea>
 <div class="answer"></div>
 <script>
-document.querySelector(".question").value = `foo bar baz is foo bar baz
+const initer = () => {document.querySelector(".question").value = `foo bar baz is foo bar baz
 and foo2 bar2 baz3 is foo2 bar2 baz3
 or foo2bar2baz3isfoo2bar2baz3
 or not
@@ -22,7 +22,7 @@ and foo2 qux bar2 baz3 qux2 is foo2 bar2 baz3qux3
 or foo2barQUX42baz3isfoo2bar2baz3`;
 document.querySelector(".changer").value = `foo
 qux`;
-
+};
 const changer = () => {
     document.querySelector(".answer").innerHTML =
         document.querySelector(".changer").value.split("\n").reduce((TEMPORARY, WORD, IDX) => {
@@ -50,6 +50,8 @@ const checker = () => {
         checkWithValueToAnswer(BLANK_ELEMENT, IDX)
     })
 };
+
+initer();
 changer();
 tester();
 checker();
