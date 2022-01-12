@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fill-in-the-blank-question</title>
+    <script src="ramda.js"></script>
+</head>
+
+<body>
+<textarea name="question" class="question" cols="100" rows="10"></textarea>
+<textarea name="changer" class="changer" cols="100" rows="10"></textarea>
+<div class="answer"></div>
+<script>
+document.querySelector(".question").value = `foo bar baz is foo bar baz
+and foo2 bar2 baz3 is foo2 bar2 baz3
+or foo2bar2baz3isfoo2bar2baz3
+or not
+and foo2 qux bar2 baz3 qux2 is foo2 bar2 baz3qux3 
+or foo2barQUX42baz3isfoo2bar2baz3`;
+document.querySelector(".changer").value = `foo
+qux`;
+
+const changer = () => {
+    document.querySelector(".answer").innerHTML =
+        document.querySelector(".changer").value.split("\n").reduce((TEMPORARY, WORD, IDX) => {
+            TEMPORARY = TEMPORARY
+                .replaceAll(
+                    WORD,
+                    `<input type="text" name="blank" class="blank" data-answer="${WORD}">`)
+                .replaceAll(
+                    "\n",
+                    `</br>`);
+            return TEMPORARY;
+        }, TEMPORARY = document.querySelector(".question").value);
+};
+const tester = () => {
+    document.querySelectorAll(".blank")[0].value = "foo";
+    document.querySelectorAll(".blank")[1].value = "foo";
+};
+const checker = () => { 
+    document.querySelectorAll(".blank").forEach((BLANK_ELEMENT, IDX)=>{
+        BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? console.log(`${IDX} is OK`) : console.log(`${IDX} is NG`);
+    })
+};
+changer();
+tester();
+checker();
+
+</script>
+</body>
+
+</html>
