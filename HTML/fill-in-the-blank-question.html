@@ -38,12 +38,12 @@ const changer = () => {
 };
 const tester = () => {
     document.querySelectorAll(".blank")[0].value = "foo";
-    // document.querySelectorAll(".blank")[1].value = "foo";
 };
 const checkWithValueToAnswer = (BLANK_ELEMENT, IDX) => { 
+    // console.log("OK or NG")
     BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? console.log(`${IDX} is OK`) : console.log(`${IDX} is NG`);
+    // change backgroundColor
     BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? BLANK_ELEMENT.style.backgroundColor = "" : BLANK_ELEMENT.style.backgroundColor = "red";
-    // BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? console.log(`${IDX} is OK`) : console.log(`${IDX} is NG`);
 }
 const checker = () => { 
     document.querySelectorAll(".blank").forEach((BLANK_ELEMENT, IDX)=>{
@@ -53,8 +53,6 @@ const checker = () => {
 changer();
 tester();
 checker();
-
 </script>
 </body>
-
 </html>
