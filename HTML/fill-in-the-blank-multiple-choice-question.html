@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fill-in-the-blank-question</title>
+    <title>fill-in-the-blank-multiple-choice-question</title>
     <!-- <script src="ramda.js"></script> -->
     <style>
-        button {
+        button{
             height: 3rem;
         }
     </style>
@@ -20,51 +20,67 @@
     <textarea name="question" class="question" cols="100" rows="10" oninput="changer();checker();"></textarea>
     <textarea name="changer" class="changer" cols="100" rows="10" oninput="changer();checker();"></textarea>
 </div>
-<div class="answer"></div>
+    <div class="answer"></div>
 <script>
 const collapseChanger = () => {
     const collapseStyle = document.querySelector(`.collapse`).style;
-    if (collapseStyle.visibility === "hidden") {
+    if(collapseStyle.visibility === "hidden"){
         collapseStyle.visibility = "visible";
         collapseStyle.height = collapseStyle.width = "";
-    } else {
+    }else{
         collapseStyle.visibility = "hidden";
         collapseStyle.width = collapseStyle.height = 0;
     }
 };
-const initer = () => {document.querySelector(".question").value = `foo bar baz is foo bar baz
+const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("");
+const makeSelectTag = (ARY, ANSWER) => {
+return `<select class="blank" data-answer="${ANSWER}" onchange="checker();">
+${makeOptionTag(ARY)}
+</select>`;
+};
+const initer = () => {
+    document.querySelector(".question").value = `foo bar baz is foo bar baz
 and foo2 bar2 baz3 is foo2 bar2 baz3
 or foo2bar2baz3isfoo2bar2baz3
 or not
 and foo2 qux bar2 baz3 qux2 is foo2 bar2 baz3qux3 
-or foo2barQUX42baz3isfoo2bar2baz3`;
-document.querySelector(".changer").value = `foo
-qux`;
+or foo2barQUX42baz3isfoo2bar2baz3
+日本語は自然言語のうちの一つで主に日本国内で使われています`;
+    document.querySelector(".changer").value = `foo
+qux
+日本`;
 };
+let foo;
 const changer = () => {
+    // https://stackoverflow.com/a/1234725
+    const regex = foo =  "(" + document.querySelector(".changer").value.split("\n").map(V=>`${V}|`).join("").slice(0, -1) + ")";
+    const RE = new RegExp(regex, "gm");
     document.querySelector(".answer").innerHTML =
-        document.querySelector(".changer").value.split("\n").reduce((TEMPORARY, WORD, IDX) => {
-            TEMPORARY = TEMPORARY
-                .replaceAll(
-                    WORD,
-                    `<input oninput="checker()" type="text" name="blank" class="blank" data-answer="${WORD}">`)
+                document.querySelector(".question").value.replaceAll(
+                    RE,
+                    makeSelectTag(
+                        document.querySelector(".changer").value.split("\n") ,
+                        "$1"
+                    )
+                )
                 .replaceAll(
                     "\n",
                     `</br>`);
-            return TEMPORARY;
-        }, TEMPORARY = document.querySelector(".question").value);
 };
 const tester = () => {
     document.querySelectorAll(".blank")[0].value = "foo";
+    document.querySelectorAll(".blank")[1].value = "qux";
+    document.querySelectorAll(".blank")[10].value = "qux";
+    document.querySelectorAll(".blank")[14].value = "日本";
 };
-const checkWithValueToAnswer = (BLANK_ELEMENT, IDX) => { 
+const checkWithValueToAnswer = (BLANK_ELEMENT, IDX) => {
     // console.log("OK or NG")
     BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? console.log(`${IDX} is OK`) : console.log(`${IDX} is NG`);
     // change backgroundColor
     BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? BLANK_ELEMENT.style.backgroundColor = "" : BLANK_ELEMENT.style.backgroundColor = "red";
 }
-const checker = () => { 
-    document.querySelectorAll(".blank").forEach((BLANK_ELEMENT, IDX)=>{
+const checker = () => {
+    document.querySelectorAll(".blank").forEach((BLANK_ELEMENT, IDX) => {
         checkWithValueToAnswer(BLANK_ELEMENT, IDX)
     })
 };
@@ -73,6 +89,9 @@ initer();
 changer();
 tester();
 checker();
+
+
 </script>
 </body>
+
 </html>
