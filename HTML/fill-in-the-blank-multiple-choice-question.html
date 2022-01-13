@@ -50,10 +50,9 @@ or foo2barQUX42baz3isfoo2bar2baz3
 qux
 日本`;
 };
-let foo;
 const changer = () => {
     // https://stackoverflow.com/a/1234725
-    const regex = foo =  "(" + document.querySelector(".changer").value.split("\n").map(V=>`${V}|`).join("").slice(0, -1) + ")";
+    const regex = "(" + document.querySelector(".changer").value.split("\n").map(V=>`${V}|`).join("").slice(0, -1) + ")";
     const RE = new RegExp(regex, "gm");
     document.querySelector(".answer").innerHTML =
                 document.querySelector(".question").value.replaceAll(
@@ -89,9 +88,6 @@ initer();
 changer();
 tester();
 checker();
-
-
 </script>
 </body>
-
 </html>
