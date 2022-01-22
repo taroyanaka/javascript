@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>fill-in-the-blank-multiple-choice-question</title>
-    <!-- <script src="ramda.js"></script> -->
+    <script src="ramda.js"></script>
     <style>
         button{
             height: 3rem;
@@ -51,38 +51,20 @@ or foo2barQUX42baz3isfoo2bar2baz3
 qux xqu uxq
 日本 本日`;
 };
-let HOGE="";
 const answerArray = () => document.querySelector(".changer").value.split("\n").map(V=>V.split(" ")).map(V=>V[0]);
 const changer = () => {
     // https://stackoverflow.com/a/1234725
-    // const regex = "(" + document.querySelector(".changer").value.split("\n").map(V=>`${V}|`).join("").slice(0, -1) + ")";
     const regex = "(" + document.querySelector(".changer").value.split("\n").map(V => V.split(" ")).map(V => V[0]).map(V=>`${V}|`).join("").slice(0, -1) + ")";
     const RE = new RegExp(regex, "gm");
     const THE_ARY =  (STR) => {
         const ary =document.querySelector(".changer").value.split("\n").map(V => V.split(" ")).map(V=>[V[0], V] );
         return [document.querySelector(".changer").value.replaceAll(STR, "HOGE"), "hoge"];
     };
-    // .filter(V => V.includes(STR));
-    // const THE_ARY =  (STR) => [1,2,STR, 3];
     document.querySelector(".answer").innerHTML =
                 document.querySelector(".question").value.replaceAll(
                     RE,
                     makeSelectTag(
-                        // THE_ARY("$1"),
                         document.querySelector(".changer").value.split("\n"),
-                        // .map(V=>V[0]) ,
-                        // document.querySelector(".changer").value.split("\n").filter(V => V.split(" ")[0] === "$1")[0].split(" ") ,
-
-                        // document.querySelector(".changer").value.split("\n").filter(V => V.includes("foo"))[0].split(" ") ,
-                        // document.querySelector(".changer").value.split("\n").filter(V=> V.split(" ")[0] === "$1" )[0].split(" "),
-                        // .map(V => V.split(" ")).flat() ,
-
-                        // [1,"$1",3],
-                        // document.querySelector(".changer").value.split("\n").map(V => V.split(" ")).filter(V => V[0] === HOGE)[0] === undefined ? [1,2,3] : document.querySelector(".changer").value.split("\n").map(V => V.split(" ")).filter(V => V[0] === HOGE)[0],
-
-
-                        // document.querySelector(".changer").value.split("\n").map(V=> V.split(" ")[0] === "foo" ? V.split(" "): [1,2,3]),
-                        // document.querySelector(".changer").value.split("\n").filter(V => V.split(" ").includes("$1")).map(V => V.split(" ")).flat() ,
                         "$1"
                     )
                 )
@@ -90,6 +72,27 @@ const changer = () => {
                     "\n",
                     `</br>`);
 };
+
+const makeSelectTag2 = () => {
+    let TEMP_question_VALUE= document.querySelector(".question").value;
+    // https://ramdajs.com/docs/#transpose
+    R.transpose([
+        document.querySelector(".changer").value.split("\n").map(V => V.split(" ")).map(V => V[0]),
+        document.querySelector(".changer").value.split("\n").map(V => V.split(" "))
+    ])
+    .forEach(V=>{
+        TEMP_question_VALUE = TEMP_question_VALUE.replaceAll(
+            V[0],
+            `<select class="blank" data-answer="${V[0]}" onchange="checker();">${makeOptionTag(V[1])}</select>`
+        )
+        .replaceAll(
+            "\n",
+            `</br>`);
+    })
+    return TEMP_question_VALUE;
+};
+const changer2 = () => document.querySelector(".answer").innerHTML = makeSelectTag2();
+
 const tester = () => {
     // document.querySelectorAll(".blank")[0].value = "foo";
     // document.querySelectorAll(".blank")[1].value = "qux";
@@ -109,7 +112,7 @@ const checker = () => {
 };
 
 initer();
-changer();
+changer2();
 tester();
 checker();
     // const changer2 = () => {
