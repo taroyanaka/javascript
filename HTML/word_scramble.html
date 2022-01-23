@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>word-scramble</title>
+    <script src="ramda.js"></script>
+    <style>
+        button {
+            height: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+<button class="exe" onclick="exe()">exe!!!!!!!!</button>
+
+LIMIT:<input type="number" name="LIMIT" class="LIMIT" value="3">
+SEED:<input type="number" name="SEED" class="SEED" value="42">
+<button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
+<button class="sample1" onclick="sample1()">sample1!!!!!!!!</button>
+<div class="collapse">
+    <textarea name="question" class="question" cols="100" rows="10" oninput="changer();checker();"></textarea>
+</div>
+<div class="answer"></div>
+<script>
+const collapseChanger = () => {
+    const collapseStyle = document.querySelector(`.collapse`).style;
+    if (collapseStyle.visibility === "hidden") {
+        collapseStyle.visibility = "visible";
+        collapseStyle.height = collapseStyle.width = "";
+    } else {
+        collapseStyle.visibility = "hidden";
+        collapseStyle.width = collapseStyle.height = 0;
+    }
+};
+
+
+function random(seed) {
+    var x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
+function shuffle(array, seed) {
+    var m = array.length, t, i;
+    while (m) {
+        i = Math.floor(random(seed) * m--);
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+        ++seed
+    }
+
+    return array;
+}
+
+// https://stackoverflow.com/a/37980601
+const range = n => Array.from(Array(n).keys())
+
+function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
+
+// const SEED = 42;
+// const LIMIT = 3;
+// https://stackoverflow.com/a/37535876
+const wordScramble = (STR, SEED_NUM_COUNT) => {
+    const TMP_SEED = Number(document.querySelector(`.SEED`).value) + SEED_NUM_COUNT;
+    if(STR.length < 2){return};
+    let RESULT = shuffle([...STR], TMP_SEED).join("");
+    return RESULT;
+};
+
+const makeManyWordScramble = (STR, TIMES) => {
+    const words = range(TIMES).reduce((WORDS, V, IDX) => { WORDS.push(wordScramble(STR, IDX)); return WORDS; }, WORDS = [STR])
+    const uniq_words = uniq(words);
+    return uniq_words;
+};
+
+const TIMES = 100;
+const makeManyWordScrambleWithLimit = (STR, TIMES, LIMIT) => makeManyWordScramble(STR,TIMES).slice(0, LIMIT);
+
+// https://webllica.com/change-double-byte-to-half-width/
+/**
+ * 全角から半角への変革関数
+ * 入力値の英数記号を半角変換して返却
+ * [引数]   strVal: 入力値
+ * [返却値] String(): 半角変換された文字列
+ */
+function toHalfWidth(strVal) {
+    // 半角変換
+    var halfVal = strVal.replace(/[！-～]/g,
+        function (tmpStr) {
+            // 文字コードをシフト
+            return String.fromCharCode(tmpStr.charCodeAt(0) - 0xFEE0);
+        }
+    );
+
+    // 文字コードシフトで対応できない文字の変換
+    return halfVal.replace(/”/g, "\"")
+        .replace(/’/g, "'")
+        .replace(/‘/g, "`")
+        .replace(/￥/g, "\\")
+        .replace(/　/g, " ")
+        .replace(/〜/g, "~");
+}
+
+const trim2 = (STR) => STR.trim().replace(/\s/g, '').replace(/　/g, '');
+const trim3 = (STR) => toHalfWidth(trim2(STR));
+
+
+const exe = () => {
+    document.querySelector(`.question`).value = 
+        document.querySelector(`.question`).value.split("\n").map(STR => {
+            const mySTR = trim3(STR);
+            if(mySTR.length<1){return mySTR}
+            return makeManyWordScrambleWithLimit(
+                        mySTR,
+                        100,
+                        Number(document.querySelector(`.LIMIT`).value)
+                    )
+                    .join(" ")
+        }).join("\n")
+};
+
+
+
+const sample0 = () => document.querySelector(`.question`).value = `foo`;
+const sample1 = () => document.querySelector(`.question`).value = `foo
+fo
+ bar 
+　 bar　2 ３
+buzbuz
+
+quuuxabcdef
+2📱ほ🗻ン語`;
+
+
+// sample0();
+// sample1();
+// exe();
+// sample();
+// tester();
+// checker();
+</script>
+</body>
+
+</html>
