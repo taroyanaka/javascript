@@ -23,10 +23,11 @@
 <!-- SEED:<input type="number" name="SEED" class="SEED" value="42"> -->
 <button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
 <button class="sample0" onclick="sample0()">sample0</button>
-<button class="sample1" onclick="sample1()">sample1</button>
+<!-- <button class="sample1" onclick="sample1()">sample1</button> -->
 <button class="sample0,1,exe" onclick="sample0();sample1();exe()">sample0,1,exe</button>
 <div class="collapse">
     <textarea name="original" class="original" cols="100" rows="10" oninput="exe();checker();"></textarea>
+    <button class="copy" onclick="copy()">copy</button>
     <textarea name="replaced" class="replaced" cols="100" rows="10" oninput="exe();checker();"></textarea>
     <input type="text" name="replacer" class="replacer" value="" oninput="errorCheck()">
 <button class="anyReplacer1" onclick="anyReplacer1()">anyReplacer1</button>
@@ -61,7 +62,7 @@ buzbuz
 
 quuuxabcdef
 2📱ほ🗻ン語`;
-const sample1 = () => document.querySelector(`.replaced`).value = `foo
+const sample1 = () => document.querySelector(`.replaced`).value = `f🤍🤍
 fo
  b🤍🤍 
 　 b🤍🤍　2 ３
@@ -70,8 +71,12 @@ bu🤍🤍uz
 quuux🤍🤍🤍def
 2📱ほ🗻ン語`;
 
-const regex = "foo";
-const RE = new RegExp(regex, "gm");
+
+
+
+const copy = () => document.querySelector(`.replaced`).value = document.querySelector(`.original`).value;
+// const regex = "foo";
+// const RE = new RegExp(regex, "gm");
 
 function transpose(outerlist) { return outerlist.reduce((RES, innerList) => { innerList.forEach((VAL, IDX) => { if (typeof RES[IDX] === 'undefined') { RES[IDX] = [] }; RES[IDX].push(VAL) }); return RES }, RES = []) };
 function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
@@ -85,12 +90,6 @@ const fn = () => {
             V[0] !== V[1] ? A.push(V[0]) : A.push(null);
             return A; },
         A = [])
-// .map(V=>V===null ? '"],["' : V)
-// .join("")
-// .replaceAll('[""],',"")
-// .replaceAll(/^"],/gm,"")
-// .replaceAll(/,\["$/g,"")
-// .split(",")
 };
 
 const fn2 = () => {
