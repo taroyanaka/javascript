@@ -23,8 +23,11 @@
 <div class="collapse">
 <textarea name="original" class="original" cols="100" rows="10" oninput="fn3();checker();"></textarea>
 <textarea name="replaced" class="replaced" cols="100" rows="10" oninput="fn3();checker();"></textarea>
-<input type="text" name="replacer" class="replacer" value="-">
+<input type="text" name="replacer" class="replacer" value="-" oninput="errorCheck()">
+<span class="errorMessage"></span>
 <textarea name="question" class="question" cols="100" rows="10" oninput="fn3();checker();"></textarea>
+
+<button class="errorCheck" onclick="errorCheck()">errorCheck!!!!!!!!</button>
 </div>
 <div class="answer"></div>
 <script>
@@ -75,7 +78,10 @@ const fn = () => {
     return transpose([
         [...document.querySelector(`.original`).value],
         [...document.querySelector(`.replaced`).value]
-    ]).reduce((A, V, IDX) => { V[0] !== V[1] ? A.push(V[0]) : A.push(null); return A; }, A = [])
+    ]).reduce((A, V, IDX) => {
+            V[0] !== V[1] ? A.push(V[0]) : A.push(null);
+            return A; },
+        A = [])
 // .map(V=>V===null ? '"],["' : V)
 // .join("")
 // .replaceAll('[""],',"")
@@ -98,6 +104,19 @@ const fn2 = () => {
 const fn3 = () => document.querySelector(`.question`).value = uniq(fn2()).join("\n");
 
 fn3();
+const tester = () => document.querySelector(`.replacer`).value = 2;
+let TMP = document.querySelector(`.replacer`).value;
+const errorCheck = () => {
+    document.querySelector(`.errorMessage`).textContent = "";
+    if (document.querySelector(`.replaced`).value.includes(
+        document.querySelector(`.replacer`).value)) {
+            document.querySelector(`.errorMessage`).textContent = `no use word, ${document.querySelector(`.replacer`).value}`;
+            document.querySelector(`.replaced`).value = document.querySelector(`.original`).value;
+            document.querySelector(`.replacer`).value = TMP;
+            return;
+    }
+}
+
 </script>
 </body>
 
