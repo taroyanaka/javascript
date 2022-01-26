@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>question_list_maker</title>
+    <!-- <script src="ramda.js"></script> -->
+    <style>
+        button {
+            height: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+<button class="exe" onclick="exe()">exe!!!!!!!!</button>
+<!-- LIMIT:<input type="number" name="LIMIT" class="LIMIT" value="3"> -->
+<!-- SEED:<input type="number" name="SEED" class="SEED" value="42"> -->
+<button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
+<button class="sample1" onclick="sample1()">sample1!!!!!!!!</button>
+<div class="collapse">
+<textarea name="original" class="original" cols="100" rows="10" oninput="fn3();checker();"></textarea>
+<textarea name="replaced" class="replaced" cols="100" rows="10" oninput="fn3();checker();"></textarea>
+<input type="text" name="replacer" class="replacer" value="-">
+<textarea name="question" class="question" cols="100" rows="10" oninput="fn3();checker();"></textarea>
+</div>
+<div class="answer"></div>
+<script>
+const collapseChanger = () => {
+    const collapseStyle = document.querySelector(`.collapse`).style;
+    if (collapseStyle.visibility === "hidden") {
+        collapseStyle.visibility = "visible";
+        collapseStyle.height = collapseStyle.width = "";
+    } else {
+        collapseStyle.visibility = "hidden";
+        collapseStyle.width = collapseStyle.height = 0;
+    }
+};
+
+
+const sample0 = () => document.querySelector(`.original`).value = document.querySelector(`.replaced`).value = `foo
+fo
+ bar 
+　 bar　2 ３
+buzbuz
+
+quuuxabcdef
+2📱ほ🗻ン語`;
+const sample1 = () => document.querySelector(`.replaced`).value = `foo
+fo
+ b-- 
+　 b--　2 ３
+bu--uz
+
+quuux---def
+2📱ほ🗻ン語`;
+
+sample0();
+sample1();
+// exe();
+// sample();
+// tester();
+// checker();
+
+const regex = "foo";
+const RE = new RegExp(regex, "gm");
+
+function transpose(outerlist) { return outerlist.reduce((RES, innerList) => { innerList.forEach((VAL, IDX) => { if (typeof RES[IDX] === 'undefined') { RES[IDX] = [] }; RES[IDX].push(VAL) }); return RES }, RES = []) };
+function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
+
+
+const fn = () => {
+    return transpose([
+        [...document.querySelector(`.original`).value],
+        [...document.querySelector(`.replaced`).value]
+    ]).reduce((A, V, IDX) => { V[0] !== V[1] ? A.push(V[0]) : A.push(null); return A; }, A = [])
+// .map(V=>V===null ? '"],["' : V)
+// .join("")
+// .replaceAll('[""],',"")
+// .replaceAll(/^"],/gm,"")
+// .replaceAll(/,\["$/g,"")
+// .split(",")
+};
+
+const fn2 = () => {
+    return fn()
+        .reduce((A, V, IDX) => {
+                V ? A.push(V) : A.push(document.querySelector(".replacer").value);
+                return A; },
+            A = [])
+        .join("")
+        .split(document.querySelector(".replacer").value)
+        .filter(V => V !== '')
+};
+
+const fn3 = () => document.querySelector(`.question`).value = uniq(fn2()).join("\n");
+
+fn3();
+</script>
+</body>
+
+</html>

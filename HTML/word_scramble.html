@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>word-scramble</title>
-    <script src="ramda.js"></script>
+    <!-- <script src="ramda.js"></script> -->
     <style>
         button {
             height: 3rem;
@@ -39,11 +39,11 @@ const collapseChanger = () => {
 
 
 function random(seed) {
-    var x = Math.sin(seed++) * 10000;
+    const x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
 }
-function shuffle(array, seed) {
-    var m = array.length, t, i;
+function seedShuffle(array, seed) {
+    let m = array.length, t, i;
     while (m) {
         i = Math.floor(random(seed) * m--);
         t = array[m];
@@ -51,22 +51,19 @@ function shuffle(array, seed) {
         array[i] = t;
         ++seed
     }
-
     return array;
 }
 
 // https://stackoverflow.com/a/37980601
 const range = n => Array.from(Array(n).keys())
-
+// https://ramdajs.com/docs/#uniq
 function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
 
-// const SEED = 42;
-// const LIMIT = 3;
 // https://stackoverflow.com/a/37535876
 const wordScramble = (STR, SEED_NUM_COUNT) => {
     const TMP_SEED = Number(document.querySelector(`.SEED`).value) + SEED_NUM_COUNT;
     if(STR.length < 2){return};
-    let RESULT = shuffle([...STR], TMP_SEED).join("");
+    let RESULT = seedShuffle([...STR], TMP_SEED).join("");
     return RESULT;
 };
 
