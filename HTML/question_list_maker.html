@@ -8,27 +8,37 @@
     <title>question_list_maker</title>
     <!-- <script src="ramda.js"></script> -->
     <style>
-        button {
+        button,input {
             height: 3rem;
+        }
+        input{
+            font-size: 3rem;
         }
     </style>
 </head>
 
 <body>
-<button class="exe" onclick="exe()">exe!!!!!!!!</button>
+<!-- <button class="exe" onclick="exe()">exe</button> -->
 <!-- LIMIT:<input type="number" name="LIMIT" class="LIMIT" value="3"> -->
 <!-- SEED:<input type="number" name="SEED" class="SEED" value="42"> -->
 <button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
-<button class="sample1" onclick="sample1()">sample1!!!!!!!!</button>
+<button class="sample0" onclick="sample0()">sample0</button>
+<button class="sample1" onclick="sample1()">sample1</button>
+<button class="sample0,1,exe" onclick="sample0();sample1();exe()">sample0,1,exe</button>
 <div class="collapse">
-<textarea name="original" class="original" cols="100" rows="10" oninput="fn3();checker();"></textarea>
-<textarea name="replaced" class="replaced" cols="100" rows="10" oninput="fn3();checker();"></textarea>
-<input type="text" name="replacer" class="replacer" value="-" oninput="errorCheck()">
-<span class="errorMessage"></span>
-<textarea name="question" class="question" cols="100" rows="10" oninput="fn3();checker();"></textarea>
-
-<button class="errorCheck" onclick="errorCheck()">errorCheck!!!!!!!!</button>
+    <textarea name="original" class="original" cols="100" rows="10" oninput="exe();checker();"></textarea>
+    <textarea name="replaced" class="replaced" cols="100" rows="10" oninput="exe();checker();"></textarea>
+    <input type="text" name="replacer" class="replacer" value="" oninput="errorCheck()">
+<button class="anyReplacer1" onclick="anyReplacer1()">anyReplacer1</button>
+<button class="anyReplacer2" onclick="anyReplacer2()">anyReplacer2</button>
+<button class="anyReplacer3" onclick="anyReplacer3()">anyReplacer3</button>
+<button class="anyReplacer4" onclick="anyReplacer4()">anyReplacer4</button>
+<button class="anyReplacer5" onclick="anyReplacer5()">anyReplacer5</button>
 </div>
+<textarea name="question" class="question" cols="100" rows="10" oninput="exe();checker();"></textarea>
+
+<!-- <button class="errorCheck" onclick="errorCheck()">errorCheck</button> -->
+
 <div class="answer"></div>
 <script>
 const collapseChanger = () => {
@@ -53,19 +63,12 @@ quuuxabcdef
 2📱ほ🗻ン語`;
 const sample1 = () => document.querySelector(`.replaced`).value = `foo
 fo
- b-- 
-　 b--　2 ３
-bu--uz
+ b🤍🤍 
+　 b🤍🤍　2 ３
+bu🤍🤍uz
 
-quuux---def
+quuux🤍🤍🤍def
 2📱ほ🗻ン語`;
-
-sample0();
-sample1();
-// exe();
-// sample();
-// tester();
-// checker();
 
 const regex = "foo";
 const RE = new RegExp(regex, "gm");
@@ -101,10 +104,8 @@ const fn2 = () => {
         .filter(V => V !== '')
 };
 
-const fn3 = () => document.querySelector(`.question`).value = uniq(fn2()).join("\n");
+const exe = () => document.querySelector(`.question`).value = uniq(fn2()).join("\n");
 
-fn3();
-const tester = () => document.querySelector(`.replacer`).value = 2;
 let TMP = document.querySelector(`.replacer`).value;
 const errorCheck = () => {
     document.querySelector(`.errorMessage`).textContent = "";
@@ -117,6 +118,20 @@ const errorCheck = () => {
     }
 }
 
+
+const init = () => document.querySelector(`.replacer`).value = "🤍";
+const anyReplacer = (STR) => {
+    document.querySelector(`.replaced`).value = document.querySelector(`.replaced`).value.replaceAll(document.querySelector(`.replacer`).value, STR);
+    document.querySelector(`.replacer`).value = STR;
+    exe();
+};
+const anyReplacer1 = () => {anyReplacer("-");exe()};
+const anyReplacer2 = () => {anyReplacer("|");exe()};
+const anyReplacer3 = () => {anyReplacer("?");exe()};
+const anyReplacer4 = () => {anyReplacer(".");exe()};
+const anyReplacer5 = () => {anyReplacer("日");exe()};
+
+init();
 </script>
 </body>
 
