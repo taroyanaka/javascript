@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>question_list_maker2</title>
+    <style>
+        button,input {
+            height: 3rem;
+        }
+        input{
+            font-size: 3rem;
+        }
+        
+    </style>
+</head>
+
+<body>
+<button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
+<button class="sample0();sample1();exe();" onclick="sample0();sample1();exe();">sample0();sample1();exe();</button>
+<div class="collapse">
+    <textarea name="original" class="original" cols="100" rows="10" oninput="exe();checker();"></textarea>
+    <button class="copy" onclick="copy()">copy</button>
+    <textarea name="replaced" class="replaced" cols="100" rows="10" oninput="exe();checker();"></textarea>
+</div>
+<textarea name="question" class="question" cols="100" rows="10" oninput="exe();checker();"></textarea>
+
+<div class="answer"></div>
+<script>
+function transpose(outerlist) { return outerlist.reduce((RES, innerList) => { innerList.forEach((VAL, IDX) => { if (typeof RES[IDX] === 'undefined') { RES[IDX] = [] }; RES[IDX].push(VAL) }); return RES }, RES = []) };
+
+const collapseChanger = () => {
+    const collapseStyle = document.querySelector(`.collapse`).style;
+    if (collapseStyle.visibility === "hidden") {
+        collapseStyle.visibility = "visible";
+        collapseStyle.height = collapseStyle.width = "";
+    } else {
+        collapseStyle.visibility = "hidden";
+        collapseStyle.width = collapseStyle.height = 0;
+    }
+};
+
+
+const sample0 = () => document.querySelector(`.original`).value = `foo
+fo
+ bar 
+　 bar　2 ３
+buzbuz
+
+quuuxabcdef
+2📱ほ🗻ン語`;
+const sample1 = () => document.querySelector(`.replaced`).value = `f
+fo
+  
+　 bar　2 ３
+buzbuz
+
+uuxabcdef
+ン語`;
+
+const sample2_0 = () => document.querySelector(`.original`).value = `fof`;
+const sample2_1 = () => document.querySelector(`.replaced`).value = `ff`;
+
+const exe = () => 0;
+const checker = () => 0;
+
+// sample0(); sample1(); exe();
+sample2_0(); sample2_1(); exe();
+
+const a = [...document.querySelector(`.original`).value];
+const b = [...document.querySelector(`.replaced`).value];
+
+let c = [];
+let aIDX=0;
+let bIDX=0;
+
+
+c = []; bIDX = 0;
+a.forEach(V => {
+    if (V === b[bIDX]) {
+        c.push(V);
+    } else {
+        c.push(null); bIDX++;
+    }
+})
+
+console.log(c);
+
+</script>
+</body>
+
+</html>

@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>question_list_maker</title>
-    <!-- <script src="ramda.js"></script> -->
     <style>
         button,input {
             height: 3rem;
@@ -14,31 +13,27 @@
         input{
             font-size: 3rem;
         }
+        
     </style>
 </head>
 
 <body>
 <!-- <button class="exe" onclick="exe()">exe</button> -->
-<!-- LIMIT:<input type="number" name="LIMIT" class="LIMIT" value="3"> -->
-<!-- SEED:<input type="number" name="SEED" class="SEED" value="42"> -->
 <button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
 <button class="sample0" onclick="sample0()">sample0</button>
-<!-- <button class="sample1" onclick="sample1()">sample1</button> -->
 <button class="sample0,1,exe" onclick="sample0();sample1();exe()">sample0,1,exe</button>
 <div class="collapse">
     <textarea name="original" class="original" cols="100" rows="10" oninput="exe();checker();"></textarea>
     <button class="copy" onclick="copy()">copy</button>
     <textarea name="replaced" class="replaced" cols="100" rows="10" oninput="exe();checker();"></textarea>
     <input type="text" name="replacer" class="replacer" value="" oninput="errorCheck()">
-<button class="anyReplacer1" onclick="anyReplacer1()">anyReplacer1</button>
-<button class="anyReplacer2" onclick="anyReplacer2()">anyReplacer2</button>
-<button class="anyReplacer3" onclick="anyReplacer3()">anyReplacer3</button>
-<button class="anyReplacer4" onclick="anyReplacer4()">anyReplacer4</button>
-<button class="anyReplacer5" onclick="anyReplacer5()">anyReplacer5</button>
+    <button class="anyReplacer1" onclick="anyReplacer1()">anyReplacer1</button>
+    <button class="anyReplacer2" onclick="anyReplacer2()">anyReplacer2</button>
+    <button class="anyReplacer3" onclick="anyReplacer3()">anyReplacer3</button>
+    <button class="anyReplacer4" onclick="anyReplacer4()">anyReplacer4</button>
+    <button class="anyReplacer5" onclick="anyReplacer5()">anyReplacer5</button>
 </div>
 <textarea name="question" class="question" cols="100" rows="10" oninput="exe();checker();"></textarea>
-
-<!-- <button class="errorCheck" onclick="errorCheck()">errorCheck</button> -->
 
 <div class="answer"></div>
 <script>
@@ -71,12 +66,7 @@ bu🤍🤍uz
 quuux🤍🤍🤍def
 2📱ほ🗻ン語`;
 
-
-
-
 const copy = () => document.querySelector(`.replaced`).value = document.querySelector(`.original`).value;
-// const regex = "foo";
-// const RE = new RegExp(regex, "gm");
 
 function transpose(outerlist) { return outerlist.reduce((RES, innerList) => { innerList.forEach((VAL, IDX) => { if (typeof RES[IDX] === 'undefined') { RES[IDX] = [] }; RES[IDX].push(VAL) }); return RES }, RES = []) };
 function uniq(list) { list = list.map(V => { return JSON.stringify(V) }); return [...new Set(list)].map(V => { return JSON.parse(V) }) };
