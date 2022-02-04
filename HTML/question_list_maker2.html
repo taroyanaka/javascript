@@ -31,6 +31,28 @@
 <script>
 function transpose(outerlist) { return outerlist.reduce((RES, innerList) => { innerList.forEach((VAL, IDX) => { if (typeof RES[IDX] === 'undefined') { RES[IDX] = [] }; RES[IDX].push(VAL) }); return RES }, RES = []) };
 
+
+// https://ramdajs.com/docs/#splitWhenever
+// splitWhenever((value) => value === 2, [1, 2, 3, 2, 4, 5, 2, 6, 7]);
+//=> [[1], [3], [4, 5], [6, 7]]
+function splitWhenever(pred, list) {
+    var acc = [];
+    var curr = [];
+
+    for (var i = 0; i < list.length; i = i + 1) {
+        if (!pred(list[i])) {
+            curr.push(list[i]);
+        }
+
+        if ((i < list.length - 1 && pred(list[i + 1]) || i === list.length - 1) && curr.length > 0) {
+            acc.push(curr);
+            curr = [];
+        }
+    }
+
+    return acc;
+}
+
 const collapseChanger = () => {
     const collapseStyle = document.querySelector(`.collapse`).style;
     if (collapseStyle.visibility === "hidden") {
@@ -43,8 +65,8 @@ const collapseChanger = () => {
 };
 
 
-const sample0 = () => document.querySelector(`.original`).value = `foo
-fo
+const sample0 = () => document.querySelector(`.original`).value = `fooo
+foo
  bar 
 　 bar　2 ３
 buzbuz
@@ -52,7 +74,7 @@ buzbuz
 quuuxabcdef
 2📱ほ🗻ン語`;
 const sample1 = () => document.querySelector(`.replaced`).value = `f
-fo
+oo
   
 　 bar　2 ３
 buzbuz
@@ -60,33 +82,44 @@ buzbuz
 uuxabcdef
 ン語`;
 
-const sample2_0 = () => document.querySelector(`.original`).value = `fof`;
-const sample2_1 = () => document.querySelector(`.replaced`).value = `ff`;
+const sample2_0 = () => document.querySelector(`.original`).value = `fff
+abc
+d`;
+const sample2_1 = () => document.querySelector(`.replaced`).value = `f
+a`;
 
-const exe = () => 0;
 const checker = () => 0;
 
-// sample0(); sample1(); exe();
-sample2_0(); sample2_1(); exe();
+const exe = () => {
+    const a = [...document.querySelector(`.original`).value];
+    const b = [...document.querySelector(`.replaced`).value];
 
-const a = [...document.querySelector(`.original`).value];
-const b = [...document.querySelector(`.replaced`).value];
+    let c = [];
+    let aIDX = 0;
+    let bIDX = 0;
 
-let c = [];
-let aIDX=0;
-let bIDX=0;
+    c = []; bIDX = 0;
+    a.forEach((V, IDX) => {
+        if (V === b[bIDX]) { c.push(null); bIDX++ }
+        else { c.push(V); }
+    }); console.log("c is ", c);
+    // d = c.map(V => V === '\n' || V === null ? null : V)
+    d = c.map(V => V);
+    // c = []; bIDX = 0;
+    e = splitWhenever((value) => value === null, d);
+    console.log(a);
+    console.log(b);
+    console.log(c);
+    console.log(d);
+    console.log(e);
+// d = transpose([a, c])
 
+    document.querySelector(`.question`).value = e.map(V => V.join("")).join("\n");
+}
 
-c = []; bIDX = 0;
-a.forEach(V => {
-    if (V === b[bIDX]) {
-        c.push(V);
-    } else {
-        c.push(null); bIDX++;
-    }
-})
+sample0(); sample1(); exe();
+// sample2_0(); sample2_1(); exe();
 
-console.log(c);
 
 </script>
 </body>
