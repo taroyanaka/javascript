@@ -64,6 +64,10 @@ const collapseChanger = () => {
     }
 };
 
+const copy = () => {
+    document.querySelector(`.replaced`).value = document.querySelector(`.original`).value;
+    exe();
+}
 
 const sample0 = () => document.querySelector(`.original`).value = `fooo
 foo
@@ -87,40 +91,40 @@ abc
 d`;
 const sample2_1 = () => document.querySelector(`.replaced`).value = `f
 a`;
+const sample3_0 = () => document.querySelector(`.original`).value = `zaabcde`;
+const sample3_1 = () => document.querySelector(`.replaced`).value = `abcde`;
+const sample4_0 = () => document.querySelector(`.original`).value = `buzbuz`;
+const sample4_1 = () => document.querySelector(`.replaced`).value = `bz`;
 
 const checker = () => 0;
 
+
+const splitByNull = (array) => splitWhenever((value) => value === null, array);
+const insertToAnywhere = (WHERE, ARRAY) => document.querySelector(WHERE).value = ARRAY.map(V => V.join("")).join("\n");
 const exe = () => {
-    const a = [...document.querySelector(`.original`).value];
-    const b = [...document.querySelector(`.replaced`).value];
+    const originalAry = [...document.querySelector(`.original`).value];
+    const replacedAry = [...document.querySelector(`.replaced`).value];
 
-    let c = [];
-    let aIDX = 0;
-    let bIDX = 0;
-
-    c = []; bIDX = 0;
-    a.forEach((V, IDX) => {
-        if ( V === b[bIDX] ) { c.push(null); bIDX++ }
-        else { c.push(V); }
-    }); console.log("c is ", c);
-    d = c.map(V => V === '\n' || V === null ? null : V)
-    // d = c.map(V => V);
-    // c = []; bIDX = 0;
-    e = splitWhenever((value) => value === null, d);
-    console.log(a);
-    console.log(b);
-    console.log(c);
-    console.log(d);
-    console.log(e);
-// d = transpose([a, c])
-
-    document.querySelector(`.question`).value = e.map(V => V.join("")).join("\n");
+    let RESULT_ARY = [];
+    let replacedAryIDX = 0;
+    originalAry.forEach((original_VAL, originalAryIDX) => {
+        if ( original_VAL === replacedAry[replacedAryIDX] ) { 
+            if(original_VAL !== originalAry[originalAryIDX + 1]){ RESULT_ARY.push(null) };
+            replacedAryIDX++;
+         }
+        else { RESULT_ARY.push(original_VAL); }
+    });
+    const splitedArrayByNull = splitByNull(RESULT_ARY);
+    insertToAnywhere(".question", splitedArrayByNull);
+    // console.log("originalAry is", originalAry);
+    // console.log("replacedAry is", replacedAry);
+    // console.log("splitedArrayByNull is", splitedArrayByNull);
 }
 
-// sample0(); sample1(); exe();
+sample0(); sample1(); exe();
 // sample2_0(); sample2_1(); exe();
-
-
+// sample3_0(); sample3_1(); exe();
+// sample4_0(); sample4_1(); exe();
 </script>
 </body>
 
