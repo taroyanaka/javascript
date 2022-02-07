@@ -35,22 +35,17 @@ function transpose(outerlist) { return outerlist.reduce((RES, innerList) => { in
 // https://ramdajs.com/docs/#splitWhenever
 // splitWhenever((value) => value === 2, [1, 2, 3, 2, 4, 5, 2, 6, 7]);
 //=> [[1], [3], [4, 5], [6, 7]]
-function splitWhenever(pred, list) {
-    var acc = [];
-    var curr = [];
-
-    for (var i = 0; i < list.length; i = i + 1) {
-        if (!pred(list[i])) {
-            curr.push(list[i]);
+function splitWhenever(splitPointCallBack, list) {
+    let innerList = [];
+    return list.reduce((outerList, VAL, IDX) => { 
+        if (splitPointCallBack(VAL) === false) { innerList.push(VAL) }
+        const isNotEmptyList = (list) => list.length > 0;
+        const isNextIndexIsTrue = (LIST, INDEX) => splitPointCallBack(LIST[INDEX + 1]);
+        if ( ( isNextIndexIsTrue(list, IDX) || IDX === list.length - 1) && isNotEmptyList(innerList) ) {
+            outerList.push(innerList);
+            innerList = [];
         }
-
-        if ((i < list.length - 1 && pred(list[i + 1]) || i === list.length - 1) && curr.length > 0) {
-            acc.push(curr);
-            curr = [];
-        }
-    }
-
-    return acc;
+    return outerList; }, outerList = [])
 }
 
 const collapseChanger = () => {
@@ -116,12 +111,9 @@ const exe = () => {
     });
     const splitedArrayByNull = splitByNull(RESULT_ARY);
     insertToAnywhere(".question", splitedArrayByNull);
-    // console.log("originalAry is", originalAry);
-    // console.log("replacedAry is", replacedAry);
-    // console.log("splitedArrayByNull is", splitedArrayByNull);
 }
 
-sample0(); sample1(); exe();
+// sample0(); sample1(); exe();
 // sample2_0(); sample2_1(); exe();
 // sample3_0(); sample3_1(); exe();
 // sample4_0(); sample4_1(); exe();
