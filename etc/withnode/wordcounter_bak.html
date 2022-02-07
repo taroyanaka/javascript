@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8" />
+<title>word counter</title>
+<script src="ramda.min.js"></script>
+<script src="clipboard.js"></script>
+<script src="./WethePeopleoftheUnitedStates.js"></script>
+<style>
+	.preprocess{
+		width: 3rem;
+		height: 3rem;
+	}
+</style>
+</head>
+<body>
+	<div>
+		under <input type="number" name="number1" id="number1" value="1" min="1" onChange="count();">
+	</div>
+	<div>
+		over <input type="number" name="number0" id="number0" value="1" min="1" onChange="count();">
+	</div>
+	<!-- <span> -->
+	preprocess:<input type="checkbox" name="preprocess" class="preprocess" checked>
+	<!-- </span> -->
+	<div>
+		<textarea name="foo" id="foo" cols="50" rows="10" required="required" autofocus="autofocus" placeholder="foo bar foo baz" onchange="count();"></textarea>
+		<button class="btn" data-clipboard-target="#bar">COPY</button>
+		<button class="btn" data-clipboard-target="#baz">COPY</button>
+	</div>
+	<div>
+		<textarea name="bar" id="bar" cols="20" rows="100" required="required"></textarea>
+		<textarea name="baz" id="baz" cols="20" rows="100" required="required"></textarea>
+	</div>
+<script>
+	// https://webllica.com/change-double-byte-to-half-width/
+	/**
+	 * 全角から半角への変革関数
+	 * 入力値の英数記号を半角変換して返却
+	 * [引数]   strVal: 入力値
+	 * [返却値] String(): 半角変換された文字列
+	 */
+	function toHalfWidth(strVal) {
+		// 半角変換
+		var halfVal = strVal.replace(/[！-～]/g,
+			function (tmpStr) {
+				// 文字コードをシフト
+				return String.fromCharCode(tmpStr.charCodeAt(0) - 0xFEE0);
+			}
+		);
+
+		// 文字コードシフトで対応できない文字の変換
+		return halfVal.replace(/”/g, "\"")
+			.replace(/’/g, "'")
+			.replace(/‘/g, "`")
+			.replace(/￥/g, "\\")
+			.replace(/　/g, " ")
+			.replace(/〜/g, "~");
+	}
+
+	// const removeQuote = (STR) => STR.replaceAll("'", "");
+	// const removeDoubleQuote = (STR) => STR.replaceAll('"', "");
+	// const removeRoundBracket = (STR) => STR.replaceAll('(', "").replaceAll(')', "");
+	// const removeSquareBracket = (STR) => STR.replaceAll('[', "").replaceAll(']', "");
+	// const removeCurlyBracket = (STR) => STR.replaceAll('{', "").replaceAll('}', "");
+	// const removeAngleBracket = (STR) => STR.replaceAll('<', "").replaceAll('>', "");
+	// const removeColon = (STR) => STR.replaceAll(":", "");
+	// const removeSemiColon = (STR) => STR.replaceAll(";", "");
+	// const removeComma = (STR) => STR.replaceAll(",", "");
+	// const removeDot = (STR) => STR.replaceAll(".", "");
+
+	const removeAnyStrArrayFromSTR = (STR, AnyStrArray) =>
+		AnyStrArray.reduce((REPLACED, ANY) => {
+			return REPLACED.replaceAll(ANY, "") }
+		, REPLACED = STR);
+
+	const pre = (STR) =>
+		// removeQuote(
+		// removeDoubleQuote(
+		// removeRoundBracket(
+		// removeSquareBracket(
+		// removeCurlyBracket(
+		// removeAngleBracket(
+		// removeColon(
+		// removeSemiColon(
+		// removeComma(
+		// removeDot(
+		// toLowerCase(
+		// 	STR
+		// )))))))))))
+			removeAnyStrArrayFromSTR(STR,
+				['"', "'", "(", ")", "[", "]", "{", "}", "<", ">", ":", ";", ",", "."])
+			.toLowerCase()
+		;
+
+
+	const myTrim = (STR) => pre(toHalfWidth(STR.trim()));
+
+	new ClipboardJS('.btn');
+	let sample;
+	const count = ()=>{
+		const val0 = R.split(" ")(
+			document.querySelector(`.preprocess`).checked
+				? myTrim(document.querySelector(`#foo`).value)
+				: document.querySelector(`#foo`).value
+		);
+		const val1 = R.countBy(R.identity)(val0);
+		const val2 = R.toPairs(val1);
+		const by1AryDescend = R.descend(R.prop(1));
+		const val3 = R.sort(by1AryDescend, val2);
+		const UNDER = N => N[1] <= Number(document.querySelector(`#number1`).value);
+		const val4 = R.filter(UNDER, val3);
+		const OVER = N => N[1] >= Number(document.querySelector(`#number0`).value);
+		const val5 = R.filter(OVER, val4);
+		document.querySelector(`#bar`).value = R.join("\n")(R.pluck(0)(val5));
+		document.querySelector(`#baz`).value = R.join("\n")(R.pluck(1)(val5));
+		// sample = R.clone(val5);
+		sample = R.clone(val0);
+	}
+
+     async function test() {
+        document.querySelector(`#foo`).value = await WethePeopleoftheUnitedStates;
+		count();
+		console.table(sample);
+    }
+	test();
+</script>
+</body>
+</html>
