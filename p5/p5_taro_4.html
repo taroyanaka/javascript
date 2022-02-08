@@ -132,8 +132,8 @@
             // background("#ffffff");
             background(random(makeColor1()));
             noLoop();
-            // noStroke();
-            strokeWeight(1);
+            noStroke();
+            // strokeWeight(1);
             // R.repeat(0, 100000).forEach(V => {
             //     V
             //     makeCircle(
@@ -170,7 +170,9 @@
             const y4 = NUM1 + random(5, 6);
             // quad(x1, y1, x2, y2, x3, y3, x4, y4);
 
-            circle(NUM0, NUM1, random(4, 7));
+            circle(NUM0, NUM1, 1);
+            // circle(NUM0, NUM1, random(8, 10));
+            // circle(NUM0, NUM1, random(20, 25));
             // circle(NUM0, NUM1, random(10, 100));
             // circle(NUM0, NUM1, random(1, 6));
 
@@ -204,7 +206,7 @@
 
             R.range(0, 110).forEach(X => {
             R.range(0, 110).forEach(Y => {
-                makeQuad(X*10, Y*10);
+                makeQuad(X*50, Y*50);
                 // translate(100, 100)
             });
             });
