@@ -33,6 +33,7 @@ const collapseChanger = () => {
     }
 };
 const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("");
+// const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("");
 const makeSelectTag = (ARY, ANSWER) => {
 return `<select class="blank" data-answer="${ANSWER}" onchange="checker();">
 ${makeOptionTag(ARY)}

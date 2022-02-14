@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cut-out</title>
+    <style></style>
+</head>
+
+<body>
+<input type="text" name="text" class="text" oninput="exe();">
+<div class="foo"><canvas></canvas></div>
+<!-- <div class="foo"><img src="" alt=""></div> -->
+<script>
+// const canvas = document.createElement("canvas");
+// const canvasWithImg = canvas.appendChild(document.createElement("img"));
+// document.querySelector(`.foo`).appendChild(canvasWithImg);
+
+
+// const ctx = document.querySelector(`canvas`).getContext("2d");
+
+document.querySelector("style").textContent += `html{font-size: 62.5%;}`;
+
+// 1font is 10px
+const oneFontPixelSize = 10;
+const widthRate = 30;
+const heightRate = 30;
+document.querySelector("style").textContent += `canvas{border: 1px solid black;width: ${widthRate * oneFontPixelSize}px;height: ${heightRate * oneFontPixelSize}px;}`;
+document.querySelector("style").textContent += `canvas { background:url("https://pngimg.com/uploads/cat/cat_PNG50538.png");
+background-repeat: no-repeat;
+width: ${widthRate * oneFontPixelSize}px;
+height: ${heightRate * oneFontPixelSize}px;
+}`;
+// https://pngimg.com/uploads/cat/cat_PNG50538.png
+
+// function resizeCanvas() {
+//     var img = document.querySelector('img');
+//     var width = img.clientWidth;
+//     var height = img.clientHeight;
+
+//     var canvas = document.querySelector('canvas');
+//     canvas.style.width = width;
+//     canvas.style.height = height;
+// }
+
+const fn = (text, ctx, startX, startY) => {
+    ctx.font = `${oneFontPixelSize}px Arial`;
+    ctx.fillText(text, startX, startY);
+};
+
+const init = () => document.querySelector(`.text`).value = "Hello, World";
+const exe = () => {
+    fn(
+        document.querySelector(`.text`).value,
+        document.querySelector(`canvas`).getContext("2d"), oneFontPixelSize*10,
+        oneFontPixelSize*10
+    );
+    // resizeCanvas();
+};
+init();
+exe();
+</script>
+</body>
+</html>

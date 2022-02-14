@@ -16,16 +16,204 @@
 
 <body>
 <button class="exe" onclick="exe()">exe!!!!!!!!</button>
-
+<input type="checkbox" name="removeZeroChar" class="removeZeroChar" checked>
 LIMIT:<input type="number" name="LIMIT" class="LIMIT" value="3">
 SEED:<input type="number" name="SEED" class="SEED" value="42">
 <button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
 <button class="sample1" onclick="sample1()">sample1!!!!!!!!</button>
 <div class="collapse">
-    <textarea name="question" class="question" cols="100" rows="10" oninput="changer();checker();"></textarea>
+    <textarea name="question" class="question" cols="100" rows="10" oninput="    checkHtmlTagAndJsKeyword();"></textarea>
 </div>
 <div class="answer"></div>
 <script>
+    const allHtmlTag = [
+            "a",
+            "abbr",
+            "acronym",
+            "address",
+            "applet",
+            "area",
+            "article",
+            "aside",
+            "audio",
+            "b",
+            "base",
+            "basefont",
+            "bb",
+            "bdo",
+            "big",
+            "blockquote",
+            "body",
+            "br",
+            "button",
+            "canvas",
+            "caption",
+            "center",
+            "cite",
+            "code",
+            "col",
+            "colgroup",
+            "command",
+            "datagrid",
+            "datalist",
+            "dd",
+            "del",
+            "details",
+            "dfn",
+            "dialog",
+            "dir",
+            "div",
+            "dl",
+            "dt",
+            "em",
+            "embed",
+            "eventsource",
+            "fieldset",
+            "figcaption",
+            "figure",
+            "font",
+            "footer",
+            "form",
+            "frame",
+            "frameset",
+            "h1",
+            "head",
+            "header",
+            "hgroup",
+            "hr",
+            "html",
+            "i",
+            "iframe",
+            "img",
+            "input",
+            "ins",
+            "isindex",
+            "kbd",
+            "keygen",
+            "label",
+            "legend",
+            "li",
+            "link",
+            "map",
+            "mark",
+            "menu",
+            "meta",
+            "meter",
+            "nav",
+            "noframes",
+            "noscript",
+            "object",
+            "ol",
+            "optgroup",
+            "option",
+            "output",
+            "p",
+            "param",
+            "pre",
+            "progress",
+            "q",
+            "rp",
+            "rt",
+            "ruby",
+            "s",
+            "samp",
+            "script",
+            "section",
+            "select",
+            "small",
+            "source",
+            "span",
+            "strike",
+            "strong",
+            "style",
+            "sub",
+            "sup",
+            "table",
+            "tbody",
+            "td",
+            "textarea",
+            "tfoot",
+            "th",
+            "thead",
+            "time",
+            "title",
+            "tr",
+            "track",
+            "tt",
+            "u",
+            "ul",
+            "var",
+            "video",
+            "wbr"
+        ];
+            const jsKeyword = [
+                "value",
+                "class",
+
+                "elected",
+
+                "abstract",
+                "arguments",
+                "boolean",
+                "break",
+                "byte",
+                "case",
+                "catch",
+                "char",
+                "const",
+                "continue",
+                "debugger",
+                "default",
+                "delete",
+                "do",
+                "double",
+                "else",
+                "eval",
+                "false",
+                "final",
+                "finally",
+                "float",
+                "for",
+                "function",
+                "goto",
+                "if",
+                "implements",
+                "in",
+                "instanceof",
+                "int",
+                "interface",
+                "let",
+                "long",
+                "native",
+                "new",
+                "null",
+                "package",
+                "private",
+                "protected",
+                "public",
+                "return",
+                "short",
+                "static",
+                "switch",
+                "synchronized",
+                "this",
+                "throw",
+                "throws",
+                "transient",
+                "true",
+                "try",
+                "typeof",
+                "var",
+                "void",
+                "volatile",
+                "while",
+                "with",
+                "yield"
+            ];
+            const checkHtmlTagAndJsKeyword = () => document.querySelector(`.question`).value = document.querySelector(`.question`).value.split("\n").filter(V => !allHtmlTag.includes(V) && !jsKeyword.includes(V)).join("\n");
+        
+
+    
 const collapseChanger = () => {
     const collapseStyle = document.querySelector(`.collapse`).style;
     if (collapseStyle.visibility === "hidden") {
@@ -109,14 +297,26 @@ const exe = () => {
     document.querySelector(`.question`).value = 
         document.querySelector(`.question`).value.split("\n").map(STR => {
             const mySTR = trim3(STR);
-            if(mySTR.length<1){return mySTR}
+            if(mySTR.length<=1){return mySTR}
+            // if (document.querySelector(".removeZeroChar").checked && mySTR.length <= 1) {
+            //     return
+            // }
             return makeManyWordScrambleWithLimit(
                         mySTR,
                         100,
                         Number(document.querySelector(`.LIMIT`).value)
                     )
                     .join(" ")
-        }).join("\n")
+        })
+        .filter(V=>{
+            // console.log(V.split(" ")[0]);
+            // if (document.querySelector(".removeZeroChar").checked && V.split(" ")[0].length <= 3) {
+            if (document.querySelector(".removeZeroChar").checked && V.length >= 8) {
+                return V
+            }
+        })
+        .join("\n")
+
 };
 
 

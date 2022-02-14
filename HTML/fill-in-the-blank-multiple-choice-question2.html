@@ -17,11 +17,13 @@
 <body>
 <button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
 <div class="collapse">
-    <textarea name="question" class="question" cols="100" rows="10" oninput="changer();checker();"></textarea>
-    <textarea name="changer" class="changer" cols="100" rows="10" oninput="changer();checker();"></textarea>
+    <textarea name="question" class="question" cols="100" rows="10" oninput="changer2();checker();"></textarea>
+    <textarea name="changer" class="changer" cols="100" rows="10" oninput="changer2();checker();"></textarea>
 </div>
     <div class="answer"></div>
 <script>
+
+
 const collapseChanger = () => {
     const collapseStyle = document.querySelector(`.collapse`).style;
     if(collapseStyle.visibility === "hidden"){
@@ -32,13 +34,22 @@ const collapseChanger = () => {
         collapseStyle.width = collapseStyle.height = 0;
     }
 };
-const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("");
+const escapeHtml = (unsafe) => {
+    return unsafe.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+}
+// const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("");
+// const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${escapeHtml(VAL)}">${escapeHtml(VAL)}</option>`).join("");
+const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option data-foo="${escapeHtml(VAL)}">${escapeHtml(VAL)}</option>`).join("");
+
+
 const makeSelectTag = (ARY, ANSWER) => {
 ARY = ARY.length === 0 ? ["NULL?","IS?"] : ARY;
-return `<select class="blank" data-answer="${ANSWER}" onchange="checker();">
+return `<select class="blank" data-answer="${escapeHtml(ANSWER)}" onchange="checker();">
 ${makeOptionTag(ARY)}
 </select>`;
 };
+
+
 const initer = () => {
     document.querySelector(".question").value = `foo bar baz is foo bar baz
 and foo2 bar2 baz3 is foo2 bar2 baz3
@@ -77,13 +88,19 @@ const makeSelectTag2 = () => {
     let TEMP_question_VALUE= document.querySelector(".question").value;
     // https://ramdajs.com/docs/#transpose
     R.transpose([
-        document.querySelector(".changer").value.split("\n").map(V => V.split(" ")).map(V => V[0]),
+        document.querySelector(".changer").value.split("\n").map(V => V.split(" ")).map(V => V[0])
+            .filter(V => V.length >= 3)
+        ,
         document.querySelector(".changer").value.split("\n").map(V => V.split(" "))
+        //  .filter(V=>V.length>=2).filter(V => V[0].length >= 3)
+            .filter(V => V[0].length >= 3)
     ])
     .forEach(V=>{
         TEMP_question_VALUE = TEMP_question_VALUE.replaceAll(
             V[0],
-            `<select class="blank" data-answer="${V[0]}" onchange="checker();">${makeOptionTag(V[1])}</select>`
+                `<select class="blank" data-answer="${escapeHtml(V[0])}" onchange="checker();">${makeOptionTag(V[1])}</select>`
+                // `<select class="blank" data-answer="" onchange="checker();">${makeOptionTag(V[1])}</select>`
+                // `<select class="blank" data-answer="${escapeHtml(V[0])}" onchange="checker();"></select>`
         )
         .replaceAll(
             "\n",
@@ -91,7 +108,10 @@ const makeSelectTag2 = () => {
     })
     return TEMP_question_VALUE;
 };
-const changer2 = () => document.querySelector(".answer").innerHTML = makeSelectTag2();
+const changer2 = () => {
+    document.querySelector(".answer").innerHTML = makeSelectTag2();
+    // document.querySelector(".answer").appendChild = makeSelectTag2();
+}
 
 const tester = () => {
     // document.querySelectorAll(".blank")[0].value = "foo";
