@@ -15,23 +15,40 @@
 
 <body>
 <!-- <img src="https://pngimg.com/uploads/cat/cat_PNG50538.png" alt=""> -->
+<!-- https://pngimg.com/uploads/dog/dog_PNG159.png -->
+
+<input type="file" name="file" class="file" onchange="imageUpload();">
+
+<div class="qa qa_0">
 <img src="cat.png" alt="cat" data-answer="cat">
-<input type="text" name="text" class="text" oninput="fn();">
+<input type="text" name="text" class="text" oninput="fn(0);">
 <span class="res"></span>
+</div>
+<div class="qa qa_1">
+<img src="dog.png" alt="dog" data-answer="dog">
+<input type="text" name="text" class="text" oninput="fn(1);">
+<span class="res"></span>
+</div>
 <script>
-document.querySelector("style").textContent += `html{font-size: 62.5%;}`;
 
-const fn = () => {
-    document.querySelector(`.res`).textContent =
-        document.querySelector(`.text`).value === document.querySelector(`img`).dataset.answer ? "🙆‍♀️" : "🙅‍♀️";
+const fn = (EVENT) => {
+    const parentClassString = ".qa_" + EVENT.toString();
+    // console.log(parentClassString);
+    const parentClassElement = document.querySelector(parentClassString);
+    // console.log(parentClassElement);
+    parentClassElement.querySelector(`.res`).textContent =
+        parentClassElement.querySelector(`.text`).value === parentClassElement.querySelector(`img`).dataset.answer ? "🙆‍♀️" : "🙅‍♀️";
 }
-const init = () => document.querySelector(`.text`).value = "cat";
+const init0 = () => document.querySelectorAll(`.text`)[0].value = "cat";
+const init1 = () => document.querySelectorAll(`.text`)[1].value = "dog";
 
+// https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications#example_using_object_urls_to_display_images
+const imageUpload = () => document.querySelector("img").src = URL.createObjectURL(document.querySelector("input[type=file]").files[0]);
 
-
-init();
-fn();
-
+init0();
+init1();
+fn(0);
+fn(1);
 </script>
 </body>
 </html>
