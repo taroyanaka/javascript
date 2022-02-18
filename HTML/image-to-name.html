@@ -10,6 +10,10 @@
         .res{
             font-size: 3rem;
         }
+        img{
+            width: 25rem;
+            height: 20rem;
+        }
     </style>
 </head>
 
@@ -19,17 +23,24 @@
 
 <input type="file" name="file" class="file" onchange="imageUpload();">
 
+<div class="parent_qa">
 <div class="qa qa_0">
-<img src="cat.png" alt="cat" data-answer="cat">
-<input type="text" name="text" class="text" oninput="fn(0);">
-<span class="res"></span>
+    <img src="cat.png" alt="cat" data-answer="cat">
+    <input type="text" name="text" class="text" oninput="fn(0);">
+    <span class="res"></span>
 </div>
 <div class="qa qa_1">
-<img src="dog.png" alt="dog" data-answer="dog">
-<input type="text" name="text" class="text" oninput="fn(1);">
-<span class="res"></span>
+    <img src="dog.png" alt="dog" data-answer="dog">
+    <input type="text" name="text" class="text" oninput="fn(1);">
+    <span class="res"></span>
+</div>
 </div>
 <script>
+// document.createElement("div");
+const dce = (ELEMENT_STR) => document.createElement(ELEMENT_STR);
+// ac("div.parent", document.createElement("div.child"));
+const ac = (TARGET_ELEMENT_STR, ELEMENT) => document.querySelector(TARGET_ELEMENT_STR).appendChild(ELEMENT);
+
 
 const fn = (EVENT) => {
     const parentClassString = ".qa_" + EVENT.toString();
