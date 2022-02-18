@@ -11,8 +11,22 @@
             font-size: 3rem;
         }
         img{
-            width: 25rem;
-            height: 20rem;
+            width: 4.5rem;
+            height: 4rem;
+        }
+        input.file, input[value="❎"], input[value="⏬"]{
+            width: 4.5rem;
+            height: 4rem;
+            font-size: 2rem;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 1rem;
+            font-size: 2rem;
         }
     </style>
 </head>
@@ -21,23 +35,32 @@
 <!-- <img src="https://pngimg.com/uploads/cat/cat_PNG50538.png" alt=""> -->
 <!-- https://pngimg.com/uploads/dog/dog_PNG159.png -->
 
-<input type="file" name="file" class="file">
+<!-- https://stackoverflow.com/a/25825731 -->
+<label for="file" class="custom-file-upload" value="📁">
+    <input type="file" id="file">
+    📁
+</label>
+
+<input type="file" name="📁" class="file" value="📁">
 <input type="text" name="answer" class="answer" placeholder="image name">
-<input type="button" value="addQA" onclick="addQA()">
+<input type="button" value="⏬" onclick="addQA()">
 
 <div class="parent_qa">
 <div class="qa qa_0">
     <img src="cat.png" alt="cat" data-answer="cat">
     <input type="text" name="text" class="text" oninput="fn(0);">
     <span class="res"></span>
+    <input type="button" value="❎" onclick="removeQA(event)">
 </div>
 <div class="qa qa_1">
     <img src="dog.png" alt="dog" data-answer="dog">
     <input type="text" name="text" class="text" oninput="fn(1);">
     <span class="res"></span>
+    <input type="button" value="❎" onclick="removeQA(event)">
 </div>
 </div>
 <script>
+const removeQA = (EVENT) => EVENT.target.parentElement.outerHTML = "";
 // const dce = (ELEMENT_STR) => document.createElement(ELEMENT_STR);
 // const dceWITHsa = (ELEMENT_STR, NAME_VAL_ARY) => {
 //     let ELEMENT = document.createElement(ELEMENT_STR);
@@ -80,6 +103,7 @@ const makeQA = (NUM, ANSWER) => {
 <img src="${ANSWER}.png" alt="${ANSWER}" data-answer="${ANSWER}">
 <input type="text" name="text" class="text" oninput="fn(${NUM});">
 <span class="res"></span>
+<input type="button" value="❎" onclick="removeQA(event)">
 </div>`
 };
 const addQA = () => {
