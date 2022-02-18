@@ -38,16 +38,17 @@
 </div>
 </div>
 <script>
+// const dce = (ELEMENT_STR) => document.createElement(ELEMENT_STR);
+// const dceWITHsa = (ELEMENT_STR, NAME_VAL_ARY) => {
+//     let ELEMENT = document.createElement(ELEMENT_STR);
+//     NAME_VAL_ARY.forEach(NAME_VAL => ELEMENT.setAttribute(NAME_VAL[0], NAME_VAL[1]) );
+//     return ELEMENT;
+// }
+// const ac = (TARGET_ELEMENT_STR, ELEMENT) => document.querySelector(TARGET_ELEMENT_STR).appendChild(ELEMENT);
+
 // document.createElement("div");
-const dce = (ELEMENT_STR) => document.createElement(ELEMENT_STR);
 // https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute
-const dceWITHsa = (ELEMENT_STR, NAME_VAL_ARY) => {
-    let ELEMENT = document.createElement(ELEMENT_STR);
-    NAME_VAL_ARY.forEach(NAME_VAL => ELEMENT.setAttribute(NAME_VAL[0], NAME_VAL[1]) );
-    return ELEMENT;
-}
 // ac("div.parent", document.createElement("div.child"));
-const ac = (TARGET_ELEMENT_STR, ELEMENT) => document.querySelector(TARGET_ELEMENT_STR).appendChild(ELEMENT);
 
 
 
