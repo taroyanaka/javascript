@@ -21,7 +21,9 @@
 <!-- <img src="https://pngimg.com/uploads/cat/cat_PNG50538.png" alt=""> -->
 <!-- https://pngimg.com/uploads/dog/dog_PNG159.png -->
 
-<input type="file" name="file" class="file" onchange="imageUpload();">
+<input type="file" name="file" class="file">
+<input type="text" name="answer" class="answer" placeholder="foo">
+<input type="button" value="addQA" onclick="addQA()">
 
 <div class="parent_qa">
 <div class="qa qa_0">
@@ -38,8 +40,15 @@
 <script>
 // document.createElement("div");
 const dce = (ELEMENT_STR) => document.createElement(ELEMENT_STR);
+// https://developer.mozilla.org/en-US/docs/Web/API/Element/setAttribute
+const dceWITHsa = (ELEMENT_STR, NAME_VAL_ARY) => {
+    let ELEMENT = document.createElement(ELEMENT_STR);
+    NAME_VAL_ARY.forEach(NAME_VAL => ELEMENT.setAttribute(NAME_VAL[0], NAME_VAL[1]) );
+    return ELEMENT;
+}
 // ac("div.parent", document.createElement("div.child"));
 const ac = (TARGET_ELEMENT_STR, ELEMENT) => document.querySelector(TARGET_ELEMENT_STR).appendChild(ELEMENT);
+
 
 
 const fn = (EVENT) => {
@@ -54,7 +63,33 @@ const init0 = () => document.querySelectorAll(`.text`)[0].value = "cat";
 const init1 = () => document.querySelectorAll(`.text`)[1].value = "dog";
 
 // https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications#example_using_object_urls_to_display_images
-const imageUpload = () => document.querySelector("img").src = URL.createObjectURL(document.querySelector("input[type=file]").files[0]);
+const imageUpload = (INT_NUM) => {
+    if(document.querySelector("input[type=file]").files[0] === undefined){
+        document.querySelector(".answer").placeholder = "select image";
+        return;
+    }
+    document.querySelector(".qa_" + INT_NUM.toString()).querySelector("img").src = URL.createObjectURL(document.querySelector("input[type=file]").files[0]);
+};
+const makeQA = (NUM, ANSWER) => {
+    if(ANSWER === ""){
+        document.querySelector(".answer").placeholder = "input answer here";
+        return;
+    }
+    return `<div class="qa qa_${NUM}">
+<img src="${ANSWER}.png" alt="${ANSWER}" data-answer="${ANSWER}">
+<input type="text" name="text" class="text" oninput="fn(${NUM});">
+<span class="res"></span>
+</div>`
+};
+const addQA = () => {
+    const NUM = document.querySelector(".parent_qa").querySelectorAll(".qa").length;
+    document.querySelector(".parent_qa").innerHTML +=
+        makeQA(NUM, document.querySelector(".answer").value)
+            || "";
+    imageUpload(NUM);
+};
+
+
 
 init0();
 init1();
