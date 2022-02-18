@@ -48,13 +48,13 @@
 <div class="parent_qa">
 <div class="qa qa_0">
     <img src="cat.png" alt="cat" data-answer="cat">
-    <input type="text" name="text" class="text" oninput="fn(0);">
+    <input type="text" name="text" class="text" oninput="fn(0);" value="cat">
     <span class="res"></span>
     <input type="button" value="❎" onclick="removeQA(event)">
 </div>
 <div class="qa qa_1">
     <img src="dog.png" alt="dog" data-answer="dog">
-    <input type="text" name="text" class="text" oninput="fn(1);">
+    <input type="text" name="text" class="text" oninput="fn(1);" value="dog">
     <span class="res"></span>
     <input type="button" value="❎" onclick="removeQA(event)">
 </div>
@@ -101,23 +101,27 @@ const makeQA = (NUM, ANSWER) => {
     }
     return `<div class="qa qa_${NUM}">
 <img src="${ANSWER}.png" alt="${ANSWER}" data-answer="${ANSWER}">
-<input type="text" name="text" class="text" oninput="fn(${NUM});">
+<input type="text" name="text" class="text" oninput="fn(${NUM});" value="${ANSWER}">
 <span class="res"></span>
 <input type="button" value="❎" onclick="removeQA(event)">
 </div>`
 };
 const addQA = () => {
+    // let answerTextArray = Array.from(document.querySelectorAll(".qa > .text")).map(V => V.value);
     const NUM = document.querySelector(".parent_qa").querySelectorAll(".qa").length;
     document.querySelector(".parent_qa").innerHTML +=
         makeQA(NUM, document.querySelector(".answer").value)
             || "";
+    // document.querySelectorAll(".qa > .text").forEach((V, IDX) => V.value = answerTextArray[IDX]);
     imageUpload(NUM);
+    fn(NUM);
+    // Array.from(document.querySelectorAll(".qa > .text")).map(V => V.value) = answerTextArray;
 };
 
 
 
-init0();
-init1();
+// init0();
+// init1();
 fn(0);
 fn(1);
 </script>
