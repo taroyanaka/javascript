@@ -14,7 +14,7 @@
             width: 4.5rem;
             height: 4rem;
         }
-        input.file, input[value="❎"], input[value="⏬"]{
+        input.file, input[value="❎"], input[value="⏬"], input[value="🔃"]{
             width: 4.5rem;
             height: 4rem;
             font-size: 2rem;
@@ -44,6 +44,8 @@
 <input type="file" name="📁" class="file" value="📁">
 <input type="text" name="answer" class="answer" placeholder="image name">
 <input type="button" value="⏬" onclick="addQA()">
+
+<input type="button" value="🔃" onclick="removeOrUnremoveAndCheckAllQA(event)" data-removed="">
 
 <div class="parent_qa">
 <div class="qa qa_0">
@@ -114,16 +116,32 @@ const addQA = () => {
             || "";
     // document.querySelectorAll(".qa > .text").forEach((V, IDX) => V.value = answerTextArray[IDX]);
     imageUpload(NUM);
-    fn(NUM);
+    // fn(NUM);
+    checkAllQA();
     // Array.from(document.querySelectorAll(".qa > .text")).map(V => V.value) = answerTextArray;
 };
 
+let answerTextArray = [];
+const removeAnswerText = () => {
+    answerTextArray = Array.from(document.querySelectorAll(".qa > .text")).map(V => V.value);
+    Array.from(document.querySelectorAll(".qa > .text")).forEach(V => V.value = "");
+}
+const unRemoveAnswerText = () => document.querySelectorAll(".qa > .text").forEach((V, IDX) => V.value = answerTextArray[IDX]);
 
+
+const checkAllQA = () => document.querySelectorAll(".qa > .text").forEach((V,IDX) => fn(IDX));
+
+const removeOrUnremoveAndCheckAllQA = (EVENT) => {
+    EVENT.target.dataset.removed === "removed" ? unRemoveAnswerText() : removeAnswerText();
+    EVENT.target.dataset.removed === "removed" ? EVENT.target.dataset.removed = "" : EVENT.target.dataset.removed = "removed";
+    checkAllQA();
+};
 
 // init0();
 // init1();
-fn(0);
-fn(1);
+// fn(0);
+// fn(1);
+checkAllQA();
 </script>
 </body>
 </html>
