@@ -14,7 +14,8 @@
             width: 4.5rem;
             height: 4rem;
         }
-        input.file, input[value="❎"], input[value="⏬"], input[value="🔃"]{
+        /* input.file, */
+        input[value="❎"], input[value="⏬"], input[value="🔃"], input[value="❌"]{
             width: 4.5rem;
             height: 4rem;
             font-size: 2rem;
@@ -36,16 +37,18 @@
 <!-- https://pngimg.com/uploads/dog/dog_PNG159.png -->
 
 <!-- https://stackoverflow.com/a/25825731 -->
-<label for="file" class="custom-file-upload" value="📁">
-    <input type="file" id="file">
+<label for="file" class="custom-file-upload" value="📁" onchange="nameInsert()">
+    <input type="file" id="file" multiple>
     📁
 </label>
 
-<input type="file" name="📁" class="file" value="📁">
-<input type="text" name="answer" class="answer" placeholder="image name">
+
+<!-- <input type="text" name="answer" class="answer" placeholder="image name"> -->
+<textarea  name="answer" class="answer" placeholder="image name" cols="30" rows="10"></textarea>
 <input type="button" value="⏬" onclick="addQA()">
 
 <input type="button" value="🔃" onclick="removeOrUnremoveAndCheckAllQA(event)" data-removed="">
+<input type="button" value="❌" onclick="removeAllQA()">
 
 <div class="parent_qa">
 <div class="qa qa_0">
@@ -76,6 +79,7 @@ const removeQA = (EVENT) => EVENT.target.parentElement.outerHTML = "";
 // ac("div.parent", document.createElement("div.child"));
 
 
+const nameInsert = () => document.querySelector(".answer").value = Array.from(document.querySelector("input[type=file]").files).map(V => V.name).join("\n");
 
 const fn = (EVENT) => {
     const parentClassString = ".qa_" + EVENT.toString();
@@ -94,25 +98,30 @@ const imageUpload = (INT_NUM) => {
         document.querySelector(".answer").placeholder = "select image";
         return;
     }
-    document.querySelector(".qa_" + INT_NUM.toString()).querySelector("img").src = URL.createObjectURL(document.querySelector("input[type=file]").files[0]);
+
+    // document.querySelector(".qa_" + INT_NUM.toString()).querySelector("img").src = URL.createObjectURL(document.querySelector("input[type=file]").files[0]);
+    Array.from(document.querySelector("input[type=file]").files).forEach((FILE, IDX)=> document.querySelector(".qa_" + (INT_NUM + IDX).toString()).querySelector("img").src = URL.createObjectURL(FILE) );
 };
-const makeQA = (NUM, ANSWER) => {
-    if(ANSWER === ""){
+const makeQA = (NUM) => {
+    // document.querySelector(".answer").value.split("\n") >= 2
+    if(document.querySelector(".answer").value === ""){
         document.querySelector(".answer").placeholder = "input answer here";
         return;
     }
-    return `<div class="qa qa_${NUM}">
+    return document.querySelector(".answer").value.split("\n").map((ANSWER,IDX)=>{
+    return `<div class="qa qa_${NUM+IDX}">
 <img src="${ANSWER}.png" alt="${ANSWER}" data-answer="${ANSWER}">
-<input type="text" name="text" class="text" oninput="fn(${NUM});" value="${ANSWER}">
+<input type="text" name="text" class="text" oninput="fn(${NUM + IDX});" value="${ANSWER}">
 <span class="res"></span>
 <input type="button" value="❎" onclick="removeQA(event)">
 </div>`
+    }).join("")
 };
 const addQA = () => {
     // let answerTextArray = Array.from(document.querySelectorAll(".qa > .text")).map(V => V.value);
     const NUM = document.querySelector(".parent_qa").querySelectorAll(".qa").length;
     document.querySelector(".parent_qa").innerHTML +=
-        makeQA(NUM, document.querySelector(".answer").value)
+        makeQA(NUM)
             || "";
     // document.querySelectorAll(".qa > .text").forEach((V, IDX) => V.value = answerTextArray[IDX]);
     imageUpload(NUM);
@@ -136,6 +145,14 @@ const removeOrUnremoveAndCheckAllQA = (EVENT) => {
     EVENT.target.dataset.removed === "removed" ? EVENT.target.dataset.removed = "" : EVENT.target.dataset.removed = "removed";
     checkAllQA();
 };
+
+const removeAllQA = () => {
+    if(window.confirm("REMOVE ALL????")) {
+        document.querySelectorAll(".qa").forEach(ELM => ELM.innerHTML = "")
+    }
+};
+
+
 
 // init0();
 // init1();
