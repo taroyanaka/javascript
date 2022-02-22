@@ -44,28 +44,48 @@
 
 
 <!-- <input type="text" name="answer" class="answer" placeholder="image name"> -->
-<textarea  name="answer" class="answer" placeholder="image name" cols="30" rows="10"></textarea>
+<textarea name="answer" class="answer" placeholder="image name" cols="30" rows="10"></textarea>
 <input type="button" value="⏬" onclick="addQA()">
 
-<input type="button" value="🔃" onclick="removeOrUnremoveAndCheckAllQA(event)" data-removed="">
+<input type="button" value="🔃" onclick="removeOrUnremoveAndCheckAllQA()" data-removed="">
 <input type="button" value="❌" onclick="removeAllQA()">
+<input type="button" value="sample🐶🐱" onclick="sampleQA()">
+
+
 
 <div class="parent_qa">
-<div class="qa qa_0">
+</div>
+
+<script>
+
+
+    
+const sampleQA = () =>{
+    document.querySelector(`.parent_qa`).innerHTML =
+`<div class="qa qa_0">
     <img src="cat.png" alt="cat" data-answer="cat">
-    <input type="text" name="text" class="text" oninput="fn(0);" value="cat">
+    <input type="text" name="text" class="text" value="cat">
     <span class="res"></span>
     <input type="button" value="❎" onclick="removeQA(event)">
 </div>
 <div class="qa qa_1">
     <img src="dog.png" alt="dog" data-answer="dog">
-    <input type="text" name="text" class="text" oninput="fn(1);" value="dog">
+    <input type="text" name="text" class="text" value="dog">
     <span class="res"></span>
     <input type="button" value="❎" onclick="removeQA(event)">
-</div>
-</div>
-<script>
-const removeQA = (EVENT) => EVENT.target.parentElement.outerHTML = "";
+</div>`;
+    reAttachQANum();
+    manualAllQACheck();
+    addQACheckEvent();
+};
+// document.querySelectorAll(`.text`)[0].value = "cat";
+// document.querySelectorAll(`.text`)[1].value = "dog";
+
+
+const removeQA = (EVENT) => {
+    EVENT.target.parentElement.outerHTML = "";
+    reAttachQANum();
+};
 // const dce = (ELEMENT_STR) => document.createElement(ELEMENT_STR);
 // const dceWITHsa = (ELEMENT_STR, NAME_VAL_ARY) => {
 //     let ELEMENT = document.createElement(ELEMENT_STR);
@@ -81,16 +101,17 @@ const removeQA = (EVENT) => EVENT.target.parentElement.outerHTML = "";
 
 const nameInsert = () => document.querySelector(".answer").value = Array.from(document.querySelector("input[type=file]").files).map(V => V.name).join("\n");
 
-const fn = (EVENT) => {
-    const parentClassString = ".qa_" + EVENT.toString();
-    // console.log(parentClassString);
-    const parentClassElement = document.querySelector(parentClassString);
-    // console.log(parentClassElement);
-    parentClassElement.querySelector(`.res`).textContent =
-        parentClassElement.querySelector(`.text`).value === parentClassElement.querySelector(`img`).dataset.answer ? "🙆‍♀️" : "🙅‍♀️";
+
+const manualAllQACheck = () => {
+    document.querySelectorAll(".parent_qa > .qa > .text").forEach(textELM=>{
+        textELM.nextElementSibling.textContent =
+            textELM.value === textELM.previousElementSibling.dataset.answer ? "🙆‍♀️" : "🙅‍♀️";
+    })
 }
-const init0 = () => document.querySelectorAll(`.text`)[0].value = "cat";
-const init1 = () => document.querySelectorAll(`.text`)[1].value = "dog";
+const QACheck = () => {
+    event.target.nextElementSibling.textContent =
+        event.target.value === event.target.previousElementSibling.dataset.answer ? "🙆‍♀️" : "🙅‍♀️";
+}
 
 // https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications#example_using_object_urls_to_display_images
 const imageUpload = (INT_NUM) => {
@@ -99,11 +120,9 @@ const imageUpload = (INT_NUM) => {
         return;
     }
 
-    // document.querySelector(".qa_" + INT_NUM.toString()).querySelector("img").src = URL.createObjectURL(document.querySelector("input[type=file]").files[0]);
     Array.from(document.querySelector("input[type=file]").files).forEach((FILE, IDX)=> document.querySelector(".qa_" + (INT_NUM + IDX).toString()).querySelector("img").src = URL.createObjectURL(FILE) );
 };
 const makeQA = (NUM) => {
-    // document.querySelector(".answer").value.split("\n") >= 2
     if(document.querySelector(".answer").value === ""){
         document.querySelector(".answer").placeholder = "input answer here";
         return;
@@ -111,54 +130,50 @@ const makeQA = (NUM) => {
     return document.querySelector(".answer").value.split("\n").map((ANSWER,IDX)=>{
     return `<div class="qa qa_${NUM+IDX}">
 <img src="${ANSWER}.png" alt="${ANSWER}" data-answer="${ANSWER}">
-<input type="text" name="text" class="text" oninput="fn(${NUM + IDX});" value="${ANSWER}">
+<input type="text" name="text" class="text" value="${ANSWER}">
 <span class="res"></span>
 <input type="button" value="❎" onclick="removeQA(event)">
 </div>`
     }).join("")
 };
+
+const reAttachQANum = () => document.querySelectorAll(".qa").forEach((V, IDX) => V.classList.value = `qa qa_${IDX}`);
+
+
+const addQACheckEvent = () => document.querySelectorAll(".parent_qa > .qa > .text").forEach(ELM => ELM.addEventListener("input", QACheck) );
+
+
 const addQA = () => {
-    // let answerTextArray = Array.from(document.querySelectorAll(".qa > .text")).map(V => V.value);
     const NUM = document.querySelector(".parent_qa").querySelectorAll(".qa").length;
     document.querySelector(".parent_qa").innerHTML +=
         makeQA(NUM)
             || "";
-    // document.querySelectorAll(".qa > .text").forEach((V, IDX) => V.value = answerTextArray[IDX]);
     imageUpload(NUM);
-    // fn(NUM);
-    checkAllQA();
-    // Array.from(document.querySelectorAll(".qa > .text")).map(V => V.value) = answerTextArray;
+    reAttachQANum();
+    manualAllQACheck();
+    addQACheckEvent();
 };
 
 let answerTextArray = [];
 const removeAnswerText = () => {
-    answerTextArray = Array.from(document.querySelectorAll(".qa > .text")).map(V => V.value);
-    Array.from(document.querySelectorAll(".qa > .text")).forEach(V => V.value = "");
+    answerTextArray = Array.from(document.querySelectorAll(".parent_qa > .qa > .text")).map(V => V.value);
+    Array.from(document.querySelectorAll(".parent_qa > .qa > .text")).forEach(V => V.value = "");
 }
-const unRemoveAnswerText = () => document.querySelectorAll(".qa > .text").forEach((V, IDX) => V.value = answerTextArray[IDX]);
+const unRemoveAnswerText = () => document.querySelectorAll(".parent_qa > .qa > .text").forEach((V, IDX) => V.value = answerTextArray[IDX]);
 
-
-const checkAllQA = () => document.querySelectorAll(".qa > .text").forEach((V,IDX) => fn(IDX));
-
-const removeOrUnremoveAndCheckAllQA = (EVENT) => {
-    EVENT.target.dataset.removed === "removed" ? unRemoveAnswerText() : removeAnswerText();
-    EVENT.target.dataset.removed === "removed" ? EVENT.target.dataset.removed = "" : EVENT.target.dataset.removed = "removed";
-    checkAllQA();
+const removeOrUnremoveAndCheckAllQA = () => {
+    event.target.dataset.removed === "removed" ? unRemoveAnswerText() : removeAnswerText();
+    event.target.dataset.removed === "removed" ? event.target.dataset.removed = "" : event.target.dataset.removed = "removed";
+    manualAllQACheck();
 };
 
 const removeAllQA = () => {
     if(window.confirm("REMOVE ALL????")) {
-        document.querySelectorAll(".qa").forEach(ELM => ELM.innerHTML = "")
+        document.querySelectorAll(".parent_qa > .qa").forEach(ELM => ELM.outerHTML = "")
     }
 };
 
-
-
-// init0();
-// init1();
-// fn(0);
-// fn(1);
-checkAllQA();
+manualAllQACheck();
 </script>
 </body>
 </html>
