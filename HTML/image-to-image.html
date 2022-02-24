@@ -102,7 +102,7 @@ const fn1 = async () => {
         await fn0(reader, files, index);
         await reader.readAsArrayBuffer(files[index]);
     });
-    document.querySelector(`.res`).value = await bar;
+    // document.querySelector(`.res`).value = await bar;
     return await bar;
     // baz = await bar.sort((A, B) => A[0] - B[0]);
     // return baz;

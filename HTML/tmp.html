@@ -5,12 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!-- <script src="ramda.min.js"></script> -->
+    <style>
+        img{
+            width: 4rem;
+            height: 4rem;
+        }
+    </style>
 </head>
 <body>
+<div class="group_0" data-allanswer=""></div>
 <!-- <input value="foo" class="foo" data-hogehoge="hogehoge"></input> -->
 </body>
 <!-- <script src="ramda.min.js"></script> -->
 <script>
+    const allImage = [
+"0.png",
+"1.png",
+"2.png",
+"3.png",
+"4.png",
+"5.png",
+"6.png",
+"7.png",
+"8.png",
+"9.png",
+    ];
+    const allanswer =
+    [
+        "d1a849cb5b68622fe2027d6f9129bc2e61b472b1848347655ac075d8e8560204",
+        "b00ba79bb628a962366d136702f96137105b2fcbbcd3308385572da65585ab28",
+        "5fb8140529d6892a9d720eca4e9a67697ac0edf007dc3aac1d04508bdab7348d",
+        "e44ddcb5382078cade6c8bf6c79b59fb760a52638fe9ad4ffb61fe9b618e4183",
+        "82200fc69390750a8cff80d2768b09c8a5eccdaf0221de6dc82b09612ae74988",
+        "f04dfb4a090765c6d1786260e797c4fb9d451f27a4a616a7cbdfc9a4e6bf1e0e",
+        "6f7063238e049e2501d1483add1b006a5cac7eefb0031627ea40e83465ba763d",
+        "1c7ac19f4b5e007398a0bec4aa2e364c1f1112021af60b8f1242bd941e9579bf",
+        "9f831857afee89d9f3227d306c678a80f063897f1af478dcfc7ce539cb97bd71",
+        "50044241021367f1cf67afe8a6de28ce346792762f7c6af0503abe14f272004c"
+    ];
+function transpose(outerlist) { return outerlist.reduce((RES, innerList) => { innerList.forEach((VAL, IDX) => { if (typeof RES[IDX] === 'undefined') { RES[IDX] = [] }; RES[IDX].push(VAL) }); return RES }, RES = []) };
+// transpose([[1, 2], [3, 4]])
+// =>[[1, 3],[2, 4]]
+document.querySelector(".group_0").innerHTML += transpose([allImage, allanswer]).map(V => `<span><img src="png/${V[0]}" alt="" data-answer="${V[1]}"></span>`).join("");
+
 // let hoge;
 // const showAny = () => { console.log(event.target); hoge = event.target}
 // document.querySelector(".foo").addEventListener("input", showAny);
