@@ -17,7 +17,8 @@
         input[value="❎"],
         input[value="⏬"],
         input[value="🔃"],
-        input[value="❌"]{
+        input[value="❌"]
+        {
             width: 4.5rem;
             height: 4rem;
             font-size: 2rem;
@@ -33,8 +34,8 @@
         }
     </style>
 </head>
-
 <body>
+<img src="" alt="img1" class="img1">
 <!-- <img src="https://pngimg.com/uploads/cat/cat_PNG50538.png" alt=""> -->
 <!-- https://pngimg.com/uploads/dog/dog_PNG159.png -->
 <!-- https://stackoverflow.com/a/25825731 -->
@@ -44,8 +45,8 @@
     📁
 </label> -->
 
-<!-- <label><input type="file" onchange="foo(this.files)" multiple><span title="Select file"></span></label> -->
-<label><input type="file" onchange="foo()" multiple><span title="Select file"></span></label>
+<!-- <label><input type="file" onchange="fn1(this.files)" multiple><span title="Select file"></span></label> -->
+<label><input type="file" onchange="fn1()" multiple><span title="Select file"></span></label>
 <div>
     <p id="result">No image selected</p>
 </div>
@@ -81,18 +82,49 @@ function hex(buffer) {
     }
     return hexCodes.join("");
 }
-const foo = () => {
-    const files = document.querySelector("input").files;
-    Object.keys(files).forEach((item, index) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            crypto.subtle.digest('SHA-256', reader.result).then((hash) => {
-                document.querySelector(`.res`).value += hex(hash) + "\n";
-            });
-        };
-        reader.readAsArrayBuffer(files[index]);
+
+let bar = [];
+let baz = [];
+const fn0 = async (ANY, files, index) => {
+    await ANY.addEventListener("load", async () => {
+        await crypto.subtle.digest('SHA-256', ANY.result).then(hash => {
+            bar.push([index, files[index].name, hex(hash)]);
+            document.querySelector(`.res`).value += hex(hash) + "\n";
+        });
     });
+};
+
+const fn1 = async () => {
+    bar = await [];
+    const files = await Array.from(document.querySelector("input").files);
+    await Object.keys(files).forEach(async (item, index) => {
+        const reader = await new FileReader();
+        await fn0(reader, files, index);
+        await reader.readAsArrayBuffer(files[index]);
+    });
+    document.querySelector(`.res`).value = await bar;
+    return await bar;
+    // baz = await bar.sort((A, B) => A[0] - B[0]);
+    // return baz;
 }
+const fn2 = () => {
+    // const hoge = await fn1();
+    // await hoge.sort((A, B) => A[0] - B[0]).forEach(V=>console.log(V));
+    return bar.sort((A, B) => A[0] - B[0])
+    // .map(V=>console.log(V));
+};
+
+
+// document.querySelector(".img1").src = URL.createObjectURL(document.querySelector("input").files[0]);
+
+const data1 = 
+[
+        [["0.png", "hex0"], ["1.png", "hex1"], ["2.png", "hex2"], ["3.png", "hex3"],],
+        [["4.png", "hex4"], ["5.png", "hex5"], ["6.png", "hex6"],],
+        [["7.png", "hex7"], ["8.png", "hex8"], ["9.png", "hex9"],],
+];
+
+
 </script>
 </body>
 </html>
