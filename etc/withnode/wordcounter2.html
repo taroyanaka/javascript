@@ -66,9 +66,12 @@ const removeAnyStrArrayFromSTR = (STR, AnyStrArray) =>
 		return REPLACED.replaceAll(ANY, "") }
 	, REPLACED = STR);
 
+	const replaceAllCRToSpace = (STR) => STR.replaceAll("\n"," ");
 const pre = (STR) =>
-	removeAnyStrArrayFromSTR(STR,
-		['"', "'", "(", ")", "[", "]", "{", "}", "<", ">", ":", ";", ",", "."])
+	replaceAllCRToSpace(
+		removeAnyStrArrayFromSTR(STR,
+			['"', "'", "(", ")", "[", "]", "{", "}", "<", ">", ":", ";", ",", ".","—","“"])
+	)
 	.toLowerCase()
 ;
 const myTrim = (STR) => pre(toHalfWidth(STR.trim()));
