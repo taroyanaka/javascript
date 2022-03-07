@@ -32,8 +32,11 @@ const collapseChanger = () => {
         collapseStyle.width = collapseStyle.height = 0;
     }
 };
+const mixAnswer = (ARY, ANSWER) => ARY;
 const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("");
 // const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("");
+let ans=[];
+let ary=[];
 const makeSelectTag = (ARY, ANSWER) => {
 return `<select class="blank" data-answer="${ANSWER}" onchange="checker();">
 ${makeOptionTag(ARY)}
@@ -49,17 +52,27 @@ or foo2barQUX42baz3isfoo2bar2baz3
 日本語は自然言語のうちの一つで主に日本国内で使われています`;
     document.querySelector(".changer").value = `foo
 qux
-日本`;
+日本
+blabla
+yes
+😄yes😄
+no`;
 };
 const changer = () => {
     // https://stackoverflow.com/a/1234725
     const regex = "(" + document.querySelector(".changer").value.split("\n").map(V=>`${V}|`).join("").slice(0, -1) + ")";
     const RE = new RegExp(regex, "gm");
+
+    // temporary values for code reading
+    ary = document.querySelector(".changer").value.split("\n");
+    ans = regex;
+
+
     document.querySelector(".answer").innerHTML =
                 document.querySelector(".question").value.replaceAll(
                     RE,
                     makeSelectTag(
-                        document.querySelector(".changer").value.split("\n") ,
+                        document.querySelector(".changer").value.split("\n"),
                         "$1"
                     )
                 )
@@ -75,7 +88,7 @@ const tester = () => {
 };
 const checkWithValueToAnswer = (BLANK_ELEMENT, IDX) => {
     // console.log("OK or NG")
-    BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? console.log(`${IDX} is OK`) : console.log(`${IDX} is NG`);
+    // BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? console.log(`${IDX} is OK`) : console.log(`${IDX} is NG`);
     // change backgroundColor
     BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? BLANK_ELEMENT.style.backgroundColor = "" : BLANK_ELEMENT.style.backgroundColor = "red";
 }
@@ -89,6 +102,39 @@ initer();
 changer();
 tester();
 checker();
+
+
+    function random(seed) {
+        const x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+    }
+    function seedShuffle(array, seed) {
+        let m = array.length, t, i;
+        while (m) {
+            i = Math.floor(random(seed) * m--);
+            t = array[m];
+            array[m] = array[i];
+            array[i] = t;
+            ++seed
+        }
+        return array;
+    }
+
+const foo = document.querySelectorAll(".blank")[1].dataset.answer;
+const bar = Array.from(document.querySelectorAll(".blank")[1].children).filter(V => V.innerText !== "");
+const buz = Array.from(document.querySelectorAll(".blank")[1].children).filter(V => V.innerText !== "").filter(V => V.innerText !== document.querySelectorAll(".blank")[1].dataset.answer);
+const qux = Array.from(document.querySelectorAll(".blank")[1].children).filter(V => V.innerText !== "").filter(V => V.innerText === document.querySelectorAll(".blank")[1].dataset.answer);
+const quux = seedShuffle(
+    Array.from(document.querySelectorAll(".blank")[1].children).filter(V => V.innerText !== "").filter(V => V.innerText !== document.querySelectorAll(".blank")[1].dataset.answer)
+, 42
+).slice(0, 2);
+const quxAndquuxMixArray = qux.concat(quux);
+const quxHTMLString = qux[0].outerHTML;
+const quuxHTMLString = quux.map(V => V.outerHTML).join("");
+console.log(quuxHTMLString);
+const shufflequxAndquuxMixArray = seedShuffle(quxAndquuxMixArray, 42);
+const shufflequxAndquuxMixArrayHTMLString = shufflequxAndquuxMixArray.map(V => V.outerHTML).join("");
+
 </script>
 </body>
 </html>
