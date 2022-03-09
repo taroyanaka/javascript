@@ -104,36 +104,48 @@ tester();
 checker();
 
 
-    function random(seed) {
-        const x = Math.sin(seed++) * 10000;
-        return x - Math.floor(x);
-    }
-    function seedShuffle(array, seed) {
-        let m = array.length, t, i;
-        while (m) {
-            i = Math.floor(random(seed) * m--);
-            t = array[m];
-            array[m] = array[i];
-            array[i] = t;
-            ++seed
-        }
-        return array;
-    }
 
-const foo = document.querySelectorAll(".blank")[1].dataset.answer;
-const bar = Array.from(document.querySelectorAll(".blank")[1].children).filter(V => V.innerText !== "");
-const buz = Array.from(document.querySelectorAll(".blank")[1].children).filter(V => V.innerText !== "").filter(V => V.innerText !== document.querySelectorAll(".blank")[1].dataset.answer);
-const qux = Array.from(document.querySelectorAll(".blank")[1].children).filter(V => V.innerText !== "").filter(V => V.innerText === document.querySelectorAll(".blank")[1].dataset.answer);
-const quux = seedShuffle(
-    Array.from(document.querySelectorAll(".blank")[1].children).filter(V => V.innerText !== "").filter(V => V.innerText !== document.querySelectorAll(".blank")[1].dataset.answer)
-, 42
-).slice(0, 2);
-const quxAndquuxMixArray = qux.concat(quux);
-const quxHTMLString = qux[0].outerHTML;
-const quuxHTMLString = quux.map(V => V.outerHTML).join("");
-console.log(quuxHTMLString);
-const shufflequxAndquuxMixArray = seedShuffle(quxAndquuxMixArray, 42);
-const shufflequxAndquuxMixArrayHTMLString = shufflequxAndquuxMixArray.map(V => V.outerHTML).join("");
+
+function random(seed) {
+    const x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
+function seedShuffle(array, seed) {
+    let m = array.length, t, i;
+    while (m) {
+        i = Math.floor(random(seed) * m--);
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+        ++seed
+    }
+    return array;
+}
+
+let SEED = 42;
+const seedIncrement = () => SEED++;
+const narrowDownAnswer = () => {
+    document.querySelectorAll(".blank").forEach(SELECT_HTML_ELEMENT=>{
+
+        const foo = SELECT_HTML_ELEMENT.dataset.answer;
+        const bar = Array.from(SELECT_HTML_ELEMENT.children).filter(V => V.innerText !== "");
+        const buz = Array.from(SELECT_HTML_ELEMENT.children).filter(V => V.innerText !== "").filter(V => V.innerText !== SELECT_HTML_ELEMENT.dataset.answer);
+        const qux = Array.from(SELECT_HTML_ELEMENT.children).filter(V => V.innerText !== "").filter(V => V.innerText === SELECT_HTML_ELEMENT.dataset.answer);
+        const quux = seedShuffle(
+            Array.from(SELECT_HTML_ELEMENT.children).filter(V => V.innerText !== "").filter(V => V.innerText !== SELECT_HTML_ELEMENT.dataset.answer)
+        , seedIncrement()
+        ).slice(0, 2);
+        const quxAndquuxMixArray = qux.concat(quux);
+        const quxHTMLString = qux[0].outerHTML;
+        const quuxHTMLString = quux.map(V => V.outerHTML).join("");
+        console.log(quuxHTMLString);
+        const shufflequxAndquuxMixArray = seedShuffle(quxAndquuxMixArray, seedIncrement());
+        const shufflequxAndquuxMixArrayHTMLString = shufflequxAndquuxMixArray.map(V => V.outerHTML).join("");
+        // console.log(SELECT_HTML_ELEMENT);
+        SELECT_HTML_ELEMENT.innerHTML = shufflequxAndquuxMixArrayHTMLString;
+    })
+};
+narrowDownAnswer();
 
 </script>
 </body>
