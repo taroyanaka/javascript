@@ -126,26 +126,31 @@ let SEED = 42;
 const seedIncrement = () => SEED++;
 const narrowDownAnswer = () => {
     document.querySelectorAll(".blank").forEach(SELECT_HTML_ELEMENT=>{
-
-        const foo = SELECT_HTML_ELEMENT.dataset.answer;
-        const bar = Array.from(SELECT_HTML_ELEMENT.children).filter(V => V.innerText !== "");
-        const buz = Array.from(SELECT_HTML_ELEMENT.children).filter(V => V.innerText !== "").filter(V => V.innerText !== SELECT_HTML_ELEMENT.dataset.answer);
-        const qux = Array.from(SELECT_HTML_ELEMENT.children).filter(V => V.innerText !== "").filter(V => V.innerText === SELECT_HTML_ELEMENT.dataset.answer);
-        const quux = seedShuffle(
-            Array.from(SELECT_HTML_ELEMENT.children).filter(V => V.innerText !== "").filter(V => V.innerText !== SELECT_HTML_ELEMENT.dataset.answer)
-        , seedIncrement()
-        ).slice(0, 2);
-        const quxAndquuxMixArray = qux.concat(quux);
-        const quxHTMLString = qux[0].outerHTML;
-        const quuxHTMLString = quux.map(V => V.outerHTML).join("");
-        console.log(quuxHTMLString);
-        const shufflequxAndquuxMixArray = seedShuffle(quxAndquuxMixArray, seedIncrement());
-        const shufflequxAndquuxMixArrayHTMLString = shufflequxAndquuxMixArray.map(V => V.outerHTML).join("");
-        // console.log(SELECT_HTML_ELEMENT);
-        SELECT_HTML_ELEMENT.innerHTML = shufflequxAndquuxMixArrayHTMLString;
+        const OPTION_HTML_ELEMENT = SELECT_HTML_ELEMENT.children;
+        const answerOption = Array.from(OPTION_HTML_ELEMENT)
+            .filter(V => V.innerText !== "")
+            .filter(V => V.innerText === SELECT_HTML_ELEMENT.dataset.answer);
+        const shuffledWithoutBlankOptionWithoutAnswerOption = seedShuffle(
+                Array.from(OPTION_HTML_ELEMENT)
+                    .filter(V => V.innerText !== "")
+                    .filter(V => V.innerText !== SELECT_HTML_ELEMENT.dataset.answer)
+                , seedIncrement()
+            )
+            .slice(0, 2);
+        const answerAntNotAnswerOptionArray = answerOption.concat(shuffledWithoutBlankOptionWithoutAnswerOption);
+        const shuffledAnswerAntNotAnswerOptionArray = seedShuffle(
+            answerAntNotAnswerOptionArray,
+            seedIncrement());
+        const shuffledAnswerAndNotAnswerOptionHTMLString = shuffledAnswerAntNotAnswerOptionArray
+            .map(V => V.outerHTML)
+            .join("");
+        const blankOptionHTMLTagString = `<option value="" selected></option>`;
+        const blankAndShuffledAnswerAndNotAnswerOptionHTMLString = blankOptionHTMLTagString + shuffledAnswerAndNotAnswerOptionHTMLString;
+        SELECT_HTML_ELEMENT.innerHTML = blankAndShuffledAnswerAndNotAnswerOptionHTMLString;
     })
 };
 narrowDownAnswer();
+
 
 </script>
 </body>
