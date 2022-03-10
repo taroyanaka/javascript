@@ -11,12 +11,16 @@
         button{
             height: 3rem;
         }
+        .seedNum{
+            width: 3rem;
+        }
     </style>
 </head>
 
 <body>
 <button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
 <div class="collapse">
+    <input type="number" name="seedNum" class="seedNum" value="42" onchange="changer()">
     <textarea name="question" class="question" cols="100" rows="10" oninput="changer();checker();"></textarea>
     <textarea name="changer" class="changer" cols="100" rows="10" oninput="changer();checker();"></textarea>
 </div>
@@ -34,9 +38,6 @@ const collapseChanger = () => {
 };
 const mixAnswer = (ARY, ANSWER) => ARY;
 const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("");
-// const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("");
-let ans=[];
-let ary=[];
 const makeSelectTag = (ARY, ANSWER) => {
 return `<select class="blank" data-answer="${ANSWER}" onchange="checker();">
 ${makeOptionTag(ARY)}
@@ -62,12 +63,6 @@ const changer = () => {
     // https://stackoverflow.com/a/1234725
     const regex = "(" + document.querySelector(".changer").value.split("\n").map(V=>`${V}|`).join("").slice(0, -1) + ")";
     const RE = new RegExp(regex, "gm");
-
-    // temporary values for code reading
-    ary = document.querySelector(".changer").value.split("\n");
-    ans = regex;
-
-
     document.querySelector(".answer").innerHTML =
                 document.querySelector(".question").value.replaceAll(
                     RE,
@@ -79,6 +74,7 @@ const changer = () => {
                 .replaceAll(
                     "\n",
                     `</br>`);
+    narrowDownAnswer();
 };
 const tester = () => {
     document.querySelectorAll(".blank")[0].value = "foo";
@@ -97,15 +93,6 @@ const checker = () => {
         checkWithValueToAnswer(BLANK_ELEMENT, IDX)
     })
 };
-
-initer();
-changer();
-tester();
-checker();
-
-
-
-
 function random(seed) {
     const x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
@@ -121,10 +108,9 @@ function seedShuffle(array, seed) {
     }
     return array;
 }
-
-let SEED = 42;
-const seedIncrement = () => SEED++;
 const narrowDownAnswer = () => {
+    let SEED = Number(document.querySelector(`.seedNum`).value);
+    const seedIncrement = () => SEED++;
     document.querySelectorAll(".blank").forEach(SELECT_HTML_ELEMENT=>{
         const OPTION_HTML_ELEMENT = SELECT_HTML_ELEMENT.children;
         const answerOption = Array.from(OPTION_HTML_ELEMENT)
@@ -149,9 +135,12 @@ const narrowDownAnswer = () => {
         SELECT_HTML_ELEMENT.innerHTML = blankAndShuffledAnswerAndNotAnswerOptionHTMLString;
     })
 };
+
+initer();
+changer();
+tester();
+checker();
 narrowDownAnswer();
-
-
 </script>
 </body>
 </html>
