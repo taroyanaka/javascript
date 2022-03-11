@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>fill-in-the-blank-multiple-choice-question</title>
     <!-- <script src="ramda.js"></script> -->
+    <script src="localforage.js"></script>
     <style>
         button{
             height: 3rem;
@@ -141,6 +142,18 @@ changer();
 tester();
 checker();
 narrowDownAnswer();
+
+const saveAndLoad = async () => {
+    await localforage.setItem("foo", JSON.stringify([0,1,2]));
+    await localforage.getItem("foo");
+    const foo = await localforage.getItem("foo");
+    console.log(typeof JSON.parse(foo)[0]);
+    const bar = await localforage.keys();
+    console.log(bar);
+    const NUM = 0
+    const buz = location.href + "_" + NUM.toString();
+    await localforage.setItem(buz, JSON.stringify([10,20,30]));
+};
 </script>
 </body>
 </html>
