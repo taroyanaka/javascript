@@ -150,7 +150,7 @@ const saveAndLoad = async () => {
     console.log(typeof JSON.parse(foo)[0]);
     const bar = await localforage.keys();
     console.log(bar);
-    const NUM = 0
+    const NUM = 0;
     const buz = location.href + "_" + NUM.toString();
     await localforage.setItem(buz, JSON.stringify([10,20,30]));
     console.log(
