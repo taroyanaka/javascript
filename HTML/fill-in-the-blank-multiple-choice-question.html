@@ -19,7 +19,14 @@
 </head>
 
 <body>
+
+
+<div class="saveData"></div>
+
 <button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
+<button class="dataNameToHTMLInsert" onclick="dataNameToHTMLInsert()">dataNameToHTMLInsert</button>
+<button class="saveData" onclick="saveData()">saveData</button>
+<button class="clearAllSaveData" onclick="clearAllSaveData()">clearAllSaveData</button>
 <div class="collapse">
     <input type="number" name="seedNum" class="seedNum" value="42" onchange="changer()">
     <textarea name="question" class="question" cols="100" rows="10" oninput="changer();checker();"></textarea>
@@ -143,23 +150,73 @@ tester();
 checker();
 narrowDownAnswer();
 
-const saveAndLoad = async () => {
-    await localforage.setItem("foo", JSON.stringify([0,1,2]));
-    await localforage.getItem("foo");
-    const foo = await localforage.getItem("foo");
-    console.log(typeof JSON.parse(foo)[0]);
+const getQAValue = () => [document.querySelector(`.question`).value, document.querySelector(`.changer`).value];
+
+const dataNameToHTML = (ARY) => ARY.map(V=>`<button onclick="loadAndExe('${V}')">${V}</button>`).join("");
+// (await localforage.keys()).filter(V=>V.includes(location.href)).map(V=>V.split("_")).map(V=>[V[0], Number(V[1])]).sort((A,B)=>A[1] - B[1])
+
+const dataNameToHTMLInsert = async () => {
+    document.querySelector(`.saveData`).innerHTML
+    = dataNameToHTML(
+        (await localforage.keys())
+            .filter(V=>V.includes(location.href))
+    )
+};
+
+const loadData = async (KEY) => {
+    const saveDataJSON = await localforage.getItem(KEY);
+    const saveData = JSON.parse(saveDataJSON);
+    [document.querySelector(`.question`).value, document.querySelector(`.changer`).value] = [saveData[0], saveData[1]];
+};
+
+const loadAndExe = async (KEY) => {
+    await loadData(KEY);
+    changer();
+    checker();
+    narrowDownAnswer();
+};
+
+const saveData = async () => {
+    // localforage.removeItem("key");
     const bar = await localforage.keys();
     console.log(bar);
-    const NUM = 0;
-    const buz = location.href + "_" + NUM.toString();
-    await localforage.setItem(buz, JSON.stringify([10,20,30]));
-    console.log(
-        JSON.parse(
-            await localforage.getItem("http://127.0.0.1:5500/fill-in-the-blank-multiple-choice-question.html_0")
-        )
-        [0]
-    );
+    const URLAndUTCTime = location.href + "_" + Date.now().toString();
+    await localforage.setItem(
+        URLAndUTCTime,
+            JSON.stringify(
+                getQAValue()
+            )
+        );
+    // console.log(
+    //     JSON.parse(
+    //         await localforage.getItem("http://127.0.0.1:5500/fill-in-the-blank-multiple-choice-question.html_0")
+    //     )
+    //     [0]
+    // );
 };
+
+const clearAllSaveData = async () => await localforage.clear();
+
+// const saveAndLoadSample = async () => {
+//     await localforage.setItem("foo", JSON.stringify([0,1,2]));
+//     await localforage.getItem("foo");
+//     const foo = await localforage.getItem("foo");
+//     console.log(typeof JSON.parse(foo)[0]);
+//     const bar = await localforage.keys();
+//     console.log(bar);
+//     const NUM = Date.now();
+//     const buz = location.href + "_" + NUM.toString();
+//     await localforage.setItem(buz, JSON.stringify([10,20,30]));
+//     console.log(
+//         JSON.parse(
+//             await localforage.getItem("http://127.0.0.1:5500/fill-in-the-blank-multiple-choice-question.html_0")
+//         )
+//         [0]
+//     );
+// };
+
+
 </script>
+
 </body>
 </html>
