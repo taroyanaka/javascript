@@ -194,8 +194,11 @@ const saveData = async () => {
     //     [0]
     // );
 };
-
-const clearAllSaveData = async () => await localforage.clear();
+const dataNameToHTMLRemove = () => document.querySelector(`.saveData`).innerHTML = "";
+const clearAllSaveData = async () => {
+    await localforage.clear();
+    dataNameToHTMLRemove();
+};
 
 // const saveAndLoadSample = async () => {
 //     await localforage.setItem("foo", JSON.stringify([0,1,2]));
