@@ -8,6 +8,8 @@
     <title>fill-in-the-blank-multiple-choice-question</title>
     <!-- <script src="ramda.js"></script> -->
     <script src="localforage.js"></script>
+    <!-- https://github.com/davidshimjs/qrcodejs -->
+    <script src="qrcode.js"></script>
     <style>
         button{
             height: 3rem;
@@ -19,13 +21,13 @@
 </head>
 
 <body>
-
-
+<div class="qrcode"></div>
 <div class="saveData"></div>
 
 <button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
 <button class="sample" onclick="sample()">sample</button>
-<button class="makeShareURL" onclick="makeShareURL()">makeShareURL</button>
+<button class="makeShareURLButton" onclick="makeShareURLButton()">makeShareURLButton</button>
+<button class="QRCodeButton" onclick="QRCodeButton()">QRCodeButton</button>
 <button class="dataNameToHTMLInsert" onclick="dataNameToHTMLInsert()">dataNameToHTMLInsert</button>
 <button class="saveData" onclick="saveData()">saveData</button>
 <button class="clearAllSaveData" onclick="clearAllSaveData()">clearAllSaveData</button>
@@ -227,13 +229,33 @@ const clearAllSaveData = async () => {
 // };
 
 // https://stackoverflow.com/a/6257480
-const makeShareURL = () => document.querySelector(`.shareURL`).href = document.querySelector(`.shareURL`).innerText = 
-location.protocol + '//' + location.host + location.pathname +
+const makeShareURLButton = () => document.querySelector(`.shareURL`).href = document.querySelector(`.shareURL`).innerText = makeShareURL();
+
+const makeShareURL = () => location.protocol + '//' + location.host + location.pathname +
 "?question=" +
 JSON.stringify(document.querySelector(`.question`).value) +
 "&changer=" +
-JSON.stringify(document.querySelector(`.changer`).value)
-;
+JSON.stringify(document.querySelector(`.changer`).value);
+
+
+// https://github.com/davidshimjs/qrcodejs
+const makeQRCode = () => {
+    new QRCode(document.querySelector(".qrcode"), {
+        text: makeShareURL(),
+        // width: window.screen.width,
+        width: window.innerWidth,
+        // height: window.screen.height,
+        height: window.innerHeight,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+};
+const removeQRCode = () => document.querySelector(`.qrcode`).outerHTML = `<div class="qrcode"></div>`;
+
+const QRCodeButton
+ = () => document.querySelector(".qrcode").innerHTML ? removeQRCode() : makeQRCode();
+// if(){"hoge"}else{"fuga"}
 
 changer();
 checker();
