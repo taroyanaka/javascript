@@ -24,16 +24,30 @@
 <div class="saveData"></div>
 
 <button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
+<button class="sample" onclick="sample()">sample</button>
+<button class="makeShareURL" onclick="makeShareURL()">makeShareURL</button>
 <button class="dataNameToHTMLInsert" onclick="dataNameToHTMLInsert()">dataNameToHTMLInsert</button>
 <button class="saveData" onclick="saveData()">saveData</button>
 <button class="clearAllSaveData" onclick="clearAllSaveData()">clearAllSaveData</button>
 <div class="collapse">
-    <input type="number" name="seedNum" class="seedNum" value="42" onchange="changer()">
+    <a href="" class="shareURL"></a>
+    <div><input type="number" name="seedNum" class="seedNum" value="42" onchange="changer()"></div>
     <textarea name="question" class="question" cols="100" rows="10" oninput="changer();checker();"></textarea>
     <textarea name="changer" class="changer" cols="100" rows="10" oninput="changer();checker();"></textarea>
 </div>
-    <div class="answer"></div>
+<div class="answer"></div>
 <script>
+const receiveShareURL = () => {
+document.querySelector(`.question`).value =
+document.querySelector(`.question`).value ||
+JSON.parse((new URL(document.location)).searchParams.get('question'));
+document.querySelector(`.changer`).value =
+document.querySelector(`.changer`).value ||
+JSON.parse((new URL(document.location)).searchParams.get('changer'));
+}
+
+receiveShareURL();
+
 const collapseChanger = () => {
     const collapseStyle = document.querySelector(`.collapse`).style;
     if(collapseStyle.visibility === "hidden"){
@@ -51,7 +65,7 @@ return `<select class="blank" data-answer="${ANSWER}" onchange="checker();">
 ${makeOptionTag(ARY)}
 </select>`;
 };
-const initer = () => {
+const sample = () => {
     document.querySelector(".question").value = `foo bar baz is foo bar baz
 and foo2 bar2 baz3 is foo2 bar2 baz3
 or foo2bar2baz3isfoo2bar2baz3
@@ -66,6 +80,9 @@ blabla
 yes
 😄yes😄
 no`;
+changer();
+tester();
+checker();
 };
 const changer = () => {
     // https://stackoverflow.com/a/1234725
@@ -143,18 +160,9 @@ const narrowDownAnswer = () => {
         SELECT_HTML_ELEMENT.innerHTML = blankAndShuffledAnswerAndNotAnswerOptionHTMLString;
     })
 };
-
-initer();
-changer();
-tester();
-checker();
-narrowDownAnswer();
-
 const getQAValue = () => [document.querySelector(`.question`).value, document.querySelector(`.changer`).value];
-
 const dataNameToHTML = (ARY) => ARY.map(V=>`<button onclick="loadAndExe('${V}')">${V}</button>`).join("");
 // (await localforage.keys()).filter(V=>V.includes(location.href)).map(V=>V.split("_")).map(V=>[V[0], Number(V[1])]).sort((A,B)=>A[1] - B[1])
-
 const dataNameToHTMLInsert = async () => {
     document.querySelector(`.saveData`).innerHTML
     = dataNameToHTML(
@@ -218,8 +226,18 @@ const clearAllSaveData = async () => {
 //     );
 // };
 
+// https://stackoverflow.com/a/6257480
+const makeShareURL = () => document.querySelector(`.shareURL`).href = document.querySelector(`.shareURL`).innerText = 
+location.protocol + '//' + location.host + location.pathname +
+"?question=" +
+JSON.stringify(document.querySelector(`.question`).value) +
+"&changer=" +
+JSON.stringify(document.querySelector(`.changer`).value)
+;
 
+changer();
+checker();
+narrowDownAnswer();
 </script>
-
 </body>
 </html>
