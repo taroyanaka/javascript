@@ -10,13 +10,54 @@
     <script src="localforage.js"></script>
     <!-- https://github.com/davidshimjs/qrcodejs -->
     <script src="qrcode.js"></script>
+<link rel="stylesheet" href="./reset.css">
     <style>
         button{
-            height: 3rem;
+            height: 100%;
         }
         .seedNum{
             width: 3rem;
         }
+
+        .ul{
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-areas:
+"li-1 li-2 li-3 li-4 li-5 li-6 li-7";
+width: 100vw;
+height: 20vh;
+}
+li{
+    list-style: none;
+}
+.li-1{background-color: rgba(122,111,104);
+grid-area: li-1;
+
+}
+.li-2{background-color: rgba(227,110,247);
+grid-area: li-2;
+
+}
+.li-3{background-color: rgba(174,200,103);
+grid-area: li-3;
+
+}
+.li-4{background-color: rgba(127,163,24);
+grid-area: li-4;
+
+}
+.li-5{background-color: rgba(234,187,115);
+grid-area: li-5;
+
+}
+.li-6{background-color: rgba(94,228,153);
+grid-area: li-6;
+
+}
+.li-7{background-color: rgb(127, 50, 228);
+grid-area: li-7;
+
+}
     </style>
 </head>
 
@@ -24,13 +65,16 @@
 <div class="qrcode"></div>
 <div class="saveData"></div>
 
-<button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button>
-<button class="sample" onclick="sample()">sample</button>
-<button class="makeShareURLButton" onclick="makeShareURLButton()">makeShareURLButton</button>
-<button class="QRCodeButton" onclick="QRCodeButton()">QRCodeButton</button>
-<button class="dataNameToHTMLInsert" onclick="dataNameToHTMLInsert()">dataNameToHTMLInsert</button>
-<button class="saveData" onclick="saveData()">saveData</button>
-<button class="clearAllSaveData" onclick="clearAllSaveData()">clearAllSaveData</button>
+<ul class="ul">
+<li class="li-1"><button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button></li>
+<li class="li-2"><button class="sample" onclick="sample()">sample</button></li>
+<li class="li-3"><button class="makeShareURLButton" onclick="makeShareURLButton()">makeShareURLButton</button></li>
+<li class="li-4"><button class="QRCodeButton" onclick="QRCodeButton()">QRCodeButton</button></li>
+<li class="li-5"><button class="dataNameToHTMLInsert" onclick="dataNameToHTMLInsert()">dataNameToHTMLInsert</button></li>
+<li class="li-6"><button class="saveData" onclick="saveData()">saveData</button></li>
+<li class="li-7"><button class="clearAllSaveData" onclick="clearAllSaveData()">clearAllSaveData</button></li>
+</ul>
+
 <div class="collapse">
     <a href="" class="shareURL"></a>
     <div><input type="number" name="seedNum" class="seedNum" value="42" onchange="changer()"></div>

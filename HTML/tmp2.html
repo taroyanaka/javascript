@@ -74,11 +74,12 @@ table {
             display: grid;
             grid-template-columns: auto;
             grid-template-areas:
-"li-1 li-2 li-3 li-4 li-5 li-6";
+"li-1 li-2 li-3 li-4 li-5 li-6 li-7";
 width: 100vw;
 }
 li{
     list-style: none;
+    height: 10vh;
 }
 .li-1{background-color: rgba(122,111,104);
 grid-area: li-1;
@@ -104,6 +105,10 @@ grid-area: li-5;
 grid-area: li-6;
 
 }
+.li-7{background-color: rgb(127, 50, 228);
+grid-area: li-7;
+
+}
     </style>
 </head>
 
@@ -119,6 +124,7 @@ grid-area: li-6;
         <li class="li-4">li-4</li>
         <li class="li-5">li-5</li>
         <li class="li-6">li-6</li>
+        <li class="li-7">li-7</li>
     </ul>
 </body>
 </html>
