@@ -15,21 +15,24 @@
     <script src="qrcode.js"></script>
 <link rel="stylesheet" href="./reset.css">
     <style>
+        :root {
+          --bg-color: whitesmoke;
+          --button-ul-height: 20vh;
+        }
         body{
             /* background-color: aquamarine; */
             /* background: rgb(2,0,36); */
             /* background: rgb(52,44,196); */
             /* background: linear-gradient(90deg, rgba(52,44,196,1) 9%, rgba(166,60,60,1) 35%, rgba(153,0,157,1) 93%); */
-            background-color: whitesmoke;
+
+            /* background-color: whitesmoke; */
+            background-color: var(--bg-color);
         }
         textarea{
             width: 100%;
             height: 20rem;
         }
         button{
-            /* overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis; */
             width: 100%;
             height: 100%;
         }
@@ -46,8 +49,7 @@
             grid-template-areas:
 "li-1 li-2 li-3 li-4 li-5 li-6 li-7";
 width: 100vw;
-/* width: 100%; */
-height: 20vh;
+height: var(--button-ul-height);
 }
 li{
     list-style: none;
@@ -80,10 +82,20 @@ grid-area: li-6;
 grid-area: li-7;
 
 }
+
+
+.open{
+    --bg-color: whitesmoke;
+    --button-ul-height: 20vh;
+}
+.close{
+    --bg-color: palevioletred;
+    --button-ul-height: 5vh;
+}
     </style>
 </head>
 
-<body>
+<body class="open">
 <div class="qrcode"></div>
 <div class="saveData"></div>
 
@@ -121,9 +133,13 @@ const collapseChanger = () => {
     if(collapseStyle.visibility === "hidden"){
         collapseStyle.visibility = "visible";
         collapseStyle.height = collapseStyle.width = "";
+        document.querySelector("body").classList.remove("close");
+        document.querySelector("body").classList.add("open");
     }else{
         collapseStyle.visibility = "hidden";
         collapseStyle.width = collapseStyle.height = 0;
+        document.querySelector("body").classList.remove("open");
+        document.querySelector("body").classList.add("close");
     }
 };
 const mixAnswer = (ARY, ANSWER) => ARY;
