@@ -6,17 +6,37 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>fill-in-the-blank-multiple-choice-question</title>
+    <!-- https://taroyanaka.github.io/javascript/HTML/vent-list.html -->
+    <!-- https://cssgradient.io/ -->
+
     <!-- <script src="ramda.js"></script> -->
     <script src="localforage.js"></script>
     <!-- https://github.com/davidshimjs/qrcodejs -->
     <script src="qrcode.js"></script>
 <link rel="stylesheet" href="./reset.css">
     <style>
+        body{
+            /* background-color: aquamarine; */
+            /* background: rgb(2,0,36); */
+            background: rgb(52,44,196);
+            background: linear-gradient(90deg, rgba(52,44,196,1) 9%, rgba(166,60,60,1) 35%, rgba(153,0,157,1) 93%);
+        }
+        textarea{
+            width: 100%;
+            height: 20rem;
+        }
         button{
+            /* overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis; */
+            width: 100%;
             height: 100%;
         }
         .seedNum{
             width: 3rem;
+        }
+        .answer{
+            margin: 1rem;
         }
 
         .ul{
@@ -25,6 +45,7 @@
             grid-template-areas:
 "li-1 li-2 li-3 li-4 li-5 li-6 li-7";
 width: 100vw;
+/* width: 100%; */
 height: 20vh;
 }
 li{
@@ -66,20 +87,20 @@ grid-area: li-7;
 <div class="saveData"></div>
 
 <ul class="ul">
-<li class="li-1"><button class="collapseChanger" onclick="collapseChanger()">collapseChanger</button></li>
-<li class="li-2"><button class="sample" onclick="sample()">sample</button></li>
-<li class="li-3"><button class="makeShareURLButton" onclick="makeShareURLButton()">makeShareURLButton</button></li>
-<li class="li-4"><button class="QRCodeButton" onclick="QRCodeButton()">QRCodeButton</button></li>
-<li class="li-5"><button class="dataNameToHTMLInsert" onclick="dataNameToHTMLInsert()">dataNameToHTMLInsert</button></li>
-<li class="li-6"><button class="saveData" onclick="saveData()">saveData</button></li>
-<li class="li-7"><button class="clearAllSaveData" onclick="clearAllSaveData()">clearAllSaveData</button></li>
+<li class="li-1"><button class="collapseChanger" onclick="collapseChanger()">👐</button></li>
+<li class="li-2"><button class="sample" onclick="sample()">📝</button></li>
+<li class="li-3"><button class="makeShareURLButton" onclick="makeShareURLButton()">🔗</button></li>
+<li class="li-4"><button class="QRCodeButton" onclick="QRCodeButton()">🔣</button></li>
+<li class="li-5"><button class="dataNameToHTMLInsert" onclick="dataNameToHTMLInsert()">👆</button></li>
+<li class="li-6"><button class="saveData" onclick="saveData()">👇</button></li>
+<li class="li-7"><button class="clearAllSaveData" onclick="clearAllSaveData()">💨</button></li>
 </ul>
 
 <div class="collapse">
     <a href="" class="shareURL"></a>
     <div><input type="number" name="seedNum" class="seedNum" value="42" onchange="changer()"></div>
-    <textarea name="question" class="question" cols="100" rows="10" oninput="changer();checker();"></textarea>
-    <textarea name="changer" class="changer" cols="100" rows="10" oninput="changer();checker();"></textarea>
+    <textarea name="question" class="question" oninput="changer();checker();"></textarea>
+    <textarea name="changer" class="changer" oninput="changer();checker();"></textarea>
 </div>
 <div class="answer"></div>
 <script>
@@ -157,7 +178,7 @@ const checkWithValueToAnswer = (BLANK_ELEMENT, IDX) => {
     // console.log("OK or NG")
     // BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? console.log(`${IDX} is OK`) : console.log(`${IDX} is NG`);
     // change backgroundColor
-    BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? BLANK_ELEMENT.style.backgroundColor = "" : BLANK_ELEMENT.style.backgroundColor = "red";
+    BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? BLANK_ELEMENT.style.backgroundColor = "" : BLANK_ELEMENT.style.backgroundColor = "aquamarine";
 }
 const checker = () => {
     document.querySelectorAll(".blank").forEach((BLANK_ELEMENT, IDX) => {
