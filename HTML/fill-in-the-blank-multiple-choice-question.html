@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 
 <head>
     <meta charset="UTF-8">
@@ -16,8 +16,10 @@
 <link rel="stylesheet" href="./reset.css">
     <style>
         :root {
-          --bg-color: whitesmoke;
+          --bg-color: white;
           --button-ul-height: 20vh;
+          --li-visibility: visible;
+          --collapse-display: block;
         }
         body{
             /* background-color: aquamarine; */
@@ -27,6 +29,9 @@
 
             /* background-color: whitesmoke; */
             background-color: var(--bg-color);
+        }
+        .collapse{
+            display: var(--collapse-display);
         }
         textarea{
             width: 100%;
@@ -60,40 +65,40 @@ grid-area: li-1;
 }
 .li-2{background-color: rgba(227,110,247);
 grid-area: li-2;
-
+visibility: var(--li-visibility);
 }
 .li-3{background-color: rgba(174,200,103);
 grid-area: li-3;
-
+visibility: var(--li-visibility);
 }
 .li-4{background-color: rgba(127,163,24);
 grid-area: li-4;
-
+visibility: var(--li-visibility);
 }
 .li-5{background-color: rgba(234,187,115);
 grid-area: li-5;
-
+visibility: var(--li-visibility);
 }
 .li-6{background-color: rgba(94,228,153);
 grid-area: li-6;
-
+visibility: var(--li-visibility);
 }
 .li-7{background-color: rgb(127, 50, 228);
 grid-area: li-7;
-
+visibility: var(--li-visibility);
 }
 
-
-/* .open{
-} */
 .close{
-    --bg-color: palevioletred;
+    --bg-color: whitesmoke;
     --button-ul-height: 5vh;
+    --li-visibility: hidden;
+    --collapse-display: none;
+    /* display: block; */
 }
     </style>
 </head>
 
-<body class="open">
+<body>
 <div class="qrcode"></div>
 <div class="saveData"></div>
 
@@ -126,20 +131,7 @@ JSON.parse((new URL(document.location)).searchParams.get('changer'));
 
 receiveShareURL();
 
-const collapseChanger = () => {
-    const collapseStyle = document.querySelector(`.collapse`).style;
-    if(collapseStyle.visibility === "hidden"){
-        collapseStyle.visibility = "visible";
-        collapseStyle.height = collapseStyle.width = "";
-        document.querySelector("body").classList.remove("close");
-        // document.querySelector("body").classList.add("open");
-    }else{
-        collapseStyle.visibility = "hidden";
-        collapseStyle.width = collapseStyle.height = 0;
-        // document.querySelector("body").classList.remove("open");
-        document.querySelector("body").classList.add("close");
-    }
-};
+const collapseChanger = () => document.querySelector(":root").classList.value === "close" ? document.querySelector(":root").classList.remove("close") : document.querySelector(":root").classList.add("close");
 const mixAnswer = (ARY, ANSWER) => ARY;
 const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("");
 const makeSelectTag = (ARY, ANSWER) => {
