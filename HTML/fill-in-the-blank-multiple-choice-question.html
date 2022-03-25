@@ -61,7 +61,7 @@ li{
 }
 .li-1{background-color: rgba(122,111,104);
 grid-area: li-1;
-
+    width: var();
 }
 .li-2{background-color: rgba(227,110,247);
 grid-area: li-2;
@@ -119,6 +119,7 @@ visibility: var(--li-visibility);
     <textarea name="changer" class="changer" oninput="changer();checker();"></textarea>
 </div>
 <div class="answer"></div>
+<button class="retry" onclick="retry()">🔁</button>
 <script>
 const receiveShareURL = () => {
 document.querySelector(`.question`).value =
@@ -135,7 +136,7 @@ const collapseChanger = () => document.querySelector(":root").classList.value ==
 const mixAnswer = (ARY, ANSWER) => ARY;
 const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("");
 const makeSelectTag = (ARY, ANSWER) => {
-return `<select class="blank" data-answer="${ANSWER}" onchange="checker();">
+return `<select class="blank" data-answer="${ANSWER}" data-wrong="" onchange="checker();">
 ${makeOptionTag(ARY)}
 </select>`;
 };
@@ -181,17 +182,34 @@ const tester = () => {
     document.querySelectorAll(".blank")[10].value = "qux";
     document.querySelectorAll(".blank")[14].value = "日本";
 };
-const checkWithValueToAnswer = (BLANK_ELEMENT, IDX) => {
-    // console.log("OK or NG")
-    // BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? console.log(`${IDX} is OK`) : console.log(`${IDX} is NG`);
-    // change backgroundColor
-    BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? BLANK_ELEMENT.style.backgroundColor = "" : BLANK_ELEMENT.style.backgroundColor = "aquamarine";
-}
-const checker = () => {
-    document.querySelectorAll(".blank").forEach((BLANK_ELEMENT, IDX) => {
-        checkWithValueToAnswer(BLANK_ELEMENT, IDX)
+
+
+const retry = () => {
+    document.querySelectorAll(".blank").forEach(V=>{
+        if(V.dataset.wrong === "wrong"){
+            V.value="";
+            V.dataset.wrong="";
+            V.style.backgroundColor="blueviolet";
+        }
     })
 };
+const checkAll = (BLANK_ELEMENT, IDX) => {
+    // console.log("OK or NG")
+    // BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? console.log(`${IDX} is OK`) : console.log(`${IDX} is NG`);
+    const onceWrongIsKeepColor = (BLANK_ELEMENT) => BLANK_ELEMENT.style.backgroundColor = BLANK_ELEMENT.style.backgroundColor !== "blueviolet" ? "aquamarine" : "blueviolet";
+    const checkWithValueToAnswer = (BLANK_ELEMENT) => BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? BLANK_ELEMENT.style.backgroundColor = "" : onceWrongIsKeepColor(BLANK_ELEMENT);
+    const addWrongAndChangeColor = (ELEMENT) => {
+        ELEMENT.dataset.wrong = "wrong";
+        ELEMENT.style.backgroundColor = "pink";
+    }
+    const onceWrongBeWrong = (BLANK_ELEMENT) => {
+        if(BLANK_ELEMENT.value !== "" && BLANK_ELEMENT.value !== BLANK_ELEMENT.dataset.answer){ addWrongAndChangeColor(BLANK_ELEMENT) };
+        if(BLANK_ELEMENT.dataset.wrong === "wrong"){ BLANK_ELEMENT.style.backgroundColor = "pink" };
+    };
+    checkWithValueToAnswer(BLANK_ELEMENT);
+    onceWrongBeWrong(BLANK_ELEMENT);
+}
+const checker = () => document.querySelectorAll(".blank").forEach((BLANK_ELEMENT, IDX)=> checkAll(BLANK_ELEMENT, IDX));
 function random(seed) {
     const x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
@@ -332,6 +350,8 @@ const QRCodeButton
 changer();
 checker();
 narrowDownAnswer();
+
+
 </script>
 </body>
 </html>
