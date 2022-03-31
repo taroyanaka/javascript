@@ -2,7 +2,7 @@
 var CACHE_NAME = 'cache-v1';
 
 var urlsToCache = [
-//   '/',
+  '/',
   'tmp2_manifest.json',
   'cat.png'
 ];
