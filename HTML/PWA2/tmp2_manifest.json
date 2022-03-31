@@ -1,0 +1,16 @@
+{
+"lang": "en",
+"short_name": "tmp2",
+"name": "this is sample",
+"start_url": "start_url",
+"display": "standalone",
+"icons": [
+    {
+    "src": "/cat.png",
+    "type": "image/png",
+    "sizes": "192x192"
+    }
+],
+"background_color": "#2196F3",
+"orientation": "portrait"
+}
