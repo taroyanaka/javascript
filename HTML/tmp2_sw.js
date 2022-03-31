@@ -2,9 +2,9 @@
 var CACHE_NAME = 'cache-v1';
 
 var urlsToCache = [
-  '/',
+//   '/',
   'tmp2_manifest.json',
-  'tmp2-icon.png'
+  'cat.png'
 ];
 
 self.addEventListener('install', function(event) {

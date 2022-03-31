@@ -39,11 +39,11 @@
     <input type="file" id="file" multiple>
     📁
 </label>
-<textarea name="answer" class="answer" placeholder="image name" cols="30" rows="10"></textarea>
 <input type="button" value="⏬" onclick="addQA()">
 <input type="button" value="🔃" onclick="removeOrUnremoveAndCheckAllQA()" data-removed="">
 <input type="button" value="❌" onclick="removeAllQA()">
 <input type="button" value="sample🐶🐱" onclick="sampleQA()">
+<textarea name="answer" class="answer" placeholder="image name" cols="30" rows="10"></textarea>
 <div class="parent_qa">
 </div>
 <script>
@@ -131,6 +131,9 @@ const removeAllQA = () => {
         document.querySelectorAll(".parent_qa > .qa").forEach(ELM => ELM.outerHTML = "")
     }
 };
+
+
+
 </script>
 </body>
 </html>

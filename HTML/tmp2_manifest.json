@@ -6,7 +6,7 @@
 "display": "standalone",
 "icons": [
     {
-    "src": "/tmp2-icon.png",
+    "src": "/cat.png",
     "type": "image/png",
     "sizes": "192x192"
     }
