@@ -127,7 +127,18 @@ grid-area: li-7;
         <li class="li-6">li-6</li>
         <li class="li-7">li-7</li>
     </ul>
+
+    <button onclick="cacheDelete()">cacheDelete</button>
 <script>
+
+const cacheDelete = () => {
+    caches.open('cache-v1').then(function(cache) {
+        cache.delete('/').then(function(response) {
+            console.log("success")
+        });
+    })
+};
+
 navigator.serviceWorker.register('tmp2_sw.js').then(function(){
     console.log('サービスワーカーの登録成功');
 }).catch(function(err) {
