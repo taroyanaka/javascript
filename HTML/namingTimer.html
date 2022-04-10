@@ -48,17 +48,11 @@ const start = () => {
 }
 const set = (NUM) => document.querySelector(`.seconds`).value = parseInt(NUM, 10);
 const load = (event) => set(Number(event.target.dataset.duration));
-
-
-
 const save = () => {
     const numbering = "timer_" + document.querySelectorAll(".foo").length.toString();
     document.querySelector(`.result`).innerHTML += `<button data-duration="${document.querySelector(`.seconds`).value}" class="foo ${naming(numbering)}" onclick="load(event)">${document.querySelector(`.seconds`).value} ${naming(numbering)}</button>`;
 }
-
-
-
-
+const naming = (numbering) => validator.isAlphanumeric(document.querySelector(`.name`).value) ? document.querySelector(`.name`).value : numbering;
 
 const test = () => {
     document.querySelector(`.result`).innerHTML = `<button data-duration="3" class="foo timer_0" onclick="load(event)">3 timer_0</button>
@@ -82,9 +76,6 @@ const test2 = () => {
     document.querySelector(`.timer_4`).click();
     document.querySelector(`.start`).click();
 };
-
-const naming = (numbering) => validator.isAlphanumeric(document.querySelector(`.name`).value) ? document.querySelector(`.name`).value : numbering;
-
 
 // test();
 // test2();
