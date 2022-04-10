@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>namingTimer</title>
+    <!-- https://github.com/validatorjs/validator.js -->
     <script src="./validator.13.7.0.min.js"></script>
     <style>
         button{
@@ -19,14 +20,15 @@
 </head>
 <body>
 <div class="result"></div>
-<input type="number" name="seconds" class="seconds" placeholder="seconds" value="10" onchange="intCheck(event)" oninput="intCheck(event)">
+<input type="number" name="seconds" class="seconds" placeholder="seconds" value="10" onchange="checkOfIntegerGreaterThanOrEqualTo1(event)" oninput="checkOfIntegerGreaterThanOrEqualTo1(event)">
 <input type="text" name="name" class="name" placeholder="name alphanumeric 半角英数字">
 <div>Timer is <span class="time"></span></div>
 <button class="start" onclick="start()">start</button>
 <button class="save" onclick="save()">save</button>
 </body>
 <script>
-const intCheck = (event) => event.target.value = validator.isFloat(event.target.value, { min: 1 }) ? event.target.value : 1;
+// https://github.com/typestack/class-validator/issues/10
+const checkOfIntegerGreaterThanOrEqualTo1 = (event) => event.target.value = validator.isFloat(event.target.value, { min: 1 }) ? event.target.value : 1;
 const getMinutes = (seconds) => parseInt(seconds / 60);
 const getSeconds = (seconds) => parseInt(seconds % 60);
 const getMinutesAndSecondsString = (minutes, seconds) => minutes.toString() + ":" + seconds.toString();
