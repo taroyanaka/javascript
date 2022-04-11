@@ -19,7 +19,7 @@
     </style>
 </head>
 <body>
-<div class="result"></div>
+<div class="saveData"></div>
 <input type="number" name="seconds" class="seconds" placeholder="seconds" value="10" onchange="checkOfIntegerGreaterThanOrEqualTo1(event)" oninput="checkOfIntegerGreaterThanOrEqualTo1(event)">
 <input type="text" name="name" class="name" placeholder="name alphanumeric 半角英数字">
 <div>Timer is <span class="time"></span></div>
@@ -50,15 +50,15 @@ const set = (NUM) => document.querySelector(`.seconds`).value = parseInt(NUM, 10
 const load = (event) => set(Number(event.target.dataset.duration));
 const save = () => {
     const numbering = "timer_" + document.querySelectorAll(".foo").length.toString();
-    document.querySelector(`.result`).innerHTML += `<button data-duration="${document.querySelector(`.seconds`).value}" class="foo ${naming(numbering)}" onclick="load(event)">${document.querySelector(`.seconds`).value} ${naming(numbering)}</button>`;
+    document.querySelector(`.saveData`).innerHTML += `<button data-duration="${document.querySelector(`.seconds`).value}" class="foo ${naming(numbering)}" onclick="load(event)">${document.querySelector(`.seconds`).value} ${naming(numbering)}</button>`;
 }
 const naming = (numbering) => validator.isAlphanumeric(document.querySelector(`.name`).value) ? document.querySelector(`.name`).value : numbering;
 
-const test = () => {
-    document.querySelector(`.result`).innerHTML = `<button data-duration="3" class="foo timer_0" onclick="load(event)">3 timer_0</button>
+const test0 = () => {
+    document.querySelector(`.saveData`).innerHTML = `<button data-duration="3" class="foo timer_0" onclick="load(event)">3 timer_0</button>
 <button data-duration="5" class="foo timer_1" onclick="load(event)">5 timer_1</button>`;
 };
-const test2 = () => {
+const test1 = () => {
     document.querySelector(`.timer_0`).click();
     document.querySelector(`.start`).click();
     document.querySelector(`.timer_1`).click();
@@ -77,7 +77,26 @@ const test2 = () => {
     document.querySelector(`.start`).click();
 };
 
-// test();
-// test2();
+// test0();
+// test1();
+
+
+
+// caches.keys().then(function(cacheNames) {
+//     console.log(cacheNames);
+//     return caches.delete(cacheNames[0]);
+// }).then(function() {
+//     console.log('Cache deleted');
+// });
+// (await caches.keys());
+// (await caches.keys()).forEach(cache=>caches.delete(cache));
+// (await caches.open('foo')).add("/");
+// caches.open('foo').then(cache => cache.addAll(
+//         '/',
+//         '/0.png',
+//         '/1.png'
+//       )
+// )
+
 </script>
 </html>

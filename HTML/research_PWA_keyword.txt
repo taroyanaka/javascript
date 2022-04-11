@@ -1,0 +1,11 @@
+https://github.com/damzaky/Simple-Progressive-Web-App-Template/blob/master/service-worker.js
+
+Service Worker
+waitUntil
+addAll
+fetch
+respondWith
+match
+open
+put
+clone
