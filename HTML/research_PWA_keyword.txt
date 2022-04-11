@@ -9,3 +9,13 @@ match
 open
 put
 clone
+
+
+service worker waitUntil
+service worker addAll
+service worker fetch
+service worker respondWith
+service worker match
+service worker open
+service worker put
+service worker clone
