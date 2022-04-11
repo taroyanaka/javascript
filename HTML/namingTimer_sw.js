@@ -18,7 +18,7 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   console.info('activate', event);
-  caches.keys().forEach(cache=>caches.delete(cache));
+  // caches.keys().forEach(cache=>caches.delete(cache));
 });
 
 self.addEventListener('fetch', function(event) {
