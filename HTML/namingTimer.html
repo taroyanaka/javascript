@@ -7,6 +7,7 @@
     <title>namingTimer</title>
     <!-- https://github.com/validatorjs/validator.js -->
     <script src="./validator.13.7.0.min.js"></script>
+    <link rel="manifest" href="./manifest.json">
     <style>
         button{
             width: 10rem;
@@ -19,6 +20,8 @@
     </style>
 </head>
 <body>
+<button onclick="unregister()">unregister</button>
+
 <img src="1.png" alt="" srcset="" width="100rem" height="100rem">
 
 <div class="saveData"></div>
@@ -107,22 +110,22 @@ const test1 = () => {
 
 
 
-// if ('serviceWorker' in navigator) {
-//   navigator.serviceWorker.register('./namingTimer_sw.js', { scope: './' })
-//   .then(function(reg) {
-//     console.log('登録に成功しました。 Scope は ' + reg.scope);
-//   }).catch(function(error) {
-//     console.log('登録に失敗しました。' + error);
-//   });
-// }
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./namingTimer_sw.js', { scope: './' })
+  .then(function(reg) {
+    console.log('登録に成功しました。 Scope は ' + reg.scope);
+  }).catch(function(error) {
+    console.log('登録に失敗しました。' + error);
+  });
+}
 
 
-navigator.serviceWorker.register('./namingTimer_sw.js', { scope: './' })
-.then(function(reg) {
-    reg.unregister().then(function(boolean) {
-        console.log(boolean)
-    })
-})
+// navigator.serviceWorker.register('./namingTimer_sw.js', { scope: './' })
+// .then(function(reg) {
+//     reg.unregister().then(function(boolean) {
+//         console.log(boolean)
+//     })
+// })
 
 // navigator.serviceWorker.register('./PWA2/tmp2_sw.js', { scope: './PWA2/' })
 // .then(function(reg) {
@@ -131,5 +134,24 @@ navigator.serviceWorker.register('./namingTimer_sw.js', { scope: './' })
 //     })
 // })
 
+// navigator.serviceWorker.addEventListener('message', event => {
+//   console.log(event.data.msg, event.data.url);
+// });
+
+// navigator.serviceWorker.controller.postMessage('Hello, world', [(new MessageChannel()).port2]);
+
+
+navigator.serviceWorker.addEventListener('message', event => {
+  console.log(event.data.msg, event.data.url);
+});
+
+const unregister = () => {
+    navigator.serviceWorker.register('./namingTimer_sw.js', { scope: './' })
+    .then(function(reg) {
+        reg.unregister().then(function(boolean) {
+            console.log(boolean)
+        })
+    })
+};
 </script>
 </html>
