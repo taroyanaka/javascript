@@ -5,7 +5,7 @@
     "background_color": "#f8ea48",
     "display": "standalone",
     "Scope": "./",
-    "start_url": "namingTimer.html",
+    "start_url": "./namingTimer.html",
     "icons": [
       {
         "src": "1.png",

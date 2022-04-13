@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>namingTimer</title>
+    <link rel="manifest" href="./manifest.json">
     <!-- https://github.com/validatorjs/validator.js -->
     <script src="./validator.13.7.0.min.js"></script>
-    <link rel="manifest" href="./manifest.json">
     <style>
         button{
             width: 10rem;
@@ -21,6 +21,8 @@
 </head>
 <body>
 <button onclick="unregister()">unregister</button>
+<button onclick="message()">message</button>
+<button class="button-parent">button-parent</button>
 
 <img src="1.png" alt="" srcset="" width="100rem" height="100rem">
 
@@ -134,16 +136,20 @@ if ('serviceWorker' in navigator) {
 //     })
 // })
 
-// navigator.serviceWorker.addEventListener('message', event => {
-//   console.log(event.data.msg, event.data.url);
-// });
-
-// navigator.serviceWorker.controller.postMessage('Hello, world', [(new MessageChannel()).port2]);
-
+let foobar;
+const message = async () => {
+    navigator.serviceWorker.controller.postMessage('browser to sw', [(new MessageChannel()).port2]);
+};
 
 navigator.serviceWorker.addEventListener('message', event => {
-  console.log(event.data.msg, event.data.url);
+    console.log("sw to browser");
+    console.log(event.data.msg, event.data.url);
 });
+
+// navigator.serviceWorker.addEventListener('message', event => {
+//   console.log(event.data.msg, event.data.url);
+//   console.log(navigator.serviceWorker.ready.installing);
+// });
 
 const unregister = () => {
     navigator.serviceWorker.register('./namingTimer_sw.js', { scope: './' })
@@ -153,5 +159,8 @@ const unregister = () => {
         })
     })
 };
+
+
+
 </script>
 </html>
