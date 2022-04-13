@@ -1,4 +1,4 @@
-const VERSION = 'v4';
+const VERSION = 'v5';
 self.addEventListener('install', event => {
   console.log('service worker install ...');
   event.waitUntil(
@@ -13,10 +13,10 @@ self.addEventListener('install', event => {
     })
     .then(res=>  console.log("foo1") )
   );
-  // event.waitUntil(self.skipWaiting());
+  event.waitUntil(self.skipWaiting());
 });
 self.addEventListener('activate', async event => {
-  // await event.waitUntil(self.clients.claim());
+  await event.waitUntil(self.clients.claim());
   console.info('activate', event);
   console.log("bar");
 });
@@ -61,17 +61,36 @@ self.addEventListener('push', event => {
 
 
 addEventListener('fetch', event => {
+  // event.waitUntil(
+  //   (async () => {
+  //   }))
   event.waitUntil(
     (async () => {
       if (!event.clientId) return;
+      console.info("event.clientId", await event.clientId);
       if (!(await clients.get(event.clientId))) return;
+      console.info("clients.get(event.clientId)", await clients.get(event.clientId));
       (await clients.get(event.clientId)).postMessage({
         msg: "fetch!",
+        // msg: [await clients.get(event.clientId), await clients.get(event.clientId)],
         url: event.request.url
       });
     })()
   )
-  // .then(V=>console.log("fetch done!"));
+
+  // console.info("event.request", event.request);
+  // event.respondWith(
+  //   caches.match(event.request).then(cacheResponse => {
+  //     console.info("cacheResponse", cacheResponse);
+  //     return cacheResponse || fetch(event.request).then(response => {
+  //       console.info("response", response);
+  //       return caches.open(VERSION).then(cache => {
+  //         cache.put(event.request, response.clone());
+  //         return response;
+  //       });  
+  //     });
+  //   })
+  // );
 });
 
 

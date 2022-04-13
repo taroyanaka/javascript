@@ -136,20 +136,21 @@ if ('serviceWorker' in navigator) {
 //     })
 // })
 
-let foobar;
 const message = async () => {
     navigator.serviceWorker.controller.postMessage('browser to sw', [(new MessageChannel()).port2]);
 };
 
-navigator.serviceWorker.addEventListener('message', event => {
-    console.log("sw to browser");
-    console.log(event.data.msg, event.data.url);
-});
 
+// const swToBrowser = () => {
 // navigator.serviceWorker.addEventListener('message', event => {
-//   console.log(event.data.msg, event.data.url);
-//   console.log(navigator.serviceWorker.ready.installing);
+//     console.log("sw to browser");
+//     console.log(event.data.msg, event.data.url);
 // });
+// };
+
+navigator.serviceWorker.addEventListener('message', event => {
+  console.log(event.data.msg, event.data.url);
+});
 
 const unregister = () => {
     navigator.serviceWorker.register('./namingTimer_sw.js', { scope: './' })
