@@ -1,4 +1,4 @@
-const VERSION = 'v3';
+const VERSION = 'v4';
 self.addEventListener('install', event => {
   console.log('service worker install ...');
   event.waitUntil(
