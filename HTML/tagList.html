@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tagList</title>
+    <style>
+        li{
+            list-style: none;
+        }
+        span{
+            margin: 1rem;
+        }
+    </style>
+</head>
+<body>
+<button onclick="hoge(event)">hoge</button>
+<input type="text" name="text" class="text">
+<!-- <h1 class="foo"></h1> -->
+<ul class="ul"></ul>
+<script>
+// document.querySelector('.foo').innerHTML = ['foo', 'bar', 'baz'].join(' ');
+document.querySelector('.ul').innerHTML = 
+    [
+        `<li class="list"><span class="val">foo</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
+        `<li class="list"><span class="val">bar</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
+        `<li class="list"><span class="val">baz</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
+    ]
+    .join(' ');
+document.querySelector(`.text`).value = "tag_0";
+
+// const addTag = (EVENT) => console.log(EVENT.target.previousElementSibling.outerHTML);
+
+const addTag = (EVENT) => EVENT.target.previousElementSibling.innerHTML += `<span class="tag-child">${document.querySelector(`.text`).value}</span>`;
+
+// const addTag = (e) => console.log(e.target);
+// EVENT.target.previousElementSibling.innerHTML += `<span class="tag-child">${document.querySelector(`.text`).value}</span>`;
+const tagOnly = () => document.querySelector(`.tag-add`).previousElementSibling.innerHTML += `<span class="tag-child">${document.querySelector(`.text`).value}</span>`;
+
+function mergeAll(list){return Object.assign.apply({},[].concat(list))};
+const exe = () => {
+    return ["tag_0",
+"tag_1",
+"tag_3"]
+.reduce((acc, cur) => {
+    acc.push(Array.from(document.querySelectorAll(".tag-child")).filter(V=>V.textContent === cur).map(V=>V.parentElement));
+    return acc;
+}, []);
+};
+
+const tagFilter = () => mergeAll(exe());
+// const tagNoFilter = () => Array.from(document.querySelectorAll(".tag-child"));
+
+</script>
+</body>
+</html>
