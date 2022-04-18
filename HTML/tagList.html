@@ -6,16 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>tagList</title>
     <style>
+        :root{
+            --li-display: block;
+        }
         li{
             list-style: none;
+            display: block;
         }
+        li.noShow{
+            /* --li-display: none; */
+            display: none;
+        }
+        /* .list{
+            display: block;
+        }
+        .noList{
+            display: none;
+        } */
         span{
             margin: 1rem;
         }
     </style>
 </head>
 <body>
-<button onclick="hoge(event)">hoge</button>
+<button onclick="exe2()">exe2</button>
 <input type="text" name="text" class="text">
 <!-- <h1 class="foo"></h1> -->
 <ul class="ul"></ul>
@@ -44,12 +58,18 @@ const exe = () => {
 "tag_1",
 "tag_3"]
 .reduce((acc, cur) => {
-    acc.push(Array.from(document.querySelectorAll(".tag-child")).filter(V=>V.textContent === cur).map(V=>V.parentElement));
+    acc.push(Array.from(document.querySelectorAll(".tag-child")).filter(V=>V.textContent !== cur).map(V=>V.parentElement.parentElement));
     return acc;
 }, []);
 };
 
 const tagFilter = () => mergeAll(exe());
+
+const exe2 = () => {
+    Array.from(document.querySelectorAll(".list")).forEach(V=>V.classList.add("noShow"));
+    tagFilter().forEach(V=>V.classList.remove("noShow"));
+};
+
 // const tagNoFilter = () => Array.from(document.querySelectorAll(".tag-child"));
 
 </script>
