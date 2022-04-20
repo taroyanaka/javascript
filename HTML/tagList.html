@@ -42,18 +42,11 @@
 <ul class="ul"></ul>
 
 <script>
-document.querySelector('.ul').innerHTML = 
-    [
-        `<li class="list"><input type="checkbox" name="done" class="done"><select name="rate" class="rate" onchange="setRateOptionHTML()"></select><span class="val">foo</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
-        `<li class="list"><input type="checkbox" name="done" class="done"><select name="rate" class="rate" onchange="setRateOptionHTML()"></select><span class="val">bar</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
-        `<li class="list"><input type="checkbox" name="done" class="done"><select name="rate" class="rate" onchange="setRateOptionHTML()"></select><span class="val">baz</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
-    ]
-    .join(' ');
-
 // https://stackoverflow.com/a/60989268
 function rankings(arr){
-    // add whatever parameters you deem necessary....good luck! 
-    var sorted = arr.slice().sort(function(a,b){return b-a})
+    const ascending = (a, b) => a - b;
+    const descending = (a, b) => b - a;
+    var sorted = arr.slice().sort(function(a,b){return ascending(a, b)})
     var ranks = arr.slice().map(function(v){ return sorted.indexOf(v)});
     return ranks;
 }
@@ -62,15 +55,24 @@ function range(from,to){return[...Array(to-from)].reduce((A,V,IDX)=>{A.push(from
 const getMaxRateNum = () => Array.from(document.querySelectorAll(`.rate`)).map(V=>Number(V.value)).sort().reverse()[0];
 const setMaxRateNum = () => getMaxRateNum() === 0 ? 2 : getMaxRateNum() + 2;
 const rateOptionHTML = () => range(0, setMaxRateNum()).map(rateNum=>`<option value="${rateNum}">${rateNum}</option>`).join("");
+const deepCopy = (list) => JSON.parse(JSON.stringify(list));
+const deepCopyFromRateNum = () => deepCopy(Array.from(document.querySelectorAll(`.rate`)).map(V=>Number(V.value)));
+const revisionByRank = () => document.querySelectorAll(`.rate`).forEach((V,IDX)=> V.value = rankings(deepCopyFromRateNum())[IDX] );
 const setRateOptionHTML = () => {
-    document.querySelectorAll(`.rate`).forEach(V=>{
+    document.querySelectorAll(`.rate`).forEach((V,IDX)=>{
         const tmp = V.value;
         V.innerHTML = rateOptionHTML()
         V.value = tmp;
-    })
+    });
 };
 
-setRateOptionHTML();
+const setRevisionSet = () => {
+    setRateOptionHTML();
+    revisionByRank();
+    setRateOptionHTML();
+};
+
+
 
 // const getRateNum = (EVENT) => console.log(EVENT.target.value);
 
@@ -114,6 +116,31 @@ const init = () => {
     document.querySelector(`.listName`).value = "ThisIsListName";
     document.querySelector(`.text`).value = "tag_0";
 };
+const test_0 = () => {
+    document.querySelector('.ul').innerHTML = 
+        [
+            `<li class="list"><input type="checkbox" name="done" class="done"><select name="rate" class="rate" onInput="setRevisionSet()"></select><span class="val">foo</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
+            `<li class="list"><input type="checkbox" name="done" class="done"><select name="rate" class="rate" onInput="setRevisionSet()"></select><span class="val">bar</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
+            `<li class="list"><input type="checkbox" name="done" class="done"><select name="rate" class="rate" onInput="setRevisionSet()"></select><span class="val">baz</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
+        ]
+        .join(' ');
+};
+const test_1 = () => {
+    document.querySelectorAll(`.rate`)[0].value = 0;
+    setRevisionSet();
+    document.querySelectorAll(`.rate`)[1].value = 1;
+    setRevisionSet();
+    document.querySelectorAll(`.rate`)[2].value = 2;
+    setRevisionSet();
+    document.querySelectorAll(`.rate`)[1].value = 0;
+    setRevisionSet();
+    document.querySelectorAll(`.rate`)[0].value = 3;
+    setRevisionSet();
+    document.querySelectorAll(`.rate`)[1].value = 3;
+    setRevisionSet();
+};
+test_0();
+test_1();
 init();
 </script>
 </body>
