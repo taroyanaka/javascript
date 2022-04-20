@@ -30,6 +30,7 @@
 </head>
 <body>
 <button onclick="exe2()">exe2</button>
+<input type="text" name="listName" class="listName"><span onclick="insertNewList()">+</span>
 <input type="text" name="text" class="text">
 <!-- <h1 class="foo"></h1> -->
 <ul class="ul"></ul>
@@ -42,7 +43,11 @@ document.querySelector('.ul').innerHTML =
         `<li class="list"><span class="val">baz</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
     ]
     .join(' ');
-document.querySelector(`.text`).value = "tag_0";
+
+const newListName = () => document.querySelector(`.listName`).value || document.querySelectorAll(`.list`).length;
+const makeListHTML = () => `<li class="list"><span class="val">${newListName()}</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`;
+const insertNewList = () => document.querySelector(`.ul`).innerHTML += makeListHTML();
+
 
 // const addTag = (EVENT) => console.log(EVENT.target.previousElementSibling.outerHTML);
 
@@ -72,6 +77,11 @@ const exe2 = () => {
 
 // const tagNoFilter = () => Array.from(document.querySelectorAll(".tag-child"));
 
+const init = () => {
+    document.querySelector(`.listName`).value = "ThisIsListName";
+    document.querySelector(`.text`).value = "tag_0";
+};
+init();
 </script>
 </body>
 </html>
