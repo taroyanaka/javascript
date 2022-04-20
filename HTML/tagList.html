@@ -26,23 +26,56 @@
         span{
             margin: 1rem;
         }
+        .done{
+            width: 1.4rem;
+            height: 1.4rem;
+        }
     </style>
 </head>
 <body>
+
 <button onclick="exe2()">exe2</button>
 <input type="text" name="listName" class="listName"><span onclick="insertNewList()">+</span>
 <input type="text" name="text" class="text">
+<!-- <input type="checkbox" name="done" class="done"> -->
 <!-- <h1 class="foo"></h1> -->
 <ul class="ul"></ul>
+
 <script>
-// document.querySelector('.foo').innerHTML = ['foo', 'bar', 'baz'].join(' ');
 document.querySelector('.ul').innerHTML = 
     [
-        `<li class="list"><span class="val">foo</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
-        `<li class="list"><span class="val">bar</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
-        `<li class="list"><span class="val">baz</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
+        `<li class="list"><input type="checkbox" name="done" class="done"><select name="rate" class="rate" onchange="setRateOptionHTML()"></select><span class="val">foo</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
+        `<li class="list"><input type="checkbox" name="done" class="done"><select name="rate" class="rate" onchange="setRateOptionHTML()"></select><span class="val">bar</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
+        `<li class="list"><input type="checkbox" name="done" class="done"><select name="rate" class="rate" onchange="setRateOptionHTML()"></select><span class="val">baz</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`,
     ]
     .join(' ');
+
+// https://stackoverflow.com/a/60989268
+function rankings(arr){
+    // add whatever parameters you deem necessary....good luck! 
+    var sorted = arr.slice().sort(function(a,b){return b-a})
+    var ranks = arr.slice().map(function(v){ return sorted.indexOf(v)});
+    return ranks;
+}
+
+function range(from,to){return[...Array(to-from)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
+const getMaxRateNum = () => Array.from(document.querySelectorAll(`.rate`)).map(V=>Number(V.value)).sort().reverse()[0];
+const setMaxRateNum = () => getMaxRateNum() === 0 ? 2 : getMaxRateNum() + 2;
+const rateOptionHTML = () => range(0, setMaxRateNum()).map(rateNum=>`<option value="${rateNum}">${rateNum}</option>`).join("");
+const setRateOptionHTML = () => {
+    document.querySelectorAll(`.rate`).forEach(V=>{
+        const tmp = V.value;
+        V.innerHTML = rateOptionHTML()
+        V.value = tmp;
+    })
+};
+
+setRateOptionHTML();
+
+// const getRateNum = (EVENT) => console.log(EVENT.target.value);
+
+
+
 
 const newListName = () => document.querySelector(`.listName`).value || document.querySelectorAll(`.list`).length;
 const makeListHTML = () => `<li class="list"><span class="val">${newListName()}</span><span class="tag-parent"></span><span onclick="addTag(event)" class="tag-add">+</span></li>`;
