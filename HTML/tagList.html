@@ -9,12 +9,17 @@
         :root{
             --li-display: block;
             --ul-display: block;
+            --sorted-ul-display: none;
         }
         .sorted{
             --ul-display: none;
+            --sorted-ul-display: block;
         }
-        ul{
+        .ul{
             display: var(--ul-display);
+        }
+        .sorted_ul{
+            display: var(--sorted-ul-display);
         }
         li{
             list-style: none;
@@ -47,7 +52,7 @@
 <!-- <input type="checkbox" name="done" class="done"> -->
 <!-- <h1 class="foo"></h1> -->
 <ul class="ul"></ul>
-<ul class="soted_ul"></ul>
+<ul class="sorted_ul"></ul>
 
 <script>
 // https://stackoverflow.com/a/60989268
@@ -157,14 +162,24 @@ test_0();
 test_1();
 init();
 
-const check_1 = () => document.querySelectorAll(".done")[2].checked = true;;
-const onlyCheckedHTML = () => Array.from(document.querySelectorAll(".list")).filter(V=>V.querySelector(".done").checked).map(V=>V.innerHTML).join("");
-const filterOrSortedHTML = () => document.querySelector(`.ul`).innerHTML = onlyCheckedHTML();
-const exe3 = () => {check_1();filterOrSortedHTML()};
+const check_2 = () => document.querySelectorAll(".done")[2].checked = true;;
+const onlyNoCheckedHTML = () => Array.from(document.querySelectorAll(".list")).filter(V=>V.querySelector(".done").checked === false).map(V=>V.outerHTML).join("");
+const filterOrSortedHTML = () => document.querySelector(`.sorted_ul`).innerHTML = onlyNoCheckedHTML();
 
-const makeSortedHTML = () => document.querySelector(`.ul`).innerHTML;
+
+
+// const makeSortedHTML = () => document.querySelector(`.ul`).innerHTML;
+
+
 const sorted = () => document.querySelector(":root").classList.add("sorted");
 const sortedClear = () => document.querySelector(":root").classList.remove("sorted");
+const switchSortOrNoSort = () => {document.querySelector(":root").classList.value === "sorted" ? sortedClear() : sorted();};
+
+const exe3 = () => {
+    check_2();
+    filterOrSortedHTML();
+    switchSortOrNoSort();
+};
 </script>
 </body>
 </html>
