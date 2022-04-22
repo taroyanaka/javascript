@@ -8,6 +8,13 @@
     <style>
         :root{
             --li-display: block;
+            --ul-display: block;
+        }
+        .sorted{
+            --ul-display: none;
+        }
+        ul{
+            display: var(--ul-display);
         }
         li{
             list-style: none;
@@ -40,6 +47,7 @@
 <!-- <input type="checkbox" name="done" class="done"> -->
 <!-- <h1 class="foo"></h1> -->
 <ul class="ul"></ul>
+<ul class="soted_ul"></ul>
 
 <script>
 // https://stackoverflow.com/a/60989268
@@ -148,6 +156,15 @@ const test_1 = () => {
 test_0();
 test_1();
 init();
+
+const check_1 = () => document.querySelectorAll(".done")[2].checked = true;;
+const onlyCheckedHTML = () => Array.from(document.querySelectorAll(".list")).filter(V=>V.querySelector(".done").checked).map(V=>V.innerHTML).join("");
+const filterOrSortedHTML = () => document.querySelector(`.ul`).innerHTML = onlyCheckedHTML();
+const exe3 = () => {check_1();filterOrSortedHTML()};
+
+const makeSortedHTML = () => document.querySelector(`.ul`).innerHTML;
+const sorted = () => document.querySelector(":root").classList.add("sorted");
+const sortedClear = () => document.querySelector(":root").classList.remove("sorted");
 </script>
 </body>
 </html>
