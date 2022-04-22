@@ -47,7 +47,7 @@
 <body>
 
 <button onclick="exe2()">exe2</button>
-<input type="text" name="listName" class="listName"><span onclick="insertNewList()">+</span>
+<input type="text" name="listName" class="listName"><span onclick="insertNewList()" class="insertNewList">+</span>
 <input type="text" name="text" class="text">
 <!-- <input type="checkbox" name="done" class="done"> -->
 <!-- <h1 class="foo"></h1> -->
@@ -155,18 +155,38 @@ const test_1 = () => {
     setRateOptionHTML();
     document.querySelectorAll(`.rate`)[0].value = 3;
     setRateOptionHTML();
-    document.querySelectorAll(`.rate`)[1].value = 3;
+    document.querySelectorAll(`.rate`)[1].value = 1;
     setRateOptionHTML();
 };
 test_0();
 test_1();
+const test_2 = () => {
+    document.querySelector(".insertNewList").click();
+    document.querySelectorAll(`.rate`)[3].value = 4;
+    setRateOptionHTML();
+    document.querySelector(".insertNewList").click();
+};
+test_2();
 init();
 
-const check_2 = () => document.querySelectorAll(".done")[2].checked = true;;
+
+function zip(){const args=Object.keys(arguments).map(key=>arguments[key]);const mostLongArg=Object.keys(arguments).map(key=>arguments[key]).sort()[0];return mostLongArg.reduce((A,NOUSEVAL,IDX)=>{let tmp=[];tmp.push(...args.map(arg=>arg[IDX]).filter(V=>V!==null));A.push(tmp);return A},A=[])};
+
+const filterOrSortedHTMLWithTemporaryValueSaving = () => {
+    const getDeepCopyRateNumArray = () => deepCopy(Array.from(document.querySelectorAll(`.rate`)).map((V,IDX)=> [IDX, Number(V.value)] ));
+    const deepCopyRateNumArray = getDeepCopyRateNumArray();
+    filterOrSortedHTML();
+    // const setDeepCopyRateNumArray = () => document.querySelectorAll(`.rate`).forEach((V,IDX)=> V.value = deepCopyRateNumArray[IDX] );
+    // setDeepCopyRateNumArray();
+};
+const check_Num = (Num) => document.querySelectorAll(".done")[Num].checked = true;
 const onlyNoCheckedHTML = () => Array.from(document.querySelectorAll(".list")).filter(V=>V.querySelector(".done").checked === false).map(V=>V.outerHTML).join("");
+const onlyNoCheckedHTMLArray = () => Array.from(document.querySelectorAll(".list")).filter(V=>V.querySelector(".done").checked === false).map(V=>V.outerHTML);
+const onlyNoCheckedIDX = () => Array.from(document.querySelectorAll(".list")).map((V, IDX)=>[V, IDX]).filter(V=>V[0].querySelector(".done").checked === false).map(V=>V[1]);
 const filterOrSortedHTML = () => document.querySelector(`.sorted_ul`).innerHTML = onlyNoCheckedHTML();
 
-
+const onlyNoCheckedIDXAndArray = () => zip(onlyNoCheckedIDX(), onlyNoCheckedHTMLArray());
+// [[0, 0], [1,100], [2, 200], [3, 300]].filter(V=>[0,1].includes(V[0]))
 
 // const makeSortedHTML = () => document.querySelector(`.ul`).innerHTML;
 
@@ -176,8 +196,10 @@ const sortedClear = () => document.querySelector(":root").classList.remove("sort
 const switchSortOrNoSort = () => {document.querySelector(":root").classList.value === "sorted" ? sortedClear() : sorted();};
 
 const exe3 = () => {
-    check_2();
+    // check_Num(2);
+    // check_Num(1);
     filterOrSortedHTML();
+    filterOrSortedHTMLWithTemporaryValueSaving();
     switchSortOrNoSort();
 };
 </script>
