@@ -10,7 +10,7 @@
   "theme_color": "#ffffff",
   "screenshots" : [
     {
-      "src": "icon.png",
+      "src": "images/icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
