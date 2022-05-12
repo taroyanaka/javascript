@@ -8,6 +8,12 @@
   "short_name": "taroyanaka.github",
   "start_url": "/",
   "theme_color": "#ffffff",
+  "screenshots" : [
+    {
+      "src": "icon.png",
+      "sizes": "512x512"
+    }
+  ],
   "icons": [
       {
         "src": "images/windows11/SmallTile.scale-100.png",
