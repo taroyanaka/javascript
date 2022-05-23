@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>namingTimer</title>
+    <link rel="manifest" href="./manifest.json">
+    <!-- https://github.com/validatorjs/validator.js -->
+    <script src="./validator.13.7.0.min.js"></script>
+    <style>
+        button{
+            width: 10rem;
+            height: 2rem;
+        }
+        input{
+            width: 30rem;
+            height: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+<button onclick="unregister()">unregister</button>
+<button onclick="message()">message</button>
+<button class="button-parent">button-parent</button>
+
+<!-- <img src="1.png" alt="" srcset="" width="100rem" height="100rem"> -->
+
+<div class="saveData"></div>
+<input type="number" name="seconds" class="seconds" placeholder="seconds" value="10" onchange="checkOfIntegerGreaterThanOrEqualTo1(event)" oninput="checkOfIntegerGreaterThanOrEqualTo1(event)">
+<input type="text" name="name" class="name" placeholder="name alphanumeric 半角英数字">
+<div>Timer is <span class="time"></span></div>
+<button class="start" onclick="start()">start</button>
+<button class="save" onclick="save()">save</button>
+</body>
+<script>
+// https://github.com/typestack/class-validator/issues/10
+const checkOfIntegerGreaterThanOrEqualTo1 = (event) => event.target.value = validator.isFloat(event.target.value, { min: 1 }) ? event.target.value : 1;
+const getMinutes = (seconds) => parseInt(seconds / 60);
+const getSeconds = (seconds) => parseInt(seconds % 60);
+const getMinutesAndSecondsString = (minutes, seconds) => minutes.toString() + ":" + seconds.toString();
+// https://stackoverflow.com/a/20618517
+let intervalID;
+const start = () => {
+    const durationSeconds = parseInt(document.querySelector(`.seconds`).value, 10);
+    let remainingSeconds = durationSeconds;
+    try{clearInterval(intervalID)}
+    catch(exception_var){console.log(exception_var)}
+    finally{
+        intervalID = setInterval(() => {
+            document.querySelector('.time').textContent = getMinutesAndSecondsString(getMinutes(remainingSeconds), getSeconds(remainingSeconds));
+            remainingSeconds = remainingSeconds <= 0 ? durationSeconds : remainingSeconds - 1;
+        }, 1000);
+    }
+}
+const set = (NUM) => document.querySelector(`.seconds`).value = parseInt(NUM, 10);
+const load = (event) => set(Number(event.target.dataset.duration));
+const save = () => {
+    const numbering = "timer_" + document.querySelectorAll(".foo").length.toString();
+    document.querySelector(`.saveData`).innerHTML += `<button data-duration="${document.querySelector(`.seconds`).value}" class="foo ${naming(numbering)}" onclick="load(event)">${document.querySelector(`.seconds`).value} ${naming(numbering)}</button>`;
+}
+const naming = (numbering) => validator.isAlphanumeric(document.querySelector(`.name`).value) ? document.querySelector(`.name`).value : numbering;
+
+const test0 = () => {
+    document.querySelector(`.saveData`).innerHTML = `<button data-duration="3" class="foo timer_0" onclick="load(event)">3 timer_0</button>
+<button data-duration="5" class="foo timer_1" onclick="load(event)">5 timer_1</button>`;
+};
+const test1 = () => {
+    document.querySelector(`.timer_0`).click();
+    document.querySelector(`.start`).click();
+    document.querySelector(`.timer_1`).click();
+    document.querySelector(`.start`).click();
+    document.querySelector(`.seconds`).value = 0;
+    save();
+    document.querySelector(`.timer_2`).click();
+    document.querySelector(`.start`).click();
+    document.querySelector(`.seconds`).value = 1;
+    save();
+    document.querySelector(`.timer_3`).click();
+    document.querySelector(`.start`).click();
+    document.querySelector(`.seconds`).value = 5;
+    save();
+    document.querySelector(`.timer_4`).click();
+    document.querySelector(`.start`).click();
+};
+
+// test0();
+// test1();
+
+
+
+// caches.keys().then(function(cacheNames) {
+//     console.log(cacheNames);
+//     return caches.delete(cacheNames[0]);
+// }).then(function() {
+//     console.log('Cache deleted');
+// });
+
+// (await caches.keys());
+// (await caches.keys()).forEach(cache=>caches.delete(cache));
+
+// (await caches.open('foo')).add("/");
+
+// caches.open('foo').then(cache => cache.addAll(
+//         '/',
+//         '/0.png',
+//         '/1.png'
+//       )
+// )
+
+
+
+
+
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker.register('./namingTimer_sw.js', { scope: './' })
+//   .then(function(reg) {
+//     console.log('登録に成功しました。 Scope は ' + reg.scope);
+//   }).catch(function(error) {
+//     console.log('登録に失敗しました。' + error);
+//   });
+// }
+
+
+// navigator.serviceWorker.register('./namingTimer_sw.js', { scope: './' })
+// .then(function(reg) {
+//     reg.unregister().then(function(boolean) {
+//         console.log(boolean)
+//     })
+// })
+
+// navigator.serviceWorker.register('./PWA2/tmp2_sw.js', { scope: './PWA2/' })
+// .then(function(reg) {
+//     reg.unregister().then(function(boolean) {
+//         console.log(boolean)
+//     })
+// })
+
+
+
+
+// const message = async () => {
+//     navigator.serviceWorker.controller.postMessage('browser to sw', [(new MessageChannel()).port2]);
+// };
+
+
+// const swToBrowser = () => {
+// navigator.serviceWorker.addEventListener('message', event => {
+//     console.log("sw to browser");
+//     console.log(event.data.msg, event.data.url);
+// });
+// };
+
+
+
+
+
+
+
+// navigator.serviceWorker.addEventListener('message', event => {
+//   console.log(event.data.msg, event.data.url);
+// });
+// const unregister = () => {
+//     navigator.serviceWorker.register('./namingTimer_sw.js', { scope: './' })
+//     .then(function(reg) {
+//         reg.unregister().then(function(boolean) {
+//             console.log(boolean)
+//         })
+//     })
+// };
+
+
+
+</script>
+</html>
