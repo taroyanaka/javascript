@@ -11,7 +11,6 @@ const blog = Vue.createApp({
         {
           id: article_lists.highestIdNumPlusOne(),
           article: this.article,
-          // comment_list: comment_sample2
           comment_list: []
         }
       )
