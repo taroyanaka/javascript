@@ -21,15 +21,24 @@
     <p style="white-space: pre-line;">{{ article }}</p>
     <textarea v-model="article" placeholder="add multiple lines" name="article" id="article" cols="30" rows="10" @input="inputFn"></textarea>
     <button @click="save">save</button>
+    <input v-model="comment_text" type="text"></input>
+    <button @click="comment_save">comment_save</button>
 </div>
 
 <ul class="article_lists">
     <li v-for="(list_of_one, index) in list" @click="load(index)">
         {{ list_of_one.article }}
+        <ul>
+        <li v-for="(comment_list_of_one, index) in list_of_one.comment_list">
+            {{ comment_list_of_one.comment }}
+        </li>
+        </ul>
     </li>
 </ul>
 
-
+<div class="test">
+    <button @click="exe">test_exe</button>
+</div>
 
 
 <div id="counter">
@@ -76,18 +85,6 @@
 </div>
 
 
-
-
-<!-- <div id="todo-list-app">
-<ol>
-    <todo-item
-    v-for=item in groceryList
-    v-bind:todo2=item
-    v-bind:key=item.id
-    ></todo-item>
-</ol>
-</div> -->
-
 <div class="foo">
     <p>STRING: {{ str }}</p>
     <button v-on:click="bar">bar</button>
@@ -109,46 +106,8 @@
     <span>{{ publishedBooksMessage }}</span>
 </div>
 
-<!-- <div :style="styleObject" id="style1">style directive</div> -->
-
-<!-- <div :style="{ fontSize: '20px' }">style directive</div> -->
-
-
-
-<!-- <div
-  class="static"
-  :class="{ active: isActive, 'text-danger': hasError }"
-></div> -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <h1 v-if="awesome">Vue is awesome!</h1>
-
-<!-- <h1 v-if="10 < 9">Vue is awesome!</h1>
-<h1 v-else>Oh no 😢</h1> -->
 
 <template v-if="awesome">
     <h1>Title</h1>
@@ -198,11 +157,6 @@
 <li v-for="n in evenNumbers" :key="n">{{ n }}</li>
 </ul>
 
-<!-- <div id="range" class="demo">
-    <span v-for="n in 10" :key="n">{{ n }} </span>
-</div> -->
-
-
 <div id="range" class="demo">
     <span v-for="n in 10" :key="n">{{ n }} </span>
 </div>
@@ -228,7 +182,6 @@
 </div>
 
 <div id="event-with-method">
-    <!-- `greet` は、あらかじめ定義したメソッドの名前 -->
     <button @click="greet">Greet</button>
 </div>
 
@@ -245,7 +198,6 @@
 </div>
 
 <div id="inline-handler3">
-    <!-- ボタンをクリックすると、one（）とtwo（）の両方が実行されます -->
     <button @click="one($event), two($event)" data-foo="FOO">
         Submit
     </button>
@@ -269,12 +221,6 @@
     <br />
     <textarea v-model="message" placeholder="add multiple lines"></textarea>
 </div>
-
-<!-- bad -->
-<!-- <textarea>{{ text }}</textarea> -->
-
-<!-- good -->
-<!-- <textarea v-model="text"></textarea> -->
 
 <div id="v-model-checkbox" class="demo">
     <input type="checkbox" id="checkbox" v-model="checked" />

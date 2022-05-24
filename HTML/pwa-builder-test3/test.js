@@ -1,18 +1,30 @@
 const blog = Vue.createApp({
   data() {
     return {
-      article: ''
+      article: '',
+      comment_text: '',
     }
   },
   methods: {
     save() {
       article_lists.list.push(
-        {article: this.article}
+        {
+          id: article_lists.highestIdNumPlusOne(),
+          article: this.article,
+          // comment_list: comment_sample2
+          comment_list: []
+        }
       )
     },
     inputFn() {
       article_lists.list[article_lists.editing].article = this.article
-    }
+    },
+    comment_save() {
+      article_lists.list[article_lists.editing].comment_list
+        .push(
+          {comment: this.comment_text}
+        )
+    },
   },
 }).mount('.blog');
 
@@ -20,33 +32,58 @@ const article_lists = Vue.createApp({
   data() {
     return{
       editing: 0,
-      list: [
-        {article:"foo"},
-        {article:"bar"}
-      ]
+      list: [ ]
     }
   },
   methods: {
     load(IDX) {
       blog.article = this.list[IDX].article;
       this.editing = IDX;
+    },
+    highestIdNumPlusOne() {
+        let id = 0;
+        try {
+          id = this.list.sort((a, b)=> a.id - b.id).slice(-1)[0].id + 1;
+        } catch (error) { console.log(error) }
+        return id;
     }
   }
 }).mount('.article_lists');
 
-const test0 = () => blog.article = "foo\nbar\nBUZ";
-const test1 = () => blog.save();
-const test2 = () => {
-  article_lists.load(0);
-  article_lists.load(1);
-  article_lists.load(2);
+function test_exe(){
+  const test0 = (text) => blog.article = text;
+  const test1 = () => blog.save();
+  const test2 = () => {
+    article_lists.load(0);
+    article_lists.load(1);
+    article_lists.load(2);
+  }
+  const test3 = (id, text) => {
+    article_lists.load(id);
+    blog.comment_text = text;
+    blog.comment_save();
+  }
+  test0("foo");
+  test1();
+  test0("bar");
+  test1();
+  test0("foo\nbar\nBUZ");
+  test1();
+  test2();
+  const comment_sample = [
+    {id: 0, comment: "foo is FOO"},
+    {id: 1, comment: "bar is BAR"},
+    {id: 0, comment: "foo2 is FOO2"},
+  ]
+  comment_sample.forEach(SAMPLE=> test3(SAMPLE.id, SAMPLE.comment) )
 }
 
-test0();
-test1();
-test2();
-
-
+const test = Vue.createApp({
+  data() { },
+  methods: {
+    exe: test_exe
+  }
+}).mount('.test');
 
 
 const Counter = {
@@ -73,11 +110,11 @@ const Counter3 = {
       counter3: 0
   }
   },
-  mounted() {
-        setInterval(() => {
-          this.counter3++
-    }, 1000)
-  }
+  // mounted() {
+  //       setInterval(() => {
+  //         this.counter3++
+  //   }, 1000)
+  // }
 }
 Vue.createApp(Counter3).mount('#counter3')
 
