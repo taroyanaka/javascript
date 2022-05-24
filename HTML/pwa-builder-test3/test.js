@@ -62,6 +62,7 @@ function test_exe(){
     blog.comment_text = text;
     blog.comment_save();
   }
+
   test0("foo");
   test1();
   test0("bar");
@@ -76,13 +77,13 @@ function test_exe(){
   ]
   comment_sample.forEach(SAMPLE=> test3(SAMPLE.id, SAMPLE.comment) )
 }
-
 const test = Vue.createApp({
   data() { },
   methods: {
-    exe: test_exe
+    test_exe: test_exe
   }
 }).mount('.test');
+test.test_exe();
 
 
 const Counter = {
