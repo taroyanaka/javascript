@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue blog</title>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
+    <script src="./vue3.js"></script>
+    <!-- <link rel="manifest" href="manifest.json" /> -->
+    <!-- <script type="module">
+        import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
+        const el = document.createElement('pwa-update');
+        document.body.appendChild(el);
+     </script> -->
+</head>
+<body>
+
+
+<div class="blog">
+    <p style="white-space: pre-line;">{{ article }}</p>
+    <textarea v-model="article" placeholder="add multiple lines" name="article" id="article" cols="30" rows="10" @input="inputFn"></textarea>
+    <button @click="save">save</button>
+</div>
+
+<ul class="article_lists">
+    <li v-for="(list_of_one, index) in list" @click="load(index)">
+        {{ list_of_one.article }}
+    </li>
+</ul>
+
+
+
+
+<div id="counter">
+    Counter: {{ counter }}
+</div>
+<div id="counter2">
+    Counter: {{ counter2 }}
+</div>
+<div id="counter3">
+    Counter: {{ counter3 }}
+</div>
+<div id="bind-attribute">
+<span v-bind:title="message">
+    Hover your mouse over me for a few seconds to see my dynamically bound
+    title!
+</span>
+</div>
+<div id="event-handling">
+<p>{{ message2 }}</p>
+<button v-on:click="reverseMessage">Reverse Message</button>
+</div>
+
+
+
+
+<div id="two-way-binding">
+<p>{{ message3 }}</p>
+<input v-model="message3" />
+</div>
+
+
+<div id="conditional-rendering">
+<span v-if="seen">Now you see me</span>
+</div>
+
+
+
+<div id="list-rendering">
+    <ol>
+      <li v-for="todo in todos">
+        {{ todo.text }}
+      </li>
+    </ol>
+</div>
+
+
+
+
+<!-- <div id="todo-list-app">
+<ol>
+    <todo-item
+    v-for=item in groceryList
+    v-bind:todo2=item
+    v-bind:key=item.id
+    ></todo-item>
+</ol>
+</div> -->
+
+<div class="foo">
+    <p>STRING: {{ str }}</p>
+    <button v-on:click="bar">bar</button>
+</div>
+
+<div class="foo2">
+    <p @click="change1">Using mustaches: {{ msg }}</p>
+    <p>Using mustaches: {{ msg2 }}</p>
+    <button @click="change2">change2</button>
+</div>
+
+<div id="computed-basics">
+    <p>Has published books:</p>
+    <span>{{ author.books.length > 0 ? 'Yes' : 'No' }}</span>
+</div>
+
+<div id="computed-basics2">
+    <p>Has published books:</p>
+    <span>{{ publishedBooksMessage }}</span>
+</div>
+
+<!-- <div :style="styleObject" id="style1">style directive</div> -->
+
+<!-- <div :style="{ fontSize: '20px' }">style directive</div> -->
+
+
+
+<!-- <div
+  class="static"
+  :class="{ active: isActive, 'text-danger': hasError }"
+></div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 v-if="awesome">Vue is awesome!</h1>
+
+<!-- <h1 v-if="10 < 9">Vue is awesome!</h1>
+<h1 v-else>Oh no 😢</h1> -->
+
+<template v-if="awesome">
+    <h1>Title</h1>
+    <p>Paragraph 1</p>
+    <p>Paragraph 2</p>
+</template>
+
+<div v-if="Math.random() > 0.5">
+    Now you see me
+</div>
+<div v-else>
+    Now you don't
+</div>
+
+<h1 v-show="ok">Hello!</h1>
+
+<ul id="array-rendering">
+    <li v-for="item in items">
+      {{ item.message }}
+    </li>
+    <div v-for="item of items">
+        {{ item.message }}
+    </div>
+</ul>
+
+<ul id="array-with-index">
+    <li v-for="(item, index) in items"  :key="item.id">
+      {{ parentMessage }} - {{ index }} - {{ item.message }}
+    </li>
+    <button v-on:click="filterObj">filterObj</button>
+</ul>
+
+
+<ul id="v-for-object" class="demo">
+    <li v-for="value in myObject">
+      {{ value }}
+    </li>
+    <li v-for="(value, name) in myObject">
+        {{ name }}: {{ value }}
+    </li>
+    <li v-for="(value, name, index) in myObject">
+        {{ index }}. {{ name }}: {{ value }}
+    </li>
+</ul>
+
+<ul id="even">
+<li v-for="n in evenNumbers" :key="n">{{ n }}</li>
+</ul>
+
+<!-- <div id="range" class="demo">
+    <span v-for="n in 10" :key="n">{{ n }} </span>
+</div> -->
+
+
+<div id="range" class="demo">
+    <span v-for="n in 10" :key="n">{{ n }} </span>
+</div>
+
+<ul id="v-for-template">
+    <template v-for="item in items" :key="item.msg">
+      <li>{{ item.msg }}</li>
+      <li class="divider" role="presentation">template list</li>
+    </template>
+</ul>
+
+<ul id="v-if-with-for">
+<template v-for="todo in todos" :key="todo.name">
+    <li v-if="todo.short < 2">
+      {{ todo.name }}
+    </li>
+</template>
+</ul>
+
+<div id="basic-event">
+    <button @click="counter += 1">Add 1</button>
+    <p>The button above has been clicked {{ counter }} times.</p>
+</div>
+
+<div id="event-with-method">
+    <!-- `greet` は、あらかじめ定義したメソッドの名前 -->
+    <button @click="greet">Greet</button>
+</div>
+
+
+<div id="inline-handler">
+    <button @click="say('hi')">Say hi</button>
+    <button @click="say('what')">Say what</button>
+</div>
+
+<div id="inline-handler2">
+<button @click="warn('Form cannot be submitted yet.', $event)">
+    Submit
+</button>
+</div>
+
+<div id="inline-handler3">
+    <!-- ボタンをクリックすると、one（）とtwo（）の両方が実行されます -->
+    <button @click="one($event), two($event)" data-foo="FOO">
+        Submit
+    </button>
+</div>
+
+<div id="inline-handler4">
+    <input @keyup.enter="submit" />
+    <input @keyup.arrow-right="arrow_right" />
+    <input @keyup.ctrl.exact="onlyCtrl">A</input>
+    <input @keyup.exact="withoutMetaKey">A</input>
+</div>
+
+<div id="v-model-basic" class="demo">
+    <input v-model="message" placeholder="edit me" />
+    <p>Message is: {{ message }}</p>
+</div>
+
+<div id="v-model-textarea" class="demo">
+    <span>Multiline message is:</span>
+    <p style="white-space: pre-line;">{{ message }}</p>
+    <br />
+    <textarea v-model="message" placeholder="add multiple lines"></textarea>
+</div>
+
+<!-- bad -->
+<!-- <textarea>{{ text }}</textarea> -->
+
+<!-- good -->
+<!-- <textarea v-model="text"></textarea> -->
+
+<div id="v-model-checkbox" class="demo">
+    <input type="checkbox" id="checkbox" v-model="checked" />
+    <label for="checkbox">{{ checked }}</label>
+</div>
+
+<div id="v-model-multiple-checkboxes" class="demo">
+    <input type="checkbox" id="jack" value="Jack" v-model="checkedNames" />
+    <label for="jack">Jack</label>
+    <input type="checkbox" id="john" value="John" v-model="checkedNames" />
+    <label for="john">John</label>
+    <input type="checkbox" id="mike" value="Mike" v-model="checkedNames" />
+    <label for="mike">Mike</label>
+    <br />
+    <span>Checked names: {{ checkedNames }}</span>
+</div>
+
+<div id="v-model-radiobutton" class="demo">
+    <input type="radio" id="one" value="One" v-model="picked" />
+    <label for="one">One</label>
+    <br />
+    <input type="radio" id="two" value="Two" v-model="picked" />
+    <label for="two">Two</label>
+    <br />
+    <span>Picked: {{ picked }}</span>
+</div>
+
+
+
+<div id="fbb">
+    <div v-bind:title="foobarbuz">foobarbuz
+    </div>
+</div>
+
+<style>
+    .one{
+        color: red;
+    }
+    .two{
+        color: blue;
+    }
+</style>
+<div id="fbb2">
+    <div class="one" :class="{ two: isTwo }">foobarbuz2</div>
+    <button @click="noTwo">noTwo</button>
+</div>
+<div id="fbb3">
+    <div :style="{ color: activeColor, fontSize: fontSize + 'px' }">bigger red font</div>
+    <button @click="bigger">bigger</button>
+</div>
+
+
+
+</body>
+<script src="./test.js"></script>
+</html>
