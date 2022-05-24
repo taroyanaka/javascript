@@ -45,7 +45,10 @@ const article_lists = Vue.createApp({
           id = this.list.sort((a, b)=> a.id - b.id).slice(-1)[0].id + 1;
         } catch (error) { console.log(error) }
         return id;
-    }
+    },
+    remove(INDEX){
+      this.list.splice(INDEX, 1);
+    },
   }
 }).mount('.article_lists');
 

@@ -28,6 +28,7 @@
 <ul class="article_lists">
     <li v-for="(list_of_one, index) in list" @click="load(index)">
         {{ list_of_one.article }}
+        <button @click="remove(index)">remove</button>
         <ul>
         <li v-for="(comment_list_of_one, index) in list_of_one.comment_list">
             {{ comment_list_of_one.comment }}
