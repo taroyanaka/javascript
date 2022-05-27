@@ -11,7 +11,10 @@ const blog = Vue.createApp({
         {
           id: article_lists.highestIdNumPlusOne(),
           article: this.article,
-          comment_list: []
+          comment_list: [],
+          star_count: 0,
+          comment_count: 0,
+          article_length: this.article.length,
         }
       )
     },
@@ -22,16 +25,18 @@ const blog = Vue.createApp({
       article_lists.list[article_lists.editing].comment_list
         .push(
           {comment: this.comment_text}
-        )
-    },
-  },
+        );
+        Array.from(article_lists.list).forEach(V=>V.comment_count = V.comment_list.length);
+    }
+},
 }).mount('.blog');
 
 const article_lists = Vue.createApp({
   data() {
     return{
+      sort_asc_or_desc: false,
       editing: 0,
-      list: [ ]
+      list: [ ],
     }
   },
   methods: {
@@ -46,8 +51,18 @@ const article_lists = Vue.createApp({
         } catch (error) { console.log(error) }
         return id;
     },
-    remove(INDEX){
+    remove(INDEX) {
       this.list.splice(INDEX, 1);
+    },
+    increment_star(INDEX) {
+      this.list[INDEX].star_count++;
+    },
+    sort_by_any(SORT_KIND) {
+      this.sort_desc_or_asc = this.sort_desc_or_asc === true ? false : true
+      this.sort_desc_or_asc ? this.list.sort((a, b)=>b[SORT_KIND] - a[SORT_KIND]) : this.list.sort((a, b)=>a[SORT_KIND] - b[SORT_KIND]);
+    },
+    sort_reset(){
+      article_lists.list = article_lists.list.sort((a,b)=>a.id - b.id)
     },
   }
 }).mount('.article_lists');
@@ -65,8 +80,10 @@ function test_exe(){
     blog.comment_text = text;
     blog.comment_save();
   }
+  const test4 = (idx, count) => article_lists.list[idx].star_count += count;
+  const test5 = () => article_lists.sort_by_any('star_count');
 
-  test0("foo");
+  test0("foo0");
   test1();
   test0("bar");
   test1();
@@ -79,6 +96,9 @@ function test_exe(){
     {id: 0, comment: "foo2 is FOO2"},
   ]
   comment_sample.forEach(SAMPLE=> test3(SAMPLE.id, SAMPLE.comment) )
+  test4(0, 3);
+  test4(2, 1);
+  // test5();
 }
 const test = Vue.createApp({
   data() { },

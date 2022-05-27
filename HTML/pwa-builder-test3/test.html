@@ -26,15 +26,25 @@
 </div>
 
 <ul class="article_lists">
-    <li v-for="(list_of_one, index) in list" @click="load(index)">
-        {{ list_of_one.article }}
+    <div>
+        <button @click="sort_reset">sort_reset</button>
+        <button @click="sort_by_any('star_count')">sort_by_star_count</button>
+        <button @click="sort_by_any('comment_count')">sort_by_comment_count</button>
+        <button @click="sort_by_any('article_length')">sort_by_article_length</button>
+    </div>
+    <template v-for="(list_of_one, index) in list">
+        <span @click="load(index)">{{ list_of_one.article }}</span>
+        <span v-if="list_of_one.star_count > 0" @click="increment_star(index)"> ★</span>
+        <span v-else @click="increment_star(index)"> ☆</span>
+        {{ list_of_one.star_count > 0 ? list_of_one.star_count : '' }}
         <button @click="remove(index)">remove</button>
+        <span>{{ '  ' }} {{ list_of_one.comment_count }}</span>
         <ul>
         <li v-for="(comment_list_of_one, index) in list_of_one.comment_list">
             {{ comment_list_of_one.comment }}
         </li>
         </ul>
-    </li>
+    </template>
 </ul>
 
 <div class="test">
