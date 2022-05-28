@@ -34,9 +34,15 @@ const blog = Vue.createApp({
 const article_lists = Vue.createApp({
   data() {
     return{
+      sort_by: '',
       sort_asc_or_desc: false,
       editing: 0,
       list: [ ],
+    }
+  },
+  computed: {
+    computed_sort: function() {
+      this.sort_by_any(this.sort_by, true);
     }
   },
   methods: {
@@ -57,8 +63,11 @@ const article_lists = Vue.createApp({
     increment_star(INDEX) {
       this.list[INDEX].star_count++;
     },
-    sort_by_any(SORT_KIND) {
-      this.sort_desc_or_asc = this.sort_desc_or_asc === true ? false : true
+    sort_by_any(SORT_KIND, skip=false) {
+      this.sort_by = SORT_KIND;
+      if(skip === false) {
+        this.sort_desc_or_asc = this.sort_desc_or_asc === true ? false : true
+      }
       this.sort_desc_or_asc ? this.list.sort((a, b)=>b[SORT_KIND] - a[SORT_KIND]) : this.list.sort((a, b)=>a[SORT_KIND] - b[SORT_KIND]);
     },
     sort_reset(){

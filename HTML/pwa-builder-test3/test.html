@@ -33,10 +33,12 @@
         <button @click="sort_by_any('article_length')">sort_by_article_length</button>
     </div>
     <template v-for="(list_of_one, index) in list">
+        {{ computed_sort }}
         <span @click="load(index)">{{ list_of_one.article }}</span>
         <span v-if="list_of_one.star_count > 0" @click="increment_star(index)"> ★</span>
         <span v-else @click="increment_star(index)"> ☆</span>
         {{ list_of_one.star_count > 0 ? list_of_one.star_count : '' }}
+        <button @click="load(index)">edit</button>
         <button @click="remove(index)">remove</button>
         <span>{{ '  ' }} {{ list_of_one.comment_count }}</span>
         <ul>
