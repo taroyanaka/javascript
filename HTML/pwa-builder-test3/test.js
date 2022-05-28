@@ -87,11 +87,6 @@ const article_lists = Vue.createApp({
       this.list = this.list.sort((a,b)=>a.id - b.id)
     },
     tag_filter(){
-      this.list[0].tag_list.push('FOO');
-      this.list[0].tag_list.push('HOGE');
-      this.list[1].tag_list.push('QUX');
-      this.list[2].tag_list.push('HOGE');
-
       this.list = this.list.filter(LIST_OF_ONE=>
         intersection(tag_sample, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
       )
@@ -118,6 +113,11 @@ function test_exe(){
   }
   const test4 = (idx, count) => article_lists.list[idx].star_count += count;
   const test5 = () => article_lists.sort_by_any('star_count');
+  const test6 = () => {
+    article_lists.list[0].tag_list.push('FOO');
+    article_lists.list[0].tag_list.push('BAR');
+    article_lists.list[1].tag_list.push('QUX');
+  }
 
   test0("foo0");
   test1();
@@ -134,7 +134,8 @@ function test_exe(){
   comment_sample.forEach(SAMPLE=> test3(SAMPLE.id, SAMPLE.comment) )
   test4(0, 3);
   test4(2, 1);
-  // test5();
+  test5();
+  test6();
 }
 const test = Vue.createApp({
   data() { },
