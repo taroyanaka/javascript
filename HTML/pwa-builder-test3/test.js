@@ -116,6 +116,7 @@ function test_exe(){
   const test6 = () => {
     article_lists.list[0].tag_list.push('FOO');
     article_lists.list[0].tag_list.push('BAR');
+    article_lists.list[1].tag_list.push('BAR');
     article_lists.list[1].tag_list.push('QUX');
   }
 
