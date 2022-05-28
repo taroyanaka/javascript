@@ -19,7 +19,6 @@ const blog = Vue.createApp({
           id: article_lists.highestIdNumPlusOne(),
           article: this.article,
           tag_list: [],
-          // tag_list: ['FOO'],
           comment_list: [],
           star_count: 0,
           comment_count: 0,
@@ -47,6 +46,7 @@ const article_lists = Vue.createApp({
       sort_asc_or_desc: false,
       editing: 0,
       list: [ ],
+      selected: '',
     }
   },
   computed: {
@@ -527,6 +527,19 @@ Vue.createApp({
     }
   }
 }).mount('#v-model-radiobutton')
+
+
+
+// Vue.createApp({
+//   data() {
+//     return {
+//       selected: ''
+//     }
+//   }
+// }).mount('.v-model-select')
+
+
+
 // const TodoItem = {
 //       props: ['todo2'],
 //       template: `<li>{{ todo2.text2 }}</li>`

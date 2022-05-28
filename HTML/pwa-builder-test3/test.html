@@ -40,6 +40,17 @@
         {{ list_of_one.star_count > 0 ? list_of_one.star_count : '' }}
         <button @click="load(index)">edit</button>
         <button @click="remove(index)">remove</button>
+        
+        <!-- <div class="v-model-select" class="demo"> -->
+            <select v-model="selected" @change="list_of_one.tag_list.push(selected)">
+              <option disabled value="">Please select one</option>
+              <option>FOO</option>
+              <option>BAR</option>
+              <option>BUZ</option>
+            </select>
+            <span>Selected: {{ selected }}</span>
+        <!-- </div> -->
+
         <span>{{ '  ' }} {{ list_of_one.comment_count }}</span>
         <ul>
         <li v-for="(comment_list_of_one, index) in list_of_one.comment_list">
@@ -261,7 +272,15 @@
     <span>Picked: {{ picked }}</span>
 </div>
 
-
+<div class="v-model-select" class="demo">
+    <select v-model="selected">
+      <option disabled value="">Please select one</option>
+      <option>A</option>
+      <option>B</option>
+      <option>C</option>
+    </select>
+    <span>Selected: {{ selected }}</span>
+</div>
 
 <div id="fbb">
     <div v-bind:title="foobarbuz">foobarbuz
