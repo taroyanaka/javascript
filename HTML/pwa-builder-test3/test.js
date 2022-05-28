@@ -10,6 +10,7 @@ const blog = Vue.createApp({
     return {
       article: '',
       comment_text: '',
+      tag_all: tag_sample,
     }
   },
   methods: {
@@ -52,7 +53,10 @@ const article_lists = Vue.createApp({
   computed: {
     computed_sort: function() {
       this.sort_by_any(this.sort_by, true);
-    }
+    },
+    computed_tag_all: function() {
+      return blog.tag_all
+    },
   },
   methods: {
     load(IDX) {
@@ -83,33 +87,14 @@ const article_lists = Vue.createApp({
       this.list = this.list.sort((a,b)=>a.id - b.id)
     },
     tag_filter(){
-      // this.list = tag_sample.filter(tag=> tag.includes(this.list.tag_list) )
-
-      // this.list = this.list.filter(list_of_one=> list_of_one.tag_list.includes(tag_sample) );
-
       this.list[0].tag_list.push('FOO');
       this.list[0].tag_list.push('HOGE');
       this.list[1].tag_list.push('QUX');
       this.list[2].tag_list.push('HOGE');
 
-      // ["FOO"].filter(V=> tag_sample.includes( V ) )
-
-
-      // return this.list.filter(LIST_OF_ONE=>
-      //   LIST_OF_ONE.tag_list.filter(V=> tag_sample.includes( V ) )
-      // )
-
       this.list = this.list.filter(LIST_OF_ONE=>
         intersection(tag_sample, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
       )
-      
-
-      // this.list = this.list
-      //           .filter(LIST_OF_ONE=>{
-      //             return  LIST_OF_ONE.tag_list.filter(TAG=> tag_sample.includes( TAG ) )
-      //           })
-
-      // .tag_list;
     },
   }
 }).mount('.article_lists');
