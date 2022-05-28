@@ -1,3 +1,10 @@
+const tag_sample = [
+  'FOO',
+  'BAR',
+  'BUZ',
+  'QUX',
+];
+
 const blog = Vue.createApp({
   data() {
     return {
@@ -11,6 +18,8 @@ const blog = Vue.createApp({
         {
           id: article_lists.highestIdNumPlusOne(),
           article: this.article,
+          tag_list: [],
+          // tag_list: ['FOO'],
           comment_list: [],
           star_count: 0,
           comment_count: 0,
@@ -63,18 +72,51 @@ const article_lists = Vue.createApp({
     increment_star(INDEX) {
       this.list[INDEX].star_count++;
     },
-    sort_by_any(SORT_KIND, skip=false) {
+    sort_by_any(SORT_KIND, SKIP=false) {
       this.sort_by = SORT_KIND;
-      if(skip === false) {
+      if(SKIP === false) {
         this.sort_desc_or_asc = this.sort_desc_or_asc === true ? false : true
       }
       this.sort_desc_or_asc ? this.list.sort((a, b)=>b[SORT_KIND] - a[SORT_KIND]) : this.list.sort((a, b)=>a[SORT_KIND] - b[SORT_KIND]);
     },
     sort_reset(){
-      article_lists.list = article_lists.list.sort((a,b)=>a.id - b.id)
+      this.list = this.list.sort((a,b)=>a.id - b.id)
+    },
+    tag_filter(){
+      // this.list = tag_sample.filter(tag=> tag.includes(this.list.tag_list) )
+
+      // this.list = this.list.filter(list_of_one=> list_of_one.tag_list.includes(tag_sample) );
+
+      this.list[0].tag_list.push('FOO');
+      this.list[0].tag_list.push('HOGE');
+      this.list[1].tag_list.push('QUX');
+      this.list[2].tag_list.push('HOGE');
+
+      // ["FOO"].filter(V=> tag_sample.includes( V ) )
+
+
+      // return this.list.filter(LIST_OF_ONE=>
+      //   LIST_OF_ONE.tag_list.filter(V=> tag_sample.includes( V ) )
+      // )
+
+      this.list = this.list.filter(LIST_OF_ONE=>
+        intersection(tag_sample, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
+      )
+      
+
+      // this.list = this.list
+      //           .filter(LIST_OF_ONE=>{
+      //             return  LIST_OF_ONE.tag_list.filter(TAG=> tag_sample.includes( TAG ) )
+      //           })
+
+      // .tag_list;
     },
   }
 }).mount('.article_lists');
+
+// intersection([1, 2, 3], [2, 3, 4]) => [2, 3]
+const intersection = (list1, list2) => list1.filter(V=> list2.includes(V) );
+
 
 function test_exe(){
   const test0 = (text) => blog.article = text;
