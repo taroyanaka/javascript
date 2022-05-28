@@ -47,7 +47,9 @@ const article_lists = Vue.createApp({
       sort_asc_or_desc: false,
       editing: 0,
       list: [ ],
+      no_filter_list: [ ],
       selected: '',
+      tag_filter_with_OR_selection: [],
     }
   },
   computed: {
@@ -86,10 +88,18 @@ const article_lists = Vue.createApp({
     sort_reset(){
       this.list = this.list.sort((a,b)=>a.id - b.id)
     },
-    tag_filter(){
+    save_no_filter_list(){
+      this.no_filter_list = this.list
+    },
+    tag_filter(TAG){
+      this.tag_filter_with_OR_selection.push(TAG);
       this.list = this.list.filter(LIST_OF_ONE=>
-        intersection(tag_sample, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
+        intersection(this.tag_filter_with_OR_selection, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
       )
+    },
+    reset_tag_filter(){
+      this.tag_filter_with_OR_selection = [];
+      this.list = this.no_filter_list;
     },
   }
 }).mount('.article_lists');
