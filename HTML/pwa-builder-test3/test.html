@@ -18,13 +18,6 @@
 </head>
 <body>
 
-<div class="hoge">
-    <input type="text" v-model="search" @input="filteredList">
-    <div v-for="(item, index) in newPostList">
-        <div>{{ item.article }}</div>
-    </div>
-</div>
-
 <div class="blog">
     <p style="white-space: pre-line;">{{ article }}</p>
     <textarea v-model="article" placeholder="add multiple lines" name="article" id="article" cols="30" rows="10" @input="inputFn"></textarea>
@@ -317,6 +310,14 @@
     <button @click="bigger">bigger</button>
 </div>
 
+
+
+<!-- <div class="hoge">
+    <input type="text" v-model="search" @input="filteredList">
+    <div v-for="(item, index) in newPostList">
+        <div>{{ item.article }}</div>
+    </div>
+</div> -->
 
 
 </body>

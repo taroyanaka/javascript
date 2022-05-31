@@ -114,66 +114,38 @@ const article_lists = Vue.createApp({
     filteredList() {
       // this.list = this.list.filter(LIST_OF_ONE => {
       this.list = this.tmpList.filter(LIST_OF_ONE => {
-        const all_comment_string = LIST_OF_ONE.comment_list.map(V=>V.comment).join('');
+        // const all_comment_string = LIST_OF_ONE.comment_list.map(V=>V.comment).join('');
         const all_comment_array = LIST_OF_ONE.comment_list.map(V=>V.comment);
         const all_tag_array = LIST_OF_ONE.tag_list.map(V=>V);
-        // article_lists.list[0].tag_list.map(V=>V)
-
-        const article_with_all_comment_string = LIST_OF_ONE.article + LIST_OF_ONE.comment_list.map(V=>V.comment).join('');
+        // const article_with_all_comment_string = LIST_OF_ONE.article + LIST_OF_ONE.comment_list.map(V=>V.comment).join('');
         const article = LIST_OF_ONE.article;
-
-
         const list = [
           {
             "article": article,
             "tag": all_tag_array,
             "comment": all_comment_array,
-            // id: 0,
-            // "tag": all_tag_array.join(' '),
-            // "comment": all_comment_array.join(' '),
           },
-          // {
-          //   "title": "The Lock Artist",
-          //   "author": "Steve",
-          //   "tags": ["thriller"]
-          // }
         ];
         const options = {
           includeScore: true,
           keys: ['article', 'tag', 'comment'],
         };
-        const fuse = new Fuse(list, options);        
-        const result = fuse.search(this.search);
-        // const result = fuse.search('qux fo');
-        // console.table(result[0].score);
-        // hogehoge.push(result);
-
+        const fuse = new Fuse(list, options);
+        const orQuery = article_lists.search.split(' ').join('|')
+        const result = fuse.search(orQuery);
+        // const result = fuse.search(this.search);
         let miniSearch = new MiniSearch({
           fields: ['article', 'tag', 'comment'],
-          // fields: ['article'],
           storeFields: ['article', 'tag', 'comment'],
-          // storeFields: ['article'],
         })
-        // miniSearch.addAll(list)
-        // let miniSearchresults = miniSearch.search(this.search)
-
         try {
           LIST_OF_ONE.match_score = result[0].score;
-          // LIST_OF_ONE.match_score = miniSearchresults[0].score;
-          // LIST_OF_ONE.match_score = miniSearchresults;
         } catch (error) {
           LIST_OF_ONE.match_score = 0;
         }
-        // console.log(LIST_OF_ONE.match_score);
-        console.log(result);
-        // console.log(miniSearchresults);
-
-        // return result;
-        return LIST_OF_ONE.match_score > 0;
-
+        // console.log(result);
         // return result.length > 0;
-        // return miniSearchresults;
-
+        return LIST_OF_ONE.match_score > 0;
       })
       // .sort((A_LIST, B_LIST)=> A_LIST.match_score - B_LIST.match_score );
       if(this.search === ''){this.list = this.tmpList};
@@ -181,10 +153,6 @@ const article_lists = Vue.createApp({
 
   }
 }).mount('.article_lists');
-
-function financial(x) {
-  return Number(Number.parseFloat(x).toFixed(2));
-}
 
 // intersection([1, 2, 3], [2, 3, 4]) => [2, 3]
 const intersection = (list1, list2) => list1.filter(V=> list2.includes(V) );
@@ -218,6 +186,10 @@ function test_exe(){
   test0("bar");
   test1();
   test0("foo\nbar\nBUZ");
+  test1();
+  test0("vlahvlah!");
+  test1();
+  test0("日本語　にニほんホンゴご　ﾆﾎﾝｺﾞ");
   test1();
   test2();
   const comment_sample = [
@@ -703,73 +675,37 @@ const fbb3 = Vue.createApp({
 // }
 
 
-const hoge = Vue.createApp({
-  data() {
-    return {
-      search: '',
-      // postList : [
-      //   {id:"0", title: "foo"},
-      //   {id:"1", title: "bar"},
-      //   {id:"2", title: "buz"},
-      //   {id:"3", title: "foo1"},
-      //   {id:"4", title: "にほんご foo"},
-      // ],
-      postList: article_lists.list,
-      newPostList: article_lists.list,
-    }
-  },
-  // computed: {
-  //   foo(index){
-  //     return this.newPostList
-  //   }
-  // },
-  methods:{
-    // isNewPostList(){
-    //   return newPostList.length > 0 ? this.newPostList : this.postList;
-    // },
-    filteredList() {
-      this.newPostList = this.postList.filter(post => {
-        const all_comment_string = post.comment_list.map(V=>V.comment).join('');
-        const article_with_all_comment_string = post.article + post.comment_list.map(V=>V.comment).join('');
-        return article_with_all_comment_string.toLowerCase().includes(this.search.toLowerCase())
-        // return post.article.toLowerCase().includes(this.search.toLowerCase())
-      });
-      // this.foo();
-    }
-  }
-}).mount(".hoge");
+// const hoge = Vue.createApp({
+//   data() {
+//     return {
+//       search: '',
+//       postList: article_lists.list,
+//       newPostList: article_lists.list,
+//     }
+//   },
+//   methods:{
+//     filteredList() {
+//       this.newPostList = this.postList.filter(post => {
+//         const all_comment_string = post.comment_list.map(V=>V.comment).join('');
+//         const article_with_all_comment_string = post.article + post.comment_list.map(V=>V.comment).join('');
+//         return article_with_all_comment_string.toLowerCase().includes(this.search.toLowerCase())
+//       });
+//     }
+//   }
+// }).mount(".hoge");
 
 // https://stackoverflow.com/questions/36372611/how-to-test-if-an-object-is-a-proxy/60323358#comment77374969_36372611
-function isProxy(o) { 
-  if (typeof Proxy !== 'function') return false;
-  try { o instanceof Proxy; return false; }
-  catch{ return true; } 
-}
+// function isProxy(o) { 
+//   if (typeof Proxy !== 'function') return false;
+//   try { o instanceof Proxy; return false; }
+//   catch{ return true; } 
+// }
 
-const objectForEach = (OBJ) => {
-  let ary = [];
-  for (const [key, value] of Object.entries(OBJ)) {
-    // const val = typeof article_lists.$data === 'object' ? objectForEach(article_lists.$data) : value;
-let val = isProxy(value) ? objectForEach(value) : value;
-    ary.push([key, val]);
-
-    // ary.push([key, value]);
-
-    // ary.push({key: value});
-  }
-  return ary;
-};
-
-const full_text_search = (documents, text) => {
-  let miniSearch = new MiniSearch({
-    fields: ['title', 'text'], // fields to index for full-text search
-    storeFields: ['title', 'category'] // fields to return with search results
-  })
-  
-  // Index all documents
-  miniSearch.addAll(documents)
-  
-  // Search with default options
-  let results = miniSearch.search(text);
-  return results;
-};
+// const objectForEach = (OBJ) => {
+//   let ary = [];
+//   for (const [key, value] of Object.entries(OBJ)) {
+//   let val = isProxy(value) ? objectForEach(value) : value;
+//     ary.push([key, val]);
+// }
+//   return ary;
+// };
