@@ -7,6 +7,8 @@
     <title>vue blog</title>
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
     <script src="./vue3.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/minisearch@4.0.3/dist/umd/index.min.js"></script>
     <!-- <link rel="manifest" href="manifest.json" /> -->
     <!-- <script type="module">
         import 'https://cdn.jsdelivr.net/npm/@pwabuilder/pwaupdate';
@@ -16,6 +18,12 @@
 </head>
 <body>
 
+<div class="hoge">
+    <input type="text" v-model="search" @input="filteredList">
+    <div v-for="(item, index) in newPostList">
+        <div>{{ item.article }}</div>
+    </div>
+</div>
 
 <div class="blog">
     <p style="white-space: pre-line;">{{ article }}</p>
@@ -26,6 +34,7 @@
 </div>
 
 <ul class="article_lists">
+    <input type="text" v-model="search" @input.once="save_tmp_list" @input="filteredList" placeholder="search text">
     <div>
         <button @click="reset_tag_filter">reset_tag_filter</button>
     </div>
@@ -36,6 +45,7 @@
         <button @click="sort_by_any('article_length')">sort_by_article_length</button>
     </div>
     <template v-for="(list_of_one, index) in list">
+    <!-- <template v-for="(list_of_one, index) in newList"> -->
         {{ computed_sort }}
         <span @click="load(index)">{{ list_of_one.article }}</span>
         <span v-if="list_of_one.star_count > 0" @click="increment_star(index)"> ★</span>
