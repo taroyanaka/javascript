@@ -100,9 +100,11 @@ const article_lists = Vue.createApp({
         intersection(this.tag_filter_with_OR_selection, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
       )
     },
-    reset_tag_filter(){
+    reset_filter(){
       this.tag_filter_with_OR_selection = [];
+      this.search = '';
       this.list = this.no_filter_list;
+      this.list = this.tmpList;
     },
 
 
@@ -200,6 +202,7 @@ function test_exe(){
   test4(0, 3);
   test4(2, 1);
   test5();
+  article_lists.save_no_filter_list();
   test6();
 }
 const test = Vue.createApp({

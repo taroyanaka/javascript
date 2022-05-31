@@ -7,7 +7,7 @@
     <title>vue blog</title>
     <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> -->
     <script src="./vue3.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.js"></script>
+    <script src="./fuse.js.v6.6.2.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/minisearch@4.0.3/dist/umd/index.min.js"></script> -->
     <!-- <link rel="manifest" href="manifest.json" /> -->
     <!-- <script type="module">
@@ -29,7 +29,7 @@
 <ul class="article_lists">
     <input type="text" v-model="search" @input.once="save_tmp_list" @input="filteredList" placeholder="search text">
     <div>
-        <button @click="reset_tag_filter">reset_tag_filter</button>
+        <button @click="reset_filter">reset_filter</button>
     </div>
     <div>
         <button @click="sort_by_any('id')">sort_by_id</button>
@@ -41,7 +41,7 @@
     <template v-for="(list_of_one, index) in list">
     <!-- <template v-for="(list_of_one, index) in newList"> -->
         {{ computed_sort }}
-        <span @click="load(index)">{{ list_of_one.article }}</span>
+        <span @click="load(index)">{{ list_of_one.id }}{{'  '}}{{ list_of_one.article }}</span>
         <span v-if="list_of_one.star_count > 0" @click="increment_star(index)"> ★</span>
         <span v-else @click="increment_star(index)"> ☆</span>
         {{ list_of_one.star_count > 0 ? list_of_one.star_count : '' }}
@@ -56,7 +56,7 @@
         <!-- <span>Selected: {{ selected }}</span> -->
 
         <template v-for="(tag, tag_index) in list_of_one.tag_list">
-            <button  v-on:click.once="save_no_filter_list" @click="tag_filter(tag)">{{ tag }}</button>
+            <button @click.once="save_no_filter_list" @click="tag_filter(tag)">{{ tag }}</button>
         </template>
         <span>{{ '  ' }} {{ list_of_one.comment_count }}</span>
         <ul>
