@@ -32,10 +32,11 @@
         <button @click="reset_tag_filter">reset_tag_filter</button>
     </div>
     <div>
-        <button @click="sort_reset">sort_reset</button>
+        <button @click="sort_by_any('id')">sort_by_id</button>
         <button @click="sort_by_any('star_count')">sort_by_star_count</button>
         <button @click="sort_by_any('comment_count')">sort_by_comment_count</button>
         <button @click="sort_by_any('article_length')">sort_by_article_length</button>
+        <button @click="sort_by_any('match_score')">sort_by_match_score</button>
     </div>
     <template v-for="(list_of_one, index) in list">
     <!-- <template v-for="(list_of_one, index) in newList"> -->

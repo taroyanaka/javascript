@@ -5,7 +5,6 @@ const tag_sample = [
   'QUX',
 ];
 
-let hogehoge = [];
 
 const blog = Vue.createApp({
   data() {
@@ -60,6 +59,8 @@ const article_lists = Vue.createApp({
   computed: {
     computed_sort: function() {
       this.sort_by_any(this.sort_by, true);
+      // if(this.tmpList === null){this.tmpList = this.list}
+      // this.filteredList();
     },
     computed_tag_all: function() {
       return blog.tag_all
@@ -89,9 +90,6 @@ const article_lists = Vue.createApp({
         this.sort_desc_or_asc = this.sort_desc_or_asc === true ? false : true
       }
       this.sort_desc_or_asc ? this.list.sort((a, b)=>b[SORT_KIND] - a[SORT_KIND]) : this.list.sort((a, b)=>a[SORT_KIND] - b[SORT_KIND]);
-    },
-    sort_reset(){
-      this.list = this.list.sort((a,b)=>a.id - b.id)
     },
     save_no_filter_list(){
       this.no_filter_list = this.list
@@ -134,10 +132,10 @@ const article_lists = Vue.createApp({
         const orQuery = article_lists.search.split(' ').join('|')
         const result = fuse.search(orQuery);
         // const result = fuse.search(this.search);
-        let miniSearch = new MiniSearch({
-          fields: ['article', 'tag', 'comment'],
-          storeFields: ['article', 'tag', 'comment'],
-        })
+        // let miniSearch = new MiniSearch({
+        //   fields: ['article', 'tag', 'comment'],
+        //   storeFields: ['article', 'tag', 'comment'],
+        // })
         try {
           LIST_OF_ONE.match_score = result[0].score;
         } catch (error) {
