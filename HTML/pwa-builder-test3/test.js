@@ -124,10 +124,12 @@ const article_lists = Vue.createApp({
 
         const list = [
           {
-            id: 0,
             "article": article,
-            "tag": all_tag_array.join(' '),
-            "comment": all_comment_array.join(' '),
+            "tag": all_tag_array,
+            "comment": all_comment_array,
+            // id: 0,
+            // "tag": all_tag_array.join(' '),
+            // "comment": all_comment_array.join(' '),
           },
           // {
           //   "title": "The Lock Artist",
@@ -151,23 +153,28 @@ const article_lists = Vue.createApp({
           storeFields: ['article', 'tag', 'comment'],
           // storeFields: ['article'],
         })
-        miniSearch.addAll(list)
-        let miniSearchresults = miniSearch.search(this.search)
+        // miniSearch.addAll(list)
+        // let miniSearchresults = miniSearch.search(this.search)
 
         try {
-          // LIST_OF_ONE.match_score = result[0].score;
-          LIST_OF_ONE.match_score = miniSearchresults[0].score;
+          LIST_OF_ONE.match_score = result[0].score;
+          // LIST_OF_ONE.match_score = miniSearchresults[0].score;
           // LIST_OF_ONE.match_score = miniSearchresults;
         } catch (error) {
           LIST_OF_ONE.match_score = 0;
         }
         // console.log(LIST_OF_ONE.match_score);
-        console.log(miniSearchresults);
+        console.log(result);
+        // console.log(miniSearchresults);
+
         // return result;
-        return miniSearchresults;
+        return LIST_OF_ONE.match_score > 0;
+
+        // return result.length > 0;
+        // return miniSearchresults;
 
       })
-      // .sort((A_LIST, B_LIST)=> B_LIST.match_score - A_LIST.match_score );
+      .sort((A_LIST, B_LIST)=> B_LIST.match_score - A_LIST.match_score );
       if(this.search === ''){this.list = this.tmpList};
     },
 
