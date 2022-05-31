@@ -112,7 +112,8 @@ const article_lists = Vue.createApp({
       this.tmpList = this.list;
     },
     filteredList() {
-      this.list = this.list.filter(LIST_OF_ONE => {
+      // this.list = this.list.filter(LIST_OF_ONE => {
+      this.list = this.tmpList.filter(LIST_OF_ONE => {
         const all_comment_string = LIST_OF_ONE.comment_list.map(V=>V.comment).join('');
         const all_comment_array = LIST_OF_ONE.comment_list.map(V=>V.comment);
         const all_tag_array = LIST_OF_ONE.tag_list.map(V=>V);
@@ -174,7 +175,7 @@ const article_lists = Vue.createApp({
         // return miniSearchresults;
 
       })
-      .sort((A_LIST, B_LIST)=> B_LIST.match_score - A_LIST.match_score );
+      // .sort((A_LIST, B_LIST)=> A_LIST.match_score - B_LIST.match_score );
       if(this.search === ''){this.list = this.tmpList};
     },
 
@@ -209,6 +210,7 @@ function test_exe(){
     article_lists.list[0].tag_list.push('BAR');
     article_lists.list[1].tag_list.push('BAR');
     article_lists.list[1].tag_list.push('QUX');
+    article_lists.list[2].tag_list.push('QUX');
   }
 
   test0("foo0");
