@@ -28,7 +28,8 @@
 
 <ul class="article_lists">
     <template v-for="(tag_filter_with_OR_selection_of_one, index) in tag_filter_with_OR_selection">
-        {{ tag_filter_with_OR_selection_of_one }}
+        <!-- {{ computed_sort }} -->
+        <button @click="remove_tag(index)">{{ tag_filter_with_OR_selection_of_one }}</button>
     </template>
     <input type="text" v-model="search" @input.once="save_tmp_list" @input="filteredList" placeholder="search text">
     <div>

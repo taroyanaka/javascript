@@ -45,13 +45,14 @@ const blog = Vue.createApp({
 const article_lists = Vue.createApp({
   data() {
     return{
+      no_filter_list: [],
+      // hogehoge: "hogehoge",
       search: '',
       sort_by: '',
       sort_asc_or_desc: false,
       editing: 0,
       list: [ ],
       tmpList: null,
-      no_filter_list: [ ],
       selected: '',
       tag_filter_with_OR_selection: [],
     }
@@ -92,13 +93,44 @@ const article_lists = Vue.createApp({
       this.sort_desc_or_asc ? this.list.sort((a, b)=>b[SORT_KIND] - a[SORT_KIND]) : this.list.sort((a, b)=>a[SORT_KIND] - b[SORT_KIND]);
     },
     save_no_filter_list(){
+      // console.log(this.no_filter_list);
       this.no_filter_list = this.list
     },
-    tag_filter(TAG){
-      this.tag_filter_with_OR_selection.push(TAG);
-      this.list = this.list.filter(LIST_OF_ONE=>
-        intersection(this.tag_filter_with_OR_selection, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
-      )
+    tag_filter(TAG, SKIP=false){
+      if(SKIP === false) {
+        this.tag_filter_with_OR_selection.push(TAG);
+      }
+      // else{ }
+// console.log(this.tag_filter_with_OR_selection);
+// console.log(this.list);
+// console.log(this.no_filter_list);
+
+        this.list = this.list.filter(LIST_OF_ONE=>
+          intersection(this.tag_filter_with_OR_selection, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
+        )
+
+        if(this.tag_filter_with_OR_selection.length === 0){
+          this.list = this.no_filter_list;
+        }
+  
+    },
+    remove_tag(INDEX){
+      this.tag_filter_with_OR_selection.splice(INDEX, 1);
+
+      // article_lists.list = article_lists.no_filter_list;
+      this.tag_filter(null, true);
+      this.list = this.no_filter_list;
+
+      // article_lists.list = article_lists.list.filter(LIST_OF_ONE=>
+      //   intersection(article_lists.tag_filter_with_OR_selection, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
+      // )
+
+      // this.sort_by_any(this.sort_by, true);
+
+
+      // this.tag_filter(null, true);
+      // this.computed_sort();
+      // this.computed_tag_all;
     },
     reset_filter(){
       this.tag_filter_with_OR_selection = [];
@@ -202,7 +234,7 @@ function test_exe(){
   test4(0, 3);
   test4(2, 1);
   test5();
-  article_lists.save_no_filter_list();
+  // article_lists.save_no_filter_list();
   test6();
 }
 const test = Vue.createApp({
