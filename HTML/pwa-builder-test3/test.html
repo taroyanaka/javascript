@@ -24,6 +24,13 @@
     <button @click="save">save</button>
     <input v-model="comment_text" type="text"></input>
     <button @click="comment_save">comment_save</button>
+    <div>
+        <input v-model="new_tag" placeholder="tag" />
+        <button @click="tag_save">tag_save</button>
+        <template v-for="tag in tag_all">
+            <button @click="tag_filter_from_blog(tag)">{{ tag }}</button>
+        </template>
+    </div>
 </div>
 
 <ul class="article_lists">

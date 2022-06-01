@@ -1,16 +1,16 @@
-const tag_sample = [
+let tag_sample = [
   'FOO',
   'BAR',
   'BUZ',
   'QUX',
 ];
 
-
 const blog = Vue.createApp({
   data() {
     return {
       article: '',
       comment_text: '',
+      new_tag: '',
       tag_all: tag_sample,
     }
   },
@@ -38,7 +38,14 @@ const blog = Vue.createApp({
           {comment: this.comment_text}
         );
         Array.from(article_lists.list).forEach(V=>V.comment_count = V.comment_list.length);
-    }
+    },
+    tag_save() {
+      this.tag_all.push(this.new_tag)
+    },
+    tag_filter_from_blog(TAG) {
+      article_lists.save_no_filter_list();
+      article_lists.tag_filter(TAG);
+    },
 },
 }).mount('.blog');
 
@@ -93,19 +100,12 @@ const article_lists = Vue.createApp({
       this.sort_desc_or_asc ? this.list.sort((a, b)=>b[SORT_KIND] - a[SORT_KIND]) : this.list.sort((a, b)=>a[SORT_KIND] - b[SORT_KIND]);
     },
     save_no_filter_list(){
-      // console.log("hoge");
       this.no_filter_list = this.no_filter_list.length === 0  ? this.list : this.no_filter_list;
     },
     tag_filter(TAG, SKIP=false){
       if(SKIP === false) {
         this.tag_filter_with_OR_selection.push(TAG);
       }
-      // else{ }
-// console.log(this.tag_filter_with_OR_selection);
-// console.log(this.list);
-// console.log(this.no_filter_list);
-
-        // this.list = this.list.filter(LIST_OF_ONE=>
         this.list = this.no_filter_list.filter(LIST_OF_ONE=>
           intersection(this.tag_filter_with_OR_selection, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
         )
@@ -117,21 +117,7 @@ const article_lists = Vue.createApp({
     },
     remove_tag(INDEX){
       this.tag_filter_with_OR_selection.splice(INDEX, 1);
-
-      // article_lists.list = article_lists.no_filter_list;
       this.tag_filter(null, true);
-      // this.list = this.no_filter_list;
-
-      // article_lists.list = article_lists.list.filter(LIST_OF_ONE=>
-      //   intersection(article_lists.tag_filter_with_OR_selection, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
-      // )
-
-      // this.sort_by_any(this.sort_by, true);
-
-
-      // this.tag_filter(null, true);
-      // this.computed_sort();
-      // this.computed_tag_all;
     },
     reset_filter(){
       this.tag_filter_with_OR_selection = [];
@@ -145,12 +131,9 @@ const article_lists = Vue.createApp({
       this.tmpList = this.list;
     },
     filteredList() {
-      // this.list = this.list.filter(LIST_OF_ONE => {
       this.list = this.tmpList.filter(LIST_OF_ONE => {
-        // const all_comment_string = LIST_OF_ONE.comment_list.map(V=>V.comment).join('');
         const all_comment_array = LIST_OF_ONE.comment_list.map(V=>V.comment);
         const all_tag_array = LIST_OF_ONE.tag_list.map(V=>V);
-        // const article_with_all_comment_string = LIST_OF_ONE.article + LIST_OF_ONE.comment_list.map(V=>V.comment).join('');
         const article = LIST_OF_ONE.article;
         const list = [
           {
@@ -166,21 +149,13 @@ const article_lists = Vue.createApp({
         const fuse = new Fuse(list, options);
         const orQuery = article_lists.search.split(' ').join('|')
         const result = fuse.search(orQuery);
-        // const result = fuse.search(this.search);
-        // let miniSearch = new MiniSearch({
-        //   fields: ['article', 'tag', 'comment'],
-        //   storeFields: ['article', 'tag', 'comment'],
-        // })
         try {
           LIST_OF_ONE.match_score = result[0].score;
         } catch (error) {
           LIST_OF_ONE.match_score = 0;
         }
-        // console.log(result);
-        // return result.length > 0;
         return LIST_OF_ONE.match_score > 0;
       })
-      // .sort((A_LIST, B_LIST)=> A_LIST.match_score - B_LIST.match_score );
       if(this.search === ''){this.list = this.tmpList};
     },
 
