@@ -60,7 +60,7 @@
         <!-- <span>Selected: {{ selected }}</span> -->
 
         <template v-for="(tag, tag_index) in list_of_one.tag_list">
-            <button @click.once="save_no_filter_list" @click="tag_filter(tag)">{{ tag }}</button>
+            <button @click="save_no_filter_list();tag_filter(tag)">{{ tag }}</button>
         </template>
         <span>{{ '  ' }} {{ list_of_one.comment_count }}</span>
         <ul>

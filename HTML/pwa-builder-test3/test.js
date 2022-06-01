@@ -93,8 +93,8 @@ const article_lists = Vue.createApp({
       this.sort_desc_or_asc ? this.list.sort((a, b)=>b[SORT_KIND] - a[SORT_KIND]) : this.list.sort((a, b)=>a[SORT_KIND] - b[SORT_KIND]);
     },
     save_no_filter_list(){
-      // console.log(this.no_filter_list);
-      this.no_filter_list = this.list
+      // console.log("hoge");
+      this.no_filter_list = this.no_filter_list.length === 0  ? this.list : this.no_filter_list;
     },
     tag_filter(TAG, SKIP=false){
       if(SKIP === false) {
@@ -105,7 +105,8 @@ const article_lists = Vue.createApp({
 // console.log(this.list);
 // console.log(this.no_filter_list);
 
-        this.list = this.list.filter(LIST_OF_ONE=>
+        // this.list = this.list.filter(LIST_OF_ONE=>
+        this.list = this.no_filter_list.filter(LIST_OF_ONE=>
           intersection(this.tag_filter_with_OR_selection, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
         )
 
@@ -119,7 +120,7 @@ const article_lists = Vue.createApp({
 
       // article_lists.list = article_lists.no_filter_list;
       this.tag_filter(null, true);
-      this.list = this.no_filter_list;
+      // this.list = this.no_filter_list;
 
       // article_lists.list = article_lists.list.filter(LIST_OF_ONE=>
       //   intersection(article_lists.tag_filter_with_OR_selection, LIST_OF_ONE.tag_list).length > 0 ? LIST_OF_ONE : null
