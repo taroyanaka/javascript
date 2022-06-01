@@ -53,7 +53,6 @@ const article_lists = Vue.createApp({
   data() {
     return{
       no_filter_list: [],
-      // hogehoge: "hogehoge",
       search: '',
       sort_by: '',
       sort_asc_or_desc: false,
