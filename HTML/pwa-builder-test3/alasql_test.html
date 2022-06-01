@@ -17,6 +17,45 @@
 </div>
 
 <script>
+const upload_create_table = () => {
+    alasql('CREATE TABLE IF NOT EXISTS upload_table (id INT PRIMARY KEY AUTOINCREMENT, article TEXT, star_count INT, comment_count INT, article_length INT, match_score INT)');
+}
+const upload_read_table = () => {
+    alasql('SELECT * FROM upload_table', [], (data) => {
+        console.log(data);
+    });
+}
+const upload_update_table = () => {
+    alasql('UPDATE upload_table SET star_count = star_count + 1 WHERE id = 1');
+}
+const upload_delete_table = () => {
+    alasql('DELETE FROM upload_table WHERE id = 1');
+}
+const upload_insert_table = () => {
+    alasql('INSERT INTO upload_table (article, star_count, comment_count, article_length, match_score) VALUES ("test", 0, 0, 0, 0)');
+}
+
+
+
+
+const download_create_table = () => {
+    alasql('CREATE TABLE IF NOT EXISTS upload_table (id INT PRIMARY KEY AUTOINCREMENT, article TEXT, star_count INT, comment_count INT, article_length INT, match_score INT)');
+}
+const download_read_table = () => {
+    alasql('SELECT * FROM upload_table', [], (data) => {
+        console.log(data);
+    });
+}
+const download_update_table = () => {
+    alasql('UPDATE upload_table SET star_count = star_count + 1 WHERE id = 1');
+}
+const download_delete_table = () => {
+    alasql('DELETE FROM upload_table WHERE id = 1');
+}
+const download_insert_table = () => {
+    alasql('INSERT INTO upload_table (article, star_count, comment_count, article_length, match_score) VALUES ("test", 0, 0, 0, 0)');
+}
+
     var app = new Vue({
         el: '#app',
         data: {
