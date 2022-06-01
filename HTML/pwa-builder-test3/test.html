@@ -27,6 +27,9 @@
 </div>
 
 <ul class="article_lists">
+    <template v-for="(tag_filter_with_OR_selection_of_one, index) in tag_filter_with_OR_selection">
+        {{ tag_filter_with_OR_selection_of_one }}
+    </template>
     <input type="text" v-model="search" @input.once="save_tmp_list" @input="filteredList" placeholder="search text">
     <div>
         <button @click="reset_filter">reset_filter</button>
