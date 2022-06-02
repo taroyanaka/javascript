@@ -206,6 +206,12 @@ const no_filter_list_table = () => {
     // comment_list TEXT,
 }
 
+
+
+// FOREIGN KEY (article_lists_table_id) REFERENCES article_lists_table(id)
+
+
+
 // article_lists_table is unique table
 // comment_list_table is article_lists_table's parent table(many to one)
 // tag_table is no_filter_list_table's related table(many to many) Independent relationship
