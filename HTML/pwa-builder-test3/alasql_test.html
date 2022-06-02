@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./vue3.js"></script>
+    <script src="./localforage.js.v1.10.0.js"></script>
     <script src="./alasql.v1.7.3.js"></script>
     <title>alasql_test</title>
 </head>
@@ -15,8 +16,187 @@
         <div>{{ item.article }}</div>
     </div>
 </div>
-
 <script>
+const blog = {
+    "article": "foo0",
+    "comment_text": "foo2 is FOO2",
+    "new_tag": "FOO1",
+    "tag_all": [
+        "FOO",
+        "BAR",
+        "BUZ",
+        "QUX"
+    ]
+};
+const article_lists = {
+    "no_filter_list": [
+        {
+            "id": 1,
+            "article": "bar",
+            "tag_list": [
+                "QUX"
+            ],
+            "comment_list": [
+                {
+                    "comment": "bar is BAR"
+                }
+            ],
+            "star_count": 0,
+            "comment_count": 1,
+            "article_length": 3,
+            "match_score": 0
+        },
+        {
+            "id": 3,
+            "article": "vlahvlah!",
+            "tag_list": [],
+            "comment_list": [],
+            "star_count": 0,
+            "comment_count": 0,
+            "article_length": 9,
+            "match_score": 0
+        },
+        {
+            "id": 4,
+            "article": "日本語　にニほんホンゴご　ﾆﾎﾝｺﾞ",
+            "tag_list": [],
+            "comment_list": [],
+            "star_count": 0,
+            "comment_count": 0,
+            "article_length": 18,
+            "match_score": 0
+        },
+        {
+            "id": 2,
+            "article": "foo\nbar\nBUZ",
+            "tag_list": [
+                "BAR",
+                "QUX"
+            ],
+            "comment_list": [],
+            "star_count": 1,
+            "comment_count": 0,
+            "article_length": 11,
+            "match_score": 0
+        },
+        {
+            "id": 0,
+            "article": "foo0",
+            "tag_list": [
+                "FOO",
+                "BAR"
+            ],
+            "comment_list": [
+                {
+                    "comment": "foo is FOO"
+                },
+                {
+                    "comment": "foo is not BAR"
+                },
+                {
+                    "comment": "foo2 is FOO2"
+                }
+            ],
+            "star_count": 3,
+            "comment_count": 3,
+            "article_length": 4,
+            "match_score": 0.0055427373972876705
+        }
+    ],
+    "search": "is",
+    "sort_by": "star_count",
+    "sort_asc_or_desc": false,
+    "editing": 0,
+    "list": [
+        {
+            "id": 0,
+            "article": "foo0",
+            "tag_list": [
+                "FOO",
+                "BAR"
+            ],
+            "comment_list": [
+                {
+                    "comment": "foo is FOO"
+                },
+                {
+                    "comment": "foo is not BAR"
+                },
+                {
+                    "comment": "foo2 is FOO2"
+                }
+            ],
+            "star_count": 3,
+            "comment_count": 3,
+            "article_length": 4,
+            "match_score": 0.0055427373972876705
+        }
+    ],
+    "tmpList": [
+        {
+            "id": 0,
+            "article": "foo0",
+            "tag_list": [
+                "FOO",
+                "BAR"
+            ],
+            "comment_list": [
+                {
+                    "comment": "foo is FOO"
+                },
+                {
+                    "comment": "foo is not BAR"
+                },
+                {
+                    "comment": "foo2 is FOO2"
+                }
+            ],
+            "star_count": 3,
+            "comment_count": 3,
+            "article_length": 4,
+            "match_score": 0.0055427373972876705
+        }
+    ],
+    "selected": "",
+    "tag_filter_with_OR_selection": [
+        "FOO"
+    ]
+}
+</script>
+<script>
+    const blog_create_table = () => {
+        alasql(`CREATE TABLE IF NOT EXISTS blog_table (id INT,
+        article TEXT,
+        comment_text TEXT,
+        new_tag TEXT,
+        tag_all TEXT
+        )`);
+    }
+    const article_lists_create_table = () => {
+        alasql(`CREATE TABLE IF NOT EXISTS article_lists_table (id INT,
+        article TEXT,
+        star_count INT,
+        comment_count INT,
+        article_length INT,
+        match_score NUMBER)`);
+        // tag_list TEXT,
+        // comment_list TEXT,
+    }
+    const tag_create_table = () => {
+        alasql(`CREATE TABLE IF NOT EXISTS tag_table (id INT,
+        article_lists_table_id INT,
+        tag TEXT)`);
+    }
+    const comment_create_table = () => {
+        alasql(`CREATE TABLE IF NOT EXISTS comment_table (id INT,
+        article_lists_table_id INT,
+        comment TEXT)`);
+    }
+
+// article_lists_table is unique table
+// comment_list_table is article_lists_table's parent table(many to one)
+// tag_table is article_lists_table's parent table(many to one)
+
 const upload_create_table = () => {
     alasql('CREATE TABLE IF NOT EXISTS upload_table (id INT PRIMARY KEY AUTOINCREMENT, article TEXT, star_count INT, comment_count INT, article_length INT, match_score INT)');
 }
@@ -56,38 +236,41 @@ const download_insert_table = () => {
     alasql('INSERT INTO upload_table (article, star_count, comment_count, article_length, match_score) VALUES ("test", 0, 0, 0, 0)');
 }
 
-    var app = new Vue({
-        el: '#app',
-        data: {
-            search: '',
-            newPostList: [],
+var app = new Vue({
+    el: '#app',
+    data: {
+        search: '',
+        newPostList: [],
+    },
+    methods: {
+        filteredList: function () {
+            var self = this;
+            var search = this.search;
+            var newPostList = alasql('SELECT * FROM ? WHERE article LIKE ?', [this.newPostList, '%' + search + '%']);
+            this.newPostList = newPostList;
         },
-        methods: {
-            filteredList: function () {
-                var self = this;
-                var search = this.search;
-                var newPostList = alasql('SELECT * FROM ? WHERE article LIKE ?', [this.newPostList, '%' + search + '%']);
-                this.newPostList = newPostList;
-            },
-            addPost: function (article) {
-                this.newPostList.push({
-                    article: article,
-                    star_count: 0,
-                    comment_count: 0,
-                    article_length: article.length,
-                    match_score: 0,
-                });
-            },
-            removePost: function (index) {
-                this.newPostList.splice(index, 1);
-            },
-            sortByStarCount: function () {
-                this.newPostList.sort(function (a, b) {
-                    return a.star_count - b.star_count;
-                });
-            },
-            sortByCommentCount: function () {
+        addPost: function (article) {
+            this.newPostList.push({
+                article: article,
+                star_count: 0,
+                comment_count: 0,
+                article_length: article.length,
+                match_score: 0,
+            });
+        },
+        removePost: function (index) {
+            this.newPostList.splice(index, 1);
+        },
+        sortByStarCount: function () {
+            this.newPostList.sort(function (a, b) {
+                return a.star_count - b.star_count;
+            });
+        },
+        sortByCommentCount: function () {
 alasql("CREATE TABLE example1 (a INT, b INT)");
+        },
+    },
+});
 
 // alasql's data store for a table can be assigned directly
 alasql.tables.example1.data = [
