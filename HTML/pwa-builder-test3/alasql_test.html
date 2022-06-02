@@ -192,10 +192,22 @@ const article_lists = {
         article_lists_table_id INT,
         comment TEXT)`);
     }
+const no_filter_list_table = () => {
+    alasql(`CREATE TABLE IF NOT EXISTS no_filter_list_table (id INT,
+    article TEXT,
+    star_count INT,
+    comment_count INT,
+    article_length INT,
+    match_score NUMBER)`);
+    // tag_list TEXT,
+    // comment_list TEXT,
+}
 
 // article_lists_table is unique table
 // comment_list_table is article_lists_table's parent table(many to one)
-// tag_table is article_lists_table's parent table(many to one)
+// tag_table is no_filter_list_table's related table(many to many)
+// comment_table is no_filter_list_table's parent table(many to one)
+// no_filter_list_table is article_lists_table's parent table(many to one)
 
 const upload_create_table = () => {
     alasql('CREATE TABLE IF NOT EXISTS upload_table (id INT PRIMARY KEY AUTOINCREMENT, article TEXT, star_count INT, comment_count INT, article_length INT, match_score INT)');
