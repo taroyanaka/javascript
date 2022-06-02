@@ -164,24 +164,27 @@ const article_lists = {
 }
 </script>
 <script>
-    const blog_create_table = () => {
-        alasql(`CREATE TABLE IF NOT EXISTS blog_table (id INT,
-        article TEXT,
-        comment_text TEXT,
-        new_tag TEXT,
-        tag_all TEXT
-        )`);
-    }
+    // const blog_create_table = () => {
+    //     alasql(`CREATE TABLE IF NOT EXISTS blog_table (id INT,
+    //     article TEXT,
+    //     comment_text TEXT,
+    //     new_tag TEXT,
+    //     tag_all TEXT
+    //     )`);
+    // }
     const article_lists_create_table = () => {
         alasql(`CREATE TABLE IF NOT EXISTS article_lists_table (id INT,
         article TEXT,
+        search: TEXT,
+        sort_by: TEXT,
+        sort_asc_or_desc: BOOLEAN,
+        editing: INT,
         star_count INT,
         comment_count INT,
         article_length INT,
         match_score NUMBER)`);
-        // tag_list TEXT,
-        // comment_list TEXT,
-    }
+        // tag_filter_with_OR_selection
+        }
     const tag_create_table = () => {
         alasql(`CREATE TABLE IF NOT EXISTS tag_table (id INT,
         article_lists_table_id INT,
@@ -205,8 +208,9 @@ const no_filter_list_table = () => {
 
 // article_lists_table is unique table
 // comment_list_table is article_lists_table's parent table(many to one)
-// tag_table is no_filter_list_table's related table(many to many)
-// comment_table is no_filter_list_table's parent table(many to one)
+// tag_table is no_filter_list_table's related table(many to many) Independent relationship
+// tag_table is tag_filter_with_OR_selection_table's parent table(many to one)
+// comment_table is no_filter_list_table's parent table(one to one)
 // no_filter_list_table is article_lists_table's parent table(many to one)
 
 const upload_create_table = () => {
