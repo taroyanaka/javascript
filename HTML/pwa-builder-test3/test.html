@@ -38,7 +38,7 @@
         <!-- {{ computed_sort }} -->
         <button @click="remove_tag(index)">{{ tag_filter_with_OR_selection_of_one }}</button>
     </template>
-    <input type="text" v-model="search" @input.once="save_tmp_list" @input="filteredList" placeholder="search text">
+    <input type="text" v-model="search_txt" @input.once="save_tmp_list" @input="filteredList" placeholder="search_txt text">
     <div>
         <button @click="reset_filter">reset_filter</button>
     </div>
@@ -325,7 +325,7 @@
 
 
 <!-- <div class="hoge">
-    <input type="text" v-model="search" @input="filteredList">
+    <input type="text" v-model="search_txt" @input="filteredList">
     <div v-for="(item, index) in newPostList">
         <div>{{ item.article }}</div>
     </div>

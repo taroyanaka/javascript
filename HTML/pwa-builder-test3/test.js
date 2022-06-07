@@ -53,7 +53,7 @@ const article_lists = Vue.createApp({
   data() {
     return{
       no_filter_list: [],
-      search: '',
+      search_txt_txt: '',
       sort_by: '',
       sort_asc_or_desc: false,
       editing: 0,
@@ -120,7 +120,7 @@ const article_lists = Vue.createApp({
     },
     reset_filter(){
       this.tag_filter_with_OR_selection = [];
-      this.search = '';
+      this.search_txt = '';
       this.list = this.no_filter_list;
       this.list = this.tmpList;
     },
@@ -146,8 +146,8 @@ const article_lists = Vue.createApp({
           keys: ['article', 'tag', 'comment'],
         };
         const fuse = new Fuse(list, options);
-        const orQuery = article_lists.search.split(' ').join('|')
-        const result = fuse.search(orQuery);
+        const orQuery = article_lists.search_txt.split(' ').join('|')
+        const result = fuse.search_txt(orQuery);
         try {
           LIST_OF_ONE.match_score = result[0].score;
         } catch (error) {
@@ -155,7 +155,7 @@ const article_lists = Vue.createApp({
         }
         return LIST_OF_ONE.match_score > 0;
       })
-      if(this.search === ''){this.list = this.tmpList};
+      if(this.search_txt === ''){this.list = this.tmpList};
     },
 
   }
@@ -686,7 +686,7 @@ const fbb3 = Vue.createApp({
 // const hoge = Vue.createApp({
 //   data() {
 //     return {
-//       search: '',
+//       search_txt: '',
 //       postList: article_lists.list,
 //       newPostList: article_lists.list,
 //     }
@@ -696,7 +696,7 @@ const fbb3 = Vue.createApp({
 //       this.newPostList = this.postList.filter(post => {
 //         const all_comment_string = post.comment_list.map(V=>V.comment).join('');
 //         const article_with_all_comment_string = post.article + post.comment_list.map(V=>V.comment).join('');
-//         return article_with_all_comment_string.toLowerCase().includes(this.search.toLowerCase())
+//         return article_with_all_comment_string.toLowerCase().includes(this.search_txt.toLowerCase())
 //       });
 //     }
 //   }

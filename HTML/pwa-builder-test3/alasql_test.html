@@ -11,10 +11,10 @@
 </head>
 <body>
 <div class="hoge">
-    <input type="text" v-model="search" @input="filteredList">
-    <div v-for="(item, index) in newPostList">
-        <div>{{ item.article }}</div>
-    </div>
+    <!-- <input type="text" v-model="search" @input="filteredList"> -->
+    <!-- <div v-for="(item, index) in newPostList"> -->
+        <!-- <div>{{ item.article }}</div> -->
+    <!-- </div> -->
 </div>
 <script>
 const blog = {
@@ -172,40 +172,119 @@ const article_lists = {
     //     tag_all TEXT
     //     )`);
     // }
-    const article_lists_create_table = () => {
-        alasql(`CREATE TABLE IF NOT EXISTS article_lists_table (id INT,
-        article TEXT,
-        search: TEXT,
-        sort_by: TEXT,
-        sort_asc_or_desc: BOOLEAN,
-        editing: INT,
-        star_count INT,
-        comment_count INT,
-        article_length INT,
-        match_score NUMBER)`);
-        // tag_filter_with_OR_selection
-        }
-    const tag_create_table = () => {
-        alasql(`CREATE TABLE IF NOT EXISTS tag_table (id INT,
-        article_lists_table_id INT,
-        tag TEXT)`);
-    }
-    const comment_create_table = () => {
-        alasql(`CREATE TABLE IF NOT EXISTS comment_table (id INT,
-        article_lists_table_id INT,
-        comment TEXT)`);
-    }
-const no_filter_list_table = () => {
-    alasql(`CREATE TABLE IF NOT EXISTS no_filter_list_table (id INT,
-    article TEXT,
-    star_count INT,
-    comment_count INT,
-    article_length INT,
-    match_score NUMBER)`);
-    // tag_list TEXT,
-    // comment_list TEXT,
+const article_lists_create_table = () => {
+alasql(`CREATE TABLE IF NOT EXISTS article_lists_table (
+id INT PRIMARY KEY,
+article TEXT,
+search_txt TEXT,
+sort_by TEXT,
+sort_asc_or_desc BOOLEAN,
+editing INT,
+star_count INT,
+comment_count INT,
+article_length INT,
+match_score INT)`);
+
+
+// tag_filter_with_OR_selection
+}
+const tag_create_table = () => {
+alasql(`CREATE TABLE IF NOT EXISTS tag_table (
+id INT PRIMARY KEY,
+article_lists_table_id INT REFERENCES article_lists_table(id),
+tag TEXT)`);
+}
+const comment_create_table = () => {
+alasql(`CREATE TABLE IF NOT EXISTS comment_table (
+id INT PRIMARY KEY,
+article_lists_table_id INT REFERENCES article_lists_table(id),
+comment TEXT)`);
+}
+const no_filter_list_create_table = () => {
+alasql(`CREATE TABLE IF NOT EXISTS no_filter_list_table (
+id INT PRIMARY KEY,
+article TEXT,
+star_count INT,
+comment_count INT,
+article_length INT,
+match_score NUMBER)`);
+// tag_list TEXT,
+// comment_list TEXT,
 }
 
+
+var no_filter_list_data1 = [
+{id: 0},
+{article: "foo1"},
+{search_txt: "foo1"},
+{sort_by: "foo1"},
+{sort_asc_or_desc: true},
+{editing: 0},
+{star_count: 1},
+{comment_count: 3},
+{article_length: 3},
+{match_score: 0},
+];
+// var no_filter_list_data2 = [0,"foo1","foo1","foo1",true,0,1,3,3,0];
+// var no_filter_list_data3 = (0,"foo1","foo1","foo1",true,0,1,3,3,0);
+
+// alasql('INSERT INTO city VALUES ?', [data]);
+
+// alasql('INSERT INTO article_lists_table(id, article, search_txt, sort_by, sort_asc_or_desc, editing, star_count, comment_count, article_length, match_score) VALUES ?', no_filter_list_data2 );
+
+// alasql('INSERT INTO article_lists_table SELECT * FROM ?',[no_filter_list_data1]);
+
+
+article_lists_create_table();
+// alasql('INSERT INTO article_lists_table(id, article, search_txt, sort_by, sort_asc_or_desc, editing, star_count, comment_count, article_length, match_score) VALUES (1,"foo1","foo1","foo1",true,0,1,3,3,0)' );
+
+alasql('INSERT INTO article_lists_table VALUES ?', no_filter_list_data1 );
+
+
+
+
+tag_create_table();
+// alasql('INSERT INTO tag_table(id, article_lists_table_id, tag) VALUES (1, 1, "FOO1")' );
+// alasql('INSERT INTO city VALUES ?', [data]);
+// alasql('INSERT INTO tag_table VALUES ?', [1, 1, 'FOO1']);
+alasql('INSERT INTO tag_table VALUES ?', [
+{id: 1},
+{article_lists_table_id: 1},
+{tag: 'FOO1'},
+]);
+// alasql('INSERT INTO tag_table VALUES ?', [2, 1, 'FOO2']);
+alasql('INSERT INTO tag_table VALUES ?', [
+{id: 2},
+{article_lists_table_id: 1},
+{tag: 'FOO2'},
+]);
+// alasql('INSERT INTO tag_table VALUES ?', [3, 1, 'FOO3']);
+alasql('INSERT INTO tag_table VALUES ?', [
+{id: 3},
+{article_lists_table_id: 1},
+{tag: 'FOO3'},
+]);
+// alasql('INSERT INTO tag_table(id, article_lists_table_id, tag) VALUES (2, 1, "FOO2")' );
+// alasql('INSERT INTO tag_table(id, article_lists_table_id, tag) VALUES (3, 1, "FOO3")' );
+
+
+
+// alasql('INSERT INTO tag_table SELECT * FROM ?',[tag_data1]);
+// alasql('INSERT INTO tag_table SELECT * FROM ?',[tag_data2]);
+// alasql('INSERT INTO tag_table SELECT * FROM ?',[tag_data3]);
+
+
+
+
+// comment_create_table();
+
+// article_lists_create_table();
+
+
+
+
+// addforeign key example
+// alasql(`FOREIGN KEY(column_name) REFERENCES parent_table_name(parent_table_column_name)`);
 
 
 // FOREIGN KEY (article_lists_table_id) REFERENCES article_lists_table(id)
@@ -213,118 +292,32 @@ const no_filter_list_table = () => {
 
 
 // article_lists_table is unique table
-// comment_list_table is article_lists_table's parent table(many to one)
+// comment_table is article_lists_table's parent table(many to one)
 // tag_table is no_filter_list_table's related table(many to many) Independent relationship
 // tag_table is tag_filter_with_OR_selection_table's parent table(many to one)
 // comment_table is no_filter_list_table's parent table(one to one)
 // no_filter_list_table is article_lists_table's parent table(many to one)
 
-const upload_create_table = () => {
-    alasql('CREATE TABLE IF NOT EXISTS upload_table (id INT PRIMARY KEY AUTOINCREMENT, article TEXT, star_count INT, comment_count INT, article_length INT, match_score INT)');
-}
-const upload_read_table = () => {
-    alasql('SELECT * FROM upload_table', [], (data) => {
-        console.log(data);
-    });
-}
-const upload_update_table = () => {
-    alasql('UPDATE upload_table SET star_count = star_count + 1 WHERE id = 1');
-}
-const upload_delete_table = () => {
-    alasql('DELETE FROM upload_table WHERE id = 1');
-}
-const upload_insert_table = () => {
-    alasql('INSERT INTO upload_table (article, star_count, comment_count, article_length, match_score) VALUES ("test", 0, 0, 0, 0)');
-}
 
 
 
 
-const download_create_table = () => {
-    alasql('CREATE TABLE IF NOT EXISTS upload_table (id INT PRIMARY KEY AUTOINCREMENT, article TEXT, star_count INT, comment_count INT, article_length INT, match_score INT)');
-}
-const download_read_table = () => {
-    alasql('SELECT * FROM upload_table', [], (data) => {
-        console.log(data);
-    });
-}
-const download_update_table = () => {
-    alasql('UPDATE upload_table SET star_count = star_count + 1 WHERE id = 1');
-}
-const download_delete_table = () => {
-    alasql('DELETE FROM upload_table WHERE id = 1');
-}
-const download_insert_table = () => {
-    alasql('INSERT INTO upload_table (article, star_count, comment_count, article_length, match_score) VALUES ("test", 0, 0, 0, 0)');
-}
 
-var app = new Vue({
-    el: '#app',
-    data: {
-        search: '',
-        newPostList: [],
-    },
-    methods: {
-        filteredList: function () {
-            var self = this;
-            var search = this.search;
-            var newPostList = alasql('SELECT * FROM ? WHERE article LIKE ?', [this.newPostList, '%' + search + '%']);
-            this.newPostList = newPostList;
-        },
-        addPost: function (article) {
-            this.newPostList.push({
-                article: article,
-                star_count: 0,
-                comment_count: 0,
-                article_length: article.length,
-                match_score: 0,
-            });
-        },
-        removePost: function (index) {
-            this.newPostList.splice(index, 1);
-        },
-        sortByStarCount: function () {
-            this.newPostList.sort(function (a, b) {
-                return a.star_count - b.star_count;
-            });
-        },
-        sortByCommentCount: function () {
-alasql("CREATE TABLE example1 (a INT, b INT)");
-        },
-    },
-});
 
-// alasql's data store for a table can be assigned directly
-alasql.tables.example1.data = [
-    {a:2,b:6},
-    {a:3,b:4}
-];
+
+
+
+
+
 
 // ... or manipulated with normal SQL
-alasql("INSERT INTO example1 VALUES (1,5)");
+// alasql("INSERT INTO example1 VALUES (1,5)");
 
-var res = alasql("SELECT * FROM example1 ORDER BY b DESC");
+// var res = alasql("SELECT * FROM example1 ORDER BY b DESC");
 
-console.log(res); // [{a:2,b:6},{a:1,b:5},{a:3,b:4}]
+// console.log(res);
+// [{a:2,b:6},{a:1,b:5},{a:3,b:4}]
 
-const hoge = Vue.createApp({
-  data() {
-    return {
-      search: '',
-      postList: article_lists.list,
-      newPostList: article_lists.list,
-    }
-  },
-  methods:{
-    filteredList() {
-      this.newPostList = this.postList.filter(post => {
-        const all_comment_string = post.comment_list.map(V=>V.comment).join('');
-        const article_with_all_comment_string = post.article + post.comment_list.map(V=>V.comment).join('');
-        return article_with_all_comment_string.toLowerCase().includes(this.search.toLowerCase())
-      });
-    }
-  }
-}).mount(".hoge");
 </script>
 </body>
 </html>
