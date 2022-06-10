@@ -323,17 +323,6 @@ ON no_filter_list_table.id = comment_table.no_filter_list_table_id`;
 console.table(alasql(query2));
 console.table(alasql(query2).map(RECORD=>RECORD.comment));
 
-// const query2_2 = `SELECT comment_table.id, comment_table.comment
-// FROM no_filter_list_table
-// JOIN comment_table
-// ON no_filter_list_table.id = comment_table.no_filter_list_table_id`;
-// const query2_3 = `UPDATE comment_table
-// SET comment_table.comment = "FOOFOOFOO"
-// WHERE comment_table.id = 1`
-// console.table(alasql(query2_3));
-// console.table(alasql(query2).map(RECORD=>RECORD.comment));
-
-
 
 const query2_1 = `SELECT *
 FROM no_filter_list_table
