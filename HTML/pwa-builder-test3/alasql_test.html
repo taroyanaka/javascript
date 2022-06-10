@@ -10,12 +10,6 @@
     <title>alasql_test</title>
 </head>
 <body>
-<div class="hoge">
-    <!-- <input type="text" v-model="search" @input="filteredList"> -->
-    <!-- <div v-for="(item, index) in newPostList"> -->
-        <!-- <div>{{ item.article }}</div> -->
-    <!-- </div> -->
-</div>
 <script>
 const blog = {
     "article": "foo0",
@@ -164,14 +158,6 @@ const article_lists = {
 }
 </script>
 <script>
-    // const blog_create_table = () => {
-    //     alasql(`CREATE TABLE IF NOT EXISTS blog_table (id INT,
-    //     article TEXT,
-    //     comment_text TEXT,
-    //     new_tag TEXT,
-    //     tag_all TEXT
-    //     )`);
-    // }
 const article_lists_create_table = () => {
 alasql(`CREATE TABLE IF NOT EXISTS article_lists_table (
 id INT PRIMARY KEY,
@@ -186,14 +172,27 @@ article_length INT,
 match_score INT)`);
 
 
-// tag_filter_with_OR_selection
 }
+// const tag_create_table = () => {
+// alasql(`CREATE TABLE IF NOT EXISTS tag_table (
+// id INT PRIMARY KEY,
+// no_filter_list_table_id INT REFERENCES no_filter_list_table(id),
+// tag TEXT)`);
+// }
 const tag_create_table = () => {
 alasql(`CREATE TABLE IF NOT EXISTS tag_table (
 id INT PRIMARY KEY,
-no_filter_list_table_id INT REFERENCES no_filter_list_table(id),
+article_lists_table_tag_table_id INT REFERENCES article_lists_table_tag_table(id),
 tag TEXT)`);
 }
+
+const article_lists_table_tag_table_create_table = () => {
+alasql(`CREATE TABLE IF NOT EXISTS article_lists_table_tag_table (
+id INT PRIMARY KEY,
+article_lists_table_id INT,
+tag_table_id INT)`);
+}
+
 const comment_create_table = () => {
 alasql(`CREATE TABLE IF NOT EXISTS comment_table (
 id INT PRIMARY KEY,
@@ -209,8 +208,6 @@ comment_count INT,
 article_length INT,
 match_score NUMBER
 )`);
-// tag_list TEXT,
-// comment_list TEXT,
 }
 
 
@@ -245,15 +242,6 @@ article_length: 3,
 match_score: 0.2,
 },
 ];
-// var no_filter_list_data2 = [0,"foo1","foo1","foo1",true,0,1,3,3,0];
-// var no_filter_list_data3 = (0,"foo1","foo1","foo1",true,0,1,3,3,0);
-
-// alasql('INSERT INTO city VALUES ?', [data]);
-
-// alasql('INSERT INTO article_lists_table(id, article, search_txt, sort_by, sort_asc_or_desc, editing, star_count, comment_count, article_length, match_score) VALUES ?', no_filter_list_data2 );
-
-// alasql('INSERT INTO article_lists_table SELECT * FROM ?',[no_filter_list_data1]);
-
 
 article_lists_create_table();
 alasql('SELECT * INTO article_lists_table FROM ?', [article_lists_table1]);
@@ -261,23 +249,31 @@ alasql('SELECT * INTO article_lists_table FROM ?', [article_lists_table1]);
 no_filter_list_create_table();
 alasql('SELECT * INTO no_filter_list_table FROM ?', [no_filter_list_table1]);
 
+article_lists_table_tag_table_create_table();
 tag_create_table();
-// alasql('INSERT INTO tag_table(id, article_lists_table_id, tag) VALUES (1, 1, "FOO1")' );
-// alasql('INSERT INTO city VALUES ?', [data]);
-// alasql('INSERT INTO tag_table VALUES ?', [1, 1, 'FOO1']);
 
 // https://github.com/AlaSQL/alasql/wiki/How-to-insert-data-into-the-table#how-to-insert-data-into-the-table
 const tag_sample1 = [
-    {id: 1, no_filter_list_table_id: 1, tag: 'FOO1'},
-    {id: 2, no_filter_list_table_id: 1, tag: 'FOO2'},
-    {id: 3, no_filter_list_table_id: 1, tag: 'FOO3'},
+    {id: 1, article_lists_table_tag_table_id: 1, tag: 'FOO1'},
+    {id: 2, article_lists_table_tag_table_id: 1, tag: 'FOO2'},
+    {id: 3, article_lists_table_tag_table_id: 1, tag: 'FOO3'},
 ];
-// alasql.tables.tag_table.data = tag_sample1;
-// alasql('INSERT INTO tag_table SELECT * FROM ?', [tag_sample1]);
 alasql('SELECT * INTO tag_table FROM ?', [tag_sample1]);
 
-// console.table(alasql('SELECT * FROM tag_table'));
-// console.table(alasql('SELECT * FROM article_lists_table'));
+
+// alasql(`CREATE TABLE IF NOT EXISTS article_lists_table_tag_table (
+// id INT PRIMARY KEY,
+// article_lists_table_id INT,
+// tag_table_id INT)`);
+
+const article_lists_table_tag_table_sample1 = [
+    {id: 1, no_filter_list_table_id:1, tag_table_id:1},
+    {id: 2, no_filter_list_table_id:1, tag_table_id:2},
+    {id: 3, no_filter_list_table_id:1, tag_table_id:3},
+];
+alasql('SELECT * INTO article_lists_table_tag_table FROM ?', [article_lists_table_tag_table_sample1]);
+
+
 
 comment_create_table();
 const comment_sample1 = [
@@ -286,94 +282,49 @@ const comment_sample1 = [
 {id: 3, no_filter_list_table_id: 1, comment: 'BUZ IS QUX' },
 ]
 alasql('SELECT * INTO comment_table FROM ?', [comment_sample1]);
-// console.table(alasql('SELECT * FROM comment_table'));
 
-// const query1 = `SELECT * FROM article_lists_table.*, tag_table.* JOIN tag_table ON article_lists_table.id = tag_table.article_lists_table_id`;
-const query1 = `SELECT * FROM no_filter_list_table JOIN tag_table ON no_filter_list_table.id = tag_table.no_filter_list_table_id`;
-console.table(alasql(query1));
-console.table(alasql(query1).map(RECORD=>RECORD.tag));
+// https://stackoverflow.com/a/832589
+// SELECT *
+// FROM A_TABLE
+// JOIN CROSS_TABLE
+//     ON
+//         A_TABLE.id = CROSS_TABLE.A_TABLE_id
+// JOIN B_TABLE
+//     ON
+//         CROSS_TABLE.B_TABLE_id = B_TABLE.id
 
-const query2 = `SELECT * FROM no_filter_list_table JOIN comment_table ON no_filter_list_table.id = comment_table.no_filter_list_table_id`;
+// A no_filter_list_table
+// B tag_table
+// CROSS article_lists_table_tag_table
+
+// SELECT *
+// FROM no_filter_list_table
+// JOIN article_lists_table_tag_table
+//     ON
+//         no_filter_list_table.id = article_lists_table_tag_table.no_filter_list_table_id
+// JOIN tag_table
+//     ON
+//         article_lists_table_tag_table.tag_table_id = tag_table.id
+
+const query1_1 = `SELECT *
+FROM no_filter_list_table
+JOIN article_lists_table_tag_table
+    ON
+        no_filter_list_table.id = article_lists_table_tag_table.no_filter_list_table_id
+JOIN tag_table
+    ON
+        article_lists_table_tag_table.tag_table_id = tag_table.id`;
+
+
+console.table(alasql(query1_1));
+console.table(alasql(query1_1).map(RECORD=>RECORD.tag));
+
+const query2 = `SELECT *
+FROM no_filter_list_table
+JOIN comment_table
+ON no_filter_list_table.id = comment_table.no_filter_list_table_id`;
 console.table(alasql(query2));
 console.table(alasql(query2).map(RECORD=>RECORD.comment));
-
-const query3 = `SELECT *
-FROM no_filter_list_table
-JOIN tag_table
-ON tag_table.no_filter_list_table_id = no_filter_list_table.id
-JOIN comment_table
-ON comment_table.no_filter_list_table_id = no_filter_list_table.id`;
-console.table(alasql(query3));
-
-
-
-// alasql('SELECT * INTO tag_table FROM ?',[
-// alasql('INSERT INTO tag_table VALUES ?',[
-// {id: 2},
-// {article_lists_table_id: 1},
-// {tag: 'FOO2'},
-// ]);
-
-// alasql('INSERT INTO tag_table VALUES ?', [
-// {id: 3},
-// {article_lists_table_id: 1},
-// {tag: 'FOO3'},
-// ]);
-
-
-// alasql('INSERT INTO tag_table(id, article_lists_table_id, tag) VALUES (2, 1, "FOO2")' );
-// alasql('INSERT INTO tag_table(id, article_lists_table_id, tag) VALUES (3, 1, "FOO3")' );
-
-
-
-// alasql('INSERT INTO tag_table SELECT * FROM ?',[tag_data1]);
-// alasql('INSERT INTO tag_table SELECT * FROM ?',[tag_data2]);
-// alasql('INSERT INTO tag_table SELECT * FROM ?',[tag_data3]);
-
-
-
-
-// comment_create_table();
-
-// article_lists_create_table();
-
-
-
-
-// addforeign key example
-// alasql(`FOREIGN KEY(column_name) REFERENCES parent_table_name(parent_table_column_name)`);
-
-
-// FOREIGN KEY (article_lists_table_id) REFERENCES article_lists_table(id)
-
-
-
-// article_lists_table is unique table
-// comment_table is article_lists_table's parent table(many to one)
-// tag_table is no_filter_list_table's related table(many to many) Independent relationship
-// tag_table is tag_filter_with_OR_selection_table's parent table(many to one)
-// comment_table is no_filter_list_table's parent table(one to one)
-// no_filter_list_table is article_lists_table's parent table(many to one)
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ... or manipulated with normal SQL
-// alasql("INSERT INTO example1 VALUES (1,5)");
-
-// var res = alasql("SELECT * FROM example1 ORDER BY b DESC");
-
-// console.log(res);
-// [{a:2,b:6},{a:1,b:5},{a:3,b:4}]
 
 </script>
 </body>
