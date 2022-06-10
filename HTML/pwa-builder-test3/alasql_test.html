@@ -278,7 +278,7 @@ const comment_sample1 = [
     {id: 2, no_filter_list_table_id: 1, comment: 'BAR IS BUZ' },
     {id: 3, no_filter_list_table_id: 1, comment: 'BUZ IS QUX' },
 ]
-// alasql('SELECT * INTO comment_table FROM ?', [comment_sample1]);
+alasql('SELECT * INTO comment_table FROM ?', [comment_sample1]);
 
 // https://stackoverflow.com/a/832589
 // SELECT *
@@ -323,6 +323,27 @@ ON no_filter_list_table.id = comment_table.no_filter_list_table_id`;
 console.table(alasql(query2));
 console.table(alasql(query2).map(RECORD=>RECORD.comment));
 
+// const query2_2 = `SELECT comment_table.id, comment_table.comment
+// FROM no_filter_list_table
+// JOIN comment_table
+// ON no_filter_list_table.id = comment_table.no_filter_list_table_id`;
+// const query2_3 = `UPDATE comment_table
+// SET comment_table.comment = "FOOFOOFOO"
+// WHERE comment_table.id = 1`
+// console.table(alasql(query2_3));
+// console.table(alasql(query2).map(RECORD=>RECORD.comment));
+
+
+
+const query2_1 = `SELECT *
+FROM no_filter_list_table
+JOIN comment_table
+ON no_filter_list_table.id = comment_table.no_filter_list_table_id
+WHERE comment_table.comment = ""
+`;
+console.table(alasql(query2_1));
+console.table(alasql(query2_1).map(RECORD=>RECORD.comment));
+
 const query3_1 = `SELECT *
 FROM article_lists_table`;
 console.table(alasql(query3_1));
@@ -334,31 +355,31 @@ console.table(alasql(query3_1));
 
 
 
-// const foo_create_table = () => {
-// alasql(`CREATE TABLE IF NOT EXISTS foo (
-// id INT,
-// bar TEXT)`);
-// }
-// const foo1 = [
-// {
-// id: 1,
-// bar: "BAR1",
-// },
-// {
-// id: 2,
-// bar: "BAR2",
-// },
-// ];
-// foo_create_table();
-// alasql('SELECT * INTO foo FROM ?', [foo1]);
-// const foo_select = `SELECT *
-// FROM foo`;
-// console.table(alasql(foo_select));
-// const foo_update = "UPDATE foo SET bar = 'bar10' WHERE bar = 'BAR1'";
-// const foo_update2 = "UPDATE foo SET bar = 'bar100' WHERE id = 1";
-// console.table(alasql(foo_update));
-// console.table(alasql(foo_update2));
-// console.table(alasql(foo_select));
+const foo_create_table = () => {
+alasql(`CREATE TABLE IF NOT EXISTS foo (
+id INT,
+bar TEXT)`);
+}
+const foo1 = [
+{
+id: 1,
+bar: "BAR1",
+},
+{
+id: 2,
+bar: "BAR2",
+},
+];
+foo_create_table();
+alasql('SELECT * INTO foo FROM ?', [foo1]);
+const foo_select = `SELECT *
+FROM foo`;
+console.table(alasql(foo_select));
+const foo_update = "UPDATE foo SET bar = 'bar10' WHERE bar = 'BAR1'";
+const foo_update2 = "UPDATE foo SET bar = 'bar100' WHERE id = 1";
+console.table(alasql(foo_update));
+console.table(alasql(foo_update2));
+console.table(alasql(foo_select));
 </script>
 </body>
 </html>
