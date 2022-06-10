@@ -293,9 +293,9 @@ alasql('SELECT * INTO comment_table FROM ?', [comment_sample1]);
 //     ON
 //         CROSS_TABLE.B_TABLE_id = B_TABLE.id
 
-// A no_filter_list_table
-// B tag_table
-// CROSS article_lists_table_tag_table
+// A_table no_filter_list_table
+// B_table tag_table
+// CROSS_table article_lists_table_tag_table
 
 // SELECT *
 // FROM no_filter_list_table
@@ -306,14 +306,16 @@ alasql('SELECT * INTO comment_table FROM ?', [comment_sample1]);
 //     ON
 //         article_lists_table_tag_table.tag_table_id = tag_table.id
 
-const query1_1 = `SELECT *
+const query1_1 = `
+SELECT *
 FROM no_filter_list_table
 JOIN article_lists_table_tag_table
     ON
         no_filter_list_table.id = article_lists_table_tag_table.no_filter_list_table_id
 JOIN tag_table
     ON
-        article_lists_table_tag_table.tag_table_id = tag_table.id`;
+        article_lists_table_tag_table.tag_table_id = tag_table.id
+`;
 
 
 console.table(alasql(query1_1));
