@@ -270,7 +270,7 @@ JOIN no_filter_list_table_tag_table
 JOIN tag_table
     ON
         no_filter_list_table_tag_table.tag_table_id = tag_table.id`;
-// console.table(alasql(query1_1));
+console.table(alasql(query1_1));
 
 
 
@@ -295,6 +295,7 @@ console.table(alasql(`DELETE FROM tag_table WHERE id = 1`));
 console.table(alasql(`DELETE FROM no_filter_list_table_tag_table WHERE tag_table_id = 1`));
 console.table(alasql(`SELECT * FROM tag_table`));
 console.table(alasql(`SELECT * FROM no_filter_list_table_tag_table`));
+console.table(alasql(`SELECT * FROM no_filter_list_table`));
 
 const query1_2 = `SELECT *
 FROM no_filter_list_table
@@ -368,6 +369,24 @@ console.table(alasql(query1_2));
 // JOIN tag_table
 //     ON
 //         no_filter_list_table_tag_table.tag_table_id = tag_table.id
+
+
+
+
+
+
+
+
+
+
+const endpoint = "http://127.0.0.1:8800";
+
+const exe_fetch = async () => {
+    const res = await fetch(endpoint);
+    const json = await res.json();
+    console.table(await json);
+};
+exe_fetch();
 </script>
 </body>
 </html>
