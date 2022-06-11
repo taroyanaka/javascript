@@ -1,4 +1,6 @@
 // https://marketplace.visualstudio.com/items?itemName=emeraldwalk.RunOnSave
+// in vscode's settings.json
+
 // "emeraldwalk.runonsave": {
 //     "commands": [
 //         {
@@ -8,6 +10,7 @@
 //     ]
 // }
 
+// on CLI
 // nodemon /Users/yanakataro/Desktop/npm_package/better-sqlite3/node_express_cors_better-sqlite3_server.js
 
 const express = require('express')
