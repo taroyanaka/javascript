@@ -21,6 +21,17 @@ const port = 8800
 const Database = require('better-sqlite3');
 const db = new Database('.data/tmp2.sqlite3');
 
+const article_lists_create_table = () => `CREATE TABLE IF NOT EXISTS article_lists_table (
+id INT,
+article TEXT,
+search_txt TEXT,
+sort_by TEXT,
+sort_asc_or_desc BOOLEAN,
+editing INT,
+star_count INT,
+comment_count INT,
+article_length INT,
+match_score INT)`;
 const tag_create_table = () => `CREATE TABLE IF NOT EXISTS tag_table (
 id INT,
 no_filter_list_table_tag_table_id INT,
@@ -56,7 +67,8 @@ match_score NUMBER
 // );`).run();
 // };
 const create_query_exe = async (STR) => db.prepare(STR).run();
-const table_name_key_value_1 = {article_lists_table: [
+const table_name_key_value_1 =
+{article_lists_table: [
 ["id", 1],
 ["article", "foo1"],
 ["search_txt", "foo1"],
@@ -69,7 +81,8 @@ const table_name_key_value_1 = {article_lists_table: [
 ["match_score", 0],
 ]}
 
-const table_name_key_value_2 = {no_filter_list_table: [
+const table_name_key_value_2 =
+{no_filter_list_table: [
 ["id", 1],
 ["article", "foo0"],
 ["star_count", 3],
@@ -78,7 +91,8 @@ const table_name_key_value_2 = {no_filter_list_table: [
 ["match_score", 0.1],
 ]}
 
-const table_name_key_value_3 = {no_filter_list_table: [
+const table_name_key_value_3 =
+{no_filter_list_table: [
 ["id", 2],
 ["article", "bar"],
 ["star_count", 0],
@@ -87,17 +101,17 @@ const table_name_key_value_3 = {no_filter_list_table: [
 ["match_score", 0.2],
 ]}
 
-const table_name_key_value_4 = {no_filter_list_table_tag_table: [
+const table_name_key_value_4 ={no_filter_list_table_tag_table: [
 ["id", 1],
 ["no_filter_list_table_id", 1],
 ["tag_table_id", 1],
 ]}
-const table_name_key_value_5 = {no_filter_list_table_tag_table: [
+const table_name_key_value_5 ={no_filter_list_table_tag_table: [
 ["id", 2],
 ["no_filter_list_table_id", 1],
 ["tag_table_id", 2],
 ]}
-const table_name_key_value_6 = {no_filter_list_table_tag_table: [
+const table_name_key_value_6 ={no_filter_list_table_tag_table: [
 ["id", 3],
 ["no_filter_list_table_id", 1],
 ["tag_table_id", 3],
@@ -154,24 +168,15 @@ ${KEY_VAL_PAIR[0].join(" ")}
     stmt.run(KEY_VAL_PAIR[1].join(" "));
 };
 
-const setup = () => {
-    create_query_exe(tag_create_table());
-    create_query_exe(no_filter_list_table_tag_table_create_table());
-    create_query_exe(comment_create_table());
-    create_query_exe(no_filter_list_create_table());
-    insert_initial_data(table_name_key_value_1);
-    insert_initial_data(table_name_key_value_2);
-    insert_initial_data(table_name_key_value_3);
-    insert_initial_data(table_name_key_value_4);
-    insert_initial_data(table_name_key_value_5);
-    insert_initial_data(table_name_key_value_6);
-    insert_initial_data(table_name_key_value_7);
-    insert_initial_data(table_name_key_value_8);
-    insert_initial_data(table_name_key_value_9);
-    insert_initial_data(table_name_key_value_10);
-    insert_initial_data(table_name_key_value_11);
-    insert_initial_data(table_name_key_value_12);
-};
+
+
+
+
+
+
+
+
+
 
 
 
@@ -337,15 +342,89 @@ WHERE rowid = ? AND uid = ? AND service_id =
 // readAllanyWithserviceAll();
 // read1("service1", "foo0");
 
-app.use(cors())
 
-app.get('/', (req, res) => {
-//   res.send('Hello World!')
+
+
+
+
+
+
+
+
+
+// app.use(cors())
+
+// app.get('/', (req, res) => {
 //   res.json({msg: 'This is CORS-enabled for a whitelisted domain.'});
-  res.send(readAllservice());
-})
+//   res.send(readAllservice());
+// })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-  readAllservice();
-})
+// app.listen(port, () => {
+//   console.log(`Example app listening on port ${port}`)
+//   readAllservice();
+// })
+
+
+
+
+const setup = () => {
+    create_query_exe(article_lists_create_table());
+    // create_query_exe(tag_create_table());
+    // create_query_exe(no_filter_list_table_tag_table_create_table());
+    // create_query_exe(comment_create_table());
+    // create_query_exe(no_filter_list_create_table());
+    // insert_initial_data(table_name_key_value_1);
+    // insert_initial_data(table_name_key_value_2);
+    // insert_initial_data(table_name_key_value_3);
+    // insert_initial_data(table_name_key_value_4);
+    // insert_initial_data(table_name_key_value_5);
+    // insert_initial_data(table_name_key_value_6);
+    // insert_initial_data(table_name_key_value_7);
+    // insert_initial_data(table_name_key_value_8);
+    // insert_initial_data(table_name_key_value_9);
+    // insert_initial_data(table_name_key_value_10);
+    // insert_initial_data(table_name_key_value_11);
+    // insert_initial_data(table_name_key_value_12);
+};
+
+const table_list = [
+    "article_lists_table",
+    "no_filter_list_table",
+    "tag_table",
+    "comment_table",
+]
+const dropTableList = (LIST) => {
+    const result = LIST.reduce((A,V,IDX)=>{
+        const res = db.prepare(`DROP TABLE ${V}`).run();A.push(res);
+        return A;
+    },A=[])
+    // const result = db.prepare("DROP TABLE any").run();
+    console.table(result);
+};
+
+
+
+
+const read_table_1 = () => {
+    const stmt = db.prepare('SELECT rowid,* FROM article_lists_table');
+    // const stmt = db.prepare('SELECT rowid,* FROM any WHERE service = ? AND uid = ?');
+    // const stmt = db.prepare('SELECT rowid,* FROM any WHERE service = ? AND uid = ?');
+    try {
+        const any = stmt.all();
+        console.table(any);
+    } catch (err) {
+        console.table(err);
+    }
+};
+
+
+
+
+setup();
+// read_table_1();
+// dropTableList(table_list);
+
+
+
+
+
