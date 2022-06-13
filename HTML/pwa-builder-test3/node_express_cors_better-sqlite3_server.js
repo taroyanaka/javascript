@@ -73,7 +73,8 @@ const table_name_key_value_1 =
 ["article", "foo1"],
 ["search_txt", "foo1"],
 ["sort_by", "foo1"],
-["sort_asc_or_desc", true],
+// ["sort_asc_or_desc", true], => SQLite does not have a separate Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).
+["sort_asc_or_desc", 1],
 ["editing", 0],
 ["star_count", 1],
 ["comment_count", 3],
@@ -159,13 +160,56 @@ const insert_initial_data = (table_name_key_value) => {
     const table_name = Object.keys(table_name_key_value)[0];
     const key_val = Object.values(table_name_key_value)[0];
     const KEY_VAL_PAIR = [key_val.map(V=>V[0]), key_val.map(V=>V[1])];
-    const stmt = db.prepare(`
-INSERT INTO ${table_name} (
-${KEY_VAL_PAIR[0].join(" ")}
-)VALUES (
-    ${KEY_VAL_PAIR[1].map(V=>typeof V ==='string' ? "'" + V + "'" : V).map(V=> "?").join(" ")}
-)`);
-    stmt.run(KEY_VAL_PAIR[1].join(" "));
+    // console.log(typeof table_name);
+    console.log(table_name);
+    // console.log(key_val);
+    // console.log(KEY_VAL_PAIR);
+    // console.log(KEY_VAL_PAIR[0]);
+    // console.log(KEY_VAL_PAIR[1]);
+    // console.log(KEY_VAL_PAIR[1].map(V=> "?").join(" "));
+    // console.log(KEY_VAL_PAIR[1].map(V=>typeof V ==='string' ? "'" + V + "'" : V).join(" "));
+
+//     const stmt = db.prepare(`INSERT INTO article_lists_table (
+// id,
+// article,
+// search_txt,
+// sort_by,
+// sort_asc_or_desc,
+// editing,
+// star_count,
+// comment_count,
+// article_length,
+// match_score
+//          ) VALUES (
+// 1
+// "foo1"
+// "foo1"
+// "foo1"
+// true
+// 0
+// 1
+// 3
+// 3
+// 0
+//          )`);
+const stmt = db.prepare(`INSERT INTO ${table_name} ( ${KEY_VAL_PAIR[0].join(", ")} ) VALUES (${KEY_VAL_PAIR[1].map(V=> "?").join(", ")})`);
+// const stmt = db.prepare(`INSERT INTO ${table_name} (id,
+// article,
+// search_txt,
+// sort_by,
+// sort_asc_or_desc,
+// editing,
+// star_count,
+// comment_count,
+// article_length,
+// match_score) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+
+// stmt.run(KEY_VAL_PAIR[1].join(", "));
+stmt.run(...KEY_VAL_PAIR[1]);
+// stmt.run(
+//     KEY_VAL_PAIR[1]
+//     .map(V=>typeof V ==='string' ? "'" + V + "'" : V)
+//     .join(", "));
 };
 
 
@@ -373,7 +417,7 @@ const setup = () => {
     // create_query_exe(no_filter_list_table_tag_table_create_table());
     // create_query_exe(comment_create_table());
     // create_query_exe(no_filter_list_create_table());
-    // insert_initial_data(table_name_key_value_1);
+    insert_initial_data(table_name_key_value_1);
     // insert_initial_data(table_name_key_value_2);
     // insert_initial_data(table_name_key_value_3);
     // insert_initial_data(table_name_key_value_4);
@@ -421,7 +465,7 @@ const read_table_1 = () => {
 
 
 setup();
-// read_table_1();
+read_table_1();
 // dropTableList(table_list);
 
 
