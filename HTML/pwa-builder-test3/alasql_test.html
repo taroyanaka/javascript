@@ -230,14 +230,38 @@ match_score: 0.2,
 },
 ];
 const no_filter_list_table_tag_table = [
-    {id: 1, no_filter_list_table_id: 1, tag_table_id: 1},
-    {id: 2, no_filter_list_table_id: 1, tag_table_id: 2},
-    {id: 3, no_filter_list_table_id: 1, tag_table_id: 3},
+{
+id: 1,
+no_filter_list_table_id: 1,
+tag_table_id: 1,
+},
+{
+id: 2,
+no_filter_list_table_id: 1,
+tag_table_id: 2,
+},
+{
+id: 3,
+no_filter_list_table_id: 1,
+tag_table_id: 3,
+},
 ];
 const tag_sample1 = [
-    {id: 1, no_filter_list_table_tag_table_id: 1, tag: 'FOO1'},
-    {id: 2, no_filter_list_table_tag_table_id: 1, tag: 'FOO2'},
-    {id: 3, no_filter_list_table_tag_table_id: 1, tag: 'FOO3'},
+{
+id: 1,
+no_filter_list_table_tag_table_id: 1,
+tag: 'FOO1'
+},
+{
+id: 2,
+no_filter_list_table_tag_table_id: 1,
+tag: 'FOO2'
+},
+{
+id: 3,
+no_filter_list_table_tag_table_id: 1,
+tag: 'FOO3'
+},
 ];
 const comment_sample1 = [
     {id: 1, no_filter_list_table_id: 1, comment: 'FOO IS BAR' },
@@ -384,8 +408,8 @@ const endpoint = "http://127.0.0.1:8800";
 const exe_fetch = async () => {
     const res = await fetch(endpoint);
     console.table(await res);
-    // const json = await res.json();
-    // console.table(await json);
+    const json = await res.json();
+    console.table(await json);
 };
 
 exe_fetch();

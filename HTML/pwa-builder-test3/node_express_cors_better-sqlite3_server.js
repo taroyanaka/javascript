@@ -87,6 +87,60 @@ const table_name_key_value_3 = {no_filter_list_table: [
 ["match_score", 0.2],
 ]}
 
+const table_name_key_value_4 = {no_filter_list_table_tag_table: [
+["id", 1],
+["no_filter_list_table_id", 1],
+["tag_table_id", 1],
+]}
+const table_name_key_value_5 = {no_filter_list_table_tag_table: [
+["id", 2],
+["no_filter_list_table_id", 1],
+["tag_table_id", 2],
+]}
+const table_name_key_value_6 = {no_filter_list_table_tag_table: [
+["id", 3],
+["no_filter_list_table_id", 1],
+["tag_table_id", 3],
+]}
+
+const table_name_key_value_7 =
+{tag_table: [
+["id", 1],
+["no_filter_list_table_tag_table_id", 1],
+["tag", 'FOO1'],
+]}
+const table_name_key_value_8 =
+{tag_table: [
+["id", 2],
+["no_filter_list_table_tag_table_id", 1],
+["tag", 'FOO2'],
+]}
+const table_name_key_value_9 =
+{tag_table: [
+["id", 3],
+["no_filter_list_table_tag_table_id", 1],
+["tag", 'FOO3'],
+]}
+
+const table_name_key_value_10 =
+{comment_table: [
+["id", 1],
+["no_filter_list_table_id", 1],
+["comment", 'FOO IS BAR'],
+]}
+const table_name_key_value_11 =
+{comment_table: [
+["id", 2],
+["no_filter_list_table_id", 1],
+["comment", 'BAR IS BUZ'],
+]}
+const table_name_key_value_12 =
+{comment_table: [
+["id", 3],
+["no_filter_list_table_id", 1],
+["comment", 'BUZ IS QUX'],
+]}
+
 const insert_initial_data = (table_name_key_value) => {
     const table_name = Object.keys(table_name_key_value)[0];
     const key_val = Object.values(table_name_key_value)[0];
@@ -108,6 +162,15 @@ const setup = () => {
     insert_initial_data(table_name_key_value_1);
     insert_initial_data(table_name_key_value_2);
     insert_initial_data(table_name_key_value_3);
+    insert_initial_data(table_name_key_value_4);
+    insert_initial_data(table_name_key_value_5);
+    insert_initial_data(table_name_key_value_6);
+    insert_initial_data(table_name_key_value_7);
+    insert_initial_data(table_name_key_value_8);
+    insert_initial_data(table_name_key_value_9);
+    insert_initial_data(table_name_key_value_10);
+    insert_initial_data(table_name_key_value_11);
+    insert_initial_data(table_name_key_value_12);
 };
 
 
@@ -178,7 +241,8 @@ WHERE service = ? AND uid = ?`);
 };
 
 const readAllservice = () => {
-    const stmt = db.prepare('SELECT rowid,* FROM service');
+    // const stmt = db.prepare('SELECT rowid,* FROM service');
+    const stmt = db.prepare('SELECT * FROM service');
     const service = stmt.all();
     console.table(service);
     return service;
@@ -277,8 +341,8 @@ app.use(cors())
 
 app.get('/', (req, res) => {
 //   res.send('Hello World!')
-  res.json({msg: 'This is CORS-enabled for a whitelisted domain.'});
-//   res.send(readAllservice());
+//   res.json({msg: 'This is CORS-enabled for a whitelisted domain.'});
+  res.send(readAllservice());
 })
 
 app.listen(port, () => {
