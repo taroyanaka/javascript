@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>make_better_sqlite3_code</title>
+    <script src="./vue3.js"></script>
+</head>
+<body>
+<!-- <div class="blog">
+    <p style="white-space: pre-line;">{{ article }}</p>
+    <textarea v-model="article" placeholder="add multiple lines" name="article" id="article" cols="30" rows="10" @input="inputFn"></textarea>
+    <button @click="save">save</button>
+    <input v-model="table_name" type="text"></input>
+    <button @click="comment_save">comment_save</button>
+    <div>
+        <input v-model="new_tag" placeholder="tag" />
+        <button @click="tag_save">tag_save</button>
+        <template v-for="tag in tag_all">
+            <button @click="tag_filter_from_blog(tag)">{{ tag }}</button>
+        </template>
+    </div>
+</div> -->
+<div class="make_better_sqlite3_code">
+    <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @input="inputFn"></textarea>
+    <input v-model="table_name" placeholder="table_name" type="text"></input>
+    <textarea v-model="column_names" placeholder="column_names_one" name="column_names" id="column_names" cols="30" rows="10" @input="inputFn"></textarea>
+    <!-- <p style="white-space: pre-line;">{{ res }}</p> -->
+    <button @click="save">save</button>
+    <!-- <button @click="comment_save">comment_save</button> -->
+</div>
+</body>
+<script>
+// table_name
+// column_name
+
+// select
+// insert
+// update
+// delete
+// create
+// drop
+
+
+const template = {
+select: `const SELECT = () => {
+    try {
+        return db.prepare("SELECT rowid, * FROM !!!THIS_IS_CHANGEABLE_TABLE_NAME!!!").all();
+    } catch (ERROR) {
+        return ERROR;
+    }
+};`,
+insert: ``,
+update: ``,
+delete: ``,
+create: ``,
+drop: ``,
+};
+const replace_string = (STR, FROM, TO) => STR.replaceAll(FROM, TO);
+const make_better_sqlite3_code = Vue.createApp({
+  data() {
+    return {
+      res: '',
+      table_name: 'FOOBARBUZ',
+      column_names: '',
+    }
+  },
+  methods: {
+    save() {
+        this.res = replace_string(template["select"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name);
+        // this.res = template["insert"];
+        // this.res = template["update"];
+        // this.res = template["delete"];
+        // this.res = template["create"];
+        // this.res = template["drop"];
+    },
+    inputFn() {
+      this.res = "res"
+    },
+},
+}).mount('.make_better_sqlite3_code');
+</script>
+
+
+
+<script>
+const make_table_name_with_column_name = (TABLE_AND_COLUMN_NAMES) => TABLE_AND_COLUMN_NAMES[1].map(VAL=>TABLE_AND_COLUMN_NAMES[0] + '.' + VAL);
+const article_lists_table_and_column_name = [
+    "article_lists_table",
+    [
+        "id",
+        "article",
+        "search_txt",
+        "sort_by",
+        "sort_asc_or_desc",
+        "editing",
+        "star_count",
+        "comment_count",
+        "article_length",
+        "match_score",
+    ]
+];
+</script>
+</html>

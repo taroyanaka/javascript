@@ -338,10 +338,9 @@ console.table(alasql(query1_2));
 // console.table(alasql(query1_1));
 // console.table(alasql(query1_1).map(RECORD=>[RECORD.id, RECORD.tag]));
 
-
-
-
-
+function escapeSQL(value) {
+    return '"' + String(value).replace(/"/g, '""') + '"';
+}
 
 // const foo_create_table = () => {
 // alasql(`CREATE TABLE IF NOT EXISTS foo (

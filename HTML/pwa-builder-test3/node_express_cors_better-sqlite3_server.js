@@ -14,7 +14,8 @@
 // nodemon /Users/yanakataro/Desktop/npm_package/better-sqlite3/node_express_cors_better-sqlite3_server.js
 
 const express = require('express')
-var cors = require('cors')
+const cors = require('cors')
+const validator = require('validator')
 const app = express()
 const port = 8800
 
@@ -66,6 +67,9 @@ match_score NUMBER
 // FOREIGN KEY (service_id) REFERENCES service(id)
 // );`).run();
 // };
+
+
+
 const create_query_exe = async (STR) => db.prepare(STR).run();
 const table_name_key_value_1 =
 {article_lists_table: [
@@ -160,188 +164,15 @@ const insert_initial_data = (table_name_key_value) => {
     const table_name = Object.keys(table_name_key_value)[0];
     const key_val = Object.values(table_name_key_value)[0];
     const KEY_VAL_PAIR = [key_val.map(V=>V[0]), key_val.map(V=>V[1])];
-    // console.log(typeof table_name);
-    console.log(table_name);
-    // console.log(key_val);
-    // console.log(KEY_VAL_PAIR);
-    // console.log(KEY_VAL_PAIR[0]);
-    // console.log(KEY_VAL_PAIR[1]);
-    // console.log(KEY_VAL_PAIR[1].map(V=> "?").join(" "));
-    // console.log(KEY_VAL_PAIR[1].map(V=>typeof V ==='string' ? "'" + V + "'" : V).join(" "));
-
-//     const stmt = db.prepare(`INSERT INTO article_lists_table (
-// id,
-// article,
-// search_txt,
-// sort_by,
-// sort_asc_or_desc,
-// editing,
-// star_count,
-// comment_count,
-// article_length,
-// match_score
-//          ) VALUES (
-// 1
-// "foo1"
-// "foo1"
-// "foo1"
-// true
-// 0
-// 1
-// 3
-// 3
-// 0
-//          )`);
-const stmt = db.prepare(`INSERT INTO ${table_name} ( ${KEY_VAL_PAIR[0].join(", ")} ) VALUES (${KEY_VAL_PAIR[1].map(V=> "?").join(", ")})`);
-// const stmt = db.prepare(`INSERT INTO ${table_name} (id,
-// article,
-// search_txt,
-// sort_by,
-// sort_asc_or_desc,
-// editing,
-// star_count,
-// comment_count,
-// article_length,
-// match_score) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
-
-// stmt.run(KEY_VAL_PAIR[1].join(", "));
-stmt.run(...KEY_VAL_PAIR[1]);
-// stmt.run(
-//     KEY_VAL_PAIR[1]
-//     .map(V=>typeof V ==='string' ? "'" + V + "'" : V)
-//     .join(", "));
+    const stmt = db.prepare(`INSERT INTO ${table_name} ( ${KEY_VAL_PAIR[0].join(", ")} ) VALUES (${KEY_VAL_PAIR[1].map(V=> "?").join(", ")})`);
+    stmt.run(...KEY_VAL_PAIR[1]);
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-const insertAny = () => {
-    const stmt = db.prepare(`INSERT INTO any (txt, uid, service_id) VALUES (?, ?, ?)`);
-    stmt.run(
-        "txt1",
-        "foo0",
-        1);
-    stmt.run(
-        "txt2",
-        "foo0",
-        2);
-    stmt.run(
-        "txt3",
-        "bar1",
-        2);
-    stmt.run(
-        "txt4",
-        "bar1",
-        3);
-    stmt.run(
-        "txt5",
-        "foo0",
-        2);
-    stmt.run(
-        "txt6",
-        "foo0",
-        2);
-};
-const readAllanyWithserviceAll = () => {
-    const stmt = db.prepare(`
-SELECT *
-FROM any
-JOIN service
-ON any.service_id = service.id`);
-    try {
-        const anyWithService = stmt.all();
-        console.table(anyWithService);
-    } catch (err) {
-        console.table(err);
-    }
-};
-const read0 = (service, uid) => {
-    const stmt = db.prepare('SELECT rowid,* FROM any WHERE service = ? AND uid = ?');
-    try {
-        const any = stmt.all(service, uid);
-        console.table(any);
-    } catch (err) {
-        console.table(err);
-    }
-};
-const read1 = (service, uid) => {
-    const stmt = db.prepare(`
-SELECT txt,created_at
-FROM any
-JOIN service
-ON any.service_id = service.id
-WHERE service = ? AND uid = ?`);
-    try {
-        const anyWithService = stmt.all(service, uid);
-        console.table(anyWithService);
-    } catch (err) {
-        console.table(err);
-    }
-};
-
-const readAllservice = () => {
-    // const stmt = db.prepare('SELECT rowid,* FROM service');
-    const stmt = db.prepare('SELECT * FROM service');
-    const service = stmt.all();
-    console.table(service);
-    return service;
-};
-const readAllany = () => {
-    const stmt = db.prepare('SELECT rowid,* FROM any');
-    const any = stmt.all();
-    console.table(any);
-};
-
-const dropTableservice = () => {
-    const result = db.prepare("DROP TABLE service").run();
-    console.table(result);
-};
 const resetAUTOINCREMENTservice = () => {
     const result = db.prepare("UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE NAME='service'").run();
     console.table(result);
 };
-const dropTableany = () => {
-    const result = db.prepare("DROP TABLE any").run();
-    console.table(result);
-};
-const reset = () => {
-    dropTableany();
-    dropTableservice();
-    create();
-    insertService();
-    insertAny();
-    readAllanyWithserviceAll();
-    read1("service1", "foo0");
-};
-
-const insert = (txt, service, uid) => {
-    try {
-        const any = db.prepare(`
-INSERT INTO any (txt, uid, service_id)
-    SELECT ?, ?, service.id
-    FROM service
-    WHERE service.service = ?;
-`).run(
-        txt,
-        uid,
-        service);
-        console.table(any);
-    } catch (err) {
-        console.table(err);
-    }
-};
-
-
 
 const update = (txt, rowid, service, uid) => {
     try {
@@ -363,6 +194,8 @@ WHERE rowid = ? AND uid = ? AND service_id =
         console.table(err);
     }
 };
+
+
 
 
 
@@ -449,10 +282,40 @@ const dropTableList = (LIST) => {
 
 
 
-const read_table_TABLE_NAME = (TABLE_NAME) => {
+const read_TABLE_NAME = (TABLE_NAME) => {
     const stmt = db.prepare(`SELECT rowid,* FROM ${TABLE_NAME}`);
     // const stmt = db.prepare('SELECT rowid,* FROM any WHERE service = ? AND uid = ?');
-    // const stmt = db.prepare('SELECT rowid,* FROM any WHERE service = ? AND uid = ?');
+    try {
+        const any = stmt.all();
+        console.table(any);
+    } catch (err) {
+        console.table(err);
+    }
+};
+
+// https://stackoverflow.com/a/832589
+// SELECT *
+// FROM A_TABLE
+// JOIN CROSS_TABLE
+//     ON
+//         A_TABLE.id = CROSS_TABLE.A_TABLE_id
+// JOIN B_TABLE
+//     ON
+//         CROSS_TABLE.B_TABLE_id = B_TABLE.id
+
+// A_table no_filter_list_table
+// B_table tag_table
+// CROSS_table no_filter_list_table_tag_table
+const read_cross_TABLE_NAME = (TABLE_NAME) => {
+    const stmt = db.prepare(`SELECT *
+FROM no_filter_list_table
+JOIN no_filter_list_table_tag_table
+    ON
+        no_filter_list_table.id = no_filter_list_table_tag_table.no_filter_list_table_id
+JOIN tag_table
+    ON
+        no_filter_list_table_tag_table.tag_table_id = tag_table.id
+`);
     try {
         const any = stmt.all();
         console.table(any);
@@ -465,11 +328,65 @@ const read_table_TABLE_NAME = (TABLE_NAME) => {
 
 
 // setup();
-table_list.forEach(V=>read_table_TABLE_NAME(V));
-// read_table_TABLE_NAME('article_lists_table');
+table_list.forEach(V=>read_TABLE_NAME(V));
+read_cross_TABLE_NAME();
 // dropTableList(table_list);
 
+console.log(validator.isIn("foo", ["foo", "bar"]))
+console.log(validator.isIn("buz", ["foo", "bar"]))
+
+const make_table_name_with_column_name = (TABLE_AND_COLUMN_NAMES) => TABLE_AND_COLUMN_NAMES[1].map(VAL=>TABLE_AND_COLUMN_NAMES[0] + '.' + VAL);
+
+const article_lists_table_and_column_name = [
+    "article_lists_table",
+    [
+        "id",
+        "article",
+        "search_txt",
+        "sort_by",
+        "sort_asc_or_desc",
+        "editing",
+        "star_count",
+        "comment_count",
+        "article_length",
+        "match_score",
+    ]
+];
+
+console.log(make_table_name_with_column_name(article_lists_table_and_column_name));
+
+console.log(validator.isIn("article_lists_table.search_txt", make_table_name_with_column_name(article_lists_table_and_column_name)))
+console.log(validator.isIn("article_lists_table.uid", make_table_name_with_column_name(article_lists_table_and_column_name)))
+
+const escaped = validator.escape(`'Gifts'--'`)
+const unescaped = validator.unescape(escaped)
+const escaped2 = validator.escape(`SELECT * FROM no_filter_list_table`)
+const unescaped2 = validator.unescape(escaped2)
+console.log(escaped)
+console.log(unescaped)
+console.log(escaped2)
+console.log(unescaped2)
 
 
+const update_TABLE_NAME = (TABLE_NAME, SET_COLUMN_NAME_AND_VALUE_PAIR_ARRAY, WHERE_COLUMN_NAMES_ARRAY) => {
+    const SET_COLUMN_NAMES_ARRAY = SET_COLUMN_NAME_AND_VALUE_PAIR_ARRAY.map(V=>V[0]);
+    const VALUES_ARRAY = SET_COLUMN_NAME_AND_VALUE_PAIR_ARRAY.map(V=>V[1]);
+    // `txt = ?, you = ?, i = ?`
+    const SET_query = SET_COLUMN_NAMES_ARRAY.map(V=> `${V} = ?`).join(", ");
+    // rowid = ? AND uid = ? AND service_id = ?
+    const WHERE_query = WHERE_COLUMN_NAMES_ARRAY.map(V=> `${V} = ?`).join(" AND ");
+    try {
+        const RESULT = db.prepare(`UPDATE ${TABLE_NAME}
+SET ${SET_query}
+WHERE ${WHERE_query}
+`)
+    .run(...VALUES_ARRAY);
+        console.table(RESULT);
+    } catch (err) {
+        console.table(err);
+    }
+};
 
-
+// for security about sqlite3
+// https://www.sqlite.org/security.html
+// https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/SQLite%20Injection.md
