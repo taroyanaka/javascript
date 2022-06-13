@@ -8,20 +8,6 @@
     <script src="./vue3.js"></script>
 </head>
 <body>
-<!-- <div class="blog">
-    <p style="white-space: pre-line;">{{ article }}</p>
-    <textarea v-model="article" placeholder="add multiple lines" name="article" id="article" cols="30" rows="10" @input="inputFn"></textarea>
-    <button @click="save">save</button>
-    <input v-model="table_name" type="text"></input>
-    <button @click="comment_save">comment_save</button>
-    <div>
-        <input v-model="new_tag" placeholder="tag" />
-        <button @click="tag_save">tag_save</button>
-        <template v-for="tag in tag_all">
-            <button @click="tag_filter_from_blog(tag)">{{ tag }}</button>
-        </template>
-    </div>
-</div> -->
 <div class="make_better_sqlite3_code">
     <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @input="inputFn"></textarea>
     <input v-model="table_name" placeholder="table_name" type="text"></input>
@@ -42,21 +28,37 @@
 // create
 // drop
 
+const insert_initial_data = (table_name_key_value) => {
+    const table_name = Object.keys(table_name_key_value)[0];
+    const key_val = Object.values(table_name_key_value)[0];
+    const KEY_VAL_PAIR = [key_val.map(V=>V[0]), key_val.map(V=>V[1])];
+    const stmt = db.prepare(`INSERT INTO ${table_name} ( ${KEY_VAL_PAIR[0].join(", ")} ) VALUES (${KEY_VAL_PAIR[1].map(V=> "?").join(", ")})`);
+    stmt.run(...KEY_VAL_PAIR[1]);
+};
+
 
 const template = {
 select: `const SELECT = () => {
     try {
-        return db.prepare("SELECT rowid, * FROM !!!THIS_IS_CHANGEABLE_TABLE_NAME!!!").all();
+        return db.prepare('SELECT rowid, * FROM !!!THIS_IS_CHANGEABLE_TABLE_NAME!!!').all();
     } catch (ERROR) {
         return ERROR;
     }
 };`,
-insert: ``,
+insert: `const INSERT = () => {
+    try {
+        return db.prepare('INSERT INTO !!!THIS_IS_CHANGEABLE_TABLE_NAME!!! ( !!!THIS_IS_CHANGEABLE_COLUMN_NAMES!!! ) VALUES ( !!!THIS_IS_CHANGEABLE_COUPLE_OF_QUESTION_SYMBOLS!!! )').run( !!!THIS_IS_CHANGEABLE_VALUES_PARAMETERS!!! );
+    } catch (ERROR) {
+        return ERROR;
+    }
+};`,
 update: ``,
 delete: ``,
 create: ``,
 drop: ``,
 };
+const new_lined_string_to_join_comma_string = (new_lined_string) => new_lined_string.split("\n").join(", ");
+const new_lined_string_to_question_symbol_comma_string = (new_lined_string) => new_lined_string.split("\n").map(V=> "?").join(", ");
 const replace_string = (STR, FROM, TO) => STR.replaceAll(FROM, TO);
 const make_better_sqlite3_code = Vue.createApp({
   data() {
@@ -68,8 +70,16 @@ const make_better_sqlite3_code = Vue.createApp({
   },
   methods: {
     save() {
-        this.res = replace_string(template["select"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name);
-        // this.res = template["insert"];
+        // this.res = replace_string(template["select"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name);
+
+        this.column_names = `FOO
+BAR
+BAZ`;
+        let tmp = replace_string(template["insert"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name);
+        tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COLUMN_NAMES!!!", new_lined_string_to_join_comma_string(this.column_names));
+        tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COUPLE_OF_QUESTION_SYMBOLS!!!", new_lined_string_to_question_symbol_comma_string(this.column_names));
+        this.res = tmp;
+        
         // this.res = template["update"];
         // this.res = template["delete"];
         // this.res = template["create"];
@@ -80,6 +90,7 @@ const make_better_sqlite3_code = Vue.createApp({
     },
 },
 }).mount('.make_better_sqlite3_code');
+make_better_sqlite3_code.save();
 </script>
 
 
