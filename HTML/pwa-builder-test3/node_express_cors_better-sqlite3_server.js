@@ -4,7 +4,7 @@
 // "emeraldwalk.runonsave": {
 //     "commands": [
 //         {
-//             "match": ".*",
+//             "match": "node_express_cors_better-sqlite3_server.js",
 //             "cmd": "cp /Users/yanakataro/Desktop/js/javascript/HTML/pwa-builder-test3/node_express_cors_better-sqlite3_server.js /Users/yanakataro/Desktop/npm_package/better-sqlite3/"
 //         }
 //     ]
