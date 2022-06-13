@@ -4,7 +4,7 @@
 // "emeraldwalk.runonsave": {
 //     "commands": [
 //         {
-//             "match": "node_express_cors_better-sqlite3_server.js",
+//             "match": "/Users/yanakataro/Desktop/js/javascript/HTML/pwa-builder-test3/node_express_cors_better-sqlite3_server.js",
 //             "cmd": "cp /Users/yanakataro/Desktop/js/javascript/HTML/pwa-builder-test3/node_express_cors_better-sqlite3_server.js /Users/yanakataro/Desktop/npm_package/better-sqlite3/"
 //         }
 //     ]
@@ -277,8 +277,8 @@ app.use(cors())
 
 app.get('/', (req, res) => {
 //   res.send('Hello World!')
-//   res.json({msg: 'This is CORS-enabled for a whitelisted domain.'});
-  res.send(readAllservice());
+  res.json({msg: 'This is CORS-enabled for a whitelisted domain.'});
+//   res.send(readAllservice());
 })
 
 app.listen(port, () => {
