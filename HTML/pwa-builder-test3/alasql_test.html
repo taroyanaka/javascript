@@ -383,8 +383,9 @@ const endpoint = "http://127.0.0.1:8800";
 
 const exe_fetch = async () => {
     const res = await fetch(endpoint);
-    const json = await res.json();
-    console.table(await json);
+    console.table(await res);
+    // const json = await res.json();
+    // console.table(await json);
 };
 // 
 exe_fetch();

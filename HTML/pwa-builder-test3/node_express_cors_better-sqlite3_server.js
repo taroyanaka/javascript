@@ -42,21 +42,20 @@ article_length INT,
 match_score NUMBER
 )`;
 
-const create = async () => {
-    db.prepare(`CREATE TABLE IF NOT EXISTS service (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-service TEXT NOT NULL
-);`).run();
-    db.prepare(`CREATE TABLE IF NOT EXISTS any (
-txt TEXT NOT NULL,
-uid TEXT NOT NULL,
-created_at DATETIME DEFAULT (datetime('now', 'localtime')),
-service_id INTEGER NOT NULL,
-FOREIGN KEY (service_id) REFERENCES service(id)
-);`).run();
-};
+// const create = async () => {
+//     db.prepare(`CREATE TABLE IF NOT EXISTS service (
+// id INTEGER PRIMARY KEY AUTOINCREMENT,
+// service TEXT NOT NULL
+// );`).run();
+//     db.prepare(`CREATE TABLE IF NOT EXISTS any (
+// txt TEXT NOT NULL,
+// uid TEXT NOT NULL,
+// created_at DATETIME DEFAULT (datetime('now', 'localtime')),
+// service_id INTEGER NOT NULL,
+// FOREIGN KEY (service_id) REFERENCES service(id)
+// );`).run();
+// };
 const create_query_exe = async (STR) => db.prepare(STR).run();
-
 const table_name_key_value_1 = {article_lists_table: [
 ["id", 1],
 ["article", "foo1"],
@@ -88,22 +87,31 @@ const table_name_key_value_3 = {no_filter_list_table: [
 ["match_score", 0.2],
 ]}
 
-const get_key = (key_val_array) => [key_val_array.map(V=>V[0]), key_val_array.map(V=>V[1])][0].join(" ");
-const get_value = (key_val_array) => [key_val_array.map(V=>V[0]), key_val_array.map(V=>V[1])][1].map(V=>typeof V ==='string' ? "'" + V + "'" : V).join(" ");
-
 const insert_initial_data = (table_name_key_value) => {
     const table_name = Object.keys(table_name_key_value)[0];
     const key_val = Object.values(table_name_key_value)[0];
-    const KEY_VAL = [key_val.map(V=>V[0]), key_val.map(V=>V[1])][1].join(" ");
+    const KEY_VAL_PAIR = [key_val.map(V=>V[0]), key_val.map(V=>V[1])];
     const stmt = db.prepare(`
 INSERT INTO ${table_name} (
-${KEY_VAL[0].join(" ")}
+${KEY_VAL_PAIR[0].join(" ")}
 )VALUES (
-    ${KEY_VAL[1].map(V=>typeof V ==='string' ? "'" + V + "'" : V).map(V=> "?").join(" ")}
+    ${KEY_VAL_PAIR[1].map(V=>typeof V ==='string' ? "'" + V + "'" : V).map(V=> "?").join(" ")}
 )`);
-    // stmt.run("1 'foo1' 'foo1' 'foo1' true 0 1 3 3 0");
-    stmt.run(KEY_VAL[1].join(" "));
+    stmt.run(KEY_VAL_PAIR[1].join(" "));
 };
+
+const setup = () => {
+    create_query_exe(tag_create_table());
+    create_query_exe(no_filter_list_table_tag_table_create_table());
+    create_query_exe(comment_create_table());
+    create_query_exe(no_filter_list_create_table());
+    insert_initial_data(table_name_key_value_1);
+    insert_initial_data(table_name_key_value_2);
+    insert_initial_data(table_name_key_value_3);
+};
+
+
+
 
 const insertAny = () => {
     const stmt = db.prepare(`INSERT INTO any (txt, uid, service_id) VALUES (?, ?, ?)`);
@@ -269,8 +277,8 @@ app.use(cors())
 
 app.get('/', (req, res) => {
 //   res.send('Hello World!')
-  res.json({msg: 'This is CORS-enabled for a whitelisted domain.'});
-//   res.send(readAllservice());
+//   res.json({msg: 'This is CORS-enabled for a whitelisted domain.'});
+  res.send(readAllservice());
 })
 
 app.listen(port, () => {
