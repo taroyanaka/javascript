@@ -6,12 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>make_better_sqlite3_code</title>
     <script src="./vue3.js"></script>
+    <!-- <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css"> -->
 </head>
 <body>
 <div class="make_better_sqlite3_code">
-    <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @input="inputFn"></textarea>
-    <input v-model="table_name" placeholder="table_name" type="text"></input>
-    <textarea v-model="column_names" placeholder="column_names_one" name="column_names" id="column_names" cols="30" rows="10" @input="inputFn"></textarea>
+    <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @change="save"></textarea>
+    <input v-model="table_name" placeholder="table_name" type="text" @change="save"></input>
+    <textarea v-model="column_names" placeholder="column_names_one" name="column_names" id="column_names" cols="30" rows="10" @change="save"></textarea>
+
+<div>
+    <span>with table name:</span>
+    <input type="checkbox" id="checkbox" v-model="check"  @change="save" checked/>
+    <!-- <label for="checkbox">{{ check }}</label> -->
+</div>
+
+    <textarea v-model="PARAMETERS" placeholder="PARAMETERS_one" name="PARAMETERS" id="PARAMETERS" cols="30" rows="10" @input="inputFn"></textarea>
     <!-- <p style="white-space: pre-line;">{{ res }}</p> -->
     <button @click="save">save</button>
     <!-- <button @click="comment_save">comment_save</button> -->
@@ -36,6 +46,23 @@ const insert_initial_data = (table_name_key_value) => {
     stmt.run(...KEY_VAL_PAIR[1]);
 };
 
+const update = (txt, rowid, service, uid) => {
+    try {
+        const any = db.prepare(`UPDATE any
+SET txt = ?
+WHERE rowid = ? AND uid = ? AND service_id`).run(
+    txt,
+    rowid,
+    uid,
+    service);
+        console.table(any);
+    } catch (err) {
+        console.table(err);
+    }
+};
+
+
+// https://stackoverflow.com/questions/49689312/how-to-add-rows-based-on-multiple-selection-options-in-html-vue-js
 
 const template = {
 select: `const SELECT = () => {
@@ -45,20 +72,28 @@ select: `const SELECT = () => {
         return ERROR;
     }
 };`,
-insert: `const INSERT = () => {
+insert: `const INSERT = (!!!THIS_IS_CHANGEABLE_VALUES_PARAMETERS!!!) => {
     try {
         return db.prepare('INSERT INTO !!!THIS_IS_CHANGEABLE_TABLE_NAME!!! ( !!!THIS_IS_CHANGEABLE_COLUMN_NAMES!!! ) VALUES ( !!!THIS_IS_CHANGEABLE_COUPLE_OF_QUESTION_SYMBOLS!!! )').run( !!!THIS_IS_CHANGEABLE_VALUES_PARAMETERS!!! );
     } catch (ERROR) {
         return ERROR;
     }
 };`,
-update: ``,
+update: `const UPDATE = (!!!THIS_IS_CHANGEABLE_VALUES_PARAMETERS!!!) => {
+    try {
+        return db.prepare('UPDATE !!!THIS_IS_CHANGEABLE_TABLE_NAME!!! SET !!!THIS_IS_CHANGEABLE_COLUMN_NAMES!!!').run( !!!THIS_IS_CHANGEABLE_VALUES_PARAMETERS!!! );
+    } catch (ERROR) {
+        return ERROR;
+    }
+};`,
 delete: ``,
 create: ``,
 drop: ``,
 };
 const new_lined_string_to_join_comma_string = (new_lined_string) => new_lined_string.split("\n").join(", ");
+const new_lined_string_to_join_comma_string_with_table_name = (table_name, new_lined_string) => new_lined_string.split("\n").map(V=>table_name + "." + V).join(", ");
 const new_lined_string_to_question_symbol_comma_string = (new_lined_string) => new_lined_string.split("\n").map(V=> "?").join(", ");
+// const new_lined_string_to_parameters_string = (new_lined_string) => new_lined_string.split("\n").map(V=> "?").join(", ");
 const replace_string = (STR, FROM, TO) => STR.replaceAll(FROM, TO);
 const make_better_sqlite3_code = Vue.createApp({
   data() {
@@ -66,21 +101,34 @@ const make_better_sqlite3_code = Vue.createApp({
       res: '',
       table_name: 'FOOBARBUZ',
       column_names: '',
+      PARAMETERS: '',
+      check: true,
     }
   },
   methods: {
     save() {
         // this.res = replace_string(template["select"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name);
 
-        this.column_names = `FOO
-BAR
-BAZ`;
-        let tmp = replace_string(template["insert"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name);
-        tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COLUMN_NAMES!!!", new_lined_string_to_join_comma_string(this.column_names));
-        tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COUPLE_OF_QUESTION_SYMBOLS!!!", new_lined_string_to_question_symbol_comma_string(this.column_names));
-        this.res = tmp;
-        
-        // this.res = template["update"];
+
+
+//         this.column_names = `FOO
+// BAR
+// BAZ`;
+//         this.PARAMETERS = `PARAM1
+// PARAM2
+// PARAM3`;
+//         let tmp = replace_string(template["insert"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name);
+//         tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COLUMN_NAMES!!!", this.check ? new_lined_string_to_join_comma_string_with_table_name(this.table_name, this.column_names) : new_lined_string_to_join_comma_string(this.column_names));
+//         tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COUPLE_OF_QUESTION_SYMBOLS!!!", new_lined_string_to_question_symbol_comma_string(this.column_names));
+//         tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_VALUES_PARAMETERS!!!", new_lined_string_to_join_comma_string(this.PARAMETERS));
+//         this.res = tmp;
+
+
+
+        this.res = template["update"];
+        !!!WHERE_OPTION_COLUMN_NAMES!!!!!!
+
+
         // this.res = template["delete"];
         // this.res = template["create"];
         // this.res = template["drop"];
