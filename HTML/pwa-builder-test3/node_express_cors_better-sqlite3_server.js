@@ -413,22 +413,22 @@ WHERE rowid = ? AND uid = ? AND service_id =
 
 const setup = () => {
     create_query_exe(article_lists_create_table());
-    // create_query_exe(tag_create_table());
-    // create_query_exe(no_filter_list_table_tag_table_create_table());
-    // create_query_exe(comment_create_table());
-    // create_query_exe(no_filter_list_create_table());
+    create_query_exe(tag_create_table());
+    create_query_exe(no_filter_list_table_tag_table_create_table());
+    create_query_exe(comment_create_table());
+    create_query_exe(no_filter_list_create_table());
     insert_initial_data(table_name_key_value_1);
-    // insert_initial_data(table_name_key_value_2);
-    // insert_initial_data(table_name_key_value_3);
-    // insert_initial_data(table_name_key_value_4);
-    // insert_initial_data(table_name_key_value_5);
-    // insert_initial_data(table_name_key_value_6);
-    // insert_initial_data(table_name_key_value_7);
-    // insert_initial_data(table_name_key_value_8);
-    // insert_initial_data(table_name_key_value_9);
-    // insert_initial_data(table_name_key_value_10);
-    // insert_initial_data(table_name_key_value_11);
-    // insert_initial_data(table_name_key_value_12);
+    insert_initial_data(table_name_key_value_2);
+    insert_initial_data(table_name_key_value_3);
+    insert_initial_data(table_name_key_value_4);
+    insert_initial_data(table_name_key_value_5);
+    insert_initial_data(table_name_key_value_6);
+    insert_initial_data(table_name_key_value_7);
+    insert_initial_data(table_name_key_value_8);
+    insert_initial_data(table_name_key_value_9);
+    insert_initial_data(table_name_key_value_10);
+    insert_initial_data(table_name_key_value_11);
+    insert_initial_data(table_name_key_value_12);
 };
 
 const table_list = [
@@ -449,8 +449,8 @@ const dropTableList = (LIST) => {
 
 
 
-const read_table_1 = () => {
-    const stmt = db.prepare('SELECT rowid,* FROM article_lists_table');
+const read_table_TABLE_NAME = (TABLE_NAME) => {
+    const stmt = db.prepare(`SELECT rowid,* FROM ${TABLE_NAME}`);
     // const stmt = db.prepare('SELECT rowid,* FROM any WHERE service = ? AND uid = ?');
     // const stmt = db.prepare('SELECT rowid,* FROM any WHERE service = ? AND uid = ?');
     try {
@@ -464,8 +464,9 @@ const read_table_1 = () => {
 
 
 
-setup();
-read_table_1();
+// setup();
+table_list.forEach(V=>read_table_TABLE_NAME(V));
+// read_table_TABLE_NAME('article_lists_table');
 // dropTableList(table_list);
 
 
