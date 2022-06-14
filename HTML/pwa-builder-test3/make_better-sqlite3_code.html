@@ -18,6 +18,13 @@ textarea{
 </head>
 <body>
 <div class="make_better_sqlite3_code">
+<div>
+    <span>a_table: </span><span>{{ table_name_list[a_table] }}</span>
+</div>
+<div>
+    <span>b_table: </span><span>{{ table_name_list[b_table] }}</span>
+</div>
+
     <!-- <input v-model="table_name_list[a_table]" placeholder="table_name_list[a_table]" type="text" @input="save" @change="save"></input>
     <textarea v-model="column_names_list[a_table]" placeholder="column_names_list[a_table]_one" name="column_names_list[a_table]" id="column_names_list[a_table]" cols="30" rows="10" @input="save" @change="save"></textarea>
 
@@ -32,22 +39,13 @@ textarea{
          </option>
     </select>
 
-    <!-- <li v-for="(item, index) in items">
-        {{ parentMessage }} - {{ index }} - {{ item.message }}
-    </li> -->
-
-    <!-- <input v-model="table_name_list[0]" placeholder="table_name_list[0]" type="text" @input="save" @change="save"></input>
+    <!--
+     <input v-model="table_name_list[0]" placeholder="table_name_list[0]" type="text" @input="save" @change="save"></input>
     <textarea v-model="column_names_list[0]" placeholder="column_names_list[0]_one" name="column_names_list[0]" id="column_names_list[0]" cols="30" rows="10" @input="save" @change="save"></textarea>
 
     <input v-model="table_name_list[1]" placeholder="table_name_list[1]" type="text" @input="save" @change="save"></input>
     <textarea v-model="column_names_list[1]" placeholder="column_names_list[1]_one" name="column_names_list[1]" id="column_names_list[1]" cols="30" rows="10" @input="save" @change="save"></textarea>
-
-    <input v-model="table_name_list[2]" placeholder="table_name_list[2]" type="text" @input="save" @change="save"></input>
-    <textarea v-model="column_names_list[2]" placeholder="column_names_list[2]_one" name="column_names_list[2]" id="column_names_list[2]" cols="30" rows="10" @input="save" @change="save"></textarea>
-
-    <input v-model="table_name_list[3]" placeholder="table_name_list[3]" type="text" @input="save" @change="save"></input>
-    <textarea v-model="column_names_list[3]" placeholder="column_names_list[3]_one" name="column_names_list[3]" id="column_names_list[3]" cols="30" rows="10" @input="save" @change="save"></textarea> -->
-
+    -->
 
     <template v-for="(table_column_numbering, table_column_numbering_index) in table_column_numbering_list" :key="table_column_numbering">
         <input v-model="table_name_list[table_column_numbering]" placeholder="table_name_list[table_column_numbering]" type="text" @input="save" @change="save"></input>
