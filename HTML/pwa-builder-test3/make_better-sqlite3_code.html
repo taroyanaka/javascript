@@ -17,10 +17,6 @@ textarea{
 </head>
 <body>
 <div class="make_better_sqlite3_code">
-    <template v-for="res in res_list">
-        <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @input="save" @change="save"></textarea>
-    </template>
-    <textarea v-model="res_all" placeholder="res_all" name="res_all" id="res_all" cols="30" rows="10" @input="save" @change="save"></textarea>
     <input v-model="table_name" placeholder="table_name" type="text" @input="save" @change="save"></input>
     <textarea v-model="column_names" placeholder="column_names_one" name="column_names" id="column_names" cols="30" rows="10" @input="save" @change="save"></textarea>
     <div>
@@ -28,7 +24,12 @@ textarea{
         <input type="checkbox" id="checkbox" v-model="check"  @input="save" @change="save" checked/>
     </div>
     <textarea v-model="PARAMETERS" placeholder="PARAMETERS_one" name="PARAMETERS" id="PARAMETERS" cols="30" rows="10" @input="inputFn"></textarea>
-    <button @click="save">save</button>
+    <!-- <button @click="save">save</button> -->
+
+    <template v-for="res in res_list">
+        <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @input="save" @change="save"></textarea>
+    </template>
+    <textarea v-model="res_all" placeholder="res_all" name="res_all" id="res_all" cols="30" rows="10" @input="save" @change="save"></textarea>
 </div>
 </body>
 <script>
@@ -127,11 +128,11 @@ Object.entries(this.res_list).forEach(([key, value]) => this.res_all += value + 
         return tmp;
     },
     sample() {
-        this.table_name = 'FOOBARBAZ_TABLE_NAME';
-        this.column_names = `FOO
-BAR
-BAZ`;
-this.PARAMETERS = `PARAM1
+        this.table_name = 'TABLE_NAME';
+        this.column_names = `COLUMN_NAME1
+COLUMN_NAME2
+COLUMN_NAME3`;
+        this.PARAMETERS = `PARAM1
 PARAM2
 PARAM3`;
     },
