@@ -36,7 +36,7 @@ textarea{
         {{ parentMessage }} - {{ index }} - {{ item.message }}
     </li> -->
 
-    <input v-model="table_name_list[0]" placeholder="table_name_list[0]" type="text" @input="save" @change="save"></input>
+    <!-- <input v-model="table_name_list[0]" placeholder="table_name_list[0]" type="text" @input="save" @change="save"></input>
     <textarea v-model="column_names_list[0]" placeholder="column_names_list[0]_one" name="column_names_list[0]" id="column_names_list[0]" cols="30" rows="10" @input="save" @change="save"></textarea>
 
     <input v-model="table_name_list[1]" placeholder="table_name_list[1]" type="text" @input="save" @change="save"></input>
@@ -46,7 +46,7 @@ textarea{
     <textarea v-model="column_names_list[2]" placeholder="column_names_list[2]_one" name="column_names_list[2]" id="column_names_list[2]" cols="30" rows="10" @input="save" @change="save"></textarea>
 
     <input v-model="table_name_list[3]" placeholder="table_name_list[3]" type="text" @input="save" @change="save"></input>
-    <textarea v-model="column_names_list[3]" placeholder="column_names_list[3]_one" name="column_names_list[3]" id="column_names_list[3]" cols="30" rows="10" @input="save" @change="save"></textarea>
+    <textarea v-model="column_names_list[3]" placeholder="column_names_list[3]_one" name="column_names_list[3]" id="column_names_list[3]" cols="30" rows="10" @input="save" @change="save"></textarea> -->
 
 
     <template v-for="(table_column_numbering, table_column_numbering_index) in table_column_numbering_list" :key="table_column_numbering">
@@ -166,8 +166,7 @@ const make_better_sqlite3_code = Vue.createApp({
 // ],
         res: null,
         selected: null,
-        table_column_numbering_list: [4, 5, 6],
-        // selected_table_combination: null,
+        table_column_numbering_list: [0, 1, 2, 3, 4],
     }
   },
   methods: {
@@ -233,14 +232,15 @@ try {
 //    }
     // set_a_b_table(a_table, b_table) {
     set_a_b_table(EVENT) {
-        // a_table, b_table = EVENT.target.value.split('_');
         [this.a_table, this.b_table] = EVENT.target.value.split('+');
         [this.a_table, this.b_table] = [Number(this.a_table), Number(this.b_table)];
-        // [this.a_table, this.b_table] = EVENT.target.value;
-        // this.a_table = a_table;
-        // this.b_table = b_table;
-        console.table(typeof EVENT.target.value);
-        console.table(this.a_table, this.b_table);
+        // console.table(typeof EVENT.target.value);
+        // console.table(this.a_table, this.b_table);
+        this.save();
+    },
+    add_table_column_numbering_list() {
+        this.table_column_numbering_list.push(this.table_column_numbering_list.length);
+        this.choose_table_cobination();
         this.save();
     },
     sample() {
