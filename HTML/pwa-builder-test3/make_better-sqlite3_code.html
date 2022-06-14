@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>make_better_sqlite3_code</title>
     <script src="./vue3.js"></script>
+    <!-- https://v1.test-utils.vuejs.org/ -->
     <!-- <script src="https://unpkg.com/vue-multiselect@2.1.0"></script>
     <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css"> -->
 <style>
@@ -17,8 +18,41 @@ textarea{
 </head>
 <body>
 <div class="make_better_sqlite3_code">
-    <input v-model="table_name" placeholder="table_name" type="text" @input="save" @change="save"></input>
-    <textarea v-model="column_names" placeholder="column_names_one" name="column_names" id="column_names" cols="30" rows="10" @input="save" @change="save"></textarea>
+    <!-- <input v-model="table_name_list[a_table]" placeholder="table_name_list[a_table]" type="text" @input="save" @change="save"></input>
+    <textarea v-model="column_names_list[a_table]" placeholder="column_names_list[a_table]_one" name="column_names_list[a_table]" id="column_names_list[a_table]" cols="30" rows="10" @input="save" @change="save"></textarea>
+
+    <input v-model="table_name_list[b_table]" placeholder="table_name_list[b_table]" type="text" @input="save" @change="save"></input>
+    <textarea v-model="column_names_list[b_table]" placeholder="column_names_list[b_table]_one" name="column_names_list[b_table]" id="column_names_list[b_table]" cols="30" rows="10" @input="save" @change="save"></textarea> -->
+
+
+    <select class="select" v-model="selected" @change="set_a_b_table($event)">
+        <option disabled value="">Please select one</option>
+        <option v-for="(table_combination, table_combination_index) in table_all_combination" :key="table_combination">
+            {{ table_combination.name[0] + "+" + table_combination.name[1] }}
+         </option>
+    </select>
+
+    <!-- <li v-for="(item, index) in items">
+        {{ parentMessage }} - {{ index }} - {{ item.message }}
+    </li> -->
+
+    <input v-model="table_name_list[0]" placeholder="table_name_list[0]" type="text" @input="save" @change="save"></input>
+    <textarea v-model="column_names_list[0]" placeholder="column_names_list[0]_one" name="column_names_list[0]" id="column_names_list[0]" cols="30" rows="10" @input="save" @change="save"></textarea>
+
+    <input v-model="table_name_list[1]" placeholder="table_name_list[1]" type="text" @input="save" @change="save"></input>
+    <textarea v-model="column_names_list[1]" placeholder="column_names_list[1]_one" name="column_names_list[1]" id="column_names_list[1]" cols="30" rows="10" @input="save" @change="save"></textarea>
+
+    <input v-model="table_name_list[2]" placeholder="table_name_list[2]" type="text" @input="save" @change="save"></input>
+    <textarea v-model="column_names_list[2]" placeholder="column_names_list[2]_one" name="column_names_list[2]" id="column_names_list[2]" cols="30" rows="10" @input="save" @change="save"></textarea>
+
+
+    <template v-for="(table_column_numbering, table_column_numbering_index) in table_column_numbering_list" :key="table_column_numbering">
+        <input v-model="table_name_list[table_column_numbering]" placeholder="table_name_list[table_column_numbering]" type="text" @input="save" @change="save"></input>
+        <textarea v-model="column_names_list[table_column_numbering]" placeholder="column_names_list[table_column_numbering]_one" name="column_names_list[table_column_numbering]" id="column_names_list[table_column_numbering]" cols="30" rows="10" @input="save" @change="save"></textarea>    
+    </template>
+
+    <!-- <input v-model="table_name" placeholder="table_name" type="text" @input="save" @change="save"></input> -->
+    <!-- <textarea v-model="column_names" placeholder="column_names_one" name="column_names" id="column_names" cols="30" rows="10" @input="save" @change="save"></textarea> -->
     <div>
         <span>with table name:</span>
         <input type="checkbox" id="checkbox" v-model="check"  @input="save" @change="save" checked/>
@@ -93,31 +127,69 @@ const replace_string = (STR, FROM, TO) => STR.replaceAll(FROM, TO);
 // https://stackoverflow.com/a/36388401
 const template_key_and_empty_string_object = Object.keys(template).reduce((a, v) => ({ ...a, [v]: ''}), {});
 
+// https://ramdajs.com/repl/?v=0.28.0#?%2F%2FR.xprod%28%5B1%2C%202%5D%2C%20%5B1%2C%202%5D%29%3B%20%2F%2F%3D%3E%20%5B%5B1%2C%201%5D%2C%20%5B1%2C%202%5D%2C%20%5B2%2C%201%5D%2C%20%5B2%2C%202%5D%5D%0AR.xprod%28%5B1%2C%202%2C%203%5D%2C%20%5B1%2C%202%2C%203%5D%29.filter%28V%3D%3E%20V%5B0%5D%20%21%3D%3D%20V%5B1%5D%29%3B%20%2F%2F%3D%3E%20%5B%5B1%2C%202%5D%2C%20%5B1%2C%203%5D%2C%20%5B2%2C%201%5D%2C%20%5B2%2C%203%5D%2C%20%5B3%2C%201%5D%2C%20%5B3%2C%202%5D%5D
+// xprod([1, 2, 3], [1, 2, 3]).filter(V=> V[0] !== V[1]); // => [[1, 2],[1, 3],[2, 1],[2, 3],[3, 1],[3, 2]]
+function xprod(a,b){return a.reduce((A,aV,aIDX)=>{const RESULT=b.reduce((B,bV)=>{B.push([a[aIDX],bV]);return B},B=[]);A.push(...RESULT);return A},A=[])};
+// range(0, 3) => [0, 1, 2]
+function range(from,to){return[...Array(to-from)].reduce((A,V,IDX)=>{A.push(from+IDX);return A},A=[])};
+
 const make_better_sqlite3_code = Vue.createApp({
   data() {
     return {
-      res_list: template_key_and_empty_string_object,
-      res_all: '',
-      table_name: '',
-      column_names: '',
-      PARAMETERS: '',
-      check: true,
+        a_table: 1,
+        b_table: 2,
+        res_list: template_key_and_empty_string_object,
+        res_all: '',
+        table_name: '',
+        column_names: '',
+        table_name_list: ["table_name1", "table_name2", "BBBBBBBBBtable_name3", "AAAAAAAtable_name4"],
+        column_names_list: [],
+        PARAMETERS: '',
+        check: true,
+        table_all_combination: null,
+//         table_all_combination: [
+// {name: 'table_name1_table_name2'},
+// {name: 'table_name1_table_name3'},
+// {name: 'table_name1_table_name4'},
+// {name: 'table_name2_table_name1'},
+// {name: 'table_name2_table_name3'},
+// {name: 'table_name2_table_name4'},
+// {name: 'table_name3_table_name1'},
+// {name: 'table_name3_table_name2'},
+// {name: 'table_name3_table_name4'},
+// {name: 'table_name4_table_name1'},
+// {name: 'table_name4_table_name2'},
+// {name: 'table_name4_table_name3'},
+// ],
+        res: null,
+        selected: null,
+        // selected_table_combination: null,
     }
   },
   methods: {
     save() {
 
-this.res_list.select = replace_string(template["select"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name);
-this.res_list.insert = this.replace_statement_string(template["insert"], this.table_name, this.column_names, this.PARAMETERS);
-this.res_list.update = this.replace_statement_string(template["update"], this.table_name, this.column_names, this.PARAMETERS);
-this.res_list.delete = this.replace_statement_string(template["delete"], this.table_name, this.column_names, this.PARAMETERS);
-this.res_list.create = this.replace_statement_string(template["create"], this.table_name, this.column_names, this.PARAMETERS);
-this.res_list.drop = this.replace_statement_string(template["drop"], this.table_name, this.column_names, this.PARAMETERS);
+// this.res_list.select = replace_string(template["select"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name);
+// this.res_list.insert = this.replace_statement_string(template["insert"], this.table_name, this.column_names, this.PARAMETERS);
+// this.res_list.update = this.replace_statement_string(template["update"], this.table_name, this.column_names, this.PARAMETERS);
+// this.res_list.delete = this.replace_statement_string(template["delete"], this.table_name, this.column_names, this.PARAMETERS);
+// this.res_list.create = this.replace_statement_string(template["create"], this.table_name, this.column_names, this.PARAMETERS);
+// this.res_list.drop = this.replace_statement_string(template["drop"], this.table_name, this.column_names, this.PARAMETERS);
+this.res_list.select = replace_string(template["select"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name_list[this.a_table]);
+this.res_list.insert = this.replace_statement_string(template["insert"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.PARAMETERS);
+this.res_list.update = this.replace_statement_string(template["update"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.PARAMETERS);
+this.res_list.delete = this.replace_statement_string(template["delete"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.PARAMETERS);
+this.res_list.create = this.replace_statement_string(template["create"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.PARAMETERS);
+this.res_list.drop = this.replace_statement_string(template["drop"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.PARAMETERS);
 
 this.res_all = '';
 Object.entries(this.res_list).forEach(([key, value]) => this.res_all += value + "\n\n" );
 
-
+try {
+    this.choose_table_cobination();
+} catch (error) {
+    console.log(error);
+}
 
     },
     replace_statement_string (TEMPLATE_STR, TABLE_NAME, COLUMN_NAMES, PARAMETERS) {
@@ -129,11 +201,58 @@ Object.entries(this.res_list).forEach(([key, value]) => this.res_all += value + 
         tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_VALUES_PARAMETERS!!!", new_lined_string_to_join_comma_string(PARAMETERS));
         return tmp;
     },
+    vue_map(vue_data_list) {
+        return Object.keys(vue_data_list).map(key => vue_data_list[key] );
+    },
+    choose_table_cobination() {
+        try {
+            // let list = xprod(this.vue_map(this.table_name_list), this.vue_map(this.table_name_list))
+            const table_name_list_index_list = range(0, make_better_sqlite3_code.table_name_list.length);
+            let list = xprod(
+                        this.vue_map(table_name_list_index_list),
+                        this.vue_map(table_name_list_index_list)
+                        )
+                        .filter(V=> V[0] !== V[1])
+            const obj_list = list.map(VAL=>{
+                let obj = {};
+                // Object.assign(obj, {name: V[0] + '_' + V[1]});
+                Object.assign(obj, {name: [VAL[0], VAL[1]]});
+                return obj;
+            });
+            this.table_all_combination = obj_list;
+        } catch (error) {
+            return null
+        }
+    },
+//     onChange(e) {
+//       console.log(e.target.value)
+//    }
+    // set_a_b_table(a_table, b_table) {
+    set_a_b_table(EVENT) {
+        // a_table, b_table = EVENT.target.value.split('_');
+        [this.a_table, this.b_table] = EVENT.target.value.split('+');
+        [this.a_table, this.b_table] = [Number(this.a_table), Number(this.b_table)];
+        // [this.a_table, this.b_table] = EVENT.target.value;
+        // this.a_table = a_table;
+        // this.b_table = b_table;
+        console.table(typeof EVENT.target.value);
+        console.table(this.a_table, this.b_table);
+        this.save();
+    },
     sample() {
         this.table_name = 'TABLE_NAME';
-        this.column_names = `COLUMN_NAME1
-COLUMN_NAME2
-COLUMN_NAME3`;
+        this.column_names_list[0] = `1COLUMN_NAME1
+1COLUMN_NAME2
+1COLUMN_NAME3`;
+        this.column_names_list[1] = `2COLUMN_NAME1
+2COLUMN_NAME2
+2COLUMN_NAME3`;
+        this.column_names_list[2] = `3COLUMN_NAME1
+3COLUMN_NAME2
+3COLUMN_NAME3`;
+        this.column_names_list[3] = `4COLUMN_NAME1
+4COLUMN_NAME2
+4COLUMN_NAME3`;
         this.PARAMETERS = `PARAM1
 PARAM2
 PARAM3`;
@@ -142,5 +261,8 @@ PARAM3`;
 }).mount('.make_better_sqlite3_code');
 make_better_sqlite3_code.sample();
 make_better_sqlite3_code.save();
+
+// maybe, option selection need to use vue test library
+// make_better_sqlite3_code.selected = '3+2';
 </script>
 </html>
