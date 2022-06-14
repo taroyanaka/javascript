@@ -45,6 +45,9 @@ textarea{
     <input v-model="table_name_list[2]" placeholder="table_name_list[2]" type="text" @input="save" @change="save"></input>
     <textarea v-model="column_names_list[2]" placeholder="column_names_list[2]_one" name="column_names_list[2]" id="column_names_list[2]" cols="30" rows="10" @input="save" @change="save"></textarea>
 
+    <input v-model="table_name_list[3]" placeholder="table_name_list[3]" type="text" @input="save" @change="save"></input>
+    <textarea v-model="column_names_list[3]" placeholder="column_names_list[3]_one" name="column_names_list[3]" id="column_names_list[3]" cols="30" rows="10" @input="save" @change="save"></textarea>
+
 
     <template v-for="(table_column_numbering, table_column_numbering_index) in table_column_numbering_list" :key="table_column_numbering">
         <input v-model="table_name_list[table_column_numbering]" placeholder="table_name_list[table_column_numbering]" type="text" @input="save" @change="save"></input>
@@ -163,6 +166,7 @@ const make_better_sqlite3_code = Vue.createApp({
 // ],
         res: null,
         selected: null,
+        table_column_numbering_list: [4, 5, 6],
         // selected_table_combination: null,
     }
   },
