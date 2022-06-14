@@ -10,74 +10,29 @@
     <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css"> -->
 <style>
 textarea{
-width: 20rem;
-height: 15rem;
-/* border: none; */
-/* resize: none; */
+    width: 20rem;
+    height: 15rem;
 }
 </style>
 </head>
 <body>
 <div class="make_better_sqlite3_code">
-<!-- <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @change="save"></textarea> -->
-
     <template v-for="res in res_list">
         <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @input="save" @change="save"></textarea>
     </template>
     <textarea v-model="res_all" placeholder="res_all" name="res_all" id="res_all" cols="30" rows="10" @input="save" @change="save"></textarea>
-
-
     <input v-model="table_name" placeholder="table_name" type="text" @input="save" @change="save"></input>
     <textarea v-model="column_names" placeholder="column_names_one" name="column_names" id="column_names" cols="30" rows="10" @input="save" @change="save"></textarea>
-<div>
-    <span>with table name:</span>
-    <input type="checkbox" id="checkbox" v-model="check"  @input="save" @change="save" checked/>
-    <!-- <label for="checkbox">{{ check }}</label> -->
-</div>
-
+    <div>
+        <span>with table name:</span>
+        <input type="checkbox" id="checkbox" v-model="check"  @input="save" @change="save" checked/>
+    </div>
     <textarea v-model="PARAMETERS" placeholder="PARAMETERS_one" name="PARAMETERS" id="PARAMETERS" cols="30" rows="10" @input="inputFn"></textarea>
-    <!-- <p style="white-space: pre-line;">{{ res }}</p> -->
     <button @click="save">save</button>
-    <!-- <button @click="comment_save">comment_save</button> -->
 </div>
 </body>
 <script>
-// table_name
-// column_name
-
-// select
-// insert
-// update
-// delete
-// create
-// drop
-
-const insert_initial_data = (table_name_key_value) => {
-    const table_name = Object.keys(table_name_key_value)[0];
-    const key_val = Object.values(table_name_key_value)[0];
-    const KEY_VAL_PAIR = [key_val.map(V=>V[0]), key_val.map(V=>V[1])];
-    const stmt = db.prepare(`INSERT INTO ${table_name} ( ${KEY_VAL_PAIR[0].join(", ")} ) VALUES (${KEY_VAL_PAIR[1].map(V=> "?").join(", ")})`);
-    stmt.run(...KEY_VAL_PAIR[1]);
-};
-
-const update = (txt, rowid, service, uid) => {
-    try {
-        const any = db.prepare(`UPDATE any
-SET txt = ?
-WHERE rowid = ? AND uid = ? AND service_id`).run(
-    txt,
-    rowid,
-    uid,
-    service);
-        console.table(any);
-    } catch (err) {
-        console.table(err);
-    }
-};
-
-
 // https://stackoverflow.com/questions/49689312/how-to-add-rows-based-on-multiple-selection-options-in-html-vue-js
-
 const template = {
 select: `const SELECT = () => {
     try {
@@ -132,20 +87,17 @@ drop: `const DROP = () => {
 const new_lined_string_to_join_comma_string = (new_lined_string) => new_lined_string.split("\n").join(", ");
 const new_lined_string_to_join_comma_string_with_table_name = (table_name, new_lined_string) => new_lined_string.split("\n").map(V=>table_name + "." + V).join(", ");
 const new_lined_string_to_question_symbol_comma_string = (new_lined_string) => new_lined_string.split("\n").map(V=> "?").join(", ");
-// const new_lined_string_to_parameters_string = (new_lined_string) => new_lined_string.split("\n").map(V=> "?").join(", ");
 const replace_string = (STR, FROM, TO) => STR.replaceAll(FROM, TO);
 
 // https://stackoverflow.com/a/36388401
-let list_from_object = Object.keys(template).reduce((a, v) => ({ ...a, [v]: ''}), {});
-// Object.assign(list_from_object, {all: ''});
+let template_key_and_empty_string_object = Object.keys(template).reduce((a, v) => ({ ...a, [v]: ''}), {});
 
 const make_better_sqlite3_code = Vue.createApp({
   data() {
     return {
-    //   res: '',
-      res_list: list_from_object,
+      res_list: template_key_and_empty_string_object,
       res_all: '',
-      table_name: 'FOOBARBUZ',
+      table_name: '',
       column_names: '',
       PARAMETERS: '',
       check: true,
@@ -175,6 +127,7 @@ Object.entries(this.res_list).forEach(([key, value]) => this.res_all += value + 
         return tmp;
     },
     sample() {
+        this.table_name = 'FOOBARBAZ_TABLE_NAME';
         this.column_names = `FOO
 BAR
 BAZ`;
@@ -186,40 +139,5 @@ PARAM3`;
 }).mount('.make_better_sqlite3_code');
 make_better_sqlite3_code.sample();
 make_better_sqlite3_code.save();
-</script>
-
-
-
-<script>
-const make_table_name_with_column_name = (TABLE_AND_COLUMN_NAMES) => TABLE_AND_COLUMN_NAMES[1].map(VAL=>TABLE_AND_COLUMN_NAMES[0] + '.' + VAL);
-const article_lists_table_and_column_name = [
-    "article_lists_table",
-    [
-        "id",
-        "article",
-        "search_txt",
-        "sort_by",
-        "sort_asc_or_desc",
-        "editing",
-        "star_count",
-        "comment_count",
-        "article_length",
-        "match_score",
-    ]
-];
-
-`CREATE TABLE IF NOT EXISTS article_lists_table (
-    id INTEGER PRIMARY KEY,
-    article TEXT,
-    search_txt TEXT,
-    sort_by TEXT,
-    sort_asc_or_desc TEXT,
-    editing TEXT,
-    star_count INTEGER,
-    comment_count INTEGER,
-    article_length INTEGER,
-    match_score INTEGER
-    );`
-
 </script>
 </html>
