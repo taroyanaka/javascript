@@ -13,19 +13,25 @@ textarea{
 width: 20rem;
 height: 15rem;
 /* border: none; */
-resize: none;
+/* resize: none; */
 }
 </style>
 </head>
 <body>
 <div class="make_better_sqlite3_code">
-    <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @change="save"></textarea>
-    <input v-model="table_name" placeholder="table_name" type="text" @change="save"></input>
-    <textarea v-model="column_names" placeholder="column_names_one" name="column_names" id="column_names" cols="30" rows="10" @change="save"></textarea>
+<!-- <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @change="save"></textarea> -->
 
+    <template v-for="res in res_list">
+        <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @input="save" @change="save"></textarea>
+    </template>
+    <textarea v-model="res_all" placeholder="res_all" name="res_all" id="res_all" cols="30" rows="10" @input="save" @change="save"></textarea>
+
+
+    <input v-model="table_name" placeholder="table_name" type="text" @input="save" @change="save"></input>
+    <textarea v-model="column_names" placeholder="column_names_one" name="column_names" id="column_names" cols="30" rows="10" @input="save" @change="save"></textarea>
 <div>
     <span>with table name:</span>
-    <input type="checkbox" id="checkbox" v-model="check"  @change="save" checked/>
+    <input type="checkbox" id="checkbox" v-model="check"  @input="save" @change="save" checked/>
     <!-- <label for="checkbox">{{ check }}</label> -->
 </div>
 
@@ -129,12 +135,16 @@ const new_lined_string_to_question_symbol_comma_string = (new_lined_string) => n
 // const new_lined_string_to_parameters_string = (new_lined_string) => new_lined_string.split("\n").map(V=> "?").join(", ");
 const replace_string = (STR, FROM, TO) => STR.replaceAll(FROM, TO);
 
-
+// https://stackoverflow.com/a/36388401
+let list_from_object = Object.keys(template).reduce((a, v) => ({ ...a, [v]: ''}), {});
+// Object.assign(list_from_object, {all: ''});
 
 const make_better_sqlite3_code = Vue.createApp({
   data() {
     return {
-      res: '',
+    //   res: '',
+      res_list: list_from_object,
+      res_all: '',
       table_name: 'FOOBARBUZ',
       column_names: '',
       PARAMETERS: '',
@@ -143,22 +153,18 @@ const make_better_sqlite3_code = Vue.createApp({
   },
   methods: {
     save() {
-// this.res = replace_string(template["select"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name);
+
+this.res_list.select = replace_string(template["select"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name);
+this.res_list.insert = this.replace_statement_string(template["insert"], this.table_name, this.column_names, this.PARAMETERS);
+this.res_list.update = this.replace_statement_string(template["update"], this.table_name, this.column_names, this.PARAMETERS);
+this.res_list.delete = this.replace_statement_string(template["delete"], this.table_name, this.column_names, this.PARAMETERS);
+this.res_list.create = this.replace_statement_string(template["create"], this.table_name, this.column_names, this.PARAMETERS);
+this.res_list.drop = this.replace_statement_string(template["drop"], this.table_name, this.column_names, this.PARAMETERS);
+
+this.res_all = '';
+Object.entries(this.res_list).forEach(([key, value]) => this.res_all += value + "\n\n" );
 
 
-// this.column_names = `FOO
-// BAR
-// BAZ`;
-// this.PARAMETERS = `PARAM1
-// PARAM2
-// PARAM3`;
-// this.res = this.replace_statement_string(template["insert"], this.table_name, this.column_names, this.PARAMETERS);
-
-// this.res = this.replace_statement_string(template["delete"], this.table_name, this.column_names, this.PARAMETERS);
-
-// this.res = template["create"];
-
-// this.res = this.replace_statement_string(template["drop"], this.table_name, this.column_names, this.PARAMETERS);
 
     },
     replace_statement_string (TEMPLATE_STR, TABLE_NAME, COLUMN_NAMES, PARAMETERS) {
@@ -166,13 +172,19 @@ const make_better_sqlite3_code = Vue.createApp({
         tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COLUMN_NAMES!!!", this.check ? new_lined_string_to_join_comma_string_with_table_name(TABLE_NAME, COLUMN_NAMES) : new_lined_string_to_join_comma_string(COLUMN_NAMES));
         tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COUPLE_OF_QUESTION_SYMBOLS!!!", new_lined_string_to_question_symbol_comma_string(COLUMN_NAMES));
         tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_VALUES_PARAMETERS!!!", new_lined_string_to_join_comma_string(PARAMETERS));
+        return tmp;
     },
-
-    inputFn() {
-      this.res = "res"
+    sample() {
+        this.column_names = `FOO
+BAR
+BAZ`;
+this.PARAMETERS = `PARAM1
+PARAM2
+PARAM3`;
     },
 },
 }).mount('.make_better_sqlite3_code');
+make_better_sqlite3_code.sample();
 make_better_sqlite3_code.save();
 </script>
 
