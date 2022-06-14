@@ -280,6 +280,10 @@ const dropTableList = (LIST) => {
 };
 
 
+const drop = () => {
+    db.prepare("DROP TABLE any").run();
+};
+
 
 
 const read_TABLE_NAME = (TABLE_NAME) => {
