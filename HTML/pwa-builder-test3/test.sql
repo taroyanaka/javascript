@@ -1,4 +1,4 @@
--- const list = {
+-- const blog = {
 --     "no_filter_list": [],
 --     "search_txt_txt": "",
 --     "sort_by": "star_count",
@@ -83,7 +83,8 @@
 --     "tag_filter_with_OR_selection": []
 -- }
 
--- with copilot
+
+-- GitHub Copilot write
 CREATE TABLE IF NOT EXISTS list (
     id INTEGER PRIMARY KEY,
     article TEXT,
@@ -94,3 +95,17 @@ CREATE TABLE IF NOT EXISTS list (
     article_length INTEGER,
     match_score INTEGER
 );
+
+-- vue_instance.$data copy & paste
+-- const vue_instance = {
+--     "article": "foo0",
+--     "comment_text": "foo2 is FOO2",
+--     "new_tag": "",
+--     "star_count": 3,
+-- }
+-- CREATE TABLE IF NOT EXISTS vue_instance (
+--     article TEXT,
+--     comment_text TEXT,
+--     new_tag TEXT,
+--     tag_all INTEGER
+-- );

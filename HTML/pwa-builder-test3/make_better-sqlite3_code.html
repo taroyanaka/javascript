@@ -23,7 +23,7 @@ textarea{
         <span>with table name:</span>
         <input type="checkbox" id="checkbox" v-model="check"  @input="save" @change="save" checked/>
     </div>
-    <textarea v-model="PARAMETERS" placeholder="PARAMETERS_one" name="PARAMETERS" id="PARAMETERS" cols="30" rows="10" @input="inputFn"></textarea>
+    <textarea v-model="PARAMETERS" placeholder="PARAMETERS_one" name="PARAMETERS" id="PARAMETERS" cols="30" rows="10" @input="save" @change="save"></textarea>
     <!-- <button @click="save">save</button> -->
 
     <template v-for="res in res_list">
@@ -91,7 +91,7 @@ const new_lined_string_to_question_symbol_comma_string = (new_lined_string) => n
 const replace_string = (STR, FROM, TO) => STR.replaceAll(FROM, TO);
 
 // https://stackoverflow.com/a/36388401
-let template_key_and_empty_string_object = Object.keys(template).reduce((a, v) => ({ ...a, [v]: ''}), {});
+const template_key_and_empty_string_object = Object.keys(template).reduce((a, v) => ({ ...a, [v]: ''}), {});
 
 const make_better_sqlite3_code = Vue.createApp({
   data() {
@@ -121,8 +121,10 @@ Object.entries(this.res_list).forEach(([key, value]) => this.res_all += value + 
 
     },
     replace_statement_string (TEMPLATE_STR, TABLE_NAME, COLUMN_NAMES, PARAMETERS) {
-        let tmp = replace_string(TEMPLATE_STR, "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", TABLE_NAME);
-        tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COLUMN_NAMES!!!", this.check ? new_lined_string_to_join_comma_string_with_table_name(TABLE_NAME, COLUMN_NAMES) : new_lined_string_to_join_comma_string(COLUMN_NAMES));
+        let tmp = '';
+        tmp = replace_string(TEMPLATE_STR, "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", TABLE_NAME);
+        tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COLUMN_NAMES!!!",
+            this.check ? new_lined_string_to_join_comma_string_with_table_name(TABLE_NAME, COLUMN_NAMES) : new_lined_string_to_join_comma_string(COLUMN_NAMES));
         tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COUPLE_OF_QUESTION_SYMBOLS!!!", new_lined_string_to_question_symbol_comma_string(COLUMN_NAMES));
         tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_VALUES_PARAMETERS!!!", new_lined_string_to_join_comma_string(PARAMETERS));
         return tmp;
