@@ -65,21 +65,21 @@ delete: `const DELETE = (!!!THIS_IS_CHANGEABLE_VALUES_PARAMETERS!!!) => {
 };`,
 create: `const CREATE = () => CREATE TABLE IF NOT EXISTS !!!THIS_IS_CHANGEABLE_TABLE_NAME!!! (
 !!!THIS_IS_CHANGEABLE_COLUMN_NAMES!!!
--- I recommend GitHub Copilot writing the SQLite3 code for you. like this,
--- vue_instance.$data copy & paste
--- const vue_instance = {
---     "article": "foo0",
---     "comment_text": "foo2 is FOO2",
---     "new_tag": "",
---     "star_count": 3,
--- }
--- CREATE TABLE IF NOT EXISTS table_name ( Abracadabra...
--- CREATE TABLE IF NOT EXISTS vue_instance (
---     article TEXT,
---     comment_text TEXT,
---     new_tag TEXT,
---     star_count INTEGER
--- );
+// I recommend GitHub Copilot writing the SQLite3 code for you. like this,
+// vue_instance.$data copy & paste
+// const vue_instance = {
+//     "article": "foo0",
+//     "comment_text": "foo2 is FOO2",
+//     "new_tag": "",
+//     "star_count": 3,
+// }
+// CREATE TABLE IF NOT EXISTS table_name ( Abracadabra...
+// CREATE TABLE IF NOT EXISTS vue_instance (
+//     article TEXT,
+//     comment_text TEXT,
+//     new_tag TEXT,
+//     star_count INTEGER
+// );
 );`,
 drop: `const DROP = () => {
     db.prepare("DROP TABLE  !!!THIS_IS_CHANGEABLE_TABLE_NAME!!! ").run();
