@@ -53,6 +53,7 @@ textarea{
         <input v-model="table_name_list[table_column_numbering]" placeholder="table_name_list[table_column_numbering]" type="text" @input="save" @change="save"></input>
         <textarea v-model="column_names_list[table_column_numbering]" placeholder="column_names_list[table_column_numbering]_one" name="column_names_list[table_column_numbering]" id="column_names_list[table_column_numbering]" cols="30" rows="10" @input="save" @change="save"></textarea>    
     </template>
+    <button class="add_table_column_numbering_list" @click="add_table_column_numbering_list">add_table_column_numbering_list</button>
 
     <!-- <input v-model="table_name" placeholder="table_name" type="text" @input="save" @change="save"></input> -->
     <!-- <textarea v-model="column_names" placeholder="column_names_one" name="column_names" id="column_names" cols="30" rows="10" @input="save" @change="save"></textarea> -->
@@ -60,7 +61,7 @@ textarea{
         <span>with table name:</span>
         <input type="checkbox" id="checkbox" v-model="check"  @input="save" @change="save" checked/>
     </div>
-    <textarea v-model="PARAMETERS" placeholder="PARAMETERS_one" name="PARAMETERS" id="PARAMETERS" cols="30" rows="10" @input="save" @change="save"></textarea>
+    <textarea v-model="parameters" placeholder="parameters_one" name="parameters" id="parameters" cols="30" rows="10" @input="save" @change="save"></textarea>
     <!-- <button @click="save">save</button> -->
 
     <template v-for="res in res_list">
@@ -145,9 +146,10 @@ const make_better_sqlite3_code = Vue.createApp({
         res_all: '',
         table_name: '',
         column_names: '',
-        table_name_list: ["table_name1", "table_name2", "BBBBBBBBBtable_name3", "AAAAAAAtable_name4"],
+        table_name_list: [],
         column_names_list: [],
-        PARAMETERS: '',
+        // PARAMETERS: '',
+        parameters: '',
         check: true,
         table_all_combination: null,
 //         table_all_combination: [
@@ -166,24 +168,24 @@ const make_better_sqlite3_code = Vue.createApp({
 // ],
         res: null,
         selected: null,
-        table_column_numbering_list: [0, 1, 2, 3, 4],
+        table_column_numbering_list: [],
     }
   },
   methods: {
     save() {
 
 // this.res_list.select = replace_string(template["select"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name);
-// this.res_list.insert = this.replace_statement_string(template["insert"], this.table_name, this.column_names, this.PARAMETERS);
-// this.res_list.update = this.replace_statement_string(template["update"], this.table_name, this.column_names, this.PARAMETERS);
-// this.res_list.delete = this.replace_statement_string(template["delete"], this.table_name, this.column_names, this.PARAMETERS);
-// this.res_list.create = this.replace_statement_string(template["create"], this.table_name, this.column_names, this.PARAMETERS);
-// this.res_list.drop = this.replace_statement_string(template["drop"], this.table_name, this.column_names, this.PARAMETERS);
+// this.res_list.insert = this.replace_statement_string(template["insert"], this.table_name, this.column_names, this.parameters);
+// this.res_list.update = this.replace_statement_string(template["update"], this.table_name, this.column_names, this.parameters);
+// this.res_list.delete = this.replace_statement_string(template["delete"], this.table_name, this.column_names, this.parameters);
+// this.res_list.create = this.replace_statement_string(template["create"], this.table_name, this.column_names, this.parameters);
+// this.res_list.drop = this.replace_statement_string(template["drop"], this.table_name, this.column_names, this.parameters);
 this.res_list.select = replace_string(template["select"], "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", this.table_name_list[this.a_table]);
-this.res_list.insert = this.replace_statement_string(template["insert"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.PARAMETERS);
-this.res_list.update = this.replace_statement_string(template["update"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.PARAMETERS);
-this.res_list.delete = this.replace_statement_string(template["delete"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.PARAMETERS);
-this.res_list.create = this.replace_statement_string(template["create"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.PARAMETERS);
-this.res_list.drop = this.replace_statement_string(template["drop"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.PARAMETERS);
+this.res_list.insert = this.replace_statement_string(template["insert"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.parameters);
+this.res_list.update = this.replace_statement_string(template["update"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.parameters);
+this.res_list.delete = this.replace_statement_string(template["delete"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.parameters);
+this.res_list.create = this.replace_statement_string(template["create"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.parameters);
+this.res_list.drop = this.replace_statement_string(template["drop"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.parameters);
 
 this.res_all = '';
 Object.entries(this.res_list).forEach(([key, value]) => this.res_all += value + "\n\n" );
@@ -240,31 +242,46 @@ try {
     },
     add_table_column_numbering_list() {
         this.table_column_numbering_list.push(this.table_column_numbering_list.length);
+        this.table_name_list.push('table_name' + this.table_column_numbering_list.length);
+        this.column_names_list.push(`${this.table_column_numbering_list.length}COLUMN_NAME1
+${this.table_column_numbering_list.length}COLUMN_NAME2
+${this.table_column_numbering_list.length}COLUMN_NAME3`);
         this.choose_table_cobination();
         this.save();
     },
     sample() {
-        this.table_name = 'TABLE_NAME';
-        this.column_names_list[0] = `1COLUMN_NAME1
-1COLUMN_NAME2
-1COLUMN_NAME3`;
-        this.column_names_list[1] = `2COLUMN_NAME1
-2COLUMN_NAME2
-2COLUMN_NAME3`;
-        this.column_names_list[2] = `3COLUMN_NAME1
-3COLUMN_NAME2
-3COLUMN_NAME3`;
-        this.column_names_list[3] = `4COLUMN_NAME1
-4COLUMN_NAME2
-4COLUMN_NAME3`;
-        this.PARAMETERS = `PARAM1
+        // this.table_name = 'TABLE_NAME';
+//         this.column_names_list[0] = `1COLUMN_NAME1
+// 1COLUMN_NAME2
+// 1COLUMN_NAME3`;
+//         this.column_names_list[1] = `2COLUMN_NAME1
+// 2COLUMN_NAME2
+// 2COLUMN_NAME3`;
+//         this.column_names_list[2] = `3COLUMN_NAME1
+// 3COLUMN_NAME2
+// 3COLUMN_NAME3`;
+//         this.column_names_list[3] = `4COLUMN_NAME1
+// 4COLUMN_NAME2
+// 4COLUMN_NAME3`;
+        this.parameters = `PARAM1
 PARAM2
 PARAM3`;
+    },
+    click_for_initialize() {
+        document.querySelector(`.add_table_column_numbering_list`).click();
+        document.querySelector(`.add_table_column_numbering_list`).click();
     },
 },
 }).mount('.make_better_sqlite3_code');
 make_better_sqlite3_code.sample();
-make_better_sqlite3_code.save();
+make_better_sqlite3_code.click_for_initialize();
+// make_better_sqlite3_code.save();
+// document.querySelector(`.add_table_column_numbering_list`).click();
+
+// make_better_sqlite3_code.add_table_column_numbering_list();
+// make_better_sqlite3_code.add_table_column_numbering_list();
+// make_better_sqlite3_code.add_table_column_numbering_list();
+// make_better_sqlite3_code.add_table_column_numbering_list();
 
 // maybe, option selection need to use vue test library
 // make_better_sqlite3_code.selected = '3+2';
