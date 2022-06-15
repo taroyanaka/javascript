@@ -14,6 +14,12 @@ textarea{
     width: 20rem;
     height: 15rem;
 }
+textarea.a_table{
+    background-color: pink;
+}
+textarea.b_table{
+    background-color: greenyellow;
+}
 </style>
 </head>
 <body>
@@ -34,7 +40,8 @@ textarea{
     </select>
     <template v-for="(table_column_numbering, table_column_numbering_index) in table_column_numbering_list" :key="table_column_numbering">
         <input v-model="table_name_list[table_column_numbering]" placeholder="table_name_list[table_column_numbering]" type="text" @input="save" @change="save"></input>
-        <textarea v-model="column_names_list[table_column_numbering]" placeholder="column_names_list[table_column_numbering]_one" name="column_names_list[table_column_numbering]" id="column_names_list[table_column_numbering]" cols="30" rows="10" @input="save" @change="save"></textarea>    
+        <textarea class='' :class="{ a_table: is_a_table(table_column_numbering_index), b_table: is_b_table(table_column_numbering_index) }"
+        v-model="column_names_list[table_column_numbering]" placeholder="column_names_list[table_column_numbering]_one" name="column_names_list[table_column_numbering]" id="column_names_list[table_column_numbering]" cols="30" rows="10" @input="save" @change="save"></textarea>
     </template>
     <button class="add_table_column_numbering_list" @click="add_table_column_numbering_list">add_table_column_numbering_list</button>
     <div>
@@ -245,6 +252,14 @@ PARAM3`;
         document.querySelector(`.add_table_column_numbering_list`).click();
         document.querySelector(`.add_table_column_numbering_list`).click();
         document.querySelector(`.add_table_column_numbering_list`).click();
+    },
+    is_a_table(table_column_numbering_index) {
+        let res = null;
+        return table_column_numbering_index === this.a_table ? true : '';
+    },
+    is_b_table(table_column_numbering_index) {
+        // let res = null;
+        return table_column_numbering_index === this.b_table ? true : '';
     },
 },
 }).mount('.make_better_sqlite3_code');
