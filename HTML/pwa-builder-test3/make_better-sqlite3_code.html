@@ -24,6 +24,8 @@ textarea.b_table{
 </head>
 <body>
 <div class="make_better_sqlite3_code">
+    <button class="attach_table_name" @click="attach_table_name">attach_table_name</button>
+    <button class="detach_table_name" @click="detach_table_name">detach_table_name</button>
 <div>
     <span>a_table: </span><span>{{ table_name_list[a_table] }}</span>
     <span> active_a_table_index: </span><span>{{ a_table }}</span>
@@ -40,14 +42,14 @@ textarea.b_table{
     </select>
     <template v-for="(table_column_numbering, table_column_numbering_index) in table_column_numbering_list" :key="table_column_numbering">
         <input v-model="table_name_list[table_column_numbering]" placeholder="table_name_list[table_column_numbering]" type="text" @input="save" @change="save"></input>
-        <textarea class='' :class="{ a_table: is_a_table(table_column_numbering_index), b_table: is_b_table(table_column_numbering_index) }"
+        <textarea class='input' :class="{ a_table: is_a_table(table_column_numbering_index), b_table: is_b_table(table_column_numbering_index) }"
         v-model="column_names_list[table_column_numbering]" placeholder="column_names_list[table_column_numbering]_one" name="column_names_list[table_column_numbering]" id="column_names_list[table_column_numbering]" cols="30" rows="10" @input="save" @change="save"></textarea>
     </template>
     <button class="add_table_column_numbering_list" @click="add_table_column_numbering_list">add_table_column_numbering_list</button>
-    <div>
+    <!-- <div>
         <span>with table name:</span>
         <input type="checkbox" id="checkbox" v-model="check"  @input="save" @change="save" checked/>
-    </div>
+    </div> -->
     <textarea v-model="parameters" placeholder="parameters_one" name="parameters" id="parameters" cols="30" rows="10" @input="save" @change="save"></textarea>
     <template v-for="res in res_list">
         <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @input="save" @change="save"></textarea>
@@ -107,7 +109,7 @@ create: `const CREATE = () => CREATE TABLE IF NOT EXISTS !!!THIS_IS_CHANGEABLE_T
 drop: `const DROP = () => {
     db.prepare("DROP TABLE !!!THIS_IS_CHANGEABLE_TABLE_NAME!!! ").run();
 };`,
-create_cross_table: `const CREATE_CROSS_TABLE = () => {
+create_cross_table: `const CREATE_!!!CROSS_TABLE!!! = () => {
     try {
         return db.prepare("CREATE TABLE IF NOT EXISTS !!!A_TABLE!!!_!!!B_TABLE!!! (
 id IT,
@@ -119,7 +121,7 @@ id IT,
         return ERROR;
     }
 }`,
-select_table_join: `const SELECT_TABLE_JOIN = () => {
+select_table_join: `const SELECT_!!!A_TABLE!!!_JOIN_!!!B_TABLE!!! = () => {
     try {
         db.prepare("SELECT *
 FROM !!!A_TABLE!!!
@@ -130,16 +132,16 @@ WHERE !!!A_TABLE!!!.id = !!!B_TABLE!!!.!!!A_TABLE!!!_id
         console.table(err);
     }
 };`,
-select_cross_table: `const SELECT_CROSS_TABLE_NAME = () => {
+select_cross_table: `const SELECT_CROSS_!!!CROSS_TABLE!!! = () => {
     try {
         db.prepare("SELECT *
 FROM !!!A_TABLE!!!
-JOIN CROSS_TABLE
+JOIN !!!CROSS_TABLE!!!
     ON
-        !!!A_TABLE!!!.id = CROSS_TABLE.!!!A_TABLE!!!_id
+        !!!A_TABLE!!!.id = !!!CROSS_TABLE!!!.!!!A_TABLE!!!_id
 JOIN !!!B_TABLE
     ON
-        CROSS_TABLE.!!!B_TABLE!!!_id = !!!B_TABLE!!!.id
+        !!!CROSS_TABLE!!!.!!!B_TABLE!!!_id = !!!B_TABLE!!!.id
         ").all();
     } catch (err) {
         console.table(err);
@@ -151,7 +153,7 @@ const new_lined_string_to_join_comma_string = (new_lined_string) => new_lined_st
 const new_lined_string_to_join_comma_string_with_table_name = (table_name, new_lined_string) => new_lined_string.split("\n").map(V=>table_name + "." + V).join(", ");
 const new_lined_string_to_question_symbol_comma_string = (new_lined_string) => new_lined_string.split("\n").map(V=> "?").join(", ");
 const replace_string = (STR, FROM, TO) => STR.replaceAll(FROM, TO);
-const a_b_table_string_replace = (STR, A_TABLE_FROM, B_TABLE_FROM, A_TABLE_TO, B_TABLE_TO,) => STR.replaceAll(A_TABLE_FROM, A_TABLE_TO).replaceAll(B_TABLE_FROM, B_TABLE_TO);
+const a_b_table_string_replace = (STR, A_TABLE_FROM, B_TABLE_FROM, A_TABLE_TO, B_TABLE_TO, CROSS_TABLE_FROM, CROSS_TABLE_TO) => STR.replaceAll(A_TABLE_FROM, A_TABLE_TO).replaceAll(B_TABLE_FROM, B_TABLE_TO).replaceAll(CROSS_TABLE_FROM, CROSS_TABLE_TO);
 
 // https://stackoverflow.com/a/36388401
 const template_key_and_empty_string_object = Object.keys(template).reduce((a, v) => ({ ...a, [v]: ''}), {});
@@ -191,9 +193,9 @@ this.res_list.create = this.replace_statement_string(template["create"], this.ta
 this.res_list.drop = this.replace_statement_string(template["drop"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.parameters);
 this.res_all = '';
 
-this.res_list.create_cross_table = a_b_table_string_replace(template["create_cross_table"], "!!!A_TABLE!!!", "!!!B_TABLE!!!", this.table_name_list[this.a_table], this.table_name_list[this.b_table]);
-this.res_list.select_table_join = a_b_table_string_replace(template["select_table_join"], "!!!A_TABLE!!!", "!!!B_TABLE!!!", this.table_name_list[this.a_table], this.table_name_list[this.b_table]);
-this.res_list.select_cross_table = a_b_table_string_replace(template["select_cross_table"], "!!!A_TABLE!!!", "!!!B_TABLE!!!", this.table_name_list[this.a_table], this.table_name_list[this.b_table]);
+this.res_list.create_cross_table = a_b_table_string_replace(template["create_cross_table"], "!!!A_TABLE!!!", "!!!B_TABLE!!!", this.table_name_list[this.a_table], this.table_name_list[this.b_table], "!!!CROSS_TABLE!!!", this.table_name_list[this.a_table] + "_" + this.table_name_list[this.b_table]);
+this.res_list.select_table_join = a_b_table_string_replace(template["select_table_join"], "!!!A_TABLE!!!", "!!!B_TABLE!!!", this.table_name_list[this.a_table], this.table_name_list[this.b_table], "!!!CROSS_TABLE!!!", this.table_name_list[this.a_table] + "_" + this.table_name_list[this.b_table]);
+this.res_list.select_cross_table = a_b_table_string_replace(template["select_cross_table"], "!!!A_TABLE!!!", "!!!B_TABLE!!!", this.table_name_list[this.a_table], this.table_name_list[this.b_table], "!!!CROSS_TABLE!!!", this.table_name_list[this.a_table] + "_" + this.table_name_list[this.b_table]);
 
 Object.entries(this.res_list).forEach(([key, value]) => this.res_all += value + "\n\n" );
 try {
@@ -206,7 +208,8 @@ try {
         let tmp = '';
         tmp = replace_string(TEMPLATE_STR, "!!!THIS_IS_CHANGEABLE_TABLE_NAME!!!", TABLE_NAME);
         tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COLUMN_NAMES!!!",
-            this.check ? new_lined_string_to_join_comma_string_with_table_name(TABLE_NAME, COLUMN_NAMES) : new_lined_string_to_join_comma_string(COLUMN_NAMES));
+            // this.check ? new_lined_string_to_join_comma_string_with_table_name(TABLE_NAME, COLUMN_NAMES) :
+            new_lined_string_to_join_comma_string(COLUMN_NAMES));
         tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_COUPLE_OF_QUESTION_SYMBOLS!!!", new_lined_string_to_question_symbol_comma_string(COLUMN_NAMES));
         tmp = replace_string(tmp, "!!!THIS_IS_CHANGEABLE_VALUES_PARAMETERS!!!", new_lined_string_to_join_comma_string(PARAMETERS));
         return tmp;
@@ -262,7 +265,7 @@ PARAM3`;
             this.table_name_list,
             this.column_names_list,
             this.parameters,
-            this.check,
+            // this.check,
             this.table_all_combination,
             this.res,
             this.selected,
@@ -282,6 +285,28 @@ PARAM3`;
     is_b_table(table_column_numbering_index) {
         // let res = null;
         return table_column_numbering_index === this.b_table ? true : '';
+    },
+    attach_table_name() {
+        // this.debug();
+        // let res = [];
+        // this.column_names_list.forEach((V,INDEX)=>{
+        //     res.push(V.split("\n").map(VAL=>"hogehoge" + VAL).join("\n"))
+        // })
+        // this.column_names_list = res;
+        this.column_names_list = this.vue_map(this.column_names_list)
+            .map((column_names, INDEX)=>
+                column_names.split("\n")
+                    .map(column_name_of_one=>
+                        this.table_name_list[INDEX] + "." + column_name_of_one)
+                    .join("\n"))
+    },
+    detach_table_name() {
+        this.column_names_list = this.vue_map(this.column_names_list)
+            .map((column_names, INDEX)=>
+                column_names.split("\n")
+                    .map(column_name_of_one=>
+                        column_name_of_one.split(".")[1])
+                    .join("\n"))
     },
 },
 }).mount('.make_better_sqlite3_code');
