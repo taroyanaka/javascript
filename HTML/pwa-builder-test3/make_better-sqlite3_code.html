@@ -105,23 +105,32 @@ create: `const CREATE = () => CREATE TABLE IF NOT EXISTS !!!THIS_IS_CHANGEABLE_T
 // );
 );`,
 drop: `const DROP = () => {
-    db.prepare("DROP TABLE  !!!THIS_IS_CHANGEABLE_TABLE_NAME!!! ").run();
+    db.prepare("DROP TABLE !!!THIS_IS_CHANGEABLE_TABLE_NAME!!! ").run();
 };`,
-create_cross_table: `const create_cross_table = () => "CREATE TABLE IF NOT EXISTS A_TABLE_B_TABLE (
+create_cross_table: `const CREATE_CROSS_TABLE = () => {
+    try {
+        return db.prepare("CREATE TABLE IF NOT EXISTS !!!A_TABLE!!!_!!!B_TABLE!!! (
 id IT,
-A_TABLE_id INT,
-B_TABLE_id INT)";`,
-select_cross_table: `const read_cross_TABLE_NAME = () => {
+!!!A_TABLE!!!_id INT,
+!!!B_TABLE!!!_id INT)")
+        .run();
+    ;
+    } catch (ERROR) {
+        return ERROR;
+    }
+}`,
+select_cross_table: `const SELECT_CROSS_TABLE_NAME = () => {
     try {
         db.prepare("SELECT *
-FROM A_TABLE
+FROM !!!A_TABLE!!!
 JOIN CROSS_TABLE
     ON
-        A_TABLE.id = CROSS_TABLE.A_TABLE_id
-JOIN B_TABLE
+        !!!A_TABLE!!!.id = CROSS_TABLE.!!!A_TABLE!!!_id
+JOIN !!!B_TABLE
     ON
-        CROSS_TABLE.B_TABLE_id = B_TABLE.id
-    ").all();    } catch (err) {
+        CROSS_TABLE.!!!B_TABLE!!!_id = !!!B_TABLE!!!.id
+        ").all();
+    } catch (err) {
         console.table(err);
     }
 };`,
