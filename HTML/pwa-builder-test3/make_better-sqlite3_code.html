@@ -24,6 +24,10 @@ textarea.b_table{
 </head>
 <body>
 <div class="make_better_sqlite3_code">
+
+    <div class="in_zone"></div>
+    <div class="out_zone"></div>
+
     <button class="attach_table_name" @click="attach_table_name">attach_table_name</button>
     <button class="detach_table_name" @click="detach_table_name">detach_table_name</button>
 <div>
@@ -42,7 +46,7 @@ textarea.b_table{
     </select>
     <template v-for="(table_column_numbering, table_column_numbering_index) in table_column_numbering_list" :key="table_column_numbering">
         <input v-model="table_name_list[table_column_numbering]" placeholder="table_name_list[table_column_numbering]" type="text" @input="save" @change="save"></input>
-        <textarea class='input' :class="{ a_table: is_a_table(table_column_numbering_index), b_table: is_b_table(table_column_numbering_index) }"
+        <textarea class='' :class="{ a_table: is_a_table(table_column_numbering_index), b_table: is_b_table(table_column_numbering_index) }"
         v-model="column_names_list[table_column_numbering]" placeholder="column_names_list[table_column_numbering]_one" name="column_names_list[table_column_numbering]" id="column_names_list[table_column_numbering]" cols="30" rows="10" @input="save" @change="save"></textarea>
     </template>
     <button class="add_table_column_numbering_list" @click="add_table_column_numbering_list">add_table_column_numbering_list</button>
