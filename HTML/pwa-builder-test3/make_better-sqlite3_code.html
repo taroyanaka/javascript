@@ -46,10 +46,6 @@ textarea.b_table{
         v-model="column_names_list[table_column_numbering]" placeholder="column_names_list[table_column_numbering]_one" name="column_names_list[table_column_numbering]" id="column_names_list[table_column_numbering]" cols="30" rows="10" @input="save" @change="save"></textarea>
     </template>
     <button class="add_table_column_numbering_list" @click="add_table_column_numbering_list">add_table_column_numbering_list</button>
-    <!-- <div>
-        <span>with table name:</span>
-        <input type="checkbox" id="checkbox" v-model="check"  @input="save" @change="save" checked/>
-    </div> -->
     <textarea v-model="parameters" placeholder="parameters_one" name="parameters" id="parameters" cols="30" rows="10" @input="save" @change="save"></textarea>
     <template v-for="res in res_list">
         <textarea v-model="res" placeholder="res" name="res" id="res" cols="30" rows="10" @input="save" @change="save"></textarea>
@@ -265,7 +261,7 @@ PARAM3`;
             this.table_name_list,
             this.column_names_list,
             this.parameters,
-            // this.check,
+            this.check,
             this.table_all_combination,
             this.res,
             this.selected,
@@ -277,6 +273,7 @@ PARAM3`;
         document.querySelector(`.add_table_column_numbering_list`).click();
         document.querySelector(`.add_table_column_numbering_list`).click();
         document.querySelector(`.add_table_column_numbering_list`).click();
+        this.attach_table_name();
     },
     is_a_table(table_column_numbering_index) {
         let res = null;
@@ -297,7 +294,7 @@ PARAM3`;
             .map((column_names, INDEX)=>
                 column_names.split("\n")
                     .map(column_name_of_one=>
-                        this.table_name_list[INDEX] + "." + column_name_of_one)
+                        column_name_of_one.includes(".") === false ? this.table_name_list[INDEX] + "." + column_name_of_one : column_name_of_one)
                     .join("\n"))
     },
     detach_table_name() {
@@ -305,7 +302,7 @@ PARAM3`;
             .map((column_names, INDEX)=>
                 column_names.split("\n")
                     .map(column_name_of_one=>
-                        column_name_of_one.split(".")[1])
+                        column_name_of_one.split(".")[1] ? column_name_of_one.split(".")[1] : column_name_of_one)
                     .join("\n"))
     },
 },
