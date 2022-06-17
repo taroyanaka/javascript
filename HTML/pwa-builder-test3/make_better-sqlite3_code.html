@@ -119,6 +119,17 @@ id IT,
         return ERROR;
     }
 }`,
+select_table_join: `const SELECT_TABLE_JOIN = () => {
+    try {
+        db.prepare("SELECT *
+FROM !!!A_TABLE!!!
+JOIN !!!B_TABLE!!!
+WHERE !!!A_TABLE!!!.id = !!!B_TABLE!!!.!!!A_TABLE!!!_id
+        ").all();
+    } catch (err) {
+        console.table(err);
+    }
+};`,
 select_cross_table: `const SELECT_CROSS_TABLE_NAME = () => {
     try {
         db.prepare("SELECT *
@@ -136,14 +147,11 @@ JOIN !!!B_TABLE
 };`,
 };
 
-
-
-
-
 const new_lined_string_to_join_comma_string = (new_lined_string) => new_lined_string.split("\n").join(", ");
 const new_lined_string_to_join_comma_string_with_table_name = (table_name, new_lined_string) => new_lined_string.split("\n").map(V=>table_name + "." + V).join(", ");
 const new_lined_string_to_question_symbol_comma_string = (new_lined_string) => new_lined_string.split("\n").map(V=> "?").join(", ");
 const replace_string = (STR, FROM, TO) => STR.replaceAll(FROM, TO);
+const a_b_table_string_replace = (STR, A_TABLE_FROM, B_TABLE_FROM, A_TABLE_TO, B_TABLE_TO,) => STR.replaceAll(A_TABLE_FROM, A_TABLE_TO).replaceAll(B_TABLE_FROM, B_TABLE_TO);
 
 // https://stackoverflow.com/a/36388401
 const template_key_and_empty_string_object = Object.keys(template).reduce((a, v) => ({ ...a, [v]: ''}), {});
@@ -182,6 +190,11 @@ this.res_list.delete = this.replace_statement_string(template["delete"], this.ta
 this.res_list.create = this.replace_statement_string(template["create"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.parameters);
 this.res_list.drop = this.replace_statement_string(template["drop"], this.table_name_list[this.a_table], this.column_names_list[this.a_table], this.parameters);
 this.res_all = '';
+
+this.res_list.create_cross_table = a_b_table_string_replace(template["create_cross_table"], "!!!A_TABLE!!!", "!!!B_TABLE!!!", this.table_name_list[this.a_table], this.table_name_list[this.b_table]);
+this.res_list.select_table_join = a_b_table_string_replace(template["select_table_join"], "!!!A_TABLE!!!", "!!!B_TABLE!!!", this.table_name_list[this.a_table], this.table_name_list[this.b_table]);
+this.res_list.select_cross_table = a_b_table_string_replace(template["select_cross_table"], "!!!A_TABLE!!!", "!!!B_TABLE!!!", this.table_name_list[this.a_table], this.table_name_list[this.b_table]);
+
 Object.entries(this.res_list).forEach(([key, value]) => this.res_all += value + "\n\n" );
 try {
     this.choose_table_cobination();
