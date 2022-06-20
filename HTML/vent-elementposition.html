@@ -266,8 +266,8 @@ function exe3(event) {
     });
 
     resultCss += `.${document.querySelector(".names").lastElementChild.value} {
-    grid-column: ${barFirst[0]+1} / ${barLast[0]+1};
-    grid-row: ${barFirst[1]+1} / ${barLast[1]+1};
+    grid-column: ${barFirst[0]+1} / ${barLast[0]+2};
+    grid-row: ${barFirst[1]+1} / ${barLast[1]+2};
 }
 `
 resultHtml += `    <div class="${document.querySelector(".names").lastElementChild.value}"></div>
