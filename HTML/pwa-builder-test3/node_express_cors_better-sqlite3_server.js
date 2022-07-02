@@ -229,17 +229,6 @@ WHERE rowid = ? AND uid = ? AND service_id =
 
 
 
-// app.use(cors())
-
-// app.get('/', (req, res) => {
-//   res.json({msg: 'This is CORS-enabled for a whitelisted domain.'});
-//   res.send(readAllservice());
-// })
-
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}`)
-//   readAllservice();
-// })
 
 
 
@@ -332,12 +321,12 @@ JOIN tag_table
 
 
 // setup();
-table_list.forEach(V=>read_TABLE_NAME(V));
-read_cross_TABLE_NAME();
+// table_list.forEach(V=>read_TABLE_NAME(V));
+// read_cross_TABLE_NAME();
 // dropTableList(table_list);
 
-console.log(validator.isIn("foo", ["foo", "bar"]))
-console.log(validator.isIn("buz", ["foo", "bar"]))
+// console.log(validator.isIn("foo", ["foo", "bar"]))
+// console.log(validator.isIn("buz", ["foo", "bar"]))
 
 const make_table_name_with_column_name = (TABLE_AND_COLUMN_NAMES) => TABLE_AND_COLUMN_NAMES[1].map(VAL=>TABLE_AND_COLUMN_NAMES[0] + '.' + VAL);
 
@@ -362,14 +351,14 @@ console.log(make_table_name_with_column_name(article_lists_table_and_column_name
 console.log(validator.isIn("article_lists_table.search_txt", make_table_name_with_column_name(article_lists_table_and_column_name)))
 console.log(validator.isIn("article_lists_table.uid", make_table_name_with_column_name(article_lists_table_and_column_name)))
 
-const escaped = validator.escape(`'Gifts'--'`)
-const unescaped = validator.unescape(escaped)
-const escaped2 = validator.escape(`SELECT * FROM no_filter_list_table`)
-const unescaped2 = validator.unescape(escaped2)
-console.log(escaped)
-console.log(unescaped)
-console.log(escaped2)
-console.log(unescaped2)
+// const escaped = validator.escape(`'Gifts'--'`)
+// const unescaped = validator.unescape(escaped)
+// const escaped2 = validator.escape(`SELECT * FROM no_filter_list_table`)
+// const unescaped2 = validator.unescape(escaped2)
+// console.log(escaped)
+// console.log(unescaped)
+// console.log(escaped2)
+// console.log(unescaped2)
 
 
 const update_TABLE_NAME = (TABLE_NAME, SET_COLUMN_NAME_AND_VALUE_PAIR_ARRAY, WHERE_COLUMN_NAMES_ARRAY) => {
@@ -394,3 +383,33 @@ WHERE ${WHERE_query}
 // for security about sqlite3
 // https://www.sqlite.org/security.html
 // https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/SQLite%20Injection.md
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.use(cors())
+
+// app.get('/', (req, res) => {
+//   res.json({msg: 'This is CORS-enabled for a whitelisted domain.'});
+//   res.send(readAllservice());
+// })
+
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+    // res.json({data: "JSON RESPONSE"})
+    //   readAllservice();
+})
+
+app.get('/', (req, res) => {
+    res.json({ id: 1 });
+});
