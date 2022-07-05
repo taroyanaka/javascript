@@ -4,8 +4,8 @@
 // "emeraldwalk.runonsave": {
 //     "commands": [
 //         {
-//             "match": "/Users/yanakataro/Desktop/js/javascript/HTML/pwa-builder-test3/node_express_cors_better-sqlite3_server.js",
-//             "cmd": "cp /Users/yanakataro/Desktop/js/javascript/HTML/pwa-builder-test3/node_express_cors_better-sqlite3_server.js /Users/yanakataro/Desktop/npm_package/better-sqlite3/"
+//             "match": "/Users/yanakataro/Desktop/js2/javascript/HTML/pwa-builder-test3/node_express_cors_better-sqlite3_server.js",
+//             "cmd": "cp /Users/yanakataro/Desktop/js2/javascript/HTML/pwa-builder-test3/node_express_cors_better-sqlite3_server.js /Users/yanakataro/Desktop/npm_package/better-sqlite3/"
 //         }
 //     ]
 // }
@@ -397,7 +397,14 @@ WHERE ${WHERE_query}
 
 
 
-app.use(cors())
+var HTTP_PORT = 8000
+app.listen(HTTP_PORT, () => {
+    console.log("Server running on port %PORT%".replace("%PORT%", HTTP_PORT))
+});
+function allowOrigin(res){
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");  
+}
 
 // app.get('/', (req, res) => {
 //   res.json({msg: 'This is CORS-enabled for a whitelisted domain.'});
@@ -413,3 +420,64 @@ app.listen(port, () => {
 app.get('/', (req, res) => {
     res.json({ id: "Taro on test server" });
 });
+
+
+
+
+
+
+// function CREATETABLE(){
+//     db.prepare(`CREATE TABLE lorem(
+// id INTEGER PRIMARY KEY AUTOINCREMENT,
+// info TEXT NOT NULL
+// )`).run();
+// }
+// function DROPTABLE(){
+//     db.prepare(`DROP TABLE lorem`).run();
+// }
+
+
+app.get("/insert", (req, res, next) => {
+    allowOrigin(res);
+    const info = req.query.info;
+    db.prepare('INSERT INTO lorem (info) values(?)').run(info);
+    const table = db.prepare('SELECT * FROM lorem').all();
+    res.json({
+        "message": "success"
+        ,
+        "data": table
+    })
+});
+app.get("/update", (req, res, next) => {
+    allowOrigin(res);
+    const info = req.query.info;
+    const id = req.query.id;
+    db.prepare('UPDATE lorem SET info = ? WHERE id = ?').run(info, id);
+    const table = db.prepare('SELECT * FROM lorem').all();
+    res.json({
+        "message": "success"
+        ,
+        "data": table
+    })
+});
+app.get("/readall", (req, res, next) => {
+  allowOrigin(res);
+  const table = db.prepare('SELECT * FROM lorem').all();
+    res.json({
+        "message": "success"
+        ,
+        "data": table
+    })
+});
+app.get("/deleteid", (req, res, next) => {
+    allowOrigin(res);
+    const id = req.query.id;
+    db.prepare('DELETE FROM lorem WHERE id = (?)').run(id);
+    const table = db.prepare('SELECT * FROM lorem').all();
+    res.json({
+        "message": "success"
+        ,
+        "data": table
+    })
+});
+// 
