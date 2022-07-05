@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>how_to_validate</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script>
+    <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
+<style>
+.vali_err{
+    visibility: hidden;
+}
+</style>
+</head>
+<body>
+<input type="text" class="vali_target" oninput="exe()">
+<div></div>
+<span class="vali_value"></span>
+<div></div>
+<span class="vali_err"></span>
+<span class="error_list"></span>
+
+
+<script>
+
+const get_vali_target = () => document.querySelector(`.vali_target`).value;
+const list = [
+    ["isLength", get_vali_target, {min: 2, max: 3},  (()=>{throw "error: isLength: {min: 2, max: 3}"})  ],
+    ["isLength", get_vali_target, {min: 5, max: 7},  (()=>{throw "error: isLength: {min: 5, max: 7}"})  ],
+]
+
+let error_list = [];
+
+const vali = (PARAM_TYPE, PARAM_GET_STR_FN, PARAM_OPTION, PARAM_ERR_FUNC) => {
+    const vali_fn = (TYPE, str, OPTION) => validator[TYPE](str, OPTION);
+    const str_vali = (STR) => vali_fn(PARAM_TYPE, STR, PARAM_OPTION) ? STR : PARAM_ERR_FUNC();
+    const str_vali_tryCatch = (TEST_DATA) => R.tryCatch(() => str_vali(TEST_DATA), (err, value)=>({error : err,  value }))(TEST_DATA);
+    const err_and_val_pair = (STR) => R.is(String, str_vali_tryCatch(STR)) ? [str_vali_tryCatch(STR), ""] : [str_vali_tryCatch(STR)["error"], str_vali_tryCatch(STR)["value"]];
+    const vali_exe = (STR) => [document.querySelector(`.vali_err`).textContent, document.querySelector(`.vali_value`).textContent] = err_and_val_pair(STR);
+
+    str_vali_tryCatch(PARAM_GET_STR_FN())["error"] ? error_list.push(str_vali_tryCatch(PARAM_GET_STR_FN())["error"]) : "";
+    str_vali_tryCatch(PARAM_GET_STR_FN())["error"] ? document.querySelector(`.error_list`).textContent = error_list.join("\n") : "";
+
+    vali_exe(PARAM_GET_STR_FN());
+};
+
+const exe = () =>{
+    list.forEach(V=> vali(...V));
+    error_list = [];
+}
+exe();
+</script>
+</body>
+</html>
