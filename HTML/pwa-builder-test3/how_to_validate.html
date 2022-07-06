@@ -5,13 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>how_to_validate</title>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script>
+    <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script> -->
+    <script src="./ramda.@0.28.0.js"></script>
     <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
-<style>
-/* .vali_err{
-    visibility: hidden;
-} */
-</style>
 </head>
 <body>
 <input type="text" class="vali_target" oninput="exe()">
@@ -23,51 +19,24 @@
 
 
 <script>
-
 const get_vali_target = () => document.querySelector(`.vali_target`).value;
-const list = [
+const validate_table = [
     [get_vali_target, "isLength", {min: 2, max: 3},  "error: isLength: {min: 2, max: 3}", (()=>{throw "error: isLength: {min: 2, max: 3}"})],
-    // [get_vali_target, "isLength", {min: 2, max: 3},  (()=>{throw "error: isLength: {min: 2, max: 3}"})  ],
     [get_vali_target, "isLength", {min: 5, max: 7},  "error: isLength: {min: 5, max: 7}", (()=>{throw "error: isLength: {min: 5, max: 7}"})],
-    // [get_vali_target, "isLength", {min: 5, max: 7},  (()=>{throw "error: isLength: {min: 5, max: 7}"})  ],
 ]
 
-let error_list = [];
 
-const vali = (PARAM_GET_STR_FN, PARAM_TYPE, PARAM_OPTION, ERROR_MSG) => {
-// console.table(PARAM_GET_STR_FN, PARAM_TYPE, PARAM_OPTION, ERROR_MSG));
-
+const validate = (PARAM_GET_STR_FN, PARAM_TYPE, PARAM_OPTION, ERROR_MSG) => {
     const vali_fn = (TYPE, str, OPTION) => validator[TYPE](str, OPTION);
     const str_vali = (STR) => vali_fn(PARAM_TYPE, STR, PARAM_OPTION) ? STR : ERROR_MSG;
-
-    // const str_vali2 = (STR) => vali_fn(PARAM_TYPE, STR, PARAM_OPTION) ? {VALUE: STR} : {ERROR: ERROR_MSG};
     const str_vali3 = (STR) => vali_fn(PARAM_TYPE, STR, PARAM_OPTION) ? '' : ERROR_MSG;
-
-let tmp = [PARAM_GET_STR_FN(), str_vali3(PARAM_GET_STR_FN())];
-
-
-// let tmp = '';
-// try {
-//     tmp = {VALUE: data};
-// } catch (error) {
-//     tmp = {ERROR: error};
-// }
-
-    // const str_vali_tryCatch = (TEST_DATA) => R.tryCatch(() => str_vali(TEST_DATA), (err, value)=>({error : err,  value }))(TEST_DATA);
-    // const err_and_val_pair = (STR) => R.is(String, str_vali_tryCatch(STR)) ? [str_vali_tryCatch(STR), ""] : [str_vali_tryCatch(STR)["error"], str_vali_tryCatch(STR)["value"]];
-
-
-    // console.table(str_vali2(PARAM_GET_STR_FN()));
-
-    // return err_and_val_pair(PARAM_GET_STR_FN());
-    return tmp;
-    // return str_vali2(PARAM_GET_STR_FN());
-    // vali_exe(PARAM_GET_STR_FN());
+    const RESULT = () =>  [PARAM_GET_STR_FN(), str_vali3(PARAM_GET_STR_FN())];
+    return RESULT();
 };
 
+let error_list = [];
 const insert_data = (SELECTOR, DATA) => document.querySelector(SELECTOR).textContent = DATA;
 const insert_data2 = (SELECTOR, DATA) => document.querySelector(SELECTOR).textContent += DATA;
-// const set_data = (RESULT_OBJ) => Object.keys((RESULT_OBJ))[0] === "VALUE" ? insert_data(`.vali_value`, Object.values((RESULT_OBJ))[0]) : insert_data(`.vali_err`, Object.values((RESULT_OBJ))[0]);
 
 const set_data2 = (ARY) => {
     console.table(ARY[1]);
@@ -75,29 +44,36 @@ const set_data2 = (ARY) => {
     insert_data2(`.vali_err`, ARY[1]);
 };
 
-const list_exe = () => list.map(V=> vali(...V));
+const validate_table_exe = () => validate_table.map(V=> validate(...V));
 const exe = () =>{
     document.querySelector(`.vali_err`).textContent = "";
-    list_exe().forEach(V=> set_data2(V) );
+    validate_table_exe().forEach(V=> set_data2(V) );
 }
 
-    // const vali_exe = (STR) => [document.querySelector(`.vali_err`).textContent, document.querySelector(`.vali_value`).textContent] = err_and_val_pair(STR);
-
-    // str_vali_tryCatch(PARAM_GET_STR_FN())["error"] ? error_list.push(str_vali_tryCatch(PARAM_GET_STR_FN())["error"]) : "";
-    // str_vali_tryCatch(PARAM_GET_STR_FN())["error"] ? document.querySelector(`.error_list`).textContent = error_list.join("\n") : "";
-
-    // list.forEach(V=> vali(...V));
-
-// list.map(V=> vali(...V));
-    // error_list = list.map(V=> vali(...V));
-
-    // return set_data(list.map(V=> vali(...V)));
-    // return list.map(V=> vali(...V));
-// }
-
 console.table(exe());
-// console.table(error_list);
-// console.table(list.map(V=> vali(...V)));
+
+const f1 = () =>{try{return "no error";throw "ERROR";}catch(error){return error} };
+// f1();
+
+// R.tryCatch(() => { throw 'this is not a valid value'}, (err, value)=>({error : err,  value }))('bar')
+// => {'error': 'this is not a valid value', 'value': 'bar'}
+
+const f2 = (fn, STR) => R.tryCatch(fn(STR), (err, value)=>({error : err,  value }) );
+const f2_1 = () => R.tryCatch( ()=>{throw "error: isLength: {min: 5, max: 7}"} , (err, value)=>({error : err,  value }) )("BAR");
+
+
+
+const makeValidator = (str, TYPE, OPTION) => validator[TYPE](str, OPTION);
+const f2_2 = (STR, TYPE, OPTION, ERROR_MSG) =>{
+    return R.tryCatch( 
+        makeValidator(STR, TYPE, OPTION) ? ()=>{throw null} : ERROR_MSG,
+        (ERROR, FN)=>( FN(ERROR, STR) ),
+    )
+};
+const f3 = (ERROR, STR) => ERROR ? console.log("f3 error and " + ERROR) : console.log("f3 success and " + STR);
+f2_2("foo", "isLength", {min: 1, max: 3}, ()=>{throw "error: isLength: {min: 1, max: 3}"})(f3);
+f2_2("fooooooooooooooo", "isLength", {min: 1, max: 3}, ()=>{throw "error: isLength: {min: 1, max: 3}"})(f3);
+
 </script>
 </body>
 </html>
