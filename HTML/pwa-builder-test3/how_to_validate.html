@@ -63,16 +63,18 @@ const f2_1 = () => R.tryCatch( ()=>{throw "error: isLength: {min: 5, max: 7}"} ,
 
 
 
-const makeValidator = (str, TYPE, OPTION) => validator[TYPE](str, OPTION);
-const f2_2 = (STR, TYPE, OPTION, ERROR_MSG) =>{
+const makeValidator = (STRING, TYPE, OPTION) => validator[TYPE](STRING, OPTION);
+const f2_2 = (STRING, TYPE, OPTION, ERROR_MESSAGE) =>{
     return R.tryCatch( 
-        makeValidator(STR, TYPE, OPTION) ? ()=>{throw null} : ERROR_MSG,
-        (ERROR, FN)=>( FN(ERROR, STR) ),
+        makeValidator(STRING, TYPE, OPTION) ? ()=>{throw null} : ()=>{throw ERROR_MESSAGE},
+        (ERROR, FUNCTION)=>( FUNCTION(ERROR, STRING) ),
     )
 };
 const f3 = (ERROR, STR) => ERROR ? console.log("f3 error and " + ERROR) : console.log("f3 success and " + STR);
-f2_2("foo", "isLength", {min: 1, max: 3}, ()=>{throw "error: isLength: {min: 1, max: 3}"})(f3);
-f2_2("fooooooooooooooo", "isLength", {min: 1, max: 3}, ()=>{throw "error: isLength: {min: 1, max: 3}"})(f3);
+f2_2("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(f3);
+f2_2("fooooooooooooooo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(f3);
+// f2_2("foo", "isLength", {min: 1, max: 3}, ()=>{throw "error: isLength: {min: 1, max: 3}"})(f3);
+// f2_2("fooooooooooooooo", "isLength", {min: 1, max: 3}, ()=>{throw "error: isLength: {min: 1, max: 3}"})(f3);
 
 </script>
 </body>
