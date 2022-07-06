@@ -8,9 +8,9 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script>
     <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
 <style>
-.vali_err{
+/* .vali_err{
     visibility: hidden;
-}
+} */
 </style>
 </head>
 <body>
@@ -26,30 +26,78 @@
 
 const get_vali_target = () => document.querySelector(`.vali_target`).value;
 const list = [
-    ["isLength", get_vali_target, {min: 2, max: 3},  (()=>{throw "error: isLength: {min: 2, max: 3}"})  ],
-    ["isLength", get_vali_target, {min: 5, max: 7},  (()=>{throw "error: isLength: {min: 5, max: 7}"})  ],
+    [get_vali_target, "isLength", {min: 2, max: 3},  "error: isLength: {min: 2, max: 3}"  ],
+    // [get_vali_target, "isLength", {min: 2, max: 3},  (()=>{throw "error: isLength: {min: 2, max: 3}"})  ],
+    [get_vali_target, "isLength", {min: 5, max: 7},  "error: isLength: {min: 5, max: 7}"  ],
+    // [get_vali_target, "isLength", {min: 5, max: 7},  (()=>{throw "error: isLength: {min: 5, max: 7}"})  ],
 ]
 
 let error_list = [];
 
-const vali = (PARAM_TYPE, PARAM_GET_STR_FN, PARAM_OPTION, PARAM_ERR_FUNC) => {
+const vali = (PARAM_GET_STR_FN, PARAM_TYPE, PARAM_OPTION, ERROR_MSG) => {
+// console.table(PARAM_GET_STR_FN, PARAM_TYPE, PARAM_OPTION, ERROR_MSG));
+
     const vali_fn = (TYPE, str, OPTION) => validator[TYPE](str, OPTION);
-    const str_vali = (STR) => vali_fn(PARAM_TYPE, STR, PARAM_OPTION) ? STR : PARAM_ERR_FUNC();
-    const str_vali_tryCatch = (TEST_DATA) => R.tryCatch(() => str_vali(TEST_DATA), (err, value)=>({error : err,  value }))(TEST_DATA);
-    const err_and_val_pair = (STR) => R.is(String, str_vali_tryCatch(STR)) ? [str_vali_tryCatch(STR), ""] : [str_vali_tryCatch(STR)["error"], str_vali_tryCatch(STR)["value"]];
-    const vali_exe = (STR) => [document.querySelector(`.vali_err`).textContent, document.querySelector(`.vali_value`).textContent] = err_and_val_pair(STR);
+    const str_vali = (STR) => vali_fn(PARAM_TYPE, STR, PARAM_OPTION) ? STR : ERROR_MSG;
 
-    str_vali_tryCatch(PARAM_GET_STR_FN())["error"] ? error_list.push(str_vali_tryCatch(PARAM_GET_STR_FN())["error"]) : "";
-    str_vali_tryCatch(PARAM_GET_STR_FN())["error"] ? document.querySelector(`.error_list`).textContent = error_list.join("\n") : "";
+    // const str_vali2 = (STR) => vali_fn(PARAM_TYPE, STR, PARAM_OPTION) ? {VALUE: STR} : {ERROR: ERROR_MSG};
+    const str_vali3 = (STR) => vali_fn(PARAM_TYPE, STR, PARAM_OPTION) ? '' : ERROR_MSG;
 
-    vali_exe(PARAM_GET_STR_FN());
+let tmp = [PARAM_GET_STR_FN(), str_vali3(PARAM_GET_STR_FN())];
+
+
+// let tmp = '';
+// try {
+//     tmp = {VALUE: data};
+// } catch (error) {
+//     tmp = {ERROR: error};
+// }
+
+    // const str_vali_tryCatch = (TEST_DATA) => R.tryCatch(() => str_vali(TEST_DATA), (err, value)=>({error : err,  value }))(TEST_DATA);
+    // const err_and_val_pair = (STR) => R.is(String, str_vali_tryCatch(STR)) ? [str_vali_tryCatch(STR), ""] : [str_vali_tryCatch(STR)["error"], str_vali_tryCatch(STR)["value"]];
+
+
+    // console.table(str_vali2(PARAM_GET_STR_FN()));
+
+    // return err_and_val_pair(PARAM_GET_STR_FN());
+    return tmp;
+    // return str_vali2(PARAM_GET_STR_FN());
+    // vali_exe(PARAM_GET_STR_FN());
 };
 
+const insert_data = (SELECTOR, DATA) => document.querySelector(SELECTOR).textContent = DATA;
+const insert_data2 = (SELECTOR, DATA) => document.querySelector(SELECTOR).textContent += DATA;
+// const set_data = (RESULT_OBJ) => Object.keys((RESULT_OBJ))[0] === "VALUE" ? insert_data(`.vali_value`, Object.values((RESULT_OBJ))[0]) : insert_data(`.vali_err`, Object.values((RESULT_OBJ))[0]);
+
+const set_data2 = (ARY) => {
+    console.table(ARY[1]);
+    insert_data(`.vali_value`, ARY[0]);
+    insert_data2(`.vali_err`, ARY[1]);
+};
+
+const list_exe = () => list.map(V=> vali(...V));
 const exe = () =>{
-    list.forEach(V=> vali(...V));
-    error_list = [];
+    document.querySelector(`.vali_err`).textContent = "";
+    list_exe().forEach(V=> set_data2(V) );
 }
-exe();
+
+    // const vali_exe = (STR) => [document.querySelector(`.vali_err`).textContent, document.querySelector(`.vali_value`).textContent] = err_and_val_pair(STR);
+
+    // str_vali_tryCatch(PARAM_GET_STR_FN())["error"] ? error_list.push(str_vali_tryCatch(PARAM_GET_STR_FN())["error"]) : "";
+    // str_vali_tryCatch(PARAM_GET_STR_FN())["error"] ? document.querySelector(`.error_list`).textContent = error_list.join("\n") : "";
+
+    // list.forEach(V=> vali(...V));
+
+// list.map(V=> vali(...V));
+    // error_list = list.map(V=> vali(...V));
+
+    // return set_data(list.map(V=> vali(...V)));
+    // return list.map(V=> vali(...V));
+// }
+
+console.table(exe());
+// console.table(error_list);
+// console.table(list.map(V=> vali(...V)));
 </script>
 </body>
 </html>
