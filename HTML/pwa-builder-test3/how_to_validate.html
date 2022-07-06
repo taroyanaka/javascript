@@ -26,9 +26,9 @@
 
 const get_vali_target = () => document.querySelector(`.vali_target`).value;
 const list = [
-    [get_vali_target, "isLength", {min: 2, max: 3},  "error: isLength: {min: 2, max: 3}"  ],
+    [get_vali_target, "isLength", {min: 2, max: 3},  "error: isLength: {min: 2, max: 3}", (()=>{throw "error: isLength: {min: 2, max: 3}"})],
     // [get_vali_target, "isLength", {min: 2, max: 3},  (()=>{throw "error: isLength: {min: 2, max: 3}"})  ],
-    [get_vali_target, "isLength", {min: 5, max: 7},  "error: isLength: {min: 5, max: 7}"  ],
+    [get_vali_target, "isLength", {min: 5, max: 7},  "error: isLength: {min: 5, max: 7}", (()=>{throw "error: isLength: {min: 5, max: 7}"})],
     // [get_vali_target, "isLength", {min: 5, max: 7},  (()=>{throw "error: isLength: {min: 5, max: 7}"})  ],
 ]
 
