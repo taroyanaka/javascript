@@ -355,9 +355,9 @@ console.log(validator.isIn("article_lists_table.search_txt", make_table_name_wit
 console.log(validator.isIn("article_lists_table.uid", make_table_name_with_column_name(article_lists_table_and_column_name)))
 
 // const escaped = validator.escape(`'Gifts'--'`)
-// const unescaped = validator.unescape(escaped)
+// const unescaped = unsanitizer(escaped)
 // const escaped2 = validator.escape(`SELECT * FROM no_filter_list_table`)
-// const unescaped2 = validator.unescape(escaped2)
+// const unescaped2 = unsanitizer(escaped2)
 // console.log(escaped)
 // console.log(unescaped)
 // console.log(escaped2)
@@ -435,13 +435,25 @@ app.get('/', (req, res) => {
 // }
 
 const makeValidator = (STRING, TYPE, OPTION) => validator[TYPE](STRING, OPTION);
+// const validate_and_exe_or_no_exe = (STRING, TYPE, OPTION, ERROR_MESSAGE) =>{
+// const sanitizer = (STR) => validator.escape(validator.trim(STR));
+// const sanitizer = (STR) => validator.trim(encodeURIComponent(STR));
+const sanitizer = (STR) => validator.trim(STR);
+// const sanitizer = (STR) => encodeURIComponent(STR);
+// const sanitizer = (STR) => STR;
+// const unsanitizer = (STR) => decodeURIComponent(STR);
+// const sanitizer = (STR) => validator.escape(STR);
 const validate_and_exe_or_no_exe = (STRING, TYPE, OPTION, ERROR_MESSAGE) =>{
+// const [STRING, TYPE, OPTION, ERROR_MESSAGE] = STRING_TYPE_OPTION_ERROR_MESSAGE_array;
     return R.tryCatch( 
         makeValidator(STRING, TYPE, OPTION) ? ()=>{throw null} : ()=>{throw ERROR_MESSAGE},
         (ERROR, FUNCTION)=>( FUNCTION(ERROR, STRING) )
     )
 };
-const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? ERROR : query_function(STR);
+// const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? ERROR : query_function(STR);
+const exe_query_or_not_with_id = (query_function) => (ERROR, STR, ID) => ERROR ? ERROR : query_function(STR, ID);
+// const exe_query_or_not_with_id = (quer, IDy_function) => (ERROR, STR, ID) => E, req.query.idRROR ? ERROR : query_function(sanitizer(STR), ID);
+
 // const f4 = (a,b) => (c) => {console.log(a);c(a+b);}
 // f4(1,2)((str)=>console.log(str));
 // const f5 = (c) => (a,b) => {console.log(a);c(a+b);}
@@ -449,47 +461,83 @@ const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? ERROR : que
 // f6(10,20);
 // validate_and_exe_or_no_exe("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(f3);
 // validate_and_exe_or_no_exe("fooooooooooooooo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(f3);
+
+
+// R.fromPairs([['a', 1], ['b', 2], ['c', 3]]); //=> {a: 1, b: 2, c: 3}
+const make_id_info_from_array = (ID, INFO) => R.fromPairs([["id", ID], ["info", INFO]]);
+
+
+const db_query_select = () => {
+    // db.prepare('INSERT INTO lorem (info) values(?)').run(STRING);
+    return {
+        "message": "success",
+        "data": db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
+    }
+};
 const db_query_insert_and_select = (STRING) => {
     db.prepare('INSERT INTO lorem (info) values(?)').run(STRING);
     return {
         "message": "success",
-        "data": db.prepare('SELECT * FROM lorem').all()
+        "data": db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
     }
 };
+const db_query_update_and_select = (STRING, NUM) => {
+    db.prepare('UPDATE lorem SET info = ? WHERE id = ?').run(STRING, NUM);
+    // db.prepare('INSERT INTO lorem (info) values(?)').run(STRING);
+    return {
+        "message": "success",
+        "data": db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
+    }
+};
+const db_query_delete = (ID) => {
+    // db.prepare('INSERT INTO lorem (info) values(?)').run(STRING);
+    db.prepare('DELETE FROM lorem WHERE id = (?)').run(ID);
+    // const table = db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
+    return {
+        "message": "success",
+        "data": db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
+    }
+};
+
 app.get("/insert", (req, res, next) => {
     allowOrigin(res); res.json(
-        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 3}, {"message": "error: isLength: {min: 1, max: 3}"})(exe_query_or_not((STRING)=>db_query_insert_and_select(STRING)))
+        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not_with_id((STRING)=>db_query_insert_and_select(STRING)))
+        // validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not((STRING)=>db_query_insert_and_select(STRING)))
     )
 });
 app.get("/update", (req, res, next) => {
-    allowOrigin(res);
-    const info = req.query.info;
-    const id = req.query.id;
-    db.prepare('UPDATE lorem SET info = ? WHERE id = ?').run(info, id);
-    const table = db.prepare('SELECT * FROM lorem').all();
-    res.json({
-        "message": "success"
-        ,
-        "data": table
-    })
+    // allowOrigin(res);
+    // db.prepare('UPDATE lorem SET info = ? WHERE id = ?').run(req.query.info, req.query.id);
+    // const table = db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
+    // res.json({
+    //     "message": "success"
+    //     ,
+    //     "data": table
+    // })
+
+    allowOrigin(res); res.json(
+        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not_with_id((STRING)=>db_query_update_and_select(STRING, req.query.id)))
+    )
+
 });
 app.get("/readall", (req, res, next) => {
-  allowOrigin(res);
-  const table = db.prepare('SELECT * FROM lorem').all();
-    res.json({
-        "message": "success"
-        ,
-        "data": table
-    })
+    // allowOrigin(res)
+// db_query_select();
+//   const table = db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
+    allowOrigin(res); res.json(db_query_select());
+    // res.json({
+    //     "message": "success"
+    //     ,
+    //     "data": table
+    // })
 });
 app.get("/deleteid", (req, res, next) => {
-    allowOrigin(res);
-    const id = req.query.id;
-    db.prepare('DELETE FROM lorem WHERE id = (?)').run(id);
-    const table = db.prepare('SELECT * FROM lorem').all();
-    res.json({
-        "message": "success"
-        ,
-        "data": table
-    })
+    allowOrigin(res); res.json(db_query_delete(req.query.id));
+    // db.prepare('DELETE FROM lorem WHERE id = (?)').run(req.query.id);
+    // const table = db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
+    // res.json({
+    //     "message": "success"
+    //     ,
+    //     "data": table
+    // })
 });
