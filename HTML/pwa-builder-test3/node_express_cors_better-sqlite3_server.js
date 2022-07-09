@@ -441,6 +441,7 @@ const validate_and_exe_or_no_exe = (STRING, TYPE, OPTION, ERROR_MESSAGE) =>{
         (ERROR, FUNCTION)=>( FUNCTION(ERROR, STRING) )
     )
 };
+const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? ERROR : query_function(STR);
 const exe_query_or_not_with_id = (query_function) => (ERROR, STR, ID) => ERROR ? ERROR : query_function(STR, ID);
 const make_id_info_from_array = (ID, INFO) => R.fromPairs([["id", ID], ["info", INFO]]);
 
@@ -478,7 +479,7 @@ const db_query_delete = (ID) => {
 
 app.get("/insert", (req, res, next) => {
     allowOrigin(res); res.json(
-        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not_with_id((STRING)=>db_query_insert_and_select(STRING)))
+        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not((STRING)=>db_query_insert_and_select(STRING)))
     )
 });
 app.get("/update", (req, res, next) => {
