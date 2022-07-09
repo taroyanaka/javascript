@@ -67,12 +67,36 @@ const makeValidator = (STRING, TYPE, OPTION) => validator[TYPE](STRING, OPTION);
 const f2_2 = (STRING, TYPE, OPTION, ERROR_MESSAGE) =>{
     return R.tryCatch( 
         makeValidator(STRING, TYPE, OPTION) ? ()=>{throw null} : ()=>{throw ERROR_MESSAGE},
-        (ERROR, FUNCTION)=>( FUNCTION(ERROR, STRING) ),
+        (ERROR, FUNCTION)=>( FUNCTION(ERROR, STRING) )
     )
 };
 const f3 = (ERROR, STR) => ERROR ? console.log("f3 error and " + ERROR) : console.log("f3 success and " + STR);
-f2_2("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(f3);
-f2_2("fooooooooooooooo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(f3);
+const f4 = (a,b) => (c) => {console.log(a);c(a+b);}
+f4(1,2)((str)=>console.log(str));
+const f5 = (c) => (a,b) => {console.log(a);c(a+b);}
+const f6 = f5((str)=>console.log(str));
+f6(10,20);
+// const f5 = f4(1,2);
+
+const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? {error: ERROR} : query_function(STR);
+
+
+// f2_2("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(f3);
+// f2_2("fooooooooooooooo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(f3);
+
+const query_fn = (STR) => {
+    // db.prepare('INSERT INTO lorem (info) values(?)').run(STR);
+    console.log(STR);
+    return STR;
+}
+const query_ready_exe_query_or_not = exe_query_or_not(query_fn);
+f2_2("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(query_ready_exe_query_or_not);
+f2_2("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(exe_query_or_not((STR)=>console.log(STR+"FOOBARBUZ")));
+
+const res1 = f2_2("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(exe_query_or_not((STR)=>{console.log(STR+"FOOBARBUZ");return {res: STR+"FOOBARBUZ"}}));
+const res2 = f2_2("fooooooooooooooooooo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(exe_query_or_not((STR)=>{console.log(STR+"FOOBARBUZ");return {res: STR+"FOOBARBUZ"}}));
+console.table("res is:", res1, " and ", res2);
+
 // f2_2("foo", "isLength", {min: 1, max: 3}, ()=>{throw "error: isLength: {min: 1, max: 3}"})(f3);
 // f2_2("fooooooooooooooo", "isLength", {min: 1, max: 3}, ()=>{throw "error: isLength: {min: 1, max: 3}"})(f3);
 
