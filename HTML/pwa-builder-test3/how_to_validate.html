@@ -99,23 +99,23 @@ const f11 = () => false;
 const f12 = () => true;
 const f13 = () => false;
 
-const isTruthy = (x) => x;
+const is_truthy = (x) => x;
 const just_exe_fn_in_array = (fn_in_array) => fn_in_array.map(fn=>fn());
 
-console.log(just_exe_fn_in_array([f10, f11, f12, f13]).every(isTruthy));
-console.log(just_exe_fn_in_array([f10, f12]).every(isTruthy));
-console.log(just_exe_fn_in_array([f11, f13]).every(isTruthy));
+console.log(just_exe_fn_in_array([f10, f11, f12, f13]).every(is_truthy));
+console.log(just_exe_fn_in_array([f10, f12]).every(is_truthy));
+console.log(just_exe_fn_in_array([f11, f13]).every(is_truthy));
 
 const f14 = () => "foo";
 const f15 = () => "";
 const f16 = () => "bar";
 const f17 = () => null;
 
-console.log(just_exe_fn_in_array([f14, f15, f16, f17]).every(isTruthy));
-console.log(just_exe_fn_in_array([f14, f16]).every(isTruthy));
-console.log(just_exe_fn_in_array([f14, f15]).every(isTruthy));
-console.log(just_exe_fn_in_array([f15, f17]).every(isTruthy));
-console.log(just_exe_fn_in_array([f17]).every(isTruthy));
+console.log(just_exe_fn_in_array([f14, f15, f16, f17]).every(is_truthy));
+console.log(just_exe_fn_in_array([f14, f16]).every(is_truthy));
+console.log(just_exe_fn_in_array([f14, f15]).every(is_truthy));
+console.log(just_exe_fn_in_array([f15, f17]).every(is_truthy));
+console.log(just_exe_fn_in_array([f17]).every(is_truthy));
 
 
 
