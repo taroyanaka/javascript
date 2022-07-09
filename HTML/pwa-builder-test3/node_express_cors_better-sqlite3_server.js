@@ -424,11 +424,6 @@ app.get('/', (req, res) => {
     res.json({ id: "Taro on test server" });
 });
 
-
-
-
-
-
 // function CREATETABLE(){
 //     db.prepare(`CREATE TABLE lorem(
 // id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -439,7 +434,6 @@ app.get('/', (req, res) => {
 //     db.prepare(`DROP TABLE lorem`).run();
 // }
 
-
 const makeValidator = (STRING, TYPE, OPTION) => validator[TYPE](STRING, OPTION);
 const validate_and_exe_or_no_exe = (STRING, TYPE, OPTION, ERROR_MESSAGE) =>{
     return R.tryCatch( 
@@ -447,48 +441,26 @@ const validate_and_exe_or_no_exe = (STRING, TYPE, OPTION, ERROR_MESSAGE) =>{
         (ERROR, FUNCTION)=>( FUNCTION(ERROR, STRING) )
     )
 };
-// const f3 = (ERROR, STR) => ERROR ? console.log("f3 error and " + ERROR) : console.log("f3 success and " + STR);
-
 const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? ERROR : query_function(STR);
-
+// const f4 = (a,b) => (c) => {console.log(a);c(a+b);}
+// f4(1,2)((str)=>console.log(str));
+// const f5 = (c) => (a,b) => {console.log(a);c(a+b);}
+// const f6 = f5((str)=>console.log(str));
+// f6(10,20);
 // validate_and_exe_or_no_exe("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(f3);
 // validate_and_exe_or_no_exe("fooooooooooooooo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(f3);
-
+const db_query_insert_and_select = (STRING) => {
+    db.prepare('INSERT INTO lorem (info) values(?)').run(STRING);
+    return {
+        "message": "success",
+        "data": db.prepare('SELECT * FROM lorem').all()
+    }
+};
 app.get("/insert", (req, res, next) => {
     allowOrigin(res);
-
-
-    // const info = req.query.info;
-
-
-// const query_fn = (info) => db.prepare('INSERT INTO lorem (info) values(?)').run(info);
-
-    // const insert_and_select = async (STRING) => {
-    //     await db.prepare('INSERT INTO lorem (info) values(?)').run(STRING);
-    //     return await db.prepare('SELECT * FROM lorem').all()
-    // };
-    // const response = async (info_param) => {
-    //     return await validate_and_exe_or_no_exe(info_param, "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(exe_query_or_not(async (STRING)=>await insert_and_select(STRING)));
-    // }
-    // const table = db.prepare('SELECT * FROM lorem').all();
-    // db.prepare('INSERT INTO lorem (info) values(?)').run(info);
-    // const table = db.prepare('SELECT * FROM lorem').all();
-
-    const insert_and_select = (STRING) => {
-        db.prepare('INSERT INTO lorem (info) values(?)').run(STRING);
-        return {
-            "message": "success",
-            "data": db.prepare('SELECT * FROM lorem').all()
-        }
-    };
-//     const response = (info_param) => {
-//         return validate_and_exe_or_no_exe(info_param, "isLength", {min: 1, max: 3}, {"message": "error: isLength: {min: 1, max: 3}"})(exe_query_or_not((STRING)=>insert_and_select(STRING)));
-//     }
-
-// const response_data = response(info);
-// console.log(response_data);
     res.json(
-        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 3}, {"message": "error: isLength: {min: 1, max: 3}"})(exe_query_or_not((STRING)=>insert_and_select(STRING)))
+        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 3}, {"message": "error: isLength: {min: 1, max: 3}"})
+            (exe_query_or_not((STRING)=>db_query_insert_and_select(STRING)))
     )
 });
 app.get("/update", (req, res, next) => {
@@ -523,4 +495,3 @@ app.get("/deleteid", (req, res, next) => {
         "data": table
     })
 });
-// 
