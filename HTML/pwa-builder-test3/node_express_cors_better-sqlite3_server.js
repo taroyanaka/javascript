@@ -457,10 +457,8 @@ const db_query_insert_and_select = (STRING) => {
     }
 };
 app.get("/insert", (req, res, next) => {
-    allowOrigin(res);
-    res.json(
-        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 3}, {"message": "error: isLength: {min: 1, max: 3}"})
-            (exe_query_or_not((STRING)=>db_query_insert_and_select(STRING)))
+    allowOrigin(res); res.json(
+        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 3}, {"message": "error: isLength: {min: 1, max: 3}"})(exe_query_or_not((STRING)=>db_query_insert_and_select(STRING)))
     )
 });
 app.get("/update", (req, res, next) => {

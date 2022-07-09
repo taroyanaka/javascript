@@ -71,12 +71,6 @@ const f2_2 = (STRING, TYPE, OPTION, ERROR_MESSAGE) =>{
     )
 };
 const f3 = (ERROR, STR) => ERROR ? console.log("f3 error and " + ERROR) : console.log("f3 success and " + STR);
-const f4 = (a,b) => (c) => {console.log(a);c(a+b);}
-f4(1,2)((str)=>console.log(str));
-const f5 = (c) => (a,b) => {console.log(a);c(a+b);}
-const f6 = f5((str)=>console.log(str));
-f6(10,20);
-// const f5 = f4(1,2);
 
 const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? {error: ERROR} : query_function(STR);
 
@@ -99,6 +93,31 @@ console.table("res is:", res1, " and ", res2);
 
 // f2_2("foo", "isLength", {min: 1, max: 3}, ()=>{throw "error: isLength: {min: 1, max: 3}"})(f3);
 // f2_2("fooooooooooooooo", "isLength", {min: 1, max: 3}, ()=>{throw "error: isLength: {min: 1, max: 3}"})(f3);
+
+const f10 = () => true;
+const f11 = () => false;
+const f12 = () => true;
+const f13 = () => false;
+
+const isTruthy = (x) => x;
+const just_exe_fn_in_array = (fn_in_array) => fn_in_array.map(fn=>fn());
+
+console.log(just_exe_fn_in_array([f10, f11, f12, f13]).every(isTruthy));
+console.log(just_exe_fn_in_array([f10, f12]).every(isTruthy));
+console.log(just_exe_fn_in_array([f11, f13]).every(isTruthy));
+
+const f14 = () => "foo";
+const f15 = () => "";
+const f16 = () => "bar";
+const f17 = () => null;
+
+console.log(just_exe_fn_in_array([f14, f15, f16, f17]).every(isTruthy));
+console.log(just_exe_fn_in_array([f14, f16]).every(isTruthy));
+console.log(just_exe_fn_in_array([f14, f15]).every(isTruthy));
+console.log(just_exe_fn_in_array([f15, f17]).every(isTruthy));
+console.log(just_exe_fn_in_array([f17]).every(isTruthy));
+
+
 
 </script>
 </body>
