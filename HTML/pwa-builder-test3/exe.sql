@@ -13,6 +13,8 @@ INSERT INTO uuid (uuid) values("foo");
 INSERT INTO uuid (uuid) values("bar");
 INSERT INTO lorem (info, uuid_rowid) values("FOOBARTEXT1", 1);
 INSERT INTO lorem (info, uuid_rowid) values("FOOBARTEXT1", 2);
+INSERT INTO lorem (info, uuid_rowid) values("FOOBARTEXT10", 1);
+INSERT INTO lorem (info, uuid_rowid) values("FOOBARTEXT10", 2);
 
 INSERT INTO lorem (info, uuid_rowid)
     VALUES(
@@ -34,14 +36,14 @@ WHERE
     lorem.uuid_rowid =
         (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = "foo");
 
-SELECT
-    lorem.rowid,
-    info,
-    uuid.uuid
-FROM 
-    lorem
-JOIN uuid
-    ON uuid_rowid = uuid.rowid;
+-- SELECT
+--     lorem.rowid,
+--     info,
+--     uuid.uuid
+-- FROM 
+--     lorem
+-- JOIN uuid
+--     ON uuid_rowid = uuid.rowid;
 
 
 
@@ -59,6 +61,18 @@ WHERE
     lorem.uuid_rowid =
         (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = "foo");
 
+-- SELECT
+--     lorem.rowid,
+--     info,
+--     uuid.uuid
+-- FROM 
+--     lorem
+-- JOIN uuid
+--     ON uuid_rowid = uuid.rowid;
+
+
+
+
 SELECT
     lorem.rowid,
     info,
@@ -66,4 +80,5 @@ SELECT
 FROM 
     lorem
 JOIN uuid
-    ON uuid_rowid = uuid.rowid;
+    ON uuid_rowid = uuid.rowid
+WHERE uuid.uuid = "bar";
