@@ -1,3 +1,6 @@
+-- $ sqlite3 .data/tmp3.sqlite3
+-- sqlite> .read ./exe.sql
+
 DROP TABLE IF EXISTS uuid;
 CREATE TABLE IF NOT EXISTS uuid (
     uuid TEXT NOT NULL
@@ -69,9 +72,6 @@ WHERE
 --     lorem
 -- JOIN uuid
 --     ON uuid_rowid = uuid.rowid;
-
-
-
 
 SELECT
     lorem.rowid,

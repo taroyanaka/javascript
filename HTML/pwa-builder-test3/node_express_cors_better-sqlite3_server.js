@@ -424,15 +424,16 @@ app.get('/', (req, res) => {
     res.json({ id: "Taro on test server" });
 });
 
-// function CREATETABLE(){
-//     db.prepare(`CREATE TABLE lorem(
-// id INTEGER PRIMARY KEY AUTOINCREMENT,
-// info TEXT NOT NULL
-// )`).run();
-// }
-// function DROPTABLE(){
-//     db.prepare(`DROP TABLE lorem`).run();
-// }
+function CREATETABLE(){
+    db.prepare(`CREATE TABLE IF NOT EXISTS lorem (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+info TEXT NOT NULL
+)`).run();
+}
+function DROPTABLE(){
+    db.prepare(`DROP TABLE lorem`).run();
+}
+
 
 const makeValidator = (STRING, TYPE, OPTION) => validator[TYPE](STRING, OPTION);
 const validate_and_exe_or_no_exe = (STRING, TYPE, OPTION, ERROR_MESSAGE) =>{
@@ -494,10 +495,17 @@ app.get("/deleteid", (req, res, next) => {
     allowOrigin(res); res.json(db_query_delete(req.query.id));
 });
 
-const sample_uuid_array = ["warrior", "wizard", "taro"];
+const sample_uuid_array = [
+"Fighter",
+"Mage",
+"Priest",
+];
 const md5 = require('./md5.@2.19.0');
 var hash = md5('value');
 // console.log(hash);
  // "2063c1608d6e0baf80249c42e2be5804"
 
 // https://stackoverflow.com/questions/11643611/execute-sqlite-script
+
+
+
