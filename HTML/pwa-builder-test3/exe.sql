@@ -35,6 +35,7 @@ WHERE
         (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = "foo");
 
 SELECT
+    lorem.rowid,
     info,
     uuid.uuid
 FROM 
@@ -43,3 +44,26 @@ JOIN uuid
     ON uuid_rowid = uuid.rowid;
 
 
+
+
+
+
+
+
+
+DELETE
+FROM lorem
+WHERE
+    lorem.rowid = 4
+    AND
+    lorem.uuid_rowid =
+        (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = "foo");
+
+SELECT
+    lorem.rowid,
+    info,
+    uuid.uuid
+FROM 
+    lorem
+JOIN uuid
+    ON uuid_rowid = uuid.rowid;
