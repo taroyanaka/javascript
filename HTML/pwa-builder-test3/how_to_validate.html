@@ -5,12 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>how_to_validate</title>
+<style>
+.blog {
+    /* visibility: hidden; */
+    display: none;
+    display: block;
+}
+</style>
     <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script> -->
     <script src="./ramda.@0.28.0.js"></script>
     <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
 </head>
 <body>
-<input type="text" class="vali_target" oninput="exe()">
+<input type="text" class="vali_target" oninput="exe()" minlength="1" maxlength="3" required>
 <div></div>
 <span class="vali_value"></span>
 <div></div>
@@ -118,7 +125,8 @@ console.log(just_exe_fn_in_array([f15, f17]).every(is_truthy));
 console.log(just_exe_fn_in_array([f17]).every(is_truthy));
 
 
-
+const f18 = () => document.querySelector(`.vali_target`).value = "fooooooooooooo";
+f18();
 </script>
 </body>
-</html>
+</html

@@ -493,3 +493,11 @@ app.get("/readall", (req, res, next) => {
 app.get("/deleteid", (req, res, next) => {
     allowOrigin(res); res.json(db_query_delete(req.query.id));
 });
+
+const sample_uuid_array = ["warrior", "wizard", "taro"];
+const md5 = require('./md5.@2.19.0');
+var hash = md5('value');
+// console.log(hash);
+ // "2063c1608d6e0baf80249c42e2be5804"
+
+// https://stackoverflow.com/questions/11643611/execute-sqlite-script
