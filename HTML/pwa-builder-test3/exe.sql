@@ -14,14 +14,6 @@ INSERT INTO uuid (uuid) values("bar");
 INSERT INTO lorem (info, uuid_rowid) values("FOOBARTEXT1", 1);
 INSERT INTO lorem (info, uuid_rowid) values("FOOBARTEXT1", 2);
 
--- SELECT 
---     info, 
---     uuid.uuid
--- FROM 
---     lorem
--- JOIN uuid
---     ON uuid_rowid = uuid.rowid;
-
 INSERT INTO lorem (info, uuid_rowid)
     VALUES(
         "A two dimensional square appears that duplicates a section of the ice pattern.", 
@@ -30,7 +22,7 @@ INSERT INTO lorem (info, uuid_rowid)
 INSERT INTO lorem (info, uuid_rowid)
     VALUES(
         "The circle bulges outward... separating from the cube.", 
-        (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = "foo") -- => 2
+        (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = "foo") -- => 1
     );
 
 SELECT
@@ -42,12 +34,3 @@ JOIN uuid
     ON uuid_rowid = uuid.rowid;
 
 
--- INSERT INTO lorem (info, uuid_rowid, uuid)
--- SELECT 
---     info,
---     uuid_rowid,
---     uuid,
--- FROM 
---     lorem
--- JOIN uuid
---     ON lorem.uuid_rowid = uuid.rowid;
