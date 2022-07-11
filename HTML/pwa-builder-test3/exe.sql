@@ -25,6 +25,15 @@ INSERT INTO lorem (info, uuid_rowid)
         (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = "foo") -- => 1
     );
 
+UPDATE lorem
+SET info = "filling the frame."
+WHERE
+    lorem.rowid = 1
+    -- lorem.rowid = (SELECT lorem.rowid FROM lorem WHERE lorem.info = "FOOBARTEXT1" AND lorem.uuid_rowid = 2);
+    AND
+    lorem.uuid_rowid =
+        (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = "foo");
+
 SELECT
     info,
     uuid.uuid
