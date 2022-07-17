@@ -454,15 +454,47 @@ const db_query_select = () => {
         "data": db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
     }
 };
-const db_query_insert_and_select = (STRING) => {
-    db.prepare('INSERT INTO lorem (info) values(?)').run(STRING);
+
+
+
+const db_query_insert_and_select = (STRINGS_ARRAY) => {
+
+// You can also use named parameters. SQLite3 provides 3 different syntaxes for named parameters (@foo, :foo, and $foo), all of which are supported by better-sqlite3.
+// The following are equivalent.
+// const stmt = db.prepare('INSERT INTO people VALUES (@firstName, @lastName, @age)');
+// const stmt = db.prepare('INSERT INTO people VALUES (:firstName, :lastName, :age)');
+// const stmt = db.prepare('INSERT INTO people VALUES ($firstName, $lastName, $age)');
+const stmt = db.prepare('INSERT INTO people VALUES (@firstName, :lastName, $age)');
+
+stmt.run({
+  firstName: 'John',
+  lastName: 'Smith',
+  age: 45
+});
+
+    db.prepare('INSERT INTO lorem (info) values(?)').run(...STRINGS_ARRAY);
     return {
         "message": "success",
         "data": db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
     }
 };
-const db_query_update_and_select = (STRING, NUM) => {
-    db.prepare('UPDATE lorem SET info = ? WHERE id = ?').run(STRING, NUM);
+const db_query_update_and_select = (STRINGS_ARRAY, NUM) => {
+
+// You can also use named parameters. SQLite3 provides 3 different syntaxes for named parameters (@foo, :foo, and $foo), all of which are supported by better-sqlite3.
+// The following are equivalent.
+// const stmt = db.prepare('INSERT INTO people VALUES (@firstName, @lastName, @age)');
+// const stmt = db.prepare('INSERT INTO people VALUES (:firstName, :lastName, :age)');
+// const stmt = db.prepare('INSERT INTO people VALUES ($firstName, $lastName, $age)');
+const stmt = db.prepare('INSERT INTO people VALUES (@firstName, :lastName, $age)');
+
+stmt.run({
+  firstName: 'John',
+  lastName: 'Smith',
+  age: 45
+});
+
+
+    db.prepare('UPDATE lorem SET info = ? WHERE id = ?').run(...STRINGS_ARRAY, NUM);
     return {
         "message": "success",
         "data": db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
@@ -480,12 +512,12 @@ const db_query_delete = (ID) => {
 
 app.get("/insert", (req, res, next) => {
     allowOrigin(res); res.json(
-        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not((STRING)=>db_query_insert_and_select(STRING)))
+        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not((STRINGS_ARRAY)=>db_query_insert_and_select(STRINGS_ARRAY)))
     )
 });
 app.get("/update", (req, res, next) => {
     allowOrigin(res); res.json(
-        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not_with_id((STRING)=>db_query_update_and_select(STRING, req.query.id)))
+        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not_with_id((STRINGS_ARRAY)=>db_query_update_and_select(STRINGS_ARRAY, req.query.id)))
     )
 });
 app.get("/readall", (req, res, next) => {
