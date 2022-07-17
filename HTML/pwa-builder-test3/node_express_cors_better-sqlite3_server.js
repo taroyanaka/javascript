@@ -508,4 +508,72 @@ var hash = md5('value');
 // https://stackoverflow.com/questions/11643611/execute-sqlite-script
 
 
+`DROP TABLE IF EXISTS hashed_uuid;`;
+`CREATE TABLE IF NOT EXISTS hashed_uuid (
+    hashed_uuid TEXT NOT NULL
+);`;
+
+
+
+`DROP TABLE IF EXISTS lorem;`;
+
+
+`CREATE TABLE IF NOT EXISTS lorem (
+    info TEXT NOT NULL,
+    hashed_uuid_rowid NUMBER NOT NULL
+);`;
+
+`INSERT INTO hashed_uuid (hashed_uuid) values("foo");`;
+`INSERT INTO hashed_uuid (hashed_uuid) values("bar");`;
+`INSERT INTO lorem (info, hashed_uuid_rowid) values("FOOBARTEXT1", 1);`;
+`INSERT INTO lorem (info, hashed_uuid_rowid) values("FOOBARTEXT1", 2);`;
+`INSERT INTO lorem (info, hashed_uuid_rowid) values("FOOBARTEXT10", 1);`;
+`INSERT INTO lorem (info, hashed_uuid_rowid) values("FOOBARTEXT10", 2);`;
+
+
+
+`INSERT INTO lorem (info, hashed_uuid_rowid)
+    VALUES(
+        "A two dimensional square appears that duplicates a section of the ice pattern.", 
+        (SELECT hashed_uuid.rowid FROM hashed_uuid WHERE hashed_uuid.hashed_uuid = "bar")
+    );`;
+
+
+`INSERT INTO lorem (info, hashed_uuid_rowid)
+    VALUES(
+        "The circle bulges outward... separating from the cube.", 
+        (SELECT hashed_uuid.rowid FROM hashed_uuid WHERE hashed_uuid.hashed_uuid = "foo")
+    );`;
+
+
+
+`UPDATE lorem
+SET info = "filling the frame."
+WHERE
+    lorem.rowid = 1
+    AND
+    lorem.hashed_uuid_rowid =
+        (SELECT hashed_uuid.rowid FROM hashed_uuid WHERE hashed_uuid.hashed_uuid = "foo");`;
+
+
+
+`DELETE
+FROM lorem
+WHERE
+    lorem.rowid = 4
+    AND
+    lorem.hashed_uuid_rowid =
+        (SELECT hashed_uuid.rowid FROM hashed_uuid WHERE hashed_uuid.hashed_uuid = "foo");`;
+
+
+
+`SELECT
+    lorem.rowid,
+    info,
+    hashed_uuid.hashed_uuid
+FROM lorem
+JOIN hashed_uuid
+    ON hashed_uuid_rowid = hashed_uuid.rowid
+WHERE hashed_uuid.hashed_uuid = "bar";`;
+
 
