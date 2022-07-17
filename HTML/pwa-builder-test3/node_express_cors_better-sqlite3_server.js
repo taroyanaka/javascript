@@ -442,9 +442,23 @@ const validate_and_exe_or_no_exe = (STRING, TYPE, OPTION, ERROR_MESSAGE) =>{
         (ERROR, FUNCTION)=>( FUNCTION(ERROR, STRING) )
     )
 };
+const validate_strings_array_and_exe_or_no_exe = (STRINGS_ARRAY, TYPE, OPTION, ERROR_MESSAGE) =>{
+    return R.tryCatch( 
+        STRINGS_ARRAY.map(STRING=>makeValidator(STRING, TYPE, OPTION)).every(x=>x === true) ? ()=>{throw null} : ()=>{throw ERROR_MESSAGE},
+        (ERROR, FUNCTION)=>( FUNCTION(ERROR, STRINGS_ARRAY) )
+    )
+};
 const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? ERROR : query_function(STR);
 const exe_query_or_not_with_id = (query_function) => (ERROR, STR, ID) => ERROR ? ERROR : query_function(STR, ID);
 const make_id_info_from_array = (ID, INFO) => R.fromPairs([["id", ID], ["info", INFO]]);
+const make_named_parameters_object = (ARRAY) =>{return ARRAY.map(V=>{
+        return {
+                firstName: 'John',
+                lastName: 'Smith',
+                age: 45
+            }
+        })
+    };
 
 
 
