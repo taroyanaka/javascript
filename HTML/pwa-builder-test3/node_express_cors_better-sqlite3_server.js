@@ -442,23 +442,9 @@ const validate_and_exe_or_no_exe = (STRING, TYPE, OPTION, ERROR_MESSAGE) =>{
         (ERROR, FUNCTION)=>( FUNCTION(ERROR, STRING) )
     )
 };
-const validate_strings_array_and_exe_or_no_exe = (STRINGS_ARRAY, TYPE, OPTION, ERROR_MESSAGE) =>{
-    return R.tryCatch( 
-        STRINGS_ARRAY.map(STRING=>makeValidator(STRING, TYPE, OPTION)).every(x=>x === true) ? ()=>{throw null} : ()=>{throw ERROR_MESSAGE},
-        (ERROR, FUNCTION)=>( FUNCTION(ERROR, STRINGS_ARRAY) )
-    )
-};
 const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? ERROR : query_function(STR);
 const exe_query_or_not_with_id = (query_function) => (ERROR, STR, ID) => ERROR ? ERROR : query_function(STR, ID);
 const make_id_info_from_array = (ID, INFO) => R.fromPairs([["id", ID], ["info", INFO]]);
-const make_named_parameters_object = (ARRAY) =>{return ARRAY.map(V=>{
-        return {
-                firstName: 'John',
-                lastName: 'Smith',
-                age: 45
-            }
-        })
-    };
 
 
 
@@ -468,47 +454,15 @@ const db_query_select = () => {
         "data": db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
     }
 };
-
-
-
-const db_query_insert_and_select = (STRINGS_ARRAY) => {
-
-// You can also use named parameters. SQLite3 provides 3 different syntaxes for named parameters (@foo, :foo, and $foo), all of which are supported by better-sqlite3.
-// The following are equivalent.
-// const stmt = db.prepare('INSERT INTO people VALUES (@firstName, @lastName, @age)');
-// const stmt = db.prepare('INSERT INTO people VALUES (:firstName, :lastName, :age)');
-// const stmt = db.prepare('INSERT INTO people VALUES ($firstName, $lastName, $age)');
-const stmt = db.prepare('INSERT INTO people VALUES (@firstName, :lastName, $age)');
-
-stmt.run({
-  firstName: 'John',
-  lastName: 'Smith',
-  age: 45
-});
-
-    db.prepare('INSERT INTO lorem (info) values(?)').run(...STRINGS_ARRAY);
+const db_query_insert_and_select = (STRING) => {
+    db.prepare('INSERT INTO lorem (info) values(?)').run(STRING);
     return {
         "message": "success",
         "data": db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
     }
 };
-const db_query_update_and_select = (STRINGS_ARRAY, NUM) => {
-
-// You can also use named parameters. SQLite3 provides 3 different syntaxes for named parameters (@foo, :foo, and $foo), all of which are supported by better-sqlite3.
-// The following are equivalent.
-// const stmt = db.prepare('INSERT INTO people VALUES (@firstName, @lastName, @age)');
-// const stmt = db.prepare('INSERT INTO people VALUES (:firstName, :lastName, :age)');
-// const stmt = db.prepare('INSERT INTO people VALUES ($firstName, $lastName, $age)');
-const stmt = db.prepare('INSERT INTO people VALUES (@firstName, :lastName, $age)');
-
-stmt.run({
-  firstName: 'John',
-  lastName: 'Smith',
-  age: 45
-});
-
-
-    db.prepare('UPDATE lorem SET info = ? WHERE id = ?').run(...STRINGS_ARRAY, NUM);
+const db_query_update_and_select = (STRING, NUM) => {
+    db.prepare('UPDATE lorem SET info = ? WHERE id = ?').run(STRING, NUM);
     return {
         "message": "success",
         "data": db.prepare('SELECT * FROM lorem').all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
@@ -526,12 +480,12 @@ const db_query_delete = (ID) => {
 
 app.get("/insert", (req, res, next) => {
     allowOrigin(res); res.json(
-        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not((STRINGS_ARRAY)=>db_query_insert_and_select(STRINGS_ARRAY)))
+        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not((STRING)=>db_query_insert_and_select(STRING)))
     )
 });
 app.get("/update", (req, res, next) => {
     allowOrigin(res); res.json(
-        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not_with_id((STRINGS_ARRAY)=>db_query_update_and_select(STRINGS_ARRAY, req.query.id)))
+        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not_with_id((STRING)=>db_query_update_and_select(STRING, req.query.id)))
     )
 });
 app.get("/readall", (req, res, next) => {
@@ -540,6 +494,8 @@ app.get("/readall", (req, res, next) => {
 app.get("/deleteid", (req, res, next) => {
     allowOrigin(res); res.json(db_query_delete(req.query.id));
 });
+
+
 
 const sample_uuid_array = [
 "Fighter",
@@ -623,3 +579,45 @@ JOIN hashed_uuid
 WHERE hashed_uuid.hashed_uuid = "bar";`;
 
 
+// You can also use named parameters. SQLite3 provides 3 different syntaxes for named parameters (@foo, :foo, and $foo), all of which are supported by better-sqlite3.
+// The following are equivalent.
+// const stmt = db.prepare('INSERT INTO people VALUES (@firstName, @lastName, @age)');
+// const stmt = db.prepare('INSERT INTO people VALUES (:firstName, :lastName, :age)');
+// const stmt = db.prepare('INSERT INTO people VALUES ($firstName, $lastName, $age)');
+// const stmt = db.prepare('INSERT INTO people VALUES (@firstName, :lastName, $age)');
+// stmt.run({
+//   firstName: 'John',
+//   lastName: 'Smith',
+//   age: 45
+// });
+
+
+
+
+const data_and_rule_list = [
+    ["FOO", "isLength", {min: 1, max: 2}, "error: isLength: {min: 1, max: 2}"],
+    ["BAR", "isLength", {min: 4, max: 6}, "error: isLength: {min: 4, max: 6}"],
+    ["BUZ", "isLength", {min: 8, max: 10}, "error: isLength: {min: 8, max: 10}"],
+]
+const data_and_rule_list_2_0 = [
+    ["FOO", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+    ["BARBAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+    ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+]
+const data_and_rule_list_2_1 = [
+    ["FOO", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+    ["BAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+    ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+]
+const pre_separate_data_or_error_message = (data_and_rule_list) => data_and_rule_list.map(V=>makeValidator(V[0], V[1], V[2]) ? ["data", V[0]] : ["error", V[3]]);
+
+// const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? ERROR : query_function(STR);
+// const exe_query_or_not_with_id = (query_function) => (ERROR, STR, ID) => ERROR ? ERROR : query_function(STR, ID);
+
+const is_all_no_error = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).every(x=>x[0]==="data");
+const only_data = (data_and_rule_list) => data_and_rule_list.map(V=>V[0]);
+const only_error_message = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).filter(x=>x[0]==="error").map(V=>V[1]);
+const separate_data_or_error_message = (data_and_rule_list) => is_all_no_error(data_and_rule_list) ? only_data(data_and_rule_list) : only_error_message(data_and_rule_list);
+
+console.table(separate_data_or_error_message(data_and_rule_list_2_0));
+console.table(separate_data_or_error_message(data_and_rule_list_2_1));
