@@ -477,6 +477,95 @@ const db_query_delete = (ID) => {
 };
 
 
+const db_query_select_2 = () => {
+    return {
+        "message": "success",
+        "data": db.prepare(`SELECT
+    lorem.rowid,
+    info,
+FROM lorem
+JOIN uuid
+    ON uuid_rowid = uuid.rowid
+WHERE uuid.uuid = @uuid`
+                    ).all({
+                        uuid: STRING_ARRAY[1],
+                    }
+                ).map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
+    }
+};
+const db_query_insert_and_select_2 = (STRING_ARRAY) => {
+    db.prepare(`INSERT INTO lorem (info, uuid_rowid)
+VALUES(
+    @lorem, 
+    (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = @uuid)
+)`
+        ).run({
+            lorem: STRING_ARRAY[0],
+            uuid: STRING_ARRAY[1],
+        });
+    return db_query_select_2(STRING_ARRAY);
+};
+const db_query_update_and_select_2 = (STRING_ARRAY, ID) => {
+    db.prepare(`UPDATE lorem
+SET info = @lorem
+WHERE
+    lorem.rowid = @id
+    AND
+    lorem.uuid_rowid =
+        (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = @uuid)`
+        ).run({
+            lorem: STRING_ARRAY[0],
+            uuid: STRING_ARRAY[1],
+            id: ID,
+        });
+    return db_query_select_2(STRING_ARRAY);
+};
+const db_query_delete_2 = (STRING_ARRAY, ID) => {
+    db.prepare(`DELETE FROM lorem
+WHERE
+    lorem.rowid = @id
+    AND
+    lorem.uuid_rowid =
+        (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = @uuid)`
+        ).run({
+            uuid: STRING_ARRAY[1],
+            id: ID,
+        });
+    return db_query_select_2(STRING_ARRAY);
+};
+
+
+const data_and_rule_list = [
+    ["FOO", "isLength", {min: 1, max: 2}, "error: isLength: {min: 1, max: 2}"],
+    ["BAR", "isLength", {min: 4, max: 6}, "error: isLength: {min: 4, max: 6}"],
+    ["BUZ", "isLength", {min: 8, max: 10}, "error: isLength: {min: 8, max: 10}"],
+]
+const data_and_rule_list_2_0 = [
+    ["FOO", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+    ["BARBAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+    ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+]
+const data_and_rule_list_2_1 = [
+    ["FOO", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+    ["BAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+    ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+]
+
+const pre_separate_data_or_error_message = (data_and_rule_list) => data_and_rule_list.map(V=>makeValidator(V[0], V[1], V[2]) ? ["data", V[0]] : ["error", V[3]]);
+const is_all_no_error = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).every(x=>x[0]==="data");
+const only_data = (data_and_rule_list) => data_and_rule_list.map(V=>V[0]);
+const only_error_message = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).filter(x=>x[0]==="error").map(V=>V[1]);
+const separate_data_or_error_message = (data_and_rule_list) => is_all_no_error(data_and_rule_list) ? only_data(data_and_rule_list) : only_error_message(data_and_rule_list);
+
+const return_error_object = (ERROR_MESSAGE_ARRAY) => {
+    return {
+        "message": "error",
+        "data": ERROR_MESSAGE_ARRAY
+    };
+}
+// console.table(separate_data_or_error_message(data_and_rule_list_2_0));
+// console.table(separate_data_or_error_message(data_and_rule_list_2_1));
+
 
 app.get("/insert", (req, res, next) => {
     allowOrigin(res); res.json(
@@ -594,30 +683,26 @@ WHERE hashed_uuid.hashed_uuid = "bar";`;
 
 
 
-const data_and_rule_list = [
-    ["FOO", "isLength", {min: 1, max: 2}, "error: isLength: {min: 1, max: 2}"],
-    ["BAR", "isLength", {min: 4, max: 6}, "error: isLength: {min: 4, max: 6}"],
-    ["BUZ", "isLength", {min: 8, max: 10}, "error: isLength: {min: 8, max: 10}"],
-]
-const data_and_rule_list_2_0 = [
-    ["FOO", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
-    ["BARBAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
-    ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
-]
-const data_and_rule_list_2_1 = [
-    ["FOO", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
-    ["BAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
-    ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
-]
-const pre_separate_data_or_error_message = (data_and_rule_list) => data_and_rule_list.map(V=>makeValidator(V[0], V[1], V[2]) ? ["data", V[0]] : ["error", V[3]]);
+// const data_and_rule_list = [
+//     ["FOO", "isLength", {min: 1, max: 2}, "error: isLength: {min: 1, max: 2}"],
+//     ["BAR", "isLength", {min: 4, max: 6}, "error: isLength: {min: 4, max: 6}"],
+//     ["BUZ", "isLength", {min: 8, max: 10}, "error: isLength: {min: 8, max: 10}"],
+// ]
+// const data_and_rule_list_2_0 = [
+//     ["FOO", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+//     ["BARBAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+//     ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+// ]
+// const data_and_rule_list_2_1 = [
+//     ["FOO", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+//     ["BAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+//     ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+// ]
 
-// const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? ERROR : query_function(STR);
-// const exe_query_or_not_with_id = (query_function) => (ERROR, STR, ID) => ERROR ? ERROR : query_function(STR, ID);
-
-const is_all_no_error = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).every(x=>x[0]==="data");
-const only_data = (data_and_rule_list) => data_and_rule_list.map(V=>V[0]);
-const only_error_message = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).filter(x=>x[0]==="error").map(V=>V[1]);
-const separate_data_or_error_message = (data_and_rule_list) => is_all_no_error(data_and_rule_list) ? only_data(data_and_rule_list) : only_error_message(data_and_rule_list);
-
-console.table(separate_data_or_error_message(data_and_rule_list_2_0));
-console.table(separate_data_or_error_message(data_and_rule_list_2_1));
+// const pre_separate_data_or_error_message = (data_and_rule_list) => data_and_rule_list.map(V=>makeValidator(V[0], V[1], V[2]) ? ["data", V[0]] : ["error", V[3]]);
+// const is_all_no_error = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).every(x=>x[0]==="data");
+// const only_data = (data_and_rule_list) => data_and_rule_list.map(V=>V[0]);
+// const only_error_message = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).filter(x=>x[0]==="error").map(V=>V[1]);
+// const separate_data_or_error_message = (data_and_rule_list) => is_all_no_error(data_and_rule_list) ? only_data(data_and_rule_list) : only_error_message(data_and_rule_list);
+// console.table(separate_data_or_error_message(data_and_rule_list_2_0));
+// console.table(separate_data_or_error_message(data_and_rule_list_2_1));
