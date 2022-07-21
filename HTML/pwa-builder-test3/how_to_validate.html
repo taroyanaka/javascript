@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>how_to_validate</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script> -->
 <!-- <script src="https://unpkg.com/@supabase/supabase-js"></script> -->
 
 <!-- <script type="module">
@@ -77,7 +77,8 @@ const exe = () =>{
     validate_table_exe().forEach(V=> set_data2(V) );
 }
 
-console.table(exe());
+// console.table(exe());
+
 
 const f1 = () =>{try{return "no error";throw "ERROR";}catch(error){return error} };
 // f1();
@@ -111,16 +112,16 @@ const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? {error: ERR
 
 const query_fn = (STR) => {
     // db.prepare('INSERT INTO lorem (info) values(?)').run(STR);
-    console.log(STR);
+    // console.log(STR);
     return STR;
 }
 const query_ready_exe_query_or_not = exe_query_or_not(query_fn);
 f2_2("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(query_ready_exe_query_or_not);
-f2_2("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(exe_query_or_not((STR)=>console.log(STR+"FOOBARBUZ")));
+// f2_2("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(exe_query_or_not((STR)=>console.log(STR+"FOOBARBUZ")));
 
-const res1 = f2_2("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(exe_query_or_not((STR)=>{console.log(STR+"FOOBARBUZ");return {res: STR+"FOOBARBUZ"}}));
+// const res1 = f2_2("foo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(exe_query_or_not((STR)=>{console.log(STR+"FOOBARBUZ");return {res: STR+"FOOBARBUZ"}}));
 const res2 = f2_2("fooooooooooooooooooo", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}")(exe_query_or_not((STR)=>{console.log(STR+"FOOBARBUZ");return {res: STR+"FOOBARBUZ"}}));
-console.table("res is:", res1, " and ", res2);
+// console.table("res is:", res1, " and ", res2);
 
 // f2_2("foo", "isLength", {min: 1, max: 3}, ()=>{throw "error: isLength: {min: 1, max: 3}"})(f3);
 // f2_2("fooooooooooooooo", "isLength", {min: 1, max: 3}, ()=>{throw "error: isLength: {min: 1, max: 3}"})(f3);
@@ -133,20 +134,20 @@ const f13 = () => false;
 const is_truthy = (x) => x;
 const just_exe_fn_in_array = (fn_in_array) => fn_in_array.map(fn=>fn());
 
-console.log(just_exe_fn_in_array([f10, f11, f12, f13]).every(is_truthy));
-console.log(just_exe_fn_in_array([f10, f12]).every(is_truthy));
-console.log(just_exe_fn_in_array([f11, f13]).every(is_truthy));
+// console.log(just_exe_fn_in_array([f10, f11, f12, f13]).every(is_truthy));
+// console.log(just_exe_fn_in_array([f10, f12]).every(is_truthy));
+// console.log(just_exe_fn_in_array([f11, f13]).every(is_truthy));
 
 const f14 = () => "foo";
 const f15 = () => "";
 const f16 = () => "bar";
 const f17 = () => null;
 
-console.log(just_exe_fn_in_array([f14, f15, f16, f17]).every(is_truthy));
-console.log(just_exe_fn_in_array([f14, f16]).every(is_truthy));
-console.log(just_exe_fn_in_array([f14, f15]).every(is_truthy));
-console.log(just_exe_fn_in_array([f15, f17]).every(is_truthy));
-console.log(just_exe_fn_in_array([f17]).every(is_truthy));
+// console.log(just_exe_fn_in_array([f14, f15, f16, f17]).every(is_truthy));
+// console.log(just_exe_fn_in_array([f14, f16]).every(is_truthy));
+// console.log(just_exe_fn_in_array([f14, f15]).every(is_truthy));
+// console.log(just_exe_fn_in_array([f15, f17]).every(is_truthy));
+// console.log(just_exe_fn_in_array([f17]).every(is_truthy));
 
 
 const f18 = () => document.querySelector(`.vali_target`).value = "fooooooooooooo";
@@ -183,18 +184,117 @@ const data_and_rule_list_2_1 = [
     ["BAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
     ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
 ]
-const pre_separate_data_or_error_message = (data_and_rule_list) => data_and_rule_list.map(V=>makeValidator(V[0], V[1], V[2]) ? ["data", V[0]] : ["error", V[3]]);
+const data_and_rule_list_3 = [
+    ["FOO",
+        [
+            ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
+        ]
+    ],
+    ["20",
+        [
+            ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
+            ["isInt", { min: 10, max: 99 }, "error: isInt: { min: 10, max: 99 }",]
+        ]
+    ],
+    ["BE71096123456769",
+        [
+            ["isLength", {min: 3, max: 50}, "error: isLength: {min: 3, max: 50}",],
+            ["isIBAN", null, `country code using ISO 3166-1 alpha-2 two letters, check digits two digits, and Basic Bank Account Number (BBAN) up to 30 alphanumeric characters that are country-specific`,]
+        ]
+    ],
+    ["BE7109612345",
+        [
+            ["isLength", {min: 3, max: 50}, "error: isLength: {min: 3, max: 50}",],
+            ["isIBAN", null, `country code using ISO 3166-1 alpha-2 two letters, check digits two digits, and Basic Bank Account Number (BBAN) up to 30 alphanumeric characters that are country-specific`,]
+        ]
+    ],
+    ["BARBAR",
+        [
+            ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
+            ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",]
+        ]
+    ],
+    ["NO_CHECK_DATA",
+        [
+            [false]
+        ]
+    ],
+    ["BARBAR78",
+        [
+            ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
+            ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",]
+        ]
+    ],
+    ["BUZBUZBUZ",
+        [
+            ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
+            ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",]
+        ]
+    ],
+]
 
-// const exe_query_or_not = (query_function) => (ERROR, STR) => ERROR ? ERROR : query_function(STR);
-// const exe_query_or_not_with_id = (query_function) => (ERROR, STR, ID) => ERROR ? ERROR : query_function(STR, ID);
+// const makeValidator = (STRING, TYPE, OPTION) => validator[TYPE](STRING, OPTION);
+// data_and_rule_list_3[1]
 
-const is_all_no_error = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).every(x=>x[0]==="data");
-const only_data = (data_and_rule_list) => data_and_rule_list.map(V=>V[0]);
-const only_error_message = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).filter(x=>x[0]==="error").map(V=>V[1]);
-const separate_data_or_error_message = (data_and_rule_list) => is_all_no_error(data_and_rule_list) ? only_data(data_and_rule_list) : only_error_message(data_and_rule_list);
+const pre_separate_data_or_error_message_2 = (DATA, TYPE, OPTION, ERROR_MESSAGE) => makeValidator(DATA, TYPE, OPTION) ? ["data", DATA] : ["error", ERROR_MESSAGE];
+const fn1 = (LIST) => {
+    return LIST.map(DATA_AND_RULES=>{
+        const DATA = DATA_AND_RULES[0];
+        return DATA_AND_RULES[1].reduce((A, RULES, IDX)=>{
+            const [TYPE, OPTION, ERROR_MESSAGE] = [RULES[0], RULES[1], RULES[2]];
+            A.push(
+                RULES[0] === false ? [['no_validated_data', DATA]] : pre_separate_data_or_error_message_2(DATA, TYPE, OPTION, ERROR_MESSAGE)
+            );
+            return A;},A=[])
+    })
+};
+// const index_zero_of_data_or_error = (list) => list.map(V=>V[1]);
+const is_all_no_error_2 = (data_and_rule_list) => fn1(data_and_rule_list).map(V=>V[1]).every(x=>x[0]==="data");
+const only_data_2 = (data_and_rule_list) => data_and_rule_list.map(V=>V[0]);
+const only_error_message_2 = (data_and_rule_list) => fn1(data_and_rule_list).map(V=> V[1].filter(x=>x[0]==="error").map(V=>V[1]) );
+// const separate_data_or_error_message_2 = (data_and_rule_list) => is_all_no_error_2(data_and_rule_list) ? only_data_2(fn1(data_and_rule_list_3)) : only_error_message_2(fn1(data_and_rule_list_3));
 
-console.table(separate_data_or_error_message(data_and_rule_list_2_0));
-console.table(separate_data_or_error_message(data_and_rule_list_2_1));
+
+// R.uniq([1,1,1]) => [1]
+// R.uniq([1,1,1])[0] => 1
+const data_only =     fn1(data_and_rule_list_3).map(V=>
+            V.map(VAL=> VAL[0]==="data").every(V=>V===true) ? V.map(VAL=>VAL[1]) : null
+        )
+const data_only_uniq =     fn1(data_and_rule_list_3).map(V=>
+            V.map(VAL=> VAL[0]==="data").every(V=>V===true) ? R.uniq( V.map(VAL=>VAL[1]) )[0] : null
+        )
+const error_only =     fn1(data_and_rule_list_3).map(V=>
+            V.map(VAL=> VAL[0]==="error").some(V=>V===true) ? V.filter(VAL=>VAL[0]==="error").map(VAL=>VAL[1]) : null
+        )
+const no_validated_data_only_uniq =     fn1(data_and_rule_list_3).map(V=>
+            V.map(VAL=> VAL[0]).every(VAL=>VAL[0]==="no_validated_data") ? V[0][0][1] : null
+        )
+
+
+const res10 = [data_only_uniq, error_only, no_validated_data_only_uniq];
+const res100 = R.transpose(res10);
+const res1000 = res100.map(V=>V.filter(V=>V!==null))
+    .map(V=>V[0])
+const final_resonse = [data_and_rule_list_3.map(V=>V[0]), res1000];
+console.table(
+    final_resonse
+    // fn1(data_and_rule_list_3)
+// res[0][0][0] === "data"
+// res.map(V=>V==="data")
+);
+
+
+// .map(V=>V[1]);
+
+// const pre_separate_data_or_error_message = (data_and_rule_list) => data_and_rule_list.map(V=>makeValidator(V[0], V[1], V[2]) ? ["data", V[0]] : ["error", V[3]]);
+// const is_all_no_error = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).every(x=>x[0]==="data");
+// const only_data = (data_and_rule_list) => data_and_rule_list.map(V=>V[0]);
+// const only_error_message = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).filter(x=>x[0]==="error").map(V=>V[1]);
+// const separate_data_or_error_message = (data_and_rule_list) => is_all_no_error(data_and_rule_list) ? only_data(data_and_rule_list) : only_error_message(data_and_rule_list);
+
+
+// console.table(separate_data_or_error_message(data_and_rule_list_2_0));
+// console.table(separate_data_or_error_message(data_and_rule_list_2_1));
 </script>
 </body>
 </html
