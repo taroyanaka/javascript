@@ -34,7 +34,7 @@ async function signInWithGoogle() {
 </style>
     <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script> -->
     <script src="./ramda.@0.28.0.js"></script>
-    <script src="https://unpkg.com/validator@latest/validator.min.js"></script>
+    <script src="./validator.@13.7.0.min.js"></script>
 </head>
 <body>
 <input type="text" class="vali_target" oninput="exe()" minlength="1" maxlength="3" required>
@@ -184,6 +184,19 @@ const data_and_rule_list_2_1 = [
     ["BAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
     ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
 ]
+
+
+
+
+// const is_all_no_error_2 = (data_and_rule_list) => separate_and_tagging_data_or_error_message_or_no_validated(data_and_rule_list).map(V=>V[1]).every(x=>x[0]==="data");
+// const only_data_2 = (data_and_rule_list) => data_and_rule_list.map(V=>V[0]);
+// const only_error_message_2 = (data_and_rule_list) => separate_and_tagging_data_or_error_message_or_no_validated(data_and_rule_list).map(V=> V[1].filter(x=>x[0]==="error").map(V=>V[1]) );
+
+
+
+
+
+const data_key = ["A","B","C","D","E","F","G","H"];
 const data_and_rule_list_3 = [
     ["FOO",
         [
@@ -233,68 +246,48 @@ const data_and_rule_list_3 = [
     ],
 ]
 
-// const makeValidator = (STRING, TYPE, OPTION) => validator[TYPE](STRING, OPTION);
-// data_and_rule_list_3[1]
-
-const pre_separate_data_or_error_message_2 = (DATA, TYPE, OPTION, ERROR_MESSAGE) => makeValidator(DATA, TYPE, OPTION) ? ["data", DATA] : ["error", ERROR_MESSAGE];
-const fn1 = (LIST) => {
+const validate_to_data_or_error_by_rules_and_separate_and_tagging = (DATA, TYPE, OPTION, ERROR_MESSAGE) => makeValidator(DATA, TYPE, OPTION) ? ["data", DATA] : ["error", ERROR_MESSAGE];
+const separate_and_tagging_data_or_error_message_or_no_validated = (LIST) => {
     return LIST.map(DATA_AND_RULES=>{
         const DATA = DATA_AND_RULES[0];
         return DATA_AND_RULES[1].reduce((A, RULES, IDX)=>{
             const [TYPE, OPTION, ERROR_MESSAGE] = [RULES[0], RULES[1], RULES[2]];
             A.push(
-                RULES[0] === false ? [['no_validated_data', DATA]] : pre_separate_data_or_error_message_2(DATA, TYPE, OPTION, ERROR_MESSAGE)
+                RULES[0] === false ? [['no_validated_data', DATA]] : validate_to_data_or_error_by_rules_and_separate_and_tagging(DATA, TYPE, OPTION, ERROR_MESSAGE)
             );
             return A;},A=[])
     })
 };
-// const index_zero_of_data_or_error = (list) => list.map(V=>V[1]);
-const is_all_no_error_2 = (data_and_rule_list) => fn1(data_and_rule_list).map(V=>V[1]).every(x=>x[0]==="data");
-const only_data_2 = (data_and_rule_list) => data_and_rule_list.map(V=>V[0]);
-const only_error_message_2 = (data_and_rule_list) => fn1(data_and_rule_list).map(V=> V[1].filter(x=>x[0]==="error").map(V=>V[1]) );
-// const separate_data_or_error_message_2 = (data_and_rule_list) => is_all_no_error_2(data_and_rule_list) ? only_data_2(fn1(data_and_rule_list_3)) : only_error_message_2(fn1(data_and_rule_list_3));
+
+const data_only = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
+            V.map(VAL=> VAL[0]==="data")
+             .every(V=>V===true) ?
+                V.map(VAL=>VAL[1]) : null 
+        )
+const data_only_uniq = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
+            V.map(VAL=> VAL[0]==="data")
+             .every(V=>V===true) ?
+                R.uniq( V.map(VAL=>VAL[1]) )[0] : null 
+        )
+const error_only = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
+            V.map(VAL=> VAL[0]==="error")
+             .some(V=>V===true) ?
+                V.filter(VAL=>VAL[0]==="error").map(VAL=>VAL[1]) : null 
+        )
+const no_validated_data_only_uniq = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
+            V.map(VAL=> VAL[0])
+             .every(VAL=>VAL[0]==="no_validated_data") ?
+                V[0][0][1] : null 
+        )
 
 
-// R.uniq([1,1,1]) => [1]
-// R.uniq([1,1,1])[0] => 1
-const data_only =     fn1(data_and_rule_list_3).map(V=>
-            V.map(VAL=> VAL[0]==="data").every(V=>V===true) ? V.map(VAL=>VAL[1]) : null
-        )
-const data_only_uniq =     fn1(data_and_rule_list_3).map(V=>
-            V.map(VAL=> VAL[0]==="data").every(V=>V===true) ? R.uniq( V.map(VAL=>VAL[1]) )[0] : null
-        )
-const error_only =     fn1(data_and_rule_list_3).map(V=>
-            V.map(VAL=> VAL[0]==="error").some(V=>V===true) ? V.filter(VAL=>VAL[0]==="error").map(VAL=>VAL[1]) : null
-        )
-const no_validated_data_only_uniq =     fn1(data_and_rule_list_3).map(V=>
-            V.map(VAL=> VAL[0]).every(VAL=>VAL[0]==="no_validated_data") ? V[0][0][1] : null
-        )
-
-
-const res10 = [data_only_uniq, error_only, no_validated_data_only_uniq];
+const res10 = [data_only_uniq(data_and_rule_list_3), error_only(data_and_rule_list_3), no_validated_data_only_uniq(data_and_rule_list_3)];
 const res100 = R.transpose(res10);
-const res1000 = res100.map(V=>V.filter(V=>V!==null))
-    .map(V=>V[0])
-const final_resonse = [data_and_rule_list_3.map(V=>V[0]), res1000];
+const res1000 = res100.map(V=>V.filter(V=>V!==null)).map(V=>V[0])
+const final_resonse = [data_key, data_and_rule_list_3.map(V=>V[0]), res1000];
 console.table(
     final_resonse
-    // fn1(data_and_rule_list_3)
-// res[0][0][0] === "data"
-// res.map(V=>V==="data")
 );
-
-
-// .map(V=>V[1]);
-
-// const pre_separate_data_or_error_message = (data_and_rule_list) => data_and_rule_list.map(V=>makeValidator(V[0], V[1], V[2]) ? ["data", V[0]] : ["error", V[3]]);
-// const is_all_no_error = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).every(x=>x[0]==="data");
-// const only_data = (data_and_rule_list) => data_and_rule_list.map(V=>V[0]);
-// const only_error_message = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).filter(x=>x[0]==="error").map(V=>V[1]);
-// const separate_data_or_error_message = (data_and_rule_list) => is_all_no_error(data_and_rule_list) ? only_data(data_and_rule_list) : only_error_message(data_and_rule_list);
-
-
-// console.table(separate_data_or_error_message(data_and_rule_list_2_0));
-// console.table(separate_data_or_error_message(data_and_rule_list_2_1));
 </script>
 </body>
 </html
