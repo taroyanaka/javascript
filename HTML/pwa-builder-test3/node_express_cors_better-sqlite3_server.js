@@ -482,7 +482,7 @@ const db_query_select_2 = (STRING_ARRAY) => {
         "message": "success",
         "data": db.prepare(`SELECT
     lorem.rowid,
-    info,
+    info
 FROM lorem
 JOIN uuid
     ON uuid_rowid = uuid.rowid
@@ -490,7 +490,7 @@ WHERE uuid.uuid = @uuid`
                     ).all({
                         uuid: STRING_ARRAY[0],
                     }
-                ).map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
+                ).map(DATA=>make_id_info_from_array(DATA.rowid, DATA.info))
     }
 };
 const db_query_select_all_2 = () => {
@@ -498,7 +498,7 @@ const db_query_select_all_2 = () => {
         "message": "success",
         "data": db.prepare(`SELECT
     lorem.rowid,
-    info,
+    info
 FROM lorem`
                     ).all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
     }
@@ -543,14 +543,6 @@ WHERE
         });
     return db_query_select_2(STRING_ARRAY);
 };
-
-const return_error_object = (ERROR_MESSAGE_ARRAY) => {
-    return {
-        "message": "error",
-        "data": ERROR_MESSAGE_ARRAY
-    };
-}
-
 
 const data_key = ["A","B","C","D","E","F","G","H"];
 const data_and_rule_list_3 = [
@@ -651,24 +643,49 @@ app.get("/readall_2", (req, res, next) => {
     allowOrigin(res); res.json("foo");
 });
 app.get("/read_any_2", (req, res, next) => {
-const data_key = ["UUID"];
-const data_and_rules = [
-    [req.query.uuid,
-        [
-            ["isLength", {min: 1, max: 100}, "error: isLength: {min: 3, max: 50}",],
-        ]
-    ],
-]
-const res10 = [data_only_uniq(data_and_rule_list_3), error_only(data_and_rule_list_3), no_validated_data_only_uniq(data_and_rule_list_3)];
-const res100 = R.transpose(res10);
-const res1000 = res100.map(V=>V.filter(V=>V!==null)).map(V=>V[0])
-const final_resonse = [data_key, data_and_rule_list_3.map(V=>V[0]), res1000];
+    const data_key = ["UUID"];
+    const data_and_rules = [
+        [req.query.uuid,
+            [
+                ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
+            ]
+        ],
+    ]
 
-    allowOrigin(res);
-// console.table(final_resonse)
-    // res.json({foo:"bar"})
-    res.json(final_resonse)
-    // res.json(db_query_select_2(final_resonse));
+    // https://github.com/ramda/ramda/issues/707#issuecomment-674606727
+    const multi_zip = (...arrays) => arrays[0].map((_, i) => arrays.map((arr) => arr[i]));
+
+
+    const res10 = [data_only_uniq(data_and_rules), error_only(data_and_rules), no_validated_data_only_uniq(data_and_rules)];
+    const res100 = R.transpose(res10);
+    const res1000 = res100.map(V=>V.filter(V=>V!==null)).map(V=>V[0])
+    const only_data = () => data_and_rules.map(V=>V[0]);
+    const final_resonse = [data_key, only_data(), res1000];
+    const error_key_and_error_message = () => multi_zip(final_resonse[0], final_resonse[1], final_resonse[2]).filter(V=>R.is(Array, V[2])).map(V=>[V[0], V[2]]);
+    const response_data_or_key_with_error_message = () => res1000.every(V=>R.is(String, V)) ? only_data() : error_key_and_error_message();
+
+const return_error_object = (ERROR_MESSAGE_ARRAY) => {
+    return {
+        "message": "error",
+        "data": ERROR_MESSAGE_ARRAY
+    };
+}
+
+
+    const execute_the_response_data_or_key_with_error_message = (SQL_FUNCTION, ERROR_OBJ_FUNCTION) => res1000.every(V=>R.is(String, V)) ? SQL_FUNCTION(only_data()) : ERROR_OBJ_FUNCTION(error_key_and_error_message());
+
+// db_query_select_2
+
+
+        allowOrigin(res);
+    console.table(response_data_or_key_with_error_message())
+        // res.json({foo:"bar"})
+
+        // res.json(response_data_or_key_with_error_message());
+
+        res.json(execute_the_response_data_or_key_with_error_message(db_query_select_2, return_error_object))
+
+        // res.json(db_query_select_2(final_resonse));
 });
 app.get("/deleteid_2", (req, res, next) => {
     allowOrigin(res); res.json(db_query_delete(req.query.id));
