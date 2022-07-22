@@ -595,9 +595,7 @@ const data_and_rule_list_3 = [
 ]
 
 
-// const shinku_hadoken = (SQL_FUNCTION, INPUT_DATA_KEY, INPUT_DATA_AND_RULES) => {
-const shinku_hadoken = (SQL_FUNCTION, DATA_KEYS_DATA_AND_RULES_ARRAY) => {
-    const [INPUT_DATA_KEYS, INPUT_DATA_AND_RULES] = DATA_KEYS_DATA_AND_RULES_ARRAY;
+const shinku_hadoken = (SQL_FUNCTION, INPUT_DATA_KEY, INPUT_DATA_AND_RULES) => {
     const validate_to_data_or_error_by_rules_and_separate_and_tagging = (DATA, TYPE, OPTION, ERROR_MESSAGE) => makeValidator(DATA, TYPE, OPTION) ? ["data", DATA] : ["error", ERROR_MESSAGE];
     const separate_and_tagging_data_or_error_message_or_no_validated = (LIST) => {
         return LIST.map(DATA_AND_RULES=>{
@@ -639,7 +637,7 @@ const shinku_hadoken = (SQL_FUNCTION, DATA_KEYS_DATA_AND_RULES_ARRAY) => {
     const TRANSPOSED_THREE_LIST = R.transpose(THREE_LIST);
     const DATA_OR_ERROR_LIST = TRANSPOSED_THREE_LIST.map(V=>V.filter(V=>V!==null)).map(V=>V[0])
     const only_data = () => INPUT_DATA_AND_RULES.map(V=>V[0]);
-    const final_resonse = [INPUT_DATA_KEYS, only_data(), DATA_OR_ERROR_LIST];
+    const final_resonse = [INPUT_DATA_KEY, only_data(), DATA_OR_ERROR_LIST];
     const error_key_and_error_message = () => multi_zip(final_resonse[0], final_resonse[1], final_resonse[2]).filter(V=>R.is(Array, V[2])).map(V=>[V[0], V[2]]);
     const return_error_object = (ERROR_MESSAGE_ARRAY) => {
         return {
@@ -670,40 +668,35 @@ app.get("/readall_2", (req, res, next) => {
     // allowOrigin(res); res.json("foo");
 });
 
-const raging_demon = (REQ_QUERY, RULES) => {
-    const data_keys = R.toPairs(REQ_QUERY).map(V=>V[0]);
-    const data_and_rules = data_keys.map((V, IDX)=>{
-            return [
-                        REQ_QUERY[data_keys[IDX]],
-                        RULES[IDX]
-                    ]
-        })
-
-    // const data_and_rules = [
-    //     [REQ_QUERY[data_keys[0]],
-    //         [
-    //             ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
-    //             ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",],
-    //         ]
-    //     ],
-    // ]
-    return [data_keys, data_and_rules];
-};
 
 app.get("/read_any_2", (req, res, next) => {
-    allowOrigin(res);
-    // res.json(shinku_hadoken(db_query_select_2, data_key, data_and_rules))
-    res.json(shinku_hadoken(db_query_select_2, raging_demon(req.query, [
+    // const data_key = [req.query[0]];
+    // const data_key = R.toPairs(req.param);
+    // const data_key = req.params;
+    // const data_key = R.toPairs({"uuid":"foop","id":"hogehoge"})[0][0]
+    // const data_key = [
+    //     R.toPairs(req.query)[0][0]
+    // ];
+    const data_key = R.toPairs(req.query).map(V=>V[0]);
+
+    // const data_key = ["uuid"];
+    const data_and_rules = [
+        [req.query.uuid,
             [
                 ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
                 ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",],
-            ],
-            // [
-            //     ["isLength", {min: 3, max: 50}, "error: isLength: {min: 3, max: 50}",],
-            //     ["isIBAN", null, `country code using ISO 3166-1 alpha-2 two letters, check digits two digits, and Basic Bank Account Number (BBAN) up to 30 alphanumeric characters that are country-specific`,]
-            // ]
-        ]
-    )))
+            ]
+        ],
+    ]
+
+    allowOrigin(res);
+
+    // res.json(shinku_hadoken(null, data_key, data_and_rules))
+    res.json(shinku_hadoken(db_query_select_2, data_key, data_and_rules))
+
+// res.json(req.query);
+
+
 });
 app.get("/deleteid_2", (req, res, next) => {
     allowOrigin(res); res.json(db_query_delete(req.query.id));
