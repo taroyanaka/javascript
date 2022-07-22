@@ -594,8 +594,6 @@ const data_and_rule_list_3 = [
     ],
 ]
 
-
-// const shinku_hadoken = (SQL_FUNCTION, INPUT_DATA_KEY, INPUT_DATA_AND_RULES) => {
 const shinku_hadoken = (SQL_FUNCTION, DATA_KEYS_DATA_AND_RULES_ARRAY) => {
     const [INPUT_DATA_KEYS, INPUT_DATA_AND_RULES] = DATA_KEYS_DATA_AND_RULES_ARRAY;
     const validate_to_data_or_error_by_rules_and_separate_and_tagging = (DATA, TYPE, OPTION, ERROR_MESSAGE) => makeValidator(DATA, TYPE, OPTION) ? ["data", DATA] : ["error", ERROR_MESSAGE];
@@ -634,7 +632,6 @@ const shinku_hadoken = (SQL_FUNCTION, DATA_KEYS_DATA_AND_RULES_ARRAY) => {
     // https://github.com/ramda/ramda/issues/707#issuecomment-674606727
     const multi_zip = (...arrays) => arrays[0].map((_, i) => arrays.map((arr) => arr[i]));
 
-
     const THREE_LIST = [data_only_uniq(INPUT_DATA_AND_RULES), error_only(INPUT_DATA_AND_RULES), no_validated_data_only_uniq(INPUT_DATA_AND_RULES)];
     const TRANSPOSED_THREE_LIST = R.transpose(THREE_LIST);
     const DATA_OR_ERROR_LIST = TRANSPOSED_THREE_LIST.map(V=>V.filter(V=>V!==null)).map(V=>V[0])
@@ -655,10 +652,22 @@ const shinku_hadoken = (SQL_FUNCTION, DATA_KEYS_DATA_AND_RULES_ARRAY) => {
     return execute_the_response_data_or_key_with_error_message(SQL_FUNCTION)
 }
 
+
 app.get("/insert_2", (req, res, next) => {
-    allowOrigin(res); res.json(
-        validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not((STRING)=>db_query_insert_and_select(STRING)))
-    )
+    allowOrigin(res);
+    res.json(shinku_hadoken(db_query_insert_and_select_2, raging_demon(req.query, [
+            [
+                ["isLength", {min: 1, max: 10}, "error: isLength: {min: 1, max: 10}",],
+            ],
+            [
+                ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
+            ],
+            // [
+            //     ["isLength", {min: 3, max: 50}, "error: isLength: {min: 3, max: 50}",],
+            //     ["isIBAN", null, `country code using ISO 3166-1 alpha-2 two letters, check digits two digits, and Basic Bank Account Number (BBAN) up to 30 alphanumeric characters that are country-specific`,]
+            // ]
+        ]
+    )))
 });
 app.get("/update_2", (req, res, next) => {
     allowOrigin(res); res.json(
@@ -678,21 +687,11 @@ const raging_demon = (REQ_QUERY, RULES) => {
                         RULES[IDX]
                     ]
         })
-
-    // const data_and_rules = [
-    //     [REQ_QUERY[data_keys[0]],
-    //         [
-    //             ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
-    //             ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",],
-    //         ]
-    //     ],
-    // ]
     return [data_keys, data_and_rules];
 };
 
 app.get("/read_any_2", (req, res, next) => {
     allowOrigin(res);
-    // res.json(shinku_hadoken(db_query_select_2, data_key, data_and_rules))
     res.json(shinku_hadoken(db_query_select_2, raging_demon(req.query, [
             [
                 ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
