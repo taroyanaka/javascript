@@ -23,7 +23,7 @@ const app = express()
 const port = 8800
 
 const Database = require('better-sqlite3');
-const db = new Database('.data/tmp3.sqlite3');
+const db = new Database('.data/tmp2.sqlite3');
 
 const article_lists_create_table = () => `CREATE TABLE IF NOT EXISTS article_lists_table (
 id INT,
@@ -477,7 +477,7 @@ const db_query_delete = (ID) => {
 };
 
 
-const db_query_select_2 = (STRING_ARRAY) => {
+const db_query_select_2 = () => {
     return {
         "message": "success",
         "data": db.prepare(`SELECT
@@ -488,19 +488,9 @@ JOIN uuid
     ON uuid_rowid = uuid.rowid
 WHERE uuid.uuid = @uuid`
                     ).all({
-                        uuid: STRING_ARRAY[0],
+                        uuid: STRING_ARRAY[1],
                     }
                 ).map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
-    }
-};
-const db_query_select_all_2 = () => {
-    return {
-        "message": "success",
-        "data": db.prepare(`SELECT
-    lorem.rowid,
-    info,
-FROM lorem`
-                    ).all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
     }
 };
 const db_query_insert_and_select_2 = (STRING_ARRAY) => {
@@ -544,6 +534,8 @@ WHERE
     return db_query_select_2(STRING_ARRAY);
 };
 
+
+
 const return_error_object = (ERROR_MESSAGE_ARRAY) => {
     return {
         "message": "error",
@@ -551,147 +543,22 @@ const return_error_object = (ERROR_MESSAGE_ARRAY) => {
     };
 }
 
-
-const data_key = ["A","B","C","D","E","F","G","H"];
-const data_and_rule_list_3 = [
-    ["FOO",
-        [
-            ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
-        ]
-    ],
-    ["20",
-        [
-            ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
-            ["isInt", { min: 10, max: 99 }, "error: isInt: { min: 10, max: 99 }",]
-        ]
-    ],
-    ["BE71096123456769",
-        [
-            ["isLength", {min: 3, max: 50}, "error: isLength: {min: 3, max: 50}",],
-            ["isIBAN", null, `country code using ISO 3166-1 alpha-2 two letters, check digits two digits, and Basic Bank Account Number (BBAN) up to 30 alphanumeric characters that are country-specific`,]
-        ]
-    ],
-    ["BE7109612345",
-        [
-            ["isLength", {min: 3, max: 50}, "error: isLength: {min: 3, max: 50}",],
-            ["isIBAN", null, `country code using ISO 3166-1 alpha-2 two letters, check digits two digits, and Basic Bank Account Number (BBAN) up to 30 alphanumeric characters that are country-specific`,]
-        ]
-    ],
-    ["BARBAR",
-        [
-            ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
-            ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",]
-        ]
-    ],
-    ["NO_CHECK_DATA",
-        [
-            [false]
-        ]
-    ],
-    ["BARBAR78",
-        [
-            ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
-            ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",]
-        ]
-    ],
-    ["BUZBUZBUZ",
-        [
-            ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
-            ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",]
-        ]
-    ],
-]
-
-const validate_to_data_or_error_by_rules_and_separate_and_tagging = (DATA, TYPE, OPTION, ERROR_MESSAGE) => makeValidator(DATA, TYPE, OPTION) ? ["data", DATA] : ["error", ERROR_MESSAGE];
-const separate_and_tagging_data_or_error_message_or_no_validated = (LIST) => {
-    return LIST.map(DATA_AND_RULES=>{
-        const DATA = DATA_AND_RULES[0];
-        return DATA_AND_RULES[1].reduce((A, RULES, IDX)=>{
-            const [TYPE, OPTION, ERROR_MESSAGE] = [RULES[0], RULES[1], RULES[2]];
-            A.push(
-                RULES[0] === false ? [['no_validated_data', DATA]] : validate_to_data_or_error_by_rules_and_separate_and_tagging(DATA, TYPE, OPTION, ERROR_MESSAGE)
-            );
-            return A;},A=[])
-    })
-};
-
-const data_only = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
-            V.map(VAL=> VAL[0]==="data")
-             .every(V=>V===true) ?
-                V.map(VAL=>VAL[1]) : null 
-        )
-const data_only_uniq = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
-            V.map(VAL=> VAL[0]==="data")
-             .every(V=>V===true) ?
-                R.uniq( V.map(VAL=>VAL[1]) )[0] : null 
-        )
-const error_only = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
-            V.map(VAL=> VAL[0]==="error")
-             .some(V=>V===true) ?
-                V.filter(VAL=>VAL[0]==="error").map(VAL=>VAL[1]) : null 
-        )
-const no_validated_data_only_uniq = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
-            V.map(VAL=> VAL[0])
-             .every(VAL=>VAL[0]==="no_validated_data") ?
-                V[0][0][1] : null 
-        )
-
-app.get("/insert_2", (req, res, next) => {
+app.get("/insert", (req, res, next) => {
     allowOrigin(res); res.json(
         validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not((STRING)=>db_query_insert_and_select(STRING)))
     )
 });
-app.get("/update_2", (req, res, next) => {
+app.get("/update", (req, res, next) => {
     allowOrigin(res); res.json(
         validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not_with_id((STRING)=>db_query_update_and_select(STRING, req.query.id)))
     )
 });
-app.get("/readall_2", (req, res, next) => {
-    // allowOrigin(res); res.json(db_query_select_all_2 );
-    allowOrigin(res); res.json("foo");
+app.get("/readall", (req, res, next) => {
+    allowOrigin(res); res.json(db_query_select());
 });
-app.get("/read_any_2", (req, res, next) => {
-const data_key = ["UUID"];
-const data_and_rules = [
-    [req.query.uuid,
-        [
-            ["isLength", {min: 1, max: 100}, "error: isLength: {min: 3, max: 50}",],
-        ]
-    ],
-]
-const res10 = [data_only_uniq(data_and_rule_list_3), error_only(data_and_rule_list_3), no_validated_data_only_uniq(data_and_rule_list_3)];
-const res100 = R.transpose(res10);
-const res1000 = res100.map(V=>V.filter(V=>V!==null)).map(V=>V[0])
-const final_resonse = [data_key, data_and_rule_list_3.map(V=>V[0]), res1000];
-
-    allowOrigin(res);
-// console.table(final_resonse)
-    // res.json({foo:"bar"})
-    res.json(final_resonse)
-    // res.json(db_query_select_2(final_resonse));
-});
-app.get("/deleteid_2", (req, res, next) => {
+app.get("/deleteid", (req, res, next) => {
     allowOrigin(res); res.json(db_query_delete(req.query.id));
 });
-
-
-// app.get("/insert", (req, res, next) => {
-//     allowOrigin(res); res.json(
-//         validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not((STRING)=>db_query_insert_and_select(STRING)))
-//     )
-// });
-// app.get("/update", (req, res, next) => {
-//     allowOrigin(res); res.json(
-//         validate_and_exe_or_no_exe(req.query.info, "isLength", {min: 1, max: 30}, {"message": "error: isLength: {min: 1, max: 30}"})(exe_query_or_not_with_id((STRING)=>db_query_update_and_select(STRING, req.query.id)))
-//     )
-// });
-// app.get("/readall", (req, res, next) => {
-//     allowOrigin(res); res.json(db_query_select());
-// });
-// app.get("/deleteid", (req, res, next) => {
-//     allowOrigin(res); res.json(db_query_delete(req.query.id));
-// });
-
 
 
 
@@ -708,3 +575,133 @@ var hash = md5('value');
 // https://stackoverflow.com/questions/11643611/execute-sqlite-script
 
 
+`DROP TABLE IF EXISTS hashed_uuid;`;
+`CREATE TABLE IF NOT EXISTS hashed_uuid (
+    hashed_uuid TEXT NOT NULL
+);`;
+
+
+
+`DROP TABLE IF EXISTS lorem;`;
+
+
+`CREATE TABLE IF NOT EXISTS lorem (
+    info TEXT NOT NULL,
+    hashed_uuid_rowid NUMBER NOT NULL
+);`;
+
+`INSERT INTO hashed_uuid (hashed_uuid) values("foo");`;
+`INSERT INTO hashed_uuid (hashed_uuid) values("bar");`;
+`INSERT INTO lorem (info, hashed_uuid_rowid) values("FOOBARTEXT1", 1);`;
+`INSERT INTO lorem (info, hashed_uuid_rowid) values("FOOBARTEXT1", 2);`;
+`INSERT INTO lorem (info, hashed_uuid_rowid) values("FOOBARTEXT10", 1);`;
+`INSERT INTO lorem (info, hashed_uuid_rowid) values("FOOBARTEXT10", 2);`;
+
+
+
+`INSERT INTO lorem (info, hashed_uuid_rowid)
+    VALUES(
+        "A two dimensional square appears that duplicates a section of the ice pattern.", 
+        (SELECT hashed_uuid.rowid FROM hashed_uuid WHERE hashed_uuid.hashed_uuid = "bar")
+    );`;
+
+
+`INSERT INTO lorem (info, hashed_uuid_rowid)
+    VALUES(
+        "The circle bulges outward... separating from the cube.", 
+        (SELECT hashed_uuid.rowid FROM hashed_uuid WHERE hashed_uuid.hashed_uuid = "foo")
+    );`;
+
+
+
+`UPDATE lorem
+SET info = "filling the frame."
+WHERE
+    lorem.rowid = 1
+    AND
+    lorem.hashed_uuid_rowid =
+        (SELECT hashed_uuid.rowid FROM hashed_uuid WHERE hashed_uuid.hashed_uuid = "foo");`;
+
+
+
+`DELETE
+FROM lorem
+WHERE
+    lorem.rowid = 4
+    AND
+    lorem.hashed_uuid_rowid =
+        (SELECT hashed_uuid.rowid FROM hashed_uuid WHERE hashed_uuid.hashed_uuid = "foo");`;
+
+
+
+`SELECT
+    lorem.rowid,
+    info,
+    hashed_uuid.hashed_uuid
+FROM lorem
+JOIN hashed_uuid
+    ON hashed_uuid_rowid = hashed_uuid.rowid
+WHERE hashed_uuid.hashed_uuid = "bar";`;
+
+
+// const data_and_rule_list = [
+//     ["FOO", "isLength", {min: 1, max: 2}, "error: isLength: {min: 1, max: 2}"],
+//     ["BAR", "isLength", {min: 4, max: 6}, "error: isLength: {min: 4, max: 6}"],
+//     ["BUZ", "isLength", {min: 8, max: 10}, "error: isLength: {min: 8, max: 10}"],
+// ]
+// const data_and_rule_list_2_0 = [
+//     ["FOO", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+//     ["BARBAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+//     ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+// ]
+// const data_and_rule_list_2_1 = [
+//     ["FOO", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+//     ["BAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+//     ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+// ]
+
+// const pre_separate_data_or_error_message = (data_and_rule_list) => data_and_rule_list.map(V=>makeValidator(V[0], V[1], V[2]) ? ["data", V[0]] : ["error", V[3]]);
+// const is_all_no_error = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).every(x=>x[0]==="data");
+// const only_data = (data_and_rule_list) => data_and_rule_list.map(V=>V[0]);
+// const only_error_message = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).filter(x=>x[0]==="error").map(V=>V[1]);
+// const separate_data_or_error_message = (data_and_rule_list) => is_all_no_error(data_and_rule_list) ? only_data(data_and_rule_list) : only_error_message(data_and_rule_list);
+
+
+// You can also use named parameters. SQLite3 provides 3 different syntaxes for named parameters (@foo, :foo, and $foo), all of which are supported by better-sqlite3.
+// The following are equivalent.
+// const stmt = db.prepare('INSERT INTO people VALUES (@firstName, @lastName, @age)');
+// const stmt = db.prepare('INSERT INTO people VALUES (:firstName, :lastName, :age)');
+// const stmt = db.prepare('INSERT INTO people VALUES ($firstName, $lastName, $age)');
+// const stmt = db.prepare('INSERT INTO people VALUES (@firstName, :lastName, $age)');
+// stmt.run({
+//   firstName: 'John',
+//   lastName: 'Smith',
+//   age: 45
+// });
+
+
+
+
+// const data_and_rule_list = [
+//     ["FOO", "isLength", {min: 1, max: 2}, "error: isLength: {min: 1, max: 2}"],
+//     ["BAR", "isLength", {min: 4, max: 6}, "error: isLength: {min: 4, max: 6}"],
+//     ["BUZ", "isLength", {min: 8, max: 10}, "error: isLength: {min: 8, max: 10}"],
+// ]
+// const data_and_rule_list_2_0 = [
+//     ["FOO", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+//     ["BARBAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+//     ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+// ]
+// const data_and_rule_list_2_1 = [
+//     ["FOO", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+//     ["BAR", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+//     ["BUZ", "isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}"],
+// ]
+
+// const pre_separate_data_or_error_message = (data_and_rule_list) => data_and_rule_list.map(V=>makeValidator(V[0], V[1], V[2]) ? ["data", V[0]] : ["error", V[3]]);
+// const is_all_no_error = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).every(x=>x[0]==="data");
+// const only_data = (data_and_rule_list) => data_and_rule_list.map(V=>V[0]);
+// const only_error_message = (data_and_rule_list) => pre_separate_data_or_error_message(data_and_rule_list).filter(x=>x[0]==="error").map(V=>V[1]);
+// const separate_data_or_error_message = (data_and_rule_list) => is_all_no_error(data_and_rule_list) ? only_data(data_and_rule_list) : only_error_message(data_and_rule_list);
+// console.table(separate_data_or_error_message(data_and_rule_list_2_0));
+// console.table(separate_data_or_error_message(data_and_rule_list_2_1));
