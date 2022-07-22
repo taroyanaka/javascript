@@ -655,18 +655,18 @@ const shinku_hadoken = (SQL_FUNCTION, DATA_KEYS_DATA_AND_RULES_ARRAY) => {
 
 app.get("/insert_2", (req, res, next) => {
     allowOrigin(res);
-    res.json(shinku_hadoken(db_query_insert_and_select_2, raging_demon(req.query, [
-            [
+    res.json(shinku_hadoken(db_query_insert_and_select_2, raging_demon(req.query, {
+            "lorem": [
                 ["isLength", {min: 1, max: 10}, "error: isLength: {min: 1, max: 10}",],
             ],
-            [
+            "uuid": [
                 ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
             ],
             // [
             //     ["isLength", {min: 3, max: 50}, "error: isLength: {min: 3, max: 50}",],
             //     ["isIBAN", null, `country code using ISO 3166-1 alpha-2 two letters, check digits two digits, and Basic Bank Account Number (BBAN) up to 30 alphanumeric characters that are country-specific`,]
             // ]
-        ]
+        }
     )))
 });
 app.get("/update_2", (req, res, next) => {
@@ -679,12 +679,22 @@ app.get("/readall_2", (req, res, next) => {
     // allowOrigin(res); res.json("foo");
 });
 
-const raging_demon = (REQ_QUERY, RULES) => {
-    const data_keys = R.toPairs(REQ_QUERY).map(V=>V[0]);
-    const data_and_rules = data_keys.map((V, IDX)=>{
+// Object.keys(myObject).map(function(key, index) {
+//   myObject[key] *= 2;
+// });
+
+const raging_demon = (REQ_QUERY, KEYS_RULES_OBJECT) => {
+
+
+    // const data_keys = KEYS_RULES_OBJECT.keys();
+    const data_keys = Object.keys(KEYS_RULES_OBJECT);
+    // const data_keys = R.toPairs(REQ_QUERY).map(V=>V[0]);
+    // const data_and_rules = KEY_ARRAY.map((KEY, IDX)=>{
+    // const data_and_rules = KEYS_RULES_OBJECT.map((RULES_OBJECT, KEY)=>{
+    const data_and_rules = Object.keys(KEYS_RULES_OBJECT).map(KEY=>{
             return [
-                        REQ_QUERY[data_keys[IDX]],
-                        RULES[IDX]
+                        REQ_QUERY[KEY],
+                        KEYS_RULES_OBJECT[KEY]
                     ]
         })
     return [data_keys, data_and_rules];
@@ -692,16 +702,16 @@ const raging_demon = (REQ_QUERY, RULES) => {
 
 app.get("/read_any_2", (req, res, next) => {
     allowOrigin(res);
-    res.json(shinku_hadoken(db_query_select_2, raging_demon(req.query, [
-            [
+    res.json(shinku_hadoken(db_query_select_2, raging_demon(req.query, {
+            'uuid': [
                 ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
                 ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",],
-            ],
+            ]
             // [
             //     ["isLength", {min: 3, max: 50}, "error: isLength: {min: 3, max: 50}",],
             //     ["isIBAN", null, `country code using ISO 3166-1 alpha-2 two letters, check digits two digits, and Basic Bank Account Number (BBAN) up to 30 alphanumeric characters that are country-specific`,]
             // ]
-        ]
+        }
     )))
 });
 app.get("/deleteid_2", (req, res, next) => {
