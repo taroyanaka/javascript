@@ -594,39 +594,64 @@ const data_and_rule_list_3 = [
     ],
 ]
 
-const validate_to_data_or_error_by_rules_and_separate_and_tagging = (DATA, TYPE, OPTION, ERROR_MESSAGE) => makeValidator(DATA, TYPE, OPTION) ? ["data", DATA] : ["error", ERROR_MESSAGE];
-const separate_and_tagging_data_or_error_message_or_no_validated = (LIST) => {
-    return LIST.map(DATA_AND_RULES=>{
-        const DATA = DATA_AND_RULES[0];
-        return DATA_AND_RULES[1].reduce((A, RULES, IDX)=>{
-            const [TYPE, OPTION, ERROR_MESSAGE] = [RULES[0], RULES[1], RULES[2]];
-            A.push(
-                RULES[0] === false ? [['no_validated_data', DATA]] : validate_to_data_or_error_by_rules_and_separate_and_tagging(DATA, TYPE, OPTION, ERROR_MESSAGE)
-            );
-            return A;},A=[])
-    })
-};
 
-const data_only = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
-            V.map(VAL=> VAL[0]==="data")
-             .every(V=>V===true) ?
-                V.map(VAL=>VAL[1]) : null 
-        )
-const data_only_uniq = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
-            V.map(VAL=> VAL[0]==="data")
-             .every(V=>V===true) ?
-                R.uniq( V.map(VAL=>VAL[1]) )[0] : null 
-        )
-const error_only = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
-            V.map(VAL=> VAL[0]==="error")
-             .some(V=>V===true) ?
-                V.filter(VAL=>VAL[0]==="error").map(VAL=>VAL[1]) : null 
-        )
-const no_validated_data_only_uniq = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
-            V.map(VAL=> VAL[0])
-             .every(VAL=>VAL[0]==="no_validated_data") ?
-                V[0][0][1] : null 
-        )
+const shinku_hadoken = (SQL_FUNCTION, INPUT_DATA_KEY, INPUT_DATA_AND_RULES) => {
+    const validate_to_data_or_error_by_rules_and_separate_and_tagging = (DATA, TYPE, OPTION, ERROR_MESSAGE) => makeValidator(DATA, TYPE, OPTION) ? ["data", DATA] : ["error", ERROR_MESSAGE];
+    const separate_and_tagging_data_or_error_message_or_no_validated = (LIST) => {
+        return LIST.map(DATA_AND_RULES=>{
+            const DATA = DATA_AND_RULES[0];
+            return DATA_AND_RULES[1].reduce((A, RULES, IDX)=>{
+                const [TYPE, OPTION, ERROR_MESSAGE] = [RULES[0], RULES[1], RULES[2]];
+                A.push(
+                    RULES[0] === false ? [['no_validated_data', DATA]] : validate_to_data_or_error_by_rules_and_separate_and_tagging(DATA, TYPE, OPTION, ERROR_MESSAGE)
+                );
+                return A;},A=[])
+        })
+    };
+
+    // const data_only = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
+    //             V.map(VAL=> VAL[0]==="data")
+    //             .every(V=>V===true) ?
+    //                 V.map(VAL=>VAL[1]) : null 
+    //         )
+    const data_only_uniq = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
+                V.map(VAL=> VAL[0]==="data")
+                .every(V=>V===true) ?
+                    R.uniq( V.map(VAL=>VAL[1]) )[0] : null 
+            )
+    const error_only = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
+                V.map(VAL=> VAL[0]==="error")
+                .some(V=>V===true) ?
+                    V.filter(VAL=>VAL[0]==="error").map(VAL=>VAL[1]) : null 
+            )
+    const no_validated_data_only_uniq = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
+                V.map(VAL=> VAL[0])
+                .every(VAL=>VAL[0]==="no_validated_data") ?
+                    V[0][0][1] : null 
+            )
+    // https://github.com/ramda/ramda/issues/707#issuecomment-674606727
+    const multi_zip = (...arrays) => arrays[0].map((_, i) => arrays.map((arr) => arr[i]));
+
+
+    const THREE_LIST = [data_only_uniq(INPUT_DATA_AND_RULES), error_only(INPUT_DATA_AND_RULES), no_validated_data_only_uniq(INPUT_DATA_AND_RULES)];
+    const TRANSPOSED_THREE_LIST = R.transpose(THREE_LIST);
+    const DATA_OR_ERROR_LIST = TRANSPOSED_THREE_LIST.map(V=>V.filter(V=>V!==null)).map(V=>V[0])
+    const only_data = () => INPUT_DATA_AND_RULES.map(V=>V[0]);
+    const final_resonse = [INPUT_DATA_KEY, only_data(), DATA_OR_ERROR_LIST];
+    const error_key_and_error_message = () => multi_zip(final_resonse[0], final_resonse[1], final_resonse[2]).filter(V=>R.is(Array, V[2])).map(V=>[V[0], V[2]]);
+    const return_error_object = (ERROR_MESSAGE_ARRAY) => {
+        return {
+            "message": "error",
+            "data": ERROR_MESSAGE_ARRAY
+        };
+    }
+
+    const execute_the_response_data_or_key_with_error_message = (SQL_FUNCTION) => DATA_OR_ERROR_LIST.every(V=>R.is(String, V)) ? SQL_FUNCTION(only_data()) : return_error_object(error_key_and_error_message());
+
+    // const FOR_DEBUG_response_data_or_key_with_error_message = () => DATA_OR_ERROR_LIST.every(V=>R.is(String, V)) ? only_data() : error_key_and_error_message();
+    // return FOR_DEBUG_response_data_or_key_with_error_message()
+    return execute_the_response_data_or_key_with_error_message(SQL_FUNCTION)
+}
 
 app.get("/insert_2", (req, res, next) => {
     allowOrigin(res); res.json(
@@ -639,11 +664,24 @@ app.get("/update_2", (req, res, next) => {
     )
 });
 app.get("/readall_2", (req, res, next) => {
-    // allowOrigin(res); res.json(db_query_select_all_2 );
-    allowOrigin(res); res.json("foo");
+    allowOrigin(res); res.json(db_query_select_all_2 );
+    // allowOrigin(res); res.json("foo");
 });
+
+
 app.get("/read_any_2", (req, res, next) => {
-    const data_key = ["UUID"];
+    // const data_key = [req.query[0]];
+    // const data_key = R.toPairs(req.param);
+    // const data_key = req.params;
+    // const data_key = R.toPairs({"uuid":"foop","id":"hogehoge"})[0][0]
+    // const data_key = [
+    //     R.toPairs(req.query)[0][0]
+    // ];
+    const data_key = R.toPairs(req.query).map(V=>V[0]);
+
+    // const data_key = ["uuid"];
+
+
     const data_and_rules = [
         [req.query.uuid,
             [
@@ -652,40 +690,14 @@ app.get("/read_any_2", (req, res, next) => {
         ],
     ]
 
-    // https://github.com/ramda/ramda/issues/707#issuecomment-674606727
-    const multi_zip = (...arrays) => arrays[0].map((_, i) => arrays.map((arr) => arr[i]));
+    allowOrigin(res);
+
+    // res.json(shinku_hadoken(null, data_key, data_and_rules))
+    res.json(shinku_hadoken(db_query_select_2, data_key, data_and_rules))
+
+// res.json(req.query);
 
 
-    const res10 = [data_only_uniq(data_and_rules), error_only(data_and_rules), no_validated_data_only_uniq(data_and_rules)];
-    const res100 = R.transpose(res10);
-    const res1000 = res100.map(V=>V.filter(V=>V!==null)).map(V=>V[0])
-    const only_data = () => data_and_rules.map(V=>V[0]);
-    const final_resonse = [data_key, only_data(), res1000];
-    const error_key_and_error_message = () => multi_zip(final_resonse[0], final_resonse[1], final_resonse[2]).filter(V=>R.is(Array, V[2])).map(V=>[V[0], V[2]]);
-    const response_data_or_key_with_error_message = () => res1000.every(V=>R.is(String, V)) ? only_data() : error_key_and_error_message();
-
-const return_error_object = (ERROR_MESSAGE_ARRAY) => {
-    return {
-        "message": "error",
-        "data": ERROR_MESSAGE_ARRAY
-    };
-}
-
-
-    const execute_the_response_data_or_key_with_error_message = (SQL_FUNCTION, ERROR_OBJ_FUNCTION) => res1000.every(V=>R.is(String, V)) ? SQL_FUNCTION(only_data()) : ERROR_OBJ_FUNCTION(error_key_and_error_message());
-
-// db_query_select_2
-
-
-        allowOrigin(res);
-    console.table(response_data_or_key_with_error_message())
-        // res.json({foo:"bar"})
-
-        // res.json(response_data_or_key_with_error_message());
-
-        res.json(execute_the_response_data_or_key_with_error_message(db_query_select_2, return_error_object))
-
-        // res.json(db_query_select_2(final_resonse));
 });
 app.get("/deleteid_2", (req, res, next) => {
     allowOrigin(res); res.json(db_query_delete(req.query.id));
