@@ -83,7 +83,8 @@ const db_query_select_2 = (STRING_ARRAY) => {
         "message": "success",
         "data": db.prepare(`SELECT
     lorem.rowid,
-    info
+    info,
+    (SELECT uuid.uuid FROM uuid WHERE uuid.rowid = lorem.uuid_rowid) as uuid
 FROM lorem
 JOIN uuid
     ON uuid_rowid = uuid.rowid
@@ -324,7 +325,7 @@ app.get("/read_any_2", (req, res, next) => {
     res.json(shinku_hadoken(db_query_select_2, raging_demon(req.query, {
             'uuid': [
                 ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
-                ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",],
+                // ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",],
             ]
             // [
             //     ["isLength", {min: 3, max: 50}, "error: isLength: {min: 3, max: 50}",],

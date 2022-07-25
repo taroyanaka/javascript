@@ -314,14 +314,18 @@ const fetch_all = async () => {
     const res_json = res_json_tmp = await res.json();
     rendering_db_result(res_json);
 };
-
+const fetch_any = async () => {
+    const res = await fetch("http://localhost:8800/read_any_2?uuid=foo");
+    const res_json = res_json_tmp = await res.json();
+    rendering_db_result(res_json);
+};
 const dalete_and_fetch_all = async () => {
     const res = await fetch("http://localhost:8800/deleteid_2?id=1&uuid=foo");
     const res_json = res_json_tmp = await res.json();
     rendering_db_result(res_json);
 };
 const insert_and_fetch_all = async () => {
-    const res = await fetch("http://localhost:8800/insert_2?lorem=bowbowmeow00000000000&uuid=foo");
+    const res = await fetch("http://localhost:8800/insert_2?lorem=bowbowmeow&uuid=foo");
     const res_json = res_json_tmp = await res.json();
     rendering_db_result(res_json);
 };
