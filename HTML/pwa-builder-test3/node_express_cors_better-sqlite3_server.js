@@ -91,7 +91,8 @@ WHERE uuid.uuid = @uuid`
                     ).all({
                         uuid: STRING_ARRAY["uuid"],
                     }
-                ).map(DATA=>make_id_info_from_array(DATA.rowid, DATA.info))
+                )
+        // .map(DATA=>make_id_info_from_array(DATA.rowid, DATA.info))
     }
 };
 const db_query_select_all_2 = () => {
@@ -345,7 +346,3 @@ app.get("/deleteid_2", (req, res, next) => {
     )))
     // res.json(db_query_delete_2(req.query.id));
 });
-
-
-
-
