@@ -37,6 +37,8 @@ async function signInWithGoogle() {
     <script src="./validator.@13.7.0.min.js"></script>
 </head>
 <body>
+<h4><ul class="data"></ul></h4>
+
 <input type="text" class="vali_target" oninput="exe()" minlength="1" maxlength="3" required>
 <div></div>
 <span class="vali_value"></span>
@@ -293,11 +295,21 @@ const error_key_and_error_message = () => multi_zip(final_resonse[0], final_reso
 const response_data_or_key_with_error_message = () => res1000.every(V=>R.is(String, V)) ? only_data() : error_key_and_error_message();
 const execute_the_response_data_or_key_with_error_message = (SQL_FUNCTION, ERROR_OBJ_FUNCTION) => res1000.every(V=>R.is(String, V)) ? SQL_FUNCTION(only_data()) : ERROR_OBJ_FUNCTION(error_key_and_error_message());
 
+let res_json_tmp;
 
 
-console.table(
-    final_resonse
-);
+const fetch_and_render = async () => {
+    const res = await fetch("http://localhost:8800/update_2?lorem=ipsum&uuid=foo&id=1");
+    const res_json = res_json_tmp = await res.json();
+    document.querySelector(`.data`).innerHTML = res_json.data.map(V=>`<li>${V.rowid}: ${V.info}: ${V.uuid}</li>`).join("")
+};
+const fetch_all = async () => {
+    const res = await fetch("http://localhost:8800/readall_2");
+    const res_json = res_json_tmp = await res.json();
+    document.querySelector(`.data`).innerHTML = res_json.data.map(V=>`<li>${V.rowid}: ${V.info}: ${V.uuid}</li>`).join("")
+};
+
+fetch_and_render();
 </script>
 </body>
 </html

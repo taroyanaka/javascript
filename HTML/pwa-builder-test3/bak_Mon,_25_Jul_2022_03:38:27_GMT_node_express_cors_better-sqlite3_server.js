@@ -23,7 +23,7 @@ const app = express()
 const port = 8800
 
 const Database = require('better-sqlite3');
-const db = new Database('.data/tmp2.sqlite3');
+const db = new Database('.data/tmp3.sqlite3');
 
 const article_lists_create_table = () => `CREATE TABLE IF NOT EXISTS article_lists_table (
 id INT,
@@ -499,7 +499,7 @@ const db_query_select_all_2 = () => {
         "data": db.prepare(`SELECT
     lorem.rowid,
     info,
-    (SELECT uuid.uuid FROM uuid WHERE uuid.rowid = lorem.uuid_rowid)
+    (SELECT uuid.uuid FROM uuid WHERE uuid.rowid = lorem.uuid_rowid) as uuid
 FROM lorem
 JOIN uuid
     ON uuid_rowid = uuid.rowid;`
@@ -779,3 +779,4 @@ var hash = md5('value');
 // https://stackoverflow.com/questions/11643611/execute-sqlite-script
 
 
+// const uuid_create_table = () => `CREATE TABLE IF NOT EXISTS uuid (uuid TEXT NOT NULL)`;
