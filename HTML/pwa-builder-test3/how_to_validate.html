@@ -302,33 +302,23 @@ const execute_the_response_data_or_key_with_error_message = (SQL_FUNCTION, ERROR
 
 
 let res_json_tmp;
+
+const exe_fetch_and_get_res = async (QUERY) => {
+    const res = await fetch(QUERY);
+    const res_json = res_json_tmp = await res.json();
+    // const res_json = res_json_tmp = await (await fetch(QUERY)).json();
+    return res_json;
+};
+
 const rendering_db_result = (res_json) => document.querySelector(`.data`).innerHTML = res_json.data.map(V=>`<li>${V.rowid}: ${V.info}: ${V.uuid}</li>`).join("");
 
-const update_and_fetch_all = async () => {
-    const res = await fetch("http://localhost:8800/update_2?lorem=fooooooooo&uuid=foo&id=1");
-    const res_json = res_json_tmp = await res.json();
-    rendering_db_result(res_json);
-};
-const fetch_all = async () => {
-    const res = await fetch("http://localhost:8800/readall_2");
-    const res_json = res_json_tmp = await res.json();
-    rendering_db_result(res_json);
-};
-const fetch_any = async () => {
-    const res = await fetch("http://localhost:8800/read_any_2?uuid=foo");
-    const res_json = res_json_tmp = await res.json();
-    rendering_db_result(res_json);
-};
-const dalete_and_fetch_all = async () => {
-    const res = await fetch("http://localhost:8800/deleteid_2?id=1&uuid=foo");
-    const res_json = res_json_tmp = await res.json();
-    rendering_db_result(res_json);
-};
-const insert_and_fetch_all = async () => {
-    const res = await fetch("http://localhost:8800/insert_2?lorem=bowbowmeow&uuid=foo");
-    const res_json = res_json_tmp = await res.json();
-    rendering_db_result(res_json);
-};
+const update_and_fetch_all = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/update_2?lorem=fooooooooo&uuid=foo&id=1")));
+const fetch_all = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/readall_2")));
+const fetch_any = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/read_any_2?uuid=foo")));
+const dalete_and_fetch_all = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/deleteid_2?id=1&uuid=foo")));
+const insert_and_fetch_all = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/insert_2?lorem=bowbowmeow")));
+
+
 fetch_all();
 </script>
 </body>
