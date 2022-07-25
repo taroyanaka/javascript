@@ -119,7 +119,7 @@ VALUES(
             lorem: STRING_ARRAY["lorem"],
             uuid: STRING_ARRAY["uuid"],
         });
-    return db_query_select_2(STRING_ARRAY);
+    return db_query_select_all_2(STRING_ARRAY);
 };
 
 const db_query_update_and_select_2 = (STRING_ARRAY) => {
