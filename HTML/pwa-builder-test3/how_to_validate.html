@@ -298,8 +298,8 @@ const execute_the_response_data_or_key_with_error_message = (SQL_FUNCTION, ERROR
 let res_json_tmp;
 
 
-const fetch_and_render = async () => {
-    const res = await fetch("http://localhost:8800/update_2?lorem=ipsum&uuid=foo&id=1");
+const update_and_fetch_all = async () => {
+    const res = await fetch("http://localhost:8800/update_2?lorem=fooooooooo&uuid=foo&id=1");
     const res_json = res_json_tmp = await res.json();
     document.querySelector(`.data`).innerHTML = res_json.data.map(V=>`<li>${V.rowid}: ${V.info}: ${V.uuid}</li>`).join("")
 };
@@ -309,6 +309,11 @@ const fetch_all = async () => {
     document.querySelector(`.data`).innerHTML = res_json.data.map(V=>`<li>${V.rowid}: ${V.info}: ${V.uuid}</li>`).join("")
 };
 
+const dalete_and_fetch_all = async () => {
+    const res = await fetch("http://localhost:8800/deleteid_2?id=1&uuid=foo");
+    const res_json = res_json_tmp = await res.json();
+    document.querySelector(`.data`).innerHTML = res_json.data.map(V=>`<li>${V.rowid}: ${V.info}: ${V.uuid}</li>`).join("")
+};
 fetch_and_render();
 </script>
 </body>

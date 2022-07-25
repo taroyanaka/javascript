@@ -137,7 +137,7 @@ WHERE
         });
     return db_query_select_all_2(STRING_ARRAY);
 };
-const db_query_delete_2 = (STRING_ARRAY, ID) => {
+const db_query_delete_2 = (STRING_ARRAY) => {
     db.prepare(`DELETE FROM lorem
 WHERE
     lorem.rowid = @id
@@ -145,10 +145,11 @@ WHERE
     lorem.uuid_rowid =
         (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = @uuid)`
         ).run({
-            uuid: STRING_ARRAY[1],
-            id: ID,
+            id: STRING_ARRAY["id"],
+            uuid: STRING_ARRAY["uuid"],
+            // id: ID,
         });
-    return db_query_select_2(STRING_ARRAY);
+    return db_query_select_all_2(STRING_ARRAY);
 };
 
 const data_key = ["A","B","C","D","E","F","G","H"];
@@ -332,7 +333,17 @@ app.get("/read_any_2", (req, res, next) => {
     )))
 });
 app.get("/deleteid_2", (req, res, next) => {
-    allowOrigin(res); res.json(db_query_delete(req.query.id));
+    allowOrigin(res);
+    res.json(shinku_hadoken(db_query_delete_2, raging_demon(req.query, {
+            "id": [
+                ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
+            ],
+            'uuid': [
+                ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
+            ],
+        }
+    )))
+    // res.json(db_query_delete_2(req.query.id));
 });
 
 
