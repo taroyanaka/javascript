@@ -347,3 +347,5 @@ app.get("/deleteid_2", (req, res, next) => {
     )))
     // res.json(db_query_delete_2(req.query.id));
 });
+
+

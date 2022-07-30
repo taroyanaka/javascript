@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>  
+<body>
+<h1 class="main_js"></h1>
+<h1 class="main_with_as_js"></h1>
+<h1 class="index_html"></h1>
+
+<script type="module" src="main.js"></script>
+<script type="module" src="main_with_as.js"></script>
+
+<script type="module">
+import {helper, return_foo} from "./helper.js"; 
+helper("This works! in index.html");
+document.querySelector("h1.index_html").textContent = return_foo() + " in index.html";
+</script>
+</body>
+</html>
