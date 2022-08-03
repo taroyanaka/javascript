@@ -50,7 +50,9 @@ const app = express()
 const port = 8800
 
 const Database = require('better-sqlite3');
-const db = new Database('./1659517536_vue_test_with_web_api.sqlite3');
+// const db = new Database('./db/1659517536_vue_test_with_web_api.sqlite3');
+const db = new Database('./db/1659525935_vue_test_with_web_api.sqlite3');
+
 
 
 function allowOrigin(res){
@@ -86,40 +88,40 @@ const db_query_select_2 = (STRING_ARRAY) => {
     return {
         "message": "success",
         "data": db.prepare(`SELECT
-    lorem.rowid,
+    lorem.id,
     info,
-    (SELECT uid.uid FROM uid WHERE uid.rowid = lorem.uid_rowid) as uid
+    (SELECT uid.uid FROM uid WHERE uid.id = lorem.uid_id) as uid
 FROM lorem
 JOIN uid
-    ON uid_rowid = uid.rowid
+    ON uid_id = uid.id
 WHERE uid.uid = @uid`
                     ).all({
                         uid: STRING_ARRAY["uid"],
                     }
                 )
-        // .map(DATA=>make_id_info_from_array(DATA.rowid, DATA.info))
+        // .map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
     }
 };
 const db_query_select_all_2 = () => {
     return {
         "message": "success",
         "data": db.prepare(`SELECT
-    lorem.rowid,
+    lorem.id,
     info,
-    (SELECT uid.uid FROM uid WHERE uid.rowid = lorem.uid_rowid) as uid
+    (SELECT uid.uid FROM uid WHERE uid.id = lorem.uid_id) as uid
 FROM lorem
 JOIN uid
-    ON uid_rowid = uid.rowid;`
+    ON uid_id = uid.id;`
         ).all()
 // .map(DATA=>DATA)
         // ).all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
     }
 };
 const db_query_insert_and_select_2 = (STRING_ARRAY) => {
-    db.prepare(`INSERT INTO lorem (info, uid_rowid)
+    db.prepare(`INSERT INTO lorem (info, uid_id)
 VALUES(
     @lorem, 
-    (SELECT uid.rowid FROM uid WHERE uid.uid = @uid)
+    (SELECT uid.id FROM uid WHERE uid.uid = @uid)
 )`
         ).run({
             lorem: STRING_ARRAY["lorem"],
@@ -132,10 +134,10 @@ const db_query_update_and_select_2 = (STRING_ARRAY) => {
     db.prepare(`UPDATE lorem
 SET info = @lorem
 WHERE
-    lorem.rowid = @id
+    lorem.id = @id
     AND
-    lorem.uid_rowid =
-        (SELECT uid.rowid FROM uid WHERE uid.uid = @uid)`
+    lorem.uid_id =
+        (SELECT uid.id FROM uid WHERE uid.uid = @uid)`
         ).run({
             lorem: STRING_ARRAY["lorem"],
             uid: STRING_ARRAY["uid"],
@@ -146,10 +148,10 @@ WHERE
 const db_query_delete_2 = (STRING_ARRAY) => {
     db.prepare(`DELETE FROM lorem
 WHERE
-    lorem.rowid = @id
+    lorem.id = @id
     AND
-    lorem.uid_rowid =
-        (SELECT uid.rowid FROM uid WHERE uid.uid = @uid)`
+    lorem.uid_id =
+        (SELECT uid.id FROM uid WHERE uid.uid = @uid)`
         ).run({
             id: STRING_ARRAY["id"],
             uid: STRING_ARRAY["uid"],

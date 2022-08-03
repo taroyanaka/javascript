@@ -310,13 +310,13 @@ const exe_fetch_and_get_res = async (QUERY) => {
     return res_json;
 };
 
-const rendering_db_result = (res_json) => document.querySelector(`.data`).innerHTML = res_json.data.map(V=>`<li>${V.rowid}: ${V.info}: ${V.uid}</li>`).join("");
+const rendering_db_result = (res_json) => document.querySelector(`.data`).innerHTML = res_json.data.map(V=>`<li>${V.id}: ${V.info}: ${V.uid}</li>`).join("");
 
 const fetch_all = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/readall_2")));
 const fetch_any = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/read_any_2?uid=foo")));
-const update_and_fetch_all = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/update_2?lorem=fooooooooo&uid=foo&id=1")));
-const dalete_and_fetch_all = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/deleteid_2?id=1&uid=foo")));
-const insert_and_fetch_all = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/insert_2?lorem=bowbowmeow")));
+const update_and_fetch_all = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/update_2?lorem=fooooooooo&uid=bar&id=1")));
+const dalete_and_fetch_all = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/deleteid_2?id=10&uid=foo")));
+const insert_and_fetch_all = async () => rendering_db_result((await exe_fetch_and_get_res("http://localhost:8800/insert_2?lorem=bowbowmeow&uid=foo")));
 
 
 fetch_all();
