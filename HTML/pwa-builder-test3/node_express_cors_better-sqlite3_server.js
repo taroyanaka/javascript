@@ -14,10 +14,14 @@
 // nodemon /Users/yanakataro/Desktop/npm_package/better-sqlite3/node_express_cors_better-sqlite3_server.js
 
 
+// https://stackoverflow.com/a/9756189
+// $ ls -la  
+// var d1 = new Date();
+// d1.toUTCString();
+// Math.floor(d1.getTime()/ 1000);
 
 
-
-const sample_uuid_array = [
+const sample_uid_array = [
 "Fighter",
 "Mage",
 "Priest",
@@ -30,7 +34,7 @@ var hash = md5('value');
 // https://stackoverflow.com/questions/11643611/execute-sqlite-script
 
 
-// const uuid_create_table = () => `CREATE TABLE IF NOT EXISTS uuid (uuid TEXT NOT NULL)`;
+// const uid_create_table = () => `CREATE TABLE IF NOT EXISTS uid (uid TEXT NOT NULL)`;
 
 
 
@@ -46,7 +50,7 @@ const app = express()
 const port = 8800
 
 const Database = require('better-sqlite3');
-const db = new Database('.data/tmp3.sqlite3');
+const db = new Database('./1659517536_vue_test_with_web_api.sqlite3');
 
 
 function allowOrigin(res){
@@ -84,13 +88,13 @@ const db_query_select_2 = (STRING_ARRAY) => {
         "data": db.prepare(`SELECT
     lorem.rowid,
     info,
-    (SELECT uuid.uuid FROM uuid WHERE uuid.rowid = lorem.uuid_rowid) as uuid
+    (SELECT uid.uid FROM uid WHERE uid.rowid = lorem.uid_rowid) as uid
 FROM lorem
-JOIN uuid
-    ON uuid_rowid = uuid.rowid
-WHERE uuid.uuid = @uuid`
+JOIN uid
+    ON uid_rowid = uid.rowid
+WHERE uid.uid = @uid`
                     ).all({
-                        uuid: STRING_ARRAY["uuid"],
+                        uid: STRING_ARRAY["uid"],
                     }
                 )
         // .map(DATA=>make_id_info_from_array(DATA.rowid, DATA.info))
@@ -102,24 +106,24 @@ const db_query_select_all_2 = () => {
         "data": db.prepare(`SELECT
     lorem.rowid,
     info,
-    (SELECT uuid.uuid FROM uuid WHERE uuid.rowid = lorem.uuid_rowid) as uuid
+    (SELECT uid.uid FROM uid WHERE uid.rowid = lorem.uid_rowid) as uid
 FROM lorem
-JOIN uuid
-    ON uuid_rowid = uuid.rowid;`
+JOIN uid
+    ON uid_rowid = uid.rowid;`
         ).all()
 // .map(DATA=>DATA)
         // ).all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
     }
 };
 const db_query_insert_and_select_2 = (STRING_ARRAY) => {
-    db.prepare(`INSERT INTO lorem (info, uuid_rowid)
+    db.prepare(`INSERT INTO lorem (info, uid_rowid)
 VALUES(
     @lorem, 
-    (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = @uuid)
+    (SELECT uid.rowid FROM uid WHERE uid.uid = @uid)
 )`
         ).run({
             lorem: STRING_ARRAY["lorem"],
-            uuid: STRING_ARRAY["uuid"],
+            uid: STRING_ARRAY["uid"],
         });
     return db_query_select_all_2(STRING_ARRAY);
 };
@@ -130,11 +134,11 @@ SET info = @lorem
 WHERE
     lorem.rowid = @id
     AND
-    lorem.uuid_rowid =
-        (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = @uuid)`
+    lorem.uid_rowid =
+        (SELECT uid.rowid FROM uid WHERE uid.uid = @uid)`
         ).run({
             lorem: STRING_ARRAY["lorem"],
-            uuid: STRING_ARRAY["uuid"],
+            uid: STRING_ARRAY["uid"],
             id: STRING_ARRAY["id"],
         });
     return db_query_select_all_2(STRING_ARRAY);
@@ -144,11 +148,11 @@ const db_query_delete_2 = (STRING_ARRAY) => {
 WHERE
     lorem.rowid = @id
     AND
-    lorem.uuid_rowid =
-        (SELECT uuid.rowid FROM uuid WHERE uuid.uuid = @uuid)`
+    lorem.uid_rowid =
+        (SELECT uid.rowid FROM uid WHERE uid.uid = @uid)`
         ).run({
             id: STRING_ARRAY["id"],
-            uuid: STRING_ARRAY["uuid"],
+            uid: STRING_ARRAY["uid"],
             // id: ID,
         });
     return db_query_select_all_2(STRING_ARRAY);
@@ -273,7 +277,7 @@ app.get("/insert_2", (req, res, next) => {
             "lorem": [
                 ["isLength", {min: 1, max: 10}, "error: isLength: {min: 1, max: 10}",],
             ],
-            "uuid": [
+            "uid": [
                 ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
             ],
             // [
@@ -289,7 +293,7 @@ app.get("/update_2", (req, res, next) => {
                     "lorem": [
                         ["isLength", {min: 1, max: 10}, "error: isLength: {min: 1, max: 10}",],
                     ],
-                    "uuid": [
+                    "uid": [
                         ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
                     ],
                     "id": [
@@ -323,7 +327,7 @@ const raging_demon = (REQ_QUERY, KEYS_RULES_OBJECT) => {
 app.get("/read_any_2", (req, res, next) => {
     allowOrigin(res);
     res.json(shinku_hadoken(db_query_select_2, raging_demon(req.query, {
-            'uuid': [
+            'uid': [
                 ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
                 // ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",],
             ]
@@ -340,7 +344,7 @@ app.get("/deleteid_2", (req, res, next) => {
             "id": [
                 ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
             ],
-            'uuid': [
+            'uid': [
                 ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
             ],
         }
