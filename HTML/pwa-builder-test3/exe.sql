@@ -82,3 +82,35 @@ FROM
 JOIN uuid
     ON uuid_rowid = uuid.rowid
 WHERE uuid.uuid = "bar";
+
+
+
+
+BEGIN TRANSACTION;
+
+ALTER TABLE lorem RENAME TO tbl_temp;
+DROP TABLE lorem;
+CREATE TABLE lorem(id INTEGER PRIMARY KEY, info TEXT, uid_id INTEGER);
+INSERT INTO lorem(info, uid_id) SELECT info, uid_rowid FROM tbl_temp;
+DROP TABLE tbl_temp;
+
+COMMIT;
+
+
+BEGIN TRANSACTION;
+
+ALTER TABLE uid RENAME TO tbl_temp;
+DROP TABLE uid;
+CREATE TABLE uid(id INTEGER PRIMARY KEY, uid TEXT);
+INSERT INTO uid(uid) SELECT uid FROM tbl_temp;
+DROP TABLE tbl_temp;
+
+COMMIT;
+
+-- SELECT * FROM uid;
+-- SELECT * FROM lorem;
+
+INSERT INTO lorem (info, uid_id) values("FOOBARTEXT1", 1);
+INSERT INTO lorem (info, uid_id) values("FOOBARTEXT1", 2);
+INSERT INTO lorem (info, uid_id) values("FOOBARTEXT10", 1);
+INSERT INTO lorem (info, uid_id) values("FOOBARTEXT10", 2);

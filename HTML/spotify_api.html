@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+const accessToken = "BQCKEZdlbY185vT2cIpuMluXCzYhuFJQlaBuR12NVQF2laGwiOxYfM_9LXALNg02GVZ45zPpXTeG7-P1J3pVbZGJVNM3NiUncOHy6C385XgxDQqwWBmYGw2sjQSjkFDaj47rf1gjF7xHFM5bNvz56PlYRz-wNmstOFmMBwKIrlb_tXvVCLDpp74";
+const playlist_id = "5cjen0cNMWH8uoDED7n9tD";
+// fetch('https://api.spotify.com/v1/playlist/5cjen0cNMWH8uoDED7n9tD', {
+fetch(`https://api.spotify.com/v1/playlist/${playlist_id}`, {
+// fetch('https://api.spotify.com/v1/artists/21E3waRsmPlU7jZsS13rcj', {
+            method: 'GET', headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + accessToken
+            }
+        })
+            .then((response) => {
+                console.log(response.json().then(
+                    (data) => { console.log(data) }
+                ));
+            });
+</script>
+</body>
+</html>
