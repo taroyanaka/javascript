@@ -36,6 +36,18 @@
     --none-or-block-col-2: none;
     /* --none-or-block-col-3: none; */
 }
+textarea{
+    border: none;
+    resize: none;
+    background: transparent;
+    overflow: auto;
+}
+input, button {
+    border: none;
+    background: transparent;
+    /* background: transparent; */
+    cursor: pointer;
+}
 .row {
     display: grid;
     /* grid-template-columns: repeat(4, 1fr); */
@@ -70,8 +82,12 @@
     /* width: fit-content; */
     /* grid-column: 4 / 5; */
 }
-.foo {
+/* .foo {
     width: 70%;
+} */
+section{
+--accordion-panel-background: #000;
+/* --accordion-title-spacing: 100rem; */
 }
 
 textarea.col-0 {
@@ -81,6 +97,8 @@ textarea.col-0 {
 .red{
     color: red;
 }
+
+
 
 /* https://codepen.io/hashikaru/pen/ZEBYoZp */
 .x-scroll {
@@ -98,9 +116,87 @@ textarea.col-0 {
   height: 100%;
   box-sizing: border-box;
 }
+
+
+.box{
+    position: relative;
+    z-index: -1;
+}
+.inner_box{
+    position: absolute;
+    /* width: 10vw; */
+}
+.box_0{
+    top: 0px;
+}
+/* .box_1{
+    top: 10px;
+    left: 30px;
+}
+.box_2{
+    top: 20px;
+    left: 60px;
+} */
+.circle {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+.circle_1 {
+    background: red;
+}
+.circle_2 {
+    background: gray;
+}
+.circle_3 {
+    background: blueviolet;
+}
+.circle_4 {
+    background: palegreen;
+}
+.circle_5 {
+    background: yellow;
+}
+.circle_6 {
+    background: palevioletred;
+}
+.circle_7 {
+    background: plum;
+}
+.circle_8 {
+    background: powderblue;
+}
+.circle_9 {
+    background: burlywood;
+}
+.circle_10 {
+    background: azure;
+}
 </style>
 </head>
 <body>
+
+<div class="box">
+<!-- <div class="inner_box box_0">
+<div class="circle circle_1"></div>
+<div class="circle circle_2"></div>
+<div class="circle circle_3"></div>
+<div class="circle circle_4"></div>
+</div>
+<div class="inner_box box_1">
+<div class="circle circle_1"></div>
+<div class="circle circle_2"></div>
+<div class="circle circle_3"></div>
+<div class="circle circle_4"></div>
+</div>
+<div class="inner_box box_2">
+<div class="circle circle_1"></div>
+<div class="circle circle_2"></div>
+<div class="circle circle_3"></div>
+<div class="circle circle_4"></div>
+</div> -->
+</div>
+
 <input type="text" name="target_str" class="target_str" value="" onchange="execute()" oninput="execute()">
 <div class="layout_change">
 <input type="button" value="css_root_reset" onclick="css_root_reset()">
@@ -296,6 +392,61 @@ const css_root_reset = () => document.querySelector(":root").classList.value = "
 const css_root_none_co_2_col_3 = () => {css_root_reset();document.querySelector(":root").classList.add("none-col-2-col-3");}
 const css_root_none_co_0_col_2 = () => {css_root_reset();document.querySelector(":root").classList.add("none-col-0-col-2");}
 const css_root_none = () => {css_root_reset();document.querySelector(":root").classList.add("none");}
+
+
+function random(seed) {
+    const x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
+function seedShuffle(array, seed) {
+    let m = array.length, t, i;
+    while (m) {
+        i = Math.floor(random(seed) * m--);
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+        ++seed
+    }
+    return array;
+}
+
+// const make_html_string_circle_box_html = (NUM, array) => `<div class="inner_box box_${NUM}">
+// <div class="circle circle_1"></div>
+// <div class="circle circle_2"></div>
+// <div class="circle circle_3"></div>
+// <div class="circle circle_4"></div>
+// </div>`;
+const make_html_string_circle_box_html_random_array = (NUM, array) => `<div class="inner_box box_${NUM}">
+<div class="circle circle_${array[0]}"></div>
+<div class="circle circle_${array[1]}"></div>
+<div class="circle circle_${array[2]}"></div>
+<div class="circle circle_${array[3]}"></div>
+<div class="circle circle_${array[4]}"></div>
+<div class="circle circle_${array[5]}"></div>
+<div class="circle circle_${array[6]}"></div>
+<div class="circle circle_${array[7]}"></div>
+<div class="circle circle_${array[8]}"></div>
+<div class="circle circle_${array[9]}"></div>
+<div class="circle circle_${array[10]}"></div>
+<div class="circle circle_${array[11]}"></div>
+</div>`;
+
+const make_html_string_circle_box_css = (NUM) => `.box_${NUM}{
+    top: ${NUM*10}px;
+    left: ${NUM*30}px;
+}`;
+const make_html_string_circle_box_css_with_random = (NUM) => `.box_${NUM}{
+    top: calc(${Math.round(Math.random(42)*10)+10*NUM}px - 100vh);
+    left: calc(${Math.round(Math.random(42)*10)+30*NUM}px - 110vw);
+
+    z-index: ${Math.round(Math.random(42)*10)};
+}`;
+
+// document.querySelector(`.box`).innerHTML = R.range(0, 20).map(V=>make_html_string_circle_box_html_random_array(V, seedShuffle(R.range(1, 10), 42))).join("");
+document.querySelector(`.box`).innerHTML = R.range(0, 100).map(V=>make_html_string_circle_box_html_random_array(V, seedShuffle(R.range(0, 12), Math.round(Math.random(42)*10)))).join("");
+// document.querySelector(`.box`).innerHTML = R.range(0, 10).map(V=>make_html_string_circle_box_html(V, seedShuffle([1,2,3], 42))).join("");
+// document.querySelector(`style`).innerText += R.map(make_html_string_circle_box_css, R.range(0, 100)).join("");
+document.querySelector(`style`).innerText += R.map(make_html_string_circle_box_css_with_random, R.range(0, 100)).join("");
 </script>
 </body>
 </html>
