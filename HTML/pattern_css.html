@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pattern css</title>
+    <link rel="stylesheet" href="reset.css">
+    <script src="./ramda.@0.28.0.js"></script>
+<style>
+.box{
+    position: relative;
+    /* z-index: -1; */
+}
+.inner_box{
+    position: absolute;
+    /* width: 10vw; */
+}
+.box_0{
+    top: 0px;
+}
+/* .box_1{
+    top: 10px;
+    left: 30px;
+}
+.box_2{
+    top: 20px;
+    left: 60px;
+} */
+.circle {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+}
+/* .circle_1 {
+    background: red;
+}
+.circle_2 {
+    background: gray;
+}
+.circle_3 {
+    background: blueviolet;
+}
+.circle_4 {
+    background: palegreen;
+}
+.circle_5 {
+    background: yellow;
+}
+.circle_6 {
+    background: palevioletred;
+}
+.circle_7 {
+    background: plum;
+}
+.circle_8 {
+    background: powderblue;
+}
+.circle_9 {
+    background: burlywood;
+}
+.circle_10 {
+    background: azure;
+} */
+.circle_1 {
+    background:rgb(255, 255, 255);
+}
+.circle_2 {
+    background:rgb(200,200,200);
+}
+.circle_3 {
+    background:rgb(180,180,180);
+}
+.circle_4 {
+    background:rgb(150,150,150);
+}
+.circle_5 {
+    background:rgb(120,120,120);
+}
+.circle_6 {
+    background:rgb(100,100,100);
+}
+.circle_7 {
+    background:rgb(80,80,80);
+}
+.circle_8 {
+    background:rgb(50,50,50);
+}
+.circle_9 {
+    background:rgb(20,20,20);
+}
+.circle_10 {
+    background:rgb(10,10,10);
+}
+
+.box {
+  /* transition: all 0.3s ease; */
+  /* width: 100%; */
+    /* filter: opacity(50%); */
+  filter: blur(2px) brightness(1.2);
+  transform: scale(1.5);
+
+}
+.box:hover {
+  filter: blur(8px) brightness(1.3);
+  transform: scale(1.8);
+    /* filter: drop-shadow(7px 10px 21px rgba(255,128,0,0.5)); */
+    /* filter: opacity(50%); */
+}
+</style>
+</head>
+<body>
+<div class="box">
+<!-- <div class="inner_box box_0">
+<div class="circle circle_1"></div>
+<div class="circle circle_2"></div>
+<div class="circle circle_3"></div>
+<div class="circle circle_4"></div>
+</div>
+<div class="inner_box box_1">
+<div class="circle circle_1"></div>
+<div class="circle circle_2"></div>
+<div class="circle circle_3"></div>
+<div class="circle circle_4"></div>
+</div>
+<div class="inner_box box_2">
+<div class="circle circle_1"></div>
+<div class="circle circle_2"></div>
+<div class="circle circle_3"></div>
+<div class="circle circle_4"></div>
+</div> -->
+</div>
+</body>
+<script>
+function random(seed) {
+    const x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
+function seedShuffle(array, seed) {
+    let m = array.length, t, i;
+    while (m) {
+        i = Math.floor(random(seed) * m--);
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+        ++seed
+    }
+    return array;
+}
+
+// const make_html_string_circle_box_html = (NUM, array) => `<div class="inner_box box_${NUM}">
+// <div class="circle circle_1"></div>
+// <div class="circle circle_2"></div>
+// <div class="circle circle_3"></div>
+// <div class="circle circle_4"></div>
+// </div>`;
+const make_html_string_circle_box_html_random_array = (NUM, array) => `<div class="inner_box box_${NUM}">
+<div class="circle circle_${array[0]}"></div>
+<div class="circle circle_${array[1]}"></div>
+<div class="circle circle_${array[2]}"></div>
+<div class="circle circle_${array[3]}"></div>
+<div class="circle circle_${array[4]}"></div>
+<div class="circle circle_${array[5]}"></div>
+<div class="circle circle_${array[6]}"></div>
+<div class="circle circle_${array[7]}"></div>
+<div class="circle circle_${array[8]}"></div>
+<div class="circle circle_${array[9]}"></div>
+<div class="circle circle_${array[10]}"></div>
+<div class="circle circle_${array[11]}"></div>
+</div>`;
+
+const make_html_string_circle_box_css = (NUM) => `.box_${NUM}{
+    top: ${NUM*10}px;
+    left: ${NUM*30}px;
+}`;
+const make_html_string_circle_box_css_with_random = (NUM) => `.box_${NUM}{
+    top: calc(${Math.round(Math.random(42)*10)+10*NUM}px - 100vh);
+    left: calc(${Math.round(Math.random(42)*10)+30*NUM}px - 110vw);
+
+    z-index: ${Math.round(Math.random(42)*10)};
+}`;
+
+// document.querySelector(`.box`).innerHTML = R.range(0, 20).map(V=>make_html_string_circle_box_html_random_array(V, seedShuffle(R.range(1, 10), 42))).join("");
+document.querySelector(`.box`).innerHTML = R.range(0, 100).map(V=>make_html_string_circle_box_html_random_array(V, seedShuffle(R.range(0, 12), Math.round(Math.random(42)*10)))).join("");
+// document.querySelector(`.box`).innerHTML = R.range(0, 10).map(V=>make_html_string_circle_box_html(V, seedShuffle([1,2,3], 42))).join("");
+// document.querySelector(`style`).innerText += R.map(make_html_string_circle_box_css, R.range(0, 100)).join("");
+document.querySelector(`style`).innerText += R.map(make_html_string_circle_box_css_with_random, R.range(0, 100)).join("");
+</script>
+</html>
