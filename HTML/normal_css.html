@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="cssui/cssui.accordion.min.css">
 <style>
 :root{
+font-weight: 900;
+font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     --none-or-block-col-0: '';
     --none-or-block-col-1: '';
     --none-or-block-col-2: '';
@@ -37,12 +39,17 @@
     /* --none-or-block-col-3: none; */
 }
 textarea{
+    font-size: large;
+    font-weight: bold;
     border: none;
-    resize: none;
+    /* resize: none; */
     background: transparent;
     overflow: auto;
 }
 input, button {
+    font-size: large;
+    font-weight: bold;
+
     border: none;
     background: transparent;
     /* background: transparent; */
@@ -61,6 +68,7 @@ input, button {
     /* width: auto; */
     grid-row: 1 / 11;
     object-fit: fill;
+    /* object-fit: contain; */
 }
 .col-0 {
     display: var(--none-or-block-col-0);
@@ -71,7 +79,21 @@ input, button {
     display: var(--none-or-block-col-1);
     /* width: fit-content; */
     /* grid-column: 2 / 3; */
+    /* text-align: right; */
+    /* align-content: right; */
 }
+.col-1 ul {
+    list-style-type: none;
+    padding: 0;
+  display: grid;
+
+    grid-auto-columns: auto;
+    grid-auto-rows: auto;
+  justify-items: end;
+}
+    /* text-align: right; */
+    /* align-content: right; */
+
 .col-2 {
     display: var(--none-or-block-col-2);
     /* width: fit-content; */
@@ -254,7 +276,7 @@ textarea.col-0 {
 
 <div class="col-0">
 <h1>col-0</h1>
-<textarea name="col-0" class="col-0"></textarea>
+<textarea name="col-0" class="col-0" oninput="execute();"></textarea>
 </div>
 
 <div class="col-1">
