@@ -30,36 +30,50 @@
     outline: none;
     color: #666;
     }
+
+
 .parent_bubble {
-    /* position: relative; */
-  display: grid;
-  /* grid-auto-rows: minmax(180px, auto); */
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-/* gap: 1px; */
-  /* grid-auto-columns: minmax(180px, auto); */
+    display: grid;
+    /* grid-template-columns: repeat(3, 1fr); */
+    /* grid-template-rows: repeat(3, 1fr); */
     width: 360px;
     height: 360px;
     background-color: #f06;
 }
 .bubble {
-  /* width: 40vmin; */
-  width: 180px;
-  height: 180px;
-  background-color: gray;
-  clip-path: polygon(0 5%, 10% 5%, 15% 0, 20% 5%, 100% 5%, 100% 100%, 0 100%);
+    /* grid-column: 1/3; */
+    /* grid-row: 1/3; */
+    /* width: 180px; */
+    /* height: 360px; */
+    background-color: gray;
+    border-radius: 10px;
+    line-break: auto;
+}
+.bubble_2 {
+    /* grid-column: 3/3; */
+    /* grid-row: 1/3; */
+    /* width: 180px; */
+    /* height: 360px; */
+    background-color: purple;
+    clip-path: polygon(0% 40%, 10% 50%, 0% 60%);
+}
+.text{
+    line-break: anywhere;
 }
     </style>
+<style class="wrap"></style>
 </head>
 <body>
-1/2
-1/3
-1/4
+<!-- <p class="text">aaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p> -->
+
+
+
 <div class="parent_bubble">
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
-    <div class="bubble"></div>
+    <div class="bubble"><p class="text">aaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p></div>
+    <div class="bubble_2"></div>
+    <!-- <div class="bubble"></div> -->
+    <!-- <div class="bubble"></div> -->
+    <!-- <div class="bubble"></div> -->
 </div>
 
 <!-- https://saruwakakun.com/html-css/reference/speech-bubble#section5 -->
@@ -155,6 +169,57 @@ var text = draw_2.text(function(add) {
 // var use  = draw_2.use(symbol).move(200, 200)
 // var defs = draw_2.defs()
 // var defs = rect.root().defs()
+
+1/2
+1/3
+1/4
+
+6/12
+4/12
+3/12
+
+
+const MAX_NUM = 2;
+const width_num_string = 360 / MAX_NUM;
+const height_num_string = 360 / MAX_NUM;
+// const MAX_NUM = number_of_divisions;
+// const THIS_PATTERN_NUM = number_of_divisions + 2;
+// const colomn_num = MAX_NUM/THIS_PATTERN_NUM;
+// const bubble_num = MAX_NUM/THIS_PATTERN_NUM;
+
+const COLUMN_OFFSET = 1;
+const COLUMN_OFFSET_plus_bubble_2 = COLUMN_OFFSET + 1;
+
+const ROW_OFFSET = 1;
+// const ROW_OFFSET_plus_bubble_2 = ROW_OFFSET + 1;
+const ROW_OFFSET_plus_bubble_2 =  1;
+
+// const colomn_num_string = colomn_num.toString();
+// const colomn_num_string = MAX_NUM.toString();
+// const OFFSET_string = OFFSET.toString();
+// const OFFSET_plus_bubble_2_string = OFFSET_plus_bubble_2.toString();
+// const bubble_num_string = bubble_num.toString();
+// const bubble_num_string = MAX_NUM.toString();
+
+document.querySelector(`.wrap`).textContent = "";
+document.querySelector(`.wrap`).textContent += `.parent_bubble{
+grid-template-columns: repeat(${MAX_NUM}, 1fr);
+grid-template-rows: repeat(${MAX_NUM}, 1fr);
+}`;
+
+document.querySelector(`.wrap`).textContent += `.bubble{
+grid-column: ${COLUMN_OFFSET}/${MAX_NUM};
+grid-row: ${ROW_OFFSET}/${MAX_NUM};
+    width: ${width_num_string}px;
+    height: ${height_num_string}px;
+}`;
+
+document.querySelector(`.wrap`).textContent += `.bubble_2{
+grid-column: ${COLUMN_OFFSET_plus_bubble_2}/${MAX_NUM};
+grid-row: ${ROW_OFFSET_plus_bubble_2}/${MAX_NUM};
+    width: ${width_num_string}px;
+    height: ${height_num_string}px;
+}`;
 
 </script>
 </body>
