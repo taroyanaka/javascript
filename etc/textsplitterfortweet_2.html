@@ -10,124 +10,53 @@
 <style>
 .twitter-share-button{
     display: block;
-}
-blockquote.twitter-tweet {
-  display: inline-block;
-  font-family: "Helvetica Neue", Roboto, "Segoe UI", Calibri, sans-serif;
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 16px;
-  border-color: #eee #ddd #bbb;
-  border-radius: 5px;
-  border-style: solid;
-  border-width: 1px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-  margin: 10px 5px;
-  padding: 0 16px 16px 16px;
-  max-width: 468px;
-}
-
-blockquote.twitter-tweet p {
-  font-size: 16px;
-  font-weight: normal;
-  line-height: 20px;
-}
-
-blockquote.twitter-tweet a {
-  color: inherit;
-  font-weight: normal;
-  text-decoration: none;
-  outline: 0 none;
-}
-
-blockquote.twitter-tweet a:hover,
-blockquote.twitter-tweet a:focus {
-  text-decoration: underline;
+    overflow-wrap: anywhere;
 }
 </style>
 </head>
 <body>
-  <!-- <li v-for="item in result" :key="item.message"> -->
-  <!-- <li v-for="item in result"> -->
-<!-- <script src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> -->
-
-<!-- <a class="twitter-share-button" href="https://twitter.com/intent/tweet?text=result_of_one" data-size="large">Tweet</a> -->
-
 <div class="app">
-
 <textarea v-model="foo" class="foo"></textarea>
+    <select class="select" v-model="selected" @change="fn_B($event)">
+        <option disabled value="">Please select one</option>
+        <option v-for="NUM in ALL_NUM" :key="NUM">
+            {{ NUM }}
+         </option>
+    </select>
 <input type="button" value="fn_A" @click="fn_A">
 
-
-<!-- <template v-for="(result_of_one, result_of_one_index) in result" :key="result_of_one"> -->
-    <!-- <a class="twitter-share-button" href="item" data-size="large" v-for="item in result">{{ item }}</a> -->
-
 <!-- https://stackoverflow.com/a/60293732 -->
-<a class="twitter-share-button" v-bind:href="`https://twitter.com/intent/tweet?text=${item}`" data-size="large" v-for="item in result">{{ item }}</a>
-
-    <!-- <a class="twitter-share-button" href="result_of_one" data-size="large">{{ result_of_one }}</a> -->
-<!-- </template> -->
-
-<!-- <script src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> -->
-<!-- <a class="twitter-share-button" href="result_of_one" data-size="large">{{ result_of_one }}</a> -->
-
-
-</div>
+<a class="twitter-share-button" v-bind:href="`https://twitter.com/intent/tweet?text=${item}`" data-size="large" v-for="item in TXT">{{ item }}</a>
 
 </div>
 </body>
-
-
 <script>
 const app = Vue.createApp({
   data() {
     return {
         foo: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
-        bar: '',
-
-        buz: [],
-        qux: [],
-        foo_list: [],
-        TXT: '',
-
-        result: [],
-
-        selected: '',
-        BAR2: [],
-        BUZZ: [],
-        X: [],
-        check: true,
-        BAR_list: [],
+        TXT: [],
+        selected: 140,
+        ALL_NUM:[],
     }
+  },
+  mounted() {
+    this.init()
   },
   methods: {
     fn_A() {
-        this.bar = document.querySelector('.foo').value.split('');
-
-        this.TXT = R.splitEvery(30,
-                this.foo
+        this.TXT = R.splitEvery(
+                    this.selected,
+                    this.foo
                 );
-
         console.log(this.TXT)
-
-            // let script = document.createElement("script"); script.setAttribute("src", "https://platform.twitter.com/widgets.js"); script.setAttribute("charset", "utf-8");
-            // document.querySelector("body").appendChild(script, null)
-
-
-        for (let dataText of this.TXT) {
-            // let a = document.createElement("a"); a.setAttribute("class", "twitter-share-button"); a.setAttribute("data-text", dataText);
-            // document.querySelector("body").insertBefore(a, null)
-            // document.querySelector("body").appendChild(a, null);
-
-
-            // let a = document.createElement("a"); a.setAttribute("class", "twitter-share-button"); a.setAttribute("data-text", dataText);
-            // document.querySelector("body").appendChild(a, null)
-            // this.result.push('https://twitter.com/intent/tweet?text=' + dataText)
-            this.result.push(dataText)
-        }
-
     },
-    fn_B() {
+    fn_B(EVENT) {
+        this.selected = Number(EVENT.target.value);
+    },
+    init() {
+        this.ALL_NUM = R.range(1, 141);
+        this.selected = 140;
     },
   },
 }).mount('.app');
