@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- 
+vue ✅
+server|client side validate
+web api with authentication
+grid layout
+client side save
+PWA
+ -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,15 +24,15 @@
 </head>
 <body>
 <div class="app">
-<textarea v-model="foo" class="foo"></textarea>
-    <select class="select" v-model="selected" @change="fn_B($event)">
-        <option disabled value="">Please select one</option>
-        <option v-for="NUM in ALL_NUM" :key="NUM">
-            {{ NUM }}
-         </option>
-    </select>
-<input type="button" value="fn_A" @click="fn_A">
 
+<textarea v-model="foo" class="foo"></textarea>
+<select class="select" v-model="selected" @change="fn_B($event)">
+    <option disabled value="">Please select one</option>
+    <option v-for="NUM in ALL_NUM" :key="NUM">
+        {{ NUM }}
+        </option>
+</select>
+<input type="button" value="fn_A" @click="fn_A">
 <!-- https://stackoverflow.com/a/60293732 -->
 <a class="twitter-share-button" v-bind:href="`https://twitter.com/intent/tweet?text=${item}`" data-size="large" v-for="item in TXT">{{ item }}</a>
 
@@ -61,5 +69,4 @@ const app = Vue.createApp({
   },
 }).mount('.app');
 </script>
-
 </html>
