@@ -56,6 +56,7 @@
     /* height: 360px; */
     background-color: purple;
     clip-path: polygon(0% 40%, 10% 50%, 0% 60%);
+    clip-path: polygon(0% 10%, 10% 20%, 0% 30%);
 }
 .text{
     line-break: anywhere;
@@ -180,8 +181,8 @@ var text = draw_2.text(function(add) {
 
 
 const MAX_NUM = 2;
-const width_num_string = 360 / MAX_NUM;
-const height_num_string = 360 / MAX_NUM;
+const width_num = 360 / MAX_NUM;
+const height_num = 360 / MAX_NUM;
 // const MAX_NUM = number_of_divisions;
 // const THIS_PATTERN_NUM = number_of_divisions + 2;
 // const colomn_num = MAX_NUM/THIS_PATTERN_NUM;
@@ -210,17 +211,16 @@ grid-template-rows: repeat(${MAX_NUM}, 1fr);
 document.querySelector(`.wrap`).textContent += `.bubble{
 grid-column: ${COLUMN_OFFSET}/${MAX_NUM};
 grid-row: ${ROW_OFFSET}/${MAX_NUM};
-    width: ${width_num_string}px;
-    height: ${height_num_string}px;
+    width: ${width_num}px;
+    height: ${height_num}px;
 }`;
 
 document.querySelector(`.wrap`).textContent += `.bubble_2{
 grid-column: ${COLUMN_OFFSET_plus_bubble_2}/${MAX_NUM};
 grid-row: ${ROW_OFFSET_plus_bubble_2}/${MAX_NUM};
-    width: ${width_num_string}px;
-    height: ${height_num_string}px;
+    width: ${width_num}px;
+    height: ${height_num}px;
 }`;
-
 </script>
 </body>
 </html>

@@ -50,10 +50,19 @@ const app = express()
 const port = 8800
 
 const Database = require('better-sqlite3');
-// const db = new Database('./db/1659517536_vue_test_with_web_api.sqlite3');
-const db = new Database('./db/1659525935_vue_test_with_web_api.sqlite3');
-
-
+let db;
+const switch_db = (SERVICE_NAME) => {
+    switch (SERVICE_NAME) {
+        case "vue_test_with_web_api":
+            db = new Database('./db/1659525935_vue_test_with_web_api.sqlite3');
+            break;
+        case "textsplitterfortweet_2":
+            db = new Database('./db/1660820720_textsplitterfortweet_2.sqlite3');
+            break;
+        default:
+            break;
+    }
+};
 
 function allowOrigin(res){
   res.header("Access-Control-Allow-Origin", "*");
@@ -274,7 +283,7 @@ const shinku_hadoken = (SQL_FUNCTION, DATA_KEYS_DATA_AND_RULES_ARRAY) => {
 
 
 app.get("/insert_2", (req, res, next) => {
-    allowOrigin(res);
+    switch_db("vue_test_with_web_api"); allowOrigin(res);
     res.json(shinku_hadoken(db_query_insert_and_select_2, raging_demon(req.query, {
             "lorem": [
                 ["isLength", {min: 1, max: 10}, "error: isLength: {min: 1, max: 10}",],
@@ -290,7 +299,7 @@ app.get("/insert_2", (req, res, next) => {
     )))
 });
 app.get("/update_2", (req, res, next) => {
-    allowOrigin(res); res.json(
+    switch_db("vue_test_with_web_api"); allowOrigin(res); res.json(
         shinku_hadoken(db_query_update_and_select_2, raging_demon(req.query, {
                     "lorem": [
                         ["isLength", {min: 1, max: 10}, "error: isLength: {min: 1, max: 10}",],
@@ -306,7 +315,7 @@ app.get("/update_2", (req, res, next) => {
     )
 });
 app.get("/readall_2", (req, res, next) => {
-    allowOrigin(res); res.json(db_query_select_all_2());
+    switch_db("vue_test_with_web_api"); allowOrigin(res); res.json(db_query_select_all_2());
 });
 
 const raging_demon = (REQ_QUERY, KEYS_RULES_OBJECT) => {
@@ -327,7 +336,7 @@ const raging_demon = (REQ_QUERY, KEYS_RULES_OBJECT) => {
 };
 
 app.get("/read_any_2", (req, res, next) => {
-    allowOrigin(res);
+    switch_db("vue_test_with_web_api"); allowOrigin(res);
     res.json(shinku_hadoken(db_query_select_2, raging_demon(req.query, {
             'uid': [
                 ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
@@ -341,7 +350,7 @@ app.get("/read_any_2", (req, res, next) => {
     )))
 });
 app.get("/deleteid_2", (req, res, next) => {
-    allowOrigin(res);
+    switch_db("vue_test_with_web_api"); allowOrigin(res);
     res.json(shinku_hadoken(db_query_delete_2, raging_demon(req.query, {
             "id": [
                 ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
@@ -355,3 +364,6 @@ app.get("/deleteid_2", (req, res, next) => {
 });
 
 
+
+
+// textsplitterfortweet_2
