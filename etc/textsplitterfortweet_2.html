@@ -61,6 +61,7 @@ const app = Vue.createApp({
     },
     fn_B(EVENT) {
         this.selected = Number(EVENT.target.value);
+        this.fn_A();
     },
     init() {
         this.ALL_NUM = R.range(1, 141);
