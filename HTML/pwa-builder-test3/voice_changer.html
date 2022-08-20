@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8"/>
+	<!-- <script src="https://cdn.jsdelivr.net/npm/howler@2.2.3/dist/howler.js" defer></script> -->
+    <!-- https://zenn.dev/sdkfz181tiger/articles/f1ec114967cd4a -->
+
+    <!-- https://gist.github.com/jrichardsz/7f6fa3f69caaf6fa6d83eed7885f0031 -->
+    <!-- ffmpeg -i ./foo.webm -af "asetrate=44100*3/4,atempo=4/3" ./foo_out.mp3 -->
+    <!-- find -f ./*webm|sort|xargs -n1 -INUM echo NUM -->
+    <!-- find -f ./*webm|sort|xargs -n1 -IFILE ffmpeg -i "FILE" -af "asetrate=44100*3/4,atempo=4/3" ./"FILE".mp3 -->
+
+<style>
+.is_readAloud{
+    width: 3rem;
+    height: 3rem;
+}
+</style>
+</head>
+<body>
+<!-- https://stackoverflow.com/a/28301762/9740478 -->
+<a class="dl_link" href="./mug.png" src="" download="dl">
+<img src="./mug.png" class="mug" width="25%" height="25%" onload="getPixels(this)"/>
+</a>
+<!-- <input type="text" id="color" value="#6491ee" /> -->
+<input type="text" id="color" value="#000000" />
+<input type="button" value="set_canvas" onclick="changeMugsColor()">
+<button class="canvas_download">canvas_download</button>
+
+
+<script type="text/javascript">
+
+    var mug = document.getElementsByClassName("mug");
+    var canvas = document.createElement("canvas");
+
+    var ctx = canvas.getContext("2d");
+    var originalPixels = null;
+    var currentPixels = null;
+
+    document.querySelector(".canvas_download").onclick = (event) => {
+        // let canvas = document.querySelector("canvas");
+
+        let link = document.createElement("a");
+        link.href = canvas.toDataURL("image/png");
+        link.download = document.querySelector("#text").value || "test.png";
+        link.click();
+    }
+
+
+    function HexToRGB(Hex)
+    {
+        var Long = parseInt(Hex.replace(/^#/, ""), 16);
+        return {
+            R: (Long >>> 16) & 0xff,
+            G: (Long >>> 8) & 0xff,
+            B: Long & 0xff
+        };
+    }
+
+    function changeMugsColor() {
+        for (var ii = 0; ii < mug.length; ii++) {
+            changeColor(mug[ii]);
+        }
+    }
+
+    function changeColor(amug)
+    {
+        if(!originalPixels) return; // Check if image has loaded
+        var newColor = HexToRGB(document.getElementById("color").value);
+
+        console.log(newColor)
+
+        for(var I = 0, L = originalPixels.data.length; I < L; I += 4)
+        {
+            if(currentPixels.data[I + 3] > 0)
+            {
+                currentPixels.data[I] = originalPixels.data[I] / 255 * newColor.R;
+                currentPixels.data[I + 1] = originalPixels.data[I + 1] / 255 * newColor.G;
+                currentPixels.data[I + 2] = originalPixels.data[I + 2] / 255 * newColor.B;
+            }
+        }
+
+        // currentPixels.data.forEach(V=>V=0);
+        // const currentPixels2 = Array.from(currentPixels.data).map(V=>V === 0 ? 255 : 0);
+
+        ctx.putImageData(currentPixels, 0, 0);
+        // ctx.putImageData(currentPixels2, 100, 0);
+        amug.src = canvas.toDataURL("image/png");
+    }
+
+    function getPixels(img)
+    {
+        canvas.width = img.width;
+        canvas.height = img.height;
+
+        ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, img.width, img.height);
+        originalPixels = ctx.getImageData(0, 0, img.width, img.height);
+        currentPixels = ctx.getImageData(0, 0, img.width, img.height);
+
+        img.onload = null;
+    }
+</script>
+
+<textarea name="" class="all_text" cols="30" rows="10">吾輩は猫である。
+名前はまだ無い。
+どこで生れたかとんと見当がつかぬ。
+何でも薄暗いじめじめした所でニャーニャー泣いていた事だけは記憶している。
+吾輩はここで始めて人間というものを見た。</textarea>
+
+	<button id="btnStart">開始</button>
+	<button id="btnStop">停止</button>
+
+is_readAloud? <input type="checkbox" name="is_readAloud" class="is_readAloud" checked>
+<input type="text" id="text" name="text" value="" placeholder="読み上げたいテキストを入力してください" />
+<button onclick="readAloud()">readAloud</button>
+<!-- <p>上記テキストを読み上げます。<br>「読み上げる」ボタンをクリックしてください。</p> -->
+    <!-- <input id="input" type="file" accept="audio/mp3"> -->
+</body>
+<script>
+let text_number = 0;
+const split_text = () => document.querySelector(".all_text").value.split("\n");
+const split_text_increment = () => {
+    if(document.querySelector(".all_text").value.split("\n").length <= text_number) return "text_number is over";
+    return document.querySelector(".all_text").value.split("\n")[text_number++]
+};
+const set_split_text_and_increment = () => document.querySelector("#text").value = split_text_increment();
+
+let chunks = [];// データを格納する配列
+
+window.onload = ()=>{
+
+	// 1-1, MediaDevicesが使えるかどうかを判定します
+	if(!navigator.mediaDevices){
+		console.log("Media Devices not supported!!");
+		return;
+	}
+
+	// 1-2, MediaDevicesを起動します
+	navigator.mediaDevices.getUserMedia({audio: true}).then((stream)=>{
+		readyMediaRecorder(stream);// Ready
+	}).catch((err)=>{
+		console.log("Error:" + err);// Error
+	});
+}
+
+// https://developer.chrome.com/blog/mediarecorder/
+function download(blob) {
+    // var blob = new Blob(recordedChunks, {
+    // type: 'video/webm'
+    // });
+
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    document.body.appendChild(a);
+    a.style = 'display: none';
+    a.href = url;
+    // a.download = 'test.webm';
+    a.download = `${document.querySelector("#text").value}.webm`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+
+function readyMediaRecorder(stream){
+
+	// 2-1, MediaRecorderを準備します
+	let mediaRecorder = new MediaRecorder(stream);
+
+	// 2-2, MediaRecorderの開始
+	mediaRecorder.onstart = (e)=>{
+		console.log("onstart!!");
+	}
+
+	// 2-3, MediaRecorderの停止
+	mediaRecorder.onstop = (e)=>{
+		console.log("onstop!!");
+		// 4-1, Blob形式に変換する
+		const blob = new Blob(chunks, {"type":"audio/ogg; codecs=opus"});
+
+        download(blob);
+
+		const url = URL.createObjectURL(blob);
+		chunks = [];// 配列を初期化
+		// 4-2, Base64形式に変換する
+		let reader = new FileReader();// Reader
+		reader.readAsDataURL(blob);
+		// reader.onload = ()=>{playHowl(reader.result);};
+		reader.onload = ()=>{reader.result};
+	}
+
+	// 2-4, MediaRecorderにデータを追加
+	mediaRecorder.ondataavailable = (e)=>{
+		console.log("ondataavailable!!");
+		chunks.push(e.data);
+    }
+
+    // 2-5, MediaRecorderのエラー
+    mediaRecorder.onerror = (e)=>{
+		console.log("onerror:" + e);
+	}
+
+	// 3-1, スタートボタン
+	document.getElementById("btnStart").onclick = ()=>{
+        set_split_text_and_increment();
+        document.querySelector(".is_readAloud").checked ? readAloud() : null;
+		if(mediaRecorder.state == "recording") return;
+		mediaRecorder.start();
+		console.log("MediaRecorder:" + mediaRecorder.state);
+	}
+
+	// 3-2, ストップボタン
+	document.getElementById("btnStop").onclick = ()=>{
+		if(mediaRecorder.state == "inactive") return;
+		mediaRecorder.stop();
+		console.log("MediaRecorder:" + mediaRecorder.state);
+	}
+}
+
+// https://web-creates.com/code/js-web-speech-api/
+// https://qiita.com/hmmrjn/items/be29c62ba4e4a02d305c
+function readAloud() {
+    function exe(){
+        const uttr = new SpeechSynthesisUtterance();
+        uttr.text = document.getElementById("text").value;
+        // 文章 (コンストラクタの引数以外に、この方法でも指定できます)
+        // uttr.text = "Hi, Dave."
+
+        // 言語 (日本語:ja-JP, アメリカ英語:en-US, イギリス英語:en-GB, 中国語:zh-CN, 韓国語:ko-KR)
+        // uttr.lang = "en-US"
+        uttr.lang = "ja-JP"
+
+        // 速度 0.1-10 初期値:1 (倍速なら2, 半分の倍速なら0.5)
+        uttr.rate = 1.5
+
+        // 高さ 0-2 初期値:1
+        uttr.pitch = 1.8
+
+        // 音量 0-1 初期値:1
+        // uttr.volume = 0.75
+        uttr.volume = 1
+        window.speechSynthesis.speak(uttr);
+    }
+    ('speechSynthesis' in window) ? exe() : alert('Web Speech APIには未対応です');
+}
+
+
+
+function playHowl(base64){
+	console.log("playHowl:" + base64);
+	// 5, Howlerを使って再生する
+	let snd = new Howl({
+		src: base64,
+		loop: false,// 繰り返し 
+		volume: 1.0,// 音量
+		rate: 1.4,  // 再生速度
+		onplay: ()=>{
+			console.log("サウンド再生!!");
+		},
+		onstop: ()=>{
+			console.log("サウンド停止!!");
+		},
+		onpause: ()=>{
+			console.log("サウンド一時停止!!");
+		},
+		onend: ()=>{
+			console.log("サウンド終了!!");
+		}
+	});
+	snd.play();
+}
+</script>
+</html>
