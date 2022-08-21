@@ -89,9 +89,23 @@ function DROPTABLE(){
     db.prepare(`DROP TABLE lorem`).run();
 }
 
+function textsplitterfortweet_2_1660820720_CREATETABLE(){
+    db.prepare(`CREATE TABLE IF NOT EXISTS textsplitterfortweet_foo (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+foo TEXT NOT NULL,
+textsplitterfortweet_uid_id INTEGER NOT NULL,
+)`).run();
+    db.prepare(`CREATE TABLE IF NOT EXISTS textsplitterfortweet_uid (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+uid TEXT NOT NULL
+)`).run();
+}
+function textsplitterfortweet_2_1660820720_DROPTABLE(){
+    db.prepare(`DROP TABLE textsplitterfortweet_foo`).run();
+    db.prepare(`DROP TABLE textsplitterfortweet_uid`).run();
+}
 
 const makeValidator = (STRING, TYPE, OPTION) => validator[TYPE](STRING, OPTION);
-const make_id_info_from_array = (ID, INFO) => R.fromPairs([["id", ID], ["info", INFO]]);
 
 const db_query_select_2 = (STRING_ARRAY) => {
     return {
@@ -108,7 +122,6 @@ WHERE uid.uid = @uid`
                         uid: STRING_ARRAY["uid"],
                     }
                 )
-        // .map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
     }
 };
 const db_query_select_all_2 = () => {
@@ -122,8 +135,6 @@ FROM lorem
 JOIN uid
     ON uid_id = uid.id;`
         ).all()
-// .map(DATA=>DATA)
-        // ).all().map(DATA=>make_id_info_from_array(DATA.id, DATA.info))
     }
 };
 const db_query_insert_and_select_2 = (STRING_ARRAY) => {
@@ -234,11 +245,6 @@ const shinku_hadoken = (SQL_FUNCTION, DATA_KEYS_DATA_AND_RULES_ARRAY) => {
         })
     };
 
-    // const data_only = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
-    //             V.map(VAL=> VAL[0]==="data")
-    //             .every(V=>V===true) ?
-    //                 V.map(VAL=>VAL[1]) : null 
-    //         )
     const data_only_uniq = (LIST) => separate_and_tagging_data_or_error_message_or_no_validated(LIST).map(V=>
                 V.map(VAL=> VAL[0]==="data")
                 .every(V=>V===true) ?
@@ -264,8 +270,6 @@ const shinku_hadoken = (SQL_FUNCTION, DATA_KEYS_DATA_AND_RULES_ARRAY) => {
     const final_resonse = [INPUT_DATA_KEYS, only_data(), DATA_OR_ERROR_LIST];
     const error_key_and_error_message = () => multi_zip(final_resonse[0], final_resonse[1], final_resonse[2]).filter(V=>R.is(Array, V[2])).map(V=>[V[0], V[2]]);
     const multi_zipped_final_resonse = () => multi_zip(final_resonse[0], final_resonse[1], final_resonse[2]);
-    // R.fromPairs([['a', 1], ['b', 2], ['c', 3]]);
-        //=> {a: 1, b: 2, c: 3}
     const multi_zipped_key_and_data = () => R.fromPairs(multi_zip(final_resonse[0], final_resonse[1]));
     const return_error_object = (ERROR_MESSAGE_ARRAY) => {
         return {
@@ -319,13 +323,7 @@ app.get("/readall_2", (req, res, next) => {
 });
 
 const raging_demon = (REQ_QUERY, KEYS_RULES_OBJECT) => {
-
-
-    // const data_keys = KEYS_RULES_OBJECT.keys();
     const data_keys = Object.keys(KEYS_RULES_OBJECT);
-    // const data_keys = R.toPairs(REQ_QUERY).map(V=>V[0]);
-    // const data_and_rules = KEY_ARRAY.map((KEY, IDX)=>{
-    // const data_and_rules = KEYS_RULES_OBJECT.map((RULES_OBJECT, KEY)=>{
     const data_and_rules = Object.keys(KEYS_RULES_OBJECT).map(KEY=>{
             return [
                         REQ_QUERY[KEY],
@@ -367,3 +365,68 @@ app.get("/deleteid_2", (req, res, next) => {
 
 
 // textsplitterfortweet_2
+
+// CREATE TABLE IF NOT EXISTS textsplitterfortweet_foo (
+// id INTEGER PRIMARY KEY AUTOINCREMENT,
+// foo TEXT NOT NULL,
+// textsplitterfortweet_uid_id INTEGER NOT NULL
+// );
+
+// CREATE TABLE IF NOT EXISTS textsplitterfortweet_uid (
+// id INTEGER PRIMARY KEY AUTOINCREMENT,
+// uid TEXT NOT NULL
+// );
+
+// INSERT INTO textsplitterfortweet_uid (uid) VALUES ('foo');
+// INSERT INTO textsplitterfortweet_uid (uid) VALUES ('bar');
+// INSERT INTO textsplitterfortweet_uid (uid) VALUES ('buz');
+
+// INSERT INTO textsplitterfortweet_foo (foo, textsplitterfortweet_uid_id)
+// VALUES(
+    // 'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem',
+    // (SELECT textsplitterfortweet_uid.id FROM textsplitterfortweet_uid WHERE textsplitterfortweet_uid.uid = 'foo')
+// );
+// INSERT INTO textsplitterfortweet_foo (foo, textsplitterfortweet_uid_id)
+// VALUES(
+    // 'ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum',
+    // (SELECT textsplitterfortweet_uid.id FROM textsplitterfortweet_uid WHERE textsplitterfortweet_uid.uid = 'foo')
+// );
+// INSERT INTO textsplitterfortweet_foo (foo, textsplitterfortweet_uid_id)
+// VALUES(
+    // 'dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor',
+    // (SELECT textsplitterfortweet_uid.id FROM textsplitterfortweet_uid WHERE textsplitterfortweet_uid.uid = 'bar')
+// );
+
+// SELECT
+    // textsplitterfortweet_foo.id,
+    // textsplitterfortweet_foo.foo,
+    // (SELECT textsplitterfortweet_uid.uid
+    //  FROM textsplitterfortweet_uid
+    //  WHERE textsplitterfortweet_uid.id = textsplitterfortweet_foo.textsplitterfortweet_uid_id)
+            // as uid
+// FROM textsplitterfortweet_foo
+// JOIN textsplitterfortweet_uid
+    // ON textsplitterfortweet_foo.textsplitterfortweet_uid_id = textsplitterfortweet_uid.id
+// WHERE textsplitterfortweet_uid.uid = 'foo';
+
+// UPDATE textsplitterfortweet_foo
+// SET foo = 'sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit'
+// WHERE
+    // textsplitterfortweet_foo.id = '1'
+    // AND
+    // textsplitterfortweet_foo.textsplitterfortweet_uid_id =
+        // (SELECT textsplitterfortweet_uid.id
+        //  FROM textsplitterfortweet_uid
+        //  WHERE textsplitterfortweet_uid.uid = 'foo');
+
+// DELETE FROM textsplitterfortweet_foo
+// WHERE
+    // textsplitterfortweet_foo.id = '2'
+    // AND
+    // textsplitterfortweet_foo.textsplitterfortweet_uid_id =
+        // (SELECT textsplitterfortweet_uid.id
+        //  FROM textsplitterfortweet_uid
+        //  WHERE textsplitterfortweet_uid.uid = 'foo');
+
+// SELECT * FROM textsplitterfortweet_uid;
+// SELECT * FROM textsplitterfortweet_foo;
