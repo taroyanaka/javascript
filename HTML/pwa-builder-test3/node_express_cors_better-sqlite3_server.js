@@ -89,7 +89,7 @@ function DROPTABLE(){
     db.prepare(`DROP TABLE lorem`).run();
 }
 
-function textsplitterfortweet_2_1660820720_CREATETABLE(){
+function textsplitterfortweet_2_CREATETABLE(){
     db.prepare(`CREATE TABLE IF NOT EXISTS textsplitterfortweet_foo (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 foo TEXT NOT NULL,
@@ -100,7 +100,7 @@ id INTEGER PRIMARY KEY AUTOINCREMENT,
 uid TEXT NOT NULL
 )`).run();
 }
-function textsplitterfortweet_2_1660820720_DROPTABLE(){
+function textsplitterfortweet_2_DROPTABLE(){
     db.prepare(`DROP TABLE textsplitterfortweet_foo`).run();
     db.prepare(`DROP TABLE textsplitterfortweet_uid`).run();
 }
@@ -362,6 +362,70 @@ app.get("/deleteid_2", (req, res, next) => {
 });
 
 
+// CREATE TABLE IF NOT EXISTS TABLE_A (
+// id INTEGER PRIMARY KEY AUTOINCREMENT,
+// COLUMN_A_2 TEXT NOT NULL,
+// TABLE_B_id INTEGER NOT NULL
+// );
+
+// CREATE TABLE IF NOT EXISTS TABLE_B (
+// id INTEGER PRIMARY KEY AUTOINCREMENT,
+// COLUMN_B_2 TEXT NOT NULL
+// );
+
+// INSERT INTO TABLE_B (COLUMN_B_2) VALUES ('foo');
+// INSERT INTO TABLE_B (COLUMN_B_2) VALUES ('bar');
+// INSERT INTO TABLE_B (COLUMN_B_2) VALUES ('buz');
+
+// INSERT INTO TABLE_A (COLUMN_A_2, TABLE_B_id)
+// VALUES(
+//     'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem',
+//     (SELECT TABLE_B.id FROM TABLE_B WHERE TABLE_B.COLUMN_B_2 = 'foo')
+// );
+// INSERT INTO TABLE_A (COLUMN_A_2, TABLE_B_id)
+// VALUES(
+//     'ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum',
+//     (SELECT TABLE_B.id FROM TABLE_B WHERE TABLE_B.COLUMN_B_2 = 'foo')
+// );
+// INSERT INTO TABLE_A (COLUMN_A_2, TABLE_B_id)
+// VALUES(
+//     'dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor',
+//     (SELECT TABLE_B.id FROM TABLE_B WHERE TABLE_B.COLUMN_B_2 = 'bar')
+// );
+
+// SELECT
+//     TABLE_A.id,
+//     TABLE_A.COLUMN_A_2,
+//     (SELECT TABLE_B.COLUMN_B_2
+//      FROM TABLE_B
+//      WHERE TABLE_B.id = TABLE_A.TABLE_B_id)
+//             as COLUMN_B_2
+// FROM TABLE_A
+// JOIN TABLE_B
+//     ON TABLE_A.TABLE_B_id = TABLE_B.id
+// WHERE TABLE_B.COLUMN_B_2 = 'foo';
+
+// UPDATE TABLE_A
+// SET COLUMN_A_2 = 'sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit'
+// WHERE
+//     TABLE_A.id = '1'
+//     AND
+//     TABLE_A.TABLE_B_id =
+//         (SELECT TABLE_B.id
+//          FROM TABLE_B
+//          WHERE TABLE_B.COLUMN_B_2 = 'foo');
+
+// DELETE FROM TABLE_A
+// WHERE
+//     TABLE_A.id = '2'
+//     AND
+//     TABLE_A.TABLE_B_id =
+//         (SELECT TABLE_B.id
+//          FROM TABLE_B
+//          WHERE TABLE_B.COLUMN_B_2 = 'foo');
+
+// SELECT * FROM TABLE_B;
+// SELECT * FROM TABLE_A;
 
 
 // textsplitterfortweet_2
