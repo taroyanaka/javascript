@@ -1,7 +1,10 @@
 {
-    "files.autoSave": "onFocusChange",
-    "editor.formatOnPaste": true,
-    "editor.formatOnType": true,
-	"editor.autoIndent": false,
-	"liveServer.settings.port": 5502
+"emeraldwalk.runonsave": {
+    "commands": [
+        {
+            "match": "/Users/yanakataro/Desktop/js2/javascript/HTML/pwa-builder-test3/node_express_cors_better-sqlite3_server.js",
+            "cmd": "cp /Users/yanakataro/Desktop/js2/javascript/HTML/pwa-builder-test3/node_express_cors_better-sqlite3_server.js /Users/yanakataro/Desktop/npm_package/better-sqlite3/"
+        }
+    ]
+}
 }

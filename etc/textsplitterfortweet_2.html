@@ -9,7 +9,7 @@ grid layout
 client side save
 PWA?(maybe i wont do it(because web app need maintenance that released on store, it's hard way to do(if it's standaole app, it's easy way to do)))
     => this app is for training to make web app(not for production)
- -->
+-->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,10 +23,9 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 }
 </style>
 </head>
-<body>
-<div class="app">
+<body class="app">
 
-<textarea v-model="foo" class="foo"></textarea>
+<textarea v-model="foo" class="foo" minlength="1" maxlength="1400" @input="fn_A" @change="fn_A"></textarea>
 <select class="select" v-model="selected" @change="fn_B($event)">
     <option disabled value="">Please select one</option>
     <option v-for="NUM in ALL_NUM" :key="NUM">
@@ -37,15 +36,15 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 <!-- https://stackoverflow.com/a/60293732 -->
 <a class="twitter-share-button" v-bind:href="`https://twitter.com/intent/tweet?text=${item}`" data-size="large" v-for="item in TXT">{{ item }}</a>
 
-</div>
 </body>
 <script>
 const app = Vue.createApp({
   data() {
     return {
         foo: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
+        // foo: 'a',
         TXT: [],
-        selected: 140,
+        selected: 10,
         ALL_NUM:[],
     }
   },
