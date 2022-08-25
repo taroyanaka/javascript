@@ -509,30 +509,38 @@ WHERE
     return textsplitterfortweet_2_db_query_select_all(STRING_ARRAY);
 };
 
+app.get("/textsplitterfortweet_2_read_any", (req, res, next) => {
+    switch_db("vue_test_with_web_api"); allowOrigin(res);
+    res.json(shinku_hadoken(textsplitterfortweet_2_db_query_select, raging_demon(req.query, {
+            'uid': [
+                ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
+            ],
+        }
+    )))
+});
+app.get("/textsplitterfortweet_2_readall", (req, res, next) => {
+    switch_db("vue_test_with_web_api"); allowOrigin(res); res.json(textsplitterfortweet_2_db_query_select_all());
+});
 app.get("/textsplitterfortweet_2_insert", (req, res, next) => {
     switch_db("vue_test_with_web_api"); allowOrigin(res);
-    res.json(shinku_hadoken(db_query_insert_and_select_2, raging_demon(req.query, {
-            "lorem": [
-                ["isLength", {min: 1, max: 10}, "error: isLength: {min: 1, max: 10}",],
+    res.json(shinku_hadoken(textsplitterfortweet_2_db_query_insert_and_select, raging_demon(req.query, {
+            "foo": [
+                ["isLength", {min: 1, max: 1400}, "error: isLength: {min: 1, max: 1400}",],
             ],
-            "uid": [
-                ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
+            'uid': [
+                ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
             ],
-            // [
-            //     ["isLength", {min: 3, max: 50}, "error: isLength: {min: 3, max: 50}",],
-            //     ["isIBAN", null, `country code using ISO 3166-1 alpha-2 two letters, check digits two digits, and Basic Bank Account Number (BBAN) up to 30 alphanumeric characters that are country-specific`,]
-            // ]
         }
     )))
 });
 app.get("/textsplitterfortweet_2_update", (req, res, next) => {
-    switch_db("vue_test_with_web_api"); allowOrigin(res); res.json(
-        shinku_hadoken(db_query_update_and_select_2, raging_demon(req.query, {
-                    "lorem": [
-                        ["isLength", {min: 1, max: 10}, "error: isLength: {min: 1, max: 10}",],
+    switch_db("vue_test_with_web_api"); allowOrigin(res);
+    res.json(shinku_hadoken(textsplitterfortweet_2_db_query_update_and_select, raging_demon(req.query, {
+                    "foo": [
+                        ["isLength", {min: 1, max: 1400}, "error: isLength: {min: 1, max: 1400}",],
                     ],
-                    "uid": [
-                        ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
+                    'uid': [
+                        ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
                     ],
                     "id": [
                         ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
@@ -541,31 +549,14 @@ app.get("/textsplitterfortweet_2_update", (req, res, next) => {
             ))
     )
 });
-app.get("/textsplitterfortweet_2_readall", (req, res, next) => {
-    switch_db("vue_test_with_web_api"); allowOrigin(res); res.json(db_query_select_all_2());
-});
-app.get("/textsplitterfortweet_2_read_any", (req, res, next) => {
-    switch_db("vue_test_with_web_api"); allowOrigin(res);
-    res.json(shinku_hadoken(db_query_select_2, raging_demon(req.query, {
-            'uid': [
-                ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
-                // ["isLength", {min: 7, max: 10}, "error: isLength: {min: 7, max: 10}",],
-            ]
-            // [
-            //     ["isLength", {min: 3, max: 50}, "error: isLength: {min: 3, max: 50}",],
-            //     ["isIBAN", null, `country code using ISO 3166-1 alpha-2 two letters, check digits two digits, and Basic Bank Account Number (BBAN) up to 30 alphanumeric characters that are country-specific`,]
-            // ]
-        }
-    )))
-});
 app.get("/textsplitterfortweet_2_deleteid", (req, res, next) => {
     switch_db("vue_test_with_web_api"); allowOrigin(res);
-    res.json(shinku_hadoken(db_query_delete_2, raging_demon(req.query, {
+    res.json(shinku_hadoken(textsplitterfortweet_2_db_query_delete, raging_demon(req.query, {
             "id": [
                 ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
             ],
             'uid': [
-                ["isLength", {min: 1, max: 3}, "error: isLength: {min: 1, max: 3}",],
+                ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
             ],
         }
     )))
