@@ -419,7 +419,6 @@ const css_root_none_co_2_col_3 = () => {css_root_reset();document.querySelector(
 const css_root_none_co_0_col_2 = () => {css_root_reset();document.querySelector(":root").classList.add("none-col-0-col-2");}
 const css_root_none = () => {css_root_reset();document.querySelector(":root").classList.add("none");}
 
-
 function random(seed) {
     const x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
@@ -436,12 +435,6 @@ function seedShuffle(array, seed) {
     return array;
 }
 
-// const make_html_string_circle_box_html = (NUM, array) => `<div class="inner_box box_${NUM}">
-// <div class="circle circle_1"></div>
-// <div class="circle circle_2"></div>
-// <div class="circle circle_3"></div>
-// <div class="circle circle_4"></div>
-// </div>`;
 const make_html_string_circle_box_html_random_array = (NUM, array) => `<div class="inner_box box_${NUM}">
 <div class="circle circle_${array[0]}"></div>
 <div class="circle circle_${array[1]}"></div>
@@ -468,11 +461,8 @@ const make_html_string_circle_box_css_with_random = (NUM) => `.box_${NUM}{
     z-index: ${Math.round(Math.random(42)*10)};
 }`;
 
-// document.querySelector(`.box`).innerHTML = R.range(0, 20).map(V=>make_html_string_circle_box_html_random_array(V, seedShuffle(R.range(1, 10), 42))).join("");
-document.querySelector(`.box`).innerHTML = R.range(0, 100).map(V=>make_html_string_circle_box_html_random_array(V, seedShuffle(R.range(0, 12), Math.round(Math.random(42)*10)))).join("");
-// document.querySelector(`.box`).innerHTML = R.range(0, 10).map(V=>make_html_string_circle_box_html(V, seedShuffle([1,2,3], 42))).join("");
-// document.querySelector(`style`).innerText += R.map(make_html_string_circle_box_css, R.range(0, 100)).join("");
-document.querySelector(`style`).innerText += R.map(make_html_string_circle_box_css_with_random, R.range(0, 100)).join("");
+// document.querySelector(`.box`).innerHTML = R.range(0, 100).map(V=>make_html_string_circle_box_html_random_array(V, seedShuffle(R.range(0, 12), Math.round(Math.random(42)*10)))).join("");
+// document.querySelector(`style`).innerText += R.map(make_html_string_circle_box_css_with_random, R.range(0, 100)).join("");
 </script>
 </body>
 </html>
