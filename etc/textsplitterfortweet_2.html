@@ -5,8 +5,17 @@
 vue ✅
 server|client side validate
 web api with authentication
+
+    public data(named data & unnamed data)
+    online my data(named server side data)
+    offline my data(named & unnamed client side data)
+
+        when signin: offline my data(named) => online my data(named) & public data(named)
+        when not signin: offline my data(unnamed) => public data(unnamed)
+        always: public data(named data & unnamed data)
+
 grid layout
-client side save
+client side save?(is it need?)
 PWA?(maybe i wont do it(because web app need maintenance that released on store, it's hard way to do(if it's standaole app, it's easy way to do)))
     => this app is for training to make web app(not for production)
 -->
@@ -126,16 +135,13 @@ const app = Vue.createApp({
         this.selected = 140;
     },
     async save() {
-    localforage.setItem('data', 'myvalue').then(console.log);
-try {
-    const value = await localforage.getItem('somekey');
-    // This code runs once the value has been loaded
-    // from the offline store.
-    console.log(value);
-} catch (err) {
-    // This code runs if there were any errors.
-    console.log(err);
-}
+        // localforage.setItem('data', 'myvalue').then(console.log);
+        // try {
+        //     const value = await localforage.getItem('data');
+        //     console.log(value);
+        // } catch (err) {
+        //     console.log(err);
+        // }
 
         this.save_data_list.push({
             save_foo: this.foo,
