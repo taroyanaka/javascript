@@ -16,14 +16,15 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>textsplitterfortweet_2</title>
     <script src="./vue3.js"></script>
-    <script src="./ramda.@0.28.0.js "></script>
+    <script src="./ramda.@0.28.0.js"></script>
+    <script src="./localforage.js"></script>
     <!-- <script src="validator@13.7.0.js"></script> -->
     <!-- <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script> -->
-<!-- <script src="./firebase-app.8.6.1.js"></script> -->
+<script src="./firebase-app.8.6.1.js"></script>
     <!-- <script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-auth.js"></script> -->
-<!-- <script src="./firebase-auth.8.4.0.js"></script> -->
-    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-auth.js"></script>
+<script src="./firebase-auth.8.4.0.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-auth.js"></script> -->
 
 <!-- <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js"></script> -->
 <!-- <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-auth.js"></script> -->
@@ -44,10 +45,12 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 </head>
 <body>
 <div class="app">
-<button @click="foo_fn">foo_fn</button>
+<!-- <button @click="foo_fn">foo_fn</button> -->
 <button @click="firebase_auth_onAuthStateChanged">firebase_auth_onAuthStateChanged</button>
 <!-- <span>login_data: {{ login_data }}</span> -->
-<textarea v-model="login_data"></textarea>
+<textarea v-model="login_data['uid']"></textarea>
+
+
 <span>{{ login_data }}</span>
 
 <!-- <img src="./google_signin_buttons/web/2x/btn_google_signin_dark_normal_web@2x.png" class="login" value="googleLogin" @click="toggleSignIn" /> -->
@@ -67,35 +70,25 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 <input type="button" value="fn_A" @click="fn_A">
 <!-- https://stackoverflow.com/a/60293732 -->
 <a class="twitter-share-button" v-bind:href="`https://twitter.com/intent/tweet?text=${item}`" data-size="large" v-for="item in TXT">{{ item }}</a>
+
+<li v-for="save_data in save_data_list" :key="NUM">
+{{ save_data['save_foo'] }} {{ save_data['save_split_num'] }}
+</li>
+<input type="button" value="save" @click="save">
+
 </div>
 </body>
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBcOlIDP2KWbJuKM0WeMHNp-WvjTVfLt9Y",
-            authDomain: "p2auth-ea50a.firebaseapp.com",
-            projectId: "p2auth-ea50a",
-            storageBucket: "p2auth-ea50a.appspot.com",
-            messagingSenderId: "796225429484",
-            appId: "1:796225429484:web:ece56ef2fc0be28cd6eac9"
-        };
+<script>
+const firebaseConfig = {
+    apiKey: "AIzaSyBcOlIDP2KWbJuKM0WeMHNp-WvjTVfLt9Y",
+    authDomain: "p2auth-ea50a.firebaseapp.com",
+    projectId: "p2auth-ea50a",
+    storageBucket: "p2auth-ea50a.appspot.com",
+    messagingSenderId: "796225429484",
+    appId: "1:796225429484:web:ece56ef2fc0be28cd6eac9"
+};
 
-        firebase.initializeApp(firebaseConfig);
-
-// import { getAuth, createUserWithEmailAndPassword } from "./firebase/auth";
-// import { initializeApp } from './firebase/app';
-// import { getAuth, createUserWithEmailAndPassword } from "/firebase/auth";
-// import { initializeApp } from '/firebase/app';
-
-// const firebaseConfig = {
-//     apiKey: "AIzaSyBcOlIDP2KWbJuKM0WeMHNp-WvjTVfLt9Y",
-//     authDomain: "p2auth-ea50a.firebaseapp.com",
-//     projectId: "p2auth-ea50a",
-//     storageBucket: "p2auth-ea50a.appspot.com",
-//     messagingSenderId: "796225429484",
-//     appId: "1:796225429484:web:ece56ef2fc0be28cd6eac9"
-// };
-
-// firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 const app = Vue.createApp({
   data() {
@@ -109,11 +102,12 @@ const app = Vue.createApp({
         is_logging_in: false,
         login_data: "fooooooooooooooooooooo",
         login_error: null,
+        save_data_list: [],
     }
   },
   mounted() {
-    this.initApp()
-    // this.firebase_auth_onAuthStateChanged();
+    this.init();
+    this.init_app()
   },
   methods: {
     fn_A() {
@@ -130,6 +124,23 @@ const app = Vue.createApp({
     init() {
         this.ALL_NUM = R.range(1, 141);
         this.selected = 140;
+    },
+    async save() {
+    localforage.setItem('data', 'myvalue').then(console.log);
+try {
+    const value = await localforage.getItem('somekey');
+    // This code runs once the value has been loaded
+    // from the offline store.
+    console.log(value);
+} catch (err) {
+    // This code runs if there were any errors.
+    console.log(err);
+}
+
+        this.save_data_list.push({
+            save_foo: this.foo,
+            save_split_num: this.selected,
+        })
     },
 
 
@@ -163,7 +174,6 @@ async firebase_auth_getRedirectResult() {
 foo_fn(){
     let SELF = this;
     SELF.login_data = "foooooo4";
-    // this.login_data = "foooooo5";
 },
 async firebase_auth_onAuthStateChanged() {
     let SELF = this;
@@ -192,7 +202,7 @@ async firebase_auth_onAuthStateChanged() {
         console.log(get_user_data_object(USER));
     });
 },
-async initApp() {
+async init_app() {
     await this.firebase_auth_getRedirectResult();
     await this.firebase_auth_onAuthStateChanged();
 },
