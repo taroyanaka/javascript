@@ -10,20 +10,52 @@ client side save
 PWA?(maybe i wont do it(because web app need maintenance that released on store, it's hard way to do(if it's standaole app, it's easy way to do)))
     => this app is for training to make web app(not for production)
 -->
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>textsplitterfortweet_2</title>
     <script src="./vue3.js"></script>
     <script src="./ramda.@0.28.0.js "></script>
+    <!-- <script src="validator@13.7.0.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script> -->
+<!-- <script src="./firebase-app.8.6.1.js"></script> -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-auth.js"></script> -->
+<!-- <script src="./firebase-auth.8.4.0.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-auth.js"></script>
+
+<!-- <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js"></script> -->
+<!-- <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-auth.js"></script> -->
+
 <style>
 .twitter-share-button{
     display: block;
     overflow-wrap: anywhere;
 }
+.login{
+    width: 8rem;
+    height: 2rem;
+}
 </style>
+
+
+
 </head>
-<body class="app">
+<body>
+<div class="app">
+<button @click="foo_fn">foo_fn</button>
+<button @click="firebase_auth_onAuthStateChanged">firebase_auth_onAuthStateChanged</button>
+<!-- <span>login_data: {{ login_data }}</span> -->
+<textarea v-model="login_data"></textarea>
+<span>{{ login_data }}</span>
+
+<!-- <img src="./google_signin_buttons/web/2x/btn_google_signin_dark_normal_web@2x.png" class="login" value="googleLogin" @click="toggleSignIn" /> -->
+<!-- <img src="./btn_google_signin_dark_normal_web@2x.png" class="login" value="googleLogin" @click="toggleSignIn" /> -->
+<!-- <img src="./btn_google_signin_light_pressed_web@2x.png" class="login" value="googleLogin" @click="toggleSignIn" /> -->
+<!-- <img src="./btn_google_signin_dark_pressed_web@2x.png" class="login" value="googleLogin" @click="toggleSignIn" /> -->
+<!-- <button class="login" value="googleLogin" @click="toggleSignIn"> -->
+<input type="button"  class="login" value="googleLogin" @click="toggleSignIn">
 
 <textarea v-model="foo" class="foo" minlength="1" maxlength="1400" @input="fn_A" @change="fn_A"></textarea>
 <select class="select" v-model="selected" @change="fn_B($event)">
@@ -35,9 +67,36 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 <input type="button" value="fn_A" @click="fn_A">
 <!-- https://stackoverflow.com/a/60293732 -->
 <a class="twitter-share-button" v-bind:href="`https://twitter.com/intent/tweet?text=${item}`" data-size="large" v-for="item in TXT">{{ item }}</a>
-
+</div>
 </body>
-<script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBcOlIDP2KWbJuKM0WeMHNp-WvjTVfLt9Y",
+            authDomain: "p2auth-ea50a.firebaseapp.com",
+            projectId: "p2auth-ea50a",
+            storageBucket: "p2auth-ea50a.appspot.com",
+            messagingSenderId: "796225429484",
+            appId: "1:796225429484:web:ece56ef2fc0be28cd6eac9"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
+// import { getAuth, createUserWithEmailAndPassword } from "./firebase/auth";
+// import { initializeApp } from './firebase/app';
+// import { getAuth, createUserWithEmailAndPassword } from "/firebase/auth";
+// import { initializeApp } from '/firebase/app';
+
+// const firebaseConfig = {
+//     apiKey: "AIzaSyBcOlIDP2KWbJuKM0WeMHNp-WvjTVfLt9Y",
+//     authDomain: "p2auth-ea50a.firebaseapp.com",
+//     projectId: "p2auth-ea50a",
+//     storageBucket: "p2auth-ea50a.appspot.com",
+//     messagingSenderId: "796225429484",
+//     appId: "1:796225429484:web:ece56ef2fc0be28cd6eac9"
+// };
+
+// firebase.initializeApp(firebaseConfig);
+
 const app = Vue.createApp({
   data() {
     return {
@@ -46,10 +105,15 @@ const app = Vue.createApp({
         TXT: [],
         selected: 10,
         ALL_NUM:[],
+        login_result: null,
+        is_logging_in: false,
+        login_data: "fooooooooooooooooooooo",
+        login_error: null,
     }
   },
   mounted() {
-    this.init()
+    this.initApp()
+    // this.firebase_auth_onAuthStateChanged();
   },
   methods: {
     fn_A() {
@@ -67,6 +131,72 @@ const app = Vue.createApp({
         this.ALL_NUM = R.range(1, 141);
         this.selected = 140;
     },
+
+
+async firebase_auth_signOut_and_all_login_property_clear() {
+    const all_login_property_clear = () => {
+        this.login_result = null;
+        this.is_logging_in = false;
+        this.login_data = null;
+        this.login_error = null;
+    };
+    await firebase.auth().signOut();
+    all_login_property_clear();
+},
+async toggleSignIn() {
+    // firebase.auth().currentUser ? firebase.auth().signOut() : firebase.auth().signInWithRedirect((new firebase.auth.GoogleAuthProvider()));
+    firebase.auth().currentUser ? this.firebase_auth_signOut_and_all_login_property_clear() : firebase.auth().signInWithRedirect((new firebase.auth.GoogleAuthProvider()));
+},
+async firebase_auth_getRedirectResult() {
+    await firebase.auth().getRedirectResult().then((RESULT) => {
+        console.log("getRedirectResult is this?????");
+        this.login_result = RESULT;
+        this.is_logging_in = RESULT["user"] === null ? false : true;
+    }).catch((ERROR) => {
+        this.is_logging_in = false;
+        this.login_error = ERROR;
+        // ERROR.code === 'auth/account-exists-with-different-credential' ? alert('You have already signed up with a different auth provider for that email.') : console.error(error);
+    });
+
+    // await this.firebase_auth_onAuthStateChanged();
+},
+foo_fn(){
+    let SELF = this;
+    SELF.login_data = "foooooo4";
+    // this.login_data = "foooooo5";
+},
+async firebase_auth_onAuthStateChanged() {
+    let SELF = this;
+    const get_user_data_object = (USER) => {
+        const user_keys = [
+            // "refreshToken",
+            "uid",
+            "displayName",
+            // "photoURL",
+            // "email",
+            // "emailVerified",
+            // "phoneNumber",
+            // "isAnonymous",
+            // "tenantId",
+            // "metadata",
+            // "providerData",
+        ];
+        return R.fromPairs(
+            user_keys.map(KEY=>[KEY, USER[KEY]])
+        )
+    };
+    await firebase.auth().onAuthStateChanged(USER => {
+        console.log("onAuthStateChanged is this?????");
+        if (USER) { SELF.login_data = get_user_data_object(USER) };
+        if (USER) { SELF.is_logging_in = true };
+        console.log(get_user_data_object(USER));
+    });
+},
+async initApp() {
+    await this.firebase_auth_getRedirectResult();
+    await this.firebase_auth_onAuthStateChanged();
+},
+
   },
 }).mount('.app');
 </script>
