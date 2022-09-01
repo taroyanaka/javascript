@@ -10,12 +10,24 @@ web api with authentication
     online my data(named server side data)
     offline my data(named & unnamed client side data)
 
-        when signin: offline my data(named) => online my data(named) & public data(named)
-        when not signin: offline my data(unnamed) => public data(unnamed)
+        when login: offline my data(named) => online my data(named) & public data(named)
+        when not login: offline my data(unnamed) => public data(unnamed)
         always: public data(named data & unnamed data)
 
+client side save?(
+    is it need?
+
+    is it save into localforage.js?
+        client side save NOT include uid, when the data send with uid?
+        client side save separate with online my data(named server side data)
+)
+
+            save function only after login(it's better way)
+
+offline save without uid(no signin) <=> app => online save with uid(my data & public data)(need signin)
+
 grid layout
-client side save?(is it need?)
+
 PWA?(maybe i wont do it(because web app need maintenance that released on store, it's hard way to do(if it's standaole app, it's easy way to do)))
     => this app is for training to make web app(not for production)
 -->
@@ -85,6 +97,11 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 </li>
 <input type="button" value="save" @click="save">
 
+<button @click="readall">readall</button>
+<li v-for="web_data in web_data_list">
+id:{{ web_data['id'] }} foo:{{ web_data['foo'] }} uid:{{ web_data['uid'] }}
+</li>
+
 </div>
 </body>
 <script>
@@ -99,6 +116,10 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+let SERVER_URL = '';
+SERVER_URL = 'http://localhost:8800';
+// SERVER_URL = "https://marred-mint-art.glitch.me";
+
 const app = Vue.createApp({
   data() {
     return {
@@ -112,6 +133,8 @@ const app = Vue.createApp({
         login_data: "fooooooooooooooooooooo",
         login_error: null,
         save_data_list: [],
+        web_data_list: "bar2",
+        // web_data_list: [],
     }
   },
   mounted() {
@@ -149,6 +172,41 @@ const app = Vue.createApp({
         })
     },
 
+async async_await_fetch_json_log_assign(FETCH_PARAM, DATA_KEY_ARRAY, KEY) {
+    const FETCH_DATA = await fetch(FETCH_PARAM);
+    const JSON_DATA = await FETCH_DATA.json();
+    console.table(JSON_DATA);
+    if (JSON_DATA.message !== "success") return
+    this.web_data_list = "foo";
+    // https://stackoverflow.com/a/37576787
+    for (const DATA_KEY of DATA_KEY_ARRAY) {
+        this[DATA_KEY] = JSON_DATA[KEY];
+    }
+},
+async readall() {
+    // this.web_data_list = "bar";
+
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_readall"), ["web_data_list"], "data");
+},
+async insert() {
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_insert?foo=" + this.foo), ["web_data_list"], "data");
+},
+async update(ID, foo, UID) {
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_update?id=" + ID + "&foo=" + foo + "&uuid=" + UID), ["web_data_list"], "data");
+},
+async deleteid(ID, UID) {
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_deleteid?id=" + ID + "&uid=" + UID), ["web_data_list"], "data");
+},
+
+// insert_validation_check(){
+//     return Array.from(document.querySelectorAll("input.insert")).map(V=>V.validity.valid).some(x=> x === false )
+// },
+// update_validation_check(){
+//     return Array.from(document.querySelectorAll("input.update")).map(V=>V.validity.valid).some(x=> x === false )
+// },
+// https://p2auth-ea50a.firebaseapp.com/__/auth/handler
+// https://qiita.com/sl2/items/2815e62aaf2baea2f589
+// https://blog.katsubemakito.net/firebase/firebase-authentication-facebook-web1
 
 async firebase_auth_signOut_and_all_login_property_clear() {
     const all_login_property_clear = () => {
