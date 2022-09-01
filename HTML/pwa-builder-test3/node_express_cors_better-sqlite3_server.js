@@ -26,8 +26,10 @@ const sample_uid_array = [
 "Mage",
 "Priest",
 ];
-const md5 = require('./md5.@2.19.0');
-var hash = md5('value');
+
+
+// const md5 = require('./md5.@2.19.0');
+// var hash = md5('value');
 // console.log(hash);
  // "2063c1608d6e0baf80249c42e2be5804"
 
@@ -40,14 +42,14 @@ var hash = md5('value');
 
 
 
-const express = require('express')
-const cors = require('cors')
+const express = require('express');
+const cors = require('cors');
 
-const R = require('ramda')
-const validator = require('validator')
+const R = require('ramda');
+const validator = require('validator');
 
-const app = express()
-const port = 8800
+const app = express();
+const port = 8800;
 
 const Database = require('better-sqlite3');
 let db;
@@ -519,10 +521,10 @@ app.get("/textsplitterfortweet_2_read_any", (req, res, next) => {
     )))
 });
 app.get("/textsplitterfortweet_2_readall", (req, res, next) => {
-    switch_db("vue_test_with_web_api"); allowOrigin(res); res.json(textsplitterfortweet_2_db_query_select_all());
+    switch_db("textsplitterfortweet_2"); allowOrigin(res); res.json(textsplitterfortweet_2_db_query_select_all());
 });
 app.get("/textsplitterfortweet_2_insert", (req, res, next) => {
-    switch_db("vue_test_with_web_api"); allowOrigin(res);
+    switch_db("textsplitterfortweet_2"); allowOrigin(res);
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_insert_and_select, raging_demon(req.query, {
             "foo": [
                 ["isLength", {min: 1, max: 1400}, "error: isLength: {min: 1, max: 1400}",],
@@ -534,7 +536,7 @@ app.get("/textsplitterfortweet_2_insert", (req, res, next) => {
     )))
 });
 app.get("/textsplitterfortweet_2_update", (req, res, next) => {
-    switch_db("vue_test_with_web_api"); allowOrigin(res);
+    switch_db("textsplitterfortweet_2"); allowOrigin(res);
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_update_and_select, raging_demon(req.query, {
                     "foo": [
                         ["isLength", {min: 1, max: 1400}, "error: isLength: {min: 1, max: 1400}",],
@@ -550,7 +552,7 @@ app.get("/textsplitterfortweet_2_update", (req, res, next) => {
     )
 });
 app.get("/textsplitterfortweet_2_deleteid", (req, res, next) => {
-    switch_db("vue_test_with_web_api"); allowOrigin(res);
+    switch_db("textsplitterfortweet_2"); allowOrigin(res);
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_delete, raging_demon(req.query, {
             "id": [
                 ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
@@ -627,3 +629,5 @@ app.get("/textsplitterfortweet_2_deleteid", (req, res, next) => {
 
 // SELECT * FROM textsplitterfortweet_uid;
 // SELECT * FROM textsplitterfortweet_foo;
+
+
