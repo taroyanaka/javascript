@@ -125,23 +125,14 @@ const app = Vue.createApp({
                         this.when,
                     ];
         },
-
-rating_up(INDEX){
-console.log(INDEX);
-    // this.all_save[INDEX][3] = this.all_save[INDEX][3] + 1;
-    this.all_save[INDEX][3]++;
-            console.log(
-                this.all_save[INDEX][3]
-            );
-    localStorage.setItem('key', JSON.stringify(this.all_save));
-// this.save_data_load();
-},
-rating_down(INDEX){
-    this.all_save[INDEX][3]--;
-    localStorage.setItem('key', JSON.stringify(this.all_save));
-// this.save_data_load();
-},
-
+        rating_up(INDEX){
+            this.all_save[INDEX][3]++;
+            localStorage.setItem('key', JSON.stringify(this.all_save));
+        },
+        rating_down(INDEX){
+            this.all_save[INDEX][3]--;
+            localStorage.setItem('key', JSON.stringify(this.all_save));
+        },
         save_data_to_all_save() {
             this.all_save.push(this.save_data);
             localStorage.setItem('key', JSON.stringify(this.all_save));
@@ -158,24 +149,20 @@ rating_down(INDEX){
                 localStorage.setItem('key', JSON.stringify(this.all_save));
             }
         },
-sort_by_when(){
-    this.all_save.sort((a, b) => {
-        time_A = new Date(a[4]);
-        time_B = new Date(b[4]);
-        return this.sort_by === 'asc' ? time_A - time_B : time_B - time_A;
-    });
-    this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
-    console.log(this.all_save[0][4]);
-    console.log(this.all_save[3][4]);
-
-},
-sort_by_rating(){
-    this.all_save.sort((a, b) => {
-        return this.sort_by === 'asc' ? a[3] - b[3] : b[3] - a[3];
-    });
-    this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
-},
-
+        sort_by_when(){
+            this.all_save.sort((a, b) => {
+                time_A = new Date(a[4]);
+                time_B = new Date(b[4]);
+                return this.sort_by === 'asc' ? time_A - time_B : time_B - time_A;
+            });
+            this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
+        },
+        sort_by_rating(){
+            this.all_save.sort((a, b) => {
+                return this.sort_by === 'asc' ? a[3] - b[3] : b[3] - a[3];
+            });
+            this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
+        },
     }
 }).mount('.app');
 </script>
