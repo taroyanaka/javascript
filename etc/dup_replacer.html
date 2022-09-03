@@ -8,18 +8,65 @@
 <script src="./vue3.js"></script>
 <script src="./localforage.js"></script>
 <script src="./ramda.@0.28.0.js"></script>
+<style>
+/* grid layout */
+/* grid layout */
+.app {
+  display: grid;
+/* grid-auto-rows: auto; */
+grid-auto-columns: auto;
+  /* grid-template-columns: repeat(12, 1fr); */
+  /* grid-template-rows: repeat(3, 1fr); */
+    grid-template-rows: 0.2fr 2fr 1fr;
+  grid-gap: 0px;
+  grid-template-areas:
+    "button"
+    "textarea"
+    "list";
+}
+.button_parent{
+    display: grid;
+    grid-area: button;
+      grid-template-rows: 1fr;
+      grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: auto; */
+    /* grid-template-rows: auto; */
+}
+.button{
+  /* grid-area: button; */
+    /* height: 5rem; */
+    /* width: auto; */
+}
+.textarea_parent {
+  display: grid;
+grid-auto-rows: auto;
+/* grid-auto-columns: auto; */
+  /* grid-template-columns: repeat(4, 1fr); */
+  grid-template-columns: 2fr 1fr 1fr 2fr;
+  /* grid-template-rows: repeat(12, 1fr); */
+  grid-gap: 0px;
+  /* grid-template-areas:
+    "header header header header header header header header header header header header"
+    "main main main main main main main main main main main main"
+    "footer footer footer footer footer footer footer footer footer footer footer footer"; */
+}
+</style>
 </head>
 <body>
 <div class="app">
 
-<div>
-<input type="button" value="save_data_to_all_save" @click="save_data_to_all_save">
+<div class="button_parent">
+<input type="button" value="save_data_to_all_save" @click="save_data_to_all_save" class="button">
+<input type="button" value="sample_en" @click="sample_en" class="button">
+<input type="button" value="sample_ja" @click="sample_ja" class="button">
 </div>
 
+<div class="textarea_parent">
 <textarea name="a" id="a" cols="5" rows="10" v-model="a" @input=""></textarea>
 <textarea name="b" id="b" cols="5" rows="10" v-model="b"></textarea>
 <textarea name="c" id="c" cols="5" rows="10" v-model="c"></textarea>
 <textarea name="d" id="d" cols="5" rows="10" v-model="result">{{ result }}</textarea>
+</div>
 
 <ul>
 <li v-for="(item, index) in all_save" @click="save_data_set(index)">
@@ -45,6 +92,7 @@ const app = Vue.createApp({
     computed: {
         result: function () {
             this.save_data_load();
+            this.refrech_save_data();
 
             let tmp = this.a;
             R.zip(
@@ -53,11 +101,6 @@ const app = Vue.createApp({
                     .forEach(V=>
                         tmp = tmp.replaceAll(V[0],
                                                 V[1]));
-            this.save_data = [
-                this.a,
-                this.b,
-                this.c,
-            ];
             return tmp;
         }
     },
@@ -68,6 +111,26 @@ const app = Vue.createApp({
     updated() {
     },
     methods: {
+        sample_en(){
+                    this.a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    this.b = 'BC\nEF\nHI\nXY';
+                    this.c = 'bc\nef\nhi\nxy';
+        },
+        sample_ja(){
+                    this.a = `いろはにほへと　ちりぬるを
+        わかよたれそ　つねならむ
+        うゐのおくやま　けふこえて
+        あさきゆめみし　ゑひもせす`;
+                    this.b = 'はに\nなら\nゆめ\nもせ';
+                    this.c = 'hani\nnara\nyume\nmose';
+        },
+        refrech_save_data() {
+                    this.save_data = [
+                        this.a,
+                        this.b,
+                        this.c,
+                    ];
+        },
         save_data_to_all_save() {
             this.all_save.push(this.save_data);
             localStorage.setItem('key', JSON.stringify(this.all_save));
