@@ -10,47 +10,30 @@
 <script src="./ramda.@0.28.0.js"></script>
 <style>
 ul{
-    list-style-type: none;
+list-style-type: none;
 }
 /* grid layout */
 .app {
-  display: grid;
-/* grid-auto-rows: auto; */
+display: grid;
 grid-auto-columns: auto;
-  /* grid-template-columns: repeat(12, 1fr); */
-  /* grid-template-rows: repeat(3, 1fr); */
-    grid-template-rows: 0.2fr 2fr 1fr;
-  grid-gap: 0px;
-  grid-template-areas:
+grid-template-rows: 0.2fr 2fr 1fr;
+grid-gap: 0px;
+grid-template-areas:
     "button"
     "textarea"
     "list";
 }
 .button_parent{
-    display: grid;
-    grid-area: button;
-      grid-template-rows: 1fr;
-      grid-template-columns: repeat(3, 1fr);
-    /* grid-template-columns: auto; */
-    /* grid-template-rows: auto; */
-}
-.button{
-  /* grid-area: button; */
-    /* height: 5rem; */
-    /* width: auto; */
+display: grid;
+grid-area: button;
+grid-template-rows: 1fr;
+grid-template-columns: repeat(3, 1fr);
 }
 .textarea_parent {
-  display: grid;
+display: grid;
 grid-auto-rows: auto;
-/* grid-auto-columns: auto; */
-  /* grid-template-columns: repeat(4, 1fr); */
-  grid-template-columns: 2fr 1fr 1fr 2fr;
-  /* grid-template-rows: repeat(12, 1fr); */
-  grid-gap: 0px;
-  /* grid-template-areas:
-    "header header header header header header header header header header header header"
-    "main main main main main main main main main main main main"
-    "footer footer footer footer footer footer footer footer footer footer footer footer"; */
+grid-template-columns: 2fr 1fr 1fr 2fr;
+grid-gap: 0px;
 }
 </style>
 </head>
@@ -58,9 +41,9 @@ grid-auto-rows: auto;
 <div class="app">
 
 <div class="button_parent">
-<input type="button" value="save_data_to_all_save" @click="save_data_to_all_save" class="button">
-<input type="button" value="sample_en" @click="sample_en" class="button">
-<input type="button" value="sample_ja" @click="sample_ja" class="button">
+<input type="button" value="save_data_to_all_save" @click="save_data_to_all_save">
+<input type="button" value="sample_en" @click="sample_en">
+<input type="button" value="sample_ja" @click="sample_ja">
 </div>
 
 <div class="textarea_parent">
