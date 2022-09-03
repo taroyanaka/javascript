@@ -71,9 +71,12 @@ grid-auto-rows: auto;
 </div>
 
 <ul>
+<input type="button" value="sort_by_when" @click="sort_by_when">
+<input type="button" value="sort_by_rating" @click="sort_by_rating">
 <li v-for="(item, index) in all_save" @click="save_data_set(index)">
 <button @click="save_data_set(index)">save_data_set</button>
-{{ index }}: {{ item }}
+<!-- index {{ index }}:  -->
+{{ item[4] }}: rating {{ item[3] }} <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>: {{ item }}
 <button @click="save_data_delete(index)">save_data_delete</button>
 </li>
 </ul>
@@ -87,12 +90,16 @@ const app = Vue.createApp({
             a: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
             b: 'BC\nEF\nHI\nXY',
             c: 'bc\nef\nhi\nxy',
+            rating: 0,
+            when: null,
             save_data: '',
             all_save: [],
+            sort_by: 'asc',
         }
     },
     computed: {
         result: function () {
+            this.when = (new Date()).toLocaleString('en');
             this.save_data_load();
             this.refrech_save_data();
 
@@ -131,8 +138,27 @@ const app = Vue.createApp({
                         this.a,
                         this.b,
                         this.c,
+                        this.rating,
+                        this.when,
                     ];
         },
+
+rating_up(INDEX){
+console.log(INDEX);
+    // this.all_save[INDEX][3] = this.all_save[INDEX][3] + 1;
+    this.all_save[INDEX][3]++;
+            console.log(
+                this.all_save[INDEX][3]
+            );
+    localStorage.setItem('key', JSON.stringify(this.all_save));
+// this.save_data_load();
+},
+rating_down(INDEX){
+    this.all_save[INDEX][3]--;
+    localStorage.setItem('key', JSON.stringify(this.all_save));
+// this.save_data_load();
+},
+
         save_data_to_all_save() {
             this.all_save.push(this.save_data);
             localStorage.setItem('key', JSON.stringify(this.all_save));
@@ -141,7 +167,7 @@ const app = Vue.createApp({
             this.all_save = JSON.parse(localStorage.getItem('key'));
         },
         save_data_set(INDEX) {
-            [this.a, this.b, this.c] = this.all_save[INDEX];
+            [this.a, this.b, this.c, this.rating] = this.all_save[INDEX];
         },
         save_data_delete(INDEX) {
             if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
@@ -149,6 +175,24 @@ const app = Vue.createApp({
                 localStorage.setItem('key', JSON.stringify(this.all_save));
             }
         },
+sort_by_when(){
+    this.all_save.sort((a, b) => {
+        time_A = new Date(a[4]);
+        time_B = new Date(b[4]);
+        return this.sort_by === 'asc' ? time_A - time_B : time_B - time_A;
+    });
+    this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
+    console.log(this.all_save[0][4]);
+    console.log(this.all_save[3][4]);
+
+},
+sort_by_rating(){
+    this.all_save.sort((a, b) => {
+        return this.sort_by === 'asc' ? a[3] - b[3] : b[3] - a[3];
+    });
+    this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
+},
+
     }
 }).mount('.app');
 </script>
