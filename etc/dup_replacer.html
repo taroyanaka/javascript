@@ -18,6 +18,7 @@
 <textarea name="b" id="b" cols="5" rows="10" v-model="b"></textarea>
 <textarea name="c" id="c" cols="5" rows="10" v-model="c"></textarea>
 <textarea name="d" id="d" cols="5" rows="10" v-model="result">{{ result }}</textarea>
+<h1>{{all_save_length}}</h1>
 </div>
 </body>
 <script>
@@ -27,11 +28,14 @@ return {
     a: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
     b: 'BC\nEF\nHI\nXY',
     c: 'bc\nef\nhi\nxy',
-    save: '',
+    save_data: '',
+    all_save: [],
+    all_save_length: 0,
 }
 },
  computed: {
     result: function () {
+        all_save_length = this.all_save.length;
         let tmp = this.a;
         R.zip(
             this.b.split("\n"),
@@ -39,7 +43,7 @@ return {
                 .forEach(V=>
                     tmp = tmp.replaceAll(V[0],
                                          V[1]));
-this.save = [
+this.save_data = [
 this.a,
 this.b,
 this.c,
