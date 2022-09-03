@@ -20,7 +20,6 @@
 <textarea name="b" id="b" cols="5" rows="10" v-model="b"></textarea>
 <textarea name="c" id="c" cols="5" rows="10" v-model="c"></textarea>
 <textarea name="d" id="d" cols="5" rows="10" v-model="result">{{ result }}</textarea>
-<!-- all_save_length: <h1>{{all_save_length}}</h1> -->
 
 <ul>
 <li v-for="(item, index) in all_save" @click="save_data_set(index)">
@@ -41,13 +40,12 @@ const app = Vue.createApp({
             c: 'bc\nef\nhi\nxy',
             save_data: '',
             all_save: [],
-            all_save_length: 0,
         }
     },
     computed: {
         result: function () {
             this.save_data_load();
-            this.all_save_length = this.all_save.length;
+
             let tmp = this.a;
             R.zip(
                 this.b.split("\n"),
