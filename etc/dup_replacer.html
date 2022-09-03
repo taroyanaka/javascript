@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src="./vue3.js"></script>
+<script src="./localforage.js"></script>
+<script src="./ramda.@0.28.0.js"></script>
+</head>
+<body>
+<div class="app">
+<!-- <div> -->
+<!-- <input type="button" value="fn_A" @click="fn_A"> -->
+<!-- </div> -->
+<textarea name="a" id="a" cols="5" rows="10" v-model="a" @input=""></textarea>
+<textarea name="b" id="b" cols="5" rows="10" v-model="b"></textarea>
+<textarea name="c" id="c" cols="5" rows="10" v-model="c"></textarea>
+<textarea name="d" id="d" cols="5" rows="10" v-model="result">{{ result }}</textarea>
+</div>
+</body>
+<script>
+const app = Vue.createApp({
+data() {
+return {
+    a: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    b: 'BC\nEF\nHI\nXY',
+    c: 'bc\nef\nhi\nxy',
+    save: '',
+}
+},
+ computed: {
+    result: function () {
+        let tmp = this.a;
+        R.zip(
+            this.b.split("\n"),
+            this.c.split("\n"))
+                .forEach(V=>
+                    tmp = tmp.replaceAll(V[0],
+                                         V[1]));
+this.save = [
+this.a,
+this.b,
+this.c,
+];
+// localStorage.setItem('key', JSON.stringify(this.save));
+        return tmp;
+    }
+  },
+mounted() {
+},
+beforeUpdated() {
+    // fn_A();
+},
+updated() {
+    // fn_A();
+},
+methods: {
+    // fn_A() {
+    //     let tmp = this.a;
+    //     R.zip(
+    //         this.b.split("\n"),
+    //         this.c.split("\n"))
+    //             .forEach(V=>
+    //                 tmp = this.d.replaceAll(V[0],
+    //                                         V[1]));
+    //     this.d = tmp;
+    // },
+}
+}).mount('.app');
+</script>
+</html>
