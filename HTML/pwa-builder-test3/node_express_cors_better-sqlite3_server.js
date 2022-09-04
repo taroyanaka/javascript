@@ -28,8 +28,8 @@ const sample_uid_array = [
 ];
 
 
-// const md5 = require('./md5.@2.19.0');
-// var hash = md5('value');
+const MD5 = require('./md5.@2.19.0');
+// var hash = MD5('value');
 // console.log(hash);
  // "2063c1608d6e0baf80249c42e2be5804"
 
@@ -473,7 +473,8 @@ VALUES(
 );`
         ).run({
             foo: STRING_ARRAY["foo"],
-            uid: STRING_ARRAY["uid"],
+            // uid: STRING_ARRAY["uid"],
+            uid: MD5(STRING_ARRAY["uid"]),
         });
     return textsplitterfortweet_2_db_query_select_all(STRING_ARRAY);
 };
@@ -490,7 +491,8 @@ WHERE
          WHERE textsplitterfortweet_uid.uid = @uid);`
         ).run({
             foo: STRING_ARRAY["foo"],
-            uid: STRING_ARRAY["uid"],
+            // uid: STRING_ARRAY["uid"],
+            uid: MD5(STRING_ARRAY["uid"]),
             id: STRING_ARRAY["id"],
         });
     return textsplitterfortweet_2_db_query_select_all(STRING_ARRAY);
@@ -506,7 +508,8 @@ WHERE
          WHERE textsplitterfortweet_uid.uid = @uid);`
         ).run({
             id: STRING_ARRAY["id"],
-            uid: STRING_ARRAY["uid"],
+            // uid: STRING_ARRAY["uid"],
+            uid: MD5(STRING_ARRAY["uid"]),
         });
     return textsplitterfortweet_2_db_query_select_all(STRING_ARRAY);
 };
@@ -631,3 +634,4 @@ app.get("/textsplitterfortweet_2_deleteid", (req, res, next) => {
 // SELECT * FROM textsplitterfortweet_foo;
 
 
+// 
