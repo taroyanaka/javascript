@@ -57,7 +57,8 @@ grid-gap: 0px;
 <ul>
 <input type="button" value="sort_by_when" @click="sort_by_when">
 <input type="button" value="sort_by_rating" @click="sort_by_rating">
-<li v-for="(item, index) in all_save" @click="save_data_set(index)">
+<li v-for="(item, index) in all_save">
+<!-- <li v-for="item in all_save" @click="save_data_set(index)"> -->
 <button @click="save_data_set(index)">save_data_set</button>
 <!-- index {{ index }}:  -->
 {{ item[4] }}: rating {{ item[3] }} <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>: {{ item }}
