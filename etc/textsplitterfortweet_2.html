@@ -36,17 +36,14 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>textsplitterfortweet_2</title>
-    <script src="./vue3.js"></script>
-    <script src="./ramda.@0.28.0.js"></script>
-    <script src="./localforage.js"></script>
-    <!-- <script src="validator@13.7.0.js"></script> -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script> -->
-<script src="./firebase-app.8.6.1.js"></script>
-    <!-- <script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-auth.js"></script> -->
-<script src="./firebase-auth.8.4.0.js"></script>
-    <!-- <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script> -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/8.4.0/firebase-auth.js"></script> -->
-
+<!-- <script src="./vue3.js"></script> -->
+<script src="./vue@3.2.36.global.prod.js"></script>
+<script src="./ramda.@0.28.0.js"></script>
+<!-- <script src="./localforage.js"></script> -->
+<script src="./localforage@1.10.0.js"></script>
+<!-- <script src="validator@13.7.0.js"></script> -->
+<script src="./firebase@8.6.1-app.js"></script>
+<script src="./firebase@8.6.1-auth.js"></script>
 <!-- <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js"></script> -->
 <!-- <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-auth.js"></script> -->
 
@@ -158,14 +155,6 @@ const app = Vue.createApp({
         this.selected = 140;
     },
     async save() {
-        // localforage.setItem('data', 'myvalue').then(console.log);
-        // try {
-        //     const value = await localforage.getItem('data');
-        //     console.log(value);
-        // } catch (err) {
-        //     console.log(err);
-        // }
-
         this.save_data_list.push({
             save_foo: this.foo,
             save_split_num: this.selected,
