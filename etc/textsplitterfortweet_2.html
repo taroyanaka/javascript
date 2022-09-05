@@ -63,13 +63,24 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 </head>
 <body>
 <div class="app">
+
+<span>web_message: {{  }}</span>
+
 <!-- <button @click="foo_fn">foo_fn</button> -->
 <button @click="firebase_auth_onAuthStateChanged">firebase_auth_onAuthStateChanged</button>
 <!-- <span>login_data: {{ login_data }}</span> -->
-<textarea v-model="login_data['uid']"></textarea>
 
 
-<span>{{ login_data }}</span>
+
+<!-- <textarea v-model="login_data['uid'] || 'sample'"></textarea> -->
+
+
+<div>
+<span>login_data is: {{ login_data }}</span>
+</div>
+<div>
+<span>login_data type is: {{ typeof login_data }}</span>
+</div>
 
 <!-- <img src="./google_signin_buttons/web/2x/btn_google_signin_dark_normal_web@2x.png" class="login" value="googleLogin" @click="toggleSignIn" /> -->
 <!-- <img src="./btn_google_signin_dark_normal_web@2x.png" class="login" value="googleLogin" @click="toggleSignIn" /> -->
@@ -83,7 +94,7 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
     <option disabled value="">Please select one</option>
     <option v-for="NUM in ALL_NUM" :key="NUM">
         {{ NUM }}
-        </option>
+    </option>
 </select>
 <input type="button" value="fn_A" @click="fn_A">
 <!-- https://stackoverflow.com/a/60293732 -->
@@ -95,6 +106,10 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 <input type="button" value="save" @click="save">
 
 <button @click="readall">readall</button>
+<button @click="insert">insert</button>
+<button @click="update">update</button>
+<button @click="deleteid">deleteid</button>
+
 <li v-for="web_data in web_data_list">
 id:{{ web_data['id'] }} foo:{{ web_data['foo'] }} uid:{{ web_data['uid'] }}
 </li>
@@ -120,17 +135,27 @@ SERVER_URL = 'http://localhost:8800';
 const app = Vue.createApp({
   data() {
     return {
-        foo: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
+        foo: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
         // foo: 'a',
         TXT: [],
         selected: 10,
         ALL_NUM:[],
         login_result: null,
         is_logging_in: false,
-        login_data: "fooooooooooooooooooooo",
+        // login_data: '',
+        // login_data: [],
+        // login_data: 'foobarbuz',
+        login_data: null,
         login_error: null,
         save_data_list: [],
-        web_data_list: "bar2",
+        // web_data_list: "bar2",
+        web_data_list: [{
+                "id": 'bar_id',
+                "foo": 'bar_foo',
+                "uid": 'bar_uid',
+            }],
+
+        // foo_data: '',
         // web_data_list: [],
     }
   },
@@ -166,25 +191,35 @@ async async_await_fetch_json_log_assign(FETCH_PARAM, DATA_KEY_ARRAY, KEY) {
     const JSON_DATA = await FETCH_DATA.json();
     console.table(JSON_DATA);
     if (JSON_DATA.message !== "success") return
-    this.web_data_list = "foo";
+    // this.web_data_list = "foo";
     // https://stackoverflow.com/a/37576787
     for (const DATA_KEY of DATA_KEY_ARRAY) {
         this[DATA_KEY] = JSON_DATA[KEY];
     }
 },
-async readall() {
-    // this.web_data_list = "bar";
 
+alert_if_no_login() {
+    if (this.login_data === null) {
+        this.web_message = "please login";
+        alert(this.web_message);
+        return true
+    }
+    return false
+},
+async readall() {
     await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_readall"), ["web_data_list"], "data");
 },
 async insert() {
-    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_insert?foo=" + this.foo), ["web_data_list"], "data");
+    if (this.alert_if_no_login()) return
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_insert?foo=" + this.foo + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
 },
-async update(ID, foo, UID) {
-    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_update?id=" + ID + "&foo=" + foo + "&uuid=" + UID), ["web_data_list"], "data");
+async update() {
+    if (this.alert_if_no_login()) return
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_update?id=" + ID + "&foo=" + foo + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
 },
-async deleteid(ID, UID) {
-    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_deleteid?id=" + ID + "&uid=" + UID), ["web_data_list"], "data");
+async deleteid() {
+    if (this.alert_if_no_login()) return
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_deleteid?id=" + ID + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
 },
 
 // insert_validation_check(){
