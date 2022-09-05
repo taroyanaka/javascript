@@ -56,6 +56,9 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
     width: 8rem;
     height: 2rem;
 }
+.update_deleteid_display_none {
+    display: none;
+}
 </style>
 
 
@@ -112,6 +115,10 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 
 <li v-for="web_data in web_data_list">
 id:{{ web_data['id'] }} foo:{{ web_data['foo'] }} uid:{{ web_data['uid'] }}
+<button @click="update(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === this.login_data['uid'] ? false : true }">update</button>
+<button @click="deleteid(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === this.login_data['uid'] ? false : true }">deleteid</button>
+<!-- <button @click="update(web_data['id'])" :class="{ update_deleteid_display_none: this.update_deleteid_display_none_check(web_data['uid']) ? true : false }">update</button>
+<button @click="deleteid(web_data['id'])" :class="{ update_deleteid_display_none: this.update_deleteid_display_none_check(web_data['uid']) ? true : false }">deleteid</button> -->
 </li>
 
 </div>
@@ -161,7 +168,8 @@ const app = Vue.createApp({
   },
   mounted() {
     this.init();
-    this.init_app()
+    this.init_app();
+    this.readall();
   },
   methods: {
     fn_A() {
@@ -210,17 +218,24 @@ async readall() {
     await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_readall"), ["web_data_list"], "data");
 },
 async insert() {
+    console.log('insert executed');
     if (this.alert_if_no_login()) return
     await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_insert?foo=" + this.foo + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
 },
-async update() {
+async update(ID) {
     if (this.alert_if_no_login()) return
-    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_update?id=" + ID + "&foo=" + foo + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_update?id=" + ID + "&foo=" + this.foo + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
 },
-async deleteid() {
+async deleteid(ID) {
     if (this.alert_if_no_login()) return
     await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_deleteid?id=" + ID + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
 },
+
+// update_deleteid_display_none_check(WEB_DATA_UID){
+//     if (WEB_DATA_UID === this.login_data['uid']) return false
+//     return true
+// },
+
 
 // insert_validation_check(){
 //     return Array.from(document.querySelectorAll("input.insert")).map(V=>V.validity.valid).some(x=> x === false )
