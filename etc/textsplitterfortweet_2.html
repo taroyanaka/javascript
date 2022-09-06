@@ -49,6 +49,11 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 <script src="./firebase@8.6.1-auth.js"></script>
 <!-- <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js"></script> -->
 <!-- <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-auth.js"></script> -->
+<!-- <script src="./md5.@2.19.0.js"></script> -->
+<!-- <script src="https://unpkg.com/blueimp-md5@2.19.0/js/md5.js"></script> -->
+
+<!-- https://unpkg.com/blueimp-md5@2.19.0/js/md5.js -->
+<script async src="./blueimp-md5@2.19.0.js"></script>
 
 <style>
 .twitter-share-button{
@@ -118,10 +123,9 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 
 <li v-for="web_data in web_data_list">
 id:{{ web_data['id'] }} foo:{{ web_data['foo'] }} uid:{{ web_data['uid'] }}
-<button @click="update(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === this.login_data['uid'] ? false : true }">update</button>
-<button @click="deleteid(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === this.login_data['uid'] ? false : true }">deleteid</button>
-<!-- <button @click="update(web_data['id'])" :class="{ update_deleteid_display_none: this.update_deleteid_display_none_check(web_data['uid']) ? true : false }">update</button>
-<button @click="deleteid(web_data['id'])" :class="{ update_deleteid_display_none: this.update_deleteid_display_none_check(web_data['uid']) ? true : false }">deleteid</button> -->
+
+<button @click="update(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === uid_to_md5( this.login_data['uid'] ) ? false : true }">update</button>
+<button @click="deleteid(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === uid_to_md5( this.login_data['uid'] ) ? false : true }">deleteid</button>
 </li>
 
 </div>
@@ -313,7 +317,13 @@ async init_app() {
     await this.firebase_auth_onAuthStateChanged();
 },
 
+uid_to_md5(UID_STR) {
+    // return md5('foobarbuz');
+    return md5(UID_STR);
+},
+
   },
+
 }).mount('.app');
 </script>
 </html>
