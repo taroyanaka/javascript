@@ -466,15 +466,29 @@ JOIN textsplitterfortweet_uid
     }
 };
 const textsplitterfortweet_2_db_query_insert_and_select = (STRING_ARRAY) => {
+// https://github.com/WiseLibs/better-sqlite3/blob/master/docs/api.md#getbindparameters---row
+// "If the statement was successful but found no data, undefined is returned."
+const is_there_uid = db.prepare('SELECT * FROM textsplitterfortweet_uid WHERE uid = ?').get(MD5(STRING_ARRAY["uid"]));
+
+is_there_uid ? "normal insert" : "insert uid before normal insert";
+
+const result = db.prepare('INSERT INTO textsplitterfortweet_uid (uid) VALUES (?)').run(MD5(STRING_ARRAY["uid"]));
+"INSERT INTO textsplitterfortweet_uid (uid) VALUES ('qux')"
+// const stmt = db.prepare('INSERT INTO people VALUES (?, ?, ?)');
+// stmt.run('John', 'Smith', 45);
+// stmt.run(['John', 'Smith', 45]);
+// stmt.run(['John'], ['Smith', 45]);
+
     db.prepare(`INSERT INTO textsplitterfortweet_foo (foo, textsplitterfortweet_uid_id)
 VALUES(
     @foo,
-    (SELECT textsplitterfortweet_uid.id FROM textsplitterfortweet_uid WHERE textsplitterfortweet_uid.uid = 'foo')
+    (SELECT textsplitterfortweet_uid.id FROM textsplitterfortweet_uid WHERE textsplitterfortweet_uid.uid = @uid)
 );`
         ).run({
             foo: STRING_ARRAY["foo"],
             // uid: STRING_ARRAY["uid"],
             uid: MD5(STRING_ARRAY["uid"]),
+            // uid: "barbarbar",
         });
     return textsplitterfortweet_2_db_query_select_all(STRING_ARRAY);
 };
@@ -532,6 +546,9 @@ app.get("/textsplitterfortweet_2_insert", (req, res, next) => {
             "foo": [
                 ["isLength", {min: 1, max: 1400}, "error: isLength: {min: 1, max: 1400}",],
             ],
+            // "foo": [
+            //     ["isLength", {min: 1, max: 1400}, "error: isLength: {min: 1, max: 1400}",],
+            // ],
             'uid': [
                 ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
             ],
