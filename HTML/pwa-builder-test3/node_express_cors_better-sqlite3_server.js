@@ -27,8 +27,10 @@ const sample_uid_array = [
 "Priest",
 ];
 
-
-const MD5 = require('./md5.@2.19.0');
+// https://github.com/blueimp/JavaScript-MD5
+// https://unpkg.com/blueimp-md5@2.19.0/js/md5.js
+// const MD5 = require('./md5.@2.19.0');
+const MD5 = require('./blueimp-md5@2.19.0');
 // var hash = MD5('value');
 // console.log(hash);
  // "2063c1608d6e0baf80249c42e2be5804"
@@ -466,30 +468,28 @@ JOIN textsplitterfortweet_uid
     }
 };
 const textsplitterfortweet_2_db_query_insert_and_select = (STRING_ARRAY) => {
-// https://github.com/WiseLibs/better-sqlite3/blob/master/docs/api.md#getbindparameters---row
-// "If the statement was successful but found no data, undefined is returned."
-const is_there_uid = db.prepare('SELECT * FROM textsplitterfortweet_uid WHERE uid = ?').get(MD5(STRING_ARRAY["uid"]));
-
-is_there_uid ? "normal insert" : "insert uid before normal insert";
-
-const result = db.prepare('INSERT INTO textsplitterfortweet_uid (uid) VALUES (?)').run(MD5(STRING_ARRAY["uid"]));
-"INSERT INTO textsplitterfortweet_uid (uid) VALUES ('qux')"
-// const stmt = db.prepare('INSERT INTO people VALUES (?, ?, ?)');
-// stmt.run('John', 'Smith', 45);
-// stmt.run(['John', 'Smith', 45]);
-// stmt.run(['John'], ['Smith', 45]);
-
-    db.prepare(`INSERT INTO textsplitterfortweet_foo (foo, textsplitterfortweet_uid_id)
-VALUES(
-    @foo,
-    (SELECT textsplitterfortweet_uid.id FROM textsplitterfortweet_uid WHERE textsplitterfortweet_uid.uid = @uid)
-);`
+    const normal_insert = () => {
+        db.prepare(`INSERT INTO textsplitterfortweet_foo (foo, textsplitterfortweet_uid_id)
+    VALUES(
+        @foo,
+        (SELECT textsplitterfortweet_uid.id FROM textsplitterfortweet_uid WHERE textsplitterfortweet_uid.uid = @uid)
+    );`
         ).run({
             foo: STRING_ARRAY["foo"],
-            // uid: STRING_ARRAY["uid"],
             uid: MD5(STRING_ARRAY["uid"]),
             // uid: "barbarbar",
         });
+    };
+
+    const insert_uid = () => db.prepare('INSERT INTO textsplitterfortweet_uid (uid) VALUES (?)').run(MD5(STRING_ARRAY["uid"]));
+
+    // https://github.com/WiseLibs/better-sqlite3/blob/master/docs/api.md#getbindparameters---row
+    // "If the statement was successful but found no data, undefined is returned."
+    // const is_there_uid_result = db.prepare('SELECT * FROM textsplitterfortweet_uid WHERE uid = ?').get(MD5(STRING_ARRAY["uid"]));
+    // is_there_uid_result === undefined ? insert_uid() : null;
+    db.prepare('SELECT * FROM textsplitterfortweet_uid WHERE uid = ?').get(MD5(STRING_ARRAY["uid"])) === undefined ? insert_uid() : null;
+    normal_insert();
+
     return textsplitterfortweet_2_db_query_select_all(STRING_ARRAY);
 };
 
