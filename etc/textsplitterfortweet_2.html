@@ -62,11 +62,28 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 </head>
 <body>
 <div class="app">
+
+<span>{{ when }}</span>
+<span>{{ rating }}</span>
+
+<input type="button" value="save_data_to_all_save" @click="save_data_to_all_save">
+
+<ul>
+<input type="button" value="sort_by_when" @click="sort_by_when">
+<input type="button" value="sort_by_rating" @click="sort_by_rating">
+<li v-for="(item, index) in all_save" @click="save_data_set(index)">
+<button @click="save_data_set(index)">save_data_set</button>
+{{ item[0] }}: rating {{ item[1] }} <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>: {{ item }}
+<button @click="save_data_delete(index)">save_data_delete</button>
+</li>
+</ul>
+
 <span>web_message: {{ web_message }}</span>
 <!-- <button @click="firebase_auth_onAuthStateChanged">firebase_auth_onAuthStateChanged</button> -->
 
 <div>
 <span>login_data is: {{ login_data }}</span>
+<!-- <span>login_result: {{ login_result }}</span> -->
 </div>
 <div>
 <span>login_data type is: {{ typeof login_data }}</span>
@@ -85,10 +102,10 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 <!-- <input type="button" value="fn_A" @click="fn_A"> -->
 <a class="twitter-share-button" v-bind:href="`https://twitter.com/intent/tweet?text=${item}`" data-size="large" v-for="item in TXT">{{ item }}</a>
 
-<li v-for="save_data in save_data_list" :key="NUM">
-{{ save_data['save_foo'] }} {{ save_data['save_split_num'] }}
-</li>
 <input type="button" value="save" @click="save">
+<li v-for="save_data in all_save" :key="NUM">
+save_data: {{ save_data['save_foo'] }} {{ save_data['save_split_num'] }}
+</li>
 
 <button @click="readall">readall</button>
 <button @click="insert">insert</button>
@@ -119,25 +136,35 @@ let SERVER_URL = '';
 SERVER_URL = 'http://localhost:8800';
 // SERVER_URL = "https://marred-mint-art.glitch.me";
 
+let login_result = null;
+let login_error = null;
+
 const app = Vue.createApp({
-  data() {
-    return {
-        foo: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
-        TXT: [],
-        selected: 10,
-        ALL_NUM:[],
-        login_result: null,
-        is_logging_in: false,
-        login_data: null,
-        login_error: null,
-        save_data_list: [],
-        web_data_list: [{
-                "id": 'bar_id',
-                "foo": 'bar_foo',
-                "uid": 'bar_uid',
-            }],
-    }
-  },
+data() {
+return {
+    foo: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
+    TXT: [],
+    selected: 1,
+    ALL_NUM: [],
+    login_data: null,
+
+    when: null,
+    rating: 0,
+    save_data: [],
+    all_save: [],
+
+    web_data_list: [{
+            "id": 'bar_id',
+            "foo": 'bar_foo',
+            "uid": 'bar_uid',
+        }],
+}
+},
+    // computed: {
+    //     COMP: function () {
+    //         return COMP;
+    //     }
+    // },
 created() {
 },
 beforeMount() {
@@ -146,6 +173,7 @@ beforeMount() {
 mounted() {
     this.init();
     this.init_app();
+    this.save_data_load();
     this.readall();
 },
 beforeUpdated() {
@@ -191,12 +219,13 @@ init() {
     this.ALL_NUM = R.range(1, 141);
     this.selected = 140;
 },
-async save() {
-    this.save_data_list.push({
-        save_foo: this.foo,
-        save_split_num: this.selected,
-    })
-},
+
+// async save() {
+//     this.all_save.push({
+//         save_foo: this.foo,
+//         save_split_num: this.selected,
+//     })
+// },
 
 async async_await_fetch_json_log_assign(FETCH_PARAM, DATA_KEY_ARRAY, KEY) {
     const FETCH_DATA = await fetch(FETCH_PARAM);
@@ -244,18 +273,9 @@ set_temporary_data_for_vue_rendering() {
 console.log(this.login_data);
 },
 async firebase_auth_signOut_and_all_login_property_clear() {
-    // await firebase.auth().signOut();
     await firebase.auth().signOut().then(() => {
         console.log('signOut success');
-        const all_login_property_clear = () => {
-            this.login_result = null;
-            this.is_logging_in = false;
-            // this.login_data = null;
-            this.login_error = null;
-            this.set_temporary_data_for_vue_rendering();
-        };
-        all_login_property_clear();
-        // this.reload_once();
+        this.set_temporary_data_for_vue_rendering();
         app.$forceUpdate();
     }).catch((error) => {
         console.log(error);
@@ -266,12 +286,10 @@ async toggleSignIn() {
 },
 async firebase_auth_getRedirectResult() {
     await firebase.auth().getRedirectResult().then((RESULT) => {
-        console.log("getRedirectResult is this?????");
-        this.login_result = RESULT;
-        this.is_logging_in = RESULT["user"] === null ? false : true;
+        console.log("getRedirectResult!!!!");
+        login_result = RESULT;
     }).catch((ERROR) => {
-        this.is_logging_in = false;
-        this.login_error = ERROR;
+        login_error = ERROR;
     });
 },
 async firebase_auth_onAuthStateChanged() {
@@ -288,7 +306,7 @@ async firebase_auth_onAuthStateChanged() {
     await firebase.auth().onAuthStateChanged(USER => {
         console.log("onAuthStateChanged is this?????");
         if (USER) { SELF.login_data = get_user_data_object(USER) };
-        if (USER) { SELF.is_logging_in = true };
+        // if (USER) { SELF.is_logging_in = true };
     });
 },
 async init_app() {
@@ -299,6 +317,58 @@ uid_to_md5(UID_STR) {
     return md5(UID_STR);
 },
 
+
+
+
+        async rating_up(INDEX){
+            console.log(INDEX);
+            this.all_save[INDEX][1]++;
+            await localforage.setItem('key', JSON.stringify(this.all_save));
+            await this.save_data_load();
+        },
+        async rating_down(INDEX){
+            console.log(INDEX);
+            this.all_save[INDEX][1]--;
+            await localforage.setItem('key', JSON.stringify(this.all_save));
+            await this.save_data_load();
+        },
+        async save_data_to_all_save(){
+            // this.all_save.push(this.save_data);
+
+            this.when = (new Date()).toLocaleString('en');
+            this.rating = 0;
+            // const RATING = 0;
+            // const WHEN = (new Date()).toLocaleString('en');
+            this.all_save.push([this.when, this.rating, this.foo]);
+            // this.all_save.push([RATING, WHEN]);
+            await localforage.setItem('key', JSON.stringify(this.all_save));
+        },
+        async save_data_load() {
+            this.all_save = JSON.parse(await localforage.getItem('key')) || [];
+        },
+        save_data_set(INDEX){
+            [this.when, this.rating, this.foo] = this.all_save[INDEX];
+        },
+        async save_data_delete(INDEX){
+            if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
+                this.all_save.splice(INDEX, 1);
+                await localforage.setItem('key', JSON.stringify(this.all_save));
+            }
+        },
+        sort_by_when(){
+            this.all_save.sort((a, b) => {
+                time_A = new Date(a[0]);
+                time_B = new Date(b[0]);
+                return this.sort_by === 'asc' ? time_A - time_B : time_B - time_A;
+            });
+            this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
+        },
+        sort_by_rating(){
+            this.all_save.sort((a, b) => {
+                return this.sort_by === 'asc' ? a[1] - b[1] : b[1] - a[1];
+            });
+            this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
+        },
 },
 }).mount('.app');
 </script>
