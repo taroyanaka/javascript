@@ -62,8 +62,8 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 </head>
 <body>
 <div class="app">
-<span>web_message: {{  }}</span>
-<button @click="firebase_auth_onAuthStateChanged">firebase_auth_onAuthStateChanged</button>
+<span>web_message: {{ web_message }}</span>
+<!-- <button @click="firebase_auth_onAuthStateChanged">firebase_auth_onAuthStateChanged</button> -->
 
 <div>
 <span>login_data is: {{ login_data }}</span>
@@ -72,7 +72,8 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 <span>login_data type is: {{ typeof login_data }}</span>
 </div>
 
-<input type="button"  class="login" value="googleLogin" @click="toggleSignIn">
+<input type="button" class="login" value="googleLogin" @click="toggleSignIn">
+<input type="button" class="firebase_auth_signOut_and_all_login_property_clear" value="firebase_auth_signOut_and_all_login_property_clear" @click="firebase_auth_signOut_and_all_login_property_clear">
 
 <textarea v-model="foo" class="foo" minlength="1" maxlength="1400" @input="fn_A" @change="fn_A"></textarea>
 <select class="select" v-model="selected" @change="fn_B($event)">
@@ -81,7 +82,7 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
         {{ NUM }}
     </option>
 </select>
-<input type="button" value="fn_A" @click="fn_A">
+<!-- <input type="button" value="fn_A" @click="fn_A"> -->
 <a class="twitter-share-button" v-bind:href="`https://twitter.com/intent/tweet?text=${item}`" data-size="large" v-for="item in TXT">{{ item }}</a>
 
 <li v-for="save_data in save_data_list" :key="NUM">
@@ -97,6 +98,7 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 id:{{ web_data['id'] }} foo:{{ web_data['foo'] }} uid:{{ web_data['uid'] }}
 
 <button @click="update(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === uid_to_md5( this.login_data['uid'] ) ? false : true }">update</button>
+<!-- <button @click="deleteid('foo')" :class="{ update_deleteid_display_none: 'foo' === uid_to_md5( 'foo' ) ? false : true }">deleteid</button> -->
 <button @click="deleteid(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === uid_to_md5( this.login_data['uid'] ) ? false : true }">deleteid</button>
 </li>
 
@@ -136,12 +138,61 @@ const app = Vue.createApp({
             }],
     }
   },
+  beforeMount() {
+//   created() {
+    this.set_temporary_data_for_vue_rendering();
+    // if (this.login_data === null) {
+    //     this.web_message = "please login";
+    //     this.login_data = {
+    //         "uid": 'tmp_uid',
+    //         "displayName": 'tmp_displayName',
+    //     };
+    // }
+    // console.log(this.login_data);
+    // if(this.web_data_list === null){this.web_data_list = [];}
+    // this.web_data_list = this.web_data_list === null ? [] : [{
+    //         "id": 'tmp_data_id',
+    //         "foo": 'tmp_data_foo',
+    //         "uid": 'tmp_data_uid',
+    //     }];
+  },
   mounted() {
+    // this.reload_once();
     this.init();
     this.init_app();
     this.readall();
   },
+    beforeUpdated() {
+    },
+
+    watch: {
+      login_data(new_login_data, old_login_data) {
+        console.log('forceUpdated from login_data!!');
+        app.$forceUpdate();
+      },
+      web_data_list(new_web_data_list, old_web_data_list) {
+        console.log('forceUpdated from new_web_data_list!!');
+        app.$forceUpdate();
+        // new_web_data_list === old_web_data_list ? console.log('web_data_list is not changed') : console.log('web_data_list is changed');
+        // this.login_data['uid'] === 'tmp_uid' ? (console.log('forceUpdated!!'), app.$forceUpdate()) : console.log('not forceUpdate');
+      }
+    },
+
 methods: {
+async sleep(ms) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+},
+async reload_once() {
+    console.log('reload_once'+"2000ms");
+    await this.sleep(5000);
+    // https://stackoverflow.com/a/50214060/9740478
+    if (await localforage.getItem('reloaded')) {
+        await localforage.removeItem('reloaded');
+    } else {
+        await localforage.setItem('reloaded', '1');
+        location.reload();
+    }
+},
 fn_A() {
     this.TXT = R.splitEvery(
                 this.selected,
@@ -199,15 +250,52 @@ async deleteid(ID) {
 // https://p2auth-ea50a.firebaseapp.com/__/auth/handler
 // https://qiita.com/sl2/items/2815e62aaf2baea2f589
 // https://blog.katsubemakito.net/firebase/firebase-authentication-facebook-web1
+
+
+force_update() {
+    this.$forceUpdate()
+},
+set_temporary_data_for_vue_rendering() {
+    // this.web_message = (this.login_data !== null) ? "Logged in" : "please login";
+    // if (this.login_data === null) {
+        this.web_message = "please login";
+        this.login_data = {
+            "uid": 'tmp_uid',
+            "displayName": 'tmp_displayName',
+        };
+    // }
+    console.log(this.login_data);
+    // if(this.web_data_list === null){this.web_data_list = [];}
+    // this.web_data_list = this.web_data_list === null ? [] : [{
+    //         "id": 'tmp_data_id',
+    //         "foo": 'tmp_data_foo',
+    //         "uid": 'tmp_data_uid',
+    //     }];
+},
 async firebase_auth_signOut_and_all_login_property_clear() {
-    const all_login_property_clear = () => {
-        this.login_result = null;
-        this.is_logging_in = false;
-        this.login_data = null;
-        this.login_error = null;
-    };
-    await firebase.auth().signOut();
-    all_login_property_clear();
+    // await firebase.auth().signOut();
+    await firebase.auth().signOut().then(() => {
+    // Sign-out successful.
+        console.log('signOut success');
+
+        const all_login_property_clear = () => {
+            this.login_result = null;
+            this.is_logging_in = false;
+            // this.login_data = null;
+            this.login_error = null;
+            this.set_temporary_data_for_vue_rendering();
+        };
+        all_login_property_clear();
+
+        // this.reload_once();
+        app.$forceUpdate();
+        // app.$forceUpdate();
+        // this.force_update();
+        // await this.readall();
+    }).catch((error) => {
+    // An error happened.
+        console.log(error);
+    });
 },
 async toggleSignIn() {
     firebase.auth().currentUser ? this.firebase_auth_signOut_and_all_login_property_clear() : firebase.auth().signInWithRedirect((new firebase.auth.GoogleAuthProvider()));
@@ -239,9 +327,12 @@ async firebase_auth_onAuthStateChanged() {
     };
     await firebase.auth().onAuthStateChanged(USER => {
         console.log("onAuthStateChanged is this?????");
+
         if (USER) { SELF.login_data = get_user_data_object(USER) };
         if (USER) { SELF.is_logging_in = true };
-        console.log(get_user_data_object(USER));
+
+        // console.log(get_user_data_object(USER));
+
     });
 },
 async init_app() {
