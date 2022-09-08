@@ -138,61 +138,44 @@ const app = Vue.createApp({
             }],
     }
   },
-  beforeMount() {
-//   created() {
+created() {
+},
+beforeMount() {
     this.set_temporary_data_for_vue_rendering();
-    // if (this.login_data === null) {
-    //     this.web_message = "please login";
-    //     this.login_data = {
-    //         "uid": 'tmp_uid',
-    //         "displayName": 'tmp_displayName',
-    //     };
-    // }
-    // console.log(this.login_data);
-    // if(this.web_data_list === null){this.web_data_list = [];}
-    // this.web_data_list = this.web_data_list === null ? [] : [{
-    //         "id": 'tmp_data_id',
-    //         "foo": 'tmp_data_foo',
-    //         "uid": 'tmp_data_uid',
-    //     }];
-  },
-  mounted() {
-    // this.reload_once();
+},
+mounted() {
     this.init();
     this.init_app();
     this.readall();
-  },
-    beforeUpdated() {
-    },
-
-    watch: {
-      login_data(new_login_data, old_login_data) {
+},
+beforeUpdated() {
+},
+watch: {
+    login_data(new_login_data, old_login_data) {
         console.log('forceUpdated from login_data!!');
         app.$forceUpdate();
-      },
-      web_data_list(new_web_data_list, old_web_data_list) {
+    },
+    web_data_list(new_web_data_list, old_web_data_list) {
         console.log('forceUpdated from new_web_data_list!!');
         app.$forceUpdate();
-        // new_web_data_list === old_web_data_list ? console.log('web_data_list is not changed') : console.log('web_data_list is changed');
-        // this.login_data['uid'] === 'tmp_uid' ? (console.log('forceUpdated!!'), app.$forceUpdate()) : console.log('not forceUpdate');
-      }
-    },
-
-methods: {
-async sleep(ms) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
-},
-async reload_once() {
-    console.log('reload_once'+"2000ms");
-    await this.sleep(5000);
-    // https://stackoverflow.com/a/50214060/9740478
-    if (await localforage.getItem('reloaded')) {
-        await localforage.removeItem('reloaded');
-    } else {
-        await localforage.setItem('reloaded', '1');
-        location.reload();
     }
 },
+
+methods: {
+// async sleep(ms) {
+//     return new Promise( resolve => setTimeout(resolve, ms) );
+// },
+// async reload_once() {
+//     console.log('reload_once'+"2000ms");
+//     await this.sleep(5000);
+//     // https://stackoverflow.com/a/50214060/9740478
+//     if (await localforage.getItem('reloaded')) {
+//         await localforage.removeItem('reloaded');
+//     } else {
+//         await localforage.setItem('reloaded', '1');
+//         location.reload();
+//     }
+// },
 fn_A() {
     this.TXT = R.splitEvery(
                 this.selected,
@@ -247,37 +230,23 @@ async deleteid(ID) {
     if (this.alert_if_no_login()) return
     await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_deleteid?id=" + ID + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
 },
+
 // https://p2auth-ea50a.firebaseapp.com/__/auth/handler
 // https://qiita.com/sl2/items/2815e62aaf2baea2f589
 // https://blog.katsubemakito.net/firebase/firebase-authentication-facebook-web1
-
-
-force_update() {
-    this.$forceUpdate()
-},
+// https://firebase.google.com/docs/auth/web/password-auth#web-version-8_2
 set_temporary_data_for_vue_rendering() {
-    // this.web_message = (this.login_data !== null) ? "Logged in" : "please login";
-    // if (this.login_data === null) {
-        this.web_message = "please login";
-        this.login_data = {
-            "uid": 'tmp_uid',
-            "displayName": 'tmp_displayName',
-        };
-    // }
-    console.log(this.login_data);
-    // if(this.web_data_list === null){this.web_data_list = [];}
-    // this.web_data_list = this.web_data_list === null ? [] : [{
-    //         "id": 'tmp_data_id',
-    //         "foo": 'tmp_data_foo',
-    //         "uid": 'tmp_data_uid',
-    //     }];
+    this.web_message = "please login";
+    this.login_data = {
+        "uid": 'tmp_uid',
+        "displayName": 'tmp_displayName',
+    };
+console.log(this.login_data);
 },
 async firebase_auth_signOut_and_all_login_property_clear() {
     // await firebase.auth().signOut();
     await firebase.auth().signOut().then(() => {
-    // Sign-out successful.
         console.log('signOut success');
-
         const all_login_property_clear = () => {
             this.login_result = null;
             this.is_logging_in = false;
@@ -286,14 +255,9 @@ async firebase_auth_signOut_and_all_login_property_clear() {
             this.set_temporary_data_for_vue_rendering();
         };
         all_login_property_clear();
-
         // this.reload_once();
         app.$forceUpdate();
-        // app.$forceUpdate();
-        // this.force_update();
-        // await this.readall();
     }).catch((error) => {
-    // An error happened.
         console.log(error);
     });
 },
@@ -310,10 +274,6 @@ async firebase_auth_getRedirectResult() {
         this.login_error = ERROR;
     });
 },
-foo_fn(){
-    let SELF = this;
-    SELF.login_data = "foooooo4";
-},
 async firebase_auth_onAuthStateChanged() {
     let SELF = this;
     const get_user_data_object = (USER) => {
@@ -327,12 +287,8 @@ async firebase_auth_onAuthStateChanged() {
     };
     await firebase.auth().onAuthStateChanged(USER => {
         console.log("onAuthStateChanged is this?????");
-
         if (USER) { SELF.login_data = get_user_data_object(USER) };
         if (USER) { SELF.is_logging_in = true };
-
-        // console.log(get_user_data_object(USER));
-
     });
 },
 async init_app() {
