@@ -153,6 +153,7 @@ return {
     save_data: [],
     all_save: [],
 
+    web_message: null,
     web_data_list: [{
             "id": 'bar_id',
             "foo": 'bar_foo',
@@ -267,7 +268,7 @@ console.log(this.login_data);
 },
 async firebase_auth_signOut_and_all_login_property_clear() {
     await firebase.auth().signOut().then(() => {
-        console.log('signOut success');
+        this.web_message = 'signOut success';
         this.set_temporary_data_for_vue_rendering();
         app.$forceUpdate();
     }).catch((error) => {
@@ -278,8 +279,9 @@ async toggleSignIn() {
     firebase.auth().currentUser ? this.firebase_auth_signOut_and_all_login_property_clear() : firebase.auth().signInWithRedirect((new firebase.auth.GoogleAuthProvider()));
 },
 async firebase_auth_getRedirectResult() {
+    this.web_message = "Now logging in...";
     await firebase.auth().getRedirectResult().then((RESULT) => {
-        console.log("getRedirectResult!!!!");
+        this.web_message = "Now logged in, getRedirectResult!!!!";
         login_result = RESULT;
     }).catch((ERROR) => {
         login_error = ERROR;
