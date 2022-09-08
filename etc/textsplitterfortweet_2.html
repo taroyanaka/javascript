@@ -102,10 +102,10 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 <!-- <input type="button" value="fn_A" @click="fn_A"> -->
 <a class="twitter-share-button" v-bind:href="`https://twitter.com/intent/tweet?text=${item}`" data-size="large" v-for="item in TXT">{{ item }}</a>
 
-<input type="button" value="save" @click="save">
+<!-- <input type="button" value="save" @click="save">
 <li v-for="save_data in all_save" :key="NUM">
 save_data: {{ save_data['save_foo'] }} {{ save_data['save_split_num'] }}
-</li>
+</li> -->
 
 <button @click="readall">readall</button>
 <button @click="insert">insert</button>
@@ -220,13 +220,6 @@ init() {
     this.selected = 140;
 },
 
-// async save() {
-//     this.all_save.push({
-//         save_foo: this.foo,
-//         save_split_num: this.selected,
-//     })
-// },
-
 async async_await_fetch_json_log_assign(FETCH_PARAM, DATA_KEY_ARRAY, KEY) {
     const FETCH_DATA = await fetch(FETCH_PARAM);
     const JSON_DATA = await FETCH_DATA.json();
@@ -321,26 +314,19 @@ uid_to_md5(UID_STR) {
 
 
         async rating_up(INDEX){
-            console.log(INDEX);
             this.all_save[INDEX][1]++;
             await localforage.setItem('key', JSON.stringify(this.all_save));
             await this.save_data_load();
         },
         async rating_down(INDEX){
-            console.log(INDEX);
             this.all_save[INDEX][1]--;
             await localforage.setItem('key', JSON.stringify(this.all_save));
             await this.save_data_load();
         },
         async save_data_to_all_save(){
-            // this.all_save.push(this.save_data);
-
             this.when = (new Date()).toLocaleString('en');
             this.rating = 0;
-            // const RATING = 0;
-            // const WHEN = (new Date()).toLocaleString('en');
             this.all_save.push([this.when, this.rating, this.foo]);
-            // this.all_save.push([RATING, WHEN]);
             await localforage.setItem('key', JSON.stringify(this.all_save));
         },
         async save_data_load() {
