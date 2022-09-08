@@ -39,12 +39,21 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>textsplitterfortweet_2</title>
-
+<!-- <script src="./vue3.js"></script> -->
 <script src="./vue@3.2.36.global.prod.js"></script>
 <script src="./ramda.@0.28.0.js"></script>
+<!-- <script src="./localforage.js"></script> -->
 <script src="./localforage@1.10.0.js"></script>
+<!-- <script src="validator@13.7.0.js"></script> -->
 <script src="./firebase@8.6.1-app.js"></script>
 <script src="./firebase@8.6.1-auth.js"></script>
+<!-- <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js"></script> -->
+<!-- <script src="https://www.gstatic.com/firebasejs/9.9.1/firebase-auth.js"></script> -->
+<!-- <script src="./md5.@2.19.0.js"></script> -->
+<!-- <script src="https://unpkg.com/blueimp-md5@2.19.0/js/md5.js"></script> -->
+
+<!-- https://unpkg.com/blueimp-md5@2.19.0/js/md5.js -->
+<!-- <script async src="./blueimp-md5@2.19.0.js"></script> -->
 <script src="./blueimp-md5@2.19.0.js"></script>
 
 <style>
@@ -60,11 +69,23 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
     display: none;
 }
 </style>
+
+
+
 </head>
 <body>
 <div class="app">
+
 <span>web_message: {{  }}</span>
+
+<!-- <button @click="foo_fn">foo_fn</button> -->
 <button @click="firebase_auth_onAuthStateChanged">firebase_auth_onAuthStateChanged</button>
+<!-- <span>login_data: {{ login_data }}</span> -->
+
+
+
+<!-- <textarea v-model="login_data['uid'] || 'sample'"></textarea> -->
+
 
 <div>
 <span>login_data is: {{ login_data }}</span>
@@ -73,6 +94,11 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 <span>login_data type is: {{ typeof login_data }}</span>
 </div>
 
+<!-- <img src="./google_signin_buttons/web/2x/btn_google_signin_dark_normal_web@2x.png" class="login" value="googleLogin" @click="toggleSignIn" /> -->
+<!-- <img src="./btn_google_signin_dark_normal_web@2x.png" class="login" value="googleLogin" @click="toggleSignIn" /> -->
+<!-- <img src="./btn_google_signin_light_pressed_web@2x.png" class="login" value="googleLogin" @click="toggleSignIn" /> -->
+<!-- <img src="./btn_google_signin_dark_pressed_web@2x.png" class="login" value="googleLogin" @click="toggleSignIn" /> -->
+<!-- <button class="login" value="googleLogin" @click="toggleSignIn"> -->
 <input type="button"  class="login" value="googleLogin" @click="toggleSignIn">
 
 <textarea v-model="foo" class="foo" minlength="1" maxlength="1400" @input="fn_A" @change="fn_A"></textarea>
@@ -83,6 +109,7 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
     </option>
 </select>
 <input type="button" value="fn_A" @click="fn_A">
+<!-- https://stackoverflow.com/a/60293732 -->
 <a class="twitter-share-button" v-bind:href="`https://twitter.com/intent/tweet?text=${item}`" data-size="large" v-for="item in TXT">{{ item }}</a>
 
 <li v-for="save_data in save_data_list" :key="NUM">
@@ -92,6 +119,7 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 
 <button @click="readall">readall</button>
 <button @click="insert">insert</button>
+<!-- <button @click="update">update</button> -->
 <button @click="deleteid">deleteid</button>
 
 <li v-for="web_data in web_data_list">
@@ -112,6 +140,7 @@ const firebaseConfig = {
     messagingSenderId: "796225429484",
     appId: "1:796225429484:web:ece56ef2fc0be28cd6eac9"
 };
+
 firebase.initializeApp(firebaseConfig);
 
 let SERVER_URL = '';
@@ -122,19 +151,27 @@ const app = Vue.createApp({
   data() {
     return {
         foo: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
+        // foo: 'a',
         TXT: [],
         selected: 10,
         ALL_NUM:[],
         login_result: null,
         is_logging_in: false,
+        // login_data: '',
+        // login_data: [],
+        // login_data: 'foobarbuz',
         login_data: null,
         login_error: null,
         save_data_list: [],
+        // web_data_list: "bar2",
         web_data_list: [{
                 "id": 'bar_id',
                 "foo": 'bar_foo',
                 "uid": 'bar_uid',
             }],
+
+        // foo_data: '',
+        // web_data_list: [],
     }
   },
   mounted() {
@@ -142,37 +179,41 @@ const app = Vue.createApp({
     this.init_app();
     this.readall();
   },
-methods: {
-fn_A() {
-    this.TXT = R.splitEvery(
-                this.selected,
-                this.foo
-            );
-    console.log(this.TXT)
-},
-fn_B(EVENT) {
-    this.selected = Number(EVENT.target.value);
-    this.fn_A();
-},
-init() {
-    this.ALL_NUM = R.range(1, 141);
-    this.selected = 140;
-},
-async save() {
-    this.save_data_list.push({
-        save_foo: this.foo,
-        save_split_num: this.selected,
-    })
-},
+  methods: {
+    fn_A() {
+        this.TXT = R.splitEvery(
+                    this.selected,
+                    this.foo
+                );
+        console.log(this.TXT)
+    },
+    fn_B(EVENT) {
+        this.selected = Number(EVENT.target.value);
+        this.fn_A();
+    },
+    init() {
+        this.ALL_NUM = R.range(1, 141);
+        this.selected = 140;
+    },
+    async save() {
+        this.save_data_list.push({
+            save_foo: this.foo,
+            save_split_num: this.selected,
+        })
+    },
 
 async async_await_fetch_json_log_assign(FETCH_PARAM, DATA_KEY_ARRAY, KEY) {
     const FETCH_DATA = await fetch(FETCH_PARAM);
     const JSON_DATA = await FETCH_DATA.json();
+    console.table(JSON_DATA);
     if (JSON_DATA.message !== "success") return
+    // this.web_data_list = "foo";
+    // https://stackoverflow.com/a/37576787
     for (const DATA_KEY of DATA_KEY_ARRAY) {
         this[DATA_KEY] = JSON_DATA[KEY];
     }
 },
+
 alert_if_no_login() {
     if (this.login_data === null) {
         this.web_message = "please login";
@@ -197,9 +238,23 @@ async deleteid(ID) {
     if (this.alert_if_no_login()) return
     await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_deleteid?id=" + ID + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
 },
+
+// update_deleteid_display_none_check(WEB_DATA_UID){
+//     if (WEB_DATA_UID === this.login_data['uid']) return false
+//     return true
+// },
+
+
+// insert_validation_check(){
+//     return Array.from(document.querySelectorAll("input.insert")).map(V=>V.validity.valid).some(x=> x === false )
+// },
+// update_validation_check(){
+//     return Array.from(document.querySelectorAll("input.update")).map(V=>V.validity.valid).some(x=> x === false )
+// },
 // https://p2auth-ea50a.firebaseapp.com/__/auth/handler
 // https://qiita.com/sl2/items/2815e62aaf2baea2f589
 // https://blog.katsubemakito.net/firebase/firebase-authentication-facebook-web1
+
 async firebase_auth_signOut_and_all_login_property_clear() {
     const all_login_property_clear = () => {
         this.login_result = null;
@@ -211,6 +266,7 @@ async firebase_auth_signOut_and_all_login_property_clear() {
     all_login_property_clear();
 },
 async toggleSignIn() {
+    // firebase.auth().currentUser ? firebase.auth().signOut() : firebase.auth().signInWithRedirect((new firebase.auth.GoogleAuthProvider()));
     firebase.auth().currentUser ? this.firebase_auth_signOut_and_all_login_property_clear() : firebase.auth().signInWithRedirect((new firebase.auth.GoogleAuthProvider()));
 },
 async firebase_auth_getRedirectResult() {
@@ -221,7 +277,10 @@ async firebase_auth_getRedirectResult() {
     }).catch((ERROR) => {
         this.is_logging_in = false;
         this.login_error = ERROR;
+        // ERROR.code === 'auth/account-exists-with-different-credential' ? alert('You have already signed up with a different auth provider for that email.') : console.error(error);
     });
+
+    // await this.firebase_auth_onAuthStateChanged();
 },
 foo_fn(){
     let SELF = this;
@@ -231,8 +290,17 @@ async firebase_auth_onAuthStateChanged() {
     let SELF = this;
     const get_user_data_object = (USER) => {
         const user_keys = [
+            // "refreshToken",
             "uid",
             "displayName",
+            // "photoURL",
+            // "email",
+            // "emailVerified",
+            // "phoneNumber",
+            // "isAnonymous",
+            // "tenantId",
+            // "metadata",
+            // "providerData",
         ];
         return R.fromPairs(
             user_keys.map(KEY=>[KEY, USER[KEY]])
@@ -249,11 +317,14 @@ async init_app() {
     await this.firebase_auth_getRedirectResult();
     await this.firebase_auth_onAuthStateChanged();
 },
+
 uid_to_md5(UID_STR) {
+    // return md5('foobarbuz');
     return md5(UID_STR);
 },
 
-},
+  },
+
 }).mount('.app');
 </script>
 </html>
