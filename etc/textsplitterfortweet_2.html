@@ -54,7 +54,8 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 
 .app{
 display: grid;
-width: 100%;
+width: 100vw;
+height: 100vh;
 /* grid-auto-columns: auto; */
 grid-template-columns: repeat(3, 1fr);
 /* grid-template-rows: 0.3fr 2fr 1fr; */
@@ -86,11 +87,12 @@ background-color: gray;
 display: grid;
 /* grid-area: button; */
 /* grid-template-rows: repeat(5, 1fr); */
-grid-template-rows: auto;
+grid-template-rows: auto auto 8fr 1fr 1fr 1fr;
+/* grid-template-rows: auto; */
 /* grid-template-columns: repeat(5, 1fr); */
 }
 .console textarea{
-    height: 30rem;
+    /* height: 30rem; */
 }
 .web_save{
     /* display: grid; */
@@ -116,6 +118,10 @@ button{
 }
 li{
     list-style: none;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+span, button, li, a {
     overflow-wrap: break-word;
     word-break: break-all;
 }
