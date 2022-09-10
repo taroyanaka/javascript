@@ -79,6 +79,7 @@ auto
 auto
 8fr
 1fr
+auto
 1fr;
 }
 textarea{
@@ -128,8 +129,8 @@ span, button, li, a {
 <div class="app">
 
 <div class="local_save">
-<span>{{ when }}</span>
-<span>{{ rating }}</span>
+<!-- <span>{{ when }}</span> -->
+<!-- <span>{{ rating }}</span> -->
 
 <input type="button" value="save_data_to_all_save" @click="save_data_to_all_save">
 
@@ -138,7 +139,9 @@ span, button, li, a {
 <button value="sort_by_rating" @click="sort_by_rating">sort_by_rating</button>
 <li v-for="(item, index) in all_save" @click="save_data_set(index)">
 <button @click="save_data_set(index)">save_data_set</button>
-{{ item[0] }}: rating {{ item[1] }} <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>: {{ item }}
+<!-- {{ item[0] }}: rating {{ item[1] }}  -->
+<button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>
+{{ item }}
 <button @click="save_data_delete(index)">save_data_delete</button>
 </li>
 </ul>
@@ -148,7 +151,7 @@ span, button, li, a {
 <input type="button" class="login" value="googleLogin" @click="toggleSignIn">
 <input type="button" class="signout_clear" value="signout_clear" @click="signout_clear">
 
-<textarea  v-model="foo" class="foo" minlength="1" maxlength="1400" @input="fn_A" @change="fn_A"></textarea>
+<textarea  v-model="foo" class="foo" minlength="1" maxlength="420" @input="fn_A" @change="fn_A"></textarea>
 <select class="select" v-model="selected" @change="fn_B($event)">
     <option disabled value="">Please select one</option>
     <option v-for="NUM in ALL_NUM" :key="NUM">
@@ -204,8 +207,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 let SERVER_URL = '';
-SERVER_URL = 'http://localhost:8800';
-// SERVER_URL = "https://marred-mint-art.glitch.me";
+// SERVER_URL = 'http://localhost:8800';
+SERVER_URL = "https://marred-mint-art.glitch.me";
 
 let login_result = null;
 let login_error = null;
@@ -247,6 +250,7 @@ mounted() {
     this.init_app();
     this.save_data_load();
     this.readall();
+    this.fn_A();
 },
 beforeUpdated() {
 },
@@ -289,7 +293,7 @@ fn_B(EVENT) {
 },
 init() {
     this.ALL_NUM = R.range(1, 141);
-    this.selected = 140;
+    this.selected = 3;
 },
 
 async async_await_fetch_json_log_assign(FETCH_PARAM, DATA_KEY_ARRAY, KEY) {
