@@ -10,12 +10,14 @@
 <button onclick="changeHostToLocalhost()">changeHostToLocalhost</button>
 
     <h1>test glitch.com rest api</h1>
-    <h2>https://spectrum-whip-sulfur.glitch.me/test?id=NUMBER</h2>
+    <!-- <h2>https://spectrum-whip-sulfur.glitch.me/test?id=NUMBER</h2> -->
+    <h2>https://cotton-concrete-catsup.glitch.me/test</h2>
     <h3></h3>
-    <button onclick="execute();">execute fetch</button>
+    <!-- <button onclick="execute();">execute fetch</button> -->
 
 
-    <button onclick="exe2();">exe2 fetch</button>
+    <!-- <button onclick="exe2();">exe2 fetch</button> -->
+    <button onclick="exe();">exe fetch</button>
 <script>
 
 
@@ -23,38 +25,28 @@ const changeHostToLocalhost = () => window.location.host = 'localhost:5500';;
 
 // const url = `https://spectrum-whip-sulfur.glitch.me/test?id=420`;
 // const url = `https://spectrum-whip-sulfur.glitch.me:8800/`;
-let url = `https://spectrum-whip-sulfur.glitch.me/foo`;
-url = `https://cotton-concrete-catsup.glitch.me/`;
+// let url = `https://spectrum-whip-sulfur.glitch.me/foo`;
+// url = `https://cotton-concrete-catsup.glitch.me/`;
 
 // url = `https://viacep.com.br/ws/01001000/json/`;
-function execute() {
-        // fetch(`https://spectrum-whip-sulfur.glitch.me/test?id=420`)
-        fetch(url)
-        .then((response) => {
-            return response.json();
-        }).then(json => {
-            console.log(json);
-            document.querySelector("h3").innerText = json;
-            // document.querySelector("h3").innerText = json.localidade;
-        }).catch((error) => {
-            console.error('Error:', error);
-        });
+// function execute() {
+//         fetch(url)
+//         .then((response) => {
+//             return response.json();
+//         }).then(json => {
+//             console.log(json);
+//             document.querySelector("h3").innerText = json;
+//         }).catch((error) => {
+//             console.error('Error:', error);
+//         });
+// }
 
-//   .then((response) => response.json())
-//   .then((result) => {
-//     console.log('Success:', result);
-//   })
-//   .catch((error) => {
-//     console.error('Error:', error);
-//   });
-
-}
 // const url2 = "cotton-concrete-catsup.glitch.me/test";
-const url2 = "https://cotton-concrete-catsup.glitch.me/test";
-const exe2 = () => {
-fetch(url2)
+const url = "https://cotton-concrete-catsup.glitch.me/test";
+const exe = () => {
+fetch(url)
     .then(res => res.json())
-    .then(text => console.log(text))
+    .then(json => {console.log(json); document.querySelector("h3").innerText = json.id;})
     .catch((error) => console.error('Error:', error))
 };
 
