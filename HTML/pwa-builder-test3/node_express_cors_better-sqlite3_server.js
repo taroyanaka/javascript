@@ -97,7 +97,7 @@ function textsplitterfortweet_2_CREATETABLE(){
     db.prepare(`CREATE TABLE IF NOT EXISTS textsplitterfortweet_foo (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 foo TEXT NOT NULL,
-textsplitterfortweet_uid_id INTEGER NOT NULL,
+textsplitterfortweet_uid_id INTEGER NOT NULL
 )`).run();
     db.prepare(`CREATE TABLE IF NOT EXISTS textsplitterfortweet_uid (
 id INTEGER PRIMARY KEY AUTOINCREMENT,

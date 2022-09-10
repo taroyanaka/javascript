@@ -7,13 +7,22 @@
     <title>Document</title>
 </head>
 <body>
+<button onclick="changeHostToLocalhost()">changeHostToLocalhost</button>
+
     <h1>test glitch.com rest api</h1>
     <h2>https://spectrum-whip-sulfur.glitch.me/test?id=NUMBER</h2>
     <h3></h3>
     <button onclick="execute();">execute fetch</button>
     <script>
+
+
+const changeHostToLocalhost = () => window.location.host = 'localhost:5500';;
+
+// const url = `https://spectrum-whip-sulfur.glitch.me/test?id=420`;
+const url = `https://spectrum-whip-sulfur.glitch.me/`;
 function execute() {
-        fetch(`https://spectrum-whip-sulfur.glitch.me/test?id=420`)
+        // fetch(`https://spectrum-whip-sulfur.glitch.me/test?id=420`)
+        fetch(url)
         .then((response) => {
             return response.json();
         }).then(json => {
