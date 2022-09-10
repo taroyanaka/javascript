@@ -121,13 +121,13 @@ const app = Vue.createApp({
                     this.c = 'hani\nnara\nyume\nmose';
         },
         refrech_save_data() {
-                    this.save_data = [
-                        this.a,
-                        this.b,
-                        this.c,
-                        this.rating,
-                        this.when,
-                    ];
+            this.save_data = [
+                this.a,
+                this.b,
+                this.c,
+                this.rating,
+                this.when,
+            ];
         },
         async rating_up(INDEX){
             this.all_save[INDEX][3]++;

@@ -46,14 +46,85 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 <script src="./firebase@8.6.1-auth.js"></script>
 <script src="./blueimp-md5@2.19.0.js"></script>
 
+<link rel="stylesheet" href="reset.css">
+
 <style>
+
+
+
+.app{
+display: grid;
+width: 100%;
+/* grid-auto-columns: auto; */
+grid-template-columns: repeat(3, 1fr);
+/* grid-template-rows: 0.3fr 2fr 1fr; */
+/* grid-template-rows: 3rem 100rem 1fr; */
+/* grid-template-rows: 1fr; */
+/* grid-template-columns: 1fr 1fr 1fr; */
+/* grid-template-columns: 3fr; */
+grid-gap: 0px;
+/* grid-template-areas:
+    "loacl_save"
+    "console"
+    "web_save"; */
+}
+.local_save{
+/* display: grid; */
+/* grid-area: loacl_save; */
+/* grid-template-rows: 1fr; */
+/* grid-template-columns: repeat(3, 1fr); */
+/* grid-template-columns: 1fr; */
+    /* display: grid; */
+    /* grid-area: local_save; */
+background-color: red;
+/* width: 100rem; */
+    /* grid-template-rows: 1fr; */
+    /* grid-template-columns: repeat(3, 1fr); */
+}
+.console{
+background-color: blue;
+display: grid;
+/* grid-area: button; */
+/* grid-template-rows: repeat(5, 1fr); */
+grid-template-rows: auto;
+/* grid-template-columns: repeat(5, 1fr); */
+}
+.console textarea{
+    height: 30rem;
+}
+.web_save{
+    /* display: grid; */
+    /* grid-area: web_save; */
+background-color: green;
+    /* grid-template-rows: 1fr; */
+    /* grid-template-columns: repeat(3, 1fr); */
+/* display: grid; */
+/* grid-auto-rows: auto; */
+/* grid-template-columns: 2fr 1fr 1fr 2fr; */
+/* grid-gap: 0px; */
+
+overflow-wrap:break-word;
+}
+
+button{
+    /* width: 100%; */
+    /* height: 100%; */
+    /* overflow-wrap: break-word; */
+    /* word-break: break-all; */
+    /* white-space: normal; */
+    /* word-wrap: break-word; */
+}
+li{
+    list-style: none;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
 .twitter-share-button{
     display: block;
-    overflow-wrap: anywhere;
 }
 .login{
-    width: 8rem;
-    height: 2rem;
+    /* width: 8rem; */
+    /* height: 2rem; */
 }
 .update_deleteid_display_none {
     display: none;
@@ -63,34 +134,26 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
 <body>
 <div class="app">
 
+<div class="local_save">
 <span>{{ when }}</span>
 <span>{{ rating }}</span>
 
 <input type="button" value="save_data_to_all_save" @click="save_data_to_all_save">
 
 <ul>
-<input type="button" value="sort_by_when" @click="sort_by_when">
-<input type="button" value="sort_by_rating" @click="sort_by_rating">
+<button value="sort_by_when" @click="sort_by_when">sort_by_when</button>
+<button value="sort_by_rating" @click="sort_by_rating">sort_by_rating</button>
 <li v-for="(item, index) in all_save" @click="save_data_set(index)">
 <button @click="save_data_set(index)">save_data_set</button>
 {{ item[0] }}: rating {{ item[1] }} <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>: {{ item }}
 <button @click="save_data_delete(index)">save_data_delete</button>
 </li>
 </ul>
-
-<span>web_message: {{ web_message }}</span>
-<!-- <button @click="firebase_auth_onAuthStateChanged">firebase_auth_onAuthStateChanged</button> -->
-
-<div>
-<span>login_data is: {{ login_data }}</span>
-<!-- <span>login_result: {{ login_result }}</span> -->
-</div>
-<div>
-<span>login_data type is: {{ typeof login_data }}</span>
 </div>
 
+<div class="console">
 <input type="button" class="login" value="googleLogin" @click="toggleSignIn">
-<input type="button" class="firebase_auth_signOut_and_all_login_property_clear" value="firebase_auth_signOut_and_all_login_property_clear" @click="firebase_auth_signOut_and_all_login_property_clear">
+<input type="button" class="signout_clear" value="signout_clear" @click="signout_clear">
 
 <textarea v-model="foo" class="foo" minlength="1" maxlength="1400" @input="fn_A" @change="fn_A"></textarea>
 <select class="select" v-model="selected" @change="fn_B($event)">
@@ -111,6 +174,20 @@ save_data: {{ save_data['save_foo'] }} {{ save_data['save_split_num'] }}
 <button @click="insert">insert</button>
 <!-- <button @click="deleteid">deleteid</button> -->
 
+<!-- <span>web_message: {{ web_message }}</span> -->
+<!-- <button @click="firebase_auth_onAuthStateChanged">firebase_auth_onAuthStateChanged</button> -->
+
+<!-- <div> -->
+<!-- <span>login_data is: {{ login_data }}</span> -->
+<!-- <span>login_result: {{ login_result }}</span> -->
+<!-- </div> -->
+
+<!-- <div> -->
+<!-- <span>login_data type is: {{ typeof login_data }}</span> -->
+<!-- </div> -->
+</div>
+
+<div class="web_save">
 <li v-for="web_data in web_data_list">
 id:{{ web_data['id'] }} foo:{{ web_data['foo'] }} uid:{{ web_data['uid'] }}
 
@@ -118,6 +195,7 @@ id:{{ web_data['id'] }} foo:{{ web_data['foo'] }} uid:{{ web_data['uid'] }}
 <!-- <button @click="deleteid('foo')" :class="{ update_deleteid_display_none: 'foo' === uid_to_md5( 'foo' ) ? false : true }">deleteid</button> -->
 <button @click="deleteid(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === uid_to_md5( this.login_data['uid'] ) ? false : true }">deleteid</button>
 </li>
+</div>
 
 </div>
 </body>
@@ -266,7 +344,7 @@ set_temporary_data_for_vue_rendering() {
     };
 console.log(this.login_data);
 },
-async firebase_auth_signOut_and_all_login_property_clear() {
+async signout_clear() {
     await firebase.auth().signOut().then(() => {
         this.web_message = 'signOut success';
         this.set_temporary_data_for_vue_rendering();
