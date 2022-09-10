@@ -13,20 +13,29 @@
     <h2>https://spectrum-whip-sulfur.glitch.me/test?id=NUMBER</h2>
     <h3></h3>
     <button onclick="execute();">execute fetch</button>
-    <script>
+
+
+    <button onclick="exe2();">exe2 fetch</button>
+<script>
 
 
 const changeHostToLocalhost = () => window.location.host = 'localhost:5500';;
 
 // const url = `https://spectrum-whip-sulfur.glitch.me/test?id=420`;
-const url = `https://spectrum-whip-sulfur.glitch.me/`;
+// const url = `https://spectrum-whip-sulfur.glitch.me:8800/`;
+let url = `https://spectrum-whip-sulfur.glitch.me/foo`;
+url = `https://cotton-concrete-catsup.glitch.me/`;
+
+// url = `https://viacep.com.br/ws/01001000/json/`;
 function execute() {
         // fetch(`https://spectrum-whip-sulfur.glitch.me/test?id=420`)
         fetch(url)
         .then((response) => {
             return response.json();
         }).then(json => {
+            console.log(json);
             document.querySelector("h3").innerText = json;
+            // document.querySelector("h3").innerText = json.localidade;
         }).catch((error) => {
             console.error('Error:', error);
         });
@@ -40,6 +49,15 @@ function execute() {
 //   });
 
 }
-    </script>
+// const url2 = "cotton-concrete-catsup.glitch.me/test";
+const url2 = "https://cotton-concrete-catsup.glitch.me/test";
+const exe2 = () => {
+fetch(url2)
+    .then(res => res.json())
+    .then(text => console.log(text))
+    .catch((error) => console.error('Error:', error))
+};
+
+</script>
 </body>
 </html>
