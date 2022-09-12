@@ -72,25 +72,19 @@ const validator = require('validator');
 const Database = require('better-sqlite3');
 let db;
 
-const switch_db_dev = (SERVICE_NAME) => {
-    switch (SERVICE_NAME) {
-        case "vue_test_with_web_api":
-            db = new Database('./db/1659525935_vue_test_with_web_api.sqlite3');
-            break;
-        case "textsplitterfortweet_2":
-            db = new Database('./db/1660820720_textsplitterfortweet_2.sqlite3');
-            break;
-        default:
-            break;
-    }
-};
 const switch_db = (SERVICE_NAME) => {
     switch (SERVICE_NAME) {
         case "vue_test_with_web_api":
             db = new Database('.data/1659525935_vue_test_with_web_api.sqlite3');
             break;
+        case "vue_test_with_web_api_DEV":
+            db = new Database('./db/1659525935_vue_test_with_web_api.sqlite3');
+            break;
         case "textsplitterfortweet_2":
             db = new Database('.data/1660820720_textsplitterfortweet_2.sqlite3');
+            break;
+        case "textsplitterfortweet_2_DEV":
+            db = new Database('./db/1660820720_textsplitterfortweet_2.sqlite3');
             break;
         default:
             break;
@@ -117,11 +111,11 @@ function DROPTABLE(){
 }
 
 function textsplitterfortweet_2_CREATETABLE(){
-    db.prepare(`CREATE TABLE IF NOT EXISTS textsplitterfortweet_foo (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-foo TEXT NOT NULL,
-textsplitterfortweet_uid_id INTEGER NOT NULL,
-)`).run();
+//     db.prepare(`CREATE TABLE IF NOT EXISTS textsplitterfortweet_foo (
+// id INTEGER PRIMARY KEY AUTOINCREMENT,
+// foo TEXT NOT NULL,
+// textsplitterfortweet_uid_id INTEGER NOT NULL
+// )`).run();
     db.prepare(`CREATE TABLE IF NOT EXISTS textsplitterfortweet_uid (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 uid TEXT NOT NULL
@@ -561,9 +555,11 @@ WHERE
     return textsplitterfortweet_2_db_query_select_all(STRING_ARRAY);
 };
 
+
+const choose_db_mode = (REQ) => REQ.query.mode === "DEV" ? switch_db("textsplitterfortweet_2_DEV") : switch_db("textsplitterfortweet_2");
+
 app.get("/textsplitterfortweet_2_read_any", (req, res, next) => {
-    switch_db("vue_test_with_web_api"); 
-allowOrigin(res);
+    choose_db_mode(req);
 
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_select, raging_demon(req.query, {
             'uid': [
@@ -573,14 +569,13 @@ allowOrigin(res);
     )))
 });
 app.get("/textsplitterfortweet_2_readall", (req, res, next) => {
-    switch_db("textsplitterfortweet_2"); 
-// allowOrigin(res);
+    console.log("mode is",req.query.mode);
+
+    choose_db_mode(req);
  res.json(textsplitterfortweet_2_db_query_select_all());
 });
 app.get("/textsplitterfortweet_2_insert", (req, res, next) => {
-    switch_db("textsplitterfortweet_2"); 
-allowOrigin(res);
-
+    choose_db_mode(req);
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_insert_and_select, raging_demon(req.query, {
             "foo": [
                 ["isLength", {min: 1, max: 420}, "error: isLength: {min: 1, max: 420}",],
@@ -595,9 +590,7 @@ allowOrigin(res);
     )))
 });
 app.get("/textsplitterfortweet_2_update", (req, res, next) => {
-    switch_db("textsplitterfortweet_2"); 
-allowOrigin(res);
-
+    choose_db_mode(req);
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_update_and_select, raging_demon(req.query, {
                     "foo": [
                         ["isLength", {min: 1, max: 420}, "error: isLength: {min: 1, max: 420}",],
@@ -613,9 +606,7 @@ allowOrigin(res);
     )
 });
 app.get("/textsplitterfortweet_2_deleteid", (req, res, next) => {
-    switch_db("textsplitterfortweet_2"); 
-allowOrigin(res);
-
+    choose_db_mode(req);
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_delete, raging_demon(req.query, {
             "id": [
                 ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
@@ -697,3 +688,7 @@ allowOrigin(res);
 app.get("/sample", (req, res, next) => {
     res.json({ id: "Taro on test server" });
 });
+
+// switch_db("textsplitterfortweet_2_DEV");
+// textsplitterfortweet_2_CREATETABLE();
+// textsplitterfortweet_2_DROPTABLE();
