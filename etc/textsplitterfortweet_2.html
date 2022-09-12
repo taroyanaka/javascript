@@ -30,7 +30,7 @@ offline save without uid(no signin) <=> app => online save with uid(my data & pu
 
 grid layout ✅
 
-setup production db
+setup production db ✅
 switch to
     production mode <=> development mode
 
@@ -210,6 +210,7 @@ let SERVER_URL = '';
 // SERVER_URL = 'http://localhost:8800';
 SERVER_URL = "https://marred-mint-art.glitch.me";
 // SERVER_URL = "https://marred-mint-art.glitch.me:8800";
+// SERVER_URL = "https://marred-mint-art.glitch.me:8800";
 
 let login_result = null;
 let login_error = null;
@@ -299,6 +300,7 @@ init() {
 
 async async_await_fetch_json_log_assign(FETCH_PARAM, DATA_KEY_ARRAY, KEY) {
     const FETCH_DATA = await fetch(FETCH_PARAM);
+    // const JSON_DATA = await fetch(FETCH_PARAM);
     const JSON_DATA = await FETCH_DATA.json();
     if (JSON_DATA.message !== "success") return
     for (const DATA_KEY of DATA_KEY_ARRAY) {
