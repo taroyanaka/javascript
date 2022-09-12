@@ -39,6 +39,8 @@ setup production db ✅
 switch to
     production mode <=> development mode
 
+roll-out ✅
+
 PWA?(maybe i wont do it(because web app need maintenance that released on store, it's hard way to do(if it's standaole app, it's easy way to do)))
     => this app is for training to make web app(not for production)
 -->
@@ -211,11 +213,12 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
+
+let MODE = ""
+// MODE = "DEV";
+MODE = "PROD";
 let SERVER_URL = '';
-// SERVER_URL = 'http://localhost:8800';
-SERVER_URL = "https://marred-mint-art.glitch.me";
-// SERVER_URL = "https://marred-mint-art.glitch.me:8800";
-// SERVER_URL = "https://marred-mint-art.glitch.me:8800";
+SERVER_URL = MODE === "DEV" ? 'http://localhost:3000' : "https://marred-mint-art.glitch.me";
 
 let login_result = null;
 let login_error = null;
@@ -304,8 +307,10 @@ init() {
 },
 
 async async_await_fetch_json_log_assign(FETCH_PARAM, DATA_KEY_ARRAY, KEY) {
-    const FETCH_DATA = await fetch(FETCH_PARAM);
-    // const JSON_DATA = await fetch(FETCH_PARAM);
+    const FETCH_PARAM_WITH_MODE = MODE === "DEV" ? (FETCH_PARAM+'&mode=DEV') : (FETCH_PARAM+'&mode=PROD');
+    // const FETCH_PARAM_WITH_MODE = true ? (FETCH_PARAM+'&mode=DEV') : (FETCH_PARAM+'&mode=PROD');
+    // const FETCH_DATA = await fetch(FETCH_PARAM);
+    const FETCH_DATA = await fetch(FETCH_PARAM_WITH_MODE);
     const JSON_DATA = await FETCH_DATA.json();
     if (JSON_DATA.message !== "success") return
     for (const DATA_KEY of DATA_KEY_ARRAY) {
@@ -321,7 +326,7 @@ alert_if_no_login() {
     return false
 },
 async readall() {
-    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_readall"), ["web_data_list"], "data");
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_readall?readall=read"), ["web_data_list"], "data");
 },
 async insert() {
     console.log('insert executed');
