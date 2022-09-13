@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list url pop up 2</title>
+    <style>
+        textarea{
+            width: 100vw;
+            height: 90vh;
+        }
+    </style>
+</head>
+<body>
+<select class="max-open-volume-of-number"></select>
+<button onclick="exe()">number of list url pop up open!!!</button>
+<textarea name="" class="url-list"></textarea>
+</body>
+<script>
+function tabOpen(params) {
+    window.open(params, '_blank')
+};
+function exe() {
+    Array.from(document.querySelector("textarea.url-list").value.split("\n"))
+        .slice(0, Number(document.querySelector(".max-open-volume-of-number").value)).forEach(V=>
+            tabOpen(V)
+        )
+}
+const option = [...Array(100).keys()].map((V, IDX) => `<option value="${IDX + 1}">${IDX + 1}</option>`).join("");
+document.querySelector(".max-open-volume-of-number").insertAdjacentHTML("afterbegin", option);
+
+document.querySelector("textarea.url-list").value = `https://taroyanaka.github.io/javascript/HTML/honeycomb.html
+https://taroyanaka.github.io/javascript/HTML/tapCountSort.html
+https://taroyanaka.github.io/javascript/HTML/anime0.html
+https://taroyanaka.github.io/javascript/HTML/autocomplete.html
+https://taroyanaka.github.io/javascript/HTML/backToTop.html
+https://taroyanaka.github.io/javascript/HTML/clickedjscss.html
+https://taroyanaka.github.io/javascript/HTML/co-occurrence.html
+https://taroyanaka.github.io/javascript/HTML/cssAnimation1.html
+https://taroyanaka.github.io/javascript/HTML/cssShortestAccordion.html
+https://taroyanaka.github.io/javascript/HTML/domTree1.html
+https://taroyanaka.github.io/javascript/HTML/domTree2.html
+https://taroyanaka.github.io/javascript/HTML/domTree3.html
+https://taroyanaka.github.io/javascript/HTML/foo.html
+https://taroyanaka.github.io/javascript/HTML/game3d.html
+https://taroyanaka.github.io/javascript/HTML/getDomTreeInsert.html
+https://taroyanaka.github.io/javascript/HTML/gradientAnimation.html
+https://taroyanaka.github.io/javascript/HTML/htmltmp.html
+https://taroyanaka.github.io/javascript/HTML/inputAnimation.html
+https://taroyanaka.github.io/javascript/HTML/kaseki.html
+https://taroyanaka.github.io/javascript/HTML/readMore1.html
+https://taroyanaka.github.io/javascript/HTML/readMore2.html
+https://taroyanaka.github.io/javascript/HTML/readMore3.html
+https://taroyanaka.github.io/javascript/HTML/readMore4.html
+https://taroyanaka.github.io/javascript/HTML/responsiveFontSizing.html
+https://taroyanaka.github.io/javascript/HTML/responsiveSideBar.html
+https://taroyanaka.github.io/javascript/HTML/responsiveSideBar2.html
+https://taroyanaka.github.io/javascript/HTML/responsiveSideBar3.html
+https://taroyanaka.github.io/javascript/HTML/responsiveSideBar4.html
+https://taroyanaka.github.io/javascript/HTML/responsiveSideBarTest.html
+https://taroyanaka.github.io/javascript/HTML/responsiveSideBarTest2.html
+https://taroyanaka.github.io/javascript/HTML/tmp.html
+https://taroyanaka.github.io/javascript/HTML/verticalHorizontalHideAccordion.html
+https://taroyanaka.github.io/javascript/HTML/whatisplus.html
+https://taroyanaka.github.io/javascript/HTML/2021.html
+https://taroyanaka.github.io/javascript/HTML/csskeyframes.html
+https://taroyanaka.github.io/javascript/HTML/movecell.html
+https://taroyanaka.github.io/javascript/HTML/movecellallcell.html
+https://taroyanaka.github.io/javascript/HTML/svgtest.html
+https://taroyanaka.github.io/javascript/HTML/textqa.html
+https://taroyanaka.github.io/javascript/HTML/vent-list.html
+https://taroyanaka.github.io/javascript/HTML/vent.html
+https://taroyanaka.github.io/javascript/HTML/web-design-sample-1.html
+https://taroyanaka.github.io/javascript/HTML/somethingtoplay.html
+https://taroyanaka.github.io/javascript/HTML/test.html
+https://taroyanaka.github.io/javascript/HTML/floatlayoutsample0.html
+https://taroyanaka.github.io/javascript/HTML/htmlcsslearning.html
+https://taroyanaka.github.io/javascript/HTML/inline-blockflexsample.html`
+</script>
+</html>

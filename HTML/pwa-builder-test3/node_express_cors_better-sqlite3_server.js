@@ -572,15 +572,10 @@ app.get("/textsplitterfortweet_2_readall", (req, res, next) => {
     console.log("mode is",req.query.mode);
 
     choose_db_mode(req);
-    // req.query.mode === "DEV" ? switch_db("textsplitterfortweet_2_DEV") : switch_db("textsplitterfortweet_2");
-    // switch_db("textsplitterfortweet_2_DEV");
-// allowOrigin(res);
  res.json(textsplitterfortweet_2_db_query_select_all());
 });
 app.get("/textsplitterfortweet_2_insert", (req, res, next) => {
     choose_db_mode(req);
-// allowOrigin(res);
-
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_insert_and_select, raging_demon(req.query, {
             "foo": [
                 ["isLength", {min: 1, max: 420}, "error: isLength: {min: 1, max: 420}",],
@@ -596,8 +591,6 @@ app.get("/textsplitterfortweet_2_insert", (req, res, next) => {
 });
 app.get("/textsplitterfortweet_2_update", (req, res, next) => {
     choose_db_mode(req);
-// allowOrigin(res);
-
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_update_and_select, raging_demon(req.query, {
                     "foo": [
                         ["isLength", {min: 1, max: 420}, "error: isLength: {min: 1, max: 420}",],
@@ -614,8 +607,6 @@ app.get("/textsplitterfortweet_2_update", (req, res, next) => {
 });
 app.get("/textsplitterfortweet_2_deleteid", (req, res, next) => {
     choose_db_mode(req);
-// allowOrigin(res);
-
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_delete, raging_demon(req.query, {
             "id": [
                 ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
