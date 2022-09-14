@@ -11,14 +11,217 @@
             width: 100vw;
             height: 90vh;
         }
+
+        .update_deleteid_display_none {
+            display: none;
+        }
     </style>
+
+<!-- starter kit -->
+<script src="./vue@3.2.36.global.prod.js"></script>
+<script src="./ramda.@0.28.0.js"></script>
+<script src="./localforage@1.10.0.js"></script>
+<script src="./firebase@8.6.1-app.js"></script>
+<script src="./firebase@8.6.1-auth.js"></script>
+<script src="./blueimp-md5@2.19.0.js"></script>
+
+<link rel="stylesheet" href="reset.css">
+
 </head>
 <body>
+
+<div class="app">
+
+<div class="local_save">
+<input type="button" value="save_data_to_all_save" @click="save_data_to_all_save">
+<ul>
+<button value="sort_by_when" @click="sort_by_when">sort_by_when</button>
+<button value="sort_by_rating" @click="sort_by_rating">sort_by_rating</button>
+<li v-for="(item, index) in all_save" @click="save_data_set(index)">
+<button @click="save_data_set(index)">save_data_set</button>
+<button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>
+{{ item }}
+<button @click="save_data_delete(index)">save_data_delete</button>
+</li>
+</ul>
+</div>
+
 <select class="max-open-volume-of-number"></select>
 <button onclick="exe()">number of list url pop up open!!!</button>
 <textarea name="" class="url-list"></textarea>
+</div>
+
+<div class="web_save">
+<li v-for="web_data in web_data_list">
+id:{{ web_data['id'] }} foo:{{ web_data['foo'] }} uid:{{ web_data['uid'] }}
+<button @click="set_data(web_data['foo'])">set_data</button>
+<button @click="update(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === uid_to_md5( this.login_data['uid'] ) ? false : true }">update</button>
+<button @click="deleteid(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === uid_to_md5( this.login_data['uid'] ) ? false : true }">deleteid</button>
+</li>
+</div>
+
+<!-- starter kit 2 -->
 </body>
 <script>
+const firebaseConfig = {
+    apiKey: "AIzaSyBcOlIDP2KWbJuKM0WeMHNp-WvjTVfLt9Y",
+    authDomain: "p2auth-ea50a.firebaseapp.com",
+    projectId: "p2auth-ea50a",
+    storageBucket: "p2auth-ea50a.appspot.com",
+    messagingSenderId: "796225429484",
+    appId: "1:796225429484:web:ece56ef2fc0be28cd6eac9"
+};
+firebase.initializeApp(firebaseConfig);
+
+
+let MODE = ""
+// MODE = "DEV";
+MODE = "PROD";
+let SERVER_URL = '';
+SERVER_URL = MODE === "DEV" ? 'http://localhost:3000' : "https://marred-mint-art.glitch.me";
+
+let login_result = null;
+let login_error = null;
+
+const app = Vue.createApp({
+data() {
+return {
+    foo: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
+    TXT: [],
+    selected: 1,
+    ALL_NUM: [],
+    login_data: null,
+
+    when: null,
+    rating: 0,
+    save_data: [],
+    all_save: [],
+
+    web_message: null,
+    web_data_list: [{
+            "id": 'bar_id',
+            "foo": 'bar_foo',
+            "uid": 'bar_uid',
+        }],
+}
+},
+    // computed: {
+    //     COMP: function () {
+    //         return COMP;
+    //     }
+    // },
+created() {
+},
+beforeMount() {
+    // this.set_temporary_data_for_vue_rendering();
+},
+mounted() {
+    // this.init();
+    // this.init_app();
+    // this.save_data_load();
+    // this.readall();
+    // this.fn_A();
+},
+beforeUpdated() {
+},
+watch: {
+    login_data(new_login_data, old_login_data) {
+        console.log('forceUpdated from login_data!!');
+        // app.$forceUpdate();
+    },
+    web_data_list(new_web_data_list, old_web_data_list) {
+        console.log('forceUpdated from new_web_data_list!!');
+        // app.$forceUpdate();
+    }
+},
+
+methods: {
+        async rating_up(INDEX){
+            this.all_save[INDEX][1]++;
+            await localforage.setItem('key', JSON.stringify(this.all_save));
+            await this.save_data_load();
+        },
+        async rating_down(INDEX){
+            this.all_save[INDEX][1]--;
+            await localforage.setItem('key', JSON.stringify(this.all_save));
+            await this.save_data_load();
+        },
+        async save_data_to_all_save(){
+            this.when = (new Date()).toLocaleString('en');
+            this.rating = 0;
+            this.all_save.push([this.when, this.rating, this.foo]);
+            await localforage.setItem('key', JSON.stringify(this.all_save));
+        },
+        async save_data_load() {
+            this.all_save = JSON.parse(await localforage.getItem('key')) || [];
+        },
+        save_data_set(INDEX){
+            [this.when, this.rating, this.foo] = this.all_save[INDEX];
+        },
+        async save_data_delete(INDEX){
+            if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
+                this.all_save.splice(INDEX, 1);
+                await localforage.setItem('key', JSON.stringify(this.all_save));
+            }
+        },
+        sort_by_when(){
+            this.all_save.sort((a, b) => {
+                time_A = new Date(a[0]);
+                time_B = new Date(b[0]);
+                return this.sort_by === 'asc' ? time_A - time_B : time_B - time_A;
+            });
+            this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
+        },
+        sort_by_rating(){
+            this.all_save.sort((a, b) => {
+                return this.sort_by === 'asc' ? a[1] - b[1] : b[1] - a[1];
+            });
+            this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
+        },
+
+
+
+
+async async_await_fetch_json_log_assign(FETCH_PARAM, DATA_KEY_ARRAY, KEY) {
+    const FETCH_PARAM_WITH_MODE = MODE === "DEV" ? (FETCH_PARAM+'&mode=DEV') : (FETCH_PARAM+'&mode=PROD');
+    const FETCH_DATA = await fetch(FETCH_PARAM_WITH_MODE);
+    const JSON_DATA = await FETCH_DATA.json();
+    if (JSON_DATA.message !== "success") return
+    for (const DATA_KEY of DATA_KEY_ARRAY) {
+        this[DATA_KEY] = JSON_DATA[KEY];
+    }
+},
+alert_if_no_login() {
+    if (this.login_data === null) {
+        this.web_message = "please login";
+        alert(this.web_message);
+        return true
+    }
+    return false
+},
+async readall() {
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_readall?readall=read"), ["web_data_list"], "data");
+},
+async insert() {
+    console.log('insert executed');
+    if (this.alert_if_no_login()) return
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_insert?foo=" + this.foo + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
+},
+async update(ID) {
+    if (this.alert_if_no_login()) return
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_update?id=" + ID + "&foo=" + this.foo + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
+},
+async deleteid(ID) {
+    if (this.alert_if_no_login()) return
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_deleteid?id=" + ID + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
+},
+set_data(DATA){
+    this.foo = DATA;
+},
+
+}
+});
+
 function tabOpen(params) {
     window.open(params, '_blank')
 };

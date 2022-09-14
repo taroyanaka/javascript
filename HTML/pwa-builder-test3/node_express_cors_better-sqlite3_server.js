@@ -111,11 +111,11 @@ function DROPTABLE(){
 }
 
 function textsplitterfortweet_2_CREATETABLE(){
-//     db.prepare(`CREATE TABLE IF NOT EXISTS textsplitterfortweet_foo (
-// id INTEGER PRIMARY KEY AUTOINCREMENT,
-// foo TEXT NOT NULL,
-// textsplitterfortweet_uid_id INTEGER NOT NULL
-// )`).run();
+    db.prepare(`CREATE TABLE IF NOT EXISTS textsplitterfortweet_foo (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+foo TEXT NOT NULL,
+textsplitterfortweet_uid_id INTEGER NOT NULL
+)`).run();
     db.prepare(`CREATE TABLE IF NOT EXISTS textsplitterfortweet_uid (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 uid TEXT NOT NULL
@@ -556,10 +556,10 @@ WHERE
 };
 
 
-const choose_db_mode = (REQ) => REQ.query.mode === "DEV" ? switch_db("textsplitterfortweet_2_DEV") : switch_db("textsplitterfortweet_2");
+const choose_db_mode_for_textsplitterfortweet_2 = (REQ) => REQ.query.mode === "DEV" ? switch_db("textsplitterfortweet_2_DEV") : switch_db("textsplitterfortweet_2");
 
 app.get("/textsplitterfortweet_2_read_any", (req, res, next) => {
-    choose_db_mode(req);
+    choose_db_mode_for_textsplitterfortweet_2(req);
 
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_select, raging_demon(req.query, {
             'uid': [
@@ -571,11 +571,11 @@ app.get("/textsplitterfortweet_2_read_any", (req, res, next) => {
 app.get("/textsplitterfortweet_2_readall", (req, res, next) => {
     console.log("mode is",req.query.mode);
 
-    choose_db_mode(req);
+    choose_db_mode_for_textsplitterfortweet_2(req);
  res.json(textsplitterfortweet_2_db_query_select_all());
 });
 app.get("/textsplitterfortweet_2_insert", (req, res, next) => {
-    choose_db_mode(req);
+    choose_db_mode_for_textsplitterfortweet_2(req);
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_insert_and_select, raging_demon(req.query, {
             "foo": [
                 ["isLength", {min: 1, max: 420}, "error: isLength: {min: 1, max: 420}",],
@@ -590,7 +590,7 @@ app.get("/textsplitterfortweet_2_insert", (req, res, next) => {
     )))
 });
 app.get("/textsplitterfortweet_2_update", (req, res, next) => {
-    choose_db_mode(req);
+    choose_db_mode_for_textsplitterfortweet_2(req);
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_update_and_select, raging_demon(req.query, {
                     "foo": [
                         ["isLength", {min: 1, max: 420}, "error: isLength: {min: 1, max: 420}",],
@@ -606,7 +606,7 @@ app.get("/textsplitterfortweet_2_update", (req, res, next) => {
     )
 });
 app.get("/textsplitterfortweet_2_deleteid", (req, res, next) => {
-    choose_db_mode(req);
+    choose_db_mode_for_textsplitterfortweet_2(req);
     res.json(shinku_hadoken(textsplitterfortweet_2_db_query_delete, raging_demon(req.query, {
             "id": [
                 ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
