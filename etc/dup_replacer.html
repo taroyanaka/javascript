@@ -39,6 +39,13 @@ grid-auto-rows: auto;
 grid-template-columns: 2fr 1fr 1fr 2fr;
 grid-gap: 0px;
 }
+.limited_item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 20rem;
+  height: 1.5rem;
+}
 </style>
 </head>
 <body>
@@ -57,12 +64,14 @@ grid-gap: 0px;
 <textarea name="d" id="d" v-model="result">{{ result }}</textarea>
 </div>
 
-<ul>
 <input type="button" value="sort_by_when" @click="sort_by_when">
 <input type="button" value="sort_by_rating" @click="sort_by_rating">
-<li v-for="(item, index) in all_save" @click="save_data_set(index)">
+<input type="button" value="is_limited_item_change" @click="is_limited_item_change">
+<input type="text" name="filter_by_text" class="filter_by_text" @input="filter_by_text" v-model="filter_text" placeholder="filter_text">
+<ul>
+<li v-for="(item, index) in all_save">
 <button @click="save_data_set(index)">save_data_set</button>
-{{ item[4] }}: rating {{ item[3] }} <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>: {{ item }}
+{{ item[4] }}: rating {{ item[3] }} <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>: <p :class="{ limited_item: is_limited_item ? true : false }">{{ item }}</p>
 <button @click="save_data_delete(index)">save_data_delete</button>
 </li>
 </ul>
@@ -81,6 +90,9 @@ const app = Vue.createApp({
             save_data: [],
             all_save: [],
             sort_by: 'asc',
+            filter_text: '',
+            temporary_all_save_for_filter: [],
+            is_limited_item: true,
         }
     },
     computed: {
@@ -143,9 +155,10 @@ const app = Vue.createApp({
         },
         async save_data_load() {
             this.all_save = JSON.parse(await localforage.getItem('key')) || [];
+            this.temporary_all_save_for_filter = this.all_save;
         },
         save_data_set(INDEX){
-            [this.a, this.b, this.c, this.rating] = this.all_save[INDEX];
+            [this.a, this.b, this.c, this.rating, this.when] = this.all_save[INDEX];
         },
         async save_data_delete(INDEX){
             if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
@@ -167,6 +180,16 @@ const app = Vue.createApp({
             });
             this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
         },
+        filter_by_text(){
+            this.all_save = this.temporary_all_save_for_filter.filter(VAL => {
+                return VAL[0].includes(this.filter_text) || VAL[1].includes(this.filter_text) || VAL[2].includes(this.filter_text);
+            });
+            this.filter_text === "" ? this.all_save = this.temporary_all_save_for_filter : null;
+        },
+        is_limited_item_change(){
+            this.is_limited_item = this.is_limited_item ? false : true;
+        },
+
     }
 }).mount('.app');
 </script>

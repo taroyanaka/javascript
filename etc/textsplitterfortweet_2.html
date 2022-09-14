@@ -51,6 +51,7 @@ PWA?(maybe i wont do it(because web app need maintenance that released on store,
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>textsplitterfortweet_2</title>
 
+<!-- starter kit -->
 <script src="./vue@3.2.36.global.prod.js"></script>
 <script src="./ramda.@0.28.0.js"></script>
 <script src="./localforage@1.10.0.js"></script>
@@ -137,8 +138,6 @@ span, button, li, a {
 <div class="app">
 
 <div class="local_save">
-<!-- <span>{{ when }}</span> -->
-<!-- <span>{{ rating }}</span> -->
 
 <input type="button" value="save_data_to_all_save" @click="save_data_to_all_save">
 
@@ -147,7 +146,6 @@ span, button, li, a {
 <button value="sort_by_rating" @click="sort_by_rating">sort_by_rating</button>
 <li v-for="(item, index) in all_save" @click="save_data_set(index)">
 <button @click="save_data_set(index)">save_data_set</button>
-<!-- {{ item[0] }}: rating {{ item[1] }}  -->
 <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>
 {{ item }}
 <button @click="save_data_delete(index)">save_data_delete</button>
@@ -196,7 +194,6 @@ save_data: {{ save_data['save_foo'] }} {{ save_data['save_split_num'] }}
 id:{{ web_data['id'] }} foo:{{ web_data['foo'] }} uid:{{ web_data['uid'] }}
 <button @click="set_data(web_data['foo'])">set_data</button>
 <button @click="update(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === uid_to_md5( this.login_data['uid'] ) ? false : true }">update</button>
-<!-- <button @click="deleteid('foo')" :class="{ update_deleteid_display_none: 'foo' === uid_to_md5( 'foo' ) ? false : true }">deleteid</button> -->
 <button @click="deleteid(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === uid_to_md5( this.login_data['uid'] ) ? false : true }">deleteid</button>
 </li>
 </div>
@@ -309,8 +306,6 @@ init() {
 
 async async_await_fetch_json_log_assign(FETCH_PARAM, DATA_KEY_ARRAY, KEY) {
     const FETCH_PARAM_WITH_MODE = MODE === "DEV" ? (FETCH_PARAM+'&mode=DEV') : (FETCH_PARAM+'&mode=PROD');
-    // const FETCH_PARAM_WITH_MODE = true ? (FETCH_PARAM+'&mode=DEV') : (FETCH_PARAM+'&mode=PROD');
-    // const FETCH_DATA = await fetch(FETCH_PARAM);
     const FETCH_DATA = await fetch(FETCH_PARAM_WITH_MODE);
     const JSON_DATA = await FETCH_DATA.json();
     if (JSON_DATA.message !== "success") return
