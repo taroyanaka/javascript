@@ -1,21 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!--
+server side file on glitch.com
+https://github.com/taroyanaka/javascript/blob/master/HTML/pwa-builder-test3/server.js
+https://glitch.com/edit/#!/marred-mint-art
+ -->
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>list url pop up 2</title>
-    <style>
-        textarea{
-            width: 100vw;
-            height: 90vh;
-        }
-
-        .update_deleteid_display_none {
-            display: none;
-        }
-    </style>
+    <title>listurlpopup_2</title>
 
 <!-- starter kit -->
 <script src="./vue@3.2.36.global.prod.js"></script>
@@ -27,13 +22,86 @@
 
 <link rel="stylesheet" href="reset.css">
 
+<style>
+
+
+
+.app{
+display: grid;
+width: 100vw;
+height: 100vh;
+grid-template-columns: repeat(3, 1fr);
+grid-gap: 0px;
+grid-template-areas:
+    "loacl_save console web_save";
+}
+.local_save{
+grid-area: loacl_save;
+display: grid;
+background-color: whitesmoke;
+}
+.console{
+grid-area: console;
+background-color: gray;
+display: grid;
+grid-template-rows:
+auto
+auto
+8fr
+1fr
+auto
+1fr;
+}
+textarea{
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #000;
+    overflow-wrap: anywhere;
+}
+.web_save{
+    grid-area: web_save;
+    display: grid;
+    background-color: gainsboro;
+    overflow-wrap:break-word;
+}
+
+button{
+    width: 100%;
+    /* height: 100%; */
+    /* overflow-wrap: break-word; */
+    /* word-break: break-all; */
+    /* white-space: normal; */
+    /* word-wrap: break-word; */
+}
+li{
+    list-style: none;
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+span, button, li, a {
+    overflow-wrap: break-word;
+    word-break: break-all;
+}
+.twitter-share-button{
+    display: block;
+}
+.login{
+    /* width: 8rem; */
+    /* height: 2rem; */
+}
+.update_deleteid_display_none {
+    display: none;
+}
+</style>
 </head>
 <body>
-
 <div class="app">
 
 <div class="local_save">
+
 <input type="button" value="save_data_to_all_save" @click="save_data_to_all_save">
+
 <ul>
 <button value="sort_by_when" @click="sort_by_when">sort_by_when</button>
 <button value="sort_by_rating" @click="sort_by_rating">sort_by_rating</button>
@@ -46,23 +114,60 @@
 </ul>
 </div>
 
-<select class="max-open-volume-of-number"></select>
-<button onclick="exe()">number of list url pop up open!!!</button>
-<textarea name="" class="url-list"></textarea>
+<div class="console">
+<input type="button" class="login" value="googleLogin" @click="toggleSignIn">
+<input type="button" class="signout_clear" value="signout_clear" @click="signout_clear">
+
+<textarea v-model="url" class="url" minlength="1" maxlength="420"></textarea>
+
+<!-- <select class="max-open-volume-of-number"></select> -->
+
+<button @click="fn_A">number of list url pop up open!!!</button>
+<!-- <textarea name="" class="url-list"></textarea> -->
+
+<!-- <select class="select" v-model="selected" @change="fn_B($event)">
+    <option disabled value="">Please select one</option>
+    <option v-for="NUM in ALL_NUM" :key="NUM">
+        {{ NUM }}
+    </option>
+</select> -->
+<a class="twitter-share-button" v-bind:href="`https://twitter.com/intent/tweet?text=${item}`" data-size="large" v-for="item in TXT">{{ item }}</a>
+
+<!-- <input type="button" value="save" @click="save">
+<li v-for="save_data in all_save" :key="NUM">
+save_data: {{ save_data['save_url'] }} {{ save_data['save_split_num'] }}
+</li> -->
+
+<!-- <button @click="readall">readall</button> -->
+<button @click="insert">insert</button>
+<!-- <button @click="deleteid">deleteid</button> -->
+
+<span>web_message: {{ web_message }}</span>
+<!-- <button @click="firebase_auth_onAuthStateChanged">firebase_auth_onAuthStateChanged</button> -->
+
+<!-- <div> -->
+<!-- <span>login_data is: {{ login_data }}</span> -->
+<!-- <span>login_result: {{ login_result }}</span> -->
+<!-- </div> -->
+
+<!-- <div> -->
+<!-- <span>login_data type is: {{ typeof login_data }}</span> -->
+<!-- </div> -->
 </div>
 
 <div class="web_save">
 <li v-for="web_data in web_data_list">
-id:{{ web_data['id'] }} foo:{{ web_data['foo'] }} uid:{{ web_data['uid'] }}
-<button @click="set_data(web_data['foo'])">set_data</button>
+id:{{ web_data['id'] }} url:{{ JSON.parse(web_data['url']) }} uid:{{ web_data['uid'] }}
+<button @click="set_data(web_data['url'])">set_data</button>
 <button @click="update(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === uid_to_md5( this.login_data['uid'] ) ? false : true }">update</button>
 <button @click="deleteid(web_data['id'])" :class="{ update_deleteid_display_none: web_data['uid'] === uid_to_md5( this.login_data['uid'] ) ? false : true }">deleteid</button>
 </li>
 </div>
 
-<!-- starter kit 2 -->
+</div>
 </body>
 <script>
+// JSON.parse()
 const firebaseConfig = {
     apiKey: "AIzaSyBcOlIDP2KWbJuKM0WeMHNp-WvjTVfLt9Y",
     authDomain: "p2auth-ea50a.firebaseapp.com",
@@ -86,7 +191,10 @@ let login_error = null;
 const app = Vue.createApp({
 data() {
 return {
-    foo: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz',
+    url: `https://www.google.com/
+https://www.amazon.com/
+https://www.facebook.com/
+https://www.apple.com/`,
     TXT: [],
     selected: 1,
     ALL_NUM: [],
@@ -100,7 +208,7 @@ return {
     web_message: null,
     web_data_list: [{
             "id": 'bar_id',
-            "foo": 'bar_foo',
+            "url": 'bar_url',
             "uid": 'bar_uid',
         }],
 }
@@ -113,14 +221,13 @@ return {
 created() {
 },
 beforeMount() {
-    // this.set_temporary_data_for_vue_rendering();
+    this.set_temporary_data_for_vue_rendering();
 },
 mounted() {
     // this.init();
-    // this.init_app();
-    // this.save_data_load();
-    // this.readall();
-    // this.fn_A();
+    this.init_app();
+    this.save_data_load();
+    this.readall();
 },
 beforeUpdated() {
 },
@@ -136,32 +243,160 @@ watch: {
 },
 
 methods: {
+// async sleep(ms) {
+//     return new Promise( resolve => setTimeout(resolve, ms) );
+// },
+// async reload_once() {
+//     console.log('reload_once'+"2000ms");
+//     await this.sleep(5000);
+//     // https://stackoverflow.com/a/50214060/9740478
+//     if (await localforage.getItem(`${document.title}_key`)) {
+//         await localforage.removeItem(`${document.title}_key`);
+//     } else {
+//         await localforage.setItem(`${document.title}_key`, '1');
+//         location.reload();
+//     }
+// },
+fn_A() {
+    const tabOpen = (params) => window.open(params, '_blank');
+    const exe = () => document.querySelector(`.url`).value.split("\n").forEach(V=>tabOpen(V));
+    if(window.confirm(`Do you really want to open ${ document.querySelector(`.url`).value.split("\n").length} URLs??🦖\n本当に${ document.querySelector(`.url`).value.split("\n").length}ページのURLを開く？?🦕`)) {
+        exe();
+    }
+},
+fn_B() {
+},
+async async_await_fetch_json_log_assign(FETCH_PARAM, DATA_KEY_ARRAY, KEY) {
+    const FETCH_PARAM_WITH_MODE = MODE === "DEV" ? (FETCH_PARAM+'&mode=DEV') : (FETCH_PARAM+'&mode=PROD');
+    const FETCH_DATA = await fetch(FETCH_PARAM_WITH_MODE);
+    const JSON_DATA = await FETCH_DATA.json();
+    if (JSON_DATA.message !== "success") return
+    for (const DATA_KEY of DATA_KEY_ARRAY) {
+        // this[DATA_KEY] = JSON_DATA[KEY];
+        console.log(JSON_DATA[KEY]);
+        this[DATA_KEY] = JSON_DATA[KEY] === "url" ? JSON.parse(JSON_DATA[KEY]) : JSON_DATA[KEY];
+        // this[DATA_KEY] = JSON.parse(JSON_DATA[KEY]);
+    }
+},
+alert_if_no_login() {
+    if (this.login_data === null) {
+        this.web_message = "please login";
+        alert(this.web_message);
+        return true
+    }
+    return false
+},
+async readall() {
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/listurlpopup_readall?readall=read"), ["web_data_list"], "data");
+},
+
+async insert() {
+    console.log('insert executed');
+    console.log(JSON.stringify(this.url));
+    if (this.alert_if_no_login()) return
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/listurlpopup_insert?url=" + JSON.stringify(this.url) + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
+},
+async update(ID) {
+    if (this.alert_if_no_login()) return
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/listurlpopup_update?id=" + ID + "&url=" + JSON.stringify(this.url) + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
+},
+async deleteid(ID) {
+    if (this.alert_if_no_login()) return
+    await this.async_await_fetch_json_log_assign((SERVER_URL + "/listurlpopup_deleteid?id=" + ID + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
+},
+set_data(DATA){
+    // this.url = DATA;
+    this.url = JSON.parse(DATA);
+},
+
+
+// https://p2auth-ea50a.firebaseapp.com/__/auth/handler
+// https://qiita.com/sl2/items/2815e62aaf2baea2f589
+// https://blog.katsubemakito.net/firebase/firebase-authentication-facebook-web1
+// https://firebase.google.com/docs/auth/web/password-auth#web-version-8_2
+set_temporary_data_for_vue_rendering() {
+    this.web_message = "please login";
+    this.login_data = {
+        "uid": 'tmp_uid',
+        "displayName": 'tmp_displayName',
+    };
+console.log(this.login_data);
+},
+async signout_clear() {
+    await firebase.auth().signOut().then(() => {
+        this.web_message = 'signOut success';
+        this.set_temporary_data_for_vue_rendering();
+        app.$forceUpdate();
+    }).catch((error) => {
+        console.log(error);
+    });
+},
+async toggleSignIn() {
+    firebase.auth().currentUser ? this.firebase_auth_signOut_and_all_login_property_clear() : firebase.auth().signInWithRedirect((new firebase.auth.GoogleAuthProvider()));
+},
+async firebase_auth_getRedirectResult() {
+    this.web_message = "Now logging in...";
+    await firebase.auth().getRedirectResult().then((RESULT) => {
+        this.web_message = "Now logged in, getRedirectResult!!!!";
+        login_result = RESULT;
+    }).catch((ERROR) => {
+        login_error = ERROR;
+    });
+},
+async firebase_auth_onAuthStateChanged() {
+    let SELF = this;
+    const get_user_data_object = (USER) => {
+        const user_keys = [
+            "uid",
+            "displayName",
+        ];
+        return R.fromPairs(
+            user_keys.map(KEY=>[KEY, USER[KEY]])
+        )
+    };
+    await firebase.auth().onAuthStateChanged(USER => {
+        console.log("onAuthStateChanged is this?????");
+        if (USER) { SELF.login_data = get_user_data_object(USER) };
+        // if (USER) { SELF.is_logging_in = true };
+    });
+},
+async init_app() {
+    await this.firebase_auth_getRedirectResult();
+    await this.firebase_auth_onAuthStateChanged();
+},
+uid_to_md5(UID_STR) {
+    return md5(UID_STR);
+},
+
+
+
+
         async rating_up(INDEX){
             this.all_save[INDEX][1]++;
-            await localforage.setItem('key', JSON.stringify(this.all_save));
+            await localforage.setItem(`${document.title}_key`, JSON.stringify(this.all_save));
             await this.save_data_load();
         },
         async rating_down(INDEX){
             this.all_save[INDEX][1]--;
-            await localforage.setItem('key', JSON.stringify(this.all_save));
+            await localforage.setItem(`${document.title}_key`, JSON.stringify(this.all_save));
             await this.save_data_load();
         },
         async save_data_to_all_save(){
             this.when = (new Date()).toLocaleString('en');
             this.rating = 0;
-            this.all_save.push([this.when, this.rating, this.foo]);
-            await localforage.setItem('key', JSON.stringify(this.all_save));
+            this.all_save.push([this.when, this.rating, this.url]);
+            await localforage.setItem(`${document.title}_key`, JSON.stringify(this.all_save));
         },
         async save_data_load() {
-            this.all_save = JSON.parse(await localforage.getItem('key')) || [];
+            this.all_save = JSON.parse(await localforage.getItem(`${document.title}_key`)) || [];
         },
         save_data_set(INDEX){
-            [this.when, this.rating, this.foo] = this.all_save[INDEX];
+            [this.when, this.rating, this.url] = this.all_save[INDEX];
         },
         async save_data_delete(INDEX){
             if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
                 this.all_save.splice(INDEX, 1);
-                await localforage.setItem('key', JSON.stringify(this.all_save));
+                await localforage.setItem(`${document.title}_key`, JSON.stringify(this.all_save));
             }
         },
         sort_by_when(){
@@ -178,108 +413,14 @@ methods: {
             });
             this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
         },
+},
+}).mount('.app');
 
 
 
 
-async async_await_fetch_json_log_assign(FETCH_PARAM, DATA_KEY_ARRAY, KEY) {
-    const FETCH_PARAM_WITH_MODE = MODE === "DEV" ? (FETCH_PARAM+'&mode=DEV') : (FETCH_PARAM+'&mode=PROD');
-    const FETCH_DATA = await fetch(FETCH_PARAM_WITH_MODE);
-    const JSON_DATA = await FETCH_DATA.json();
-    if (JSON_DATA.message !== "success") return
-    for (const DATA_KEY of DATA_KEY_ARRAY) {
-        this[DATA_KEY] = JSON_DATA[KEY];
-    }
-},
-alert_if_no_login() {
-    if (this.login_data === null) {
-        this.web_message = "please login";
-        alert(this.web_message);
-        return true
-    }
-    return false
-},
-async readall() {
-    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_readall?readall=read"), ["web_data_list"], "data");
-},
-async insert() {
-    console.log('insert executed');
-    if (this.alert_if_no_login()) return
-    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_insert?foo=" + this.foo + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
-},
-async update(ID) {
-    if (this.alert_if_no_login()) return
-    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_update?id=" + ID + "&foo=" + this.foo + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
-},
-async deleteid(ID) {
-    if (this.alert_if_no_login()) return
-    await this.async_await_fetch_json_log_assign((SERVER_URL + "/textsplitterfortweet_2_deleteid?id=" + ID + "&uid=" + this.login_data['uid']), ["web_data_list"], "data");
-},
-set_data(DATA){
-    this.foo = DATA;
-},
 
-}
-});
 
-function tabOpen(params) {
-    window.open(params, '_blank')
-};
-function exe() {
-    Array.from(document.querySelector("textarea.url-list").value.split("\n"))
-        .slice(0, Number(document.querySelector(".max-open-volume-of-number").value)).forEach(V=>
-            tabOpen(V)
-        )
-}
-const option = [...Array(100).keys()].map((V, IDX) => `<option value="${IDX + 1}">${IDX + 1}</option>`).join("");
-document.querySelector(".max-open-volume-of-number").insertAdjacentHTML("afterbegin", option);
 
-document.querySelector("textarea.url-list").value = `https://taroyanaka.github.io/javascript/HTML/honeycomb.html
-https://taroyanaka.github.io/javascript/HTML/tapCountSort.html
-https://taroyanaka.github.io/javascript/HTML/anime0.html
-https://taroyanaka.github.io/javascript/HTML/autocomplete.html
-https://taroyanaka.github.io/javascript/HTML/backToTop.html
-https://taroyanaka.github.io/javascript/HTML/clickedjscss.html
-https://taroyanaka.github.io/javascript/HTML/co-occurrence.html
-https://taroyanaka.github.io/javascript/HTML/cssAnimation1.html
-https://taroyanaka.github.io/javascript/HTML/cssShortestAccordion.html
-https://taroyanaka.github.io/javascript/HTML/domTree1.html
-https://taroyanaka.github.io/javascript/HTML/domTree2.html
-https://taroyanaka.github.io/javascript/HTML/domTree3.html
-https://taroyanaka.github.io/javascript/HTML/foo.html
-https://taroyanaka.github.io/javascript/HTML/game3d.html
-https://taroyanaka.github.io/javascript/HTML/getDomTreeInsert.html
-https://taroyanaka.github.io/javascript/HTML/gradientAnimation.html
-https://taroyanaka.github.io/javascript/HTML/htmltmp.html
-https://taroyanaka.github.io/javascript/HTML/inputAnimation.html
-https://taroyanaka.github.io/javascript/HTML/kaseki.html
-https://taroyanaka.github.io/javascript/HTML/readMore1.html
-https://taroyanaka.github.io/javascript/HTML/readMore2.html
-https://taroyanaka.github.io/javascript/HTML/readMore3.html
-https://taroyanaka.github.io/javascript/HTML/readMore4.html
-https://taroyanaka.github.io/javascript/HTML/responsiveFontSizing.html
-https://taroyanaka.github.io/javascript/HTML/responsiveSideBar.html
-https://taroyanaka.github.io/javascript/HTML/responsiveSideBar2.html
-https://taroyanaka.github.io/javascript/HTML/responsiveSideBar3.html
-https://taroyanaka.github.io/javascript/HTML/responsiveSideBar4.html
-https://taroyanaka.github.io/javascript/HTML/responsiveSideBarTest.html
-https://taroyanaka.github.io/javascript/HTML/responsiveSideBarTest2.html
-https://taroyanaka.github.io/javascript/HTML/tmp.html
-https://taroyanaka.github.io/javascript/HTML/verticalHorizontalHideAccordion.html
-https://taroyanaka.github.io/javascript/HTML/whatisplus.html
-https://taroyanaka.github.io/javascript/HTML/2021.html
-https://taroyanaka.github.io/javascript/HTML/csskeyframes.html
-https://taroyanaka.github.io/javascript/HTML/movecell.html
-https://taroyanaka.github.io/javascript/HTML/movecellallcell.html
-https://taroyanaka.github.io/javascript/HTML/svgtest.html
-https://taroyanaka.github.io/javascript/HTML/textqa.html
-https://taroyanaka.github.io/javascript/HTML/vent-list.html
-https://taroyanaka.github.io/javascript/HTML/vent.html
-https://taroyanaka.github.io/javascript/HTML/web-design-sample-1.html
-https://taroyanaka.github.io/javascript/HTML/somethingtoplay.html
-https://taroyanaka.github.io/javascript/HTML/test.html
-https://taroyanaka.github.io/javascript/HTML/floatlayoutsample0.html
-https://taroyanaka.github.io/javascript/HTML/htmlcsslearning.html
-https://taroyanaka.github.io/javascript/HTML/inline-blockflexsample.html`
 </script>
 </html>

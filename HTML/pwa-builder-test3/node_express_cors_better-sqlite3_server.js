@@ -86,10 +86,21 @@ const switch_db = (SERVICE_NAME) => {
         case "textsplitterfortweet_2_DEV":
             db = new Database('./db/1660820720_textsplitterfortweet_2.sqlite3');
             break;
+        case "listurlpopup":
+            db = new Database('.data/1663220266_listurlpopup.sqlite3');
+            break;
+        case "listurlpopup_DEV":
+            db = new Database('./db/1663220266_listurlpopup.sqlite3');
+            break;
         default:
             break;
     }
 };
+
+
+
+
+
 
 
 // app.listen(port, () => {
@@ -619,76 +630,226 @@ app.get("/textsplitterfortweet_2_deleteid", (req, res, next) => {
     // res.json(db_query_delete_2(req.query.id));
 });
 
-// CREATE TABLE IF NOT EXISTS textsplitterfortweet_foo (
-// id INTEGER PRIMARY KEY AUTOINCREMENT,
-// foo TEXT NOT NULL,
-// textsplitterfortweet_uid_id INTEGER NOT NULL
-// );
-
-// CREATE TABLE IF NOT EXISTS textsplitterfortweet_uid (
-// id INTEGER PRIMARY KEY AUTOINCREMENT,
-// uid TEXT NOT NULL
-// );
-
-// INSERT INTO textsplitterfortweet_uid (uid) VALUES ('foo');
-// INSERT INTO textsplitterfortweet_uid (uid) VALUES ('bar');
-// INSERT INTO textsplitterfortweet_uid (uid) VALUES ('buz');
-
-// INSERT INTO textsplitterfortweet_foo (foo, textsplitterfortweet_uid_id)
-// VALUES(
-//     'lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem',
-//     (SELECT textsplitterfortweet_uid.id FROM textsplitterfortweet_uid WHERE textsplitterfortweet_uid.uid = 'foo')
-// );
-// INSERT INTO textsplitterfortweet_foo (foo, textsplitterfortweet_uid_id)
-// VALUES(
-    // 'ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum ipsum',
-    // (SELECT textsplitterfortweet_uid.id FROM textsplitterfortweet_uid WHERE textsplitterfortweet_uid.uid = 'foo')
-// );
-// INSERT INTO textsplitterfortweet_foo (foo, textsplitterfortweet_uid_id)
-// VALUES(
-    // 'dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor dolor',
-    // (SELECT textsplitterfortweet_uid.id FROM textsplitterfortweet_uid WHERE textsplitterfortweet_uid.uid = 'bar')
-// );
-
-// SELECT
-//     textsplitterfortweet_foo.id,
-//     textsplitterfortweet_foo.foo,
-//     (SELECT textsplitterfortweet_uid.uid
-//      FROM textsplitterfortweet_uid
-//      WHERE textsplitterfortweet_uid.id = textsplitterfortweet_foo.textsplitterfortweet_uid_id)
-//             as uid
-// FROM textsplitterfortweet_foo
-// JOIN textsplitterfortweet_uid
-//     ON textsplitterfortweet_foo.textsplitterfortweet_uid_id = textsplitterfortweet_uid.id
-// WHERE textsplitterfortweet_uid.uid = 'foo';
-
-// UPDATE textsplitterfortweet_foo
-// SET foo = 'sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit sit'
-// WHERE
-//     textsplitterfortweet_foo.id = '1'
-//     AND
-//     textsplitterfortweet_foo.textsplitterfortweet_uid_id =
-//         (SELECT textsplitterfortweet_uid.id
-//          FROM textsplitterfortweet_uid
-//          WHERE textsplitterfortweet_uid.uid = 'foo');
-
-// DELETE FROM textsplitterfortweet_foo
-// WHERE
-//     textsplitterfortweet_foo.id = '2'
-//     AND
-//     textsplitterfortweet_foo.textsplitterfortweet_uid_id =
-//         (SELECT textsplitterfortweet_uid.id
-//          FROM textsplitterfortweet_uid
-//          WHERE textsplitterfortweet_uid.uid = 'foo');
-
-// SELECT * FROM textsplitterfortweet_uid;
-// SELECT * FROM textsplitterfortweet_foo;
 
 
-app.get("/sample", (req, res, next) => {
-    res.json({ id: "Taro on test server" });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function listurlpopup_CREATETABLE(){
+    db.prepare(`CREATE TABLE IF NOT EXISTS listurlpopup_url (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+url TEXT NOT NULL,
+listurlpopup_uid_id INTEGER NOT NULL
+)`).run();
+    db.prepare(`CREATE TABLE IF NOT EXISTS listurlpopup_uid (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+uid TEXT NOT NULL
+)`).run();
+console.log("did");
+}
+function listurlpopup_DROPTABLE(){
+    db.prepare(`DROP TABLE listurlpopup_url`).run();
+    db.prepare(`DROP TABLE listurlpopup_uid`).run();
+}
+
+
+
+
+const listurlpopup_db_query_select = (STRING_ARRAY) => {
+    return {
+        "message": "success",
+        "data": db.prepare(`SELECT
+    listurlpopup_url.id,
+    listurlpopup_url.url,
+    (SELECT listurlpopup_uid.uid
+     FROM listurlpopup_uid
+     WHERE listurlpopup_uid.id = listurlpopup_url.listurlpopup_uid_id)
+            as uid
+FROM listurlpopup_url
+JOIN listurlpopup_uid
+    ON listurlpopup_url.listurlpopup_uid_id = listurlpopup_uid.id
+WHERE listurlpopup_uid.uid = @uid`
+                    ).all({
+                        uid: STRING_ARRAY["uid"],
+                    }
+                )
+    }
+};
+const listurlpopup_db_query_select_all = () => {
+    return {
+        "message": "success",
+        "data": db.prepare(`SELECT
+    listurlpopup_url.id,
+    listurlpopup_url.url,
+    (SELECT listurlpopup_uid.uid
+     FROM listurlpopup_uid
+     WHERE listurlpopup_uid.id = listurlpopup_url.listurlpopup_uid_id)
+            as uid
+FROM listurlpopup_url
+JOIN listurlpopup_uid
+    ON listurlpopup_url.listurlpopup_uid_id = listurlpopup_uid.id`
+        ).all()
+    }
+};
+const listurlpopup_db_query_insert_and_select = (STRING_ARRAY) => {
+    const normal_insert = () => {
+        db.prepare(`INSERT INTO listurlpopup_url (url, listurlpopup_uid_id)
+    VALUES(
+        @url,
+        (SELECT listurlpopup_uid.id FROM listurlpopup_uid WHERE listurlpopup_uid.uid = @uid)
+    );`
+        ).run({
+            url: STRING_ARRAY["url"],
+            uid: MD5(STRING_ARRAY["uid"]),
+            // uid: "barbarbar",
+        });
+    };
+
+    const insert_uid = () => db.prepare('INSERT INTO listurlpopup_uid (uid) VALUES (?)').run(MD5(STRING_ARRAY["uid"]));
+
+    // https://github.com/WiseLibs/better-sqlite3/blob/master/docs/api.md#getbindparameters---row
+    // "If the statement was successful but found no data, undefined is returned."
+    // const is_there_uid_result = db.prepare('SELECT * FROM listurlpopup_uid WHERE uid = ?').get(MD5(STRING_ARRAY["uid"]));
+    // is_there_uid_result === undefined ? insert_uid() : null;
+    db.prepare('SELECT * FROM listurlpopup_uid WHERE uid = ?').get(MD5(STRING_ARRAY["uid"])) === undefined ? insert_uid() : null;
+    normal_insert();
+
+    return listurlpopup_db_query_select_all(STRING_ARRAY);
+};
+
+const listurlpopup_db_query_update_and_select = (STRING_ARRAY) => {
+    db.prepare(`UPDATE listurlpopup_url
+SET url = @url
+WHERE
+    listurlpopup_url.id = @id
+    AND
+    listurlpopup_url.listurlpopup_uid_id =
+        (SELECT listurlpopup_uid.id
+         FROM listurlpopup_uid
+         WHERE listurlpopup_uid.uid = @uid);`
+        ).run({
+            url: STRING_ARRAY["url"],
+            // uid: STRING_ARRAY["uid"],
+            uid: MD5(STRING_ARRAY["uid"]),
+            id: STRING_ARRAY["id"],
+        });
+    return listurlpopup_db_query_select_all(STRING_ARRAY);
+};
+const listurlpopup_db_query_delete = (STRING_ARRAY) => {
+    db.prepare(`DELETE FROM listurlpopup_url
+WHERE
+    listurlpopup_url.id = @id
+    AND
+    listurlpopup_url.listurlpopup_uid_id =
+        (SELECT listurlpopup_uid.id
+         FROM listurlpopup_uid
+         WHERE listurlpopup_uid.uid = @uid);`
+        ).run({
+            id: STRING_ARRAY["id"],
+            // uid: STRING_ARRAY["uid"],
+            uid: MD5(STRING_ARRAY["uid"]),
+        });
+    return listurlpopup_db_query_select_all(STRING_ARRAY);
+};
+
+
+const choose_db_mode_for_listurlpopup = (REQ) => REQ.query.mode === "DEV" ? switch_db("listurlpopup_DEV") : switch_db("listurlpopup");
+
+app.get("/listurlpopup_read_any", (req, res, next) => {
+    choose_db_mode_for_listurlpopup(req);
+
+    res.json(shinku_hadoken(listurlpopup_db_query_select, raging_demon(req.query, {
+            'uid': [
+                ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
+            ],
+        }
+    )))
+});
+app.get("/listurlpopup_readall", (req, res, next) => {
+    console.log("mode is",req.query.mode);
+
+    choose_db_mode_for_listurlpopup(req);
+ res.json(listurlpopup_db_query_select_all());
+});
+app.get("/listurlpopup_insert", (req, res, next) => {
+    choose_db_mode_for_listurlpopup(req);
+    res.json(shinku_hadoken(listurlpopup_db_query_insert_and_select, raging_demon(req.query, {
+            "url": [
+                ["isLength", {min: 1, max: 420}, "error: isLength: {min: 1, max: 420}",],
+            ],
+            // "url": [
+            //     ["isLength", {min: 1, max: 420}, "error: isLength: {min: 1, max: 420}",],
+            // ],
+            'uid': [
+                ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
+            ],
+        }
+    )))
+});
+app.get("/listurlpopup_update", (req, res, next) => {
+    choose_db_mode_for_listurlpopup(req);
+    res.json(shinku_hadoken(listurlpopup_db_query_update_and_select, raging_demon(req.query, {
+                    "url": [
+                        ["isLength", {min: 1, max: 420}, "error: isLength: {min: 1, max: 420}",],
+                    ],
+                    'uid': [
+                        ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
+                    ],
+                    "id": [
+                        ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
+                    ],
+                }
+            ))
+    )
+});
+app.get("/listurlpopup_deleteid", (req, res, next) => {
+    choose_db_mode_for_listurlpopup(req);
+    res.json(shinku_hadoken(listurlpopup_db_query_delete, raging_demon(req.query, {
+            "id": [
+                ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
+            ],
+            'uid': [
+                ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
+            ],
+        }
+    )))
+    // res.json(db_query_delete_2(req.query.id));
 });
 
-// switch_db("textsplitterfortweet_2_DEV");
-// textsplitterfortweet_2_CREATETABLE();
-// textsplitterfortweet_2_DROPTABLE();
+
+
+
+
+
+// switch_db("listurlpopup_DEV");
+// switch_db("listurlpopup");
+// listurlpopup_CREATETABLE();
+// listurlpopup_DROPTABLE();
+
+
+
+
+// app.get("/sample", (req, res, next) => {
+//     res.json({ id: "Taro on test server" });
+// });
+
