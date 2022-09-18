@@ -36,6 +36,7 @@ grid-template-columns: repeat(3, 1fr);
 .textarea_parent {
 display: grid;
 grid-auto-rows: auto;
+/* grid-template-columns: auto 2fr 1fr 1fr 2fr; */
 grid-template-columns: 2fr 1fr 1fr 2fr;
 grid-gap: 0px;
 }
@@ -58,6 +59,15 @@ grid-gap: 0px;
 </div>
 
 <div class="textarea_parent">
+<!-- <div class="tag">
+<input type="text" name="tag_input" class="tag_input">
+<ul>
+<li v-for="(item, index) in tag">
+{{item}}
+</li>
+</ul>
+</div> -->
+
 <textarea name="a" id="a" v-model="a" @input=""></textarea>
 <textarea name="b" id="b" v-model="b"></textarea>
 <textarea name="c" id="c" v-model="c"></textarea>
@@ -70,6 +80,7 @@ grid-gap: 0px;
 <input type="text" name="filter_by_text" class="filter_by_text" @input="filter_by_text" v-model="filter_text" placeholder="filter_text">
 <ul>
 <li v-for="(item, index) in all_save">
+<!-- <span>{{ item[5] ? item[5] : ['a','b','c'] }}</span> -->
 <button @click="save_data_set(index)">save_data_set</button>
 {{ item[4] }}: rating {{ item[3] }} <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>: <p :class="{ limited_item: is_limited_item ? true : false }">{{ item }}</p>
 <button @click="save_data_delete(index)">save_data_delete</button>
@@ -93,6 +104,8 @@ const app = Vue.createApp({
             filter_text: '',
             temporary_all_save_for_filter: [],
             is_limited_item: true,
+
+            tag: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
         }
     },
     computed: {
@@ -158,7 +171,7 @@ const app = Vue.createApp({
             this.temporary_all_save_for_filter = this.all_save;
         },
         save_data_set(INDEX){
-            [this.a, this.b, this.c, this.rating, this.when] = this.all_save[INDEX];
+            [this.a, this.b, this.c, this.rating, this.when, this.tag] = this.all_save[INDEX];
         },
         async save_data_delete(INDEX){
             if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
