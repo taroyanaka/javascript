@@ -11,12 +11,18 @@
 <body>
 <div class="app">
 <li v-for="(item, index) in filter_tag">{{ item }}</li>
-<li v-for="(item, index) in all_tag"><button @click="filter_by_tag(item)">{{ item }}</button></li>
+<li v-for="(item, index) in all_tag"><button @click="filter_by_tag(item)">{{ item }}</button><button @click="tag_delete_from_all_tag(item)">❎</button></li>
 <input type="text" name="txt" class="txt" v-model="txt" minlength="1" maxlength="36" required>
 <ul>
 <li v-for="(item, index) in all_save">
-{{ item[0] }} {{ item[1] }} {{ item[2] }} {{ item[3].length > 0 ? item[3] : "" }}
+{{ item[0] }} {{ item[1] }} {{ item[2] }} 
+<!-- <li v-for="(TAG, TAG_INDEX) in (item[3].length > 0 ? item[3] : "")">{{TAG}}</li> -->
+    <ul v-for="(TAG, TAG_INDEX) in (item[3].length > 0 ? item[3] : '')">
+    <li><button @click="insert_to_txt(TAG)">{{ TAG }}</button></li>
+    </ul>
+<!-- {{ item[3].length > 0 ? item[3] : "" }} -->
 <button @click="tag_set(item)">tag_set</button>
+<button @click="tag_delete_from_list(item)">tag_delete_from_list</button>
 </li>
 </ul>
 </div>
@@ -40,6 +46,16 @@ const app = Vue.createApp({
         this.temporary_all_save = this.all_save;
     },
     methods: {
+        tag_delete_from_all_tag(ITEM){
+            this.all_tag = R.without([ITEM], this.all_tag);
+            this.all_save.forEach(V=>V[3] = R.without([ITEM], V[3]));
+        },
+        tag_delete_from_list(ITEM){
+            ITEM[3] = R.without([this.txt], ITEM[3]);
+        },
+        insert_to_txt(ITEM){
+            this.txt = ITEM;
+        },
         tag_set(ITEM){
             if(this.txt === '') return false;
 
