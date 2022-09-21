@@ -7,22 +7,33 @@
     <title>vue list tag sample</title>
 <script src="./vue@3.2.36.global.prod.js"></script>
 <script src="./ramda.@0.28.0.js"></script>
+<style>
+.txt{
+    display: inline;
+}
+.no_show{
+    display: none;
+}
+</style>
 </head>
 <body>
 <div class="app">
-<li v-for="(item, index) in filter_tag">{{ item }}</li>
-<li v-for="(item, index) in all_tag"><button @click="filter_by_tag(item)">{{ item }}</button><button @click="tag_delete_from_all_tag(item)">❎</button></li>
-<input type="text" name="txt" class="txt" v-model="txt" minlength="1" maxlength="36" required>
+
+
+<li v-for="(item, index) in filter_tag">{{ item }}<button @click="delete_filter_tag(item)">❎</button></li>
+<li v-for="(item, index) in all_tag"><button @click="add_filter_tag(item)">{{ item }}</button><button @click="tag_delete_from_all_tag(item)">❎</button></li>
 <ul>
 <li v-for="(item, index) in all_save">
 {{ item[0] }} {{ item[1] }} {{ item[2] }} 
-<!-- <li v-for="(TAG, TAG_INDEX) in (item[3].length > 0 ? item[3] : "")">{{TAG}}</li> -->
     <ul v-for="(TAG, TAG_INDEX) in (item[3].length > 0 ? item[3] : '')">
-    <li><button @click="insert_to_txt(TAG)">{{ TAG }}</button></li>
+    <li>
+    <button @click="add_filter_tag(TAG)">{{ TAG }}</button>
+    <button @click="tag_delete_from_list(TAG_INDEX, item[3])">❎</button>
+    </li>
     </ul>
-<!-- {{ item[3].length > 0 ? item[3] : "" }} -->
-<button @click="tag_set(item)">⭕️</button>
-<button @click="tag_delete_from_list(item)">❎</button>
+<button @click="is_show">⌨️</button>
+<input type="text" name="txt" :class="{ no_show: show ? true : false }" v-model="txt" minlength="1" maxlength="36" required>
+<button @click="tag_set(item)" :class="{ no_show: show ? true : false }">⭕️</button>
 </li>
 </ul>
 </div>
@@ -40,41 +51,76 @@ const app = Vue.createApp({
                 [4,5,6, []],
                 [7,8,9, []],
             ],
+            show: false,
         }
     },
     mounted() {
         this.temporary_all_save = this.all_save;
     },
     methods: {
+        collect_all_tag(){
+            this.all_tag = R.uniq(R.flatten( this.all_save.map(V=>V[3]) ));
+            this.filter_tag = R.without(R.without(this.all_tag, this.filter_tag), this.filter_tag);
+        },
         tag_delete_from_all_tag(ITEM){
-            this.filter_tag = R.without([ITEM], this.filter_tag);
-            this.all_tag = R.without([ITEM], this.all_tag);
             this.all_save.forEach(V=>V[3] = R.without([ITEM], V[3]));
-            this.all_save = this.temporary_all_save.filter(VAL => {
-                return VAL[3].some(V=>this.filter_tag.includes(V));
-            });
-            this.filter_tag.length === 0 ? this.all_save = this.temporary_all_save : null;
+            this.filter_tag = R.without(R.without(this.all_tag, this.filter_tag), this.filter_tag);
+            this.list_filter_by_filter_tag();
         },
-        tag_delete_from_list(ITEM){
-            ITEM[3] = R.without([this.txt], ITEM[3]);
-        },
-        insert_to_txt(ITEM){
-            this.txt = ITEM;
+        tag_delete_from_list(TAG_INDEX, TAG_LIST_IN_THE_ITEM){
+            TAG_LIST_IN_THE_ITEM.splice(TAG_INDEX, 1);
+            this.list_filter_by_filter_tag();
         },
         tag_set(ITEM){
             if(this.txt === '') return false;
-            this.all_tag.push(this.txt)
-            this.all_tag = R.uniq(this.all_tag);
-            ITEM[3].push(this.txt);
-            this.all_save.forEach(V=>V[3] = R.uniq(V[3]));
+            ITEM[3].includes(this.txt) ? null : ITEM[3].push(this.txt);
+            this.collect_all_tag();
         },
-        filter_by_tag(ITEM){
-            this.filter_tag.includes(ITEM) ? this.filter_tag = this.filter_tag.filter(V=>V!==ITEM) : this.filter_tag.push(ITEM);
-            this.all_save = this.temporary_all_save.filter(VAL => {
-                return VAL[3].some(V=>this.filter_tag.includes(V));
-            });
-            this.filter_tag.length === 0 ? this.all_save = this.temporary_all_save : null;
+        add_filter_tag(ITEM){
+            this.filter_tag.includes(ITEM) ? null : this.filter_tag.push(ITEM);
+            this.list_filter_by_filter_tag();
         },
+        delete_filter_tag(ITEM){
+            this.filter_tag = R.without([ITEM], this.filter_tag);
+            this.list_filter_by_filter_tag();
+        },
+        list_filter_by_filter_tag(){
+            this.collect_all_tag();
+            this.all_save = this.filter_tag.length === 0 ? this.temporary_all_save : this.temporary_all_save.filter(VAL=>  VAL[3].some(V=>this.filter_tag.includes(V)) );
+        },
+        is_show(){
+            this.show = this.show ? false : true;
+        },
+
+        // tag_delete_from_all_tag(ITEM){
+        //     this.filter_tag = R.without([ITEM], this.filter_tag);
+        //     this.all_tag = R.without([ITEM], this.all_tag);
+        //     this.all_save.forEach(V=>V[3] = R.without([ITEM], V[3]));
+        //     this.all_save = this.temporary_all_save.filter(VAL => {
+        //         return VAL[3].some(V=>this.filter_tag.includes(V));
+        //     });
+        //     this.filter_tag.length === 0 ? this.all_save = this.temporary_all_save : null;
+        // },
+        // tag_delete_from_list(ITEM){
+            // ITEM[3] = R.without([this.txt], ITEM[3]);
+        // },
+        // insert_to_txt(ITEM){
+        //     this.txt = ITEM;
+        // },
+        // tag_set(ITEM){
+        //     if(this.txt === '') return false;
+        //     this.all_tag.push(this.txt)
+        //     this.all_tag = R.uniq(this.all_tag);
+        //     ITEM[3].push(this.txt);
+        //     this.all_save.forEach(V=>V[3] = R.uniq(V[3]));
+        // },
+        // filter_by_tag(ITEM){
+        //     this.filter_tag.includes(ITEM) ? this.filter_tag = this.filter_tag.filter(V=>V!==ITEM) : this.filter_tag.push(ITEM);
+        //     this.all_save = this.temporary_all_save.filter(VAL => {
+        //         return VAL[3].some(V=>this.filter_tag.includes(V));
+        //     });
+        //     this.filter_tag.length === 0 ? this.all_save = this.temporary_all_save : null;
+        // },
     },
 }).mount('.app');
 </script>
