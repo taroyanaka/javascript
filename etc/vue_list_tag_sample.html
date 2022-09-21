@@ -37,7 +37,7 @@
 <button @click="is_show">⌨️</button>
 <input type="text" name="txt" :class="{ no_show: no_show ? true : false }" v-model="txt" minlength="1" maxlength="36" required>
 <button @click="tag_set(item)" class="tag_set" :class="{ no_show: no_show ? true : false }">⭕️</button>
-<button @click="tag_delete_from_list(item)">❎</button>
+<button @click="tag_delete_from_list(item)" :class="{ no_show: no_show ? true : false }">❎</button>
 </li>
 </ul>
 </div>
