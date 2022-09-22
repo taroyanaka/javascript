@@ -40,6 +40,13 @@ grid-auto-rows: auto;
 grid-template-columns: 2fr 1fr 1fr 2fr;
 grid-gap: 0px;
 }
+.list_parent {
+display: grid;
+grid-auto-rows: auto;
+/* grid-template-columns: auto 2fr 1fr 1fr 2fr; */
+grid-auto-columns: auto;
+grid-gap: 0px;
+}
 .limited_item {
   white-space: nowrap;
   overflow: hidden;
@@ -74,9 +81,40 @@ grid-gap: 0px;
 <textarea name="d" id="d" v-model="result">{{ result }}</textarea>
 </div>
 
+<div class="list_parent">
 <input type="button" value="sort_by_when" @click="sort_by_when">
 <input type="button" value="sort_by_rating" @click="sort_by_rating">
 <input type="button" value="is_limited_item_change" @click="is_limited_item_change">
+
+<button @click="reset_filter_tag" class="reset_filter_tag">❌</button>
+<li v-for="(item, index) in filter_tag">{{ item }}</li>
+<li v-for="(item, index) in all_tag"><button @click="filter_by_new_tag(item)">{{ item }}</button>
+<!-- <button @click="tag_delete_from_all_tag(item)">❎</button> -->
+</li>
+
+
+
+
+<ul>
+<!-- <li v-for="(item, index) in all_save"> -->
+<li v-for="(item, index) in XY">
+{{ item[0] }} {{ item[1] }} {{ item[2] }} 
+    <ul v-for="(TAG, TAG_INDEX) in (item[3].length > 0 ? item[3] : '')">
+    <li>
+    <button @click="insert_to_txt_and_filter_by_new_tag(TAG)">{{ TAG }}</button>
+    <button @click="tag_delete_from_list(item, TAG)">❎</button>
+    </li>
+    </ul>
+<button @click="is_show">⌨️</button>
+<input type="text" name="txt" :class="{ no_show: no_show ? true : false }" v-model="txt" minlength="1" maxlength="36" required>
+<button @click="tag_set(item)" class="tag_set" :class="{ no_show: no_show ? true : false }">⭕️</button>
+<button @click="tag_delete_from_list(item)" :class="{ no_show: no_show ? true : false }">❎</button>
+</li>
+</ul>
+
+
+
+
 <input type="text" name="filter_by_text" class="filter_by_text" @input="filter_by_text" v-model="filter_text" placeholder="filter_text">
 <ul>
 <li v-for="(item, index) in all_save">
@@ -105,7 +143,19 @@ return {
     temporary_all_save_for_filter: [],
     is_limited_item: true,
 
-    tag: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+    // tag: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+
+    txt: 'abc',
+    all_tag: [10,20,30],
+    filter_tag: [1,2,3],
+    temporary_all_save: [],
+    // all_save: [
+    //     [1,2,3, []],
+    //     [4,5,6, []],
+    //     [7,8,9, []],
+    // ],
+    no_show: true,
+
 }
 },
 computed: {
@@ -204,6 +254,58 @@ is_limited_item_change(){
 },
 
 
+
+
+
+
+
+
+
+
+tag_delete_from_list(ITEM, TAG_PARAM){
+    const THE_TAG = TAG_PARAM ? TAG_PARAM : this.txt;
+    ITEM[6] = R.without([THE_TAG], ITEM[6]);
+    const is_there_remain_tag = () => R.flatten(R.pluck(6, this.temporary_all_save)).includes(THE_TAG);
+    is_there_remain_tag() ? null : this.all_tag = R.without([THE_TAG], this.all_tag);
+    is_there_remain_tag() ? null : this.filter_tag = R.without([THE_TAG], this.filter_tag);
+    this.filter_by_filter_tag();
+},
+insert_to_txt_and_filter_by_new_tag(ITEM){
+    this.txt = ITEM;
+    this.filter_by_new_tag(ITEM);
+},
+tag_set(ITEM){
+    if(this.txt === '') return false;
+    this.all_tag.push(this.txt)
+    this.all_tag = R.uniq(this.all_tag);
+    ITEM[6].push(this.txt);
+    this.all_save.forEach(V=>V[6] = R.uniq(V[6]));
+},
+filter_by_filter_tag(){
+    this.all_save = this.temporary_all_save.filter(VAL => {
+        return VAL[6].some(V=>this.filter_tag.includes(V));
+    });
+    this.filter_tag.length === 0 ? this.all_save = this.temporary_all_save : null;
+    this.all_tag.length === 0 ? this.all_save = this.temporary_all_save : null;
+},
+filter_by_new_tag(ITEM){
+    this.filter_tag.includes(ITEM) ? this.filter_tag = this.filter_tag.filter(V=>V!==ITEM) : this.filter_tag.push(ITEM);
+    this.filter_by_filter_tag();
+},
+reset_filter_tag(){
+    this.filter_tag = [];
+    this.filter_by_filter_tag();
+},
+is_show(){
+    this.no_show = this.no_show ? false : true;
+},
+test(){
+    document.querySelectorAll(".tag_set")[0].click();
+    document.querySelectorAll(".tag_set")[1].click();
+    this.txt = "def";
+    document.querySelectorAll(".tag_set")[1].click();
+    document.querySelectorAll(".tag_set")[2].click();
+},
 
 
 }
