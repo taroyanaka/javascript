@@ -145,7 +145,6 @@ return {
 computed: {
 result: function () {
     this.when = (new Date()).toLocaleString('en');
-    // this.save_data_load();
     this.refresh_save_data();
 
     let tmp = this.a;
@@ -187,7 +186,6 @@ refresh_save_data() {
         this.rating,
         this.when,
         this.tag,
-        // [1,2],
     ];
 },
 async rating_up(INDEX){
