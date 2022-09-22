@@ -44,75 +44,75 @@
 </body>
 <script>
 const app = Vue.createApp({
-    data() {
-        return {
-            txt: 'abc',
-            all_tag: [],
-            filter_tag: [],
-            temporary_all_save: [],
-            all_save: [
-                [1,2,3, []],
-                [4,5,6, []],
-                [7,8,9, []],
-            ],
-            no_show: true,
-        }
-    },
-    mounted() {
-        this.temporary_all_save = this.all_save;
-    },
-    methods: {
-        // tag_delete_from_all_tag(ITEM){
-        //     this.filter_tag = R.without([ITEM], this.filter_tag);
-        //     this.all_tag = R.without([ITEM], this.all_tag);
-        //     this.all_save.forEach(V=>V[3] = R.without([ITEM], V[3]));
-        //     this.filter_by_filter_tag();
-        // },
-        tag_delete_from_list(ITEM, TAG_PARAM){
-            const THE_TAG = TAG_PARAM ? TAG_PARAM : this.txt;
-            ITEM[3] = R.without([THE_TAG], ITEM[3]);
-            const is_there_remain_tag = () => R.flatten(R.pluck(3, this.temporary_all_save)).includes(THE_TAG);
-            is_there_remain_tag() ? null : this.all_tag = R.without([THE_TAG], this.all_tag);
-            is_there_remain_tag() ? null : this.filter_tag = R.without([THE_TAG], this.filter_tag);
-            this.filter_by_filter_tag();
-        },
-        insert_to_txt_and_filter_by_new_tag(ITEM){
-            this.txt = ITEM;
-            this.filter_by_new_tag(ITEM);
-        },
-        tag_set(ITEM){
-            if(this.txt === '') return false;
-            this.all_tag.push(this.txt)
-            this.all_tag = R.uniq(this.all_tag);
-            ITEM[3].push(this.txt);
-            this.all_save.forEach(V=>V[3] = R.uniq(V[3]));
-        },
-        filter_by_filter_tag(){
-            this.all_save = this.temporary_all_save.filter(VAL => {
-                return VAL[3].some(V=>this.filter_tag.includes(V));
-            });
-            this.filter_tag.length === 0 ? this.all_save = this.temporary_all_save : null;
-            this.all_tag.length === 0 ? this.all_save = this.temporary_all_save : null;
-        },
-        filter_by_new_tag(ITEM){
-            this.filter_tag.includes(ITEM) ? this.filter_tag = this.filter_tag.filter(V=>V!==ITEM) : this.filter_tag.push(ITEM);
-            this.filter_by_filter_tag();
-        },
-        reset_filter_tag(){
-            this.filter_tag = [];
-            this.filter_by_filter_tag();
-        },
-        is_show(){
-            this.no_show = this.no_show ? false : true;
-        },
-        test(){
-            document.querySelectorAll(".tag_set")[0].click();
-            document.querySelectorAll(".tag_set")[1].click();
-            this.txt = "def";
-            document.querySelectorAll(".tag_set")[1].click();
-            document.querySelectorAll(".tag_set")[2].click();
-        },
-    },
+data() {
+return {
+    txt: 'abc',
+    all_tag: [],
+    filter_tag: [],
+    temporary_all_save: [],
+    all_save: [
+        [1,2,3, []],
+        [4,5,6, []],
+        [7,8,9, []],
+    ],
+    no_show: true,
+}
+},
+mounted() {
+this.temporary_all_save = this.all_save;
+},
+methods: {
+// tag_delete_from_all_tag(ITEM){
+//     this.filter_tag = R.without([ITEM], this.filter_tag);
+//     this.all_tag = R.without([ITEM], this.all_tag);
+//     this.all_save.forEach(V=>V[3] = R.without([ITEM], V[3]));
+//     this.filter_by_filter_tag();
+// },
+tag_delete_from_list(ITEM, TAG_PARAM){
+    const THE_TAG = TAG_PARAM ? TAG_PARAM : this.txt;
+    ITEM[3] = R.without([THE_TAG], ITEM[3]);
+    const is_there_remain_tag = () => R.flatten(R.pluck(3, this.temporary_all_save)).includes(THE_TAG);
+    is_there_remain_tag() ? null : this.all_tag = R.without([THE_TAG], this.all_tag);
+    is_there_remain_tag() ? null : this.filter_tag = R.without([THE_TAG], this.filter_tag);
+    this.filter_by_filter_tag();
+},
+insert_to_txt_and_filter_by_new_tag(ITEM){
+    this.txt = ITEM;
+    this.filter_by_new_tag(ITEM);
+},
+tag_set(ITEM){
+    if(this.txt === '') return false;
+    this.all_tag.push(this.txt)
+    this.all_tag = R.uniq(this.all_tag);
+    ITEM[3].push(this.txt);
+    this.all_save.forEach(V=>V[3] = R.uniq(V[3]));
+},
+filter_by_filter_tag(){
+    this.all_save = this.temporary_all_save.filter(VAL => {
+        return VAL[3].some(V=>this.filter_tag.includes(V));
+    });
+    this.filter_tag.length === 0 ? this.all_save = this.temporary_all_save : null;
+    this.all_tag.length === 0 ? this.all_save = this.temporary_all_save : null;
+},
+filter_by_new_tag(ITEM){
+    this.filter_tag.includes(ITEM) ? this.filter_tag = this.filter_tag.filter(V=>V!==ITEM) : this.filter_tag.push(ITEM);
+    this.filter_by_filter_tag();
+},
+reset_filter_tag(){
+    this.filter_tag = [];
+    this.filter_by_filter_tag();
+},
+is_show(){
+    this.no_show = this.no_show ? false : true;
+},
+test(){
+    document.querySelectorAll(".tag_set")[0].click();
+    document.querySelectorAll(".tag_set")[1].click();
+    this.txt = "def";
+    document.querySelectorAll(".tag_set")[1].click();
+    document.querySelectorAll(".tag_set")[2].click();
+},
+},
 }).mount('.app');
 </script>
 </html>
