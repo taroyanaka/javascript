@@ -54,6 +54,14 @@ grid-gap: 0px;
   max-width: 20rem;
   height: 1.5rem;
 }
+
+
+.txt{
+    display: inline;
+}
+.no_show{
+    display: none;
+}
 </style>
 </head>
 <body>
@@ -66,14 +74,6 @@ grid-gap: 0px;
 </div>
 
 <div class="textarea_parent">
-<!-- <div class="tag">
-<input type="text" name="tag_input" class="tag_input">
-<ul>
-<li v-for="(item, index) in tag">
-{{item}}
-</li>
-</ul>
-</div> -->
 
 <textarea name="a" id="a" v-model="a" @input=""></textarea>
 <textarea name="b" id="b" v-model="b"></textarea>
@@ -90,17 +90,9 @@ grid-gap: 0px;
 
 <input type="text" name="txt" :class="{ no_show: no_show ? true : false }" v-model="txt" minlength="1" maxlength="36" required>
 
+
 <li v-for="(item, index) in filter_tag">{{ item }}</li>
-<li v-for="(item, index) in all_tag"><button @click="filter_by_new_tag(item)">{{ item }}</button>
-<!-- <button @click="tag_delete_from_all_tag(item)">❎</button> -->
-</li>
-
-
-
-
-
-
-
+<li v-for="(item, index) in all_tag"><button @click="filter_by_new_tag(item)">{{ item }}</button></li>
 
 <input type="text" name="filter_by_text" class="filter_by_text" @input="filter_by_text" v-model="filter_text" placeholder="filter_text">
 <ul>
@@ -135,7 +127,7 @@ return {
     c: 'bc\nef\nhi\nxy',
     rating: 0,
     when: null,
-    tag: [1,2,3,4,5],
+    tag: [],
     save_data: [],
     all_save: [],
     sort_by: 'asc',
@@ -143,19 +135,11 @@ return {
     temporary_all_save_for_filter: [],
     is_limited_item: true,
 
-    // tag: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
-
     txt: 'abc',
     all_tag: [],
     filter_tag: [],
     temporary_all_save: [],
-    // all_save: [
-    //     [1,2,3, []],
-    //     [4,5,6, []],
-    //     [7,8,9, []],
-    // ],
     no_show: true,
-
 }
 },
 computed: {
@@ -218,9 +202,20 @@ async save_data_to_all_save(){
     this.all_save.push(this.save_data);
     await localforage.setItem('key', JSON.stringify(this.all_save));
 },
+collect_all_tag(){
+    this.all_tag = [];
+    this.all_save.forEach((item, index)=>{
+        item[5].forEach((tag, tag_index)=>{
+            if(!this.all_tag.includes(tag)){
+                this.all_tag.push(tag);
+            }
+        });
+    });
+},
 async save_data_load() {
     this.all_save = JSON.parse(await localforage.getItem('key')) || [];
     this.temporary_all_save_for_filter = this.all_save;
+    this.collect_all_tag();
 },
 save_data_set(INDEX){
     [this.a, this.b, this.c, this.rating, this.when, this.tag] = this.all_save[INDEX];
@@ -264,38 +259,36 @@ is_limited_item_change(){
 
 
 
-tag_delete_from_list(ITEM, TAG_PARAM){
+async tag_delete_from_list(ITEM, TAG_PARAM){
     const THE_TAG = TAG_PARAM ? TAG_PARAM : this.txt;
     ITEM[5] = R.without([THE_TAG], ITEM[5]);
     const is_there_remain_tag = () => R.flatten(R.pluck(5, this.temporary_all_save_for_filter)).includes(THE_TAG);
-    // const is_there_remain_tag = () => R.flatten(R.pluck(5, this.temporary_all_save)).includes(THE_TAG);
     is_there_remain_tag() ? null : this.all_tag = R.without([THE_TAG], this.all_tag);
     is_there_remain_tag() ? null : this.filter_tag = R.without([THE_TAG], this.filter_tag);
+    await localforage.setItem('key', JSON.stringify(this.all_save));
     this.filter_by_filter_tag();
 },
 insert_to_txt_and_filter_by_new_tag(ITEM){
     this.txt = ITEM;
     this.filter_by_new_tag(ITEM);
 },
-tag_set(ITEM){
+async tag_set(ITEM){
     if(this.txt === '') return false;
     this.all_tag.push(this.txt)
     this.all_tag = R.uniq(this.all_tag);
     ITEM[5].push(this.txt);
     this.all_save.forEach(V=>V[5] = R.uniq(V[5]));
 
-    // this.save_data_set(this.all_save.indexOf(ITEM));
     console.log(this.all_save.indexOf(ITEM));
+    await localforage.setItem('key', JSON.stringify(this.all_save));
 },
 filter_by_filter_tag(){
     this.all_save = this.temporary_all_save_for_filter.filter(VAL => {
-    // this.all_save = this.temporary_all_save.filter(VAL => {
-        return VAL[5].some(V=>this.filter_tag.includes(V));
+    console.log(this.all_tag);
+        return R.flatten(VAL[5]).some(V=>R.flatten(this.filter_tag).includes(V));
     });
     this.filter_tag.length === 0 ? this.all_save = this.temporary_all_save_for_filter : null;
-    // this.filter_tag.length === 0 ? this.all_save = this.temporary_all_save : null;
     this.all_tag.length === 0 ? this.all_save = this.temporary_all_save_for_filter : null;
-    // this.all_tag.length === 0 ? this.all_save = this.temporary_all_save : null;
 },
 filter_by_new_tag(ITEM){
     this.filter_tag.includes(ITEM) ? this.filter_tag = this.filter_tag.filter(V=>V!==ITEM) : this.filter_tag.push(ITEM);
