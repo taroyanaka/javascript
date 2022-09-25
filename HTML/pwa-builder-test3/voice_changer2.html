@@ -18,25 +18,114 @@
     width: 3rem;
     height: 3rem;
 }
+/* .mug{
+ color: rgba(0, 0, 0, 0.5);
+} */
 </style>
 </head>
 <body>
+
+<div style="display:grid;grid-template-columns: 1fr 1fr; gap: 1em">
+  <canvas width="200" height="300"></canvas>
+  <div>
+    <div>red: <span class="rgb"></span></div>
+    <div>green: <span class="rgb"></span></div>
+    <div>blue: <span class="rgb"></span></div>
+    <div id="picked" style="height: 20px"></div>
+  </div>
+</div>
+
 <!-- https://stackoverflow.com/a/28301762/9740478 -->
-<a class="dl_link" href="./mug.png" src="" download="dl">
-<img src="./mug.png" class="mug" width="25%" height="25%" onload="getPixels(this)"/>
+<!-- <a class="dl_link" href="./mug.png" src="" download="dl"> -->
+<img src="./mug.png" class="mug" onload="getPixels(this)"/>
+<!-- <img src="./mug.png" class="mug" width="25%" height="25%" onload="getPixels(this)"/> -->
 </a>
 <!-- <input type="text" id="color" value="#6491ee" /> -->
 <input type="text" id="color" value="#000000" />
 <input type="button" value="set_canvas" onclick="changeMugsColor()">
 <button class="canvas_download">canvas_download</button>
+<!-- <canvas id="canvas2" width="700" height="400"></canvas> -->
+<canvas class="canvas3" width="700" height="400"></canvas>
 
 
 
-<!-- https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData -->
+
+<canvas class="foo"></canvas>
+
+
+
+
+
+<canvas class="bar"></canvas>
 
 <script type="text/javascript">
+// https://stackoverflow.com/a/70279274/9740478
+const CANVAS = document.querySelector('.canvas3');
+const CTX = CANVAS.getContext('2d');
 
-    var mug = document.getElementsByClassName("mug");
+const i = new Image();
+i.src = './mug.png';
+i.crossOrigin = "Anonymous";
+i.onload = () => {
+  CTX.drawImage(i, 0,0);
+}
+
+const cc = document.querySelectorAll('.rgb');
+const picked = document.querySelector('#picked');
+let foo;
+
+// https://kiwasalog.com/caprice/js-canvas-alpha.html
+function getPixels(img) {
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    var w = canvas.width = img.width;
+    var h = canvas.height = img.height;
+    ctx.drawImage(img, 0, 0);
+    return ctx.getImageData(0, 0, w, h);
+}
+CANVAS.addEventListener('click', (e) => {
+
+    var rgba = {"r":0, "g": 0, "b": 0, "a": 255, "rd": 0, "gd": 0, "bd": 0};
+    for(key in rgba) {
+        var obj = document.querySelectorAll(".canvas3")[0];
+        if(obj) {
+            rgba[key] = parseInt(obj.value);
+            if(rgba[key] < 0) {
+                rgba[key] = 0;
+            } else if(rgba[key] > 255) {
+                rgba[key] = 255;
+            } else {
+            }
+        }
+    }
+
+    var imgdt = CTX.getImageData(0, 0, CANVAS.width, CANVAS.height);
+    for(var i = 0; i < imgdt.width*imgdt.height; i++) {
+        if((Math.abs(imgdt.data[i*4] - rgba.r) > rgba.rd) ||
+            (Math.abs(imgdt.data[i*4+1] - rgba.g) > rgba.gd) ||
+            (Math.abs(imgdt.data[i*4+2] - rgba.b) > rgba.bd)) {
+            continue;
+        }
+        imgdt.data[i*4+3] = 0;
+    }
+    CTX.putImageData(imgdt, 0, 0);
+
+  const pixel = CTX.getImageData(e.clientX,e.clientY,1,1);
+  const r = pixel.data[0];
+  const g = pixel.data[1];
+  const b = pixel.data[2];
+  cc[0].innerText = r;
+  cc[1].innerText = g;
+  cc[2].innerText = b;
+  picked.style.backgroundColor = `rgb(${r},${g},${b})`;
+  const res = `rgb(${r},${g},${b})`;
+  console.log(picked.style);
+  console.log(res);
+
+foo = imgdt;
+});
+
+    var mug = document.querySelector(".mug");
     var canvas = document.createElement("canvas");
 
     var ctx = canvas.getContext("2d");
@@ -53,58 +142,6 @@
     }
 
 
-    function HexToRGB(Hex)
-    {
-        var Long = parseInt(Hex.replace(/^#/, ""), 16);
-        return {
-            R: (Long >>> 16) & 0xff,
-            G: (Long >>> 8) & 0xff,
-            B: Long & 0xff
-        };
-    }
-
-    function changeMugsColor() {
-        for (var ii = 0; ii < mug.length; ii++) {
-            changeColor(mug[ii]);
-        }
-    }
-
-    function changeColor(amug)
-    {
-        if(!originalPixels) return; // Check if image has loaded
-        var newColor = HexToRGB(document.getElementById("color").value);
-
-        console.log(newColor)
-
-        for(var I = 0, L = originalPixels.data.length; I < L; I += 4)
-        {
-            if(currentPixels.data[I + 3] > 0)
-            {
-                currentPixels.data[I] = originalPixels.data[I] / 255 * newColor.R;
-                currentPixels.data[I + 1] = originalPixels.data[I + 1] / 255 * newColor.G;
-                currentPixels.data[I + 2] = originalPixels.data[I + 2] / 255 * newColor.B;
-            }
-        }
-
-        // currentPixels.data.forEach(V=>V=0);
-        // const currentPixels2 = Array.from(currentPixels.data).map(V=>V === 0 ? 255 : 0);
-
-        ctx.putImageData(currentPixels, 0, 0);
-        // ctx.putImageData(currentPixels2, 100, 0);
-        amug.src = canvas.toDataURL("image/png");
-    }
-
-    function getPixels(img)
-    {
-        canvas.width = img.width;
-        canvas.height = img.height;
-
-        ctx.drawImage(img, 0, 0, img.naturalWidth, img.naturalHeight, 0, 0, img.width, img.height);
-        originalPixels = ctx.getImageData(0, 0, img.width, img.height);
-        currentPixels = ctx.getImageData(0, 0, img.width, img.height);
-
-        img.onload = null;
-    }
 </script>
 
 <textarea name="" class="all_text" cols="30" rows="10">吾輩は猫である。
