@@ -73,6 +73,24 @@
 <input type="number" name="bubble_row" class="bubble_row" v-model="bubble_row">
 <input type="number" name="bubble_2_column" class="bubble_2_column" v-model="bubble_2_column">
 <input type="number" name="bubble_2_row" class="bubble_2_row" v-model="bubble_2_row">
+
+<input type="number" name="a_0" class="a_0" v-model="a_0">
+<input type="number" name="a_1" class="a_1" v-model="a_1">
+<input type="number" name="a_2" class="a_2" v-model="a_2">
+<input type="number" name="a_3" class="a_3" v-model="a_3">
+<input type="number" name="a_4" class="a_4" v-model="a_4">
+<input type="number" name="a_5" class="a_5" v-model="a_5">
+<input type="number" name="b_0" class="b_0" v-model="b_0">
+<input type="number" name="b_1" class="b_1" v-model="b_1">
+<input type="number" name="b_2" class="b_2" v-model="b_2">
+<input type="number" name="b_3" class="b_3" v-model="b_3">
+<input type="number" name="b_4" class="b_4" v-model="b_4">
+<input type="number" name="b_5" class="b_5" v-model="b_5">
+
+<button v-on:click.once="swap" value="swap">swap</button>
+<button v-on:click.once="numbers_minus_100" value="numbers_minus_100">numbers_minus_100</button>
+
+
 <!-- <input type="number" name="COLUMN_OFFSET" class="COLUMN_OFFSET" v-model="COLUMN_OFFSET">
 <input type="number" name="COLUMN_OFFSET_plus_bubble_2" class="COLUMN_OFFSET_plus_bubble_2" v-model="COLUMN_OFFSET_plus_bubble_2">
 <input type="number" name="ROW_OFFSET" class="ROW_OFFSET" v-model="ROW_OFFSET">
@@ -109,6 +127,20 @@ bubble_2_row: 1,
     // ROW_OFFSET: 1,
     // ROW_OFFSET_plus_bubble_2: 1,
     speak: 'cute cat cute dog fool people',
+
+a_0: 0,
+a_1: 40,
+a_2: 10,
+a_3: 50,
+a_4: 0,
+a_5: 60,
+
+b_0: 0,
+b_1: 10,
+b_2: 10,
+b_3: 20,
+b_4: 0,
+b_5: 30,
 }
 },
     // computed: {
@@ -151,6 +183,7 @@ calc() {
 // bubble_row
 // bubble_2_column
 // bubble_2_row
+
 },
 fn_A() {
 document.querySelector(`.wrap`).textContent = `.parent_bubble{
@@ -168,11 +201,35 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
     grid-row: ${this.bubble_2_row}/${this.MAX_NUM};
         width: ${this.width_num}px;
         height: ${this.height_num}px;
-    clip-path: polygon(0% 40%, 10% 50%, 0% 60%);
-    clip-path: polygon(0% 10%, 10% 20%, 0% 30%);
+clip-path: polygon(${this.a_0}% ${this.a_1}%, ${this.a_2}% ${this.a_3}%, ${this.a_4}% ${this.a_5}%);
+
 }`;
+
+// clip-path: polygon(${this.b_0}% ${this.b_1}%, ${this.b_2}% ${this.b_3}%, ${this.b_4}% ${this.b_5}%);
+
+// clip-path: polygon(${100 - this.a_0}% ${100 - this.a_1}%, ${100 - this.a_2}% ${100 - this.a_3}%, ${100 - this.a_4}% ${100 - this.a_5}%);
+// clip-path: polygon(${this.a_0}% ${this.a_1}%, ${this.a_2}% ${this.a_3}%, ${this.a_4}% ${this.a_5}%);
+
+// clip-path: polygon(${this.a_0}% ${this.a_1}%, ${this.a_2}% ${this.a_3}%, ${this.a_4}% ${this.a_5}%);
+// clip-path: polygon(${this.b_0}% ${this.b_1}%, ${this.b_2}% ${this.b_3}%, ${this.b_4}% ${this.b_5}%);
+
+// clip-path: polygon(${100 - this.a_0}% ${100 - this.a_1}%, ${100 - this.a_2}% ${100 - this.a_3}%, ${100 - this.a_4}% ${100 - this.a_5}%);
+// clip-path: polygon(${100 - this.b_0}% ${100 - this.b_1}%, ${100 - this.b_2}% ${100 - this.b_3}%, ${100 - this.b_4}% ${100 - this.b_5}%);
+
+    // clip-path: polygon(${50 - this.a_0}% ${50 - this.a_1}%, ${50 - this.a_2}% ${50 - this.a_3}%, ${50 - this.a_4}% ${50 - this.a_5}%);
+
+    // clip-path: polygon(0% 40%, 10% 50%, 0% 60%);
+    // clip-path: polygon(0% 10%, 10% 20%, 0% 30%);
 },
 fn_B(EVENT) {
+},
+swap(){
+[this.a_0, this.a_1] = [this.a_1, this.a_0];
+[this.a_2, this.a_3] = [this.a_3, this.a_2];
+[this.a_4, this.a_5] = [this.a_5, this.a_4];
+},
+numbers_minus_100(){
+    [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [100 - this.a_0, 100 - this.a_1, 100 - this.a_2, 100 - this.a_3, 100 - this.a_4, 100 - this.a_5,];
 },
 },
 }).mount('.app');
