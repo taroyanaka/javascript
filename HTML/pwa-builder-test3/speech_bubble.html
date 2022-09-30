@@ -8,6 +8,8 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.js" integrity="sha512-WXWhnFUmZx+snPw8v2JjWQ0cdLUCLxTXhyqiZb7G5pkZZEGPBgVSzILSpkPK9haxW75sX5znfF08rsVnf6BUlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 <script src="svg.@3.1.2.js"></script>
 <script src="./vue@3.2.36.global.prod.js"></script>
+<!-- https://devtools.vuejs.org/ -->
+
     <style>
     /* @import url('https://fonts.googleapis.com/css?family=Inconsolata'); */
     #drawing {
@@ -51,9 +53,8 @@
     /* grid-row: 1/3; */
     /* width: 180px; */
     /* height: 360px; */
+    /* clip-path: polygon(0% 40%, 10% 50%, 0% 60%); */
     background-color: purple;
-    clip-path: polygon(0% 40%, 10% 50%, 0% 60%);
-    clip-path: polygon(0% 10%, 10% 20%, 0% 30%);
 }
 .text{
     line-break: anywhere;
@@ -63,11 +64,19 @@
 </head>
 <body>
 <div class="app">
+<span>{{ $data }}</span>
+
 <input type="number" name="MAX_NUM" class="MAX_NUM" v-model="MAX_NUM">
-<input type="number" name="COLUMN_OFFSET" class="COLUMN_OFFSET" v-model="COLUMN_OFFSET">
+<input type="number" name="width_num" class="width_num" v-model="width_num">
+<input type="number" name="height_num" class="height_num" v-model="height_num">
+<input type="number" name="bubble_column" class="bubble_column" v-model="bubble_column">
+<input type="number" name="bubble_row" class="bubble_row" v-model="bubble_row">
+<input type="number" name="bubble_2_column" class="bubble_2_column" v-model="bubble_2_column">
+<input type="number" name="bubble_2_row" class="bubble_2_row" v-model="bubble_2_row">
+<!-- <input type="number" name="COLUMN_OFFSET" class="COLUMN_OFFSET" v-model="COLUMN_OFFSET">
 <input type="number" name="COLUMN_OFFSET_plus_bubble_2" class="COLUMN_OFFSET_plus_bubble_2" v-model="COLUMN_OFFSET_plus_bubble_2">
 <input type="number" name="ROW_OFFSET" class="ROW_OFFSET" v-model="ROW_OFFSET">
-<input type="number" name="ROW_OFFSET_plus_bubble_2" class="ROW_OFFSET_plus_bubble_2" v-model="ROW_OFFSET_plus_bubble_2">
+<input type="number" name="ROW_OFFSET_plus_bubble_2" class="ROW_OFFSET_plus_bubble_2" v-model="ROW_OFFSET_plus_bubble_2"> -->
 <input type="text" name="speak" class="speak" v-model="speak">
 
 <div class="parent_bubble">
@@ -88,12 +97,17 @@ const app = Vue.createApp({
 data() {
 return {
     MAX_NUM: 4,
-    width_num: 1,
-    height_num: 1,
-    COLUMN_OFFSET: 1,
-    COLUMN_OFFSET_plus_bubble_2: 1,
-    ROW_OFFSET: 1,
-    ROW_OFFSET_plus_bubble_2: 1,
+    width_num: 90,
+    height_num: 90,
+bubble_column: 1,
+bubble_row: 1,
+bubble_2_column: 1,
+bubble_2_row: 1,
+    // COLUMN_OFFSET: 1,
+    // COLUMN_OFFSET_plus_bubble_2: 1,
+    // COLUMN_OFFSET_plus_bubble_2_result: 0,
+    // ROW_OFFSET: 1,
+    // ROW_OFFSET_plus_bubble_2: 1,
     speak: 'cute cat cute dog fool people',
 }
 },
@@ -107,12 +121,12 @@ created() {
 beforeMount() {
 },
 mounted() {
-    this.init();
+    this.calc();
     this.fn_A();
-    this.fn_B();
 },
 updated() {
-    this.fn_B();
+    this.calc();
+    this.fn_A();
 },
 beforeUpdated() {
 },
@@ -127,63 +141,41 @@ watch: {
 },
 
 methods: {
-init() {
-    this.MAX_NUM = this.MAX_NUM;
-    this.width_num = 360 / this.MAX_NUM;
-    this.height_num = 360 / this.MAX_NUM;
-    this.COLUMN_OFFSET = this.COLUMN_OFFSET;
-    this.COLUMN_OFFSET_plus_bubble_2 = this.COLUMN_OFFSET + this.COLUMN_OFFSET_plus_bubble_2;
-    this.ROW_OFFSET = this.ROW_OFFSET;
-    this.ROW_OFFSET_plus_bubble_2 =  this.ROW_OFFSET_plus_bubble_2;
-    this.speak = this.speak;
+calc() {
+    // this.width_num = 360 / this.MAX_NUM;
+    // this.height_num = 360 / this.MAX_NUM;
+    // this.width_num = 90;
+    // this.height_num = 90;
+    // this.COLUMN_OFFSET_plus_bubble_2_result = this.COLUMN_OFFSET + this.COLUMN_OFFSET_plus_bubble_2;
+// bubble_column
+// bubble_row
+// bubble_2_column
+// bubble_2_row
 },
 fn_A() {
-console.log(
-this.MAX_NUM,
-this.width_num,
-this.height_num,
-this.COLUMN_OFFSET,
-this.COLUMN_OFFSET_plus_bubble_2,
-this.ROW_OFFSET,
-this.ROW_OFFSET_plus_bubble_2,
-this.speak,
-)
-},
-fn_B(EVENT) {
-    // document.querySelector(`.wrap`).textContent = this.speak;
-    document.querySelector(`.wrap`).textContent += `.parent_bubble{
+document.querySelector(`.wrap`).textContent = `.parent_bubble{
     grid-template-columns: repeat(${this.MAX_NUM}, 1fr);
     grid-template-rows: repeat(${this.MAX_NUM}, 1fr);
-    }`;
-    document.querySelector(`.wrap`).textContent += `.bubble{
-    grid-column: ${this.COLUMN_OFFSET}/${this.MAX_NUM};
-    grid-row: ${this.ROW_OFFSET}/${this.MAX_NUM};
+}
+.bubble{
+    grid-column: ${this.bubble_column}/${this.MAX_NUM};
+    grid-row: ${this.bubble_row}/${this.MAX_NUM};
         width: ${this.width_num}px;
         height: ${this.height_num}px;
-    }`;
-    document.querySelector(`.wrap`).textContent += `.bubble_2{
-    grid-column: ${this.COLUMN_OFFSET_plus_bubble_2}/${this.MAX_NUM};
-    grid-row: ${this.ROW_OFFSET_plus_bubble_2}/${this.MAX_NUM};
+}
+.bubble_2{
+    grid-column: ${this.bubble_2_column}/${this.MAX_NUM};
+    grid-row: ${this.bubble_2_row}/${this.MAX_NUM};
         width: ${this.width_num}px;
         height: ${this.height_num}px;
-    }`;
+    clip-path: polygon(0% 40%, 10% 50%, 0% 60%);
+    clip-path: polygon(0% 10%, 10% 20%, 0% 30%);
+}`;
 },
-
+fn_B(EVENT) {
+},
 },
 }).mount('.app');
-
-// set_up = () => {};
-// set_up();
-// MAX_NUM = 4;
-// width_num = 360 / MAX_NUM;
-// height_num = 360 / MAX_NUM;
-// COLUMN_OFFSET = 1;
-// COLUMN_OFFSET_plus_bubble_2 = COLUMN_OFFSET + 1;
-// ROW_OFFSET = 1;
-// ROW_OFFSET_plus_bubble_2 =  1;
-
-
-// document.querySelector(`.text`).textContent = text;
 </script>
 </body>
 </html>
