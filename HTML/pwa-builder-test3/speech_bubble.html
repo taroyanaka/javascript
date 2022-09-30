@@ -63,11 +63,11 @@
 </head>
 <body>
 <div class="app">
-<input type="text" name="MAX_NUM" class="MAX_NUM" v-model="MAX_NUM">
-<input type="text" name="COLUMN_OFFSET" class="COLUMN_OFFSET" v-model="COLUMN_OFFSET">
-<input type="text" name="COLUMN_OFFSET_plus_bubble_2" class="COLUMN_OFFSET_plus_bubble_2" v-model="COLUMN_OFFSET_plus_bubble_2">
-<input type="text" name="ROW_OFFSET" class="ROW_OFFSET" v-model="ROW_OFFSET">
-<input type="text" name="ROW_OFFSET_plus_bubble_2" class="ROW_OFFSET_plus_bubble_2" v-model="ROW_OFFSET_plus_bubble_2">
+<input type="number" name="MAX_NUM" class="MAX_NUM" v-model="MAX_NUM">
+<input type="number" name="COLUMN_OFFSET" class="COLUMN_OFFSET" v-model="COLUMN_OFFSET">
+<input type="number" name="COLUMN_OFFSET_plus_bubble_2" class="COLUMN_OFFSET_plus_bubble_2" v-model="COLUMN_OFFSET_plus_bubble_2">
+<input type="number" name="ROW_OFFSET" class="ROW_OFFSET" v-model="ROW_OFFSET">
+<input type="number" name="ROW_OFFSET_plus_bubble_2" class="ROW_OFFSET_plus_bubble_2" v-model="ROW_OFFSET_plus_bubble_2">
 <input type="text" name="speak" class="speak" v-model="speak">
 
 <div class="parent_bubble">
@@ -109,6 +109,9 @@ beforeMount() {
 mounted() {
     this.init();
     this.fn_A();
+    this.fn_B();
+},
+updated() {
     this.fn_B();
 },
 beforeUpdated() {
