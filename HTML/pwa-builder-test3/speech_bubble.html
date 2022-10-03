@@ -8,6 +8,8 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.js" integrity="sha512-WXWhnFUmZx+snPw8v2JjWQ0cdLUCLxTXhyqiZb7G5pkZZEGPBgVSzILSpkPK9haxW75sX5znfF08rsVnf6BUlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 <script src="svg.@3.1.2.js"></script>
 <script src="./vue@3.2.36.global.prod.js"></script>
+<script src="ramda.@0.28.0.js"></script>
+
 <!-- https://devtools.vuejs.org/ -->
 
     <style>
@@ -35,6 +37,7 @@
     display: grid;
     width: 360px;
     height: 360px;
+position: relative;
   /* grid-column-gap: 15px; */
   /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
   /* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); */
@@ -48,6 +51,42 @@ border: #666 10px solid;
 }
 .text{
     line-break: anywhere;
+}
+
+
+
+
+.foo{
+    position: absolute;
+    top: 40px; left: 40px;
+    display: grid;
+    width: 360px;
+    height: 360px;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(90px, 1fr));
+}
+.foo > .fitter {
+    width: 90px;
+    height: 90px;
+    border: 1px solid green;
+    background-color: lime;
+    opacity: 0.6;
+}
+.bar{
+    position: absolute;
+    top: 100px; left: 100px;
+    display: grid;
+    width: 360px;
+    height: 360px;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(90px, 1fr));
+}
+.bar > .fitter {
+    width: 90px;
+    height: 90px;
+    border: 1px solid red;
+    background-color: orangered;
+    opacity: 0.6;
 }
     </style>
 <style class="wrap"></style>
@@ -94,6 +133,7 @@ border: #666 10px solid;
 <input type="number" name="b_4" class="b_4" v-model="b_4">
 <input type="number" name="b_5" class="b_5" v-model="b_5"> -->
 
+<button @click="get_num">NUM is</button>
 <button v-on:click.once="swap" value="swap">swap</button>
 <button v-on:click.once="numbers_minus_100" value="numbers_minus_100">numbers_minus_100</button>
 
@@ -111,6 +151,20 @@ border: #666 10px solid;
 <input type="text" name="speak" class="speak" v-model="speak">
 
 <div class="parent_bubble">
+<!-- <div class="foo"></div> -->
+  <!-- <div v-for="item in get_n_n_array" class="foo"> -->
+<div class="foo">
+  <div v-for="(item, index) in get_n_n_array()" class="fitter">
+    {{ item }}
+  </div>
+</div>
+
+<div class="bar">
+  <div v-for="(item, index) in get_n_n_array()" class="fitter" @click="get_num">
+    {{ item }}
+  </div>
+</div>
+
     <div class="bubble"><p class="speak" v-model="speak">{{ speak }}</p></div>
     <div class="bubble_2"></div>
 
@@ -174,9 +228,7 @@ beforeMount() {
 mounted() {
     this.calc();
     this.fn_A();
-
     this.fn_B();
-
 },
 updated() {
     this.calc();
@@ -240,16 +292,34 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
 }
 `;
 },
-fn_B(EVENT) {
-// document.querySelector(`.wrap`).textContent = `.parent_bubble{
-//     background-color: purple;
-// }
-// .bubble{
-//     background-color: blue;
-// }
-// .bubble_2{
-//     background-color: gray;
-// }`;
+get_num(event) {
+// X = (event.target.innerText.split(",").map(V=>Number(V))[0] - 1) * 4;
+// Y = event.target.innerText.split(",").map(V=>Number(V))[1];
+this.bubble_row = event.target.innerText.split(",").map(V=>Number(V))[0];
+this.bubble_column = event.target.innerText.split(",").map(V=>Number(V))[1];
+
+// res = X + Y;
+//     console.log(res);
+//     set_color(res)
+// console.log(event.target.innerText);
+},
+get_n_n_array(){
+    // return this.MAX_NUM * this.MAX_NUM
+    return R.times(R.identity, this.MAX_NUM * this.MAX_NUM);
+    // return [1,2,3,4];
+},
+fn_B(EVENT){
+const n_n = this.MAX_NUM * this.MAX_NUM;
+// document.querySelector(`.foo`).innerHTML = R.repeat(`<div class="fitter">f</div>`, n_n).join("");
+// document.querySelector(`.bar`).innerText = R.repeat(`<div class="fitter" @click="get_num">NUMBER</div>`, n_n).map((V,IDX)=>[V, IDX]).map(V=>V[0].replace("NUMBER", V[1]+1)).join("");
+
+
+const exe = () => {
+    const x_y_number = Array.from(document.querySelectorAll(`.bar > div`)).map((V,IDX)=>Number(IDX)).map(V=>[Math.floor(V/4), V%4]).map(V=>[V[0]+1, V[1]+1]);
+document.querySelectorAll(`.bar > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
+};
+exe();
+
 },
 swap(){
 [this.a_0, this.a_1] = [this.a_1, this.a_0];
