@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<script src="ramda.@0.28.0.js"></script>
+<style>
+.foo_bar{
+    position: relative;
+    width: 360px;
+    height: 360px;
+
+background-color: gray;
+}
+.foo{
+    position: absolute;
+    top: 40px; left: 40px;
+    display: grid;
+    width: 360px;
+    height: 360px;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(90px, 1fr));
+}
+.foo > .fitter {
+    width: 90px;
+    height: 90px;
+    border: 1px solid green;
+    background-color: lime;
+    opacity: 0.6;
+}
+.bar{
+    position: absolute;
+    top: 100px; left: 100px;
+    display: grid;
+    width: 360px;
+    height: 360px;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(90px, 1fr));
+}
+.bar > .fitter {
+    width: 90px;
+    height: 90px;
+    border: 1px solid red;
+    background-color: orangered;
+    opacity: 0.6;
+}
+</style>
+<style class="wrapper"></style>
+</head>
+<body>
+<input type="number" value="4" class="num">
+<div class="foo_bar">
+<div class="foo">
+</div>
+<div class="bar">
+</div>
+</div>
+
+
+</body>
+<script>
+const n_n = Number(document.querySelector(`.num`).value) * Number(document.querySelector(`.num`).value);
+document.querySelector(`.foo`).innerHTML = R.repeat(`<div class="fitter">f</div>`, n_n).join("");
+document.querySelector(`.bar`).innerHTML = R.repeat(`<div class="fitter" onclick="get_num(event)">NUMBER</div>`, n_n).map((V,IDX)=>[V, IDX]).map(V=>V[0].replace("NUMBER", V[1]+1)).join("");
+
+const set_color = (NUMBER) => document.querySelector(`.wrapper`).innerText = `.foo > .fitter:nth-child(${NUMBER}) {
+    background-color: pink;
+}`
+;
+const get_num = (EVENT) => {
+    console.log(EVENT.target.innerText);
+    set_color(EVENT.target.innerText)
+};
+const x_y_number = Array.from(document.querySelectorAll(`.bar > div`)).map((V,IDX)=>Number(IDX)).map(V=>[Math.floor(V/4), V%4]).map(V=>[V[0]+1, V[1]+1]);
+document.querySelectorAll(`.bar > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
+
+// R.repeat("1234567890", 42).join("")+"OVERTEXT"
+</script>
+</html>

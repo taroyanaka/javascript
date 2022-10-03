@@ -35,9 +35,13 @@
     display: grid;
     width: 360px;
     height: 360px;
+  /* grid-column-gap: 15px; */
+  /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
+  /* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); */
 }
 .bubble {
     border-radius: 10px;
+border: #666 10px solid;
     line-break: auto;
 }
 .bubble_2 {
@@ -67,15 +71,18 @@
 <input type="number" name="a_4" class="a_4" v-model="a_4">
 <input type="number" name="a_5" class="a_5" v-model="a_5">
 
+<div class="parent_bubble_color">
     <input type="color" id="parent_bubble_color" name="parent_bubble_color" v-model='parent_bubble_color'>
     <label for="parent_bubble_color">parent_bubble_color</label>
-
+</div>
+<div class="bubble_color">
     <input type="color" id="bubble_color" name="bubble_color" v-model='bubble_color'>
     <label for="bubble_color">bubble_color</label>
-
+</div>
+<div class="bubble_2_color">
     <input type="color" id="bubble_2_color" name="bubble_2_color" v-model='bubble_2_color'>
     <label for="bubble_2_color">bubble_2_color</label>
-
+</div>
 <!-- <input type="text" name="parent_bubble_color" class="parent_bubble_color" v-model="parent_bubble_color"> -->
 <!-- <input type="text" name="bubble_color" class="bubble_color" v-model="bubble_color"> -->
 <!-- <input type="text" name="bubble_2_color" class="bubble_2_color" v-model="bubble_2_color"> -->
@@ -106,13 +113,12 @@
 <div class="parent_bubble">
     <div class="bubble"><p class="speak" v-model="speak">{{ speak }}</p></div>
     <div class="bubble_2"></div>
+
 </div>
 
 <div class="balloon4"></div>
 
-<div id="drawing"></div>
 </div>
-
 <style>
 </style>
 
@@ -213,7 +219,26 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
 }
 .bubble_2{
     background-color: ${this.bubble_2_color};
-}`;
+}
+.parent_bubble_color{
+    background-color: ${this.parent_bubble_color};
+}
+.bubble_color{
+    background-color: ${this.bubble_color};
+}
+.bubble_2_color{
+    background-color: ${this.bubble_2_color};
+}
+.wrapper > div.overlay {
+  z-index: 10;
+  grid-column: main-start / main-end;
+  grid-row: hd-start / ft-end;
+  border: 4px solid rgb(92,148,13);
+  background-color: rgba(92,148,13,.4);
+  color: rgb(92,148,13);
+  font-size: 150%;
+}
+`;
 },
 fn_B(EVENT) {
 // document.querySelector(`.wrap`).textContent = `.parent_bubble{
