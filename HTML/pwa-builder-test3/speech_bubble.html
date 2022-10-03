@@ -88,6 +88,10 @@ border: #666 10px solid;
     background-color: orangered;
     opacity: 0.6;
 }
+
+.no_show{
+    display: none;
+}
     </style>
 <style class="wrap"></style>
 </head>
@@ -150,16 +154,25 @@ border: #666 10px solid;
 <input type="number" name="ROW_OFFSET_plus_bubble_2" class="ROW_OFFSET_plus_bubble_2" v-model="ROW_OFFSET_plus_bubble_2"> -->
 <input type="text" name="speak" class="speak" v-model="speak">
 
+<input type="checkbox" id="checkbox" v-model="checked">
+<label for="checkbox">{{ checked }}</label>
+
+<input type="radio" id="bubble" value="bubble" v-model="picked">
+<label for="bubble">bubble</label>
+<input type="radio" id="bubble_2" value="bubble_2" v-model="picked">
+<label for="bubble_2">bubble_2</label>
+<br>
+<span>picked: {{ picked }}</span>
+
 <div class="parent_bubble">
-<!-- <div class="foo"></div> -->
-  <!-- <div v-for="item in get_n_n_array" class="foo"> -->
-<div class="foo">
+
+<!-- <div class="foo">
   <div v-for="(item, index) in get_n_n_array()" class="fitter">
     {{ item }}
   </div>
-</div>
+</div> -->
 
-<div class="bar">
+<div class="bar" :class="{ no_show: checked ? false : true }">
   <div v-for="(item, index) in get_n_n_array()" class="fitter" @click="get_num">
     {{ item }}
   </div>
@@ -207,6 +220,9 @@ parent_bubble_color: "#e66465",
 bubble_color: "#f6b73c",
 // bubble_2_color: 'gray',
 bubble_2_color: '#C0C0C0',
+
+picked: '',
+checked: false,
 
 // b_0: 0,
 // b_1: 10,
@@ -293,15 +309,9 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
 `;
 },
 get_num(event) {
-// X = (event.target.innerText.split(",").map(V=>Number(V))[0] - 1) * 4;
-// Y = event.target.innerText.split(",").map(V=>Number(V))[1];
-this.bubble_row = event.target.innerText.split(",").map(V=>Number(V))[0];
-this.bubble_column = event.target.innerText.split(",").map(V=>Number(V))[1];
-
-// res = X + Y;
-//     console.log(res);
-//     set_color(res)
-// console.log(event.target.innerText);
+    const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
+    const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
+    this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
 },
 get_n_n_array(){
     // return this.MAX_NUM * this.MAX_NUM
