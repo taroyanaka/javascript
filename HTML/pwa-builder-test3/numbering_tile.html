@@ -70,11 +70,20 @@ const set_color = (NUMBER) => document.querySelector(`.wrapper`).innerText = `.f
 }`
 ;
 const get_num = (EVENT) => {
-    console.log(EVENT.target.innerText);
-    set_color(EVENT.target.innerText)
+// res = Number(EVENT.target.innerText.join(","));
+// res = Number(EVENT.target.innerText);
+// res = EVENT.target.innerText;
+res = 
+(EVENT.target.innerText.split(",").map(V=>Number(V))[0] - 1) * 4
+ + EVENT.target.innerText.split(",").map(V=>Number(V))[1];
+    console.log(res);
+    set_color(res)
 };
-const x_y_number = Array.from(document.querySelectorAll(`.bar > div`)).map((V,IDX)=>Number(IDX)).map(V=>[Math.floor(V/4), V%4]).map(V=>[V[0]+1, V[1]+1]);
+const exe = () => {
+    const x_y_number = Array.from(document.querySelectorAll(`.bar > div`)).map((V,IDX)=>Number(IDX)).map(V=>[Math.floor(V/4), V%4]).map(V=>[V[0]+1, V[1]+1]);
 document.querySelectorAll(`.bar > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
+};
+exe();
 
 // R.repeat("1234567890", 42).join("")+"OVERTEXT"
 </script>
