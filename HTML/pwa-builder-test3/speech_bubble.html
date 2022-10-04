@@ -98,8 +98,13 @@ height: 90px;
 .no_show{
     display: none;
 }
+.small_image{
+    width: 90px;
+    height: 90px;
+}
     </style>
 <style class="wrap"></style>
+<style class="image_layer"></style>
 </head>
 <body>
 <div class="app">
@@ -122,7 +127,7 @@ height: 90px;
         <!-- <label for="item">item</label> -->
         <!-- <img src="${item}" alt="item"> -->
 <!-- https://stackoverflow.com/a/44948966/9740478 -->
-<img v-for="image in get_image_array()" :src="image" :alt="image.alt" />
+<img v-for="image in get_image_array()" :src="image" :alt="image.alt" class="small_image">
 
   <!-- </div> -->
 
@@ -357,6 +362,31 @@ const exe = () => {
     document.querySelectorAll(`.bar > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
 };
 exe();
+
+},
+fn_C(){
+document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
+    display: grid;
+    width: 360px;
+    height: 360px;
+    position: relative;
+}
+.image_0{
+    grid-column: ${this.image_0_column}/${this.MAX_NUM};
+    grid-row: ${this.image_0_row}/${this.MAX_NUM};
+        width: ${this.image_0_width_num}px;
+        height: ${this.image_0_height_num}px;
+    content: url("./1.png");
+z-index: 2;
+}
+.image_1{
+    grid-column: ${this.image_1_column}/${this.MAX_NUM};
+    grid-row: ${this.image_1_row}/${this.MAX_NUM};
+        width: ${this.image_1_width_num}px;
+        height: ${this.image_1_height_num}px;
+    content: url("./2.png");
+z-index: 1;
+}`;
 
 },
 swap(){
