@@ -207,6 +207,11 @@ height: 90px;
 
 <div class="parent_bubble">
 
+<div class="parent_image_layer">
+<div class="image_0"></div>
+<div class="image_1"></div>
+</div>
+
 <div class="foo">
   <div v-for="(item, index) in get_n_n_array()" class="fitter">
     <!-- {{ item }} -->
@@ -287,6 +292,7 @@ mounted() {
     this.calc();
     this.fn_A();
     this.fn_B();
+    this.fn_C();
 },
 updated() {
     this.calc();
@@ -365,29 +371,24 @@ exe();
 
 },
 fn_C(){
+const image_num_array = [
+[1,2,90,90,2],
+[3,4,90,90,1],
+]
 document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
     display: grid;
     width: 360px;
     height: 360px;
-    position: relative;
-}
-.image_0{
-    grid-column: ${this.image_0_column}/${this.MAX_NUM};
-    grid-row: ${this.image_0_row}/${this.MAX_NUM};
-        width: ${this.image_0_width_num}px;
-        height: ${this.image_0_height_num}px;
+    position: absolute;
+    top: 0; left: 0;
+}` + image_num_array.map((V,IDX)=>`.image_${IDX}{
+    grid-column: ${V[0]}/${this.MAX_NUM};
+    grid-row: ${V[1]}/${this.MAX_NUM};
+        width: ${V[2]}px;
+        height: ${V[3]}px;
     content: url("./1.png");
-z-index: 2;
-}
-.image_1{
-    grid-column: ${this.image_1_column}/${this.MAX_NUM};
-    grid-row: ${this.image_1_row}/${this.MAX_NUM};
-        width: ${this.image_1_width_num}px;
-        height: ${this.image_1_height_num}px;
-    content: url("./2.png");
-z-index: 1;
-}`;
-
+z-index: ${V[4]};
+}`).join("");
 },
 swap(){
 [this.a_0, this.a_1] = [this.a_1, this.a_0];
