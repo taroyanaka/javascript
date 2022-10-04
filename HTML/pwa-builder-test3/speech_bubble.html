@@ -50,9 +50,6 @@ position: relative;
 .bubble_2 {
 }
 .cat{
-position: absolute;
-top: 0;
-right: 0;
 width: 90px;
 height: 90px;
 }
@@ -64,7 +61,7 @@ height: 90px;
 
 
 
-/* .foo{
+.foo{
     position: absolute;
     top: 40px; left: 40px;
     display: grid;
@@ -79,7 +76,7 @@ height: 90px;
     border: 1px solid green;
     background-color: lime;
     opacity: 0.6;
-} */
+}
 .bar{
     position: absolute;
     /* top: 100px; left: 100px; */
@@ -107,6 +104,32 @@ height: 90px;
 <body>
 <div class="app">
 <span>{{ $data }}</span>
+
+
+<div class="file_0_parent">
+<span class="file_0_span">file_0</span>
+<input type="file" class="file_0_input">
+</div>
+<div class="file_1_parent">
+<span class="file_1_span">file_1</span>
+<input type="file" class="file_1_input">
+</div>
+<div class="image_setter">
+<input type="checkbox" id="checkbox" v-model="image_checked">
+<label for="checkbox">{{ image_checked }}</label>
+  <!-- <div v-for="(item, index) in get_image_array()" class="fitter"> -->
+        <!-- <input type="radio" id="item" value="item" v-model="image_picked"> -->
+        <!-- <label for="item">item</label> -->
+        <!-- <img src="${item}" alt="item"> -->
+<!-- https://stackoverflow.com/a/44948966/9740478 -->
+<img v-for="image in get_image_array()" :src="image" :alt="image.alt" />
+
+  <!-- </div> -->
+
+<br>
+<span>image_checked: {{ image_checked }}</span>
+</div>
+
 
 <input type="number" name="MAX_NUM" class="MAX_NUM" v-model="MAX_NUM">
 <input type="number" name="width_num" class="width_num" v-model="width_num">
@@ -158,30 +181,33 @@ height: 90px;
 <button @click="pattern_4" value="pattern_4">pattern_4</button>
 <button @click="pattern_5" value="pattern_5">pattern_5</button>
 
-
 <!-- <input type="number" name="COLUMN_OFFSET" class="COLUMN_OFFSET" v-model="COLUMN_OFFSET">
 <input type="number" name="COLUMN_OFFSET_plus_bubble_2" class="COLUMN_OFFSET_plus_bubble_2" v-model="COLUMN_OFFSET_plus_bubble_2">
 <input type="number" name="ROW_OFFSET" class="ROW_OFFSET" v-model="ROW_OFFSET">
 <input type="number" name="ROW_OFFSET_plus_bubble_2" class="ROW_OFFSET_plus_bubble_2" v-model="ROW_OFFSET_plus_bubble_2"> -->
 <input type="text" name="speak" class="speak" v-model="speak">
 
-<input type="checkbox" id="checkbox" v-model="checked">
-<label for="checkbox">{{ checked }}</label>
 
+
+<div class="bubble_setter">
+<input type="checkbox" id="checkbox" v-model="image_checked">
+<label for="checkbox">{{ checked }}</label>
 <input type="radio" id="bubble" value="bubble" v-model="picked">
 <label for="bubble">bubble</label>
 <input type="radio" id="bubble_2" value="bubble_2" v-model="picked">
 <label for="bubble_2">bubble_2</label>
 <br>
 <span>picked: {{ picked }}</span>
+</div>
 
 <div class="parent_bubble">
-<img src="./cat.png" alt="cat" class="cat">
-<!-- <div class="foo">
+
+<div class="foo">
   <div v-for="(item, index) in get_n_n_array()" class="fitter">
-    {{ item }}
+    <!-- {{ item }} -->
+    <img src="./cat.png" alt="cat" class="cat">
   </div>
-</div> -->
+</div>
 
 <div class="bar" :class="{ no_show: checked ? false : true }">
   <div v-for="(item, index) in get_n_n_array()" class="fitter" @click="get_num">
@@ -356,8 +382,11 @@ pattern_4(){
 pattern_5(){
     [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 80, 10, 90, 0, 100,];
 },
-
+get_image_array(){
+    return R.times(R.identity, 2).map(V=>`./${V+1}.png`);
 },
+},
+
 }).mount('.app');
 </script>
 </body>
