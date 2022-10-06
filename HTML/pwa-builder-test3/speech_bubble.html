@@ -386,7 +386,7 @@ document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
     grid-row: ${V[1]}/${this.MAX_NUM};
         width: ${V[2]}px;
         height: ${V[3]}px;
-    content: url("./1.png");
+    content: url("./${IDX+1}.png");
 z-index: ${V[4]};
 }`).join("");
 },
