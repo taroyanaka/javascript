@@ -110,17 +110,14 @@ height: 90px;
 <span>{{ $data }}</span>
 
 
-
-<template v-for="(item, INDEX) in get_image_and_the_parameter()">
-<input type="text" :name="item[0]" :id="item[0]" :value="item[0]">
-<input type="text" :name="item[1]" :id="item[1]" :value="item[1]">
-<input type="text" :name="item[2]" :id="item[2]" :value="item[2]">
-<input type="text" :name="item[3]" :id="item[3]" :value="item[3]">
-<input type="file" :class="item[0]">
-<!-- https://stackoverflow.com/a/44948966/9740478 -->
-<img :src="item[4]" :alt="item[4]" class="small_image">
+<!-- https://stackoverflow.com/q/61207314/9740478 -->
+<template v-for="(IN_ARY, IN_ARY_INDEX) in image_and_the_parameter">
+<div v-for="(v, INDEX) in IN_ARY">
+    <input :type="typeof IN_ARY[INDEX] === 'string' ? 'text' : 'number'" v-model="IN_ARY[INDEX]"/>
+    <img v-if="INDEX === 0" :src="IN_ARY[INDEX]" :alt="IN_ARY[INDEX]" class="small_image">
+</div>
+<input type="file" class="" :name="IN_ARY_INDEX" accept="image/png, image/jpeg" @change="img_set">
 </template>
-
 
 <span>image_checked: {{ image_checked }}</span>
 <div class="image_setter">
@@ -264,7 +261,22 @@ bubble_2_color: '#C0C0C0',
 picked: '',
 bubble_checked: false,
 image_checked: true,
+
+image_and_the_parameter: [
+        [`./${1}.png`, 3,2,90,90,2],
+        [`./${2}.png`, 3,4,90,90,1],
+    ],
+
 }
+},
+watch: {
+   image_and_the_parameter: {
+     handler() {
+        console.log('change');
+        this.fn_C();
+     },
+     deep: true
+   }
 },
     // computed: {
     //     COMP: function () {
@@ -286,12 +298,6 @@ updated() {
     this.fn_A();
 },
 beforeUpdated() {
-},
-watch: {
-    // web_data_list(new_web_data_list, old_web_data_list) {
-    //     console.log('forceUpdated from new_web_data_list!!');
-    //     app.$forceUpdate();
-    // }
 },
 methods: {
 calc() {
@@ -370,23 +376,23 @@ exe();
 
 },
 fn_C(){
-const image_num_array = [
-[1,2,90,90,2],
-[3,4,90,90,1],
-]
+// const image_num_array = [
+// [1,2,90,90,2],
+// [3,4,90,90,1],
+// ]
 document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
     display: grid;
     width: 360px;
     height: 360px;
     position: absolute;
     top: 0; left: 0;
-}` + image_num_array.map((V,IDX)=>`.image_${IDX}{
-    content: url("./${IDX+1}.png");
-    grid-column: ${V[0]}/${this.MAX_NUM};
-    grid-row: ${V[1]}/${this.MAX_NUM};
-        width: ${V[2]}px;
-        height: ${V[3]}px;
-    z-index: ${V[4]};
+}` + this.image_and_the_parameter.map((V,IDX)=>`.image_${IDX}{
+    content: url(${V[0]});
+    grid-column: ${V[1]}/${this.MAX_NUM};
+    grid-row: ${V[2]}/${this.MAX_NUM};
+        width: ${V[3]}px;
+        height: ${V[4]}px;
+    z-index: ${V[5]};
 }`).join("");
 },
 swap(){
@@ -415,12 +421,27 @@ pattern_5(){
 get_image_array(){
     return R.times(R.identity, 2).map(V=>`./${V+1}.png`);
 },
-get_image_and_the_parameter(){
-    return R.times(R.identity, 2).map(V=>[0,1,2,3, `./${V+1}.png`]);
+img_set(EVENT){
+// https://forum.vuejs.org/t/how-i-can-get-image-or-any-file-as-an-input-using-form-tag-then-store-and-display-on-page/127679/2
+    const files = EVENT.target.files;
+    if (!files.length) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(files[0])
+    reader.onload = () => (document.querySelectorAll("img")[Number(EVENT.target.name)].src = reader.result);
+},
+watch_it(){
+    console.log("fooooo")
 },
 },
 
 }).mount('.app');
+
+    // app.$watch('image_and_the_parameter', function (newVal, oldVal) {
+    //     console.log("barrrrrrrrr")
+    // },{
+    //     deep: true
+    // });
+
 </script>
 </body>
 </html>
