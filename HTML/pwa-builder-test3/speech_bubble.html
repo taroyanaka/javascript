@@ -60,10 +60,9 @@ height: 90px;
 
 
 
-
 .foo{
     position: absolute;
-    top: 40px; left: 40px;
+    top: 100px; left: 100px;
     display: grid;
     width: 360px;
     height: 360px;
@@ -77,9 +76,9 @@ height: 90px;
     background-color: lime;
     opacity: 0.6;
 }
+
 .bar{
     position: absolute;
-    /* top: 100px; left: 100px; */
     top: 0; left: 0;
     display: grid;
     width: 360px;
@@ -111,29 +110,23 @@ height: 90px;
 <span>{{ $data }}</span>
 
 
-<div class="file_0_parent">
-<span class="file_0_span">file_0</span>
-<input type="file" class="file_0_input">
-</div>
-<div class="file_1_parent">
-<span class="file_1_span">file_1</span>
-<input type="file" class="file_1_input">
-</div>
+
+<template v-for="(item, INDEX) in get_image_and_the_parameter()">
+<input type="text" :name="item[0]" :id="item[0]" :value="item[0]">
+<input type="text" :name="item[1]" :id="item[1]" :value="item[1]">
+<input type="text" :name="item[2]" :id="item[2]" :value="item[2]">
+<input type="text" :name="item[3]" :id="item[3]" :value="item[3]">
+<input type="file" :class="item[0]">
+<!-- https://stackoverflow.com/a/44948966/9740478 -->
+<img :src="item[4]" :alt="item[4]" class="small_image">
+</template>
+
+
+<span>image_checked: {{ image_checked }}</span>
 <div class="image_setter">
 <input type="checkbox" id="checkbox" v-model="image_checked">
 <label for="checkbox">{{ image_checked }}</label>
-  <!-- <div v-for="(item, index) in get_image_array()" class="fitter"> -->
-        <!-- <input type="radio" id="item" value="item" v-model="image_picked"> -->
-        <!-- <label for="item">item</label> -->
-        <!-- <img src="${item}" alt="item"> -->
-<!-- https://stackoverflow.com/a/44948966/9740478 -->
-<img v-for="image in get_image_array()" :src="image" :alt="image.alt" class="small_image">
 
-  <!-- </div> -->
-
-<br>
-<span>image_checked: {{ image_checked }}</span>
-</div>
 
 
 <input type="number" name="MAX_NUM" class="MAX_NUM" v-model="MAX_NUM">
@@ -195,8 +188,8 @@ height: 90px;
 
 
 <div class="bubble_setter">
-<input type="checkbox" id="checkbox" v-model="image_checked">
-<label for="checkbox">{{ checked }}</label>
+<input type="checkbox" id="checkbox" v-model="bubble_checked">
+<label for="checkbox">{{ bubble_checked }}</label>
 <input type="radio" id="bubble" value="bubble" v-model="picked">
 <label for="bubble">bubble</label>
 <input type="radio" id="bubble_2" value="bubble_2" v-model="picked">
@@ -212,15 +205,15 @@ height: 90px;
 <div class="image_1"></div>
 </div>
 
-<div class="foo">
-  <div v-for="(item, index) in get_n_n_array()" class="fitter">
-    <!-- {{ item }} -->
-    <img src="./cat.png" alt="cat" class="cat">
+<div class="foo" :class="{ no_show: image_checked ? false : true }">
+  <div v-for="(item, index) in get_n_n_array()" class="fitter" @click="get_num_for_image">
+    {{ item }}
+    <!-- <img src="./cat.png" alt="cat" class="cat"> -->
   </div>
 </div>
 
-<div class="bar" :class="{ no_show: checked ? false : true }">
-  <div v-for="(item, index) in get_n_n_array()" class="fitter" @click="get_num">
+<div class="bar" :class="{ no_show: bubble_checked ? false : true }">
+  <div v-for="(item, index) in get_n_n_array()" class="fitter" @click="get_num_for_bubble">
     {{ item }}
   </div>
 </div>
@@ -269,14 +262,8 @@ bubble_color: "#f6b73c",
 bubble_2_color: '#C0C0C0',
 
 picked: '',
-checked: false,
-
-// b_0: 0,
-// b_1: 10,
-// b_2: 10,
-// b_3: 20,
-// b_4: 0,
-// b_5: 30,
+bubble_checked: false,
+image_checked: true,
 }
 },
     // computed: {
@@ -347,7 +334,12 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
 }
 `;
 },
-get_num(event) {
+get_num_for_image(event) {
+    const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
+    const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
+    this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
+},
+get_num_for_bubble(event) {
     const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
     const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
     this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
@@ -360,12 +352,19 @@ get_n_n_array(){
 fn_B(EVENT){
 const n_n = this.MAX_NUM * this.MAX_NUM;
 // document.querySelector(`.foo`).innerHTML = R.repeat(`<div class="fitter">f</div>`, n_n).join("");
-// document.querySelector(`.bar`).innerText = R.repeat(`<div class="fitter" @click="get_num">NUMBER</div>`, n_n).map((V,IDX)=>[V, IDX]).map(V=>V[0].replace("NUMBER", V[1]+1)).join("");
+// document.querySelector(`.bar`).innerText = R.repeat(`<div class="fitter" @click="get_num_for_image">NUMBER</div>`, n_n).map((V,IDX)=>[V, IDX]).map(V=>V[0].replace("NUMBER", V[1]+1)).join("");
 
 
 const exe = () => {
-    const x_y_number = Array.from(document.querySelectorAll(`.bar > div`)).map((V,IDX)=>Number(IDX)).map(V=>[Math.floor(V/4), V%4]).map(V=>[V[0]+1, V[1]+1]);
-    document.querySelectorAll(`.bar > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
+    // const x_y_number = Array.from(document.querySelectorAll(`.bar > div`)).map((V,IDX)=>Number(IDX)).map(V=>[Math.floor(V/4), V%4]).map(V=>[V[0]+1, V[1]+1]);
+    // document.querySelectorAll(`.bar > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
+
+    ['foo', 'bar'].forEach(foo_bar=>{
+        const x_y_number = Array.from(document.querySelectorAll(`.${foo_bar} > div`)).map((V,IDX)=>Number(IDX)).map(V=>[Math.floor(V/4), V%4]).map(V=>[V[0]+1, V[1]+1]);
+        document.querySelectorAll(`.${foo_bar} > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
+    });
+
+
 };
 exe();
 
@@ -382,12 +381,12 @@ document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
     position: absolute;
     top: 0; left: 0;
 }` + image_num_array.map((V,IDX)=>`.image_${IDX}{
+    content: url("./${IDX+1}.png");
     grid-column: ${V[0]}/${this.MAX_NUM};
     grid-row: ${V[1]}/${this.MAX_NUM};
         width: ${V[2]}px;
         height: ${V[3]}px;
-    content: url("./${IDX+1}.png");
-z-index: ${V[4]};
+    z-index: ${V[4]};
 }`).join("");
 },
 swap(){
@@ -415,6 +414,9 @@ pattern_5(){
 },
 get_image_array(){
     return R.times(R.identity, 2).map(V=>`./${V+1}.png`);
+},
+get_image_and_the_parameter(){
+    return R.times(R.identity, 2).map(V=>[0,1,2,3, `./${V+1}.png`]);
 },
 },
 
