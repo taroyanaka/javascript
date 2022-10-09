@@ -99,11 +99,13 @@ height: 90px;
 </head>
 <body>
 <div class="app">
+<input type="text" name="image_url_file_url" class="image_url_file_url" v-model="image_url_file_url" @input="get_image_url_list_from_url" @change="get_image_url_list_from_url" placeholder="I am not crazy; my reality is just different from yours.">
+
 <textarea name="image_url_list" class="image_url_list" cols="100" rows="10" v-model="image_url_list">
 </textarea>
-<select name="image_url_selecter" class="image_url_selecter" @change="image_url_select" v-model="select_image_url">
+<!-- <select name="image_url_selecter" class="image_url_selecter" @change="image_url_select" v-model="select_image_url">
 <option v-for="image_url in image_url_list.split('\n')"  :value="image_url">{{ image_url }}</option>
-</select>
+</select> -->
 
 <span>{{ $data }}</span>
 
@@ -113,7 +115,12 @@ height: 90px;
     <input :type="typeof IN_ARY[INDEX] === 'string' ? 'text' : 'number'" v-model="IN_ARY[INDEX]"/>
     <img v-if="INDEX === 0" :src="IN_ARY[INDEX]" :alt="IN_ARY[INDEX]" class="small_image">
 </div>
-<input type="file" class="" :name="IN_ARY_INDEX" accept="image/png, image/jpeg" @change="img_set">
+<input type="file" class="files" :name="IN_ARY_INDEX" accept="image/png, image/jpeg" @change="img_set">
+
+<select :name="IN_ARY_INDEX" class="image_url_selecter" @change="image_url_select" v-model="select_image_url">
+    <option v-for="image_url in image_url_list.split('\n')"  :value="image_url">{{ image_url }}</option>
+</select>
+
 <button @click="active_the_image_for_get_num_fn(IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
 </template>
 
@@ -237,7 +244,7 @@ active_the_image_index: 0,
 image_url_list: `https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/1.png
 https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/2.png`,
 select_image_url: '',
-
+image_url_file_url: 'https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/png_file_url.txt',
 
 }
 },
@@ -409,6 +416,9 @@ pattern_5(){
 img_set(EVENT){
 // https://forum.vuejs.org/t/how-i-can-get-image-or-any-file-as-an-input-using-form-tag-then-store-and-display-on-page/127679/2
     const files = EVENT.target.files;
+
+    console.log(files);
+
     if (!files.length) return;
     const reader = new FileReader();
     reader.readAsDataURL(files[0])
@@ -421,8 +431,13 @@ active_the_image_for_get_num_fn(IN_ARY_INDEX){
     this.active_the_image_index = IN_ARY_INDEX;
 },
 image_url_select(EVENT){
-    // console.log(EVENT.target)
-    console.log(this.select_image_url)
+    this.image_and_the_parameter[Number(EVENT.target.name)][0] = this.select_image_url;
+},
+async get_image_url_list_from_url(){
+    if(this.image_url_file_url === '') return;
+    const response = await fetch(this.image_url_file_url);
+    const url_list_text = await response.text();
+    this.image_url_list = await url_list_text;
 },
 
 },
