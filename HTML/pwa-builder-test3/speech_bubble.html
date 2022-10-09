@@ -99,15 +99,10 @@ height: 90px;
 </head>
 <body>
 <div class="app">
-<input type="text" name="image_url_file_url" class="image_url_file_url" v-model="image_url_file_url" @input="get_image_url_list_from_url" @change="get_image_url_list_from_url" placeholder="I am not crazy; my reality is just different from yours.">
-
-<textarea name="image_url_list" class="image_url_list" cols="100" rows="10" v-model="image_url_list">
-</textarea>
-<!-- <select name="image_url_selecter" class="image_url_selecter" @change="image_url_select" v-model="select_image_url">
-<option v-for="image_url in image_url_list.split('\n')"  :value="image_url">{{ image_url }}</option>
-</select> -->
-
 <span>{{ $data }}</span>
+
+<input type="text" name="image_url_file_url" class="image_url_file_url" v-model="image_url_file_url" @input="get_image_url_list_from_url" @change="get_image_url_list_from_url" placeholder="I am not crazy; my reality is just different from yours.">
+<textarea name="image_url_list" class="image_url_list" cols="100" rows="10" v-model="image_url_list"></textarea>
 
 <!-- https://stackoverflow.com/q/61207314/9740478 -->
 <template v-for="(IN_ARY, IN_ARY_INDEX) in image_and_the_parameter">
