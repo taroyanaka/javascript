@@ -99,6 +99,12 @@ height: 90px;
 </head>
 <body>
 <div class="app">
+<textarea name="image_url_list" class="image_url_list" cols="100" rows="10" v-model="image_url_list">
+</textarea>
+<select name="image_url_selecter" class="image_url_selecter" @input="image_url_select">
+<option v-for="image_url in image_url_list.split('\n')" value="image_url">{{ image_url }}</option>
+</select>
+
 <span>{{ $data }}</span>
 
 <!-- https://stackoverflow.com/q/61207314/9740478 -->
@@ -228,6 +234,8 @@ image_and_the_parameter: [
         [`./${2}.png`, 3,3,90,90,1],
     ],
 active_the_image_index: 0,
+image_url_list: `https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/1.png
+https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/2.png`
 
 }
 },
