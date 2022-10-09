@@ -101,8 +101,8 @@ height: 90px;
 <div class="app">
 <textarea name="image_url_list" class="image_url_list" cols="100" rows="10" v-model="image_url_list">
 </textarea>
-<select name="image_url_selecter" class="image_url_selecter" @input="image_url_select">
-<option v-for="image_url in image_url_list.split('\n')" value="image_url">{{ image_url }}</option>
+<select name="image_url_selecter" class="image_url_selecter" @change="image_url_select" v-model="select_image_url">
+<option v-for="image_url in image_url_list.split('\n')"  :value="image_url">{{ image_url }}</option>
 </select>
 
 <span>{{ $data }}</span>
@@ -235,7 +235,9 @@ image_and_the_parameter: [
     ],
 active_the_image_index: 0,
 image_url_list: `https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/1.png
-https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/2.png`
+https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/2.png`,
+select_image_url: '',
+
 
 }
 },
@@ -417,6 +419,10 @@ image_add(){
 },
 active_the_image_for_get_num_fn(IN_ARY_INDEX){
     this.active_the_image_index = IN_ARY_INDEX;
+},
+image_url_select(EVENT){
+    // console.log(EVENT.target)
+    console.log(this.select_image_url)
 },
 
 },
