@@ -105,21 +105,18 @@ height: 90px;
 <textarea name="image_url_list" class="image_url_list" cols="100" rows="10" v-model="image_url_list"></textarea>
 
 <!-- https://stackoverflow.com/q/61207314/9740478 -->
-<template v-for="(OUTER_ARY, OUTER_ARY_INDEX) in image_and_the_parameter">
-<div v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
-    <div v-for="(NO_USE_VAL, INDEX) in IN_ARY" :class="{ coloring: (active_the_image_index[0] === OUTER_ARY_INDEX && active_the_image_index[1] === IN_ARY_INDEX) ? true : false }">
-        <input :type="typeof IN_ARY[INDEX] === 'string' ? 'text' : 'number'" v-model="IN_ARY[INDEX]"/>
-        <img v-if="INDEX === 0" :src="IN_ARY[INDEX]" :alt="IN_ARY[INDEX]" class="small_image">
-    </div>
-    <input type="file" class="files" accept="image/png, image/jpeg" @change="img_set($event, OUTER_ARY_INDEX, IN_ARY_INDEX)">
-
-    <select :name="IN_ARY_INDEX" class="image_url_selecter" @change="image_url_select" v-model="select_image_url">
-        <option v-for="image_url in image_url_list.split('\n')"  :value="image_url">{{ image_url }}</option>
-    </select>
-
-    <button @click="active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
+<template v-for="(IN_ARY, IN_ARY_INDEX) in image_and_the_parameter">
+<div v-for="(v, INDEX) in IN_ARY" :class="{ coloring: active_the_image_index === IN_ARY_INDEX ? true : false }">
+    <input :type="typeof IN_ARY[INDEX] === 'string' ? 'text' : 'number'" v-model="IN_ARY[INDEX]"/>
+    <img v-if="INDEX === 0" :src="IN_ARY[INDEX]" :alt="IN_ARY[INDEX]" class="small_image">
 </div>
-<button @click="image_add(OUTER_ARY_INDEX)">image_add</button>
+<input type="file" class="files" :name="IN_ARY_INDEX" accept="image/png, image/jpeg" @change="img_set">
+
+<select :name="IN_ARY_INDEX" class="image_url_selecter" @change="image_url_select" v-model="select_image_url">
+    <option v-for="image_url in image_url_list.split('\n')"  :value="image_url">{{ image_url }}</option>
+</select>
+
+<button @click="active_the_image_for_get_num_fn(IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
 </template>
 
 <span>image_checked: {{ image_checked }}</span>
@@ -127,6 +124,7 @@ height: 90px;
 <input type="checkbox" id="checkbox" v-model="image_checked">
 <label for="checkbox">{{ image_checked }}</label>
 
+<button @click="image_add">image_add</button>
 
 <input type="number" name="MAX_NUM" class="MAX_NUM" v-model="MAX_NUM">
 <input type="number" name="width_num" class="width_num" v-model="width_num">
@@ -232,16 +230,10 @@ bubble_checked: false,
 image_checked: true,
 
 image_and_the_parameter: [
-        [
-            [`./${1}.png`, 2,2,90,90,2],
-            [`./${2}.png`, 3,3,90,90,1]
-        ],
-        [
-            [`./${1}.png`, 1,1,90,90,4],
-            [`./${2}.png`, 4,4,90,90,3]
-        ]
+        [`./${1}.png`, 2,2,90,90,2],
+        [`./${2}.png`, 3,3,90,90,1],
     ],
-active_the_image_index: [0, 0],
+active_the_image_index: 0,
 image_url_list: `https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/1.png
 https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/2.png`,
 select_image_url: '',
@@ -271,8 +263,8 @@ mounted() {
     this.calc();
     this.fn_A();
     this.fn_B();
-    // this.fn_C();
-    // this.image_add();
+    this.fn_C();
+    this.image_add();
 },
 updated() {
     this.calc();
@@ -324,14 +316,18 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
 get_num_for_image(event) {
     const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
     const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
+
 console.log(
     typeof COLUMN,
     typeof ROW,
     this.active_the_image_index,
     this.image_and_the_parameter,
-);
-this.image_and_the_parameter[0][this.active_the_image_index][1] = ROW;
-this.image_and_the_parameter[0][this.active_the_image_index][2] = COLUMN;
+)
+this.image_and_the_parameter[this.active_the_image_index][1] = ROW;
+this.image_and_the_parameter[this.active_the_image_index][2] = COLUMN;
+// this.image_and_the_parameter[this.active_the_image_index][1] = ROW;
+// this.image_and_the_parameter[this.active_the_image_index][2] = COLUMN;
+    // this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
 },
 get_num_for_bubble(event) {
     const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
@@ -352,24 +348,32 @@ const exe = () => {
 exe();
 },
 fn_C(){
+// document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
+//     display: grid;
+//     width: 360px;
+//     height: 360px;
+//     position: absolute;
+//     top: 90px; left: 90px;
+// }` + this.image_and_the_parameter.map((V,IDX)=>`.image_${IDX}{
+//     content: url(${V[0]});
+//     grid-column: ${V[1]}/${this.MAX_NUM};
+//     grid-row: ${V[2]}/${this.MAX_NUM};
+//         width: ${V[3]}px;
+//         height: ${V[4]}px;
+//     z-index: ${V[5]};
+// }`).join("");
 console.log(
 "V[1] is ", this.image_and_the_parameter[1][1],
 "V[1] ary is ", this.image_and_the_parameter[1][1] * 360 / this.MAX_NUM,
 "V[2] is ", this.image_and_the_parameter[1][2],
 "V[2] ary is ", this.image_and_the_parameter[1][2] * 360 / this.MAX_NUM,
 )
-const image_array = this.image_and_the_parameter.map(V=>V[0]);
-const layer_array = this.image_and_the_parameter.map((V,IDX)=>`.layer_${IDX}{}`);
 document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
     width: 360px;
     height: 360px;
     position: absolute;
     top: 0; left: 0;
-}
-`
-+ layer_array.join("") +
-image_array.map((V,IDX)=>`
-.image_${IDX}{
+}` + this.image_and_the_parameter.map((V,IDX)=>`.image_${IDX}{
     content: url(${V[0]});
     position: absolute;
     top: ${V[1] * 360 / this.MAX_NUM - (360 / this.MAX_NUM)}px;
@@ -402,8 +406,7 @@ pattern_4(){
 pattern_5(){
     [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 80, 10, 90, 0, 100,];
 },
-// img_set(EVENT){
-img_set(EVENT, OUTER_ARY_INDEX, IN_ARY_INDEX){
+img_set(EVENT){
 // https://forum.vuejs.org/t/how-i-can-get-image-or-any-file-as-an-input-using-form-tag-then-store-and-display-on-page/127679/2
     const files = EVENT.target.files;
 
@@ -412,15 +415,13 @@ img_set(EVENT, OUTER_ARY_INDEX, IN_ARY_INDEX){
     if (!files.length) return;
     const reader = new FileReader();
     reader.readAsDataURL(files[0])
-    reader.onload = () => (this.image_and_the_parameter[OUTER_ARY_INDEX][IN_ARY_INDEX][0] = reader.result);
+    reader.onload = () => (this.image_and_the_parameter[Number(EVENT.target.name)][0] = reader.result);
 },
-image_add(OUTER_ARY_INDEX){
-    console.log(OUTER_ARY_INDEX);
-    this.image_and_the_parameter[OUTER_ARY_INDEX].push(['./1.png', 1, 1, 90, 90, 1]);
+image_add(){
+    this.image_and_the_parameter.push(['./1.png', 1, 1, 90, 90, 1]);
 },
-// active_the_image_for_get_num_fn(IN_ARY_INDEX){
-active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX){
-    this.active_the_image_index = [OUTER_ARY_INDEX, IN_ARY_INDEX];
+active_the_image_for_get_num_fn(IN_ARY_INDEX){
+    this.active_the_image_index = IN_ARY_INDEX;
 },
 image_url_select(EVENT){
     this.image_and_the_parameter[Number(EVENT.target.name)][0] = this.select_image_url;
