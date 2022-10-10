@@ -114,7 +114,7 @@ height: 90px;
     </div>
     <input type="file" class="files" accept="image/png, image/jpeg" @change="img_set($event, OUTER_ARY_INDEX, IN_ARY_INDEX)">
 
-    <select :name="IN_ARY_INDEX" class="image_url_selecter" @change="image_url_select" v-model="select_image_url">
+    <select class="image_url_selecter" @change="image_url_select(IN_ARY_INDEX)" v-model="select_image_url">
         <option v-for="image_url in image_url_list.split('\n')"  :value="image_url">{{ image_url }}</option>
     </select>
 
@@ -335,7 +335,7 @@ console.log(
     this.active_the_image_index,
     this.image_and_the_parameter,
 );
-const [OUTER_ARY_INDEX, IN_ARY_INDEX] = [active_the_image_index[0], active_the_image_index[1]];
+const [OUTER_ARY_INDEX, IN_ARY_INDEX] = [this.active_the_image_index[0], this.active_the_image_index[1]];
 this.image_and_the_parameter[OUTER_ARY_INDEX][IN_ARY_INDEX][1] = ROW;
 this.image_and_the_parameter[OUTER_ARY_INDEX][IN_ARY_INDEX][2] = COLUMN;
 },
@@ -358,20 +358,6 @@ const exe = () => {
 exe();
 },
 fn_C(){
-console.log(
-"V[1] is ", this.image_and_the_parameter[1][1],
-"V[1] ary is ", this.image_and_the_parameter[1][1] * 360 / this.MAX_NUM,
-"V[2] is ", this.image_and_the_parameter[1][2],
-"V[2] ary is ", this.image_and_the_parameter[1][2] * 360 / this.MAX_NUM,
-)
-
-// const image_array = this.image_and_the_parameter.map(V=>V[0]);
-// console.log(
-// image_array
-// )
-// const image_array = this.image_and_the_parameter.map(V=>V);
-// const layer_array = this.image_and_the_parameter.map((V,IDX)=>`.layer_${IDX}{}`);
-
 const leyer_N__image_N_n = this.image_and_the_parameter.map((IN_ARY, OUTER_IDX)=>
 IN_ARY.map((V, IDX)=>
 `.layer_${OUTER_IDX} > .image_${OUTER_IDX}_${IDX}{
@@ -435,9 +421,10 @@ image_add(OUTER_ARY_INDEX){
 // active_the_image_for_get_num_fn(IN_ARY_INDEX){
 active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX){
     this.active_the_image_index = [OUTER_ARY_INDEX, IN_ARY_INDEX];
+console.log(this.active_the_image_index);
 },
-image_url_select(EVENT){
-    this.image_and_the_parameter[Number(EVENT.target.name)][0] = this.select_image_url;
+image_url_select(IN_ARY_INDEX){
+    this.image_and_the_parameter[IN_ARY_INDEX][0] = this.select_image_url;
 },
 async get_image_url_list_from_url(){
     if(this.image_url_file_url === '') return;
