@@ -110,12 +110,14 @@ height: 90px;
     <div v-for="(NO_USE_VAL, INDEX) in IN_ARY" :class="{ coloring: (active_the_image_index[0] === OUTER_ARY_INDEX && active_the_image_index[1] === IN_ARY_INDEX) ? true : false }">
     <!-- <div v-for="(NO_USE_VAL, INDEX) in IN_ARY"> -->
         <input :type="typeof IN_ARY[INDEX] === 'string' ? 'text' : 'number'" v-model="IN_ARY[INDEX]"/>
-        <img v-if="INDEX === 0" :src="IN_ARY[INDEX]" :alt="IN_ARY[INDEX]" class="small_image">
+        <!-- <img v-if="INDEX === 0" :src="this.image_index_to_image_path_convert(IN_ARY[INDEX])" :alt="IN_ARY[INDEX]" class="small_image"> -->
+        <!-- <img v-if="INDEX === 0" :src="foo" :alt="IN_ARY[INDEX]" class="small_image"> -->
+        <img v-if="INDEX === 0" :src="image_num_to_image_url(IN_ARY[INDEX])" :alt="IN_ARY[INDEX]" class="small_image">
     </div>
     <input type="file" class="files" accept="image/png, image/jpeg" @change="img_set($event, OUTER_ARY_INDEX, IN_ARY_INDEX)">
 
-    <select class="image_url_selecter" @change="image_url_select(OUTER_ARY_INDEX, IN_ARY_INDEX)" v-model="select_image_url">
-        <option v-for="image_url in image_url_list.split('\n')"  :value="image_url">{{ image_url }}</option>
+    <select class="image_url_selecter" @change="image_url_select(OUTER_ARY_INDEX, IN_ARY_INDEX)" v-model="select_image_url_index">
+        <option v-for="(image_url, image_url_index) in image_url_list.split('\n')"  :value="image_url_index">{{ image_url }}</option>
     </select>
 
     <button @click="active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
@@ -238,26 +240,26 @@ image_checked: true,
 
 // Array of layers containing images and their parameters
 
-// [`./${1}.png`, 2,2,90,90,2] => [image, column, row, width, height, z-index]
+// [0, 2,2,90,90,2] => [image_index, column, row, width, height, z-index]
 
 // [
-//     [`./${1}.png`, 2,2,90,90,2],
-//     [`./${2}.png`, 3,3,90,90,1]
+//     [0, 2,2,90,90,2],
+//     [1, 3,3,90,90,1]
 // ]
 // =>
 // [
-//     [image, column, row, width, height, z-index],
-//     [image, column, row, width, height, z-index],
+//     [image_index, column, row, width, height, z-index],
+//     [image_index, column, row, width, height, z-index],
 // ] => layer_0
 
 // [
 //     [
-//         [`./${1}.png`, 2,2,90,90,2],
-//         [`./${2}.png`, 3,3,90,90,1],
+//         [0, 2,2,90,90,2],
+//         [1, 3,3,90,90,1],
 //     ],
 //     [
-//         [`./${1}.png`, 1,1,90,90,4],
-//         [`./${2}.png`, 4,4,90,90,3],
+//         [0, 1,1,90,90,4],
+//         [1, 4,4,90,90,3],
 //     ],
 // ]
 // =>
@@ -268,18 +270,28 @@ image_checked: true,
 
 layer_chunk: [
         [
-            [`./${1}.png`, 2,2,90,90,2],
-            [`./${2}.png`, 3,3,90,90,1],
+            [0, 2,2,90,90,2],
+            [1, 3,3,90,90,1],
         ],
         [
-            [`./${1}.png`, 1,1,90,90,4],
-            [`./${2}.png`, 4,4,90,90,3],
+            [0, 1,1,90,90,4],
+            [1, 4,4,90,90,3],
         ],
     ],
+// layer_chunk: [
+//         [
+//             [`./${1}.png`, 2,2,90,90,2],
+//             [`./${2}.png`, 3,3,90,90,1],
+//         ],
+//         [
+//             [`./${1}.png`, 1,1,90,90,4],
+//             [`./${2}.png`, 4,4,90,90,3],
+//         ],
+//     ],
 active_the_image_index: [0, 0],
 image_url_list: `https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/1.png
 https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/2.png`,
-select_image_url: '',
+select_image_url_index: 0,
 image_url_file_url: 'https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/png_file_url.txt',
 
 }
@@ -390,7 +402,7 @@ fn_C(){
 const leyer_N__image_N_n = this.layer_chunk.map((IN_ARY, OUTER_IDX)=>
 IN_ARY.map((V, IDX)=>
 `.layer_${OUTER_IDX} > .image_${OUTER_IDX}_${IDX}{
-    content: url(${V[0]});
+    content: url('${ this.image_num_to_image_url(V[0]) }');
     position: absolute;
     top: ${V[1] * 360 / this.MAX_NUM - (360 / this.MAX_NUM)}px;
     left: ${V[2] * 360 / this.MAX_NUM - (360 / this.MAX_NUM)}px;
@@ -451,7 +463,12 @@ active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX){
     this.active_the_image_index = [OUTER_ARY_INDEX, IN_ARY_INDEX];
 },
 image_url_select(OUTER_ARY_INDEX, IN_ARY_INDEX){
-    this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][0] = this.select_image_url;
+    this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][0] = this.select_image_url_index;
+    // this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][0] = 1;
+    // this.fn_C();
+},
+image_num_to_image_url(IMAGE_INDEX){
+    return this.image_url_list.split("\n")[IMAGE_INDEX];
 },
 async get_image_url_list_from_url(){
     if(this.image_url_file_url === '') return;
@@ -459,7 +476,6 @@ async get_image_url_list_from_url(){
     const url_list_text = await response.text();
     this.image_url_list = await url_list_text;
 },
-
 },
 }).mount('.app');
 </script>
