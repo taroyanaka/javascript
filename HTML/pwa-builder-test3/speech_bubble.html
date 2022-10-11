@@ -108,7 +108,7 @@ height: 90px;
 <template v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
 <div v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
     <div v-for="(NO_USE_VAL, INDEX) in IN_ARY" :class="{ coloring: (active_the_image_index[0] === OUTER_ARY_INDEX && active_the_image_index[1] === IN_ARY_INDEX) ? true : false }">
-        <input :type="typeof IN_ARY[INDEX] === 'string' ? 'text' : 'number'" v-model="IN_ARY[INDEX]"/>
+        <input type='number' :step="(INDEX === 3||INDEX === 4) ? 0.1 : 1" v-model="IN_ARY[INDEX]">
         <img v-if="INDEX === 0" :src="image_num_to_image_url(IN_ARY[INDEX])" :alt="IN_ARY[INDEX]" class="small_image">
     </div>
     <input type="file" class="files" accept="image/png, image/jpeg" @change="img_set($event, OUTER_ARY_INDEX, IN_ARY_INDEX)">
@@ -264,13 +264,21 @@ image_checked: true,
 
 layer_chunk: [
         [
-            [0, 2,2,90,90,2],
-            [1, 3,3,90,90,1],
+            [0, 2,2,1,1,2],
+            [1, 3,3,2,2,1],
         ],
         [
-            [0, 1,1,90,90,4],
-            [1, 4,4,90,90,3],
+            [0, 1,1,2,2,4],
+            [1, 4,4,1,1,3],
         ],
+        // [
+        //     [0, 2,2,90,90,2],
+        //     [1, 3,3,90,90,1],
+        // ],
+        // [
+        //     [0, 1,1,90,90,4],
+        //     [1, 4,4,90,90,3],
+        // ],
     ],
 active_the_image_index: [0, 0],
 image_url_list: `https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/1.png
@@ -387,10 +395,10 @@ IN_ARY.map((V, IDX)=>
 `.layer_${OUTER_IDX} > .image_${OUTER_IDX}_${IDX}{
     content: url('${ this.image_num_to_image_url(V[0]) }');
     position: absolute;
-    top: ${V[1] * 360 / this.MAX_NUM - (360 / this.MAX_NUM)}px;
-    left: ${V[2] * 360 / this.MAX_NUM - (360 / this.MAX_NUM)}px;
-    width: ${V[3]}px;
-    height: ${V[4]}px;
+    top: ${V[1] * this.width_num - (this.width_num)}px;
+    left: ${V[2] * this.height_num - (this.height_num)}px;
+    width: ${V[3] * this.width_num}px;
+    height: ${V[4] * this.height_num}px;
     z-index: ${V[5]};
 }
 `).join("")
@@ -440,7 +448,7 @@ img_set(EVENT, OUTER_ARY_INDEX, IN_ARY_INDEX){
 },
 image_add(OUTER_ARY_INDEX){
     console.log(OUTER_ARY_INDEX);
-    this.layer_chunk[OUTER_ARY_INDEX].push(['./1.png', 1, 1, 90, 90, 1]);
+    this.layer_chunk[OUTER_ARY_INDEX].push(['./1.png', 1, 1, 1, 1, 1]);
 },
 active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX){
     this.active_the_image_index = [OUTER_ARY_INDEX, IN_ARY_INDEX];
