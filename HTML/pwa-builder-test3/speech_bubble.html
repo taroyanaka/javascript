@@ -17,6 +17,9 @@
 <!-- ROW_POINT => 0...10 -->
 
 <!-- COLUMN_POINT and ROW_POINT => 10 fix????? -->
+<!-- if youtube short is 1920 pixels by 1080 pixels. 
+        1920px is 192px?????(1step 192px is too large??????) -->
+<!-- Insert offset parameter to???? -->
 
 <!-- width_num * COLUMN_POINT => MAX_width -->
 <!-- height_num * ROW_POINT => MAX_height -->
@@ -184,7 +187,6 @@ color: #666;
 </div>
 
 <div class="parent_bubble">
-
 <div class="parent_image_layer">
 
 <div :class="'layer_'+OUTER_ARY_INDEX" v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
@@ -208,9 +210,6 @@ color: #666;
 <div class="bubble_2"></div>
 
 </div>
-
-<div class="balloon4"></div>
-
 </div>
 <style>
 </style>
@@ -220,10 +219,12 @@ data() {
 return {
 // COLUMN_POINT min: 1 max: 10
 COLUMN_POINT: 10,
-MAX_WIDTH: 360,
+// MAX_WIDTH: 360,
+MAX_WIDTH: 1080,
 // ROW_POINT min: 1 max: 10
 ROW_POINT: 10,
-MAX_HEIGHT: 360,
+// MAX_HEIGHT: 360,
+MAX_HEIGHT: 1920,
 
 width_num: 36,
 height_num: 36,
@@ -244,24 +245,25 @@ image_checked: true,
 // Array of layers containing images and their parameters
 // [0, 2,2,90,90,2]
 // =>
-// [image_index, column, row, width, height, z-index]
+// [0,           1,      2,   3,     4,      5,       6,        7]
+// [image_index, column, row, width, height, z-index, x-offset, y-offset]
 // [
 //     [0, 2,2,90,90,2],
 //     [1, 3,3,90,90,1]
 // ]
 // =>
 // [
-//     [image_index, column, row, width, height, z-index],
-//     [image_index, column, row, width, height, z-index],
+//     [image_index, column, row, width, height, z-index, x-offset, y-offset],
+//     [image_index, column, row, width, height, z-index, x-offset, y-offset],
 // ] => layer_0
 // [
 //     [
-//         [0, 2,2,90,90,2],
-//         [1, 3,3,90,90,1],
+//         [0, 2,2,90,90,2,0,0,],
+//         [1, 3,3,90,90,1,0,0,],
 //     ],
 //     [
-//         [0, 1,1,90,90,4],
-//         [1, 4,4,90,90,3],
+//         [0, 1,1,90,90,4,0,0,],
+//         [1, 4,4,90,90,3,0,0,],
 //     ],
 // ]
 // =>
@@ -271,22 +273,22 @@ image_checked: true,
 // ] => layer chunk
 
 layer_chunk: [
-        [
-            [0, 2,2,1,1,2],
-            [1, 3,3,2,2,1],
-        ],
-        [
-            [0, 1,1,2,2,4],
-            [1, 4,4,1,1,3],
-        ],
         // [
-        //     [0, 2,2,90,90,2],
-        //     [1, 3,3,90,90,1],
+        //     [0, 1,1,1,1,1,0,0,],
+        //     [0, 1,1,1,1,1,0,0,],
         // ],
         // [
-        //     [0, 1,1,90,90,4],
-        //     [1, 4,4,90,90,3],
+        //     [0, 1,1,1,1,1,0,0,],
+        //     [0, 1,1,1,1,1,0,0,],
         // ],
+        [
+            [0, 2,2,1,1,2,0,0,],
+            [1, 3,3,2,2,1,0,0,],
+        ],
+        [
+            [0, 1,1,2,2,4,0,0,],
+            [1, 4,4,1,1,3,0,0,],
+        ],
     ],
 active_the_image_index: [0, 0],
 image_url_list: `https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/1.png
@@ -417,8 +419,10 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
 `;
 },
 get_num_for_image(event) {
-    const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
-    const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
+    // const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
+    // const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
+    const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[0];
+    const ROW = event.target.innerText.split(",").map(V=>Number(V))[1];
 console.log(
     typeof COLUMN,
     typeof ROW,
@@ -448,8 +452,8 @@ IN_ARY.map((V, IDX)=>
 `.layer_${OUTER_IDX} > .image_${OUTER_IDX}_${IDX}{
     content: url('${ this.image_num_to_image_url(V[0]) }');
     position: absolute;
-    top: ${V[1] * this.width_num - (this.width_num)}px;
-    left: ${V[2] * this.height_num - (this.height_num)}px;
+    left: ${(V[1] - 1) * this.width_num + V[6]}px;
+    top: ${(V[2] - 1) * this.height_num + V[7]}px;
     width: ${V[3] * this.width_num}px;
     height: ${V[4] * this.height_num}px;
     z-index: ${V[5]};
@@ -506,7 +510,8 @@ img_set(EVENT, OUTER_ARY_INDEX, IN_ARY_INDEX){
 },
 image_add(OUTER_ARY_INDEX){
     console.log(OUTER_ARY_INDEX);
-    this.layer_chunk[OUTER_ARY_INDEX].push(['./1.png', 1, 1, 1, 1, 1]);
+    // this.layer_chunk[OUTER_ARY_INDEX].push(['./1.png', 1, 1, 1, 1, 1]);
+    this.layer_chunk[OUTER_ARY_INDEX].push(['./1.png', 0,0,0,0,0]);
 },
 active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX){
     this.active_the_image_index = [OUTER_ARY_INDEX, IN_ARY_INDEX];
