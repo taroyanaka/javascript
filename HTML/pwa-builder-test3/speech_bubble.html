@@ -430,20 +430,15 @@ get_n_n_array(){
     return R.times(R.identity, this.COLUMN_POINT * this.ROW_POINT);
 },
 fn_B(EVENT){
-const n_n = this.COLUMN_POINT * this.ROW_POINT;
-const exe = () => {
-// const x = ['x_1','x_2','x_3',];
-// const y = ['y_1','y_2','y_3',];
-// R.xprod(x, y)
+// const exe = () => {
+    const x = R.range(1, this.COLUMN_POINT + 1);
+    const y = R.range(1, this.ROW_POINT + 1);
+    const x_y_number = R.xprod(x, y);
     ['foo', 'bar'].forEach(foo_bar=>{
-        const x_y_number = Array.from(document.querySelectorAll(`.${foo_bar} > div`)).map((V,IDX)=>Number(IDX)).map(V=>[Math.floor(V/ ((this.COLUMN_POINT + this.ROW_POINT)/2) ), V% ((this.COLUMN_POINT + this.ROW_POINT)/2) ]).map(V=>[V[0]+1, V[1]+1]);
-console.log(
-    x_y_number
-);
         document.querySelectorAll(`.${foo_bar} > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
     });
-};
-exe();
+// };
+// exe();
 },
 fn_C(){
 const leyer_N__image_N_n = this.layer_chunk.map((IN_ARY, OUTER_IDX)=>
