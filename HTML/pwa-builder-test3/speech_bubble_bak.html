@@ -8,9 +8,17 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.js" integrity="sha512-WXWhnFUmZx+snPw8v2JjWQ0cdLUCLxTXhyqiZb7G5pkZZEGPBgVSzILSpkPK9haxW75sX5znfF08rsVnf6BUlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 <link rel="stylesheet" href="./reset.css">
 <script src="./vue@3.2.36.global.prod.js"></script>
-<script src="ramda.@0.28.0.js"></script>
+<script src="./ramda.@0.28.0.js"></script>
 
 <!-- https://devtools.vuejs.org/ -->
+
+
+<!-- width_num * MAX_NUM => MAX_width -->
+<!-- height_num * MAX_NUM => MAX_height -->
+<!-- COLUMN_POINT => 0...100 -->
+<!-- ROW_POINT => 0...100 -->
+<!-- width_num * COLUMN_POINT => MAX_width -->
+<!-- height _num * ROW_POINT => MAX_height  -->
 
     <style>
 input[type=text] {
@@ -25,10 +33,7 @@ color: #666;
     display: grid;
     width: 360px;
     height: 360px;
-position: relative;
-  /* grid-column-gap: 15px; */
-  /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
-  /* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); */
+    position: relative;
 }
 .bubble {
     border-radius: 5px;
@@ -36,10 +41,6 @@ position: relative;
     line-break: auto;
 }
 .bubble_2 {
-}
-.cat{
-width: 90px;
-height: 90px;
 }
 
 .text{
@@ -49,13 +50,11 @@ height: 90px;
 .foo{
     position: absolute;
     top: 0; left: 0;
-
-    /* top: 100px; left: 100px; */
     display: grid;
     width: 360px;
     height: 360px;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  grid-template-rows: repeat(auto-fit, minmax(90px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(90px, 1fr));
 }
 .foo > .fitter {
     width: 90px;
@@ -105,18 +104,21 @@ height: 90px;
 <textarea name="image_url_list" class="image_url_list" cols="100" rows="10" v-model="image_url_list"></textarea>
 
 <!-- https://stackoverflow.com/q/61207314/9740478 -->
-<template v-for="(IN_ARY, IN_ARY_INDEX) in image_and_the_parameter">
-<div v-for="(v, INDEX) in IN_ARY" :class="{ coloring: active_the_image_index === IN_ARY_INDEX ? true : false }">
-    <input :type="typeof IN_ARY[INDEX] === 'string' ? 'text' : 'number'" v-model="IN_ARY[INDEX]"/>
-    <img v-if="INDEX === 0" :src="IN_ARY[INDEX]" :alt="IN_ARY[INDEX]" class="small_image">
+<template v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
+<div v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
+    <div v-for="(NO_USE_VAL, INDEX) in IN_ARY" :class="{ coloring: (active_the_image_index[0] === OUTER_ARY_INDEX && active_the_image_index[1] === IN_ARY_INDEX) ? true : false }">
+        <input type='number' :step="(INDEX === 3||INDEX === 4) ? 0.1 : 1" v-model="IN_ARY[INDEX]">
+        <img v-if="INDEX === 0" :src="image_num_to_image_url(IN_ARY[INDEX])" :alt="IN_ARY[INDEX]" class="small_image">
+    </div>
+    <input type="file" class="files" accept="image/png, image/jpeg" @change="img_set($event, OUTER_ARY_INDEX, IN_ARY_INDEX)">
+
+    <select class="image_url_selecter" @change="image_url_select(OUTER_ARY_INDEX, IN_ARY_INDEX)" v-model="select_image_url_index">
+        <option v-for="(image_url, image_url_index) in image_url_list.split('\n')"  :value="image_url_index">{{ image_url }}</option>
+    </select>
+
+    <button @click="active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
 </div>
-<input type="file" class="files" :name="IN_ARY_INDEX" accept="image/png, image/jpeg" @change="img_set">
-
-<select :name="IN_ARY_INDEX" class="image_url_selecter" @change="image_url_select" v-model="select_image_url">
-    <option v-for="image_url in image_url_list.split('\n')"  :value="image_url">{{ image_url }}</option>
-</select>
-
-<button @click="active_the_image_for_get_num_fn(IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
+<button @click="image_add(OUTER_ARY_INDEX)">image_add</button>
 </template>
 
 <span>image_checked: {{ image_checked }}</span>
@@ -124,7 +126,6 @@ height: 90px;
 <input type="checkbox" id="checkbox" v-model="image_checked">
 <label for="checkbox">{{ image_checked }}</label>
 
-<button @click="image_add">image_add</button>
 
 <input type="number" name="MAX_NUM" class="MAX_NUM" v-model="MAX_NUM">
 <input type="number" name="width_num" class="width_num" v-model="width_num">
@@ -183,7 +184,9 @@ height: 90px;
 <div class="parent_bubble">
 
 <div class="parent_image_layer">
-<img :class="'image_'+index" v-for="(item, index) in image_and_the_parameter">
+
+<div :class="'layer_'+OUTER_ARY_INDEX" v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
+<img :class="'image_'+OUTER_ARY_INDEX+'_'+IN_ARY_INDEX" v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
 </div>
 
 
@@ -229,20 +232,62 @@ picked: '',
 bubble_checked: false,
 image_checked: true,
 
-image_and_the_parameter: [
-        [`./${1}.png`, 2,2,90,90,2],
-        [`./${2}.png`, 3,3,90,90,1],
+// Array of layers containing images and their parameters
+// [0, 2,2,90,90,2]
+// =>
+// [image_index, column, row, width, height, z-index]
+// [
+//     [0, 2,2,90,90,2],
+//     [1, 3,3,90,90,1]
+// ]
+// =>
+// [
+//     [image_index, column, row, width, height, z-index],
+//     [image_index, column, row, width, height, z-index],
+// ] => layer_0
+// [
+//     [
+//         [0, 2,2,90,90,2],
+//         [1, 3,3,90,90,1],
+//     ],
+//     [
+//         [0, 1,1,90,90,4],
+//         [1, 4,4,90,90,3],
+//     ],
+// ]
+// =>
+// [
+//         lalyer_0,
+//         layer_1,
+// ] => layer chunk
+
+layer_chunk: [
+        [
+            [0, 2,2,1,1,2],
+            [1, 3,3,2,2,1],
+        ],
+        [
+            [0, 1,1,2,2,4],
+            [1, 4,4,1,1,3],
+        ],
+        // [
+        //     [0, 2,2,90,90,2],
+        //     [1, 3,3,90,90,1],
+        // ],
+        // [
+        //     [0, 1,1,90,90,4],
+        //     [1, 4,4,90,90,3],
+        // ],
     ],
-active_the_image_index: 0,
+active_the_image_index: [0, 0],
 image_url_list: `https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/1.png
 https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/2.png`,
-select_image_url: '',
+select_image_url_index: 0,
 image_url_file_url: 'https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/png_file_url.txt',
-
 }
 },
 watch: {
-   image_and_the_parameter: {
+   layer_chunk: {
      handler() {
         console.log('change');
         this.fn_C();
@@ -264,7 +309,6 @@ mounted() {
     this.fn_A();
     this.fn_B();
     this.fn_C();
-    this.image_add();
 },
 updated() {
     this.calc();
@@ -316,18 +360,15 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
 get_num_for_image(event) {
     const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
     const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
-
 console.log(
     typeof COLUMN,
     typeof ROW,
     this.active_the_image_index,
-    this.image_and_the_parameter,
-)
-this.image_and_the_parameter[this.active_the_image_index][1] = ROW;
-this.image_and_the_parameter[this.active_the_image_index][2] = COLUMN;
-// this.image_and_the_parameter[this.active_the_image_index][1] = ROW;
-// this.image_and_the_parameter[this.active_the_image_index][2] = COLUMN;
-    // this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
+    this.layer_chunk,
+);
+const [OUTER_ARY_INDEX, IN_ARY_INDEX] = [this.active_the_image_index[0], this.active_the_image_index[1]];
+this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][1] = ROW;
+this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][2] = COLUMN;
 },
 get_num_for_bubble(event) {
     const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
@@ -348,40 +389,27 @@ const exe = () => {
 exe();
 },
 fn_C(){
-// document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
-//     display: grid;
-//     width: 360px;
-//     height: 360px;
-//     position: absolute;
-//     top: 90px; left: 90px;
-// }` + this.image_and_the_parameter.map((V,IDX)=>`.image_${IDX}{
-//     content: url(${V[0]});
-//     grid-column: ${V[1]}/${this.MAX_NUM};
-//     grid-row: ${V[2]}/${this.MAX_NUM};
-//         width: ${V[3]}px;
-//         height: ${V[4]}px;
-//     z-index: ${V[5]};
-// }`).join("");
-console.log(
-"V[1] is ", this.image_and_the_parameter[1][1],
-"V[1] ary is ", this.image_and_the_parameter[1][1] * 360 / this.MAX_NUM,
-"V[2] is ", this.image_and_the_parameter[1][2],
-"V[2] ary is ", this.image_and_the_parameter[1][2] * 360 / this.MAX_NUM,
-)
+const leyer_N__image_N_n = this.layer_chunk.map((IN_ARY, OUTER_IDX)=>
+IN_ARY.map((V, IDX)=>
+`.layer_${OUTER_IDX} > .image_${OUTER_IDX}_${IDX}{
+    content: url('${ this.image_num_to_image_url(V[0]) }');
+    position: absolute;
+    top: ${V[1] * this.width_num - (this.width_num)}px;
+    left: ${V[2] * this.height_num - (this.height_num)}px;
+    width: ${V[3] * this.width_num}px;
+    height: ${V[4] * this.height_num}px;
+    z-index: ${V[5]};
+}
+`).join("")
+).join("");
+console.log(leyer_N__image_N_n);
 document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
     width: 360px;
     height: 360px;
     position: absolute;
     top: 0; left: 0;
-}` + this.image_and_the_parameter.map((V,IDX)=>`.image_${IDX}{
-    content: url(${V[0]});
-    position: absolute;
-    top: ${V[1] * 360 / this.MAX_NUM - (360 / this.MAX_NUM)}px;
-    left: ${V[2] * 360 / this.MAX_NUM - (360 / this.MAX_NUM)}px;
-    width: ${V[3]}px;
-    height: ${V[4]}px;
-    z-index: ${V[5]};
-}`).join("");
+}` + leyer_N__image_N_n;
+
 },
 swap(){
 [this.a_0, this.a_1] = [this.a_1, this.a_0];
@@ -406,7 +434,7 @@ pattern_4(){
 pattern_5(){
     [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 80, 10, 90, 0, 100,];
 },
-img_set(EVENT){
+img_set(EVENT, OUTER_ARY_INDEX, IN_ARY_INDEX){
 // https://forum.vuejs.org/t/how-i-can-get-image-or-any-file-as-an-input-using-form-tag-then-store-and-display-on-page/127679/2
     const files = EVENT.target.files;
 
@@ -415,16 +443,20 @@ img_set(EVENT){
     if (!files.length) return;
     const reader = new FileReader();
     reader.readAsDataURL(files[0])
-    reader.onload = () => (this.image_and_the_parameter[Number(EVENT.target.name)][0] = reader.result);
+    reader.onload = () => (this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][0] = reader.result);
 },
-image_add(){
-    this.image_and_the_parameter.push(['./1.png', 1, 1, 90, 90, 1]);
+image_add(OUTER_ARY_INDEX){
+    console.log(OUTER_ARY_INDEX);
+    this.layer_chunk[OUTER_ARY_INDEX].push(['./1.png', 1, 1, 1, 1, 1]);
 },
-active_the_image_for_get_num_fn(IN_ARY_INDEX){
-    this.active_the_image_index = IN_ARY_INDEX;
+active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX){
+    this.active_the_image_index = [OUTER_ARY_INDEX, IN_ARY_INDEX];
 },
-image_url_select(EVENT){
-    this.image_and_the_parameter[Number(EVENT.target.name)][0] = this.select_image_url;
+image_url_select(OUTER_ARY_INDEX, IN_ARY_INDEX){
+    this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][0] = this.select_image_url_index;
+},
+image_num_to_image_url(IMAGE_INDEX){
+    return this.image_url_list.split("\n")[IMAGE_INDEX];
 },
 async get_image_url_list_from_url(){
     if(this.image_url_file_url === '') return;
@@ -432,7 +464,6 @@ async get_image_url_list_from_url(){
     const url_list_text = await response.text();
     this.image_url_list = await url_list_text;
 },
-
 },
 }).mount('.app');
 </script>

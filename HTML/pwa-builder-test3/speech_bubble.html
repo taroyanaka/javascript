@@ -8,9 +8,17 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.js" integrity="sha512-WXWhnFUmZx+snPw8v2JjWQ0cdLUCLxTXhyqiZb7G5pkZZEGPBgVSzILSpkPK9haxW75sX5znfF08rsVnf6BUlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 <link rel="stylesheet" href="./reset.css">
 <script src="./vue@3.2.36.global.prod.js"></script>
-<script src="ramda.@0.28.0.js"></script>
+<script src="./ramda.@0.28.0.js"></script>
 
 <!-- https://devtools.vuejs.org/ -->
+
+
+<!-- width_num * MAX_NUM => MAX_width -->
+<!-- height_num * MAX_NUM => MAX_height -->
+<!-- COLUMN_POINT => 0...100 -->
+<!-- ROW_POINT => 0...100 -->
+<!-- width_num * COLUMN_POINT => MAX_width -->
+<!-- height _num * ROW_POINT => MAX_height  -->
 
     <style>
 input[type=text] {
@@ -25,10 +33,7 @@ color: #666;
     display: grid;
     width: 360px;
     height: 360px;
-position: relative;
-  /* grid-column-gap: 15px; */
-  /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
-  /* grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); */
+    position: relative;
 }
 .bubble {
     border-radius: 5px;
@@ -36,10 +41,6 @@ position: relative;
     line-break: auto;
 }
 .bubble_2 {
-}
-.cat{
-width: 90px;
-height: 90px;
 }
 
 .text{
@@ -49,13 +50,11 @@ height: 90px;
 .foo{
     position: absolute;
     top: 0; left: 0;
-
-    /* top: 100px; left: 100px; */
     display: grid;
     width: 360px;
     height: 360px;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  grid-template-rows: repeat(auto-fit, minmax(90px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(90px, 1fr));
 }
 .foo > .fitter {
     width: 90px;
