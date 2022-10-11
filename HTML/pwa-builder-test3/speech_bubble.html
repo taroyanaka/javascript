@@ -195,18 +195,15 @@ color: #666;
 
 
 <div class="foo" :class="{ no_show: image_checked ? false : true }">
-  <div v-for="(item, index) in foo_matrix" class="fitter" @click="get_num_for_image">
+  <div v-for="(item, index) in foo_or_bar_matrix" class="fitter" @click="get_num_for_image">
     {{ item }}
   </div>
-  <!-- <div v-for="(item, index) in get_n_n_array()" class="fitter" @click="get_num_for_image">
-    {{ item }}
-  </div> -->
 </div>
 
 <div class="bar" :class="{ no_show: bubble_checked ? false : true }">
-  <div v-for="(item, index) in get_n_n_array()" class="fitter" @click="get_num_for_bubble">
-    {{ item }}
-  </div>
+    <div v-for="(item, index) in foo_or_bar_matrix" class="fitter" @click="get_num_for_bubble">
+        {{ item }}
+    </div>
 </div>
 
 <div class="bubble"><p class="speak" v-model="speak">{{ speak }}</p></div>
@@ -307,12 +304,29 @@ watch: {
         this.fn_C();
      },
      deep: true
-   }
+   },
+   COLUMN_POINT: {
+     handler() {
+        console.log('change COLUMN_POINT');
+        this.fn_B();
+     },
+     deep: true
+   },
+   ROW_POINT: {
+     handler() {
+        console.log('change ROW_POINT');
+        this.fn_B();
+     },
+     deep: true
+   },
 },
 computed: {
-    foo_matrix: function () {
-        return R.times(R.identity, this.COLUMN_POINT * this.ROW_POINT);
-    }
+    foo_or_bar_matrix: function () {
+        const x = R.range(1, this.COLUMN_POINT + 1);
+        const y = R.range(1, this.ROW_POINT + 1);
+        const x_y_number = R.xprod(x, y);
+        return x_y_number.map(V=> (V[0]).toString() + "," + (V[1]).toString() );
+    },
 },
 created() {
 },
@@ -421,9 +435,6 @@ get_num_for_bubble(event) {
     const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
     const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
     this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
-},
-get_n_n_array(){
-    return R.times(R.identity, this.COLUMN_POINT * this.ROW_POINT);
 },
 fn_B(EVENT){
     const x = R.range(1, this.COLUMN_POINT + 1);
