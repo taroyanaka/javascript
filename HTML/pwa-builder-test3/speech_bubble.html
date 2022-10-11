@@ -13,13 +13,11 @@
 <!-- https://devtools.vuejs.org/ -->
 
 
-<!-- width_num * MAX_NUM => MAX_width -->
-<!-- height_num * MAX_NUM => MAX_height -->
-
-<!-- MAX_NUM => null -->
-
 <!-- COLUMN_POINT => 0...10 -->
 <!-- ROW_POINT => 0...10 -->
+
+<!-- COLUMN_POINT and ROW_POINT => 10 fix????? -->
+
 <!-- width_num * COLUMN_POINT => MAX_width -->
 <!-- height_num * ROW_POINT => MAX_height -->
 
@@ -437,12 +435,12 @@ get_num_for_bubble(event) {
     this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
 },
 fn_B(EVENT){
-    const x = R.range(1, this.COLUMN_POINT + 1);
-    const y = R.range(1, this.ROW_POINT + 1);
-    const x_y_number = R.xprod(x, y);
-    ['foo', 'bar'].forEach(foo_bar=>{
-        document.querySelectorAll(`.${foo_bar} > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
-    });
+    // const x = R.range(1, this.COLUMN_POINT + 1);
+    // const y = R.range(1, this.ROW_POINT + 1);
+    // const x_y_number = R.xprod(x, y);
+    // ['foo', 'bar'].forEach(foo_bar=>{
+    //     document.querySelectorAll(`.${foo_bar} > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
+    // });
 },
 fn_C(){
 const leyer_N__image_N_n = this.layer_chunk.map((IN_ARY, OUTER_IDX)=>
