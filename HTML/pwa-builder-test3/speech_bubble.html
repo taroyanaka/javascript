@@ -18,8 +18,8 @@
 
 <!-- MAX_NUM => null -->
 
-<!-- COLUMN_POINT => 0...100 -->
-<!-- ROW_POINT => 0...100 -->
+<!-- COLUMN_POINT => 0...10 -->
+<!-- ROW_POINT => 0...10 -->
 <!-- width_num * COLUMN_POINT => MAX_width -->
 <!-- height_num * ROW_POINT => MAX_height -->
 
@@ -103,9 +103,9 @@ color: #666;
 <div class="app">
 <span>{{ $data }}</span>
 
-<input type="number" name="COLUMN_POINT" class="COLUMN_POINT" v-model="COLUMN_POINT">
+<input type="number" name="COLUMN_POINT" class="COLUMN_POINT" v-model="COLUMN_POINT" min="1" max="10" step="1">
 <input type="number" name="MAX_WIDTH" class="MAX_WIDTH" v-model="MAX_WIDTH">
-<input type="number" name="ROW_POINT" class="ROW_POINT" v-model="ROW_POINT">
+<input type="number" name="ROW_POINT" class="ROW_POINT" v-model="ROW_POINT" min="1" max="10" step="1">
 <input type="number" name="MAX_HEIGHT" class="MAX_HEIGHT" v-model="MAX_HEIGHT">
 
 <input type="text" name="image_url_file_url" class="image_url_file_url" v-model="image_url_file_url" @input="get_image_url_list_from_url" @change="get_image_url_list_from_url" placeholder="I am not crazy; my reality is just different from yours.">
@@ -223,8 +223,10 @@ color: #666;
 const app = Vue.createApp({
 data() {
 return {
+// COLUMN_POINT min: 1 max: 10
 COLUMN_POINT: 10,
 MAX_WIDTH: 360,
+// ROW_POINT min: 1 max: 10
 ROW_POINT: 10,
 MAX_HEIGHT: 360,
 
@@ -330,14 +332,8 @@ beforeUpdated() {
 },
 methods: {
 calc() {
-    this.width_num = this.calc_width();
-    this.height_num = this.calc_height();
-},
-calc_width() {
-    return this.MAX_WIDTH / this.COLUMN_POINT;
-},
-calc_height() {
-    return this.MAX_HEIGHT / this.ROW_POINT;
+    this.width_num = this.MAX_WIDTH / this.COLUMN_POINT;
+    this.height_num = this.MAX_HEIGHT / this.ROW_POINT;
 },
 fn_A() {
 document.querySelector(`.wrap`).textContent = `.parent_bubble{
@@ -388,8 +384,8 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
     height: ${this.MAX_HEIGHT}px;
 }
 .foo{
-    grid-template-columns: repeat(auto-fit, minmax(${this.width_num}px, 1fr));
-    grid-template-rows: repeat(auto-fit, minmax(${this.height_num}px, 1fr));
+    grid-template-columns: repeat(${this.COLUMN_POINT}, minmax(${this.width_num}px, 1fr));
+    grid-template-rows: repeat(${this.ROW_POINT}, minmax(${this.height_num}px, 1fr));
 }
 .foo > .fitter {
     width: ${this.width_num}px;
@@ -398,8 +394,8 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
 }
 
 .bar{
-    grid-template-columns: repeat(auto-fit, minmax(${this.width_num}px, 1fr));
-    grid-template-rows: repeat(auto-fit, minmax(${this.height_num}px, 1fr));
+    grid-template-columns: repeat(${this.COLUMN_POINT}, minmax(${this.width_num}px, 1fr));
+    grid-template-rows: repeat(${this.ROW_POINT}, minmax(${this.height_num}px, 1fr));
 }
 .bar > .fitter {
     width: ${this.width_num}px;
@@ -430,15 +426,12 @@ get_n_n_array(){
     return R.times(R.identity, this.COLUMN_POINT * this.ROW_POINT);
 },
 fn_B(EVENT){
-// const exe = () => {
     const x = R.range(1, this.COLUMN_POINT + 1);
     const y = R.range(1, this.ROW_POINT + 1);
     const x_y_number = R.xprod(x, y);
     ['foo', 'bar'].forEach(foo_bar=>{
         document.querySelectorAll(`.${foo_bar} > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
     });
-// };
-// exe();
 },
 fn_C(){
 const leyer_N__image_N_n = this.layer_chunk.map((IN_ARY, OUTER_IDX)=>
