@@ -15,10 +15,13 @@
 
 <!-- width_num * MAX_NUM => MAX_width -->
 <!-- height_num * MAX_NUM => MAX_height -->
+
+<!-- MAX_NUM => null -->
+
 <!-- COLUMN_POINT => 0...100 -->
 <!-- ROW_POINT => 0...100 -->
 <!-- width_num * COLUMN_POINT => MAX_width -->
-<!-- height _num * ROW_POINT => MAX_height  -->
+<!-- height_num * ROW_POINT => MAX_height -->
 
     <style>
 input[type=text] {
@@ -31,8 +34,8 @@ color: #666;
 
 .parent_bubble {
     display: grid;
-    width: 360px;
-    height: 360px;
+    /* width: 360px; */
+    /* height: 360px; */
     position: relative;
 }
 .bubble {
@@ -51,15 +54,15 @@ color: #666;
     position: absolute;
     top: 0; left: 0;
     display: grid;
-    width: 360px;
-    height: 360px;
-    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-    grid-template-rows: repeat(auto-fit, minmax(90px, 1fr));
+    /* width: 360px; */
+    /* height: 360px; */
+    /* grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); */
+    /* grid-template-rows: repeat(auto-fit, minmax(90px, 1fr)); */
 }
 .foo > .fitter {
-    width: 90px;
-    height: 90px;
-    border: 1px solid green;
+    /* width: 90px; */
+    /* height: 90px; */
+    /* border: 1px solid green; */
     background-color: lime;
     opacity: 0.6;
 }
@@ -68,15 +71,15 @@ color: #666;
     position: absolute;
     top: 0; left: 0;
     display: grid;
-    width: 360px;
-    height: 360px;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
-  grid-template-rows: repeat(auto-fit, minmax(90px, 1fr));
+    /* width: 360px; */
+    /* height: 360px; */
+    /* grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); */
+    /* grid-template-rows: repeat(auto-fit, minmax(90px, 1fr)); */
 }
 .bar > .fitter {
-    width: 90px;
-    height: 90px;
-    border: 1px solid red;
+    /* width: 90px; */
+    /* height: 90px; */
+    /* border: 1px solid red; */
     background-color: orangered;
     opacity: 0.6;
 }
@@ -99,6 +102,11 @@ color: #666;
 <body>
 <div class="app">
 <span>{{ $data }}</span>
+
+<input type="number" name="COLUMN_POINT" class="COLUMN_POINT" v-model="COLUMN_POINT">
+<input type="number" name="MAX_WIDTH" class="MAX_WIDTH" v-model="MAX_WIDTH">
+<input type="number" name="ROW_POINT" class="ROW_POINT" v-model="ROW_POINT">
+<input type="number" name="MAX_HEIGHT" class="MAX_HEIGHT" v-model="MAX_HEIGHT">
 
 <input type="text" name="image_url_file_url" class="image_url_file_url" v-model="image_url_file_url" @input="get_image_url_list_from_url" @change="get_image_url_list_from_url" placeholder="I am not crazy; my reality is just different from yours.">
 <textarea name="image_url_list" class="image_url_list" cols="100" rows="10" v-model="image_url_list"></textarea>
@@ -126,10 +134,6 @@ color: #666;
 <input type="checkbox" id="checkbox" v-model="image_checked">
 <label for="checkbox">{{ image_checked }}</label>
 
-
-<input type="number" name="MAX_NUM" class="MAX_NUM" v-model="MAX_NUM">
-<input type="number" name="width_num" class="width_num" v-model="width_num">
-<input type="number" name="height_num" class="height_num" v-model="height_num">
 <input type="number" name="bubble_column" class="bubble_column" v-model="bubble_column">
 <input type="number" name="bubble_row" class="bubble_row" v-model="bubble_row">
 <input type="number" name="bubble_2_column" class="bubble_2_column" v-model="bubble_2_column">
@@ -191,9 +195,12 @@ color: #666;
 
 
 <div class="foo" :class="{ no_show: image_checked ? false : true }">
-  <div v-for="(item, index) in get_n_n_array()" class="fitter" @click="get_num_for_image">
+  <div v-for="(item, index) in foo_matrix" class="fitter" @click="get_num_for_image">
     {{ item }}
   </div>
+  <!-- <div v-for="(item, index) in get_n_n_array()" class="fitter" @click="get_num_for_image">
+    {{ item }}
+  </div> -->
 </div>
 
 <div class="bar" :class="{ no_show: bubble_checked ? false : true }">
@@ -216,9 +223,14 @@ color: #666;
 const app = Vue.createApp({
 data() {
 return {
-MAX_NUM: 4,
-width_num: 90,
-height_num: 90,
+COLUMN_POINT: 10,
+MAX_WIDTH: 360,
+ROW_POINT: 10,
+MAX_HEIGHT: 360,
+
+width_num: 36,
+height_num: 36,
+
 bubble_column: 1,
 bubble_row: 1,
 bubble_2_column: 1,
@@ -295,11 +307,11 @@ watch: {
      deep: true
    }
 },
-// computed: {
-//     COMP: function () {
-//         return COMP;
-//     }
-// },
+computed: {
+    foo_matrix: function () {
+        return R.times(R.identity, this.COLUMN_POINT * this.ROW_POINT);
+    }
+},
 created() {
 },
 beforeMount() {
@@ -318,21 +330,29 @@ beforeUpdated() {
 },
 methods: {
 calc() {
+    this.width_num = this.calc_width();
+    this.height_num = this.calc_height();
+},
+calc_width() {
+    return this.MAX_WIDTH / this.COLUMN_POINT;
+},
+calc_height() {
+    return this.MAX_HEIGHT / this.ROW_POINT;
 },
 fn_A() {
 document.querySelector(`.wrap`).textContent = `.parent_bubble{
-    grid-template-columns: repeat(${this.MAX_NUM}, 1fr);
-    grid-template-rows: repeat(${this.MAX_NUM}, 1fr);
+    grid-template-columns: repeat(${this.COLUMN_POINT}, 1fr);
+    grid-template-rows: repeat(${this.ROW_POINT}, 1fr);
 }
 .bubble{
-    grid-column: ${this.bubble_column}/${this.MAX_NUM};
-    grid-row: ${this.bubble_row}/${this.MAX_NUM};
+    grid-column: ${this.bubble_column}/${this.COLUMN_POINT};
+    grid-row: ${this.bubble_row}/${this.ROW_POINT};
         width: ${this.width_num}px;
         height: ${this.height_num}px;
 }
 .bubble_2{
-    grid-column: ${this.bubble_2_column}/${this.MAX_NUM};
-    grid-row: ${this.bubble_2_row}/${this.MAX_NUM};
+    grid-column: ${this.bubble_2_column}/${this.COLUMN_POINT};
+    grid-row: ${this.bubble_2_row}/${this.ROW_POINT};
         width: ${this.width_num}px;
         height: ${this.height_num}px;
     clip-path: polygon(${this.a_0}% ${this.a_1}%, ${this.a_2}% ${this.a_3}%, ${this.a_4}% ${this.a_5}%);
@@ -355,6 +375,37 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
 .bubble_2_color{
     background-color: ${this.bubble_2_color};
 }
+.parent_bubble {
+    width: ${this.MAX_WIDTH}px;
+    height: ${this.MAX_HEIGHT}px;
+}
+.foo{
+    width: ${this.MAX_WIDTH}px;
+    height: ${this.MAX_HEIGHT}px;
+}
+.bar{
+    width: ${this.MAX_WIDTH}px;
+    height: ${this.MAX_HEIGHT}px;
+}
+.foo{
+    grid-template-columns: repeat(auto-fit, minmax(${this.width_num}px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(${this.height_num}px, 1fr));
+}
+.foo > .fitter {
+    width: ${this.width_num}px;
+    height: ${this.height_num}px;
+    border: 0.1px solid green;
+}
+
+.bar{
+    grid-template-columns: repeat(auto-fit, minmax(${this.width_num}px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(${this.height_num}px, 1fr));
+}
+.bar > .fitter {
+    width: ${this.width_num}px;
+    height: ${this.height_num}px;
+    border: 0.1px solid red;
+}
 `;
 },
 get_num_for_image(event) {
@@ -376,13 +427,19 @@ get_num_for_bubble(event) {
     this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
 },
 get_n_n_array(){
-    return R.times(R.identity, this.MAX_NUM * this.MAX_NUM);
+    return R.times(R.identity, this.COLUMN_POINT * this.ROW_POINT);
 },
 fn_B(EVENT){
-const n_n = this.MAX_NUM * this.MAX_NUM;
+const n_n = this.COLUMN_POINT * this.ROW_POINT;
 const exe = () => {
+// const x = ['x_1','x_2','x_3',];
+// const y = ['y_1','y_2','y_3',];
+// R.xprod(x, y)
     ['foo', 'bar'].forEach(foo_bar=>{
-        const x_y_number = Array.from(document.querySelectorAll(`.${foo_bar} > div`)).map((V,IDX)=>Number(IDX)).map(V=>[Math.floor(V/4), V%4]).map(V=>[V[0]+1, V[1]+1]);
+        const x_y_number = Array.from(document.querySelectorAll(`.${foo_bar} > div`)).map((V,IDX)=>Number(IDX)).map(V=>[Math.floor(V/ ((this.COLUMN_POINT + this.ROW_POINT)/2) ), V% ((this.COLUMN_POINT + this.ROW_POINT)/2) ]).map(V=>[V[0]+1, V[1]+1]);
+console.log(
+    x_y_number
+);
         document.querySelectorAll(`.${foo_bar} > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
     });
 };
@@ -404,12 +461,17 @@ IN_ARY.map((V, IDX)=>
 ).join("");
 console.log(leyer_N__image_N_n);
 document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
-    width: 360px;
-    height: 360px;
+    width: ${this.MAX_WIDTH}px;
+    height: ${this.MAX_HEIGH}px;
     position: absolute;
     top: 0; left: 0;
 }` + leyer_N__image_N_n;
-
+// document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
+//     width: 360px;
+//     height: 360px;
+//     position: absolute;
+//     top: 0; left: 0;
+// }` + leyer_N__image_N_n;
 },
 swap(){
 [this.a_0, this.a_1] = [this.a_1, this.a_0];
