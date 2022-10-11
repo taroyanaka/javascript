@@ -186,10 +186,13 @@ color: #666;
 <span>picked: {{ picked }}</span>
 </div>
 
+bubble_no_show: <input type="checkbox" id="bubble_no_show_check" v-model="bubble_no_show">
+<label for="bubble_no_show_check">{{ bubble_no_show }}</label>
+
 <div class="parent_bubble">
 
-<div class="bubble"><p class="speak" v-model="speak">{{ speak }}</p></div>
-<div class="bubble_2"></div>
+<div class="bubble" :class="{ no_show: bubble_no_show ? true : false }"><p class="speak" v-model="speak">{{ speak }}</p></div>
+<div class="bubble_2" :class="{ no_show: bubble_no_show ? true : false }"></div>
 
 <div class="parent_image_layer">
 
@@ -213,8 +216,6 @@ color: #666;
 
 </div>
 </div>
-<style>
-</style>
 <script>
 const app = Vue.createApp({
 data() {
@@ -243,6 +244,7 @@ bubble_2_color: '#C0C0C0',
 picked: '',
 bubble_checked: false,
 image_checked: true,
+bubble_no_show: false,
 
 // Array of layers containing images and their parameters
 // [0, 2,2,90,90,2]
@@ -529,6 +531,9 @@ async get_image_url_list_from_url(){
     const response = await fetch(this.image_url_file_url);
     const url_list_text = await response.text();
     this.image_url_list = await url_list_text;
+},
+no_bubble(){
+    return this.image_url_list.split("\n")[IMAGE_INDEX];
 },
 },
 }).mount('.app');
