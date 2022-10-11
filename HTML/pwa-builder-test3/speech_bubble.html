@@ -273,22 +273,22 @@ image_checked: true,
 // ] => layer chunk
 
 layer_chunk: [
-        // [
-        //     [0, 1,1,1,1,1,0,0,],
-        //     [0, 1,1,1,1,1,0,0,],
-        // ],
-        // [
-        //     [0, 1,1,1,1,1,0,0,],
-        //     [0, 1,1,1,1,1,0,0,],
-        // ],
         [
-            [0, 2,2,1,1,2,0,0,],
-            [1, 3,3,2,2,1,0,0,],
+            [0, 1,1,1,1,1,0,0,],
+            [0, 1,1,1,1,1,0,0,],
         ],
         [
-            [0, 1,1,2,2,4,0,0,],
-            [1, 4,4,1,1,3,0,0,],
+            [0, 1,1,1,1,1,0,0,],
+            [0, 1,1,1,1,1,0,0,],
         ],
+        // [
+        //     [0, 2,2,1,1,2,0,0,],
+        //     [1, 3,3,2,2,1,0,0,],
+        // ],
+        // [
+        //     [0, 1,1,2,2,4,0,0,],
+        //     [1, 4,4,1,1,3,0,0,],
+        // ],
     ],
 active_the_image_index: [0, 0],
 image_url_list: `https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/1.png
@@ -305,20 +305,20 @@ watch: {
      },
      deep: true
    },
-   COLUMN_POINT: {
-     handler() {
-        console.log('change COLUMN_POINT');
-        this.fn_B();
-     },
-     deep: true
-   },
-   ROW_POINT: {
-     handler() {
-        console.log('change ROW_POINT');
-        this.fn_B();
-     },
-     deep: true
-   },
+//    COLUMN_POINT: {
+//      handler() {
+//         console.log('change COLUMN_POINT');
+//         this.fn_B();
+//      },
+//      deep: true
+//    },
+//    ROW_POINT: {
+//      handler() {
+//         console.log('change ROW_POINT');
+//         this.fn_B();
+//      },
+//      deep: true
+//    },
 },
 computed: {
     foo_or_bar_matrix: function () {
