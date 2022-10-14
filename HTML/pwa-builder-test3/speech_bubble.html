@@ -74,10 +74,14 @@ color: #666;
 </head>
 <body>
 <div class="app">
-
-<button @click="only_show_active_layer_chunk">only_show_active_layer_chunk</button>
-
-<button @click="get_bubble_chunk">get_bubble_chunk</button>
+<textarea name="active_layer_list" class="active_layer_list" placeholder="active_layer_list" cols="30" rows="10">1
+1 2
+2 3
+3</textarea>
+<textarea name="active_bubble_list" class="active_bubble_list" placeholder="active_bubble_list" cols="30" rows="10">1
+1 2
+2 3
+3</textarea>
 
 <span>{{ $data }}</span>
 
@@ -174,7 +178,6 @@ bubble_no_show: <input type="checkbox" id="bubble_no_show_check" v-model="bubble
 <div class="parent_image_layer">
 
 <div :class="'layer_'+OUTER_ARY_INDEX" v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
-<!-- <div :class="'layer_'+OUTER_ARY_INDEX" v-for="(OUTER_ARY, OUTER_ARY_INDEX) in active_layer_chunk"> -->
 <img :class="'image_'+OUTER_ARY_INDEX+'_'+IN_ARY_INDEX" v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
 </div>
 
@@ -198,8 +201,6 @@ bubble_no_show: <input type="checkbox" id="bubble_no_show_check" v-model="bubble
 const app = Vue.createApp({
 data() {
 return {
-bubble_chunk: [],
-
 COLUMN_POINT: 10,
 MAX_WIDTH: 1080,
 ROW_POINT: 10,
@@ -210,9 +211,6 @@ height_num: 36,
 
 parent_bubble_color: "#e66465",
 
-active_layer_chunk: [],
-active_layer_chunk_index_array: 0,
-
 bubble_column: 1,
 bubble_row: 1,
 bubble_2_column: 1,
@@ -221,21 +219,10 @@ speak: 'cute cat cute dog fool people',
 a_0: 0, a_1: 40, a_2: 10, a_3: 50, a_4: 0, a_5: 60,
 bubble_color: "#f6b73c",
 bubble_2_color: '#C0C0C0',
-layer_number_array: [],
-
-
 picked: '',
-
 bubble_checked: false,
-
-
-
-bubble_no_show: false,
-
-
-
 image_checked: true,
-
+bubble_no_show: false,
 
 // Array of layers containing images and their parameters
 // [0, 2,2,90,90,2]
@@ -284,12 +271,17 @@ layer_chunk: [
             [0, 1,1,2,2,4,0,0,],
             [1, 4,4,1,1,3,0,0,],
         ],
+        [
+            [1, 1,2,2,2,3,0,0,],
+            [1, 4,2,2,2,3,0,0,],
+        ],
     ],
 active_the_image_index: [0, 0],
 image_url_list: `https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/1.png
 https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/2.png`,
 select_image_url_index: 0,
 image_url_file_url: 'https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/png_file_url.txt',
+active_the_layer_index: 0,
 }
 },
 watch: {
@@ -300,6 +292,20 @@ watch: {
      },
      deep: true
    },
+//    COLUMN_POINT: {
+//      handler() {
+//         console.log('change COLUMN_POINT');
+//         this.fn_B();
+//      },
+//      deep: true
+//    },
+//    ROW_POINT: {
+//      handler() {
+//         console.log('change ROW_POINT');
+//         this.fn_B();
+//      },
+//      deep: true
+//    },
 },
 computed: {
     foo_or_bar_matrix: function () {
@@ -316,7 +322,11 @@ beforeMount() {
 mounted() {
     this.calc();
     this.fn_A();
+    this.fn_B();
     this.fn_C();
+
+    this.only_show_layer_active_layer_list();
+
 },
 updated() {
     this.calc();
@@ -414,12 +424,32 @@ this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][1] = ROW;
 this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][2] = COLUMN;
 },
 get_num_for_bubble(event) {
-    console.log("bubble");
     const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
     const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
     this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
 },
+fn_B(EVENT){
+    // const x = R.range(1, this.COLUMN_POINT + 1);
+    // const y = R.range(1, this.ROW_POINT + 1);
+    // const x_y_number = R.xprod(x, y);
+    // ['foo', 'bar'].forEach(foo_bar=>{
+    //     document.querySelectorAll(`.${foo_bar} > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
+    // });
+},
 fn_C(){
+const the_active_the_layer_index = R.flatten(
+                                document.querySelector(".active_layer_list")
+                                .value
+                                .split("\n")
+                                .map(V=>V.split(" ")
+                                            .map(VAL=>Number(VAL)))
+                                [0]
+                            );
+
+const numbering = this.layer_chunk.filter((IN_ARY, OUTER_IDX)=>the_active_the_layer_index.includes(OUTER_IDX)).map((V, OUTER_IDX)=>`.layer_${OUTER_IDX}{display: none}`).join("\n");
+
+// let res = [];
+// the_active_the_layer_index.forEach(V=>{if(numbering[V]){res.push( numbering[V] )}});
 const leyer_N__image_N_n = this.layer_chunk.map((IN_ARY, OUTER_IDX)=>
 IN_ARY.map((V, IDX)=>
 `.layer_${OUTER_IDX} > .image_${OUTER_IDX}_${IDX}{
@@ -433,13 +463,23 @@ IN_ARY.map((V, IDX)=>
 }
 `).join("")
 ).join("");
-console.log(leyer_N__image_N_n);
+// console.log(leyer_N__image_N_n);
+
+console.log(
+    // the_active_the_layer_index,
+    numbering,
+    // res,
+);
+
+
 document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
     width: ${this.MAX_WIDTH}px;
     height: ${this.MAX_HEIGH}px;
     position: absolute;
     top: 0; left: 0;
-}` + leyer_N__image_N_n;
+}` + leyer_N__image_N_n
+// + numbering
+;
 // document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
 //     width: 360px;
 //     height: 360px;
@@ -504,40 +544,14 @@ async get_image_url_list_from_url(){
 no_bubble(){
     return this.image_url_list.split("\n")[IMAGE_INDEX];
 },
-get_bubble_chunk(){
-    this.bubble_chunk.push([
-        this.bubble_column,
-        this.bubble_row,
-        this.bubble_2_column,
-        this.bubble_2_row,
-        this.speak,
-        this.a_0,
-        this.a_1,
-        this.a_2,
-        this.a_3,
-        this.a_4,
-        this.a_5,
-        this.bubble_color,
-        this.bubble_2_color,
-    ]);
+only_show_layer_active_layer_list(){
+// let tmp = [];
+//     this.layer_chunk.forEach((V, IDX)=>tmp = the_active_the_layer_index.includes(IDX) ? V : null);
+// this.layer_chunk = tmp;
+//         console.log(
+//             the_active_the_layer_index
+//         )
 },
-only_show_active_layer_chunk(){
-// this.layer_chunk.forEach(chunk=>{
-//     console.log("only_show_active_layer_chunk is");
-//     console.log(chunk);
-//     console.log(this.active_layer_chunk_index_array);
-//     this.active_layer_chunk.push(chunk[this.active_layer_chunk_index_array])
-// });
-
-    // this.active_layer_chunk = this.layer_chunk[this.active_layer_chunk_index_array];
-
-    // this.active_layer_chunk = this.layer_chunk[0];
-    this.layer_chunk = [this.layer_chunk[0]];
-},
-// only_show_active_bubble_chunk(){
-//     this.bubble_chunk = [this.bubble_chunk[this.active_bubble_chunk_index]];
-// },
-
 },
 }).mount('.app');
 </script>
