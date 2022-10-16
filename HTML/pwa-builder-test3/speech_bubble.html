@@ -74,14 +74,14 @@ color: #666;
 </head>
 <body>
 <div class="app">
-<textarea name="active_layer_list" class="active_layer_list" placeholder="active_layer_list" cols="30" rows="10">1
+<textarea name="active_layer_list" class="active_layer_list" placeholder="active_layer_list" cols="30" rows="10">0
+0 1
 1 2
-2 3
-3</textarea>
-<textarea name="active_bubble_list" class="active_bubble_list" placeholder="active_bubble_list" cols="30" rows="10">1
+2</textarea>
+<textarea name="active_bubble_list" class="active_bubble_list" placeholder="active_bubble_list" cols="30" rows="10">0
+0 1
 1 2
-2 3
-3</textarea>
+2</textarea>
 
 <span>{{ $data }}</span>
 
@@ -169,6 +169,8 @@ color: #666;
 
 bubble_no_show: <input type="checkbox" id="bubble_no_show_check" v-model="bubble_no_show">
 <label for="bubble_no_show_check">{{ bubble_no_show }}</label>
+
+<input type="number" name="active_layer_index" class="active_layer_index" v-model="active_layer_index" min="0" step="1" @change="fn_C">
 
 <div class="parent_bubble">
 
@@ -287,7 +289,7 @@ https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-
 https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/3_2.png`,
 select_image_url_index: 0,
 image_url_file_url: 'https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/png_file_url.txt',
-active_the_layer_index: 0,
+active_layer_index: 0,
 }
 },
 watch: {
@@ -330,9 +332,6 @@ mounted() {
     this.fn_A();
     this.fn_B();
     this.fn_C();
-
-    this.only_show_layer_active_layer_list();
-
 },
 updated() {
     this.calc();
@@ -443,20 +442,20 @@ fn_B(EVENT){
     // });
 },
 fn_C(){
-const the_active_the_layer_index = R.flatten(
+const active_list = R.flatten(
                                 document.querySelector(".active_layer_list")
                                 .value
                                 .split("\n")
                                 .map(V=>V.split(" ")
                                             .map(VAL=>Number(VAL)))
-                                [0]
+                                [this.active_layer_index]
                             );
 
-const numbering = this.layer_chunk.filter((IN_ARY, OUTER_IDX)=>the_active_the_layer_index.includes(OUTER_IDX)).map((V, OUTER_IDX)=>`.layer_${OUTER_IDX}{display: none}`).join("\n");
+const numbering = active_list.map(VAL=>`.layer_${VAL}{display: block}`).join("\n") + "\n";
 
-// let res = [];
-// the_active_the_layer_index.forEach(V=>{if(numbering[V]){res.push( numbering[V] )}});
 const leyer_N__image_N_n = this.layer_chunk.map((IN_ARY, OUTER_IDX)=>
+`.layer_${OUTER_IDX}{display: none}
+` +
 IN_ARY.map((V, IDX)=>
 `.layer_${OUTER_IDX} > .image_${OUTER_IDX}_${IDX}{
     content: url('${ this.image_num_to_image_url(V[0]) }');
@@ -469,14 +468,12 @@ IN_ARY.map((V, IDX)=>
 }
 `).join("")
 ).join("");
-// console.log(leyer_N__image_N_n);
 
-console.log(
-    // the_active_the_layer_index,
-    numbering,
-    // res,
-);
-
+console.log("fn_c");
+console.log(typeof this.active_layer_index);
+console.log(this.active_layer_index);
+console.log(active_list);
+console.log(numbering);
 
 document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
     width: ${this.MAX_WIDTH}px;
@@ -485,13 +482,8 @@ document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
     top: 0; left: 0;
 }` + leyer_N__image_N_n
 // + numbering
++ numbering
 ;
-// document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
-//     width: 360px;
-//     height: 360px;
-//     position: absolute;
-//     top: 0; left: 0;
-// }` + leyer_N__image_N_n;
 },
 swap(){
 [this.a_0, this.a_1] = [this.a_1, this.a_0];
@@ -549,14 +541,6 @@ async get_image_url_list_from_url(){
 },
 no_bubble(){
     return this.image_url_list.split("\n")[IMAGE_INDEX];
-},
-only_show_layer_active_layer_list(){
-// let tmp = [];
-//     this.layer_chunk.forEach((V, IDX)=>tmp = the_active_the_layer_index.includes(IDX) ? V : null);
-// this.layer_chunk = tmp;
-//         console.log(
-//             the_active_the_layer_index
-//         )
 },
 },
 }).mount('.app');
