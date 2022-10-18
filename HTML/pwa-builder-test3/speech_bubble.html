@@ -213,6 +213,12 @@ height_num: 36,
 
 parent_bubble_color: "#e66465",
 
+
+bubble_data_array: [
+[1,1,2,1,'cute cat cute dog fool people',0,40,10,50,0,60,"#f6b73c",'#C0C0C0','',],
+[2,2,3,2,'fool people make cool tool',0,40,10,50,0,60,"#dcc7c7",'#C0C0C0','',],
+[3,3,4,3,'tool is rule than fool animals',0,40,10,50,0,60,"#a3ffe3",'#C0C0C0','',],
+],
 bubble_column: 1,
 bubble_row: 1,
 bubble_2_column: 1,
@@ -222,10 +228,12 @@ a_0: 0, a_1: 40, a_2: 10, a_3: 50, a_4: 0, a_5: 60,
 bubble_color: "#f6b73c",
 bubble_2_color: '#C0C0C0',
 picked: '',
-bubble_checked: false,
-image_checked: true,
-bubble_no_show: false,
 
+
+
+bubble_checked: false,
+image_checked: false,
+bubble_no_show: false,
 
 
 
@@ -321,6 +329,7 @@ mounted() {
     this.fn_A();
     // this.fn_B();
     this.fn_C();
+    this.switch_bubble();
 },
 updated() {
     this.calc();
@@ -526,6 +535,24 @@ async get_image_url_list_from_url(){
 },
 no_bubble(){
     return this.image_url_list.split("\n")[IMAGE_INDEX];
+},
+switch_bubble(){
+[
+this.bubble_column,
+this.bubble_row,
+this.bubble_2_column,
+this.bubble_2_row,
+this.speak,
+this.a_0,
+this.a_1,
+this.a_2,
+this.a_3,
+this.a_4,
+this.a_5,
+this.bubble_color,
+this.bubble_2_color,
+this.picked,
+] = this.bubble_data_array[2];
 },
 },
 }).mount('.app');
