@@ -43,7 +43,7 @@ color: #666;
     display: grid;
 }
 .foo > .fitter {
-    background-color: lime;
+    background-color: plum;
     opacity: 0.6;
 }
 
@@ -226,6 +226,9 @@ bubble_checked: false,
 image_checked: true,
 bubble_no_show: false,
 
+
+
+
 // Array of layers containing images and their parameters
 // [0, 2,2,90,90,2]
 // =>
@@ -300,20 +303,6 @@ watch: {
      },
      deep: true
    },
-//    COLUMN_POINT: {
-//      handler() {
-//         console.log('change COLUMN_POINT');
-//         this.fn_B();
-//      },
-//      deep: true
-//    },
-//    ROW_POINT: {
-//      handler() {
-//         console.log('change ROW_POINT');
-//         this.fn_B();
-//      },
-//      deep: true
-//    },
 },
 computed: {
     foo_or_bar_matrix: function () {
@@ -330,7 +319,7 @@ beforeMount() {
 mounted() {
     this.calc();
     this.fn_A();
-    this.fn_B();
+    // this.fn_B();
     this.fn_C();
 },
 updated() {
@@ -349,6 +338,17 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
     grid-template-columns: repeat(${this.COLUMN_POINT}, 1fr);
     grid-template-rows: repeat(${this.ROW_POINT}, 1fr);
 }
+.parent_bubble{
+    background-color: ${this.parent_bubble_color};
+}
+.parent_bubble_color{
+    background-color: ${this.parent_bubble_color};
+}
+.parent_bubble {
+    width: ${this.MAX_WIDTH}px;
+    height: ${this.MAX_HEIGHT}px;
+}
+
 .bubble{
     grid-column: ${this.bubble_column}/${this.COLUMN_POINT};
     grid-row: ${this.bubble_row}/${this.ROW_POINT};
@@ -362,27 +362,17 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
         height: ${this.height_num}px;
     clip-path: polygon(${this.a_0}% ${this.a_1}%, ${this.a_2}% ${this.a_3}%, ${this.a_4}% ${this.a_5}%);
 }
-.parent_bubble{
-    background-color: ${this.parent_bubble_color};
-}
 .bubble{
     background-color: ${this.bubble_color};
 }
 .bubble_2{
     background-color: ${this.bubble_2_color};
 }
-.parent_bubble_color{
-    background-color: ${this.parent_bubble_color};
-}
 .bubble_color{
     background-color: ${this.bubble_color};
 }
 .bubble_2_color{
     background-color: ${this.bubble_2_color};
-}
-.parent_bubble {
-    width: ${this.MAX_WIDTH}px;
-    height: ${this.MAX_HEIGHT}px;
 }
 .foo{
     width: ${this.MAX_WIDTH}px;
@@ -429,17 +419,12 @@ this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][1] = ROW;
 this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][2] = COLUMN;
 },
 get_num_for_bubble(event) {
+console.log("get_num_for_bubble");
     const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
     const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
     this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
 },
 fn_B(EVENT){
-    // const x = R.range(1, this.COLUMN_POINT + 1);
-    // const y = R.range(1, this.ROW_POINT + 1);
-    // const x_y_number = R.xprod(x, y);
-    // ['foo', 'bar'].forEach(foo_bar=>{
-    //     document.querySelectorAll(`.${foo_bar} > div`).forEach((V,IDX)=>V.innerText = x_y_number[IDX].join(`,`));
-    // });
 },
 fn_C(){
 const active_list = R.flatten(
