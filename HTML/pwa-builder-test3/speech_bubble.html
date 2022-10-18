@@ -231,6 +231,8 @@ picked: '',
 
 
 
+
+
 bubble_checked: false,
 image_checked: false,
 bubble_no_show: false,
@@ -537,9 +539,10 @@ no_bubble(){
     return this.image_url_list.split("\n")[IMAGE_INDEX];
 },
 switch_bubble(){
+const NUMBER = 2;
 [
-this.bubble_column,
 this.bubble_row,
+this.bubble_column,
 this.bubble_2_column,
 this.bubble_2_row,
 this.speak,
@@ -552,7 +555,8 @@ this.a_5,
 this.bubble_color,
 this.bubble_2_color,
 this.picked,
-] = this.bubble_data_array[2];
+]
+= this.bubble_data_array[NUMBER];
 },
 },
 }).mount('.app');
