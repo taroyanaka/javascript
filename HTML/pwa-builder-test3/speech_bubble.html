@@ -116,24 +116,37 @@ color: #666;
 <input type="checkbox" id="checkbox" v-model="image_checked">
 <label for="checkbox">{{ image_checked }}</label>
 
-<input type="number" name="bubble_column" class="bubble_column" v-model="bubble_column">
-<input type="number" name="bubble_row" class="bubble_row" v-model="bubble_row">
-<input type="number" name="bubble_2_column" class="bubble_2_column" v-model="bubble_2_column">
-<input type="number" name="bubble_2_row" class="bubble_2_row" v-model="bubble_2_row">
-
-<input type="number" name="a_0" class="a_0" v-model="a_0">
-<input type="number" name="a_1" class="a_1" v-model="a_1">
-<input type="number" name="a_2" class="a_2" v-model="a_2">
-<input type="number" name="a_3" class="a_3" v-model="a_3">
-<input type="number" name="a_4" class="a_4" v-model="a_4">
-<input type="number" name="a_5" class="a_5" v-model="a_5">
+<template v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
+BUBBLE_{{ BUBBLE_DATA_INDEX }}
+<input type="number" name="bubble_row" class="bubble_row" v-model="BUBBLE_DATA[0]">
+<input type="number" name="bubble_column" class="bubble_column" v-model="BUBBLE_DATA[1]">
+<input type="number" name="bubble_2_column" class="bubble_2_column" v-model="BUBBLE_DATA[2]">
+<input type="number" name="bubble_2_row" class="bubble_2_row" v-model="BUBBLE_DATA[3]">
+<input type="text" name="speak" class="speak" v-model="BUBBLE_DATA[4]">
+<input type="number" name="a_0" class="a_0" v-model="BUBBLE_DATA[5]">
+<input type="number" name="a_1" class="a_1" v-model="BUBBLE_DATA[6]">
+<input type="number" name="a_2" class="a_2" v-model="BUBBLE_DATA[7]">
+<input type="number" name="a_3" class="a_3" v-model="BUBBLE_DATA[8]">
+<input type="number" name="a_4" class="a_4" v-model="BUBBLE_DATA[9]">
+<input type="number" name="a_5" class="a_5" v-model="BUBBLE_DATA[10]">
+<div class="bubble_color">
+    <input type="color" :id="'foo_' + BUBBLE_DATA_INDEX" name="bubble_color" v-model='BUBBLE_DATA[11]'>
+    <label :for="'foo_' + BUBBLE_DATA_INDEX">bubble_color</label>
+    <input type="text" name="bubble_color" v-model="BUBBLE_DATA[11]">
+</div>
+<div class="bubble_2_color">
+    <input type="color" :id="BUBBLE_DATA[12]" name="bubble_2_color" v-model='BUBBLE_DATA[12]'>
+    <label :for="BUBBLE_DATA[12]">bubble_2_color</label>
+    <input type="text" name="bubble_2_color" v-model="BUBBLE_DATA[12]">
+</div>
+</template>
 
 <div class="parent_bubble_color">
     <input type="color" id="parent_bubble_color" name="parent_bubble_color" v-model='parent_bubble_color'>
     <label for="parent_bubble_color">parent_bubble_color</label>
     <input type="text" name="parent_bubble_color" v-model="parent_bubble_color">
 </div>
-<div class="bubble_color">
+<!-- <div class="bubble_color">
     <input type="color" id="bubble_color" name="bubble_color" v-model='bubble_color'>
     <label for="bubble_color">bubble_color</label>
     <input type="text" name="bubble_color" v-model="bubble_color">
@@ -142,7 +155,7 @@ color: #666;
     <input type="color" id="bubble_2_color" name="bubble_2_color" v-model='bubble_2_color'>
     <label for="bubble_2_color">bubble_2_color</label>
     <input type="text" name="bubble_2_color" v-model="bubble_2_color">
-</div>
+</div> -->
 
 <button v-on:click.once="swap" value="swap">swap</button>
 <button v-on:click.once="numbers_minus_100" value="numbers_minus_100">numbers_minus_100</button>
@@ -152,9 +165,6 @@ color: #666;
 <button @click="pattern_3" value="pattern_3">pattern_3</button>
 <button @click="pattern_4" value="pattern_4">pattern_4</button>
 <button @click="pattern_5" value="pattern_5">pattern_5</button>
-
-<input type="text" name="speak" class="speak" v-model="speak">
-
 
 <div class="bubble_setter">
 <input type="checkbox" id="checkbox" v-model="bubble_checked">
@@ -216,7 +226,7 @@ parent_bubble_color: "#e66465",
 
 bubble_data_array: [
 [1,1,2,1,'cute cat cute dog fool people',0,40,10,50,0,60,"#f6b73c",'#C0C0C0','',],
-[2,2,3,2,'fool people make cool tool',0,40,10,50,0,60,"#dcc7c7",'#C0C0C0','',],
+[2,2,3,2,'fool people make cool tool',0,40,10,50,0,60,"#dcc7c7",'#000000','',],
 [3,3,4,3,'tool is rule than fool animals',0,40,10,50,0,60,"#a3ffe3",'#C0C0C0','',],
 ],
 bubble_column: 1,
