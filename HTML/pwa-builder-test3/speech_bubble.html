@@ -118,10 +118,11 @@ color: #666;
 
 <template v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
 BUBBLE_{{ BUBBLE_DATA_INDEX }}
-<input type="number" name="bubble_row" class="bubble_row" v-model="BUBBLE_DATA[0]">
-<input type="number" name="bubble_column" class="bubble_column" v-model="BUBBLE_DATA[1]">
-<input type="number" name="bubble_2_column" class="bubble_2_column" v-model="BUBBLE_DATA[2]">
-<input type="number" name="bubble_2_row" class="bubble_2_row" v-model="BUBBLE_DATA[3]">
+<div>
+<input type="number" name="bubble_column" class="bubble_column" v-model="BUBBLE_DATA[0]" step="0.1">
+<input type="number" name="bubble_row" class="bubble_row" v-model="BUBBLE_DATA[1]" step="0.1">
+<input type="number" name="bubble_2_column" class="bubble_2_column" v-model="BUBBLE_DATA[2]" step="0.1">
+<input type="number" name="bubble_2_row" class="bubble_2_row" v-model="BUBBLE_DATA[3]" step="0.1">
 <input type="text" name="speak" class="speak" v-model="BUBBLE_DATA[4]">
 <input type="number" name="a_0" class="a_0" v-model="BUBBLE_DATA[5]">
 <input type="number" name="a_1" class="a_1" v-model="BUBBLE_DATA[6]">
@@ -129,15 +130,17 @@ BUBBLE_{{ BUBBLE_DATA_INDEX }}
 <input type="number" name="a_3" class="a_3" v-model="BUBBLE_DATA[8]">
 <input type="number" name="a_4" class="a_4" v-model="BUBBLE_DATA[9]">
 <input type="number" name="a_5" class="a_5" v-model="BUBBLE_DATA[10]">
-<div class="bubble_color">
-    <input type="color" :id="'foo_' + BUBBLE_DATA_INDEX" name="bubble_color" v-model='BUBBLE_DATA[11]'>
-    <label :for="'foo_' + BUBBLE_DATA_INDEX">bubble_color</label>
-    <input type="text" name="bubble_color" v-model="BUBBLE_DATA[11]">
-</div>
-<div class="bubble_2_color">
-    <input type="color" :id="BUBBLE_DATA[12]" name="bubble_2_color" v-model='BUBBLE_DATA[12]'>
-    <label :for="BUBBLE_DATA[12]">bubble_2_color</label>
-    <input type="text" name="bubble_2_color" v-model="BUBBLE_DATA[12]">
+<input type="color" :class="'bubble_'+BUBBLE_DATA_INDEX+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX+'_color'" v-model='BUBBLE_DATA[11]'>
+<input type="text" :class="'bubble_'+BUBBLE_DATA_INDEX+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX+'_color'" v-model="BUBBLE_DATA[11]">
+<input type="color" :class="'bubble_'+BUBBLE_DATA_INDEX_2+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX_2+'_color'" v-model='BUBBLE_DATA[12]'>
+<input type="text" :class="'bubble_'+BUBBLE_DATA_INDEX_2+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX_2+'_color'" v-model="BUBBLE_DATA[12]">
+
+bubble_width_num<input type="number" name="bubble_width_num" class="bubble_width_num" v-model="BUBBLE_DATA[13]">
+bubble_height_num<input type="number" name="bubble_height_num" class="bubble_height_num" v-model="BUBBLE_DATA[14]">
+bubble_2_width_num<input type="number" name="bubble_2_width_num" class="bubble_2_width_num" v-model="BUBBLE_DATA[15]">
+bubble_2_height_num<input type="number" name="bubble_2_height_num" class="bubble_2_height_num" v-model="BUBBLE_DATA[16]">
+
+<input type="number" name="speak_size" class="speak_size" v-model="BUBBLE_DATA[17]" step="0.1">
 </div>
 </template>
 
@@ -184,8 +187,12 @@ bubble_no_show: <input type="checkbox" id="bubble_no_show_check" v-model="bubble
 
 <div class="parent_bubble">
 
-<div class="bubble" :class="{ no_show: bubble_no_show ? true : false }"><p class="speak" v-model="speak">{{ speak }}</p></div>
-<div class="bubble_2" :class="{ no_show: bubble_no_show ? true : false }"></div>
+<div v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
+<div :class="'bubble_'+BUBBLE_DATA_INDEX">
+    <p :class="'speak_'+BUBBLE_DATA_INDEX" v-model="BUBBLE_DATA[4]">{{ BUBBLE_DATA[4] }}</p>
+</div>
+<div :class="'bubble_'+BUBBLE_DATA_INDEX+'_2'"></div>
+</div>
 
 <div class="parent_image_layer">
 
@@ -225,9 +232,9 @@ parent_bubble_color: "#e66465",
 
 
 bubble_data_array: [
-[1,1,2,1,'cute cat cute dog fool people',0,40,10,50,0,60,"#f6b73c",'#C0C0C0','',],
-[2,2,3,2,'fool people make cool tool',0,40,10,50,0,60,"#dcc7c7",'#000000','',],
-[3,3,4,3,'tool is rule than fool animals',0,40,10,50,0,60,"#a3ffe3",'#C0C0C0','',],
+[1,1,4,1,'cute cat cute dog fool people',0,40,10,50,0,60,"#f6b73c",'#C0C0C0',360,360,360,360,30],
+[2,2,5,2,'fool people make cool tool',0,40,10,50,0,60,"#dcc7c7",'#000000',360,360,360,360,30],
+[3,3,6,3,'tool is rule than fool animals',0,40,10,50,0,60,"#a3ffe3",'#C0C0C0',360,360,360,360,30],
 ],
 bubble_column: 1,
 bubble_row: 1,
@@ -323,6 +330,14 @@ watch: {
      },
      deep: true
    },
+   bubble_data_array: {
+     handler() {
+        console.log('change');
+        this.fn_A();
+        // this.fn_C();
+     },
+     deep: true
+   },
 },
 computed: {
     foo_or_bar_matrix: function () {
@@ -338,10 +353,10 @@ beforeMount() {
 },
 mounted() {
     this.calc();
+    // this.switch_bubble();
     this.fn_A();
     // this.fn_B();
     this.fn_C();
-    this.switch_bubble();
 },
 updated() {
     this.calc();
@@ -355,6 +370,43 @@ calc() {
     this.height_num = this.MAX_HEIGHT / this.ROW_POINT;
 },
 fn_A() {
+// this.switch_bubble();
+
+const res = this.bubble_data_array.map((BUBBLE_DATA, BUBBLE_DATA_INDEX)=>
+`.bubble_${BUBBLE_DATA_INDEX}{
+    position: absolute;
+    left: ${BUBBLE_DATA[0] * this.width_num}px;
+    top: ${BUBBLE_DATA[1] * this.height_num}px;
+    width: ${BUBBLE_DATA[13]}px;
+    height: ${BUBBLE_DATA[14]}px;
+}
+.bubble_${BUBBLE_DATA_INDEX}_2{
+    position: absolute;
+    left: ${BUBBLE_DATA[2] * this.width_num}px;
+    top: ${BUBBLE_DATA[3] * this.height_num}px;
+        width: ${BUBBLE_DATA[15]}px;
+        height: ${BUBBLE_DATA[16]}px;
+    clip-path: polygon(${BUBBLE_DATA[5]}% ${BUBBLE_DATA[6]}%, ${BUBBLE_DATA[7]}% ${BUBBLE_DATA[8]}%, ${BUBBLE_DATA[9]}% ${BUBBLE_DATA[10]}%);
+}
+.speak_${BUBBLE_DATA_INDEX}{
+    font-size: ${BUBBLE_DATA[17]}px;
+}
+.bubble_${BUBBLE_DATA_INDEX}{
+    background-color: ${BUBBLE_DATA[11]};
+}
+.bubble_${BUBBLE_DATA_INDEX}_2{
+    background-color: ${BUBBLE_DATA[12]};
+}
+.bubble_${BUBBLE_DATA_INDEX}_color{
+    background-color: ${BUBBLE_DATA[11]};
+}
+.bubble_${BUBBLE_DATA_INDEX}_2_color{
+    background-color: ${BUBBLE_DATA[12]};
+}`
+).join("\n");
+
+console.log(this.bubble_data_array, res);
+
 document.querySelector(`.wrap`).textContent = `.parent_bubble{
     grid-template-columns: repeat(${this.COLUMN_POINT}, 1fr);
     grid-template-rows: repeat(${this.ROW_POINT}, 1fr);
@@ -368,34 +420,11 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
 .parent_bubble {
     width: ${this.MAX_WIDTH}px;
     height: ${this.MAX_HEIGHT}px;
-}
-
-.bubble{
-    grid-column: ${this.bubble_column}/${this.COLUMN_POINT};
-    grid-row: ${this.bubble_row}/${this.ROW_POINT};
-        width: ${this.width_num}px;
-        height: ${this.height_num}px;
-}
-.bubble_2{
-    grid-column: ${this.bubble_2_column}/${this.COLUMN_POINT};
-    grid-row: ${this.bubble_2_row}/${this.ROW_POINT};
-        width: ${this.width_num}px;
-        height: ${this.height_num}px;
-    clip-path: polygon(${this.a_0}% ${this.a_1}%, ${this.a_2}% ${this.a_3}%, ${this.a_4}% ${this.a_5}%);
-}
-.bubble{
-    background-color: ${this.bubble_color};
-}
-.bubble_2{
-    background-color: ${this.bubble_2_color};
-}
-.bubble_color{
-    background-color: ${this.bubble_color};
-}
-.bubble_2_color{
-    background-color: ${this.bubble_2_color};
-}
-.foo{
+}`
++
+res
++
+`.foo{
     width: ${this.MAX_WIDTH}px;
     height: ${this.MAX_HEIGHT}px;
 }
@@ -549,10 +578,10 @@ no_bubble(){
     return this.image_url_list.split("\n")[IMAGE_INDEX];
 },
 switch_bubble(){
-const NUMBER = 2;
+const NUMBER = 1;
 [
-this.bubble_row,
 this.bubble_column,
+this.bubble_row,
 this.bubble_2_column,
 this.bubble_2_row,
 this.speak,
@@ -564,7 +593,10 @@ this.a_4,
 this.a_5,
 this.bubble_color,
 this.bubble_2_color,
-this.picked,
+this.bubble_width_num,
+this.bubble_height_num,
+this.bubble_2_width_num,
+this.bubble_2_height_num,
 ]
 = this.bubble_data_array[NUMBER];
 },
