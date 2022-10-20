@@ -501,27 +501,22 @@ document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
 ;
 },
 fn_D(){
-const active_image_layer_list = R.flatten(
-                                document.querySelector(".active_layer_list")
-                                .value
-                                .split("\n")
-                                .map(V=>V.split(" ")
-                                            .map(VAL=>Number(VAL)))
-                                [this.active_layer_index]
-                            );
-const active_image_layer_display = active_image_layer_list.map(VAL=>`.layer_${VAL}{display: block}`).join("\n") + "\n";
-const active_bubble_list = R.flatten(
-                                document.querySelector(".active_bubble_list")
-                                .value
-                                .split("\n")
-                                .map(V=>V.split(" ")
-                                            .map(VAL=>Number(VAL)))
-                                [this.active_layer_index]
-                            );
-const active_bubble_display = active_bubble_list.map(VAL=>`.bubble_${VAL},
-.bubble_${VAL}_2,
-.speak_${VAL}{display: block}`).join("\n") + "\n";
-document.querySelector(`.active_bubble_and_image_layer`).textContent = active_bubble_display + active_image_layer_display;
+    const active_number_list_from_textarea = (CLASS_NAME_STR) => {
+                            return R.flatten(
+                                    document.querySelector(CLASS_NAME_STR)
+                                    .value
+                                    .split("\n")
+                                    .map(V=>V.split(" ")
+                                                .map(VAL=>Number(VAL)))
+                                    [this.active_layer_index]
+                                )};
+    const active_image_layer_list = active_number_list_from_textarea(".active_layer_list");
+    const active_bubble_list = active_number_list_from_textarea(".active_bubble_list");
+    const active_image_layer_display = active_image_layer_list.map(VAL=>`.layer_${VAL}{display: block}`).join("\n") + "\n";
+    const active_bubble_display = active_bubble_list.map(VAL=>`.bubble_${VAL},
+    .bubble_${VAL}_2,
+    .speak_${VAL}{display: block}`).join("\n") + "\n";
+    document.querySelector(`.active_bubble_and_image_layer`).textContent = active_bubble_display + active_image_layer_display;
 },
 swap(){
 [this.a_0, this.a_1] = [this.a_1, this.a_0];
