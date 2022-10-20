@@ -10,7 +10,9 @@
 <script src="./vue@3.2.36.global.prod.js"></script>
 <script src="./ramda.@0.28.0.js"></script>
 <script>
-console.log(`todo: insert timeline system`)
+console.log(`todo: insert timeline system
+https://stackoverflow.com/questions/20618355/how-to-write-a-countdown-timer-in-javascript
+`)
 </script>
 <!-- https://devtools.vuejs.org/ -->
 <style>
@@ -485,11 +487,8 @@ get_num_for_bubble(event) {
     const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
     const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
     const picked_bubble_data = this.bubble_data_array[this.picked_bubble_num];
-    picked_bubble_data[0] = COLUMN;
-    picked_bubble_data[1] = ROW;
-    picked_bubble_data[2] = COLUMN;
-    picked_bubble_data[3] = ROW;
-
+    [picked_bubble_data[0], picked_bubble_data[1], picked_bubble_data[2], picked_bubble_data[3]]
+        = [COLUMN, ROW, COLUMN, ROW];
 },
 fn_B(EVENT){
 },
