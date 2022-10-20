@@ -10,9 +10,7 @@
 <script src="./vue@3.2.36.global.prod.js"></script>
 <script src="./ramda.@0.28.0.js"></script>
 <script>
-console.log(`todo: all display bubble and image layer
-pick value change, remove bubble values
-insert timeline system`)
+console.log(`todo: insert timeline system`)
 </script>
 <!-- https://devtools.vuejs.org/ -->
 <style>
@@ -238,22 +236,26 @@ parent_bubble_color: "#e66465",
 
 
 bubble_data_array: [
+// => Array for Description => [
+// bubble_column,
+// bubble_row,
+// bubble_2_column,
+// bubble_2_row,
+// speak,
+// a_0,
+// a_1,
+// a_2,
+// a_3,
+// a_4,
+// a_5,
+// bubble_color,
+// bubble_2_color,
+// picked_bubble_num,
+// ],
 [1,1,4,1,'cute cat cute dog fool people',0,40,10,50,0,60,"#f6b73c",'#C0C0C0',360,360,360,360,30,],
 [2,2,5,2,'fool people make cool tool',0,40,10,50,0,60,"#dcc7c7",'#000000',360,360,360,360,30,],
 [3,3,6,3,'tool is rule than fool animals',0,40,10,50,0,60,"#a3ffe3",'#C0C0C0',360,360,360,360,30,],
 ],
-bubble_column: 1,
-bubble_row: 1,
-bubble_2_column: 1,
-bubble_2_row: 1,
-speak: 'cute cat cute dog fool people',
-a_0: 0, a_1: 40, a_2: 10, a_3: 50, a_4: 0, a_5: 60,
-bubble_color: "#f6b73c",
-bubble_2_color: '#C0C0C0',
-picked_bubble_num: 0,
-
-
-
 
 
 bubble_checked: false,
@@ -333,9 +335,7 @@ watch: {
    layer_chunk: {
      handler() {
         // console.log('layer_chunk change');
-        this.fn_A();
-        this.fn_C();
-        this.fn_D();
+        this.exe();
      },
      deep: true
    },
@@ -382,15 +382,15 @@ updated() {
 beforeUpdated() {
 },
 methods: {
-calc() {
-    this.width_num = this.MAX_WIDTH / this.COLUMN_POINT;
-    this.height_num = this.MAX_HEIGHT / this.ROW_POINT;
-},
 exe(){
     this.calc();
     this.fn_A();
     this.fn_C();
     this.fn_D();
+},
+calc() {
+    this.width_num = this.MAX_WIDTH / this.COLUMN_POINT;
+    this.height_num = this.MAX_HEIGHT / this.ROW_POINT;
 },
 fn_A() {
 const dynamic_bubble_css = this.bubble_data_array.map((BUBBLE_DATA, BUBBLE_DATA_INDEX)=>
@@ -484,18 +484,11 @@ get_num_for_image(event) {
 get_num_for_bubble(event) {
     const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
     const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
-    // this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
-    // this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
-// [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
-console.log(
-ROW,
-COLUMN,
-)
-const picked_bubble_data = this.bubble_data_array[this.picked_bubble_num];
-picked_bubble_data[0] = COLUMN;
-picked_bubble_data[1] = ROW;
-picked_bubble_data[2] = COLUMN;
-picked_bubble_data[3] = ROW;
+    const picked_bubble_data = this.bubble_data_array[this.picked_bubble_num];
+    picked_bubble_data[0] = COLUMN;
+    picked_bubble_data[1] = ROW;
+    picked_bubble_data[2] = COLUMN;
+    picked_bubble_data[3] = ROW;
 
 },
 fn_B(EVENT){
