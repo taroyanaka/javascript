@@ -71,6 +71,7 @@ color: #666;
     </style>
 <style class="wrap"></style>
 <style class="image_layer"></style>
+<style class="active_bubble_and_image_layer"></style>
 </head>
 <body>
 <div class="app">
@@ -183,7 +184,7 @@ bubble_2_height_num<input type="number" name="bubble_2_height_num" class="bubble
 bubble_no_show: <input type="checkbox" id="bubble_no_show_check" v-model="bubble_no_show">
 <label for="bubble_no_show_check">{{ bubble_no_show }}</label>
 
-<input type="number" name="active_layer_index" class="active_layer_index" v-model="active_layer_index" min="0" step="1" @change="fn_C">
+<input type="number" name="active_layer_index" class="active_layer_index" v-model="active_layer_index" min="0" step="1">
 
 <div class="parent_bubble">
 
@@ -325,16 +326,26 @@ active_layer_index: 0,
 watch: {
    layer_chunk: {
      handler() {
-        console.log('change');
+        console.log('layer_chunk change');
         this.fn_C();
+        this.fn_D();
      },
      deep: true
    },
    bubble_data_array: {
      handler() {
-        console.log('change');
+        console.log('bubble_data_array change');
         this.fn_A();
-        // this.fn_C();
+        this.fn_D();
+     },
+     deep: true
+   },
+   active_layer_index: {
+     handler() {
+        console.log('active_layer_index change');
+        this.fn_A();
+        this.fn_C();
+        this.fn_D();
      },
      deep: true
    },
@@ -353,10 +364,9 @@ beforeMount() {
 },
 mounted() {
     this.calc();
-    // this.switch_bubble();
     this.fn_A();
-    // this.fn_B();
     this.fn_C();
+    this.fn_D();
 },
 updated() {
     this.calc();
@@ -370,15 +380,14 @@ calc() {
     this.height_num = this.MAX_HEIGHT / this.ROW_POINT;
 },
 fn_A() {
-// this.switch_bubble();
-
-const res = this.bubble_data_array.map((BUBBLE_DATA, BUBBLE_DATA_INDEX)=>
+const dynamic_bubble_css = this.bubble_data_array.map((BUBBLE_DATA, BUBBLE_DATA_INDEX)=>
 `.bubble_${BUBBLE_DATA_INDEX}{
     position: absolute;
     left: ${BUBBLE_DATA[0] * this.width_num}px;
     top: ${BUBBLE_DATA[1] * this.height_num}px;
     width: ${BUBBLE_DATA[13]}px;
     height: ${BUBBLE_DATA[14]}px;
+    display: none;
 }
 .bubble_${BUBBLE_DATA_INDEX}_2{
     position: absolute;
@@ -387,6 +396,7 @@ const res = this.bubble_data_array.map((BUBBLE_DATA, BUBBLE_DATA_INDEX)=>
         width: ${BUBBLE_DATA[15]}px;
         height: ${BUBBLE_DATA[16]}px;
     clip-path: polygon(${BUBBLE_DATA[5]}% ${BUBBLE_DATA[6]}%, ${BUBBLE_DATA[7]}% ${BUBBLE_DATA[8]}%, ${BUBBLE_DATA[9]}% ${BUBBLE_DATA[10]}%);
+    display: none;
 }
 .speak_${BUBBLE_DATA_INDEX}{
     font-size: ${BUBBLE_DATA[17]}px;
@@ -405,8 +415,6 @@ const res = this.bubble_data_array.map((BUBBLE_DATA, BUBBLE_DATA_INDEX)=>
 }`
 ).join("\n");
 
-console.log(this.bubble_data_array, res);
-
 document.querySelector(`.wrap`).textContent = `.parent_bubble{
     grid-template-columns: repeat(${this.COLUMN_POINT}, 1fr);
     grid-template-rows: repeat(${this.ROW_POINT}, 1fr);
@@ -422,7 +430,7 @@ document.querySelector(`.wrap`).textContent = `.parent_bubble{
     height: ${this.MAX_HEIGHT}px;
 }`
 +
-res
+dynamic_bubble_css
 +
 `.foo{
     width: ${this.MAX_WIDTH}px;
@@ -454,22 +462,13 @@ res
 `;
 },
 get_num_for_image(event) {
-    // const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
-    // const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
     const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[0];
     const ROW = event.target.innerText.split(",").map(V=>Number(V))[1];
-console.log(
-    typeof COLUMN,
-    typeof ROW,
-    this.active_the_image_index,
-    this.layer_chunk,
-);
-const [OUTER_ARY_INDEX, IN_ARY_INDEX] = [this.active_the_image_index[0], this.active_the_image_index[1]];
-this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][1] = ROW;
-this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][2] = COLUMN;
+    const [OUTER_ARY_INDEX, IN_ARY_INDEX] = [this.active_the_image_index[0], this.active_the_image_index[1]];
+    this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][1] = ROW;
+    this.layer_chunk[OUTER_ARY_INDEX][IN_ARY_INDEX][2] = COLUMN;
 },
 get_num_for_bubble(event) {
-console.log("get_num_for_bubble");
     const ROW = event.target.innerText.split(",").map(V=>Number(V))[0];
     const COLUMN = event.target.innerText.split(",").map(V=>Number(V))[1];
     this.picked === 'bubble' ? [this.bubble_row, this.bubble_column] = [ROW, COLUMN] : [this.bubble_2_row, this.bubble_2_column] = [ROW, COLUMN];
@@ -477,17 +476,6 @@ console.log("get_num_for_bubble");
 fn_B(EVENT){
 },
 fn_C(){
-const active_list = R.flatten(
-                                document.querySelector(".active_layer_list")
-                                .value
-                                .split("\n")
-                                .map(V=>V.split(" ")
-                                            .map(VAL=>Number(VAL)))
-                                [this.active_layer_index]
-                            );
-
-const numbering = active_list.map(VAL=>`.layer_${VAL}{display: block}`).join("\n") + "\n";
-
 const leyer_N__image_N_n = this.layer_chunk.map((IN_ARY, OUTER_IDX)=>
 `.layer_${OUTER_IDX}{display: none}
 ` +
@@ -504,21 +492,36 @@ IN_ARY.map((V, IDX)=>
 `).join("")
 ).join("");
 
-console.log("fn_c");
-console.log(typeof this.active_layer_index);
-console.log(this.active_layer_index);
-console.log(active_list);
-console.log(numbering);
-
 document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
     width: ${this.MAX_WIDTH}px;
     height: ${this.MAX_HEIGH}px;
     position: absolute;
     top: 0; left: 0;
 }` + leyer_N__image_N_n
-// + numbering
-+ numbering
 ;
+},
+fn_D(){
+const active_image_layer_list = R.flatten(
+                                document.querySelector(".active_layer_list")
+                                .value
+                                .split("\n")
+                                .map(V=>V.split(" ")
+                                            .map(VAL=>Number(VAL)))
+                                [this.active_layer_index]
+                            );
+const active_image_layer_display = active_image_layer_list.map(VAL=>`.layer_${VAL}{display: block}`).join("\n") + "\n";
+const active_bubble_list = R.flatten(
+                                document.querySelector(".active_bubble_list")
+                                .value
+                                .split("\n")
+                                .map(V=>V.split(" ")
+                                            .map(VAL=>Number(VAL)))
+                                [this.active_layer_index]
+                            );
+const active_bubble_display = active_bubble_list.map(VAL=>`.bubble_${VAL},
+.bubble_${VAL}_2,
+.speak_${VAL}{display: block}`).join("\n") + "\n";
+document.querySelector(`.active_bubble_and_image_layer`).textContent = active_bubble_display + active_image_layer_display;
 },
 swap(){
 [this.a_0, this.a_1] = [this.a_1, this.a_0];
@@ -544,11 +547,8 @@ pattern_5(){
     [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 80, 10, 90, 0, 100,];
 },
 img_set(EVENT, OUTER_ARY_INDEX, IN_ARY_INDEX){
-// https://forum.vuejs.org/t/how-i-can-get-image-or-any-file-as-an-input-using-form-tag-then-store-and-display-on-page/127679/2
+    // https://forum.vuejs.org/t/how-i-can-get-image-or-any-file-as-an-input-using-form-tag-then-store-and-display-on-page/127679/2
     const files = EVENT.target.files;
-
-    console.log(files);
-
     if (!files.length) return;
     const reader = new FileReader();
     reader.readAsDataURL(files[0])
@@ -556,7 +556,6 @@ img_set(EVENT, OUTER_ARY_INDEX, IN_ARY_INDEX){
 },
 image_add(OUTER_ARY_INDEX){
     console.log(OUTER_ARY_INDEX);
-    // this.layer_chunk[OUTER_ARY_INDEX].push(['./1.png', 1, 1, 1, 1, 1]);
     this.layer_chunk[OUTER_ARY_INDEX].push(['./1.png', 0,0,0,0,0]);
 },
 active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX){
@@ -576,29 +575,6 @@ async get_image_url_list_from_url(){
 },
 no_bubble(){
     return this.image_url_list.split("\n")[IMAGE_INDEX];
-},
-switch_bubble(){
-const NUMBER = 1;
-[
-this.bubble_column,
-this.bubble_row,
-this.bubble_2_column,
-this.bubble_2_row,
-this.speak,
-this.a_0,
-this.a_1,
-this.a_2,
-this.a_3,
-this.a_4,
-this.a_5,
-this.bubble_color,
-this.bubble_2_color,
-this.bubble_width_num,
-this.bubble_height_num,
-this.bubble_2_width_num,
-this.bubble_2_height_num,
-]
-= this.bubble_data_array[NUMBER];
 },
 },
 }).mount('.app');
