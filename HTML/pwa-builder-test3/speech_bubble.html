@@ -166,8 +166,8 @@ bubble_2_height_num<input type="number" name="bubble_2_height_num" class="bubble
     <input type="text" name="bubble_2_color" v-model="bubble_2_color">
 </div> -->
 
-<button v-on:click.once="swap" value="swap">swap</button>
-<button v-on:click.once="numbers_minus_100" value="numbers_minus_100">numbers_minus_100</button>
+<button @click.once="swap" value="swap">swap</button>
+<button @click.once="numbers_minus_100" value="numbers_minus_100">numbers_minus_100</button>
 
 <button @click="pattern_1" value="pattern_1">pattern_1</button>
 <button @click="pattern_2" value="pattern_2">pattern_2</button>
@@ -336,28 +336,24 @@ all_display: true,
 watch: {
    layer_chunk: {
      handler() {
-        // console.log('layer_chunk change');
         this.exe();
      },
      deep: true
    },
    bubble_data_array: {
      handler() {
-        // console.log('bubble_data_array change');
         this.exe();
      },
      deep: true
    },
    active_layer_index: {
      handler() {
-        // console.log('active_layer_index change');
         this.exe();
      },
      deep: true
    },
    all_display: {
      handler() {
-        // console.log('active_layer_index change');
         this.exe();
      },
      deep: true
@@ -489,8 +485,6 @@ get_num_for_bubble(event) {
     const picked_bubble_data = this.bubble_data_array[this.picked_bubble_num];
     [picked_bubble_data[0], picked_bubble_data[1], picked_bubble_data[2], picked_bubble_data[3]]
         = [COLUMN, ROW, COLUMN, ROW];
-},
-fn_B(EVENT){
 },
 fn_C(){
 const leyer_N__image_N_n = this.layer_chunk.map((IN_ARY, OUTER_IDX)=>
