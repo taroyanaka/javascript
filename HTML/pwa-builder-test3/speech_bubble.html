@@ -164,23 +164,13 @@ bubble_2_height_num<input type="number" name="bubble_2_height_num" class="bubble
     <div v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
     <input type="radio" id="bubble" :value="BUBBLE_DATA_INDEX" v-model="picked_bubble_num">
     <label for="bubble" :style="'background-color: '+BUBBLE_DATA[11]">bubble: {{ BUBBLE_DATA_INDEX }}</label>
-
     <button @click="swap(BUBBLE_DATA)">swap</button>
-    <!-- <button @click="swap" v-model="swap">swap</button> -->
     <button @click="numbers_minus_100(BUBBLE_DATA)">numbers_minus_100</button>
-    <!-- <button @click="numbers_minus_100" v-model="numbers_minus_100">numbers_minus_100</button> -->
     <button @click="pattern_1(BUBBLE_DATA)">pattern_1</button>
-    <!-- <button @click="pattern_1" v-model="pattern_1">pattern_1</button> -->
     <button @click="pattern_2(BUBBLE_DATA)">pattern_2</button>
-    <!-- <button @click="pattern_2" v-model="pattern_2">pattern_2</button> -->
     <button @click="pattern_3(BUBBLE_DATA)">pattern_3</button>
-    <!-- <button @click="pattern_3" v-model="pattern_3">pattern_3</button> -->
     <button @click="pattern_4(BUBBLE_DATA)">pattern_4</button>
-    <!-- <button @click="pattern_4" v-model="pattern_4">pattern_4</button> -->
     <button @click="pattern_5(BUBBLE_DATA)">pattern_5</button>
-    <!-- <button @click="pattern_5" v-model="pattern_5">pattern_5</button> -->
-
-
     </div>
 <span>picked_bubble_num: {{ picked_bubble_num }}</span>
 </div>
