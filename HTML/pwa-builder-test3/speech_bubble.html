@@ -155,25 +155,8 @@ bubble_2_height_num<input type="number" name="bubble_2_height_num" class="bubble
     <label for="parent_bubble_color">parent_bubble_color</label>
     <input type="text" name="parent_bubble_color" v-model="parent_bubble_color">
 </div>
-<!-- <div class="bubble_color">
-    <input type="color" id="bubble_color" name="bubble_color" v-model='bubble_color'>
-    <label for="bubble_color">bubble_color</label>
-    <input type="text" name="bubble_color" v-model="bubble_color">
-</div>
-<div class="bubble_2_color">
-    <input type="color" id="bubble_2_color" name="bubble_2_color" v-model='bubble_2_color'>
-    <label for="bubble_2_color">bubble_2_color</label>
-    <input type="text" name="bubble_2_color" v-model="bubble_2_color">
-</div> -->
 
-<button @click.once="swap" value="swap">swap</button>
-<button @click.once="numbers_minus_100" value="numbers_minus_100">numbers_minus_100</button>
 
-<button @click="pattern_1" value="pattern_1">pattern_1</button>
-<button @click="pattern_2" value="pattern_2">pattern_2</button>
-<button @click="pattern_3" value="pattern_3">pattern_3</button>
-<button @click="pattern_4" value="pattern_4">pattern_4</button>
-<button @click="pattern_5" value="pattern_5">pattern_5</button>
 
 <div class="bubble_setter">
 <input type="checkbox" id="checkbox" v-model="bubble_checked">
@@ -181,6 +164,23 @@ bubble_2_height_num<input type="number" name="bubble_2_height_num" class="bubble
     <div v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
     <input type="radio" id="bubble" :value="BUBBLE_DATA_INDEX" v-model="picked_bubble_num">
     <label for="bubble" :style="'background-color: '+BUBBLE_DATA[11]">bubble: {{ BUBBLE_DATA_INDEX }}</label>
+
+    <button @click="swap(BUBBLE_DATA)">swap</button>
+    <!-- <button @click="swap" v-model="swap">swap</button> -->
+    <button @click="numbers_minus_100(BUBBLE_DATA)">numbers_minus_100</button>
+    <!-- <button @click="numbers_minus_100" v-model="numbers_minus_100">numbers_minus_100</button> -->
+    <button @click="pattern_1(BUBBLE_DATA)">pattern_1</button>
+    <!-- <button @click="pattern_1" v-model="pattern_1">pattern_1</button> -->
+    <button @click="pattern_2(BUBBLE_DATA)">pattern_2</button>
+    <!-- <button @click="pattern_2" v-model="pattern_2">pattern_2</button> -->
+    <button @click="pattern_3(BUBBLE_DATA)">pattern_3</button>
+    <!-- <button @click="pattern_3" v-model="pattern_3">pattern_3</button> -->
+    <button @click="pattern_4(BUBBLE_DATA)">pattern_4</button>
+    <!-- <button @click="pattern_4" v-model="pattern_4">pattern_4</button> -->
+    <button @click="pattern_5(BUBBLE_DATA)">pattern_5</button>
+    <!-- <button @click="pattern_5" v-model="pattern_5">pattern_5</button> -->
+
+
     </div>
 <span>picked_bubble_num: {{ picked_bubble_num }}</span>
 </div>
@@ -239,20 +239,20 @@ parent_bubble_color: "#e66465",
 
 bubble_data_array: [
 // => Array for Description => [
-// bubble_column,
-// bubble_row,
-// bubble_2_column,
-// bubble_2_row,
-// speak,
-// a_0,
-// a_1,
-// a_2,
-// a_3,
-// a_4,
-// a_5,
-// bubble_color,
-// bubble_2_color,
-// picked_bubble_num,
+// 0 // bubble_column,
+// 1 // bubble_row,
+// 2 // bubble_2_column,
+// 3 // bubble_2_row,
+// 4 // speak,
+// 5 // a_0,
+// 6 // a_1,
+// 7 // a_2,
+// 8 // a_3,
+// 9 // a_4,
+// 10 // a_5,
+// 11 // bubble_color,
+// 12 // bubble_2_color,
+// 13 // picked_bubble_num,
 // ],
 [1,1,4,1,'cute cat cute dog fool people',0,40,10,50,0,60,"#f6b73c",'#C0C0C0',360,360,360,360,30,],
 [2,2,5,2,'fool people make cool tool',0,40,10,50,0,60,"#dcc7c7",'#000000',360,360,360,360,30,],
@@ -529,29 +529,52 @@ fn_D(){
 .speak_${VAL}{display: block}`).join("\n") + "\n";
     document.querySelector(`.active_bubble_and_image_layer`).textContent = active_bubble_display + active_image_layer_display;
 },
-swap(){
-[this.a_0, this.a_1] = [this.a_1, this.a_0];
-[this.a_2, this.a_3] = [this.a_3, this.a_2];
-[this.a_4, this.a_5] = [this.a_5, this.a_4];
+swap(BUBBLE_DATA){
+[BUBBLE_DATA[5], BUBBLE_DATA[6]] = [BUBBLE_DATA[6], BUBBLE_DATA[5]];
+[BUBBLE_DATA[7], BUBBLE_DATA[8]] = [BUBBLE_DATA[8], BUBBLE_DATA[7]];
+[BUBBLE_DATA[8], BUBBLE_DATA[9]] = [BUBBLE_DATA[9], BUBBLE_DATA[8]];
 },
-numbers_minus_100(){
-    [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [100 - this.a_0, 100 - this.a_1, 100 - this.a_2, 100 - this.a_3, 100 - this.a_4, 100 - this.a_5,];
+numbers_minus_100(BUBBLE_DATA){
+    [BUBBLE_DATA[5],BUBBLE_DATA[6],BUBBLE_DATA[7],BUBBLE_DATA[8],BUBBLE_DATA[8],BUBBLE_DATA[9],] = [100 - BUBBLE_DATA[5], 100 - BUBBLE_DATA[6], 100 - BUBBLE_DATA[7], 100 - BUBBLE_DATA[8], 100 - BUBBLE_DATA[8], 100 - BUBBLE_DATA[9],];
 },
-pattern_1(){
-    [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 0, 10, 10, 0, 20,];
+pattern_1(BUBBLE_DATA){
+    [BUBBLE_DATA[5],BUBBLE_DATA[6],BUBBLE_DATA[7],BUBBLE_DATA[8],BUBBLE_DATA[8],BUBBLE_DATA[9],] = [0, 0, 10, 10, 0, 20,];
 },
-pattern_2(){
-    [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 20, 10, 30, 0, 40,];
+pattern_2(BUBBLE_DATA){
+    [BUBBLE_DATA[5],BUBBLE_DATA[6],BUBBLE_DATA[7],BUBBLE_DATA[8],BUBBLE_DATA[8],BUBBLE_DATA[9],] = [0, 20, 10, 30, 0, 40,];
 },
-pattern_3(){
-    [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 40, 10, 50, 0, 60,];
+pattern_3(BUBBLE_DATA){
+    [BUBBLE_DATA[5],BUBBLE_DATA[6],BUBBLE_DATA[7],BUBBLE_DATA[8],BUBBLE_DATA[8],BUBBLE_DATA[9],] = [0, 40, 10, 50, 0, 60,];
 },
-pattern_4(){
-    [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 60, 10, 70, 0, 80,];
+pattern_4(BUBBLE_DATA){
+    [BUBBLE_DATA[5],BUBBLE_DATA[6],BUBBLE_DATA[7],BUBBLE_DATA[8],BUBBLE_DATA[8],BUBBLE_DATA[9],] = [0, 60, 10, 70, 0, 80,];
 },
-pattern_5(){
-    [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 80, 10, 90, 0, 100,];
+pattern_5(BUBBLE_DATA){
+    [BUBBLE_DATA[5],BUBBLE_DATA[6],BUBBLE_DATA[7],BUBBLE_DATA[8],BUBBLE_DATA[8],BUBBLE_DATA[9],] = [0, 80, 10, 90, 0, 100,];
 },
+// swap(BUBBLE_DATA){
+// [this.a_0, this.a_1] = [this.a_1, this.a_0];
+// [this.a_2, this.a_3] = [this.a_3, this.a_2];
+// [this.a_4, this.a_5] = [this.a_5, this.a_4];
+// },
+// numbers_minus_100(BUBBLE_DATA){
+//     [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [100 - this.a_0, 100 - this.a_1, 100 - this.a_2, 100 - this.a_3, 100 - this.a_4, 100 - this.a_5,];
+// },
+// pattern_1(BUBBLE_DATA){
+//     [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 0, 10, 10, 0, 20,];
+// },
+// pattern_2(BUBBLE_DATA){
+//     [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 20, 10, 30, 0, 40,];
+// },
+// pattern_3(BUBBLE_DATA){
+//     [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 40, 10, 50, 0, 60,];
+// },
+// pattern_4(BUBBLE_DATA){
+//     [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 60, 10, 70, 0, 80,];
+// },
+// pattern_5(BUBBLE_DATA){
+//     [this.a_0,this.a_1,this.a_2,this.a_3,this.a_4,this.a_5,] = [0, 80, 10, 90, 0, 100,];
+// },
 img_set(EVENT, OUTER_ARY_INDEX, IN_ARY_INDEX){
     // https://forum.vuejs.org/t/how-i-can-get-image-or-any-file-as-an-input-using-form-tag-then-store-and-display-on-page/127679/2
     const files = EVENT.target.files;
