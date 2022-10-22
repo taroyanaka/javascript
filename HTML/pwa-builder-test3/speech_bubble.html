@@ -183,6 +183,10 @@ all_display: <input type="checkbox" id="all_display" v-model="all_display">
 <button @click="startTimer">!!!startTimer!!!</button>
 <span class="timer"></span>
 
+<div v-for="(TMP_TL, TMP_TL_INDEX) in tmp_tl_array">
+    <input type="number" name="TMP_TL" class="TMP_TL" v-model="tmp_tl_array(TMP_TL_INDEX)">
+</div>
+
 
 <div class="parent_bubble">
 
@@ -340,6 +344,7 @@ active_bubble_list: `0
 0 1
 1 2
 2`,
+tmp_tl_array: [],
 }
 },
 watch: {
@@ -603,6 +608,11 @@ no_bubble(){
 speak_array_add(){
     this.speak_array.push('foo bar baz');
 },
+make_tmp_tl_array(){
+    const longer_active_list_line_length = this.active_layer_list.split("\n").length >= this.active_bubble_list.split("\n").length ?
+                                            this.active_layer_list.split("\n").length : this.active_bubble_list.split("\n").length;
+    this.tmp_tl_array = R.range(0, longer_active_list_line_length);
+},
 
 startTimer() {
 let index_time = 0;
@@ -610,6 +620,7 @@ let index_time = 0;
     var timer = duration
     let minutes = 0;
     let seconds = 0;
+this.make_tmp_tl_array()
 console.log(timer);
     setInterval(() => {
         minutes = parseInt(timer / 60, 10);
@@ -618,14 +629,10 @@ console.log(timer);
 
 this.active_layer_index = index_time;
 
-const longer_array_length = this.active_layer_list.length >= this.active_bubble_list.length ? this.active_layer_list.length : this.active_bubble_list.length
-const make_tmp_tl_array = () => R.range(0, longer_array_length);
-
 console.log(
-longer_array_length,
-make_tmp_tl_array(),
+this.tmp_tl_array,
 "index_time is " + index_time,
-"index_time_IDX is " + make_tmp_tl_array().map((V, IDX)=>V < index_time ? true : false).findIndex(V=>V===true),
+"index_time_IDX is " + this.tmp_tl_array.map((V, IDX)=>V < index_time ? true : false).findIndex(V=>V===true),
 // "index_time_IDX is " + tl.map((V, IDX)=>V < index_time ? true : false).findIndex(V=>V===true),
 index_time = index_time + 1,
 "index_time_plus_one is " + index_time,
