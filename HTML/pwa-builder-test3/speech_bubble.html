@@ -184,7 +184,8 @@ all_display: <input type="checkbox" id="all_display" v-model="all_display">
 <span class="timer"></span>
 
 <div v-for="(TMP_TL, TMP_TL_INDEX) in tmp_tl_array">
-    <input type="number" name="TMP_TL" class="TMP_TL" v-model="tmp_tl_array(TMP_TL_INDEX)">
+    <input type="number" name="a_5" class="a_5" @change="change_tl_array(TMP_TL_INDEX)" v-model="TMP_TL">
+    <!-- <input type="number" name="TMP_TL" class="TMP_TL" v-model="tmp_tl_array(TMP_TL_INDEX)"> -->
 </div>
 
 
@@ -405,6 +406,8 @@ exe(){
     this.fn_A();
     this.fn_C();
     this.fn_D();
+// this.change_tl_array();
+// this.make_tmp_tl_array();
 },
 calc() {
     this.width_num = this.MAX_WIDTH / this.COLUMN_POINT;
@@ -534,8 +537,7 @@ document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
 ;
 },
 fn_D(){
-this.active_bubble_list
-this.active_layer_list
+    // this.make_tmp_tl_array();
     const active_number_list_from_textarea = (LIST_NAME) => {
         const target_str = LIST_NAME === 'active_bubble_list' ? this.active_bubble_list : this.active_layer_list;
         return  target_str
@@ -608,6 +610,13 @@ no_bubble(){
 speak_array_add(){
     this.speak_array.push('foo bar baz');
 },
+change_tl_array(INDEX){
+    this.tmp_tl_array =
+        this.tmp_tl_array
+                        // .filter((V,IDX)=> IDX > INDEX)
+                        .map((V, IDX)=>IDX > INDEX ? V+1 : V);
+    // this.tl_array = this.tl_array.map((V, IDX)=>IDX !== 0 ? V+1 : V);
+},
 make_tmp_tl_array(){
     const longer_active_list_line_length = this.active_layer_list.split("\n").length >= this.active_bubble_list.split("\n").length ?
                                             this.active_layer_list.split("\n").length : this.active_bubble_list.split("\n").length;
@@ -615,12 +624,12 @@ make_tmp_tl_array(){
 },
 
 startTimer() {
-let index_time = 0;
+    let index_time = 0;
     let duration = 3;
     var timer = duration
     let minutes = 0;
     let seconds = 0;
-this.make_tmp_tl_array()
+    this.make_tmp_tl_array();
 console.log(timer);
     setInterval(() => {
         minutes = parseInt(timer / 60, 10);
@@ -633,7 +642,6 @@ console.log(
 this.tmp_tl_array,
 "index_time is " + index_time,
 "index_time_IDX is " + this.tmp_tl_array.map((V, IDX)=>V < index_time ? true : false).findIndex(V=>V===true),
-// "index_time_IDX is " + tl.map((V, IDX)=>V < index_time ? true : false).findIndex(V=>V===true),
 index_time = index_time + 1,
 "index_time_plus_one is " + index_time,
 )
