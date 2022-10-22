@@ -81,14 +81,8 @@ color: #666;
 <body>
 <div class="app">
 
-<textarea name="active_layer_list" class="active_layer_list" placeholder="active_layer_list" cols="30" rows="10">0
-0 1
-1 2
-2</textarea>
-<textarea name="active_bubble_list" class="active_bubble_list" placeholder="active_bubble_list" cols="30" rows="10">0
-0 1
-1 2
-2</textarea>
+<textarea name="active_layer_list" class="active_layer_list" placeholder="active_layer_list" v-model="active_layer_list" cols="30" rows="10"></textarea>
+<textarea name="active_bubble_list" class="active_bubble_list" placeholder="active_bubble_list" v-model="active_bubble_list" cols="30" rows="10"></textarea>
 
 <span>{{ $data }}</span>
 
@@ -336,6 +330,16 @@ select_image_url_index: 0,
 image_url_file_url: 'https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/png_file_url.txt',
 active_layer_index: 0,
 all_display: false,
+
+
+active_layer_list: `0
+0 1
+1 2
+2`,
+active_bubble_list: `0
+0 1
+1 2
+2`,
 }
 },
 watch: {
@@ -525,17 +529,18 @@ document.querySelector(`.image_layer`).textContent = `.parent_image_layer{
 ;
 },
 fn_D(){
-    const active_number_list_from_textarea = (CLASS_NAME_STR) => {
-                            return R.flatten(
-                                    document.querySelector(CLASS_NAME_STR)
-                                    .value
-                                    .split("\n")
-                                    .map(V=>V.split(" ")
-                                                .map(VAL=>Number(VAL)))
-                                    [this.active_layer_index]
-                                )};
-    const active_image_layer_list = this.all_display ? this.layer_chunk.map((V,IDX)=>IDX) : active_number_list_from_textarea(".active_layer_list");
-    const active_bubble_list = this.all_display ? this.bubble_data_array.map((V,IDX)=>IDX) : active_number_list_from_textarea(".active_bubble_list");
+this.active_bubble_list
+this.active_layer_list
+    const active_number_list_from_textarea = (LIST_NAME) => {
+        const target_str = LIST_NAME === 'active_bubble_list' ? this.active_bubble_list : this.active_layer_list;
+        return  target_str
+                .split("\n")
+                .map(V=>V.split(" ")
+                    .map(VAL=>Number(VAL)))
+                [this.active_layer_index];
+    };
+    const active_image_layer_list = this.all_display ? this.layer_chunk.map((V,IDX)=>IDX) : active_number_list_from_textarea("active_layer_list");
+    const active_bubble_list = this.all_display ? this.bubble_data_array.map((V,IDX)=>IDX) : active_number_list_from_textarea("active_bubble_list");
     const active_image_layer_display = active_image_layer_list.map(VAL=>`.layer_${VAL}{display: block}`).join("\n") + "\n";
     const active_bubble_display = active_bubble_list.map(VAL=>`.bubble_${VAL},
 .bubble_${VAL}_2,
@@ -601,7 +606,7 @@ speak_array_add(){
 
 startTimer() {
 let index_time = 0;
-    let duration = 4;
+    let duration = 3;
     var timer = duration
     let minutes = 0;
     let seconds = 0;
@@ -613,19 +618,21 @@ console.log(timer);
 
 this.active_layer_index = index_time;
 
+const longer_array_length = this.active_layer_list.length >= this.active_bubble_list.length ? this.active_layer_list.length : this.active_bubble_list.length
+const make_tmp_tl_array = () => R.range(0, longer_array_length);
+
 console.log(
-    // timeline.map((V, IDX) => V.includes(timer) ? IDX : 0)
-// .filter(V => V !== 0)
+longer_array_length,
+make_tmp_tl_array(),
 "index_time is " + index_time,
-"index_time_IDX is " + timeline.map((V, IDX)=>V.includes(index_time)).findIndex(V=>V===true),
+"index_time_IDX is " + make_tmp_tl_array().map((V, IDX)=>V < index_time ? true : false).findIndex(V=>V===true),
+// "index_time_IDX is " + tl.map((V, IDX)=>V < index_time ? true : false).findIndex(V=>V===true),
 index_time = index_time + 1,
 "index_time_plus_one is " + index_time,
 )
 
-// ]
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
-
 
         document.querySelector(".timer").textContent = minutes + ":" + seconds;
 
@@ -645,6 +652,7 @@ const timeline =[
 [5, 6],
 [6, 9],
 ];
+const tl = [0,2,5,6,9];
 
 </script>
 </body>
