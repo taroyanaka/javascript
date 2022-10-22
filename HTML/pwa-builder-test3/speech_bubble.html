@@ -80,6 +80,7 @@ color: #666;
 </head>
 <body>
 <div class="app">
+
 <textarea name="active_layer_list" class="active_layer_list" placeholder="active_layer_list" cols="30" rows="10">0
 0 1
 1 2
@@ -179,11 +180,14 @@ bubble_no_show: <input type="checkbox" id="bubble_no_show_check" v-model="bubble
 <label for="bubble_no_show_check">{{ bubble_no_show }}</label>
 
 <input type="number" name="active_layer_index" class="active_layer_index" v-model="active_layer_index" min="0" step="1">
-<input type="checkbox" id="all_display" v-model="all_display">
+all_display: <input type="checkbox" id="all_display" v-model="all_display">
 
 <textarea v-for="(speak, speak_array_IDX) in speak_array" v-model="speak_array[speak_array_IDX]"></textarea>
 <button @click="speak_array_add">speak_array_add</button>
 
+
+<button @click="startTimer">!!!startTimer!!!</button>
+<span class="timer"></span>
 
 
 <div class="parent_bubble">
@@ -331,7 +335,7 @@ https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-
 select_image_url_index: 0,
 image_url_file_url: 'https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/png_file_url.txt',
 active_layer_index: 0,
-all_display: true,
+all_display: false,
 }
 },
 watch: {
@@ -594,8 +598,54 @@ no_bubble(){
 speak_array_add(){
     this.speak_array.push('foo bar baz');
 },
+
+startTimer() {
+let index_time = 0;
+    let duration = 4;
+    var timer = duration
+    let minutes = 0;
+    let seconds = 0;
+console.log(timer);
+    setInterval(() => {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+
+this.active_layer_index = index_time;
+
+console.log(
+    // timeline.map((V, IDX) => V.includes(timer) ? IDX : 0)
+// .filter(V => V !== 0)
+"index_time is " + index_time,
+"index_time_IDX is " + timeline.map((V, IDX)=>V.includes(index_time)).findIndex(V=>V===true),
+index_time = index_time + 1,
+"index_time_plus_one is " + index_time,
+)
+
+// ]
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+
+        document.querySelector(".timer").textContent = minutes + ":" + seconds;
+
+        if (--timer < 0) {
+            timer = duration;
+index_time = 0;
+        }
+    }, 1000);
+},
+
 },
 }).mount('.app');
+
+const timeline =[
+[0, 1],
+[2, 4],
+[5, 6],
+[6, 9],
+];
+
 </script>
 </body>
 </html>
