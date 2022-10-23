@@ -646,6 +646,13 @@ pre_set_timer(){
     this.timer = this.duration = this.make_tmp_tl_array().slice(-1)[0];
 },
 start_timer() {
+const timer_stop = (INTERVAL_ID) => {
+    if (this.timer < 0) {
+        this.timer = this.duration;
+        this.index_time = 0;
+        clearInterval(INTERVAL_ID);
+    }
+};
 const intervalID = setInterval(() => {
     // range_list([0,2,5,7]);
     // => [[0, 1], [2, 3, 4], [5, 6]]
@@ -665,11 +672,7 @@ console.log(
 "index_time_IDX: " ,index_time_IDX,
 "index_time: " ,this.index_time,
 );
-        if (this.timer < 0) {
-            this.timer = this.duration;
-            this.index_time = 0;
-            clearInterval(intervalID);
-        }
+    timer_stop(intervalID);
 }, 1000);
 },
 
