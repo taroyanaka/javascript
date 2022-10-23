@@ -180,14 +180,14 @@ all_display: <input type="checkbox" id="all_display" v-model="all_display">
 <button @click="speak_array_add">speak_array_add</button>
 
 
-<button @click="startTimer">!!!startTimer!!!</button>
+<button @click="start_timer">!!!start_timer!!!</button>
 <span class="timer"></span>
 
 <div v-for="(TMP_TL, TMP_TL_INDEX) in tmp_tl_array">
     <input type="number" name="a_5" class="a_5" @change="change_tl_array(TMP_TL_INDEX)" v-model="TMP_TL">
     <!-- <input type="number" name="TMP_TL" class="TMP_TL" v-model="tmp_tl_array(TMP_TL_INDEX)"> -->
 </div>
-
+<button @click="pre_set_timer">pre_set_timer</button>
 
 <div class="parent_bubble">
 
@@ -346,6 +346,9 @@ active_bubble_list: `0
 1 2
 2`,
 tmp_tl_array: [],
+index_time: 0,
+timer: 0,
+duration: 0,
 }
 },
 watch: {
@@ -616,6 +619,8 @@ change_tl_array(INDEX){
                         // .filter((V,IDX)=> IDX > INDEX)
                         .map((V, IDX)=>IDX > INDEX ? V+1 : V);
     // this.tl_array = this.tl_array.map((V, IDX)=>IDX !== 0 ? V+1 : V);
+
+    this.timer = this.duration = this.tmp_tl_array[this.tmp_tl_array.length - 1];
 },
 make_tmp_tl_array(){
     const longer_active_list_line_length = this.active_layer_list.split("\n").length >= this.active_bubble_list.split("\n").length ?
@@ -623,44 +628,39 @@ make_tmp_tl_array(){
     this.tmp_tl_array = R.range(0, longer_active_list_line_length);
     return R.range(0, longer_active_list_line_length);
 },
+pre_set_timer(){
+    this.index_time = 0;
+    this.timer = this.duration = this.make_tmp_tl_array().slice(-1)[0];
+},
+start_timer() {
+const intervalID = setInterval(() => {
+// range_list([0,2,5,7]);
+// => [[0, 1], [2, 3, 4], [5, 6]]
+const range_list = (LIST) => LIST.reduce((A,V,IDX,LIST)=>{A.push([LIST[IDX], LIST[IDX+1]]);return A;},A=[]).slice(0, -1).map(V=>R.range(V[0], V[1]));
+const res = range_list(this.tmp_tl_array);
+    const pre_index_time_IDX = res.map((V, IDX)=>V.includes( this.index_time ) ? true : false);
+    let index_time_IDX = res.map((V, IDX)=>V.includes( this.index_time ) ? true : false)
+                                .findIndex(V=>V===true);
+    index_time_IDX = index_time_IDX === -1 ? (pre_index_time_IDX.length) : index_time_IDX;
+    this.index_time = this.index_time + 1;
 
-startTimer() {
-    let index_time = 0;
-    let duration = this.make_tmp_tl_array().slice(-1)[0]
-    var timer = duration
-    let minutes = 0;
-    let seconds = 0;
+    // this.active_layer_index = this.index_time;
+    this.active_layer_index = index_time_IDX;
 
-    console.log(timer);
-    const intervalID = setInterval(() => {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
+    console.log(
+"pre_index_time_IDX: ", pre_index_time_IDX,
+"this.tmp_tl_array: ", this.tmp_tl_array,
+"index_time_IDX: " ,index_time_IDX,
+"index_time: " ,this.index_time,
+);
 
-
-this.active_layer_index = index_time;
-
-const index_time_IDX = this.tmp_tl_array.map((V, IDX)=>V < index_time ? true : false).findIndex(V=>V===true);
-
-console.log(
-this.tmp_tl_array,
-"index_time is " + index_time,
-"index_time_IDX is " + index_time_IDX,
-index_time = index_time + 1,
-"index_time_plus_one is " + index_time,
-)
-
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        document.querySelector(".timer").textContent = minutes + ":" + seconds;
-
-        if (--timer < 0) {
-            timer = duration;
-            index_time = 0;
-          clearInterval(intervalID);
-
+    this.timer = this.timer - 1;
+        if (this.timer < 0) {
+            this.timer = this.duration;
+            this.index_time = 0;
+            clearInterval(intervalID);
         }
-    }, 1000);
+}, 1000);
 },
 
 },
