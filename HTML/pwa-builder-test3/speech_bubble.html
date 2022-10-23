@@ -646,9 +646,9 @@ pre_set_timer(){
     this.timer = this.duration = this.make_tmp_tl_array().slice(-1)[0];
 },
 start_timer() {
-// range_list([0,2,5,7]);
-// => [[0, 1], [2, 3, 4], [5, 6]]
 const intervalID = setInterval(() => {
+    // range_list([0,2,5,7]);
+    // => [[0, 1], [2, 3, 4], [5, 6]]
     const range_list = (LIST) => LIST.reduce((A,V,IDX,LIST)=>{A.push([LIST[IDX], LIST[IDX+1]]);return A;},A=[]).slice(0, -1).map(V=>R.range(V[0], V[1]));
     const res = range_list(this.tmp_tl_array);
     const pre_index_time_IDX = res.map((V, IDX)=>V.includes( this.index_time ) ? true : false);
