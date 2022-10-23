@@ -648,12 +648,12 @@ pre_set_timer(){
 start_timer() {
 // range_list([0,2,5,7]);
 // => [[0, 1], [2, 3, 4], [5, 6]]
-const range_list = (LIST) => LIST.reduce((A,V,IDX,LIST)=>{A.push([LIST[IDX], LIST[IDX+1]]);return A;},A=[]).slice(0, -1).map(V=>R.range(V[0], V[1]));
-const res = range_list(this.tmp_tl_array);
-const pre_index_time_IDX = res.map((V, IDX)=>V.includes( this.index_time ) ? true : false);
-let index_time_IDX = res.map((V, IDX)=>V.includes( this.index_time ) ? true : false)
-                            .findIndex(V=>V===true);
 const intervalID = setInterval(() => {
+    const range_list = (LIST) => LIST.reduce((A,V,IDX,LIST)=>{A.push([LIST[IDX], LIST[IDX+1]]);return A;},A=[]).slice(0, -1).map(V=>R.range(V[0], V[1]));
+    const res = range_list(this.tmp_tl_array);
+    const pre_index_time_IDX = res.map((V, IDX)=>V.includes( this.index_time ) ? true : false);
+    let index_time_IDX = res.map((V, IDX)=>V.includes( this.index_time ) ? true : false)
+                                .findIndex(V=>V===true);
     // when .findIndex return -1, it means that the index_time is not in the range_list
     index_time_IDX = index_time_IDX === -1 ? (pre_index_time_IDX.length) : index_time_IDX;
     this.index_time = this.index_time + 1;
