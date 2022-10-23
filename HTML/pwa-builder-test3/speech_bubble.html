@@ -621,27 +621,30 @@ make_tmp_tl_array(){
     const longer_active_list_line_length = this.active_layer_list.split("\n").length >= this.active_bubble_list.split("\n").length ?
                                             this.active_layer_list.split("\n").length : this.active_bubble_list.split("\n").length;
     this.tmp_tl_array = R.range(0, longer_active_list_line_length);
+    return R.range(0, longer_active_list_line_length);
 },
 
 startTimer() {
     let index_time = 0;
-    let duration = 3;
+    let duration = this.make_tmp_tl_array().slice(-1)[0]
     var timer = duration
     let minutes = 0;
     let seconds = 0;
-    this.make_tmp_tl_array();
-console.log(timer);
-    setInterval(() => {
+
+    console.log(timer);
+    const intervalID = setInterval(() => {
         minutes = parseInt(timer / 60, 10);
         seconds = parseInt(timer % 60, 10);
 
 
 this.active_layer_index = index_time;
 
+const index_time_IDX = this.tmp_tl_array.map((V, IDX)=>V < index_time ? true : false).findIndex(V=>V===true);
+
 console.log(
 this.tmp_tl_array,
 "index_time is " + index_time,
-"index_time_IDX is " + this.tmp_tl_array.map((V, IDX)=>V < index_time ? true : false).findIndex(V=>V===true),
+"index_time_IDX is " + index_time_IDX,
 index_time = index_time + 1,
 "index_time_plus_one is " + index_time,
 )
@@ -653,7 +656,9 @@ index_time = index_time + 1,
 
         if (--timer < 0) {
             timer = duration;
-index_time = 0;
+            index_time = 0;
+          clearInterval(intervalID);
+
         }
     }, 1000);
 },
