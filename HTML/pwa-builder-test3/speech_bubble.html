@@ -184,10 +184,11 @@ all_display: <input type="checkbox" id="all_display" v-model="all_display">
 <span class="timer"></span>
 
 <div v-for="(TMP_TL, TMP_TL_INDEX) in tmp_tl_array">
-    <input type="number" name="a_5" class="a_5" @change="change_tl_array(TMP_TL_INDEX)" v-model="TMP_TL">
-    <!-- <input type="number" name="TMP_TL" class="TMP_TL" v-model="tmp_tl_array(TMP_TL_INDEX)"> -->
+    <input type="number" name="a_5" class="a_5" @change="change_tl_array($event, TMP_TL_INDEX)" v-model="TMP_TL">
 </div>
 <button @click="pre_set_timer">pre_set_timer</button>
+
+<textarea cols="30" rows="10" @input="change_tl_str" v-model="tmp_tl_str"></textarea>
 
 <div class="parent_bubble">
 
@@ -346,9 +347,11 @@ active_bubble_list: `0
 1 2
 2`,
 tmp_tl_array: [],
+tmp_tl_str: '',
 index_time: 0,
 timer: 0,
 duration: 0,
+
 }
 },
 watch: {
@@ -390,6 +393,9 @@ computed: {
         const x_y_number = R.xprod(x, y);
         return x_y_number.map(V=> (V[0]).toString() + "," + (V[1]).toString() );
     },
+    // tmp_tl_str: function () {
+    //     return this.tmp_tl_array.join("\n");
+    // },
 },
 created() {
 },
@@ -613,19 +619,26 @@ no_bubble(){
 speak_array_add(){
     this.speak_array.push('foo bar baz');
 },
-change_tl_array(INDEX){
-    this.tmp_tl_array =
-        this.tmp_tl_array
-                        // .filter((V,IDX)=> IDX > INDEX)
-                        .map((V, IDX)=>IDX > INDEX ? V+1 : V);
-    // this.tl_array = this.tl_array.map((V, IDX)=>IDX !== 0 ? V+1 : V);
-
+make_tl_str(){
+    this.tmp_tl_str = this.tmp_tl_array.join("\n");
+},
+change_tl_str(){
+    this.tmp_tl_array = this.tmp_tl_str.split("\n");
+},
+change_tl_array(EVENT, INDEX){
+    const up_or_down = this.tmp_tl_array[INDEX] < EVENT.target.value ? 'up' : 'down';
+    this.tmp_tl_array = up_or_down === 'up' ?
+            this.tmp_tl_array.map(V=>Number(V)).map((V, IDX)=>IDX >= INDEX ? V + 1 : V)
+            :
+            this.tmp_tl_array.map(V=>Number(V)).map((V, IDX)=>IDX >= INDEX ? V - 1 : V);
+    this.make_tl_str();
     this.timer = this.duration = this.tmp_tl_array[this.tmp_tl_array.length - 1];
 },
 make_tmp_tl_array(){
     const longer_active_list_line_length = this.active_layer_list.split("\n").length >= this.active_bubble_list.split("\n").length ?
                                             this.active_layer_list.split("\n").length : this.active_bubble_list.split("\n").length;
     this.tmp_tl_array = R.range(0, longer_active_list_line_length);
+    this.make_tl_str();
     return R.range(0, longer_active_list_line_length);
 },
 pre_set_timer(){
@@ -633,29 +646,25 @@ pre_set_timer(){
     this.timer = this.duration = this.make_tmp_tl_array().slice(-1)[0];
 },
 start_timer() {
-const intervalID = setInterval(() => {
 // range_list([0,2,5,7]);
 // => [[0, 1], [2, 3, 4], [5, 6]]
 const range_list = (LIST) => LIST.reduce((A,V,IDX,LIST)=>{A.push([LIST[IDX], LIST[IDX+1]]);return A;},A=[]).slice(0, -1).map(V=>R.range(V[0], V[1]));
 const res = range_list(this.tmp_tl_array);
-    const pre_index_time_IDX = res.map((V, IDX)=>V.includes( this.index_time ) ? true : false);
-    let index_time_IDX = res.map((V, IDX)=>V.includes( this.index_time ) ? true : false)
-                                .findIndex(V=>V===true);
+const pre_index_time_IDX = res.map((V, IDX)=>V.includes( this.index_time ) ? true : false);
+let index_time_IDX = res.map((V, IDX)=>V.includes( this.index_time ) ? true : false)
+                            .findIndex(V=>V===true);
+const intervalID = setInterval(() => {
     // when .findIndex return -1, it means that the index_time is not in the range_list
     index_time_IDX = index_time_IDX === -1 ? (pre_index_time_IDX.length) : index_time_IDX;
     this.index_time = this.index_time + 1;
-
-    // this.active_layer_index = this.index_time;
+    this.timer = this.timer - 1;
     this.active_layer_index = index_time_IDX;
-
-    console.log(
+console.log(
 "pre_index_time_IDX: ", pre_index_time_IDX,
 "this.tmp_tl_array: ", this.tmp_tl_array,
 "index_time_IDX: " ,index_time_IDX,
 "index_time: " ,this.index_time,
 );
-
-    this.timer = this.timer - 1;
         if (this.timer < 0) {
             this.timer = this.duration;
             this.index_time = 0;
@@ -666,15 +675,6 @@ const res = range_list(this.tmp_tl_array);
 
 },
 }).mount('.app');
-
-const timeline =[
-[0, 1],
-[2, 4],
-[5, 6],
-[6, 9],
-];
-const tl = [0,2,5,6,9];
-
 </script>
 </body>
 </html>
