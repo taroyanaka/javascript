@@ -34,9 +34,11 @@
 <a class="dl2" href="" download="dl2">dl2</a>
 
 
-<input type="number" name="timer" class="timer" value="4">
-<input type="button" value="start" onclick="start_timer()">
+<input type="number" name="timer" class="timer" value="6">
+<input type="button" value="start_timer" onclick="start_timer()">
 <input type="number" name="elapsed_time" class="elapsed_time" value="0">
+<textarea name="time_line_to_textarea" class="time_line_to_textarea" cols="30" rows="10"></textarea>
+<input type="button" value="push_time_line_array" onclick="push_time_line_array()">
 
 
 
@@ -231,21 +233,32 @@ function readyMediaRecorder(stream){
 	}
 }
 
+
+let time_line_array = [0,];
+function time_line_to_textarea(){
+    document.querySelector(`.time_line_to_textarea`).value = time_line_array.join("\n");
+};
+function push_time_line_array(){
+    time_line_array.push(elapsed_time);
+};
+let elapsed_time = 0;
 function start_timer(){
-    let timer = Number(document.querySelector(`.timer`).value);
-    let elapsed_time = 0;
-    // const timer_stop = (INTERVAL_ID) => timer < 0 ? clearInterval(INTERVAL_ID) : null;
+    let timer = init_timer = Number(document.querySelector(`.timer`).value);
     const timer_stop = (INTERVAL_ID) => {
         if (timer < 0) {
             clearInterval(INTERVAL_ID);
+            document.querySelector(`.timer`).value = init_timer;
+            document.querySelector(`.elapsed_time`).value = 0;
+            time_line_to_textarea();
         }
     };
     const intervalID = setInterval(() =>{
+        // push_time_line_array(elapsed_time);
         document.querySelector(`.elapsed_time`).value = elapsed_time++;
         document.querySelector(`.timer`).value = timer--;
         timer_stop(intervalID);
     }, 1000);
-}
+};
 
 // https://web-creates.com/code/js-web-speech-api/
 // https://qiita.com/hmmrjn/items/be29c62ba4e4a02d305c
