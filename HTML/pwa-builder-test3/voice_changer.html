@@ -34,6 +34,12 @@
 <a class="dl2" href="" download="dl2">dl2</a>
 
 
+<input type="number" name="timer" class="timer" value="4">
+<input type="button" value="start" onclick="start_timer()">
+<input type="number" name="elapsed_time" class="elapsed_time" value="0">
+
+
+
 <!-- https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/getImageData -->
 
 <script type="text/javascript">
@@ -223,6 +229,22 @@ function readyMediaRecorder(stream){
 		mediaRecorder.stop();
 		console.log("MediaRecorder:" + mediaRecorder.state);
 	}
+}
+
+function start_timer(){
+    let timer = Number(document.querySelector(`.timer`).value);
+    let elapsed_time = 0;
+    // const timer_stop = (INTERVAL_ID) => timer < 0 ? clearInterval(INTERVAL_ID) : null;
+    const timer_stop = (INTERVAL_ID) => {
+        if (timer < 0) {
+            clearInterval(INTERVAL_ID);
+        }
+    };
+    const intervalID = setInterval(() =>{
+        document.querySelector(`.elapsed_time`).value = elapsed_time++;
+        document.querySelector(`.timer`).value = timer--;
+        timer_stop(intervalID);
+    }, 1000);
 }
 
 // https://web-creates.com/code/js-web-speech-api/
