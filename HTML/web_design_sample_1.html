@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web_design_sample_1</title>
+<style>
+.content{
+    display: grid;
+    grid-template-rows: repeat(8, 1fr);
+    background-color: peru;
+}
+.header{}
+.main_big{
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    background-color: peachpuff;
+}
+.main_big_1{
+    grid-column: 2 / 8;
+    grid-rows: 1 / 10;
+    background-color: gray;
+}
+.main_big_2{
+    grid-column: 8 / 11;
+    grid-rows: 1 / 10;
+    background-color: pink;
+}
+.main_mini{
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    background-color: blueviolet;
+}
+.main_mini_1{
+    grid-column: 2 / 5;
+    grid-rows: 1 / 2;
+    background-color: gray;
+}
+.main_mini_2{
+    grid-column: 5 / 8;
+    grid-rows: 1 / 2;
+    background-color: yellowgreen;
+}
+.main_mini_3{
+    grid-column: 8 / 11;
+    grid-rows: 1 / 2;
+    background-color: yellow;
+}
+
+.main_mini_4{
+    grid-column: 2 / 5;
+    grid-rows: 2 / 3;
+    background-color: palegoldenrod;
+}
+.main_mini_5{
+    grid-column: 5 / 8;
+    grid-rows: 2 / 3;
+    background-color: palegreen;
+}
+.main_mini_6{
+    grid-column: 8 / 11;
+    grid-rows: 2 / 3;
+    background-color: palevioletred;
+}
+
+.sub_1{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    background-color: green;
+}
+.sub_1_1{
+    grid-column: 1 / 2;
+    grid-rows: 2 / 3;
+    background-color: gray;
+}
+.sub_1_2{
+    grid-column: 2 / 3;
+    grid-rows: 2 / 3;
+    background-color: yellowgreen;
+}
+.sub_1_3{
+    grid-column: 3 / 4;
+    grid-rows: 2 / 3;
+    background-color: yellow;
+}
+.sub_1_4{
+    grid-column: 4 / 5;
+    grid-rows: 2 / 3;
+    background-color: palegoldenrod;
+}
+.sub_1_5{
+    grid-column: 5 / 6;
+    grid-rows: 2 / 3;
+    background-color: palegreen;
+}
+.sub_1_6{
+    grid-column: 6 / 7;
+    grid-rows: 2 / 3;
+    background-color: palevioletred;
+}
+.sub_1_7{
+    grid-column: 7 / 8;
+    grid-rows: 2 / 3;
+    background-color: midnightblue;
+}
+
+.sub_2{}
+.detail_1{}
+.detail_2{}
+.footer{}
+</style>
+</head>
+<body>
+<div class="content">
+
+<div class="header">
+<span>LOGO</span>
+<span>FASHION</span>
+<span>BEAUTY</span>
+<span>LIFESTYLE</span>
+<span>FOOD</span>
+<span>CULTURE</span>
+<span>COLUMN</span>
+<span>INTERVIEW</span>
+<span>VIDEO</span>
+<span>HOROSCOPE</span>
+<span>LOGIN</span>
+<span>SEARCH</span>
+<span>MENU</span>
+</div>
+<div class="main_big">
+<span class="main_big_1">main_big_1</span>
+<span class="main_big_2">main_big_2</span>
+</div>
+<div class="main_mini">
+<span class="main_mini_1">main_mini_1</span>
+<span class="main_mini_2">main_mini_2</span>
+<span class="main_mini_3">main_mini_3</span>
+
+<span class="main_mini_4">main_mini_4</span>
+<span class="main_mini_5">main_mini_5</span>
+<span class="main_mini_6">main_mini_6</span>
+</div>
+<div class="sub_1">
+<span class="sub_1_1">sub_1_1</span>
+<span class="sub_1_2">sub_1_2</span>
+<span class="sub_1_3">sub_1_3</span>
+<span class="sub_1_4">sub_1_4</span>
+<span class="sub_1_5">sub_1_5</span>
+<span class="sub_1_6">sub_1_6</span>
+<span class="sub_1_7">sub_1_7</span>
+</div>
+
+<div class="sub_2">
+<span class="sub_2_1">sub_2_1</span>
+<span class="sub_2_2">sub_2_2</span>
+<span class="sub_2_3">sub_2_3</span>
+<span class="sub_2_4">sub_2_4</span>
+<span class="sub_2_5">sub_2_5</span>
+<span class="sub_2_6">sub_2_6</span>
+<span class="sub_2_7">sub_2_7</span>
+</div>
+
+<div class="detail_1">detail_1</div>
+<div class="detail_2">detail_2</div>
+<div class="footer">footer</div>
+
+</div>
+</body>
+</html>

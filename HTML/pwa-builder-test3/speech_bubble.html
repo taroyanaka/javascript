@@ -666,13 +666,13 @@ start_timer() {
         this.index_time = this.index_time + 1;
         this.timer = this.timer - 1;
         this.active_layer_index = index_time_IDX;
-    console.log(
-    "pre_index_time_IDX: ", pre_index_time_IDX,
-    "this.tmp_tl_array: ", this.tmp_tl_array,
-    "index_time_IDX: " ,index_time_IDX,
-    "index_time: " ,this.index_time,
-    );
-    timer_stop(intervalID);
+console.log(
+"pre_index_time_IDX: ", pre_index_time_IDX,
+"this.tmp_tl_array: ", this.tmp_tl_array,
+"index_time_IDX: " ,index_time_IDX,
+"index_time: " ,this.index_time,
+);
+        timer_stop(intervalID);
     }, 1000);
 },
 
