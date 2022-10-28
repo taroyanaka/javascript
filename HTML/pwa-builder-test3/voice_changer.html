@@ -117,16 +117,37 @@
 
         img.onload = null;
     }
+
+function make_url_with_param(){
+    const URL = "http://localhost:5500/HTML/pwa-builder-test3/speech_bubble.html";
+// const URL = window.location.href;
+    document.querySelector(`.redirect_url`).href = document.querySelector(`.redirect_url`).textContent =
+        URL + "?time_line_and_text=" +
+        JSON.stringify([document.querySelector(".time_line_to_textarea").value, document.querySelector(".all_text").value])
+}
+
+function set_param_to_textarea_from_URL(PARAM_NAME){
+    const param_val = (new URL(window.location.href)).searchParams.get(PARAM_NAME);
+    const parsed_param_val = JSON.parse(param_val);
+    [document.querySelector(".time_line_to_textarea").value, document.querySelector(".all_text").value]
+        = [parsed_param_val[0], parsed_param_val[1]]
+    console.log(parsed_param_val);
+}
+
 </script>
+
+
+<button onclick="make_url_with_param()">make_url_with_param</button>
+<a href="" class="redirect_url">redirect_url</a>
+
+<button onclick="set_param_to_textarea_from_URL('time_line_and_text')">set_param_to_textarea_from_URL</button>
 
 <textarea name="" class="all_text" cols="30" rows="10">吾輩は猫である。
 名前はまだ無い。
-どこで生れたかとんと見当がつかぬ。
-何でも薄暗いじめじめした所でニャーニャー泣いていた事だけは記憶している。
-吾輩はここで始めて人間というものを見た。</textarea>
+どこで生れたかとんと見当がつかぬ。</textarea>
 
-	<button id="btnStart">開始</button>
-	<button id="btnStop">停止</button>
+<button id="btnStart">開始</button>
+<button id="btnStop">停止</button>
 
 is_readAloud? <input type="checkbox" name="is_readAloud" class="is_readAloud" checked>
 <input type="text" id="text" name="text" value="" placeholder="読み上げたいテキストを入力してください" />
@@ -178,8 +199,36 @@ function download(blob) {
     window.URL.revokeObjectURL(url);
 }
 
-function readyMediaRecorder(stream){
+let time_line_array = [0,];
+function time_line_to_textarea(){
+    document.querySelector(`.time_line_to_textarea`).value = time_line_array.join("\n");
+};
+function push_time_line_array(){
+    time_line_array.push(elapsed_time);
+    time_line_to_textarea();
+};
+let elapsed_time = 0;
+let started = false;
+function start_timer(){
+    started = true;
+    let timer = init_timer = Number(document.querySelector(`.timer`).value);
+    const timer_stop = (INTERVAL_ID) => {
+        if (timer < 0) {
+            clearInterval(INTERVAL_ID);
+            document.querySelector(`.timer`).value = init_timer;
+            document.querySelector(`.elapsed_time`).value = 0;
+            time_line_to_textarea();
+        }
+    };
+    const intervalID = setInterval(() =>{
+        // push_time_line_array(elapsed_time);
+        document.querySelector(`.elapsed_time`).value = elapsed_time++;
+        document.querySelector(`.timer`).value = timer--;
+        timer_stop(intervalID);
+    }, 1000);
+};
 
+function readyMediaRecorder(stream){
 	// 2-1, MediaRecorderを準備します
 	let mediaRecorder = new MediaRecorder(stream);
 
@@ -218,6 +267,10 @@ function readyMediaRecorder(stream){
 
 	// 3-1, スタートボタン
 	document.getElementById("btnStart").onclick = ()=>{
+
+        started ? push_time_line_array() : start_timer();
+        // push_time_line_array();
+
         set_split_text_and_increment();
         document.querySelector(".is_readAloud").checked ? readAloud() : null;
 		if(mediaRecorder.state == "recording") return;
@@ -234,32 +287,6 @@ function readyMediaRecorder(stream){
 }
 
 
-let time_line_array = [0,];
-function time_line_to_textarea(){
-    document.querySelector(`.time_line_to_textarea`).value = time_line_array.join("\n");
-};
-function push_time_line_array(){
-    time_line_array.push(elapsed_time);
-    time_line_to_textarea();
-};
-let elapsed_time = 0;
-function start_timer(){
-    let timer = init_timer = Number(document.querySelector(`.timer`).value);
-    const timer_stop = (INTERVAL_ID) => {
-        if (timer < 0) {
-            clearInterval(INTERVAL_ID);
-            document.querySelector(`.timer`).value = init_timer;
-            document.querySelector(`.elapsed_time`).value = 0;
-            time_line_to_textarea();
-        }
-    };
-    const intervalID = setInterval(() =>{
-        // push_time_line_array(elapsed_time);
-        document.querySelector(`.elapsed_time`).value = elapsed_time++;
-        document.querySelector(`.timer`).value = timer--;
-        timer_stop(intervalID);
-    }, 1000);
-};
 
 // https://web-creates.com/code/js-web-speech-api/
 // https://qiita.com/hmmrjn/items/be29c62ba4e4a02d305c

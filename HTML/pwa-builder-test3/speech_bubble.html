@@ -81,6 +81,11 @@ color: #666;
 <body>
 <div class="app">
 
+<button @click="set_param_to_textarea_from_URL">set_param_to_textarea_from_URL</button>
+
+<textarea name="time_line_to_textarea" class="time_line_to_textarea" placeholder="time_line_to_textarea" cols="30" rows="10"></textarea>
+<textarea name="all_text" class="all_text" placeholder="all_text" cols="30" rows="10"></textarea>
+
 <textarea name="active_layer_list" class="active_layer_list" placeholder="active_layer_list" v-model="active_layer_list" cols="30" rows="10"></textarea>
 <textarea name="active_bubble_list" class="active_bubble_list" placeholder="active_bubble_list" v-model="active_bubble_list" cols="30" rows="10"></textarea>
 
@@ -675,7 +680,14 @@ console.log(
         timer_stop(intervalID);
     }, 1000);
 },
-
+set_param_to_textarea_from_URL(){
+    const param_val = (new URL(window.location.href)).searchParams.get("time_line_and_text");
+    const parsed_param_val = JSON.parse(param_val);
+    [document.querySelector(".time_line_to_textarea").value, document.querySelector(".all_text").value]
+        = [parsed_param_val[0], parsed_param_val[1]]
+    console.log(param_val);
+    console.log(parsed_param_val);
+}
 },
 }).mount('.app');
 </script>
