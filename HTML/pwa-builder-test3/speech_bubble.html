@@ -683,8 +683,11 @@ console.log(
 set_param_to_textarea_from_URL(){
     const param_val = (new URL(window.location.href)).searchParams.get("time_line_and_text");
     const parsed_param_val = JSON.parse(param_val);
-    [document.querySelector(".time_line_to_textarea").value, document.querySelector(".all_text").value]
-        = [parsed_param_val[0], parsed_param_val[1]]
+    // [document.querySelector(".time_line_to_textarea").value, document.querySelector(".all_text").value]
+    // [document.querySelector(".time_line_to_textarea").value, this.speak_array]
+    [this.tmp_tl_array, this.speak_array]
+        = [parsed_param_val[0].split("\n"), parsed_param_val[1].split("\n")];
+    this.make_tl_str();
     console.log(param_val);
     console.log(parsed_param_val);
 }
