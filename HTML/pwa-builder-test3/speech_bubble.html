@@ -537,6 +537,11 @@ const leyer_N__image_N_n = this.layer_chunk.map((IN_ARY, OUTER_IDX)=>
 ` +
 IN_ARY.map((V, IDX)=>
 `.layer_${OUTER_IDX} > .image_${OUTER_IDX}_${IDX}{
+
+    animation: shake;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+
     content: url('${ this.image_num_to_image_url(V[0]) }');
     position: absolute;
     left: ${(V[1] - 1) * this.width_num + V[6]}px;
