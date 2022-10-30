@@ -149,7 +149,81 @@
     grid-row: 2 / 3;
     background-color: midnightblue;
 }
-.detail_2{}
+
+.outer_detail_1{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    background-color: gray;
+}
+.detail_1{
+    grid-column: 3 / 9;
+    grid-row: 2 / 10;
+
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+
+    background-color: pink;
+}
+.detail_1_title{
+    grid-column: 1 / 12;
+    grid-row: 1 / 3;
+    background-color: yellow;
+}
+.detail_1_1{
+    grid-column: 2 / 5;
+    grid-row: 3 / 10;
+    background-color: gainsboro;
+}
+.detail_1_2{
+    grid-column: 5 / 8;
+    grid-row: 3 / 10;
+    background-color: burlywood;
+}
+.detail_1_3{
+    grid-column: 8 / 11;
+    grid-row: 3 / 10;
+    background-color: olive;
+}
+
+.outer_detail_2{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    background-color: gray;
+}
+.detail_2{
+    grid-column: 3 / 9;
+    grid-row: 2 / 10;
+
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+
+    background-color: pink;
+}
+.detail_2_title{
+    grid-column: 1 / 12;
+    grid-row: 1 / 3;
+    background-color: yellow;
+}
+.detail_2_1{
+    grid-column: 2 / 5;
+    grid-row: 3 / 10;
+    background-color: gainsboro;
+}
+.detail_2_2{
+    grid-column: 5 / 8;
+    grid-row: 3 / 10;
+    background-color: burlywood;
+}
+.detail_2_3{
+    grid-column: 8 / 11;
+    grid-row: 3 / 10;
+    background-color: olive;
+}
+
 .footer{}
 </style>
 </head>
@@ -206,54 +280,24 @@
 
 <div class="outer_detail_1">
 <div class="detail_1">
-<span class="detail_title">detail_title</span>
+<span class="detail_1_title">detail_1_title</span>
 <span class="detail_1_1">detail_1_1</span>
 <span class="detail_1_2">detail_1_2</span>
 <span class="detail_1_3">detail_1_3</span>
 </div>
 </div>
 
-<div class="detail_2">detail_2</div>
+<div class="outer_detail_2">
+<div class="detail_2">
+<span class="detail_2_title">detail_2_title</span>
+<span class="detail_2_1">detail_2_1</span>
+<span class="detail_2_2">detail_2_2</span>
+<span class="detail_2_3">detail_2_3</span>
+</div>
+</div>
+
 <div class="footer">footer</div>
 
 </div>
 </body>
-<style>
-.outer_detail_1{
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    background-color: gray;
-}
-.detail_1{
-    grid-column: 3 / 9;
-    grid-row: 2 / 10;
-
-    display: grid;
-    grid-template-columns: repeat(11, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-
-    background-color: pink;
-}
-.detail_title{
-    grid-column: 1 / 12;
-    grid-row: 1 / 3;
-    background-color: yellow;
-}
-.detail_1_1{
-    grid-column: 2 / 5;
-    grid-row: 3 / 10;
-    background-color: gainsboro;
-}
-.detail_1_2{
-    grid-column: 5 / 8;
-    grid-row: 3 / 10;
-    background-color: burlywood;
-}
-.detail_1_3{
-    grid-column: 8 / 11;
-    grid-row: 3 / 10;
-    background-color: olive;
-}
-</style>
 </html>
