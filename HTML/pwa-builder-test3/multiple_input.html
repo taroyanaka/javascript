@@ -36,7 +36,7 @@ change_animation_iteration_count_value_number: <input type="number" name="" clas
 change_animation_timing_function_value_number: <input type="number" name="" class="" value="1" @change="change_animation_timing_function_value_number($event)">
 
 
-<h1>h1 is: {{ animation_value }}</h1>
+<h1>animation_value is: {{ animation_value }}</h1>
 
 </div>
 </body>
@@ -160,26 +160,6 @@ animation_fill_mode_value_str: '',
             animation_value: '',
         }
     },
-// watch: {
-//    animation_value: {
-//      handler() {
-//         this.fn_0();
-//      },
-//      deep: true
-//    },
-// },
-computed: {
-    // foo: function () {
-    // const data = `
-    //     animation-duration: ${this.animation_duration_value_str}s;
-    //     animation-direction: ${this.animation_direction_value_str};
-    //     animation-iteration-count: ${this.animation_iteration_count_value_str};
-    //     animation-timing-function: ${ (typeof this.animation_timing_function_value) === 'number' ? 'steps('+this.animation_timing_function_value_str+')' : this.animation_timing_function_value_str};
-    //     animation-fill-mode: ${this.animation_fill_mode_value_str};
-    // `;
-    // return data;
-    // },
-},
 mounted() {
     this.change_animation_duration_value_number();
     this.test();
