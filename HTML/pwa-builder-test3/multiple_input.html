@@ -19,7 +19,8 @@
 <div class="app">
 <span>{{ $data }}</span>
 
-<button :class="'animated '+ary_1_str" :style="animation_value" @click="handleClick">handleClick</button>
+<!-- <button :class="'animated '+ary_1_str" :style="animation_value" @click="handleClick">handleClick</button> -->
+<button :class="'animated '+ary_1_str" :style="animation_value" v-for="(VAL, IDX) in [1,2,3]">handleClick</button>
 
 <select class="ary_1_str_selecter" v-model="ary_1_str">
 <option v-for="(ARY_STR, ARY_STR_INDEX) in ary_1" :VALUE="ARY_STR">{{ ARY_STR }}</option>
@@ -76,7 +77,6 @@ animation_direction_value_str: '',
 animation_iteration_count_value_str: '',
 animation_timing_function_value_str: '',
 animation_fill_mode_value_str: '',
-
 
             ary_1: [
             'bounce',
@@ -184,6 +184,19 @@ collect_animation_value(){
         animation-fill-mode: ${this.animation_fill_mode_value_str};
     `;
     this.animation_value = data;
+// this.animation_array
+// =[
+// [null, null, null, null, null,],
+// [null, null, null, null, null,],
+// [null, null, null, null, null,],
+// ]
+// animation_duration_value_str
+// animation_direction_value_str
+// animation_iteration_count_value_str
+// animation_timing_function_value_str
+// animation_fill_mode_value_str
+
+
 },
 change_animation_duration_value_number(event){
     this.animation_duration_value = event === undefined ? R.range(0, 181) : R.range(0, Number(event.target.value));
