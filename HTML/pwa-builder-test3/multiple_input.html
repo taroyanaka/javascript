@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./reset.css">
+
+    <!-- https://animate.style/ -->
+    <!-- https://acchou.github.io/html-css-cheat-sheet/animation.html -->
+    <link rel="stylesheet" href="./animate@3.5.2.css">
+
+    <script src="./vue@3.2.36.global.prod.js"></script>
+    <script src="./ramda.@0.28.0.js"></script>
+
+<style>
+.no_show{
+    display: none;
+}
+</style>
+</head>
+<body>
+<div class="app">
+<span>{{ $data }}</span>
+
+<!-- <button :class="'animated '+ary_1_str" :style="collect_animation_value" @click="handleClick">handleClick</button> -->
+<button :class="'animated shake'" :style="animation_value" @click="handleClick">handleClick</button>
+<button :class="'animated '+ary_1_str" :style="animation_value" @click="handleClick">handleClick</button>
+<!-- <img :class="'image_'+OUTER_ARY_INDEX+'_'+IN_ARY_INDEX+' animated shake infinite'"
+    style="animation-duration: 3s;animation-timing-function: steps(3);"
+    v-for="(IN_ARY, IN_ARY_INDEX) in ary_0"> -->
+
+<!-- <select class="ary_0_str_selecter" v-model="ary_0_str">
+<option v-for="(ARY_STR, ARY_STR_INDEX) in ary_0" :VALUE="ARY_STR">{{ ARY_STR }}</option>
+</select> -->
+
+<select class="ary_1_str_selecter" v-model="ary_1_str">
+<option v-for="(ARY_STR, ARY_STR_INDEX) in ary_1" :VALUE="ARY_STR">{{ ARY_STR }}</option>
+</select>
+
+<div>animation_duration: <select name="animation_duration_value_str" class="animation_duration_value_str" v-model="animation_duration_value_str"><option v-for="(VAL, VAL_INDEX) in animation_duration_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_direction: <select name="animation_direction_value_str" class="animation_direction_value_str" v-model="animation_direction_value_str"><option v-for="(VAL, VAL_INDEX) in animation_direction_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_iteration_count: <select name="animation_iteration_count_value_str" class="animation_iteration_count_value_str" v-model="animation_iteration_count_value_str"><option v-for="(VAL, VAL_INDEX) in animation_iteration_count_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_timing_function: <select name="animation_timing_function_value_str" class="animation_timing_function_value_str" v-model="animation_timing_function_value_str"><option v-for="(VAL, VAL_INDEX) in animation_timing_function_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_fill_mode: <select name="animation_fill_mode_value_str" class="animation_fill_mode_value_str" v-model="animation_fill_mode_value_str"><option v-for="(VAL, VAL_INDEX) in animation_fill_mode_value" :value="VAL">{{ VAL }}</option></select></div>
+
+<div class="foo" :class="{ no_show: is_no_show ? true : false }">foo</div>
+
+change_animation_duration_value_number: <input type="number" name="" class="" value="" @change="change_animation_duration_value_number($event)">
+change_animation_iteration_count_value_number: <input type="number" name="" class="" value="1" @change="change_animation_iteration_count_value_number($event)">
+change_animation_timing_function_value_number: <input type="number" name="" class="" value="1" @change="change_animation_timing_function_value_number($event)">
+
+
+<!-- <h1>h1 is: {{ animation_value }}</h1> -->
+
+</div>
+</body>
+<script>
+const app = Vue.createApp({
+    data() {
+        return {
+animation_duration_value: [0],
+animation_direction_value: [
+'normal',
+'alternate',
+'reverse',
+'alternate-reverse',
+],
+animation_iteration_count_value: [
+1,
+'infinite',
+],
+animation_timing_function_value: [
+1,
+'linear',
+'ease',
+'ease-in',
+'ease-out',
+'ease-in-out',
+'step-start',
+'step-end',
+],
+animation_fill_mode_value: [
+'none',
+'forwards',
+'backwards',
+'both',
+],
+animation_duration_value_str: '',
+animation_direction_value_str: '',
+animation_iteration_count_value_str: '',
+animation_timing_function_value_str: '',
+animation_fill_mode_value_str: '',
+
+
+            ary_0: [
+                "animation-duration",
+                "animation-direction",
+                "animation-iteration-count",
+                "animation-timing-function",
+                "animation-fill-mode",
+            ],
+            ary_1: [
+            'bounce',
+            'flash',
+            'pulse',
+            'rubberBand',
+            'shake',
+            'headShake',
+            'swing',
+            'tada',
+            'wobble',
+            'jello',
+            'bounceIn',
+            'bounceInDown',
+            'bounceInLeft',
+            'bounceInRight',
+            'bounceInUp',
+            'bounceOut',
+            'bounceOutDown',
+            'bounceOutLeft',
+            'bounceOutRight',
+            'bounceOutUp',
+            'fadeIn',
+            'fadeInDown',
+            'fadeInDownBig',
+            'fadeInLeft',
+            'fadeInLeftBig',
+            'fadeInRight',
+            'fadeInRightBig',
+            'fadeInUp',
+            'fadeInUpBig',
+            'fadeOut',
+            'fadeOutDown',
+            'fadeOutDownBig',
+            'fadeOutLeft',
+            'fadeOutLeftBig',
+            'fadeOutRight',
+            'fadeOutRightBig',
+            'fadeOutUp',
+            'fadeOutUpBig',
+            'flipInX',
+            'flipInY',
+            'flipOutX',
+            'flipOutY',
+            'lightSpeedIn',
+            'lightSpeedOut',
+            'rotateIn',
+            'rotateInDownLeft',
+            'rotateInDownRight',
+            'rotateInUpLeft',
+            'rotateInUpRight',
+            'rotateOut',
+            'rotateOutDownLeft',
+            'rotateOutDownRight',
+            'rotateOutUpLeft',
+            'rotateOutUpRight',
+            'zoomIn',
+            'zoomInDown',
+            'zoomInLeft',
+            'zoomInRight',
+            'zoomInUp',
+            'zoomOut',
+            'zoomOutDown',
+            'zoomOutLeft',
+            'zoomOutRight',
+            'zoomOutUp',
+            'slideInDown',
+            'slideInLeft',
+            'slideInRight',
+            'slideInUp',
+            'slideOutDown',
+            'slideOutLeft',
+            'slideOutRight',
+            'slideOutUp',
+            'hinge',
+            'jackInTheBox',
+            'rollIn',
+            'rollOut',
+            ],
+            ary_0_str: '',
+            ary_1_str: '',
+            is_no_show: true,
+animation_value: '',
+        }
+    },
+mounted() {
+    this.change_animation_duration_value_number();
+    this.collect_animation_value();
+},
+updated() {
+    this.collect_animation_value();
+},
+    methods: {
+        handleClick() {
+            console.log('click')
+        },
+        fn_0() {
+            console.log('click')
+        },
+collect_animation_value(){
+    const data = `
+        animation-duration: ${this.animation_duration_value_str}s;
+        animation-direction: ${this.animation_direction_value_str};
+        animation-iteration-count: ${this.animation_iteration_count_value_str};
+        animation-timing-function: ${ (typeof this.animation_timing_function_value) === 'number' ? 'steps('+this.animation_timing_function_value_str+')' : this.animation_timing_function_value_str};
+        animation-fill-mode: ${this.animation_fill_mode_value_str};
+    `
+    this.animation_value = data;
+},
+change_animation_duration_value_number(event){
+    this.animation_duration_value = event === undefined ? R.range(0, 181) : R.range(0, Number(event.target.value));
+},
+change_animation_iteration_count_value_number(event){
+    this.animation_iteration_count_value[0] = Number(event.target.value);
+},
+change_animation_timing_function_value_number(event){
+    this.animation_timing_function_value[0] = Number(event.target.value);
+},
+
+},
+
+}).mount('.app');
+</script>
+</html>
