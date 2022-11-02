@@ -200,6 +200,20 @@ all_display: <input type="checkbox" id="all_display" v-model="all_display">
 
 <textarea cols="30" rows="10" @input="change_tl_str" v-model="tmp_tl_str"></textarea>
 
+<div>animation_duration: <select @change="collect_animation_value" name="animation_duration_value_str" class="animation_duration_value_str" v-model="animation_duration_value_str"><option v-for="(VAL, VAL_INDEX) in animation_duration_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_direction: <select @change="collect_animation_value" name="animation_direction_value_str" class="animation_direction_value_str" v-model="animation_direction_value_str"><option v-for="(VAL, VAL_INDEX) in animation_direction_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_iteration_count: <select @change="collect_animation_value" name="animation_iteration_count_value_str" class="animation_iteration_count_value_str" v-model="animation_iteration_count_value_str"><option v-for="(VAL, VAL_INDEX) in animation_iteration_count_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_timing_function: <select @change="collect_animation_value" name="animation_timing_function_value_str" class="animation_timing_function_value_str" v-model="animation_timing_function_value_str"><option v-for="(VAL, VAL_INDEX) in animation_timing_function_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_fill_mode: <select @change="collect_animation_value" name="animation_fill_mode_value_str" class="animation_fill_mode_value_str" v-model="animation_fill_mode_value_str"><option v-for="(VAL, VAL_INDEX) in animation_fill_mode_value" :value="VAL">{{ VAL }}</option></select></div>
+
+change_animation_duration_value_number: <input type="number" name="" class="" value="" @change="change_animation_duration_value_number($event)">
+change_animation_iteration_count_value_number: <input type="number" name="" class="" value="1" @change="change_animation_iteration_count_value_number($event)">
+change_animation_timing_function_value_number: <input type="number" name="" class="" value="1" @change="change_animation_timing_function_value_number($event)">
+
+
+<h1>animation_value is: {{ animation_value }}</h1>
+
+
 <div class="parent_bubble">
 
 <div v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
@@ -364,6 +378,46 @@ tmp_tl_str: '',
 index_time: 0,
 timer: 0,
 duration: 0,
+
+
+animation_duration_value: [0],
+animation_direction_value: [
+'normal',
+'alternate',
+'reverse',
+'alternate-reverse',
+],
+animation_iteration_count_value: [
+1,
+'infinite',
+],
+animation_timing_function_value: [
+1,
+'linear',
+'ease',
+'ease-in',
+'ease-out',
+'ease-in-out',
+'step-start',
+'step-end',
+],
+animation_fill_mode_value: [
+'none',
+'forwards',
+'backwards',
+'both',
+],
+animation_duration_value_str: '',
+animation_direction_value_str: '',
+animation_iteration_count_value_str: '',
+animation_timing_function_value_str: '',
+animation_fill_mode_value_str: '',
+
+ary_1: ['bounce','flash','pulse','rubberBand','shake','headShake','swing','tada','wobble','jello','bounceIn','bounceInDown','bounceInLeft','bounceInRight','bounceInUp','bounceOut','bounceOutDown','bounceOutLeft','bounceOutRight','bounceOutUp','fadeIn','fadeInDown','fadeInDownBig','fadeInLeft','fadeInLeftBig','fadeInRight','fadeInRightBig','fadeInUp','fadeInUpBig','fadeOut','fadeOutDown','fadeOutDownBig','fadeOutLeft','fadeOutLeftBig','fadeOutRight','fadeOutRightBig','fadeOutUp','fadeOutUpBig','flipInX','flipInY','flipOutX','flipOutY','lightSpeedIn','lightSpeedOut','rotateIn','rotateInDownLeft','rotateInDownRight','rotateInUpLeft','rotateInUpRight','rotateOut','rotateOutDownLeft','rotateOutDownRight','rotateOutUpLeft','rotateOutUpRight','zoomIn','zoomInDown','zoomInLeft','zoomInRight','zoomInUp','zoomOut','zoomOutDown','zoomOutLeft','zoomOutRight','zoomOutUp','slideInDown','slideInLeft','slideInRight','slideInUp','slideOutDown','slideOutLeft','slideOutRight','slideOutUp','hinge','jackInTheBox','rollIn','rollOut',
+],
+ary_1_str: '',
+animation_value: '',
+
 
 }
 },
@@ -698,7 +752,33 @@ set_param_to_textarea_from_URL(){
     this.make_tl_str();
     console.log(param_val);
     console.log(parsed_param_val);
-}
+},
+
+
+
+
+
+collect_animation_value(){
+    const data = `
+        animation-duration: ${this.animation_duration_value_str}s;
+        animation-direction: ${this.animation_direction_value_str};
+        animation-iteration-count: ${this.animation_iteration_count_value_str};
+        animation-timing-function: ${ (typeof this.animation_timing_function_value) === 'number' ? 'steps('+this.animation_timing_function_value_str+')' : this.animation_timing_function_value_str};
+        animation-fill-mode: ${this.animation_fill_mode_value_str};
+    `;
+    this.animation_value = data;
+},
+change_animation_duration_value_number(event){
+    this.animation_duration_value = event === undefined ? R.range(0, 181) : R.range(0, Number(event.target.value));
+    this.animation_duration_value_str = this.animation_duration_value[this.animation_duration_value.length - 1].toString();
+},
+change_animation_iteration_count_value_number(event){
+    this.animation_iteration_count_value_str = this.animation_iteration_count_value[0] = Number(event.target.value);
+},
+change_animation_timing_function_value_number(event){
+    this.animation_timing_function_value_str = this.animation_timing_function_value[0] = Number(event.target.value);
+},
+
 },
 }).mount('.app');
 </script>
