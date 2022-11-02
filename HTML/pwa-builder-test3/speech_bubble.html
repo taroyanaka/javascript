@@ -111,6 +111,34 @@ color: #666;
         <input type='number' :step="(INDEX === 3||INDEX === 4) ? 0.1 : 1" v-model="IN_ARY[INDEX]">
         <img v-if="INDEX === 0" :src="image_num_to_image_url(IN_ARY[INDEX])" :alt="IN_ARY[INDEX]" class="small_image">
     </div>
+
+<div>
+<!-- <select class="ary_1_str_selecter" v-model="ary_1_str"> -->
+<select class="ary_1_str_selecter" v-model="animation_value_array[IN_ARY[8]][0]">
+<!-- <select class="ary_1_str_selecter" v-model="animation_value_array[IN_ARY[8]]"> -->
+<option v-for="(ARY_STR, ARY_STR_INDEX) in ary_1" :VALUE="ARY_STR">{{ ARY_STR }}</option>
+</select>
+
+<div>animation_duration: <select @change="collect_animation_value(IN_ARY[8])" name="animation_duration_value_str" class="animation_duration_value_str" v-model="animation_duration_value_str"><option v-for="(VAL, VAL_INDEX) in animation_duration_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_direction: <select @change="collect_animation_value(IN_ARY[8])" name="animation_direction_value_str" class="animation_direction_value_str" v-model="animation_direction_value_str"><option v-for="(VAL, VAL_INDEX) in animation_direction_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_iteration_count: <select @change="collect_animation_value(IN_ARY[8])" name="animation_iteration_count_value_str" class="animation_iteration_count_value_str" v-model="animation_iteration_count_value_str"><option v-for="(VAL, VAL_INDEX) in animation_iteration_count_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_timing_function: <select @change="collect_animation_value(IN_ARY[8])" name="animation_timing_function_value_str" class="animation_timing_function_value_str" v-model="animation_timing_function_value_str"><option v-for="(VAL, VAL_INDEX) in animation_timing_function_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_fill_mode: <select @change="collect_animation_value(IN_ARY[8])" name="animation_fill_mode_value_str" class="animation_fill_mode_value_str" v-model="animation_fill_mode_value_str"><option v-for="(VAL, VAL_INDEX) in animation_fill_mode_value" :value="VAL">{{ VAL }}</option></select></div>
+
+change_animation_duration_value_number: <input type="number" name="" class="" value="" @change="change_animation_duration_value_number($event)">
+change_animation_iteration_count_value_number: <input type="number" name="" class="" value="1" @change="change_animation_iteration_count_value_number($event)">
+change_animation_timing_function_value_number: <input type="number" name="" class="" value="1" @change="change_animation_timing_function_value_number($event)">
+
+
+<h1>animation_value_array[0] is: {{ animation_value_array[IN_ARY[8]][0] }}</h1>
+<h1>animation_value_array[1] is: {{ animation_value_array[IN_ARY[8]][1] }}</h1>
+<h1>IN_ARY is: {{ IN_ARY[8] }}</h1>
+
+<!-- <h1>animation_value_array is: {{ animation_value_array }}</h1> -->
+</div>
+
+    <!-- <input type='number' v-model="IN_ARY[8]"> -->
+
     <input type="file" class="files" accept="image/png, image/jpeg" @change="img_set($event, OUTER_ARY_INDEX, IN_ARY_INDEX)">
 
     <select class="image_url_selecter" @change="image_url_select(OUTER_ARY_INDEX, IN_ARY_INDEX)" v-model="select_image_url_index">
@@ -118,6 +146,8 @@ color: #666;
     </select>
 
     <button @click="active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
+
+
 </div>
 <button @click="image_add(OUTER_ARY_INDEX)">image_add</button>
 </template>
@@ -199,19 +229,6 @@ all_display: <input type="checkbox" id="all_display" v-model="all_display">
 <button @click="pre_set_timer">pre_set_timer</button>
 
 <textarea cols="30" rows="10" @input="change_tl_str" v-model="tmp_tl_str"></textarea>
-
-<div>animation_duration: <select @change="collect_animation_value" name="animation_duration_value_str" class="animation_duration_value_str" v-model="animation_duration_value_str"><option v-for="(VAL, VAL_INDEX) in animation_duration_value" :value="VAL">{{ VAL }}</option></select></div>
-<div>animation_direction: <select @change="collect_animation_value" name="animation_direction_value_str" class="animation_direction_value_str" v-model="animation_direction_value_str"><option v-for="(VAL, VAL_INDEX) in animation_direction_value" :value="VAL">{{ VAL }}</option></select></div>
-<div>animation_iteration_count: <select @change="collect_animation_value" name="animation_iteration_count_value_str" class="animation_iteration_count_value_str" v-model="animation_iteration_count_value_str"><option v-for="(VAL, VAL_INDEX) in animation_iteration_count_value" :value="VAL">{{ VAL }}</option></select></div>
-<div>animation_timing_function: <select @change="collect_animation_value" name="animation_timing_function_value_str" class="animation_timing_function_value_str" v-model="animation_timing_function_value_str"><option v-for="(VAL, VAL_INDEX) in animation_timing_function_value" :value="VAL">{{ VAL }}</option></select></div>
-<div>animation_fill_mode: <select @change="collect_animation_value" name="animation_fill_mode_value_str" class="animation_fill_mode_value_str" v-model="animation_fill_mode_value_str"><option v-for="(VAL, VAL_INDEX) in animation_fill_mode_value" :value="VAL">{{ VAL }}</option></select></div>
-
-change_animation_duration_value_number: <input type="number" name="" class="" value="" @change="change_animation_duration_value_number($event)">
-change_animation_iteration_count_value_number: <input type="number" name="" class="" value="1" @change="change_animation_iteration_count_value_number($event)">
-change_animation_timing_function_value_number: <input type="number" name="" class="" value="1" @change="change_animation_timing_function_value_number($event)">
-
-
-<h1>animation_value is: {{ animation_value }}</h1>
 
 
 <div class="parent_bubble">
@@ -338,16 +355,16 @@ layer_chunk: [
         //     [0, 1,1,1,1,1,0,0,],
         // ],
         [
-            [2, 2,2,1,1,2,0,0,],
-            [3, 3,3,2,2,1,0,0,],
+            [2, 2,2,1,1,2,0,0,   0],
+            [3, 3,3,2,2,1,0,0,   1],
         ],
         [
-            [4, 1,1,2,2,4,0,0,],
-            [5, 4,4,1,1,3,0,0,],
+            [4, 1,1,2,2,4,0,0,   2],
+            [5, 4,4,1,1,3,0,0,   3],
         ],
         [
-            [6, 1,2,2,2,3,0,0,],
-            [7, 4,2,2,2,3,0,0,],
+            [6, 1,2,2,2,3,0,0,   4],
+            [7, 4,2,2,2,3,0,0,   5],
         ],
     ],
 active_the_image_index: [0, 0],
@@ -416,7 +433,14 @@ animation_fill_mode_value_str: '',
 ary_1: ['bounce','flash','pulse','rubberBand','shake','headShake','swing','tada','wobble','jello','bounceIn','bounceInDown','bounceInLeft','bounceInRight','bounceInUp','bounceOut','bounceOutDown','bounceOutLeft','bounceOutRight','bounceOutUp','fadeIn','fadeInDown','fadeInDownBig','fadeInLeft','fadeInLeftBig','fadeInRight','fadeInRightBig','fadeInUp','fadeInUpBig','fadeOut','fadeOutDown','fadeOutDownBig','fadeOutLeft','fadeOutLeftBig','fadeOutRight','fadeOutRightBig','fadeOutUp','fadeOutUpBig','flipInX','flipInY','flipOutX','flipOutY','lightSpeedIn','lightSpeedOut','rotateIn','rotateInDownLeft','rotateInDownRight','rotateInUpLeft','rotateInUpRight','rotateOut','rotateOutDownLeft','rotateOutDownRight','rotateOutUpLeft','rotateOutUpRight','zoomIn','zoomInDown','zoomInLeft','zoomInRight','zoomInUp','zoomOut','zoomOutDown','zoomOutLeft','zoomOutRight','zoomOutUp','slideInDown','slideInLeft','slideInRight','slideInUp','slideOutDown','slideOutLeft','slideOutRight','slideOutUp','hinge','jackInTheBox','rollIn','rollOut',
 ],
 ary_1_str: '',
-animation_value: '',
+animation_value_array: [
+['bounce', '1AAAA animation-duration: 1s; animation-direction: normal; animation-iteration-count: infinite; animation-timing-function: ease; animation-fill-mode: none;',],
+['flash', '2BBBB animation-duration: 1s; animation-direction: normal; animation-iteration-count: infinite; animation-timing-function: ease; animation-fill-mode: none;',],
+['pulse', '3CCCC animation-duration: 1s; animation-direction: normal; animation-iteration-count: infinite; animation-timing-function: ease; animation-fill-mode: none;',],
+['rubberBand', '4DDDD animation-duration: 1s; animation-direction: normal; animation-iteration-count: infinite; animation-timing-function: ease; animation-fill-mode: none;',],
+['shake', '5EEEE animation-duration: 1s; animation-direction: normal; animation-iteration-count: infinite; animation-timing-function: ease; animation-fill-mode: none;',],
+['headShake', '6FFFF animation-duration: 1s; animation-direction: normal; animation-iteration-count: infinite; animation-timing-function: ease; animation-fill-mode: none;',],
+],
 
 
 }
@@ -758,7 +782,8 @@ set_param_to_textarea_from_URL(){
 
 
 
-collect_animation_value(){
+collect_animation_value(INDEX){
+console.log(INDEX);
     const data = `
         animation-duration: ${this.animation_duration_value_str}s;
         animation-direction: ${this.animation_direction_value_str};
@@ -766,7 +791,7 @@ collect_animation_value(){
         animation-timing-function: ${ (typeof this.animation_timing_function_value) === 'number' ? 'steps('+this.animation_timing_function_value_str+')' : this.animation_timing_function_value_str};
         animation-fill-mode: ${this.animation_fill_mode_value_str};
     `;
-    this.animation_value = data;
+    this.animation_value_array[INDEX][1] = data;
 },
 change_animation_duration_value_number(event){
     this.animation_duration_value = event === undefined ? R.range(0, 181) : R.range(0, Number(event.target.value));
