@@ -120,15 +120,15 @@ color: #666;
 </select>
 
 <!-- <div>animation_duration: <select @change="collect_animation_value(IN_ARY[8])" name="animation_duration_value_str" class="animation_duration_value_str" v-model="animation_duration_value_str"><option v-for="(VAL, VAL_INDEX) in animation_duration_value" :value="VAL">{{ VAL }}</option></select></div> -->
-<div>animation_direction: <select @change="collect_animation_value(IN_ARY[8])" name="animation_direction_value_str" class="animation_direction_value_str" v-model="animation_direction_value_str"><option v-for="(VAL, VAL_INDEX) in animation_direction_value" :value="VAL">{{ VAL }}</option></select></div>
-<div>animation_iteration_count: <select @change="collect_animation_value(IN_ARY[8])" name="animation_iteration_count_value_str" class="animation_iteration_count_value_str" v-model="animation_iteration_count_value_str"><option v-for="(VAL, VAL_INDEX) in animation_iteration_count_value" :value="VAL">{{ VAL }}</option></select></div>
-<div>animation_timing_function: <select @change="collect_animation_value(IN_ARY[8])" name="animation_timing_function_value_str" class="animation_timing_function_value_str" v-model="animation_timing_function_value_str"><option v-for="(VAL, VAL_INDEX) in animation_timing_function_value" :value="VAL">{{ VAL }}</option></select></div>
-<div>animation_fill_mode: <select @change="collect_animation_value(IN_ARY[8])" name="animation_fill_mode_value_str" class="animation_fill_mode_value_str" v-model="animation_fill_mode_value_str"><option v-for="(VAL, VAL_INDEX) in animation_fill_mode_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_direction: <select @change="collect_animation_value(IN_ARY[8]), EVENT" name="animation_direction_value_str" class="animation_direction_value_str" v-model="animation_direction_value_str"><option v-for="(VAL, VAL_INDEX) in animation_direction_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_iteration_count: <select @change="collect_animation_value(IN_ARY[8]), EVENT" name="animation_iteration_count_value_str" class="animation_iteration_count_value_str" v-model="animation_iteration_count_value_str"><option v-for="(VAL, VAL_INDEX) in animation_iteration_count_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_timing_function: <select @change="collect_animation_value(IN_ARY[8]), EVENT" name="animation_timing_function_value_str" class="animation_timing_function_value_str" v-model="animation_timing_function_value_str"><option v-for="(VAL, VAL_INDEX) in animation_timing_function_value" :value="VAL">{{ VAL }}</option></select></div>
+<div>animation_fill_mode: <select @change="collect_animation_value(IN_ARY[8]), EVENT" name="animation_fill_mode_value_str" class="animation_fill_mode_value_str" v-model="animation_fill_mode_value_str"><option v-for="(VAL, VAL_INDEX) in animation_fill_mode_value" :value="VAL">{{ VAL }}</option></select></div>
 
 <!-- change_animation_duration_value_number: <input type="number" name="" class="" value="" @change="change_animation_duration_value_number($event)"> -->
 change_animation_duration_value_number: <input type="number" name="change_animation_duration_value_number" class="" value="0" @change="collect_animation_value(IN_ARY[8], $event)">
 <!-- change_animation_iteration_count_value_number: <input type="number" name="change_animation_iteration_count_value_number" class="" value="1" @change="change_animation_iteration_count_value_number($event)"> -->
-change_animation_iteration_count_value_number: <input type="number" name="change_animation_iteration_count_value_number" class="" value="1" @change="collect_animation_value(IN_ARY[8], $event)">
+change_animation_iteration_count_value_number: <input type="number" name="change_animation_iteration_count_value_number" class="" v-model="animation_iteration_count_value_number" @change="collect_animation_value(IN_ARY[8])">
 <!-- change_animation_timing_function_value_number: <input type="number" name="change_animation_timing_function_value_number" class="" value="1" @change="change_animation_timing_function_value_number($event)"> -->
 change_animation_timing_function_value_number: <input type="number" name="change_animation_timing_function_value_number" class="" value="1" @change="collect_animation_value(IN_ARY[8], $event)">
 
@@ -408,11 +408,11 @@ animation_direction_value: [
 'alternate-reverse',
 ],
 animation_iteration_count_value: [
-1,
+"NUMBER",
 'infinite',
 ],
 animation_timing_function_value: [
-1,
+"NUMBER",
 'linear',
 'ease',
 'ease-in',
@@ -445,6 +445,7 @@ animation_value_array: [
 ['headShake', '6FFFF animation-duration: 1s; animation-direction: normal; animation-iteration-count: infinite; animation-timing-function: ease; animation-fill-mode: none;',],
 ],
 
+animation_iteration_count_value_number: 0,
 
 }
 },
@@ -787,13 +788,15 @@ set_param_to_textarea_from_URL(){
 
 collect_animation_value(INDEX, EVENT){
 
-event !== undefined ? event.target.value : this.layer_chunk[INDEX][0][1];
 
-console.log(INDEX, EVENT);
+// EVENT
+
+// console.log(INDEX, EVENT);
+console.log(this.animation_iteration_count_value_str);
     const data = `
         animation-duration: ${this.animation_duration_value_str}s;
         animation-direction: ${this.animation_direction_value_str};
-        animation-iteration-count: ${this.animation_iteration_count_value_str};
+        animation-iteration-count: ${this.animation_iteration_count_value_str === 'NUMBER' ? this.change_animation_iteration_count_value_number() : this.animation_iteration_count_value_str};
         animation-timing-function: ${ (typeof this.animation_timing_function_value) === 'number' ? 'steps('+this.animation_timing_function_value_str+')' : this.animation_timing_function_value_str};
         animation-fill-mode: ${this.animation_fill_mode_value_str};
     `;
@@ -803,8 +806,9 @@ change_animation_duration_value_number(event){
     this.animation_duration_value = event === undefined ? R.range(0, 181) : R.range(0, Number(event.target.value));
     this.animation_duration_value_str = this.animation_duration_value[this.animation_duration_value.length - 1].toString();
 },
-change_animation_iteration_count_value_number(event){
-    this.animation_iteration_count_value_str = this.animation_iteration_count_value[0] = Number(event.target.value);
+change_animation_iteration_count_value_number(){
+    this.animation_iteration_count_value_str = this.animation_iteration_count_value_number;
+    return this.animation_iteration_count_value_str;
 },
 change_animation_timing_function_value_number(event){
     this.animation_timing_function_value_str = this.animation_timing_function_value[0] = Number(event.target.value);
