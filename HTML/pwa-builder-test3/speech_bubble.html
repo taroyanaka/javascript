@@ -217,33 +217,37 @@ bubble_2_height_num<input type="number" name="bubble_2_height_num" class="bubble
 </div>
 
 
-
-<div class="bubble_setter">
-<input type="checkbox" id="checkbox" v-model="bubble_checked">
-<label for="checkbox">{{ bubble_checked }}</label>
-    <div v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
-    <input type="radio" id="bubble" :value="BUBBLE_DATA_INDEX" v-model="picked_bubble_num">
-    <label for="bubble" :style="'background-color: '+BUBBLE_DATA[11]">bubble: {{ BUBBLE_DATA_INDEX }}</label>
-    <button @click="swap(BUBBLE_DATA)">swap</button>
-    <button @click="numbers_minus_100(BUBBLE_DATA)">numbers_minus_100</button>
-    <button @click="pattern_1(BUBBLE_DATA)">pattern_1</button>
-    <button @click="pattern_2(BUBBLE_DATA)">pattern_2</button>
-    <button @click="pattern_3(BUBBLE_DATA)">pattern_3</button>
-    <button @click="pattern_4(BUBBLE_DATA)">pattern_4</button>
-    <button @click="pattern_5(BUBBLE_DATA)">pattern_5</button>
+<details data-dropdown>
+<summary>open_bubble_setter</summary>
+    <div class="bubble_setter">
+    <input type="checkbox" id="checkbox" v-model="bubble_checked">
+    <label for="checkbox">{{ bubble_checked }}</label>
+        <div v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
+        <input type="radio" id="bubble" :value="BUBBLE_DATA_INDEX" v-model="picked_bubble_num">
+        <label for="bubble" :style="'background-color: '+BUBBLE_DATA[11]">bubble: {{ BUBBLE_DATA_INDEX }}</label>
+        <button @click="swap(BUBBLE_DATA)">swap</button>
+        <button @click="numbers_minus_100(BUBBLE_DATA)">numbers_minus_100</button>
+        <button @click="pattern_1(BUBBLE_DATA)">pattern_1</button>
+        <button @click="pattern_2(BUBBLE_DATA)">pattern_2</button>
+        <button @click="pattern_3(BUBBLE_DATA)">pattern_3</button>
+        <button @click="pattern_4(BUBBLE_DATA)">pattern_4</button>
+        <button @click="pattern_5(BUBBLE_DATA)">pattern_5</button>
+        </div>
+    <span>picked_bubble_num: {{ picked_bubble_num }}</span>
     </div>
-<span>picked_bubble_num: {{ picked_bubble_num }}</span>
-</div>
 
-bubble_no_show: <input type="checkbox" id="bubble_no_show_check" v-model="bubble_no_show">
-<label for="bubble_no_show_check">{{ bubble_no_show }}</label>
+    bubble_no_show: <input type="checkbox" id="bubble_no_show_check" v-model="bubble_no_show">
+    <label for="bubble_no_show_check">{{ bubble_no_show }}</label>
+</details>
 
 <input type="number" name="active_layer_index" class="active_layer_index" v-model="active_layer_index" min="0" step="1">
 all_display: <input type="checkbox" id="all_display" v-model="all_display">
 
+<details data-dropdown>
+<summary>open_speak_array_and_add</summary>
 <textarea v-for="(speak, speak_array_IDX) in speak_array" v-model="speak_array[speak_array_IDX]"></textarea>
 <button @click="speak_array_add">speak_array_add</button>
-
+</details>
 
 <details data-dropdown>
 <summary>open_timer</summary>
