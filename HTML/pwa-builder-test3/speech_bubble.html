@@ -12,6 +12,7 @@
 <!-- https://acchou.github.io/html-css-cheat-sheet/animation.html -->
 <link rel="stylesheet" href="./animate@3.5.2.css">
 <link rel="stylesheet" href="./cssui.min.css">
+<link rel="stylesheet" href="./cssui.tabs.min.css">
 
 <script src="./vue@3.2.36.global.prod.js"></script>
 <script src="./ramda.@0.28.0.js"></script>
@@ -96,6 +97,7 @@ summary{
 
 <details data-dropdown>
 <summary>open_time_and_active_layer</summary>
+
     <button @click="set_param_to_textarea_from_URL">set_param_to_textarea_from_URL</button>
 
     <textarea name="time_line_to_textarea" class="time_line_to_textarea" placeholder="time_line_to_textarea" cols="30" rows="10"></textarea>
@@ -129,8 +131,16 @@ summary{
 
 <details data-dropdown>
 <summary>open_layer_chunk</summary>
-    <!-- https://stackoverflow.com/q/61207314/9740478 -->
+
+<div data-tabs>
+    <!-- tab0 not working -->
+    <input v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk" :id="'tab'+(OUTER_ARY_INDEX+1)" type="radio" name="tab" :data-tab="'tab'+(OUTER_ARY_INDEX+1)" />
+    <nav>
+    <label v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk" :for="'tab'+(OUTER_ARY_INDEX+1)" :data-tab-label="'tab'+(OUTER_ARY_INDEX+1)" role="tab">{{ OUTER_ARY_INDEX }}</label>
+    </nav>
     <template v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
+<section :data-tab-panel="'tab'+(OUTER_ARY_INDEX+1)" role="tabpanel" :aria-labelledby="'tab'+(OUTER_ARY_INDEX+1)">
+    <!-- https://stackoverflow.com/q/61207314/9740478 -->
     <div v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
         <div v-for="(NO_USE_VAL, INDEX) in IN_ARY" :class="{ coloring: (active_the_image_index[0] === OUTER_ARY_INDEX && active_the_image_index[1] === IN_ARY_INDEX) ? true : false }">
             <input type='number' :step="(INDEX === 3||INDEX === 4) ? 0.1 : 1" v-model="IN_ARY[INDEX]">
@@ -138,14 +148,9 @@ summary{
         </div>
 
     <div>
-    <!-- <select class="ary_1_str_selecter" v-model="ary_1_str"> -->
     <select class="ary_1_str_selecter" v-model="animation_value_array[IN_ARY[8]][0]">
-    <!-- <select class="ary_1_str_selecter" v-model="animation_value_array[IN_ARY[8]]"> -->
     <option v-for="(ARY_STR, ARY_STR_INDEX) in ary_1" :VALUE="ARY_STR">{{ ARY_STR }}</option>
     </select>
-
-    <!-- <div>animation_duration: <select @change="collect_animation_value(IN_ARY[8])" name="animation_duration_value_str" class="animation_duration_value_str" v-model="animation_duration_value_str"><option v-for="(VAL, VAL_INDEX) in animation_duration_value" :value="VAL">{{ VAL }}</option></select></div> -->
-
     <div>animation_direction: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_direction_value_str" class="animation_direction_value_str" v-model="animation_value_array[IN_ARY[8]][3][0]"><option v-for="(VAL, VAL_INDEX) in animation_direction_value" :value="VAL">{{ VAL }}</option></select></div>
     {{ IN_ARY[8] }}
     <div>animation_iteration_count: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_iteration_count_value_str" class="animation_iteration_count_value_str"  v-model="animation_value_array[IN_ARY[8]][3][1]"><option v-for="(VAL, VAL_INDEX) in animation_iteration_count_value" :value="VAL">{{ VAL }}</option></select></div>
@@ -159,24 +164,53 @@ summary{
     <h1>animation_value_array[0] is: {{ animation_value_array[IN_ARY[8]][0] }}</h1>
     <h1>animation_value_array[1] is: {{ animation_value_array[IN_ARY[8]][1] }}</h1>
     <h1>IN_ARY is: {{ IN_ARY[8] }}</h1>
-
-    <!-- <h1>animation_value_array is: {{ animation_value_array }}</h1> -->
     </div>
-
-        <!-- <input type='number' v-model="IN_ARY[8]"> -->
-
         <input type="file" class="files" accept="image/png, image/jpeg" @change="img_set($event, OUTER_ARY_INDEX, IN_ARY_INDEX)">
-
         <select class="image_url_selecter" @change="image_url_select(OUTER_ARY_INDEX, IN_ARY_INDEX)" v-model="select_image_url_index">
             <option v-for="(image_url, image_url_index) in image_url_list.split('\n')"  :value="image_url_index">{{ image_url }}</option>
         </select>
-
         <button @click="active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
-
-
     </div>
     <button @click="image_add(OUTER_ARY_INDEX)">image_add</button>
+</section>
     </template>
+</div>
+
+
+    <!-- https://stackoverflow.com/q/61207314/9740478 -->
+    <!-- <template v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
+    <div v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
+        <div v-for="(NO_USE_VAL, INDEX) in IN_ARY" :class="{ coloring: (active_the_image_index[0] === OUTER_ARY_INDEX && active_the_image_index[1] === IN_ARY_INDEX) ? true : false }">
+            <input type='number' :step="(INDEX === 3||INDEX === 4) ? 0.1 : 1" v-model="IN_ARY[INDEX]">
+            <img v-if="INDEX === 0" :src="image_num_to_image_url(IN_ARY[INDEX])" :alt="IN_ARY[INDEX]" class="small_image">
+        </div>
+
+    <div>
+    <select class="ary_1_str_selecter" v-model="animation_value_array[IN_ARY[8]][0]">
+    <option v-for="(ARY_STR, ARY_STR_INDEX) in ary_1" :VALUE="ARY_STR">{{ ARY_STR }}</option>
+    </select>
+    <div>animation_direction: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_direction_value_str" class="animation_direction_value_str" v-model="animation_value_array[IN_ARY[8]][3][0]"><option v-for="(VAL, VAL_INDEX) in animation_direction_value" :value="VAL">{{ VAL }}</option></select></div>
+    {{ IN_ARY[8] }}
+    <div>animation_iteration_count: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_iteration_count_value_str" class="animation_iteration_count_value_str"  v-model="animation_value_array[IN_ARY[8]][3][1]"><option v-for="(VAL, VAL_INDEX) in animation_iteration_count_value" :value="VAL">{{ VAL }}</option></select></div>
+    <div>animation_timing_function: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_timing_function_value_str" class="animation_timing_function_value_str" v-model="animation_value_array[IN_ARY[8]][3][2]"><option v-for="(VAL, VAL_INDEX) in animation_timing_function_value" :value="VAL">{{ VAL }}</option></select></div>
+    <div>animation_fill_mode: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_fill_mode_value_str" class="animation_fill_mode_value_str" v-model="animation_value_array[IN_ARY[8]][3][3]"><option v-for="(VAL, VAL_INDEX) in animation_fill_mode_value" :value="VAL">{{ VAL }}</option></select></div>
+
+    change_animation_duration_value_number: <input type="number" name="change_animation_duration_value_number" class="" value="0" @change="collect_animation_value(IN_ARY[8], $event)">
+    change_animation_iteration_count_value_number: <input type="number" name="change_animation_iteration_count_value_number" class=""  value="0" @change="collect_animation_value(IN_ARY[8], $event)">
+    change_animation_timing_function_value_number: <input type="number" name="change_animation_timing_function_value_number" class=""  value="0" @change="collect_animation_value(IN_ARY[8], $event)">
+
+    <h1>animation_value_array[0] is: {{ animation_value_array[IN_ARY[8]][0] }}</h1>
+    <h1>animation_value_array[1] is: {{ animation_value_array[IN_ARY[8]][1] }}</h1>
+    <h1>IN_ARY is: {{ IN_ARY[8] }}</h1>
+    </div>
+        <input type="file" class="files" accept="image/png, image/jpeg" @change="img_set($event, OUTER_ARY_INDEX, IN_ARY_INDEX)">
+        <select class="image_url_selecter" @change="image_url_select(OUTER_ARY_INDEX, IN_ARY_INDEX)" v-model="select_image_url_index">
+            <option v-for="(image_url, image_url_index) in image_url_list.split('\n')"  :value="image_url_index">{{ image_url }}</option>
+        </select>
+        <button @click="active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
+    </div>
+    <button @click="image_add(OUTER_ARY_INDEX)">image_add</button>
+    </template> -->
 </details>
 
 <span>image_checked: {{ image_checked }}</span>
@@ -282,10 +316,10 @@ all_display: <input type="checkbox" id="all_display" v-model="all_display">
 
 <div class="parent_image_layer">
 
-<div :class="'layer_'+OUTER_ARY_INDEX" v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
-<!-- <img :class="'image_'+OUTER_ARY_INDEX+'_'+IN_ARY_INDEX+' animated shake infinite'" style="animation-duration: 3s;animation-timing-function: steps(3);" v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY"> -->
+<div :class="'layer_'+(OUTER_ARY_INDEX+1)" v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
+<!-- <img :class="'image_'+(OUTER_ARY_INDEX+1)+'_'+IN_ARY_INDEX+' animated shake infinite'" style="animation-duration: 3s;animation-timing-function: steps(3);" v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY"> -->
 <!-- {{ OUTER_ARY[0][8] }} -->
-<img :class="'image_'+OUTER_ARY_INDEX+'_'+IN_ARY_INDEX+' animated '+animation_value_array[IN_ARY[8]][0]" :style="animation_value_array[IN_ARY[8]][1]" v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
+<img :class="'image_'+(OUTER_ARY_INDEX+1)+'_'+IN_ARY_INDEX+' animated '+animation_value_array[IN_ARY[8]][0]" :style="animation_value_array[IN_ARY[8]][1]" v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
 </div>
 
 
@@ -544,6 +578,7 @@ beforeMount() {
 },
 mounted() {
     this.exe();
+document.querySelectorAll("summary")[4].click();
 },
 updated() {
     this.exe();
