@@ -22,10 +22,6 @@
 <style>
 /* grid layout */
 .app{
-width: 0;
-height: 0;
-margin: 0;
-padding: 0;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
@@ -35,7 +31,6 @@ padding: 0;
         "footer footer footer";
     height: 100vh;
     width: 100vw;
-    /* position: relative; */
 }
 header{
 grid-area: header;
@@ -64,9 +59,15 @@ article{
 }
 footer{
     grid-area: footer;
-    background-color: azure;
+    background-color: goldenrod;
+    height: 3rem;
+    width: 100vw;
 }
 
+header ul, footer ul{
+    display: flex;
+    justify-content: space-around;
+}
 header ul li, footer > ul > li{
 display: inline-block;
 }
