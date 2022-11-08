@@ -17,6 +17,7 @@
 
 <script src="./vue@3.2.36.global.prod.js"></script>
 <script src="./ramda.@0.28.0.js"></script>
+<script src="./prefectures_of_japan_list_alphabet_1222.js"></script>
 
 <style>
 /* grid layout */
@@ -43,6 +44,7 @@ margin: 0;
 padding: 0;
 
 top: 0rem;
+height: 3rem;
 }
 main{
     grid-area: main;
@@ -86,10 +88,7 @@ display: inline-block;
 </main>
 <article>
 <ul>
-<li v-for="(ALPHABET, ALPHABET_INDEX) in alphabet"><button class="article_button" @click="set_data_to_content(ALPHABET)">{{ ALPHABET }}</button></li>
-<li v-for="(UPPER_ALPHABET, UPPER_ALPHABET_INDEX) in upper_alphabet"><button class="article_button" @click="set_data_to_content(UPPER_ALPHABET)">{{ UPPER_ALPHABET }}</button></li>
-<li v-for="(ALPHABET, ALPHABET_INDEX) in alphabet"><button class="article_button" @click="set_data_to_content(ALPHABET)">{{ ALPHABET }}</button></li>
-<li v-for="(UPPER_ALPHABET, UPPER_ALPHABET_INDEX) in upper_alphabet"><button class="article_button" @click="set_data_to_content(UPPER_ALPHABET)">{{ UPPER_ALPHABET }}</button></li>
+<li v-for="(PREFECTURE, PREFECTURE_INDEX) in sample_list_0"><button class="article_button" @click="set_data_to_content(PREFECTURE)">{{ PREFECTURE }}</button></li>
 </ul>
 </article>
 <footer>
@@ -110,6 +109,8 @@ data() {
 alphabet: [...'abcdefghijklmnopqrstuvwxyz'],
 upper_alphabet: [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
 content_data: [1,2,3],
+sample_list_0: prefectures_of_japan_list,
+sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
     }
 },
 mounted() {
@@ -117,9 +118,6 @@ mounted() {
 updated() {
 },
 methods: {
-click() {
-    console.log('click')
-},
 set_data_to_content(STR){
     this.content_data = [
                             STR + " is this",
