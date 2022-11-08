@@ -71,6 +71,15 @@ header ul, footer ul{
 header ul li, footer > ul > li{
 display: inline-block;
 }
+.image_data_set{
+    /* background-color: pink; */
+    /* margin: 0; */
+    /* padding: 0; */
+}
+.image_data{
+    background-color: peachpuff;
+    /* content: url(https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/1_1.png); */
+}
 </style>
 </head>
 <body class="app">
@@ -88,14 +97,21 @@ display: inline-block;
 </header>
 <main>
 <ul class="content">
-<template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
-<li>
-<ul>
-<li v-for="(LI_DATA, LI_DATA_INDEX) in LI_DATA_ARRAY">{{ LI_DATA }}</li>
-</ul>
-<br>
-</li>
-</template>
+    <template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
+        <div class="image_data_set" :data-word="LI_DATA_ARRAY[2]">
+        <img src="" :alt="" class="image_data">
+        <canvas width="100" height="80"></canvas>
+        </div>
+
+        <li>
+            <ul>
+            <template v-for="(LI_DATA, LI_DATA_INDEX) in LI_DATA_ARRAY">
+                <li>{{ LI_DATA }}</li>
+            </template>
+            </ul>
+            <br>
+        </li>
+    </template>
 </ul>
 </main>
 <article>
@@ -120,7 +136,7 @@ data() {
     return {
 alphabet: [...'abcdefghijklmnopqrstuvwxyz'],
 upper_alphabet: [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
-content_data: [1,2,3],
+content_data: [1,2,3,4,100],
 sample_list_0: prefectures_of_japan_list,
 sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
 // const sample_list_2[0] = [
@@ -137,21 +153,38 @@ sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
 sample_list_2: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array,
     }
 },
+beforeMounte(){
+},
 mounted() {
-document.querySelectorAll(`.article_button`)[0].click()
+    document.querySelectorAll(`.article_button`)[0].click();
 },
 updated() {
+    this.make_img_from_canvas();
 },
 methods: {
 set_data_to_content(STR){
     this.content_data = this.sample_list_2
                             .filter(V=>V[0] === STR)
-                            // .map(V=>[V[0], V[1]]);
-}
+},
+make_img_from_canvas(){
+document.querySelectorAll(".image_data_set").forEach(image_data_set=>{
+    const canvas = image_data_set.querySelector("canvas");
+    const ctx = canvas.getContext('2d');
+    let img = new Image("Image_URL_here");
+    ctx.drawImage(img,0,0);
+    ctx.font = '10px serif';
+    ctx.fillText(image_data_set.dataset.word, 10, 30);
+    image_data_set.querySelector("img").src = canvas.toDataURL('image/png');
+    canvas.remove();
+})
+},
+
 
 },
 }).mount('.app');
 
-R.transpose([prefectures_of_japan_list_alphabet_1222_0_1_2, sample_data_array]).map(V=>V[0].concat(V[1]));
+
+// R.transpose([prefectures_of_japan_list_alphabet_1222_0_1_2, sample_data_array]).map(V=>V[0].concat(V[1]));
+
 </script>
 </html>
