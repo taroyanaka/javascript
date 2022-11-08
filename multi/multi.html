@@ -52,6 +52,10 @@ article{
     grid-area: article;
     background-color: antiquewhite;
 }
+.article_button{
+    width: 90%;
+    height: 2rem;
+}
 footer{
     grid-area: footer;
     background-color: azure;
@@ -82,10 +86,10 @@ display: inline-block;
 </main>
 <article>
 <ul>
-<li v-for="(ALPHABET, ALPHABET_INDEX) in alphabet"><button @click="set_data_to_content(ALPHABET)">{{ ALPHABET }}</button></li>
-<li v-for="(UPPER_ALPHABET, UPPER_ALPHABET_INDEX) in upper_alphabet"><button @click="set_data_to_content(UPPER_ALPHABET)">{{ UPPER_ALPHABET }}</button></li>
-<li v-for="(ALPHABET, ALPHABET_INDEX) in alphabet"><button @click="set_data_to_content(ALPHABET)">{{ ALPHABET }}</button></li>
-<li v-for="(UPPER_ALPHABET, UPPER_ALPHABET_INDEX) in upper_alphabet"><button @click="set_data_to_content(UPPER_ALPHABET)">{{ UPPER_ALPHABET }}</button></li>
+<li v-for="(ALPHABET, ALPHABET_INDEX) in alphabet"><button class="article_button" @click="set_data_to_content(ALPHABET)">{{ ALPHABET }}</button></li>
+<li v-for="(UPPER_ALPHABET, UPPER_ALPHABET_INDEX) in upper_alphabet"><button class="article_button" @click="set_data_to_content(UPPER_ALPHABET)">{{ UPPER_ALPHABET }}</button></li>
+<li v-for="(ALPHABET, ALPHABET_INDEX) in alphabet"><button class="article_button" @click="set_data_to_content(ALPHABET)">{{ ALPHABET }}</button></li>
+<li v-for="(UPPER_ALPHABET, UPPER_ALPHABET_INDEX) in upper_alphabet"><button class="article_button" @click="set_data_to_content(UPPER_ALPHABET)">{{ UPPER_ALPHABET }}</button></li>
 </ul>
 </article>
 <footer>
