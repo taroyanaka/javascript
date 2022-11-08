@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.js" integrity="sha512-WXWhnFUmZx+snPw8v2JjWQ0cdLUCLxTXhyqiZb7G5pkZZEGPBgVSzILSpkPK9haxW75sX5znfF08rsVnf6BUlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+<link rel="stylesheet" href="./reset.css">
+
+<!-- https://animate.style/ -->
+<!-- https://acchou.github.io/html-css-cheat-sheet/animation.html -->
+<!-- <link rel="stylesheet" href="./animate@3.5.2.css"> -->
+<!-- <link rel="stylesheet" href="./cssui.min.css"> -->
+<!-- <link rel="stylesheet" href="./cssui.tabs.min.css"> -->
+
+<script src="./vue@3.2.36.global.prod.js"></script>
+<script src="./ramda.@0.28.0.js"></script>
+
+<style>
+/* grid layout */
+.app{
+width: 0;
+height: 0;
+margin: 0;
+padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas: 
+        "header header header"
+        "main main article"
+        "footer footer footer";
+    height: 100vh;
+    width: 100vw;
+}
+header{
+    grid-area: header;
+    background-color: #f1f1f1;
+position: sticky;
+margin: 0;
+padding: 0;
+
+top: 0rem;
+}
+main{
+    grid-area: main;
+    background-color: aliceblue;
+}
+article{
+    grid-area: article;
+    background-color: antiquewhite;
+}
+footer{
+    grid-area: footer;
+    background-color: azure;
+}
+
+header > ul > li, footer > ul > li{
+display: inline-block;
+}
+</style>
+</head>
+<body class="app">
+<header class="tracker">
+<ul>
+<li>abc</li>
+<li>abc</li>
+<li>abc</li>
+<li>abc</li>
+<li>abc</li>
+<li>abc</li>
+</ul>
+</header>
+<main>
+<ul class="content">
+<template v-for="(LI_DATA, LI_DATA_INDEX) in content_data">
+<li>{{ LI_DATA }}</li>
+</template>
+</ul>
+</main>
+<article>
+<ul>
+<li v-for="(ALPHABET, ALPHABET_INDEX) in alphabet"><button @click="set_data_to_content(ALPHABET)">{{ ALPHABET }}</button></li>
+<li v-for="(UPPER_ALPHABET, UPPER_ALPHABET_INDEX) in upper_alphabet"><button @click="set_data_to_content(UPPER_ALPHABET)">{{ UPPER_ALPHABET }}</button></li>
+<li v-for="(ALPHABET, ALPHABET_INDEX) in alphabet"><button @click="set_data_to_content(ALPHABET)">{{ ALPHABET }}</button></li>
+<li v-for="(UPPER_ALPHABET, UPPER_ALPHABET_INDEX) in upper_alphabet"><button @click="set_data_to_content(UPPER_ALPHABET)">{{ UPPER_ALPHABET }}</button></li>
+</ul>
+</article>
+<footer>
+<ul>
+<li>def</li>
+<li>def</li>
+<li>def</li>
+<li>def</li>
+<li>def</li>
+<li>def</li>
+</ul>
+</footer>
+</body>
+<script>
+const app = Vue.createApp({
+data() {
+    return {
+alphabet: [...'abcdefghijklmnopqrstuvwxyz'],
+upper_alphabet: [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
+content_data: [1,2,3],
+    }
+},
+mounted() {
+},
+updated() {
+},
+methods: {
+click() {
+    console.log('click')
+},
+set_data_to_content(STR){
+    this.content_data = [
+                            STR + " is this",
+                            STR + " is that",
+                            STR + " is the other",
+                        ];
+}
+},
+}).mount('.app');
+
+</script>
+</html>
