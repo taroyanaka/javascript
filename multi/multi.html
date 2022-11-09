@@ -119,10 +119,11 @@ display: inline-block;
 </main>
 <article>
 <ul>
-<li v-for="(TAG, TAG_INDEX) in tag_list"><button class="article_button" @click="set_data_to_content(TAG)">{{ TAG }}</button></li>
+<li v-for="(TAG, TAG_INDEX) in tag_list"><button class="article_button" @click="set_data_to_content({'filter_by_tag': TAG})">{{ TAG }}</button></li>
 </ul>
 <ul>
-<li v-for="(PREFECTURE, PREFECTURE_INDEX) in sample_list_0"><button class="article_button" @click="set_data_to_content(PREFECTURE)">{{ PREFECTURE }}</button></li>
+<!-- <li v-for="(PREFECTURE, PREFECTURE_INDEX) in sample_list_0"><button class="article_button" @click="set_data_to_content(PREFECTURE)">{{ PREFECTURE }}</button></li> -->
+<li v-for="(PREFECTURE, PREFECTURE_INDEX) in sample_list_0"><button class="article_button" @click="set_data_to_content({'filter_by_pre': PREFECTURE})">{{ PREFECTURE }}</button></li>
 </ul>
 </article>
 <footer>
@@ -171,20 +172,29 @@ updated() {
 },
 methods: {
 filter_by_rule(FILTER_OBJ){
-const isEven = OBJ => OBJ % 2 === 0;
-const obj_0 = {"filter_by_pre": "hokkaido"};
-const obj_1 = {"filter_by_tag": "a_1"};
-Object.keys(obj)[0];
-// const isEven = n => n % 2 === 0;
-R.filter(isEven, [1, 2, 3, 4]); //=> [2, 4]
+const filter_by_pre = (OBJ, LIST) => LIST.filter(V=>Object.values(OBJ)[0] === V[0]);
+const filter_by_tag = (OBJ, LIST) => LIST.filter(V=>V[9].map(VAL=>this.index_to_tag_name(VAL)).includes(Object.values(OBJ)[0]));
+const choose_filter = OBJ => {
+    if(Object.keys(OBJ)[0] === "filter_by_pre"){
+        return filter_by_pre;
+    }else if(Object.keys(OBJ)[0] === "filter_by_tag"){
+        return filter_by_tag;
+    }
+}
+// const filter_by_rule = (OBJ, LIST) => LIST.filter(V => choose_filter(OBJ)(OBJ, V));
+const filter_by_rule = (OBJ, LIST) => choose_filter(OBJ)(OBJ, LIST);
 
+const res = filter_by_rule({'filter_by_pre': 'hokkaido'}, prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array);
+const res2 = filter_by_rule({'filter_by_tag': 'a_1'}, prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array);
+console.log(res,res2);
+    // return filter_by_rule(FILTER_OBJ, this.sample_list_3);
 },
-},
-set_data_to_content(STR){
-    const list = this.sample_list_3
-                        .filter(V=>V[0] === STR)
+set_data_to_content(STR, FILTER_OBJ){
+    const filtered_list = this.filter_by_rule(FILTER_OBJ);
+    const list = this.sample_list_3;
+                        // .filter(V=>V[0] === STR)
+    // this.content_data = this.convert_index_to_tag_name_and_display(filtered_list);
     this.content_data = this.convert_index_to_tag_name_and_display(list);
-
 },
 index_to_tag_name(INDEX){
     return this.tag_list[INDEX];
