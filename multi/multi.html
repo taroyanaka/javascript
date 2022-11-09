@@ -52,9 +52,12 @@ main{
 article{
     grid-area: article;
     background-color: antiquewhite;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 .article_button{
-    width: 90%;
+    width: 100%;
     height: 2rem;
 }
 footer{
@@ -116,6 +119,9 @@ display: inline-block;
 </main>
 <article>
 <ul>
+<li v-for="(TAG, TAG_INDEX) in tag_list"><button class="article_button" @click="set_data_to_content(TAG)">{{ TAG }}</button></li>
+</ul>
+<ul>
 <li v-for="(PREFECTURE, PREFECTURE_INDEX) in sample_list_0"><button class="article_button" @click="set_data_to_content(PREFECTURE)">{{ PREFECTURE }}</button></li>
 </ul>
 </article>
@@ -152,13 +158,13 @@ sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
 // "sample_time_1", // 8
 // ];
 sample_list_2: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array,
-sample_list_3: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_tag_index,
+sample_list_3: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array,
     }
 },
 beforeMounte(){
 },
 mounted() {
-    document.querySelectorAll(`.article_button`)[0].click();
+    document.querySelectorAll(`.article_button`)[104].click();
 },
 updated() {
     this.make_img_from_canvas();
