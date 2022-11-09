@@ -137,6 +137,7 @@ data() {
 alphabet: [...'abcdefghijklmnopqrstuvwxyz'],
 upper_alphabet: [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
 content_data: [1,2,3,4,100],
+tag_list: tag_list,
 sample_list_0: prefectures_of_japan_list,
 sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
 // const sample_list_2[0] = [
@@ -151,6 +152,7 @@ sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
 // "sample_time_1", // 8
 // ];
 sample_list_2: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array,
+sample_list_3: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_tag_index,
     }
 },
 beforeMounte(){
@@ -163,18 +165,31 @@ updated() {
 },
 methods: {
 set_data_to_content(STR){
-    this.content_data = this.sample_list_2
+        const list = this.sample_list_3
                             .filter(V=>V[0] === STR)
+    this.content_data = this.convert_index_to_tag_name_and_display(list);
+
+},
+index_to_tag_name(INDEX){
+    return this.tag_list[INDEX];
+},
+convert_index_to_tag_name_and_display(LIST){
+    return LIST.map(V=>
+                                V.concat(
+                                   [ V[9].map(TAG_INDEX=>this.index_to_tag_name(TAG_INDEX)) ]
+                                )
+                            )
+                            .map(V=>R.remove(9, 1, V));
 },
 make_img_from_canvas(){
-document.querySelectorAll(".image_data_set").forEach(image_data_set=>{
-    const canvas = image_data_set.querySelector("canvas");
+document.querySelectorAll(".image_data_set").forEach(IMAGE_DATA_SET=>{
+    const canvas = IMAGE_DATA_SET.querySelector("canvas");
     const ctx = canvas.getContext('2d');
     let img = new Image("Image_URL_here");
     ctx.drawImage(img,0,0);
     ctx.font = '10px serif';
-    ctx.fillText(image_data_set.dataset.word, 10, 30);
-    image_data_set.querySelector("img").src = canvas.toDataURL('image/png');
+    ctx.fillText(IMAGE_DATA_SET.dataset.word, 10, 30);
+    IMAGE_DATA_SET.querySelector("img").src = canvas.toDataURL('image/png');
     canvas.remove();
 })
 },
@@ -185,6 +200,44 @@ document.querySelectorAll(".image_data_set").forEach(image_data_set=>{
 
 
 // R.transpose([prefectures_of_japan_list_alphabet_1222_0_1_2, sample_data_array]).map(V=>V[0].concat(V[1]));
+
+// prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array.map(V=>V.concat(
+//     [R.uniq(random_length_array(R.range(0, 10)).map(V=> random_number_from_min_to_max(1, 103)))
+//      ]
+//     ))
+
+// shuffle arrray
+// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
+// random number from min to max
+function random_number_from_min_to_max(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+// random length array
+function random_length_array(array) {
+  return array.slice(0, random_number_from_min_to_max(1, array.length));
+}
+
+
+
 
 </script>
 </html>
