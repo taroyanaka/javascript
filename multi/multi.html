@@ -171,9 +171,14 @@ updated() {
     this.make_img_from_canvas();
 },
 methods: {
-filter_by_rule(FILTER_OBJ){
+filter_by_rule(FILTER_OBJ, LIST_PARAM){
+console.log(FILTER_OBJ);
 const filter_by_pre = (OBJ, LIST) => LIST.filter(V=>Object.values(OBJ)[0] === V[0]);
-const filter_by_tag = (OBJ, LIST) => LIST.filter(V=>V[9].map(VAL=>this.index_to_tag_name(VAL)).includes(Object.values(OBJ)[0]));
+const filter_by_tag = (OBJ, LIST) => {
+    const TMP_LIST = LIST.filter(V=>V[9].map(VAL=>this.index_to_tag_name(VAL)).includes(Object.values(OBJ)[0]));
+    const RESULT_LIST = TMP_LIST.length > 0 ? TMP_LIST : LIST;
+    return RESULT_LIST;
+};
 const choose_filter = OBJ => {
     if(Object.keys(OBJ)[0] === "filter_by_pre"){
         return filter_by_pre;
@@ -186,15 +191,17 @@ const filter_by_rule = (OBJ, LIST) => choose_filter(OBJ)(OBJ, LIST);
 
 const res = filter_by_rule({'filter_by_pre': 'hokkaido'}, prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array);
 const res2 = filter_by_rule({'filter_by_tag': 'a_1'}, prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array);
-console.log(res,res2);
-    // return filter_by_rule(FILTER_OBJ, this.sample_list_3);
+// console.log(res,res2);
+    return filter_by_rule(FILTER_OBJ, this.sample_list_3);
 },
-set_data_to_content(STR, FILTER_OBJ){
+// set_data_to_content(STR, FILTER_OBJ){
+set_data_to_content(FILTER_OBJ){
+    // const list = this.sample_list_3;
+    // const filtered_list = this.filter_by_rule(FILTER_OBJ, list);
     const filtered_list = this.filter_by_rule(FILTER_OBJ);
-    const list = this.sample_list_3;
                         // .filter(V=>V[0] === STR)
-    // this.content_data = this.convert_index_to_tag_name_and_display(filtered_list);
-    this.content_data = this.convert_index_to_tag_name_and_display(list);
+    this.content_data = this.convert_index_to_tag_name_and_display(filtered_list);
+    // this.content_data = this.convert_index_to_tag_name_and_display(list);
 },
 index_to_tag_name(INDEX){
     return this.tag_list[INDEX];
