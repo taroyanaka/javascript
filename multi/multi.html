@@ -269,7 +269,12 @@ function random_length_array(array) {
 }
 
 
+R.uniq(random_length_array(R.range(0, 10)).map(V=> random_number_from_min_to_max(1, 103))).sort(function(a,b){return a - b}).map(V=>V.toString());
 
+
+// const file_names = prefectures_of_japan_list_alphabet_1222_0_1_2.map(VAL=>
+//     R.uniq(random_length_array(R.range(0, 10)).map(V=> random_number_from_min_to_max(1, 103))).sort(function(a,b){return a - b}).map(V=>VAL[2]+"_"+V.toString())
+//     )
 
 </script>
 </html>
