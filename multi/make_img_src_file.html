@@ -9029,7 +9029,7 @@ const file_names = [
     <div v-for="(INNER_ARY_DATA_ARRAY, INNER_ARY_DATA_ARRAY_INDEX) in ARY_DATA_ARRAY" class="image_parent">
         <div>{{ INNER_ARY_DATA_ARRAY }}</div>
         <canvas></canvas>
-        <img src="" :alt="INNER_ARY_DATA_ARRAY">
+        <img src="" :alt="INNER_ARY_DATA_ARRAY" :name="INNER_ARY_DATA_ARRAY">
     </div>
 </div>
 <!-- </template> -->
@@ -9041,14 +9041,14 @@ const app = Vue.createApp({
 data() {
     return {
 ary_0: [1,2,3],
-// ary_1: sample_file_names,
-ary_1: file_names,
+ary_1: sample_file_names,
+// ary_1: file_names,
     }
 },
 beforeMounte(){
 },
 mounted() {
-this.make_img_from_canvas();
+// this.make_img_from_canvas();
 },
 updated() {
 
