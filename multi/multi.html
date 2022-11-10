@@ -166,6 +166,7 @@ sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
 // ];
 sample_list_2: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array,
 sample_list_3: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array,
+sample_list_4: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
     }
 },
 beforeMounte(){
@@ -196,7 +197,8 @@ filter_by_rule(FILTER_OBJ, LIST_PARAM){
     // const res = filter_by_rule({'filter_by_pre': 'hokkaido'}, prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array);
     // const res2 = filter_by_rule({'filter_by_tag': 'a_1'}, prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array);
     // console.log(res,res2);
-    return filter_by_rule(FILTER_OBJ, this.sample_list_3);
+    // return filter_by_rule(FILTER_OBJ, this.sample_list_3);
+    return filter_by_rule(FILTER_OBJ, this.sample_list_4);
 },
 set_data_to_content(FILTER_OBJ){
     const filtered_list = this.filter_by_rule(FILTER_OBJ);
@@ -216,8 +218,8 @@ convert_index_to_tag_name_and_display(LIST){
                             [ V[9].map(TAG_INDEX=>this.index_to_tag_name(TAG_INDEX)) ]
                         )
                     )
-                    // .map(V=> V[9])
-                    .map(V=>R.remove(9, 1, V));
+                    .map(V=> R.update(10, V[9].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V))
+                    // .map(V=>R.remove(9, 1, V));
 },
 make_img_from_canvas(){
 document.querySelectorAll(".image_data_set").forEach(IMAGE_DATA_SET=>{
