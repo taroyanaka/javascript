@@ -205,12 +205,18 @@ set_data_to_content(FILTER_OBJ){
 index_to_tag_name(INDEX){
     return this.tag_list[INDEX];
 },
+file_name_number_to_file_url(PRE, PRE_ALPH, FILE_NAME_NUMBER){
+// "https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/"+"fukushima_u_"+PRE+"_"+PRE_ALPH+"_"+FILE_NAME_NUMBER+".png"
+// https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/fukushima_u_88.png
+    return "https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/"+PRE+"_"+PRE_ALPH+"_"+FILE_NAME_NUMBER+".png";
+},
 convert_index_to_tag_name_and_display(LIST){
     return LIST.map(V=>
                         V.concat(
                             [ V[9].map(TAG_INDEX=>this.index_to_tag_name(TAG_INDEX)) ]
                         )
                     )
+                    // .map(V=> V[9])
                     .map(V=>R.remove(9, 1, V));
 },
 make_img_from_canvas(){
@@ -269,7 +275,7 @@ function random_length_array(array) {
 }
 
 
-R.uniq(random_length_array(R.range(0, 10)).map(V=> random_number_from_min_to_max(1, 103))).sort(function(a,b){return a - b}).map(V=>V.toString());
+// R.uniq(random_length_array(R.range(0, 10)).map(V=> random_number_from_min_to_max(1, 103))).sort(function(a,b){return a - b}).map(V=>V.toString());
 
 
 // const file_names = prefectures_of_japan_list_alphabet_1222_0_1_2.map(VAL=>
@@ -277,6 +283,7 @@ R.uniq(random_length_array(R.range(0, 10)).map(V=> random_number_from_min_to_max
 //     )
 
 
+// I made a mistake in numbering this sample data, but it's sample data, so I'll skip over this mistake and proceed.
 // https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi_file_name.txt
 
 
