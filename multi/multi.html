@@ -14,7 +14,7 @@ make canvas error problem => make img src files from texts
          => ✅
 set img with the number(like a item price)
     => 🛠
-clear_current_filter_and_sorter
+clear current filter and sorter
     => 🛠
 -->
 
@@ -129,6 +129,7 @@ display: inline-block;
 <span>{{ current_filter }}</span>
 <span>{{ current_sorter }}</span>
 </div>
+<button @click="clear_current_filter_and_sorter">clear_current_filter_and_sorter</button>
 
 <ul class="content">
     <template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
@@ -280,6 +281,11 @@ convert_index_to_tag_name_and_display(LIST){
                     );
     const tmp_list_2 = tmp_list.map(V=> R.insert(-1, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V) );
     return tmp_list_2;
+},
+clear_current_filter_and_sorter(){
+    this.current_filter = null;
+    this.current_sorter = null;
+    this.set_data_to_content();
 },
 // make_img_from_canvas(){
 // document.querySelectorAll(".image_data_set").forEach(IMAGE_DATA_SET=>{
