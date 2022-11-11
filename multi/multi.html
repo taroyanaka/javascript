@@ -190,7 +190,7 @@ updated() {
     // this.make_img_from_canvas();
 },
 methods: {
-filter_by_rule(FILTER_OBJ, LIST_PARAM){
+filter_by_rule(FILTER_OBJ){
     const filter_by_pre = (OBJ, LIST) => LIST.filter(V=>Object.values(OBJ)[0] === V[0]);
     const filter_by_tag = (OBJ, LIST) => {
         const TMP_LIST = LIST.filter(V=>V[9].map(VAL=>this.index_to_tag_name(VAL)).includes(Object.values(OBJ)[0]));
@@ -207,10 +207,32 @@ filter_by_rule(FILTER_OBJ, LIST_PARAM){
                 break;
             default:
                 break;
-}
+        }
     }
-    const filter_by_rule = (OBJ, LIST) => choose_filter(OBJ)(OBJ, LIST);
-    return filter_by_rule(FILTER_OBJ, this.sample_list_4);
+    const filter_by = (OBJ, LIST) => choose_filter(OBJ)(OBJ, LIST);
+    return filter_by(FILTER_OBJ, this.sample_list_4);
+},
+sort_by_rule(SORT_OBJ, LIST){
+// "sample_number_0", // 5
+// "sample_number_1", // 6
+    const sort_by_number_0_asc = (OBJ, LIST_PARAM) => LIST_PARAM.sort((a,b)=>{return a[5] - b[5]});
+    const sort_by_number_0_desc = (OBJ, LIST_PARAM) => LIST_PARAM.sort((a,b)=>{return b[5] - a[5]});
+    const sort_by_number_1_asc = (OBJ, LIST_PARAM) => LIST_PARAM.sort((a,b)=>{return a[6] - b[6]});
+    const sort_by_number_1_desc = (OBJ, LIST_PARAM) => LIST_PARAM.sort((a,b)=>{return b[6] - a[6]});
+    const choose_sorter = OBJ => {
+        switch (Object.keys(OBJ)[0]) {
+            case "sort_by_number_0":
+                    return Object.values(OBJ)[0] === 'asc' ? sort_by_number_0_asc : sort_by_number_0_desc;
+                break;
+            case "sort_by_number_1":
+                    return Object.values(OBJ)[0] === 'asc' ? sort_by_number_1_asc : sort_by_number_1_desc;
+                break;
+            default:
+                break;
+        }
+    };
+    const sort_by = (OBJ, LIST_PARAM) => choose_sorter(OBJ)(OBJ, LIST_PARAM);
+    return sort_by(SORT_OBJ, LIST);
 },
 set_data_to_content(FILTER_OBJ){
     const filtered_list = this.filter_by_rule(FILTER_OBJ);
@@ -234,8 +256,9 @@ convert_index_to_tag_name_and_display(LIST){
 // console.log(tmp_list);
 // const tmp_list_2 = tmp_list.map(V=> R.update(10, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V));
 const tmp_list_2 = tmp_list.map(V=> R.insert(-1, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V) );
-console.log(tmp_list_2);
-return tmp_list_2;
+const tmp_list_3 = this.sort_by_rule({sort_by_number_0: "asc"}, tmp_list_2);
+// console.log(tmp_list_2);
+return tmp_list_3;
                     
                     // .map(V=>R.remove(9, 1, V));
 },
