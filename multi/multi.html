@@ -178,11 +178,10 @@ mounted() {
     document.querySelectorAll(`.article_button`)[104].click();
 },
 updated() {
-    this.make_img_from_canvas();
+    // this.make_img_from_canvas();
 },
 methods: {
 filter_by_rule(FILTER_OBJ, LIST_PARAM){
-    // console.log(FILTER_OBJ);
     const filter_by_pre = (OBJ, LIST) => LIST.filter(V=>Object.values(OBJ)[0] === V[0]);
     const filter_by_tag = (OBJ, LIST) => {
         const TMP_LIST = LIST.filter(V=>V[9].map(VAL=>this.index_to_tag_name(VAL)).includes(Object.values(OBJ)[0]));
@@ -190,17 +189,18 @@ filter_by_rule(FILTER_OBJ, LIST_PARAM){
         return RESULT_LIST;
     };
     const choose_filter = OBJ => {
-        if(Object.keys(OBJ)[0] === "filter_by_pre"){
-            return filter_by_pre;
-        }else if(Object.keys(OBJ)[0] === "filter_by_tag"){
-            return filter_by_tag;
-        }
+        switch (Object.keys(OBJ)[0]) {
+            case "filter_by_pre":
+                    return filter_by_pre;
+                break;
+            case "filter_by_tag":
+                    return filter_by_tag;
+                break;
+            default:
+                break;
+}
     }
     const filter_by_rule = (OBJ, LIST) => choose_filter(OBJ)(OBJ, LIST);
-    // const res = filter_by_rule({'filter_by_pre': 'hokkaido'}, prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array);
-    // const res2 = filter_by_rule({'filter_by_tag': 'a_1'}, prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array);
-    // console.log(res,res2);
-    // return filter_by_rule(FILTER_OBJ, this.sample_list_3);
     return filter_by_rule(FILTER_OBJ, this.sample_list_4);
 },
 set_data_to_content(FILTER_OBJ){
