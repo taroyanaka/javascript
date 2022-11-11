@@ -92,6 +92,11 @@ display: inline-block;
     background-color: peachpuff;
     /* content: url(https://raw.githubusercontent.com/taroyanaka/javascript/master/HTML/pwa-builder-test3/1_1.png); */
 }
+.image_list_to_inline_tag_and_smaller{
+    display: inline-block;
+    width: 6rem;
+    height: 4rem;
+}
 </style>
 </head>
 <body class="app">
@@ -110,15 +115,19 @@ display: inline-block;
 <main>
 <ul class="content">
     <template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
-        <div class="image_data_set" :data-word="LI_DATA_ARRAY[2]">
+        <!-- <div class="image_data_set" :data-word="LI_DATA_ARRAY[2]">
         <img src="" :alt="" class="image_data">
         <canvas width="100" height="80"></canvas>
-        </div>
+        </div> -->
 
         <li>
             <ul>
             <template v-for="(LI_DATA, LI_DATA_INDEX) in LI_DATA_ARRAY">
                 <li>{{ LI_DATA }}</li>
+                <template v-if="LI_DATA_INDEX === 12" v-for="(IMAGE_DATA, IMAGE_DATA_INDEX) in LI_DATA">
+                <!-- <div><a :href="IMAGE_DATA">{{ IMAGE_DATA }}</a></div> -->
+                <img :src="IMAGE_DATA" :alt="IMAGE_DATA" class="image_list_to_inline_tag_and_smaller">
+                </template>
             </template>
             </ul>
             <br>
@@ -213,15 +222,21 @@ index_to_tag_name(INDEX){
 file_name_number_to_file_url(PRE, PRE_ALPH, FILE_NAME_NUMBER){
 // "https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/"+"fukushima_u_"+PRE+"_"+PRE_ALPH+"_"+FILE_NAME_NUMBER+".png"
 // https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/fukushima_u_88.png
+// console.log(PRE, PRE_ALPH, FILE_NAME_NUMBER);
     return "https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/"+PRE+"_"+PRE_ALPH+"_"+FILE_NAME_NUMBER+".png";
 },
 convert_index_to_tag_name_and_display(LIST){
-    return LIST.map(V=>
+    const tmp_list = LIST.map(V=>
                         V.concat(
                             [ V[9].map(TAG_INDEX=>this.index_to_tag_name(TAG_INDEX)) ]
                         )
-                    )
-                    .map(V=> R.update(10, V[9].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V))
+                    );
+// console.log(tmp_list);
+// const tmp_list_2 = tmp_list.map(V=> R.update(10, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V));
+const tmp_list_2 = tmp_list.map(V=> R.insert(-1, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V) );
+console.log(tmp_list_2);
+return tmp_list_2;
+                    
                     // .map(V=>R.remove(9, 1, V));
 },
 make_img_from_canvas(){
