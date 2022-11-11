@@ -28,6 +28,8 @@ make canvas error problem => make img src files from texts
 <script src="./ramda.@0.28.0.js"></script>
 <script src="./prefectures_of_japan_list_alphabet_1222.js"></script>
 
+<link rel="stylesheet" href="./cssui.min.css">
+
 <style>
 /* grid layout */
 .app{
@@ -113,6 +115,11 @@ display: inline-block;
 </div>
 </header>
 <main>
+<details data-dropdown>
+<summary>open_$data</summary>
+    <span>{{ $data }}</span>
+</details>
+
 <ul class="content">
     <template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
         <!-- <div class="image_data_set" :data-word="LI_DATA_ARRAY[2]">
@@ -140,7 +147,6 @@ display: inline-block;
 <li v-for="(TAG, TAG_INDEX) in tag_list"><button class="article_button" @click="set_data_to_content({'filter_by_tag': TAG})">{{ TAG }}</button></li>
 </ul>
 <ul>
-<!-- <li v-for="(PREFECTURE, PREFECTURE_INDEX) in sample_list_0"><button class="article_button" @click="set_data_to_content(PREFECTURE)">{{ PREFECTURE }}</button></li> -->
 <li v-for="(PREFECTURE, PREFECTURE_INDEX) in sample_list_0"><button class="article_button" @click="set_data_to_content({'filter_by_pre': PREFECTURE})">{{ PREFECTURE }}</button></li>
 </ul>
 </article>
@@ -159,12 +165,13 @@ display: inline-block;
 const app = Vue.createApp({
 data() {
     return {
-alphabet: [...'abcdefghijklmnopqrstuvwxyz'],
-upper_alphabet: [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'],
 content_data: [1,2,3,4,100],
 tag_list: tag_list,
+current_filter: null,
+current_sorter: null,
 sample_list_0: prefectures_of_japan_list,
-sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
+// sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
+
 // const sample_list_2[0] = [
 // "prefecture", // 0
 // "alphabet_of_one", // 1
@@ -176,8 +183,8 @@ sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
 // "sample_time_0", // 7
 // "sample_time_1", // 8
 // ];
-sample_list_2: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array,
-sample_list_3: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array,
+// sample_list_2: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array,
+// sample_list_3: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array,
 sample_list_4: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
     }
 },
@@ -190,7 +197,7 @@ updated() {
     // this.make_img_from_canvas();
 },
 methods: {
-filter_by_rule(FILTER_OBJ){
+filter_by_rule(FILTER_OBJ, LIST_PARAM){
     const filter_by_pre = (OBJ, LIST) => LIST.filter(V=>Object.values(OBJ)[0] === V[0]);
     const filter_by_tag = (OBJ, LIST) => {
         const TMP_LIST = LIST.filter(V=>V[9].map(VAL=>this.index_to_tag_name(VAL)).includes(Object.values(OBJ)[0]));
@@ -235,8 +242,41 @@ sort_by_rule(SORT_OBJ, LIST){
     return sort_by(SORT_OBJ, LIST);
 },
 set_data_to_content(FILTER_OBJ){
-    const filtered_list = this.filter_by_rule(FILTER_OBJ);
-    this.content_data = this.convert_index_to_tag_name_and_display(filtered_list);
+// const set_current_filter = OBJ => {
+//     switch (Object.keys(OBJ)[0]) {
+//         case "filter_by_pre":
+//                 return Object.values(OBJ)[0];
+//             break;
+//         case "filter_by_tag":
+//                 return Object.values(OBJ)[0];
+//             break;
+//         default:
+//             break;
+//     }
+// };
+// const set_current_sorter = OBJ => {
+//     switch (Object.keys(OBJ)[0]) {
+//         case "sort_by_number_0":
+//                 return Object.values(OBJ)[0];
+//             break;
+//         case "sort_by_number_1":
+//                 return Object.values(OBJ)[0];
+//             break;
+//         default:
+//             break;
+//     }
+// };
+this.current_filter = Object.keys(FILTER_OBJ)[0].includes('filter') ? FILTER_OBJ : null;
+this.current_sorter = Object.keys(FILTER_OBJ)[0].includes('sort') ? FILTER_OBJ : null;
+// console.log(FILTER_OBJ, (typeof FILTER_OBJ));
+// console.log(Object.keys(FILTER_OBJ)[0], (typeof Object.keys(FILTER_OBJ)[0]));
+// console.log(Object.values(FILTER_OBJ)[0], (typeof Object.values(FILTER_OBJ)[0]));
+    const filtered_list = this.current_filter ? this.filter_by_rule(this.current_filter, this.sample_list_4) : this.sample_list_4;
+    const filtered_list_convert_index_to_tag_name_and_display = this.convert_index_to_tag_name_and_display(filtered_list);
+    const sorted_list = this.current_sorter ? this.sort_by_rule(this.current_sorter, filtered_list_convert_index_to_tag_name_and_display) : filtered_list_convert_index_to_tag_name_and_display;
+    this.content_data = sorted_list;
+    // this.content_data = filtered_list;
+    // this.content_data = this.sample_list_4;
 },
 index_to_tag_name(INDEX){
     return this.tag_list[INDEX];
@@ -256,9 +296,8 @@ convert_index_to_tag_name_and_display(LIST){
 // console.log(tmp_list);
 // const tmp_list_2 = tmp_list.map(V=> R.update(10, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V));
 const tmp_list_2 = tmp_list.map(V=> R.insert(-1, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V) );
-const tmp_list_3 = this.sort_by_rule({sort_by_number_0: "asc"}, tmp_list_2);
 // console.log(tmp_list_2);
-return tmp_list_3;
+return tmp_list_2;
                     
                     // .map(V=>R.remove(9, 1, V));
 },
