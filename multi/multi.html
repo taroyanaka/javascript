@@ -65,11 +65,13 @@ article{
     background-color: antiquewhite;
 
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
 }
 .article_button{
     width: 100%;
     height: 2rem;
+    /* font-size: 0.5rem; */
+white-space: nowrap;
 }
 footer{
     grid-area: footer;
@@ -120,6 +122,11 @@ display: inline-block;
     <span>{{ $data }}</span>
 </details>
 
+<div>
+<span>{{ current_filter }}</span>
+<span>{{ current_sorter }}</span>
+</div>
+
 <ul class="content">
     <template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
         <!-- <div class="image_data_set" :data-word="LI_DATA_ARRAY[2]">
@@ -143,6 +150,9 @@ display: inline-block;
 </ul>
 </main>
 <article>
+<ul>
+<li v-for="(SORT_RULE, SORT_RULE_INDEX) in sort_rule_list"><button class="article_button" @click="set_data_to_content(SORT_RULE)">{{ SORT_RULE }}</button></li>
+</ul>
 <ul>
 <li v-for="(TAG, TAG_INDEX) in tag_list"><button class="article_button" @click="set_data_to_content({'filter_by_tag': TAG})">{{ TAG }}</button></li>
 </ul>
@@ -169,6 +179,12 @@ content_data: [1,2,3,4,100],
 tag_list: tag_list,
 current_filter: null,
 current_sorter: null,
+sort_rule_list: [
+    {'sort_by_number_0': 'asc'},
+    {'sort_by_number_0': 'desc'},
+    {'sort_by_number_1': 'asc'},
+    {'sort_by_number_1': 'desc'},
+],
 sample_list_0: prefectures_of_japan_list,
 // sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
 
@@ -220,8 +236,6 @@ filter_by_rule(FILTER_OBJ, LIST_PARAM){
     return filter_by(FILTER_OBJ, this.sample_list_4);
 },
 sort_by_rule(SORT_OBJ, LIST){
-// "sample_number_0", // 5
-// "sample_number_1", // 6
     const sort_by_number_0_asc = (OBJ, LIST_PARAM) => LIST_PARAM.sort((a,b)=>{return a[5] - b[5]});
     const sort_by_number_0_desc = (OBJ, LIST_PARAM) => LIST_PARAM.sort((a,b)=>{return b[5] - a[5]});
     const sort_by_number_1_asc = (OBJ, LIST_PARAM) => LIST_PARAM.sort((a,b)=>{return a[6] - b[6]});
@@ -242,49 +256,17 @@ sort_by_rule(SORT_OBJ, LIST){
     return sort_by(SORT_OBJ, LIST);
 },
 set_data_to_content(FILTER_OBJ){
-// const set_current_filter = OBJ => {
-//     switch (Object.keys(OBJ)[0]) {
-//         case "filter_by_pre":
-//                 return Object.values(OBJ)[0];
-//             break;
-//         case "filter_by_tag":
-//                 return Object.values(OBJ)[0];
-//             break;
-//         default:
-//             break;
-//     }
-// };
-// const set_current_sorter = OBJ => {
-//     switch (Object.keys(OBJ)[0]) {
-//         case "sort_by_number_0":
-//                 return Object.values(OBJ)[0];
-//             break;
-//         case "sort_by_number_1":
-//                 return Object.values(OBJ)[0];
-//             break;
-//         default:
-//             break;
-//     }
-// };
-this.current_filter = Object.keys(FILTER_OBJ)[0].includes('filter') ? FILTER_OBJ : null;
-this.current_sorter = Object.keys(FILTER_OBJ)[0].includes('sort') ? FILTER_OBJ : null;
-// console.log(FILTER_OBJ, (typeof FILTER_OBJ));
-// console.log(Object.keys(FILTER_OBJ)[0], (typeof Object.keys(FILTER_OBJ)[0]));
-// console.log(Object.values(FILTER_OBJ)[0], (typeof Object.values(FILTER_OBJ)[0]));
+    this.current_filter = Object.keys(FILTER_OBJ)[0].includes('filter') ? FILTER_OBJ : this.current_filter;
+    this.current_sorter = Object.keys(FILTER_OBJ)[0].includes('sort') ? FILTER_OBJ : this.current_sorter;
     const filtered_list = this.current_filter ? this.filter_by_rule(this.current_filter, this.sample_list_4) : this.sample_list_4;
     const filtered_list_convert_index_to_tag_name_and_display = this.convert_index_to_tag_name_and_display(filtered_list);
     const sorted_list = this.current_sorter ? this.sort_by_rule(this.current_sorter, filtered_list_convert_index_to_tag_name_and_display) : filtered_list_convert_index_to_tag_name_and_display;
     this.content_data = sorted_list;
-    // this.content_data = filtered_list;
-    // this.content_data = this.sample_list_4;
 },
 index_to_tag_name(INDEX){
     return this.tag_list[INDEX];
 },
 file_name_number_to_file_url(PRE, PRE_ALPH, FILE_NAME_NUMBER){
-// "https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/"+"fukushima_u_"+PRE+"_"+PRE_ALPH+"_"+FILE_NAME_NUMBER+".png"
-// https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/fukushima_u_88.png
-// console.log(PRE, PRE_ALPH, FILE_NAME_NUMBER);
     return "https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/"+PRE+"_"+PRE_ALPH+"_"+FILE_NAME_NUMBER+".png";
 },
 convert_index_to_tag_name_and_display(LIST){
@@ -293,26 +275,21 @@ convert_index_to_tag_name_and_display(LIST){
                             [ V[9].map(TAG_INDEX=>this.index_to_tag_name(TAG_INDEX)) ]
                         )
                     );
-// console.log(tmp_list);
-// const tmp_list_2 = tmp_list.map(V=> R.update(10, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V));
-const tmp_list_2 = tmp_list.map(V=> R.insert(-1, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V) );
-// console.log(tmp_list_2);
-return tmp_list_2;
-                    
-                    // .map(V=>R.remove(9, 1, V));
+    const tmp_list_2 = tmp_list.map(V=> R.insert(-1, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V) );
+    return tmp_list_2;
 },
-make_img_from_canvas(){
-document.querySelectorAll(".image_data_set").forEach(IMAGE_DATA_SET=>{
-    const canvas = IMAGE_DATA_SET.querySelector("canvas");
-    const ctx = canvas.getContext('2d');
-    let img = new Image("Image_URL_here");
-    ctx.drawImage(img,0,0);
-    ctx.font = '10px serif';
-    ctx.fillText(IMAGE_DATA_SET.dataset.word, 10, 30);
-    IMAGE_DATA_SET.querySelector("img").src = canvas.toDataURL('image/png');
-    canvas.remove();
-})
-},
+// make_img_from_canvas(){
+// document.querySelectorAll(".image_data_set").forEach(IMAGE_DATA_SET=>{
+//     const canvas = IMAGE_DATA_SET.querySelector("canvas");
+//     const ctx = canvas.getContext('2d');
+//     let img = new Image("Image_URL_here");
+//     ctx.drawImage(img,0,0);
+//     ctx.font = '10px serif';
+//     ctx.fillText(IMAGE_DATA_SET.dataset.word, 10, 30);
+//     IMAGE_DATA_SET.querySelector("img").src = canvas.toDataURL('image/png');
+//     canvas.remove();
+// })
+// },
 
 
 },
