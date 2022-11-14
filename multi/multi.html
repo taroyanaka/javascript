@@ -15,7 +15,7 @@ make canvas error problem => make img src files from texts
 clear current filter and sorter
     => ✅
 display each tag volume
-    => 🛠
+    => ✅
 add the prefecture name as a kind of tag to the tag list (remove the array of prefecture names)
     => 🛠
     make sorter by prefucture tag volume
@@ -180,7 +180,14 @@ display: inline-block;
 <li v-for="(SORT_RULE, SORT_RULE_INDEX) in sort_rule_list"><button class="article_button" @click="set_data_to_content(SORT_RULE)">{{ SORT_RULE }}</button></li>
 </ul>
 <ul>
-<li v-for="(TAG, TAG_INDEX) in tag_list"><button class="article_button" @click="set_data_to_content({'filter_by_tag': TAG})">{{ TAG }}</button></li>
+<!-- <li v-for="(TAG, TAG_INDEX) in tag_list"><button class="article_button" @click="set_data_to_content({'filter_by_tag': TAG})">{{ TAG }}</button></li> -->
+    <li v-for="(TAG, TAG_INDEX) in tag_list_with_volume_sorted">
+    <button class="article_button" @click="set_data_to_content({'filter_by_tag': TAG[0]})">
+        <div>{{ TAG[0] }}</div>
+        <div>{{ TAG[1] }}</div>
+    </button>
+    </li>
+<!-- <li v-for="(TAG, TAG_INDEX) in tag_list_with_volume_sorted"><button class="article_button">{{ TAG }}</button></li> -->
 </ul>
 <ul>
 <li v-for="(PREFECTURE, PREFECTURE_INDEX) in sample_list_0"><button class="article_button" @click="set_data_to_content({'filter_by_pre': PREFECTURE})">{{ PREFECTURE }}</button></li>
@@ -202,7 +209,10 @@ const app = Vue.createApp({
 data() {
     return {
 content_data: [1,2,3,4,100],
-tag_list: tag_list,
+// tag_list: tag_list,
+tag_list: prefectures_of_japan_list_concat_tag_list,
+tag_list_with_volume_sorted: [],
+
 current_filter: null,
 current_sorter: null,
 sort_rule_list: [
@@ -211,7 +221,7 @@ sort_rule_list: [
     {'sort_by_number_1': 'asc'},
     {'sort_by_number_1': 'desc'},
 ],
-sample_list_0: prefectures_of_japan_list,
+sample_list_0: prefectures_of_japan_list_concat_tag_list,
 // sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
 
 // const sample_list_2[0] = [
@@ -227,13 +237,18 @@ sample_list_0: prefectures_of_japan_list,
 // ];
 // sample_list_2: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array,
 // sample_list_3: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array,
-sample_list_4: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
+
+// sample_list_4: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
+
+// sample_list_4: NEW_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
+sample_list_4: NEW_2_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
     }
 },
 beforeMounte(){
 },
 mounted() {
-    document.querySelectorAll(`.article_button`)[104].click();
+    document.querySelectorAll(`.article_button`)[10].click();
+    this.show_each_tag_volume();
 },
 updated() {
     // this.make_img_from_canvas();
@@ -309,6 +324,19 @@ clear_current_filter_and_sorter(){
     this.current_sorter = null;
     this.set_data_to_content();
 },
+show_each_tag_volume(){
+    const tag_list = this.tag_list;
+    const tag_list_length = tag_list.length;
+    const tag_list_with_volume = tag_list.map((V, I)=>{
+        const volume = this.sample_list_4.filter(V2=>V2[9].includes(I)).length;
+        return [V, volume];
+    });
+    // const tag_list_with_volume_sorted = tag_list_with_volume.sort((a,b)=>{return b[1] - a[1]});
+    this.tag_list_with_volume_sorted = tag_list_with_volume.sort((a,b)=>{return b[1] - a[1]});
+    // this.content_data = tag_list_with_volume_sorted;
+},
+
+
 // make_img_from_canvas(){
 // document.querySelectorAll(".image_data_set").forEach(IMAGE_DATA_SET=>{
 //     const canvas = IMAGE_DATA_SET.querySelector("canvas");
@@ -373,6 +401,9 @@ function random_length_array(array) {
 //     )
 
 
+// prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number.map(V=>R.update(9, V[9].map(VAL=>VAL+47), V))
+// NEW_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number.map(V=> R.update(9, [prefectures_of_japan_list.indexOf(V[0])].concat(V[9]), V))
+// prefectures_of_japan_list.concat(tag_list)
 
 
 </script>
