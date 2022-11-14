@@ -17,9 +17,9 @@ clear current filter and sorter
 display each tag volume
     => ✅
 add the prefecture name as a kind of tag to the tag list (remove the array of prefecture names)
-    => 🛠
+    => ✅
     make sorter by prefucture tag volume
-        => 🛠
+        => ✅
 set img with the number(like a item price)
     => 🛠
 taggingable to images
@@ -90,7 +90,8 @@ article{
     background-color: antiquewhite;
 
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    /* grid-template-columns: 1fr 1fr 1fr; */
+    grid-template-columns: 1fr 1fr;
 }
 .article_button{
     width: 100%;
@@ -189,9 +190,9 @@ display: inline-block;
     </li>
 <!-- <li v-for="(TAG, TAG_INDEX) in tag_list_with_volume_sorted"><button class="article_button">{{ TAG }}</button></li> -->
 </ul>
-<ul>
+<!-- <ul>
 <li v-for="(PREFECTURE, PREFECTURE_INDEX) in sample_list_0"><button class="article_button" @click="set_data_to_content({'filter_by_pre': PREFECTURE})">{{ PREFECTURE }}</button></li>
-</ul>
+</ul> -->
 </article>
 <footer>
 <ul>
@@ -221,7 +222,8 @@ sort_rule_list: [
     {'sort_by_number_1': 'asc'},
     {'sort_by_number_1': 'desc'},
 ],
-sample_list_0: prefectures_of_japan_list_concat_tag_list,
+// sample_list_0: prefectures_of_japan_list_concat_tag_list,
+
 // sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
 
 // const sample_list_2[0] = [
@@ -247,7 +249,7 @@ sample_list_4: NEW_2_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_d
 beforeMounte(){
 },
 mounted() {
-    document.querySelectorAll(`.article_button`)[10].click();
+    document.querySelectorAll(`.article_button`)[0].click();
     this.show_each_tag_volume();
 },
 updated() {
@@ -255,7 +257,7 @@ updated() {
 },
 methods: {
 filter_by_rule(FILTER_OBJ, LIST_PARAM){
-    const filter_by_pre = (OBJ, LIST) => LIST.filter(V=>Object.values(OBJ)[0] === V[0]);
+    // const filter_by_pre = (OBJ, LIST) => LIST.filter(V=>Object.values(OBJ)[0] === V[0]);
     const filter_by_tag = (OBJ, LIST) => {
         const TMP_LIST = LIST.filter(V=>V[9].map(VAL=>this.index_to_tag_name(VAL)).includes(Object.values(OBJ)[0]));
         const RESULT_LIST = TMP_LIST.length > 0 ? TMP_LIST : LIST;
@@ -263,9 +265,9 @@ filter_by_rule(FILTER_OBJ, LIST_PARAM){
     };
     const choose_filter = OBJ => {
         switch (Object.keys(OBJ)[0]) {
-            case "filter_by_pre":
-                    return filter_by_pre;
-                break;
+            // case "filter_by_pre":
+            //         return filter_by_pre;
+            //     break;
             case "filter_by_tag":
                     return filter_by_tag;
                 break;
