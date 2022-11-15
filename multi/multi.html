@@ -217,7 +217,6 @@ const app = Vue.createApp({
 data() {
     return {
 content_data: [1,2,3,4,100],
-// tag_list: tag_list,
 tag_list: prefectures_of_japan_list_concat_tag_list,
 tag_list_with_volume_sorted: [],
 
@@ -230,7 +229,6 @@ sort_rule_list: [
     {'sort_by_number_1': 'desc'},
 ],
 // sample_list_0: prefectures_of_japan_list_concat_tag_list,
-
 // sample_list_1: prefectures_of_japan_list_alphabet_1222_0_1_2,
 
 // const sample_list_2[0] = [
@@ -318,10 +316,7 @@ index_to_tag_name(INDEX){
     return this.tag_list[INDEX];
 },
 file_name_number_to_file_url(PRE, PRE_ALPH, FILE_NAME_NUMBER){
-// console.log(PRE, PRE_ALPH, FILE_NAME_NUMBER);
-    // const file_with_a_number_and_tag_list = this.file_with_a_number_and_tag(PRE, PRE_ALPH, FILE_NAME_NUMBER);
     return "https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/"+PRE+"_"+PRE_ALPH+"_"+FILE_NAME_NUMBER+".png";
-    // return "https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/"+file_with_a_number_and_tag_list[0]+".png";
 },
 file_with_a_number_and_tag(PRE, PRE_ALPH, FILE_NAME_NUMBER){
     const FILE_THE_NUMBER = random_number_from_min_to_max(1, 100000);
@@ -347,10 +342,7 @@ convert_index_to_tag_name_and_display(LIST){
                                 [this.make_image_tag_list_and_url_list_pair(V)]
                             )
                         );
-//  R.insert(12, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V) );
-    // console.log(tmp_list_2_added_image_url_list);
     return tmp_list_3_added_image_url_list_and_image_tag_list;
-    // return tmp_list_2_added_image_url_list;
 },
 clear_current_filter_and_sorter(){
     this.current_filter = null;
@@ -364,25 +356,8 @@ show_each_tag_volume(){
         const volume = this.sample_list_4.filter(V2=>V2[9].includes(I)).length;
         return [V, volume];
     });
-    // const tag_list_with_volume_sorted = tag_list_with_volume.sort((a,b)=>{return b[1] - a[1]});
     this.tag_list_with_volume_sorted = tag_list_with_volume.sort((a,b)=>{return b[1] - a[1]});
-    // this.content_data = tag_list_with_volume_sorted;
 },
-
-
-// make_img_from_canvas(){
-// document.querySelectorAll(".image_data_set").forEach(IMAGE_DATA_SET=>{
-//     const canvas = IMAGE_DATA_SET.querySelector("canvas");
-//     const ctx = canvas.getContext('2d');
-//     let img = new Image("Image_URL_here");
-//     ctx.drawImage(img,0,0);
-//     ctx.font = '10px serif';
-//     ctx.fillText(IMAGE_DATA_SET.dataset.word, 10, 30);
-//     IMAGE_DATA_SET.querySelector("img").src = canvas.toDataURL('image/png');
-//     canvas.remove();
-// })
-// },
-
 
 },
 }).mount('.app');
