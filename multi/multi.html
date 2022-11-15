@@ -31,13 +31,13 @@ add map and set map data(make map data??)
 full-text search (checkboxes for skewering of text or text tags only or image tags only or multiple images, respectively)
     => 🛠
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 aaaaaaaaaand, I'm going to do this for a new project.(MAKE 💵💵💵💵💵!!!!!!)
 Put temporary data into the actual store to discuss and consult with the service,
 listen to the current situation, learn about the overall picture of the industry and actual users,
 and discuss price range and usage methods.
 (It is especially important to know the best and easiest way to introduce and operate the service.)
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 -->
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.js" integrity="sha512-WXWhnFUmZx+snPw8v2JjWQ0cdLUCLxTXhyqiZb7G5pkZZEGPBgVSzILSpkPK9haxW75sX5znfF08rsVnf6BUlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
@@ -127,6 +127,11 @@ display: inline-block;
     width: 6rem;
     height: 4rem;
 }
+.image_tag{
+    display: inline-block;
+    width: 3rem;
+    height: 2rem;
+}
 </style>
 </head>
 <body class="app">
@@ -164,10 +169,12 @@ display: inline-block;
         <li>
             <ul>
             <template v-for="(LI_DATA, LI_DATA_INDEX) in LI_DATA_ARRAY">
-                <li>{{ LI_DATA }}</li>
-                <template v-if="LI_DATA_INDEX === 12" v-for="(IMAGE_DATA, IMAGE_DATA_INDEX) in LI_DATA">
+                <li>{{ LI_DATA_INDEX }}: {{ LI_DATA }}</li>
+                <template v-if="LI_DATA_INDEX === (LI_DATA_ARRAY.length-1)" v-for="(IMAGE_DATA, IMAGE_DATA_INDEX) in LI_DATA">
                 <!-- <div><a :href="IMAGE_DATA">{{ IMAGE_DATA }}</a></div> -->
-                <img :src="IMAGE_DATA" :alt="IMAGE_DATA" class="image_list_to_inline_tag_and_smaller">
+                <!-- <img :src="IMAGE_DATA" :alt="IMAGE_DATA" class="image_list_to_inline_tag_and_smaller"> -->
+                <img :src="IMAGE_DATA[0]" :alt="IMAGE_DATA[0]" class="image_list_to_inline_tag_and_smaller">
+<span v-for="(IMAGE_TAG, IMAGE_TAG_INDEX) in IMAGE_DATA[1]"><button class="article_button image_tag" @click="set_data_to_content({'filter_by_tag': index_to_tag_name(IMAGE_TAG)})">{{ index_to_tag_name(IMAGE_TAG) }}</button></span>
                 </template>
             </template>
             </ul>
@@ -243,7 +250,8 @@ sort_rule_list: [
 // sample_list_4: prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
 
 // sample_list_4: NEW_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
-sample_list_4: NEW_2_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
+// sample_list_4: NEW_2_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
+sample_list_4: NEW_3_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
     }
 },
 beforeMounte(){
@@ -310,16 +318,39 @@ index_to_tag_name(INDEX){
     return this.tag_list[INDEX];
 },
 file_name_number_to_file_url(PRE, PRE_ALPH, FILE_NAME_NUMBER){
+// console.log(PRE, PRE_ALPH, FILE_NAME_NUMBER);
+    // const file_with_a_number_and_tag_list = this.file_with_a_number_and_tag(PRE, PRE_ALPH, FILE_NAME_NUMBER);
     return "https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/"+PRE+"_"+PRE_ALPH+"_"+FILE_NAME_NUMBER+".png";
+    // return "https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/"+file_with_a_number_and_tag_list[0]+".png";
+},
+file_with_a_number_and_tag(PRE, PRE_ALPH, FILE_NAME_NUMBER){
+    const FILE_THE_NUMBER = random_number_from_min_to_max(1, 100000);
+    // return [[PRE, PRE_ALPH, FILE_NAME_NUMBER].join("_"), FILE_THE_NUMBER, TAG_LIST];
+},
+make_image_tag_list_and_url_list_pair(LIST){
+    const [url_list, image_tag_list] = [LIST[13], LIST[11]];
+    return R.transpose([url_list, image_tag_list]);
 },
 convert_index_to_tag_name_and_display(LIST){
-    const tmp_list = LIST.map(V=>
+    const tmp_list_added_tag_name_list = LIST.map(V=>
                         V.concat(
                             [ V[9].map(TAG_INDEX=>this.index_to_tag_name(TAG_INDEX)) ]
                         )
                     );
-    const tmp_list_2 = tmp_list.map(V=> R.insert(-1, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V) );
-    return tmp_list_2;
+    const tmp_list_2_added_image_url_list = tmp_list_added_tag_name_list.map(V=>
+                            V.concat(
+                                [V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL))]
+                            )
+                        );
+    const tmp_list_3_added_image_url_list_and_image_tag_list = tmp_list_2_added_image_url_list.map(V=>
+                            V.concat(
+                                [this.make_image_tag_list_and_url_list_pair(V)]
+                            )
+                        );
+//  R.insert(12, V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL)), V) );
+    // console.log(tmp_list_2_added_image_url_list);
+    return tmp_list_3_added_image_url_list_and_image_tag_list;
+    // return tmp_list_2_added_image_url_list;
 },
 clear_current_filter_and_sorter(){
     this.current_filter = null;
@@ -406,6 +437,9 @@ function random_length_array(array) {
 // prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number.map(V=>R.update(9, V[9].map(VAL=>VAL+47), V))
 // NEW_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number.map(V=> R.update(9, [prefectures_of_japan_list.indexOf(V[0])].concat(V[9]), V))
 // prefectures_of_japan_list.concat(tag_list)
+
+// shuffle(prefectures_of_japan_list_concat_tag_list.map((V,IDX)=>IDX).slice(47, -1)).slice(0, 10)
+// NEW_2_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number.map(V=>R.insert(-1, V[10].map(VAL=>[V[9][0]].concat(shuffle(prefectures_of_japan_list_concat_tag_list.map((V,IDX)=>IDX).slice(47, -1)).slice(0, 5))), V));
 
 
 </script>
