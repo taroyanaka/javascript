@@ -8,6 +8,14 @@
 
 <!-- todo -->
 <!--
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+content load is too slow
+ => any way to improve it?
+    => it will be better when server is ready(or other way to load content(download all and process it faster))
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 make canvas error problem => make img src files from texts
     // I made a mistake in numbering this sample data, but it's sample data, so I'll skip over this mistake and proceed.
     // https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi_file_name.txt
@@ -21,10 +29,11 @@ add the prefecture name as a kind of tag to the tag list (remove the array of pr
     make sorter by prefucture tag volume
         => ✅
 set img with the number(like a item price)
-    => 🛠
+    => ✅
 taggingable to images
     => ✅
 add map and set map data(make map data??)
+    => use ez sample data(City, ward, town, village, city hall Address list?)
     => 🛠
 full-text search (checkboxes for skewering of text or text tags only or image tags only or multiple images, respectively)
     => 🛠
@@ -171,9 +180,9 @@ display: inline-block;
             <template v-for="(LI_DATA, LI_DATA_INDEX) in LI_DATA_ARRAY">
                 <li>{{ LI_DATA_INDEX }}: {{ LI_DATA }}</li>
                 <template v-if="LI_DATA_INDEX === (LI_DATA_ARRAY.length-1)" v-for="(IMAGE_DATA, IMAGE_DATA_INDEX) in LI_DATA">
-                <!-- <div><a :href="IMAGE_DATA">{{ IMAGE_DATA }}</a></div> -->
-                <!-- <img :src="IMAGE_DATA" :alt="IMAGE_DATA" class="image_list_to_inline_tag_and_smaller"> -->
-                <img :src="IMAGE_DATA[0]" :alt="IMAGE_DATA[0]" class="image_list_to_inline_tag_and_smaller">
+
+                <!-- <img :src="IMAGE_DATA[0]" :alt="IMAGE_DATA[0]" class="image_list_to_inline_tag_and_smaller"> -->
+
 <span v-for="(IMAGE_TAG, IMAGE_TAG_INDEX) in IMAGE_DATA[1]"><button class="article_button image_tag" @click="set_data_to_content({'filter_by_tag': index_to_tag_name(IMAGE_TAG)})">{{ index_to_tag_name(IMAGE_TAG) }}</button></span>
                 </template>
             </template>
@@ -322,9 +331,9 @@ file_with_a_number_and_tag(PRE, PRE_ALPH, FILE_NAME_NUMBER){
     const FILE_THE_NUMBER = random_number_from_min_to_max(1, 100000);
     // return [[PRE, PRE_ALPH, FILE_NAME_NUMBER].join("_"), FILE_THE_NUMBER, TAG_LIST];
 },
-make_image_tag_list_and_url_list_pair(LIST){
-    const [url_list, image_tag_list] = [LIST[13], LIST[11]];
-    return R.transpose([url_list, image_tag_list]);
+make_image_tag_list_and_url_list_pair(LIST, IDX){
+    const [url_list, image_tag_list, image_price_list] = [LIST[13], LIST[11], number_list_for_img[IDX]];
+    return R.transpose([url_list, image_tag_list, image_price_list]);
 },
 convert_index_to_tag_name_and_display(LIST){
     const tmp_list_added_tag_name_list = LIST.map(V=>
@@ -337,11 +346,12 @@ convert_index_to_tag_name_and_display(LIST){
                                 [V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL))]
                             )
                         );
-    const tmp_list_3_added_image_url_list_and_image_tag_list = tmp_list_2_added_image_url_list.map(V=>
+    const tmp_list_3_added_image_url_list_and_image_tag_list = tmp_list_2_added_image_url_list.map((V,IDX)=>
                             V.concat(
-                                [this.make_image_tag_list_and_url_list_pair(V)]
+                                [this.make_image_tag_list_and_url_list_pair(V, IDX)]
                             )
                         );
+    // console.log(tmp_list_3_added_image_url_list_and_image_tag_list);
     return tmp_list_3_added_image_url_list_and_image_tag_list;
 },
 clear_current_filter_and_sorter(){
