@@ -40,6 +40,7 @@ full-text search (checkboxes for skewering of text or text tags only or image ta
 change multiple data architecture and set multiple data for multiple services
     => 🛠
 
+
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 aaaaaaaaaand, I'm going to do this for a new project.(MAKE 💵💵💵💵💵!!!!!!)
 Put temporary data into the actual store to discuss and consult with the service,
@@ -47,6 +48,76 @@ listen to the current situation, learn about the overall picture of the industry
 and discuss price range and usage methods.
 (It is especially important to know the best and easiest way to introduce and operate the service.)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+Find someone who is originally trying to make a map or something.
+Find at events
+Join a town community
+Join a shopping district community
+　＝＞Enter the shopping district and local community
+    　=> It also leads to introduction of stores.
+Attendees of Koenji events (people outside of Koenji)
+    ＝＞Connect to other shopping districts
+Chamber of Commerce events
+Cross-industrial exchange meetings
+Press releases
+Local free magazines
+Local newspaper
+
+I want to speak to someone part time
+    Local person who wants to contribute
+
+Senbero
+General store
+Vintage sundries
+Post office postcard price service to distribute in the area
+
+Put in one contact.
+Posting and zooming for a briefing (explain to many people at once)
+
+Terms of Use
+Privacy policy
+
+Decide also which stores are NG
+
+Differences from the store's page in google search results
+Are they privately owned only (or no chain stores?)
+
+Update information when the store goes out of business (delete by yourself or by the store)
+
+Allow users to register stores (spot deletion)
+    => 🛠.
+Allow user base to register store information ！！！！ (Priority)
+Favorite stores
+Information not available on Google
+What the competition is doing on Instagram.
+    => 🛠.
+
+Use social networking sites or influencers
+
+Get your shoppers to register with the public.
+    => 🛠
+
+Ideas to expand horizontally
+
+Do both online and in real life
+
+Find accounts on Twitter for Koenji and other places (Koenji (Shimokita) Keizai Shimbun => Press release)
+Create an account for your service.
+    => 🛠.
+be prepared to spend a year or so.
+    => I want to do it somehow, somehow (do it on a monthly basis)
+        => ?
+
+Startup pitch (sign up for newsletter)
+Just register for the newsletter.
+
+Concierge appointment with Mr. Tsuchikura and Ms. Hatano nomination.
+    => 🛠?
+Attend all seminars.
+    => 🛠
+
 -->
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.js" integrity="sha512-WXWhnFUmZx+snPw8v2JjWQ0cdLUCLxTXhyqiZb7G5pkZZEGPBgVSzILSpkPK9haxW75sX5znfF08rsVnf6BUlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
@@ -181,7 +252,7 @@ display: inline-block;
                 <li>{{ LI_DATA_INDEX }}: {{ LI_DATA }}</li>
                 <template v-if="LI_DATA_INDEX === (LI_DATA_ARRAY.length-1)" v-for="(IMAGE_DATA, IMAGE_DATA_INDEX) in LI_DATA">
 
-                <!-- <img :src="IMAGE_DATA[0]" :alt="IMAGE_DATA[0]" class="image_list_to_inline_tag_and_smaller"> -->
+                <img :src="IMAGE_DATA[0]" :alt="IMAGE_DATA[0]" class="image_list_to_inline_tag_and_smaller">
 
 <span v-for="(IMAGE_TAG, IMAGE_TAG_INDEX) in IMAGE_DATA[1]"><button class="article_button image_tag" @click="set_data_to_content({'filter_by_tag': index_to_tag_name(IMAGE_TAG)})">{{ index_to_tag_name(IMAGE_TAG) }}</button></span>
                 </template>
