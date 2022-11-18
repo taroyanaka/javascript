@@ -417,13 +417,20 @@ convert_index_to_tag_name_and_display(LIST){
                                 [V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL))]
                             )
                         );
-    const tmp_list_3_added_image_url_list_and_image_tag_list = tmp_list_2_added_image_url_list.map((V,IDX)=>
-                            V.concat(
-                                [this.make_image_tag_list_and_url_list_pair(V, IDX)]
-                            )
-                        );
-    // console.log(tmp_list_3_added_image_url_list_and_image_tag_list);
-    return tmp_list_3_added_image_url_list_and_image_tag_list;
+    let rest_address = R.clone(address_all_yakusho);
+    const tmp_list_3_added_image_url_list_with_map_data = tmp_list_2_added_image_url_list
+        .map(V=>{
+            const res = rest_address.splice(rest_address.map(VAL=>VAL[0]).indexOf(V[0]), 1)[0];
+            return V.concat([res[1]+res[2]]);
+        });
+
+    const tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list = tmp_list_3_added_image_url_list_with_map_data.map((V,IDX)=>
+            V.concat(
+                [this.make_image_tag_list_and_url_list_pair(V, IDX)]
+            )
+        );
+    // console.log(tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list);
+    return tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list;
 },
 clear_current_filter_and_sorter(){
     this.current_filter = null;
@@ -496,6 +503,13 @@ function random_length_array(array) {
 
 // shuffle(prefectures_of_japan_list_concat_tag_list.map((V,IDX)=>IDX).slice(47, -1)).slice(0, 10)
 // NEW_2_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number.map(V=>R.insert(-1, V[10].map(VAL=>[V[9][0]].concat(shuffle(prefectures_of_japan_list_concat_tag_list.map((V,IDX)=>IDX).slice(47, -1)).slice(0, 5))), V));
+
+
+// address_sample.map((V,IDX)=>[prefectures_of_japan_list[(V[0] - 1)], todouhuken[(V[0] - 1)], V[1]])[0];
+
+// let rest_address = R.clone(address_all_yakusho);
+
+
 
 
 </script>
