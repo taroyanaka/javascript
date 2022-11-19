@@ -9,6 +9,7 @@
    crossorigin=""></script>
 <script type="text/javascript">
 async function init() {
+// https://end0tknr.hateblo.jp/entry/20220821/1661064367
 const get_data = async (PARAM_ADDRESS_STR) => {
     const res = await fetch("https://msearch.gsi.go.jp/address-search/AddressSearch?q="+encodeURIComponent(PARAM_ADDRESS_STR));
     const txt = await res.json();
