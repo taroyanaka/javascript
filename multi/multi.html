@@ -337,7 +337,7 @@ beforeMounte(){
 },
 mounted() {
     this.show_each_tag_volume();
-    this.set_data_to_content({'filter_by_tag': "h_3"})
+    // this.set_data_to_content({'filter_by_tag': "h_3"})
 },
 beforeUpdate() {
 },
@@ -431,7 +431,7 @@ convert_index_to_tag_name_and_display(LIST){
                 [this.make_image_tag_list_and_url_list_pair(V, IDX)]
             )
         );
-    // console.log(tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list);
+    console.log(tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list);
     return tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list;
 },
 clear_current_filter_and_sorter(){

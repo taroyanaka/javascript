@@ -11,10 +11,23 @@
 <script src="./leaflet@1.3.4.js"></script>
 <script src="./vue@3.2.36.global.prod.js"></script>
 <link rel="stylesheet" href="./cssui.min.css">
+<script src="./prefectures_of_japan_list_alphabet_1222.js"></script>
 </head>
 <body>
 <div class="app">
+
 <div id="mapid" style="height: 400px; width: 600px;"></div>
+
+<div>
+<span>{{ converted_address_array_length }}</span>
+<span>/</span>
+<span>{{ all_address_array_length }}</span>
+</div>
+
+<button @click="each_test_data_ary_convert_to_get_data_param_async_await">each_test_data_ary_convert_to_get_data_param_async_await</button>
+<textarea v-model="abc_ary" name="" id="" cols="30" rows="100"></textarea>
+<textarea v-model="test_result_data" name="" id="" cols="30" rows="100"></textarea>
+
 </div>
 </body>
 <script>
@@ -25,34 +38,71 @@ sample_data_ary: [
 ["東京都千代田区丸の内１丁目１−１", "サンプるの内"],
 ["東京都渋谷区宇田川町1-1", "shibuya city office"],
 ],
+all_address_array: address_all_yakusho,
+abc_ary: [
+    ["a","A","あ"],
+    ["b","B","い"],
+    ["c","C","う"],
+    ["d","D","え"],
+    ["e","E","お"],
+    ["f","F","か"],
+    ["g","G","き"],
+    ["h","H","く"],
+    ["i","I","け"],
+    ["j","J","こ"],
+    ["k","K","さ"],
+    ["l","L","し"],
+    ["m","M","す"],
+    ["n","N","せ"],
+    ["o","O","そ"],
+    ["p","P","た"],
+    ["q","Q","ち"],
+    ["r","R","つ"],
+    ["s","S","て"],
+    ["t","T","と"],
+    ["u","U","な"],
+    ["v","V","に"],
+    ["w","W","ぬ"],
+    ["x","X","ね"],
+    ["y","Y","の"],
+    ["z","Z","は"],
+],
+test_data: [],
+test_result_data: [],
+all_address_array_length: 0,
+converted_address_array_length: 0,
     }
 },
 beforeMounte(){
 },
 mounted() {
 this.exe(...this.sample_data_ary[0]);
+this.only_1_index_and_2_index();
 },
 updated() {
 },
 methods: {
-async get_data(PARAM_ADDRESS_STR){
-    const res = await fetch("https://msearch.gsi.go.jp/address-search/AddressSearch?q="+encodeURIComponent(PARAM_ADDRESS_STR));
-    const txt = await res.json();
-    const data = await txt[0].geometry.coordinates;
-    console.log(data);
-    console.log(1);
-    return data;
-},
-async exe(ADDRESS_STR, POPUP_STR){
-    // const tmp_data = await get_data("東京都千代田区丸の内１丁目１−１");
-    const tmp_data = await this.get_data(ADDRESS_STR);
-function swap_array(array){
+swap_array(array){
     let tmp = array[0];
     array[0] = array[1];
     array[1] = tmp;
     return array;
-};
-    const data = swap_array(tmp_data);
+},
+async get_data(PARAM_ADDRESS_STR){
+    const res = await fetch("https://msearch.gsi.go.jp/address-search/AddressSearch?q="+encodeURIComponent(PARAM_ADDRESS_STR));
+    const txt = await res.json();
+    const data = await txt[0].geometry.coordinates;
+    const swapped_data = await this.swap_array(data);
+    my_ary.push(swapped_data);
+    console.log(swapped_data);
+    console.log(1);
+    return swapped_data;
+    // return data;
+},
+async exe(ADDRESS_STR, POPUP_STR){
+    // const tmp_data = await get_data("東京都千代田区丸の内１丁目１−１");
+    const tmp_data = await this.get_data(ADDRESS_STR);
+    const data = tmp_data;
     // const data = [35.510281, 139.606164];
         console.log(2);
     var map = await L.map('mapid').setView(data, 16);
@@ -67,8 +117,35 @@ function swap_array(array){
         .openPopup();
     console.log(5);
 },
+only_1_index_and_2_index(){
+    let tmp_ary = [];
+    for(let i=0; i<this.all_address_array.length; i++){
+        const res = [this.all_address_array[i][1], this.all_address_array[i][2]].join("");
+        tmp_ary.push(res);
+    };
+    this.test_data = tmp_ary.slice(0, 10);
+    this.abc_ary = tmp_ary.slice(0, 10).join("\n");
+    // this.test_data = tmp_ary;
+    // this.abc_ary = tmp_ary.join("\n");
+},
+async each_test_data_ary_convert_to_get_data_param_async_await(){
+    this.show_all_address_array_length();
+    let tmp_ary = [];
+    for(let i=0; i<this.test_data.length; i++){
+        const res = await this.get_data(this.test_data[i]);
+        this.show_converted_address_array_length(i+1);
+        tmp_ary.push(res);
+    };
+    this.test_result_data = tmp_ary.join("\n");
+},
+show_all_address_array_length(){
+    this.all_address_array_length = this.all_address_array.length;
+},
+show_converted_address_array_length(FINISH_NUM){
+    this.converted_address_array_length = FINISH_NUM;
+},
 },
 }).mount('.app');
-
+let my_ary = [];
 </script>
 </html>
