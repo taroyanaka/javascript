@@ -35,17 +35,17 @@ this.exe(...this.sample_data_ary[0]);
 updated() {
 },
 methods: {
+async get_data(PARAM_ADDRESS_STR){
+    const res = await fetch("https://msearch.gsi.go.jp/address-search/AddressSearch?q="+encodeURIComponent(PARAM_ADDRESS_STR));
+    const txt = await res.json();
+    const data = await txt[0].geometry.coordinates;
+    console.log(data);
+    console.log(1);
+    return data;
+},
 async exe(ADDRESS_STR, POPUP_STR){
-    const get_data = async (PARAM_ADDRESS_STR) => {
-        const res = await fetch("https://msearch.gsi.go.jp/address-search/AddressSearch?q="+encodeURIComponent(PARAM_ADDRESS_STR));
-        const txt = await res.json();
-        const data = await txt[0].geometry.coordinates;
-        console.log(data);
-        console.log(1);
-        return data;
-    };
     // const tmp_data = await get_data("東京都千代田区丸の内１丁目１−１");
-    const tmp_data = await get_data(ADDRESS_STR);
+    const tmp_data = await this.get_data(ADDRESS_STR);
 function swap_array(array){
     let tmp = array[0];
     array[0] = array[1];

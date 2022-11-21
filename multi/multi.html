@@ -336,11 +336,12 @@ sample_list_4: NEW_3_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_d
 beforeMounte(){
 },
 mounted() {
-    document.querySelectorAll(`.article_button`)[0].click();
     this.show_each_tag_volume();
+    this.set_data_to_content({'filter_by_tag': "h_3"})
+},
+beforeUpdate() {
 },
 updated() {
-    // this.make_img_from_canvas();
 },
 methods: {
 filter_by_rule(FILTER_OBJ, LIST_PARAM){
