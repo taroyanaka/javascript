@@ -12,6 +12,7 @@
 <script src="./vue@3.2.36.global.prod.js"></script>
 <link rel="stylesheet" href="./cssui.min.css">
 <script src="./prefectures_of_japan_list_alphabet_1222.js"></script>
+<script src="./ramda.@0.28.0.js"></script>
 </head>
 <body>
 <div class="app">
@@ -25,7 +26,7 @@
 </div>
 
 <button @click="each_test_data_ary_convert_to_get_data_param_async_await">each_test_data_ary_convert_to_get_data_param_async_await</button>
-<textarea v-model="abc_ary" name="" id="" cols="30" rows="100"></textarea>
+<textarea v-model="abc_ary" name="" id="" cols="30" rows="100" @input="update_tmp_ary" @change="update_tmp_ary"></textarea>
 <textarea v-model="test_result_data" name="" id="" cols="30" rows="100"></textarea>
 
 </div>
@@ -89,15 +90,17 @@ swap_array(array){
     return array;
 },
 async get_data(PARAM_ADDRESS_STR){
+try {
     const res = await fetch("https://msearch.gsi.go.jp/address-search/AddressSearch?q="+encodeURIComponent(PARAM_ADDRESS_STR));
     const txt = await res.json();
     const data = await txt[0].geometry.coordinates;
     const swapped_data = await this.swap_array(data);
     my_ary.push(swapped_data);
-    console.log(swapped_data);
     console.log(1);
     return swapped_data;
-    // return data;
+} catch (err) {
+    error_log.push([PARAM_ADDRESS_STR, err]);
+}
 },
 async exe(ADDRESS_STR, POPUP_STR){
     // const tmp_data = await get_data("東京都千代田区丸の内１丁目１−１");
@@ -123,8 +126,13 @@ only_1_index_and_2_index(){
         const res = [this.all_address_array[i][1], this.all_address_array[i][2]].join("");
         tmp_ary.push(res);
     };
-    this.test_data = tmp_ary.slice(0, 10);
-    this.abc_ary = tmp_ary.slice(0, 10).join("\n");
+
+    // error row is
+    // 1207,京都府京都市上京区今出川通室町西入堀出シ町285
+    // 1211,京都府京都市下京区西洞院通塩小路上る東塩小路町608-8
+
+    this.test_data = tmp_ary.slice(0, 3);
+    this.abc_ary = tmp_ary.slice(0, 3).join("\n");
     // this.test_data = tmp_ary;
     // this.abc_ary = tmp_ary.join("\n");
 },
@@ -144,8 +152,12 @@ show_all_address_array_length(){
 show_converted_address_array_length(FINISH_NUM){
     this.converted_address_array_length = FINISH_NUM;
 },
+update_tmp_ary(){
+    this.test_data = this.abc_ary.split("\n");
+},
 },
 }).mount('.app');
 let my_ary = [];
+let error_log = [];
 </script>
 </html>
