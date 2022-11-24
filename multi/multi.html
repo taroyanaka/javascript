@@ -337,7 +337,7 @@ beforeMounte(){
 },
 mounted() {
     this.show_each_tag_volume();
-    // this.set_data_to_content({'filter_by_tag': "h_3"})
+    this.set_data_to_content({'filter_by_tag': "h_3"})
 },
 beforeUpdate() {
 },
@@ -419,11 +419,12 @@ convert_index_to_tag_name_and_display(LIST){
                                 [V[10].map(VAL=>this.file_name_number_to_file_url(V[0], V[1], VAL))]
                             )
                         );
-    let rest_address = R.clone(address_all_yakusho);
+    // let rest_address = R.clone(address_all_yakusho);
+    let rest_address = R.clone(address_all_yakusho_error_address_removed_with_latitude_longitude_and_url);
     const tmp_list_3_added_image_url_list_with_map_data = tmp_list_2_added_image_url_list
         .map(V=>{
             const res = rest_address.splice(rest_address.map(VAL=>VAL[0]).indexOf(V[0]), 1)[0];
-            return V.concat([res[1]+res[2]]);
+            return V.concat([res[1], res[2], [res[3][0], res[3][1]], res[4]]);
         });
 
     const tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list = tmp_list_3_added_image_url_list_with_map_data.map((V,IDX)=>
@@ -514,6 +515,8 @@ function random_length_array(array) {
 
 // https://uub.jp/cpf/office.html
 // Array.from(document.querySelectorAll("#container > div > div > div > table > tbody > tr > td.al.no > a")).filter((V,IDX)=>IDX !== 1207).filter((V,IDX)=>IDX !== 1210).map(V=>V.href)
+
+// R.transpose([address_all_yakusho_error_address_removed_with_latitude_longitude, url_all_yakusho_error_address_removed]).map(V=>V[0].concat(V[1]))
 
 
 </script>
