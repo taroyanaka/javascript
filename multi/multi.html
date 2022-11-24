@@ -134,7 +134,13 @@ Attend all seminars.
 <script src="./ramda.@0.28.0.js"></script>
 <script src="./prefectures_of_japan_list_alphabet_1222.js"></script>
 
+<!-- <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"></script> -->
+<script src="./leaflet@1.3.4.js"></script>
+
 <link rel="stylesheet" href="./cssui.min.css">
+<!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" /> -->
+<link rel="stylesheet" href="./leaflet.css" />
+
 
 <style>
 /* grid layout */
@@ -213,6 +219,10 @@ display: inline-block;
     width: 3rem;
     height: 2rem;
 }
+.map_elm{
+    height: 15rem;
+    width: 20rem;
+}
 </style>
 </head>
 <body class="app">
@@ -247,9 +257,13 @@ display: inline-block;
         <canvas width="100" height="80"></canvas>
         </div> -->
 
+<div class="map_elm" :id="'mapid'+'_'+LI_DATA_ARRAY_INDEX">map_elm</div>
+
         <li>
             <ul>
             <template v-for="(LI_DATA, LI_DATA_INDEX) in LI_DATA_ARRAY">
+
+
                 <li>{{ LI_DATA_INDEX }}: {{ LI_DATA }}</li>
                 <template v-if="LI_DATA_INDEX === (LI_DATA_ARRAY.length-1)" v-for="(IMAGE_DATA, IMAGE_DATA_INDEX) in LI_DATA">
 
@@ -337,11 +351,12 @@ beforeMounte(){
 },
 mounted() {
     this.show_each_tag_volume();
-    this.set_data_to_content({'filter_by_tag': "h_3"})
+    this.set_data_to_content({'filter_by_tag': "h_3"});
 },
 beforeUpdate() {
 },
 updated() {
+    this.exe();
 },
 methods: {
 filter_by_rule(FILTER_OBJ, LIST_PARAM){
@@ -448,6 +463,30 @@ show_each_tag_volume(){
         return [V, volume];
     });
     this.tag_list_with_volume_sorted = tag_list_with_volume.sort((a,b)=>{return b[1] - a[1]});
+},
+
+exe(ADDRESS_STR, POPUP_STR){
+    // const tmp_data = await get_data("東京都千代田区丸の内１丁目１−１");
+    // const tmp_data = await this.get_data(ADDRESS_STR);
+    // const data = tmp_data;
+document.querySelectorAll(".map_elm").forEach(MAP_ELM=>{
+    console.log(MAP_ELM.id);
+// });
+// document.querySelectorAll(".map_elm").forEach(V=>{
+    // const data = ADDRESS_STR;
+    const data = [ 38.269409, 140.8703 ];
+    // var map = await L.map('mapid').setView(data, 16);
+    var map = L.map(MAP_ELM.id).setView(data, 16);
+    // var map = await L.map(MAP_ELM.id).setView([ 38.269409, 140.8703 ], 16);
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    L.marker(data).addTo(map)
+        // .bindPopup(POPUP_STR)
+        .bindPopup("foo bar buz")
+        .openPopup();
+});
+
 },
 
 },
