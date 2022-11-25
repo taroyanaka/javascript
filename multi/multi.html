@@ -36,6 +36,8 @@ add map and set map data(make map data??)
     => use ez sample data(City, ward, town, village, city hall Address list?)
         => https://github.com/openstreetmap/leaflet-osm (Coding without fucking google taxing)
             => add remove function https://medium-company.com/leaflet-remove-removelayer/
+                => https://stackoverflow.com/a/71349246/9740478
+                => or 1 map float on page, click address and change the pin color(it make customr easy to check the address)
                 => 🛠
 full-text search (checkboxes for skewering of text or text tags only or image tags only or multiple images, respectively)
     => 🛠
@@ -480,6 +482,9 @@ show_each_tag_volume(){
 exe(ADDRESS_STR, POPUP_STR){
     // document.querySelectorAll(".map_elm").forEach(V=>V.innerHTML = "");
     document.querySelectorAll(".map_elm").forEach(MAP_ELM=>{
+
+// https://stackoverflow.com/a/71349246/9740478
+
         const data = [MAP_ELM.dataset.latitude, MAP_ELM.dataset.longitude];
         var map = L.map(MAP_ELM.id).setView(data, 16);
         L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
