@@ -499,7 +499,7 @@ async map_exe(){
     this.content_data.forEach(LI_DATA_ARRAY=>{
         MARKER_DATA = new L.marker([LI_DATA_ARRAY[16][0], LI_DATA_ARRAY[16][1]])
             .addTo(MAP_DATA)
-            .bindPopup("foooooo");
+            .bindPopup(LI_DATA_ARRAY[15]);
         MARKER_DATA_ARRAY.push(MARKER_DATA);
     });
 
