@@ -253,10 +253,10 @@ display: inline-block;
 </div>
 <button @click="clear_current_filter_and_sorter">clear_current_filter_and_sorter</button>
 
-<template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
+<!-- <template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
 <div>{{ LI_DATA_ARRAY[16] }}</div>
 <div>{{ LI_DATA_ARRAY[15] }}</div>
-</template>
+</template> -->
 
 <ul class="content">
     <template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
@@ -310,6 +310,9 @@ display: inline-block;
 </footer>
 </body>
 <script>
+
+let map;
+let marker;
 const app = Vue.createApp({
 data() {
     return {
@@ -478,32 +481,21 @@ show_each_tag_volume(){
 },
 
 async exe(ADDRESS_STR, POPUP_STR){
-    const tmp_data = [ 39.703045, 141.15271 ];
-    const data = tmp_data;
-    // const data = [35.510281, 139.606164];
+    if(marker){map.removeLayer(marker);marker = null;};
+    if(map){map.remove();map = null;};
+    const data = this.content_data.slice(0, 1)[0][16];
         console.log(2);
-    var map = await L.map('map_id').setView(data, 6);
+    map = await L.map('map_id').setView(data, 5);
         console.log(3);
     await L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
         console.log(4);
-
-var locations = [
-[[ 39.703045, 141.15271 ],"盛岡市内丸10-1",],
-[[ 39.701557, 141.154343 ],"盛岡市内丸12-2",],
-[[ 39.638931, 141.946854 ],"宮古市宮町1-1-30",],
-[[ 39.081867, 141.707428 ],"大船渡市盛町字宇津野沢15",],
-[[ 38.268494, 140.87178 ],"仙台市青葉区本町3-8-1",],
-[[ 38.268028, 140.869476 ],"仙台市青葉区国分町3-7-1",],
-];
-
-for (var i = 0; i < locations.length; i++) {
-  marker = new L.marker([locations[i][0][0], locations[i][0][1]])
-    .bindPopup(locations[i][0])
-    .addTo(map);
-};
-
+    this.content_data.forEach(LI_DATA_ARRAY=>{
+    marker = new L.marker([LI_DATA_ARRAY[16][0], LI_DATA_ARRAY[16][1]])
+        .bindPopup(LI_DATA_ARRAY[15])
+        .addTo(map);
+    });
 },
 
 },
