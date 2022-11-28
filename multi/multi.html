@@ -266,7 +266,7 @@ height: 200px;
 
 <ul class="content">
     <template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
-
+<button @click="map_exe(2, LI_DATA_ARRAY_INDEX)">is this where in the map {{ LI_DATA_ARRAY_INDEX }}</button>
         <li>
             <ul>
             <template v-for="(LI_DATA, LI_DATA_INDEX) in LI_DATA_ARRAY">
@@ -487,12 +487,14 @@ show_each_tag_volume(){
     this.tag_list_with_volume_sorted = tag_list_with_volume.sort((a,b)=>{return b[1] - a[1]});
 },
 
-async map_exe(){
-    if(MARKER_DATA){MAP_DATA.removeLayer(MARKER_DATA);MARKER_DATA = null;};
+async map_exe(SCALE, CURRENT_DATA_INDEX){
+    SCALE = SCALE || 2;
+    CURRENT_DATA_INDEX = CURRENT_DATA_INDEX || 0;
+
+    if(MARKER_DATA){MAP_DATA.removeLayer(MARKER_DATA);MARKER_DATA = [];MARKER_DATA_ARRAY = [];};
     if(MAP_DATA){MAP_DATA.remove();MAP_DATA = null;};
-    const data = this.content_data.slice(0, 1)[0][16];
-    // MAP_DATA = await L.map('map_id').setView(data, 5);
-    MAP_DATA = await L.map('map_id').setView(data, 5);
+    const CURRENT_DATA = this.content_data.slice(CURRENT_DATA_INDEX, (CURRENT_DATA_INDEX+1))[0][16];
+    MAP_DATA = await L.map('map_id').setView(CURRENT_DATA, 5);
     await L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(MAP_DATA);
@@ -503,11 +505,13 @@ async map_exe(){
         MARKER_DATA_ARRAY.push(MARKER_DATA);
     });
 
-const SCALE = 1.5;
-MARKER_DATA_ARRAY[0]._icon.style["margin-left"] = (Number(MARKER_DATA_ARRAY[0]._icon.style["margin-left"].replace("px", "")) * SCALE).toString()+"px"
-MARKER_DATA_ARRAY[0]._icon.style["margin-top"] = (Number(MARKER_DATA_ARRAY[0]._icon.style["margin-top"].replace("px", "")) * SCALE).toString()+"px"
-MARKER_DATA_ARRAY[0]._icon.style["width"] = (Number(MARKER_DATA_ARRAY[0]._icon.style["width"].replace("px", "")) * SCALE).toString()+"px"
-MARKER_DATA_ARRAY[0]._icon.style["height"] = (Number(MARKER_DATA_ARRAY[0]._icon.style["height"].replace("px", "")) * SCALE).toString()+"px"
+    this.marker_icon_resize(SCALE, CURRENT_DATA_INDEX);
+},
+marker_icon_resize(SCALE, CURRENT_DATA_INDEX){
+    MARKER_DATA_ARRAY[CURRENT_DATA_INDEX]._icon.style["margin-left"] = (Number(MARKER_DATA_ARRAY[CURRENT_DATA_INDEX]._icon.style["margin-left"].replace("px", "")) * SCALE).toString()+"px";
+    MARKER_DATA_ARRAY[CURRENT_DATA_INDEX]._icon.style["margin-top"] = (Number(MARKER_DATA_ARRAY[CURRENT_DATA_INDEX]._icon.style["margin-top"].replace("px", "")) * SCALE).toString()+"px";
+    MARKER_DATA_ARRAY[CURRENT_DATA_INDEX]._icon.style["width"] = (Number(MARKER_DATA_ARRAY[CURRENT_DATA_INDEX]._icon.style["width"].replace("px", "")) * SCALE).toString()+"px";
+    MARKER_DATA_ARRAY[CURRENT_DATA_INDEX]._icon.style["height"] = (Number(MARKER_DATA_ARRAY[CURRENT_DATA_INDEX]._icon.style["height"].replace("px", "")) * SCALE).toString()+"px";
 },
 
 },
