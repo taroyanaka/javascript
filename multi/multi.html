@@ -40,7 +40,7 @@ add map and set map data(make map data??)
                 => or 1 map float on page with multi pin,
                 => click the shop and change the pin color(it make customr easy to check the address)
                     => I think this is a better UI(am I genius?)
-                        => 🛠
+                        => ✅
 full-text search (checkboxes for skewering of text or text tags only or image tags only or multiple images, respectively)
     => 🛠
 change multiple data architecture and set multiple data for multiple services
@@ -570,17 +570,18 @@ marker_icon_resize(SCALE, CURRENT_DATA_INDEX){
     MARKER_DATA_ARRAY[CURRENT_DATA_INDEX]._icon.style["height"] = (Number(MARKER_DATA_ARRAY[CURRENT_DATA_INDEX]._icon.style["height"].replace("px", "")) * SCALE).toString()+"px";
 },
 map_open_and_close(){
+const STYLE = document.documentElement.style;
 this.map_is_open = !this.map_is_open;
 if(this.map_is_open){
-    document.documentElement.style.setProperty('--grid-template-rows', '3rem 1fr 1fr');
-    document.documentElement.style.setProperty('--map-id-height', '3rem');
-    document.documentElement.style.setProperty('--map-id-width', '4rem');
-    document.documentElement.style.setProperty('--map-hide-display', 'none');
+    STYLE.setProperty('--grid-template-rows', '3rem 1fr 1fr');
+    STYLE.setProperty('--map-id-height', '3rem');
+    STYLE.setProperty('--map-id-width', '4rem');
+    STYLE.setProperty('--map-hide-display', 'none');
 }else{
-    document.documentElement.style.setProperty('--grid-template-rows', '15rem 1fr 1fr');
-    document.documentElement.style.setProperty('--map-id-height', '15rem');
-    document.documentElement.style.setProperty('--map-id-width', '20rem');
-    document.documentElement.style.setProperty('--map-hide-display', 'block');
+    STYLE.setProperty('--grid-template-rows', '15rem 1fr 1fr');
+    STYLE.setProperty('--map-id-height', '15rem');
+    STYLE.setProperty('--map-id-width', '20rem');
+    STYLE.setProperty('--map-hide-display', 'block');
 };
 },
 
