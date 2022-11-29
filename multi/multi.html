@@ -144,12 +144,24 @@ Attend all seminars.
 
 <style>
 /* grid layout */
+:root {
+--grid-template-rows: 15rem 1fr 1fr;
+
+--map-id-height: 15rem;
+--map-id-width: 20rem;
+--map-hide-display: block;
+
+}
 .app{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    /* grid-template-rows: 3rem 0rem 1fr 1fr; */
+    /* grid-template-rows: 3rem 15rem 1fr 1fr; */
+    /* grid-template-rows: 15rem 1fr 1fr; */
+    grid-template-rows: var(--grid-template-rows);
     grid-template-areas:
         "header header header"
+        "spacer spacer spacer"
         "main main article"
         "footer footer footer";
     height: 100vh;
@@ -161,15 +173,31 @@ background-color: #f1f1f1;
     width: 100vw;
 height: 3rem;
 }
+.spacer_target{
+grid-area: spacer;
+background-color: blue;
+    /* --grid-template-rows: 3rem 100rem 1fr 1fr; */
+}
+.spacer{
+  /* --grid-template-rows: 3rem 15rem 1fr 1fr; */
+}
 .bigger_header{
     height: 15rem;
+    /* --grid-template-rows: 3rem 100rem 1fr 1fr; */
 }
 .tracker{
     position: fixed;
     top: 0rem;
     background-color: #f1f1f1;
+    /* background-color: red; */
     width: 100vw;
+    height: auto;
+    /* height: 3rem; */
+    /* height: 15rem; */
 }
+/* .smaller_tracker{
+    height: 3rem;
+} */
 main{
     grid-area: main;
     background-color: aliceblue;
@@ -222,8 +250,11 @@ display: inline-block;
     height: 2rem;
 }
 #map_id{
-    height: 15rem;
-    width: 20rem;
+    /* height: 3rem; */
+    height: var(--map-id-height);
+    /* width: 4rem; */
+    width: var(--map-id-width);
+
 }
 .bigger_pin_icon { 
     width: 15rem;
@@ -235,15 +266,13 @@ display: inline-block;
     background-color: gray;
 }
 .map_hide{
-    height: 0rem;
-    width: 0rem;
-    display: none;
+    display: var(--map-hide-display);
 }
 </style>
 </head>
 <body class="app">
-
-<header :class="{ bigger_header: bigger_header_is_active }">
+<!-- <header :class="{ bigger_header: bigger_header_is_active }"> -->
+<header>
 <!-- <header> -->
 
 <!-- <header class="bigger_header"> -->
@@ -252,7 +281,8 @@ display: inline-block;
 <!-- <div v-for="(NO_USE_VAL, INDEX) in IN_ARY" :class="{ coloring: (active_the_image_index[0] === OUTER_ARY_INDEX && active_the_image_index[1] === IN_ARY_INDEX) ? true : false }"></div> -->
 <ul>
 
-<li :class="{ map_hide: bigger_header_is_active }"><div id="map_id">map_elm</div></li>
+<!-- <li :class="{ map_hide: bigger_header_is_active }"><div id="map_id">map_elm</div></li> -->
+<li><div id="map_id">map_elm</div></li>
 <!-- <li><div id="map_id" class="map_target">map_elm</div></li> -->
 <!-- <li><div id="map_id">map_elm</div></li> -->
 
@@ -266,6 +296,8 @@ display: inline-block;
 </ul>
 </div>
 </header>
+<!-- <div class="spacer_target" :class="{ spacer: bigger_header_is_active }"></div> -->
+<!-- <div class="spacer_target"></div> -->
 <main>
 
 <details data-dropdown>
@@ -286,7 +318,7 @@ display: inline-block;
 
 <ul class="content">
     <template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
-<button @click="map_exe(2, LI_DATA_ARRAY_INDEX);" :class="{ map_hide: bigger_header_is_active }">is this where in the map {{ LI_DATA_ARRAY_INDEX }}</button>
+<button @click="map_exe(2, LI_DATA_ARRAY_INDEX);" class="map_hide">is this where in the map {{ LI_DATA_ARRAY_INDEX }}</button>
         <li>
             <ul>
             <template v-for="(LI_DATA, LI_DATA_INDEX) in LI_DATA_ARRAY">
@@ -344,7 +376,7 @@ const app = Vue.createApp({
 data() {
     return {
 
-bigger_header_is_active: false,
+map_is_open: false,
 // bigger_header_is_active: false,
 
 content_data: [1,2,3,4,100],
@@ -538,7 +570,18 @@ marker_icon_resize(SCALE, CURRENT_DATA_INDEX){
     MARKER_DATA_ARRAY[CURRENT_DATA_INDEX]._icon.style["height"] = (Number(MARKER_DATA_ARRAY[CURRENT_DATA_INDEX]._icon.style["height"].replace("px", "")) * SCALE).toString()+"px";
 },
 map_open_and_close(){
-    this.bigger_header_is_active = this.bigger_header_is_active === true ? false : true;
+this.map_is_open = !this.map_is_open;
+if(this.map_is_open){
+    document.documentElement.style.setProperty('--grid-template-rows', '3rem 1fr 1fr');
+    document.documentElement.style.setProperty('--map-id-height', '3rem');
+    document.documentElement.style.setProperty('--map-id-width', '4rem');
+    document.documentElement.style.setProperty('--map-hide-display', 'none');
+}else{
+    document.documentElement.style.setProperty('--grid-template-rows', '15rem 1fr 1fr');
+    document.documentElement.style.setProperty('--map-id-height', '15rem');
+    document.documentElement.style.setProperty('--map-id-width', '20rem');
+    document.documentElement.style.setProperty('--map-hide-display', 'block');
+};
 },
 
 },
