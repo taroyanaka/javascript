@@ -146,18 +146,13 @@ Attend all seminars.
 /* grid layout */
 :root {
 --grid-template-rows: 15rem 1fr 1fr;
-
 --map-id-height: 15rem;
 --map-id-width: 20rem;
 --map-hide-display: block;
-
 }
 .app{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    /* grid-template-rows: 3rem 0rem 1fr 1fr; */
-    /* grid-template-rows: 3rem 15rem 1fr 1fr; */
-    /* grid-template-rows: 15rem 1fr 1fr; */
     grid-template-rows: var(--grid-template-rows);
     grid-template-areas:
         "header header header"
@@ -173,31 +168,13 @@ background-color: #f1f1f1;
     width: 100vw;
 height: 3rem;
 }
-.spacer_target{
-grid-area: spacer;
-background-color: blue;
-    /* --grid-template-rows: 3rem 100rem 1fr 1fr; */
-}
-.spacer{
-  /* --grid-template-rows: 3rem 15rem 1fr 1fr; */
-}
-.bigger_header{
-    height: 15rem;
-    /* --grid-template-rows: 3rem 100rem 1fr 1fr; */
-}
 .tracker{
     position: fixed;
     top: 0rem;
     background-color: #f1f1f1;
-    /* background-color: red; */
     width: 100vw;
     height: auto;
-    /* height: 3rem; */
-    /* height: 15rem; */
 }
-/* .smaller_tracker{
-    height: 3rem;
-} */
 main{
     grid-area: main;
     background-color: aliceblue;
@@ -250,11 +227,8 @@ display: inline-block;
     height: 2rem;
 }
 #map_id{
-    /* height: 3rem; */
     height: var(--map-id-height);
-    /* width: 4rem; */
     width: var(--map-id-width);
-
 }
 .bigger_pin_icon { 
     width: 15rem;
@@ -271,20 +245,11 @@ display: inline-block;
 </style>
 </head>
 <body class="app">
-<!-- <header :class="{ bigger_header: bigger_header_is_active }"> -->
 <header>
-<!-- <header> -->
-
-<!-- <header class="bigger_header"> -->
-<!-- <header> -->
 <div class="tracker">
-<!-- <div v-for="(NO_USE_VAL, INDEX) in IN_ARY" :class="{ coloring: (active_the_image_index[0] === OUTER_ARY_INDEX && active_the_image_index[1] === IN_ARY_INDEX) ? true : false }"></div> -->
 <ul>
 
-<!-- <li :class="{ map_hide: bigger_header_is_active }"><div id="map_id">map_elm</div></li> -->
 <li><div id="map_id">map_elm</div></li>
-<!-- <li><div id="map_id" class="map_target">map_elm</div></li> -->
-<!-- <li><div id="map_id">map_elm</div></li> -->
 
 <li @click="map_open_and_close" class="map_open_and_close">±</li>
 <li>abc</li>
@@ -296,10 +261,8 @@ display: inline-block;
 </ul>
 </div>
 </header>
-<!-- <div class="spacer_target" :class="{ spacer: bigger_header_is_active }"></div> -->
-<!-- <div class="spacer_target"></div> -->
-<main>
 
+<main>
 <details data-dropdown>
 <summary>open_$data</summary>
     <span>{{ $data }}</span>
@@ -318,18 +281,16 @@ display: inline-block;
 
 <ul class="content">
     <template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
-<button @click="map_exe(2, LI_DATA_ARRAY_INDEX);" class="map_hide">is this where in the map {{ LI_DATA_ARRAY_INDEX }}</button>
+    <button @click="map_exe(2, LI_DATA_ARRAY_INDEX);" class="map_hide">is this where in the map {{ LI_DATA_ARRAY_INDEX }}</button>
         <li>
             <ul>
             <template v-for="(LI_DATA, LI_DATA_INDEX) in LI_DATA_ARRAY">
-
-
                 <li>{{ LI_DATA_INDEX }}: {{ LI_DATA }}</li>
+
                 <template v-if="LI_DATA_INDEX === (LI_DATA_ARRAY.length-1)" v-for="(IMAGE_DATA, IMAGE_DATA_INDEX) in LI_DATA">
-
-                <img :src="IMAGE_DATA[0]" :alt="IMAGE_DATA[0]" class="image_list_to_inline_tag_and_smaller">
-
-<span v-for="(IMAGE_TAG, IMAGE_TAG_INDEX) in IMAGE_DATA[1]"><button class="article_button image_tag" @click="set_data_to_content({'filter_by_tag': index_to_tag_name(IMAGE_TAG)})">{{ index_to_tag_name(IMAGE_TAG) }}</button></span>
+                    <img :src="IMAGE_DATA[0]" :alt="IMAGE_DATA[0]" class="image_list_to_inline_tag_and_smaller">
+                    <!-- <span v-for="(IMAGE_TAG, IMAGE_TAG_INDEX) in IMAGE_DATA[1]"><button class="article_button image_tag" @click="set_data_to_content({'filter_by_tag': index_to_tag_name(IMAGE_TAG)})">{{ index_to_tag_name(IMAGE_TAG) }}</button></span> -->
+                    <span v-for="(IMAGE_TAG, IMAGE_TAG_INDEX) in IMAGE_DATA[1]"><button class="article_button image_tag" @click="set_data_to_content({'filter_by_tag': IMAGE_TAG})">{{ IMAGE_TAG }}</button></span>
                 </template>
             </template>
             </ul>
@@ -368,9 +329,147 @@ display: inline-block;
 </footer>
 </body>
 <script>
+const sample = [
+    "okinawa",
+    "l",
+    "okinawa_l",
+    "qxy",
+    "TELIZ",
+    970,
+    9037261584,
+    "2017-08-05T05:14:50.729Z",
+    "2020-02-04T18:33:16.766Z",
+    [
+        46,
+        83,
+        140,
+        110,
+        73,
+        93,
+        80,
+        78,
+        98
+    ],
+    [
+        16
+    ],
+    [
+        [
+            46,
+            145,
+            83,
+            59,
+            132,
+            66
+        ]
+    ],
+    [
+        "okinawa",
+        "j_0",
+        "x_1",
+        "p_3",
+        "g_2",
+        "l_2",
+        "i_1",
+        "h_3",
+        "m_3"
+    ],
+    [
+        "https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/okinawa_l_16.png"
+    ],
+    "沖縄県",
+    "宜野湾市野嵩1-1-1",
+    [
+        26.281231,
+        127.77784
+    ],
+    "https://www.city.ginowan.lg.jp/",
+    [
+        [
+            "https://raw.githubusercontent.com/taroyanaka/javascript/master/image/image_for_multi/okinawa_l_16.png",
+            [
+                46,
+                145,
+                83,
+                59,
+                132,
+                66
+            ],
+            69074
+        ],
+        [
+            91763
+        ],
+        [
+            89616
+        ],
+        [
+            54018
+        ]
+    ]
+];
+
 let MAP_DATA = null;
 let MARKER_DATA = null;
 let MARKER_DATA_ARRAY = [];
+
+// R.transpose([prefectures_of_japan_list_alphabet_1222_0_1_2, sample_data_array]).map(V=>V[0].concat(V[1]));
+
+// prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array.map(V=>V.concat(
+//     [R.uniq(random_length_array(R.range(0, 10)).map(V=> random_number_from_min_to_max(1, 103)))
+//      ]
+//     ))
+
+// shuffle arrray
+// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
+}
+
+// random number from min to max
+function random_number_from_min_to_max(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+// random length array
+function random_length_array(array) {
+  return array.slice(0, random_number_from_min_to_max(1, array.length));
+}
+// R.uniq(random_length_array(R.range(0, 10)).map(V=> random_number_from_min_to_max(1, 103))).sort(function(a,b){return a - b}).map(V=>V.toString());
+
+// const file_names = prefectures_of_japan_list_alphabet_1222_0_1_2.map(VAL=>
+//     R.uniq(random_length_array(R.range(0, 10)).map(V=> random_number_from_min_to_max(1, 103))).sort(function(a,b){return a - b}).map(V=>VAL[2]+"_"+V.toString())
+//     )
+
+// prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number.map(V=>R.update(9, V[9].map(VAL=>VAL+47), V))
+// NEW_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number.map(V=> R.update(9, [prefectures_of_japan_list.indexOf(V[0])].concat(V[9]), V))
+// prefectures_of_japan_list.concat(tag_list)
+
+// shuffle(prefectures_of_japan_list_concat_tag_list.map((V,IDX)=>IDX).slice(47, -1)).slice(0, 10)
+// NEW_2_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number.map(V=>R.insert(-1, V[10].map(VAL=>[V[9][0]].concat(shuffle(prefectures_of_japan_list_concat_tag_list.map((V,IDX)=>IDX).slice(47, -1)).slice(0, 5))), V));
+
+// address_sample.map((V,IDX)=>[prefectures_of_japan_list[(V[0] - 1)], todouhuken[(V[0] - 1)], V[1]])[0];
+
+// let rest_address = R.clone(address_all_yakusho);
+
+// https://uub.jp/cpf/office.html
+// Array.from(document.querySelectorAll("#container > div > div > div > table > tbody > tr > td.al.no > a")).filter((V,IDX)=>IDX !== 1207).filter((V,IDX)=>IDX !== 1210).map(V=>V.href)
+
+// R.transpose([address_all_yakusho_error_address_removed_with_latitude_longitude, url_all_yakusho_error_address_removed]).map(V=>V[0].concat(V[1]))
 
 const app = Vue.createApp({
 data() {
@@ -483,6 +582,12 @@ set_data_to_content(FILTER_OBJ){
     const filtered_list = this.current_filter ? this.filter_by_rule(this.current_filter, this.sample_list_4) : this.sample_list_4;
     const filtered_list_convert_index_to_tag_name_and_display = this.convert_index_to_tag_name_and_display(filtered_list);
     const sorted_list = this.current_sorter ? this.sort_by_rule(this.current_sorter, filtered_list_convert_index_to_tag_name_and_display) : filtered_list_convert_index_to_tag_name_and_display;
+
+console.log(sorted_list
+.slice(-1)
+[0]
+
+);
     this.content_data = sorted_list;
 
     this.map_exe();
@@ -498,8 +603,13 @@ file_with_a_number_and_tag(PRE, PRE_ALPH, FILE_NAME_NUMBER){
     // return [[PRE, PRE_ALPH, FILE_NAME_NUMBER].join("_"), FILE_THE_NUMBER, TAG_LIST];
 },
 make_image_tag_list_and_url_list_pair(LIST, IDX){
-    const [url_list, image_tag_list, image_price_list] = [LIST[13], LIST[11], number_list_for_img[IDX]];
+    // const [url_list, image_tag_list, image_price_list] = [LIST[13], LIST[11][0].map(V=>this.index_to_tag_name(V)), number_list_for_img[IDX]];
+    const [url_list, image_tag_list, image_price_list] = [LIST[13], LIST[11].map(V=>V.map(VAL=>this.index_to_tag_name(VAL))), number_list_for_img[IDX]];
+    // const [url_list, image_tag_list, image_price_list] = [LIST[13], LIST[11], number_list_for_img[IDX]];
+// console.log(R.flatten(image_tag_list));
     return R.transpose([url_list, image_tag_list, image_price_list]);
+    // return R.transpose([url_list, image_tag_list.map(V=>this.index_to_tag_name(V)), image_price_list]);
+    // return R.transpose([url_list, image_tag_list.map(V=>prefectures_of_japan_list_concat_tag_list[V]), image_price_list]);
 },
 convert_index_to_tag_name_and_display(LIST){
     const tmp_list_added_tag_name_list = LIST.map(V=>
@@ -525,7 +635,7 @@ convert_index_to_tag_name_and_display(LIST){
                 [this.make_image_tag_list_and_url_list_pair(V, IDX)]
             )
         );
-    console.log(tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list);
+    console.log(tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list[0]);
     return tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list;
 },
 clear_current_filter_and_sorter(){
@@ -587,72 +697,5 @@ if(this.map_is_open){
 
 },
 }).mount('.app');
-
-
-// R.transpose([prefectures_of_japan_list_alphabet_1222_0_1_2, sample_data_array]).map(V=>V[0].concat(V[1]));
-
-// prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array.map(V=>V.concat(
-//     [R.uniq(random_length_array(R.range(0, 10)).map(V=> random_number_from_min_to_max(1, 103)))
-//      ]
-//     ))
-
-// shuffle arrray
-// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-function shuffle(array) {
-  let currentIndex = array.length,  randomIndex;
-
-  // While there remain elements to shuffle.
-  while (currentIndex != 0) {
-
-    // Pick a remaining element.
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex], array[currentIndex]];
-  }
-
-  return array;
-}
-
-// random number from min to max
-function random_number_from_min_to_max(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-// random length array
-function random_length_array(array) {
-  return array.slice(0, random_number_from_min_to_max(1, array.length));
-}
-
-
-// R.uniq(random_length_array(R.range(0, 10)).map(V=> random_number_from_min_to_max(1, 103))).sort(function(a,b){return a - b}).map(V=>V.toString());
-
-
-// const file_names = prefectures_of_japan_list_alphabet_1222_0_1_2.map(VAL=>
-//     R.uniq(random_length_array(R.range(0, 10)).map(V=> random_number_from_min_to_max(1, 103))).sort(function(a,b){return a - b}).map(V=>VAL[2]+"_"+V.toString())
-//     )
-
-
-// prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number.map(V=>R.update(9, V[9].map(VAL=>VAL+47), V))
-// NEW_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number.map(V=> R.update(9, [prefectures_of_japan_list.indexOf(V[0])].concat(V[9]), V))
-// prefectures_of_japan_list.concat(tag_list)
-
-// shuffle(prefectures_of_japan_list_concat_tag_list.map((V,IDX)=>IDX).slice(47, -1)).slice(0, 10)
-// NEW_2_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number.map(V=>R.insert(-1, V[10].map(VAL=>[V[9][0]].concat(shuffle(prefectures_of_japan_list_concat_tag_list.map((V,IDX)=>IDX).slice(47, -1)).slice(0, 5))), V));
-
-
-// address_sample.map((V,IDX)=>[prefectures_of_japan_list[(V[0] - 1)], todouhuken[(V[0] - 1)], V[1]])[0];
-
-// let rest_address = R.clone(address_all_yakusho);
-
-
-// https://uub.jp/cpf/office.html
-// Array.from(document.querySelectorAll("#container > div > div > div > table > tbody > tr > td.al.no > a")).filter((V,IDX)=>IDX !== 1207).filter((V,IDX)=>IDX !== 1210).map(V=>V.href)
-
-// R.transpose([address_all_yakusho_error_address_removed_with_latitude_longitude, url_all_yakusho_error_address_removed]).map(V=>V[0].concat(V[1]))
-
-
 </script>
 </html>
