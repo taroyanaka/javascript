@@ -42,7 +42,7 @@ add map and set map data(make map data??)
                     => I think this is a better UI(am I genius?)
                         => ✅
 full-text search (checkboxes for skewering of text or text tags only or image tags only or multiple images, respectively)
-    => 🛠
+    => ✅
 change multiple data architecture and set multiple data for multiple services
     => 🛠
 
@@ -454,7 +454,7 @@ mounted() {
     this.show_each_tag_volume();
     this.set_data_to_content({'filter_by_tag': "h_3"});
 // this.full_text_search_in_content_data_text_by_fuse_js();
-    this.map_exe();
+    // this.map_exe();
 },
 beforeUpdate() {
 },
@@ -509,12 +509,7 @@ set_data_to_content(FILTER_OBJ){
     const filtered_list = this.current_filter ? this.filter_by_rule(this.current_filter, this.sample_list_4) : this.sample_list_4;
     const filtered_list_convert_index_to_tag_name_and_display = this.convert_index_to_tag_name_and_display(filtered_list);
     const sorted_list = this.current_sorter ? this.sort_by_rule(this.current_sorter, filtered_list_convert_index_to_tag_name_and_display) : filtered_list_convert_index_to_tag_name_and_display;
-
-
 this.content_data = this.full_text_search_in_content_data_text_by_fuse_js_input ? this.full_text_search_in_content_data_text_by_fuse_js(sorted_list) : sorted_list
-
-    // this.content_data = sorted_list;
-
     this.map_exe();
 },
 index_to_tag_name(INDEX){
@@ -528,13 +523,8 @@ file_with_a_number_and_tag(PRE, PRE_ALPH, FILE_NAME_NUMBER){
     // return [[PRE, PRE_ALPH, FILE_NAME_NUMBER].join("_"), FILE_THE_NUMBER, TAG_LIST];
 },
 make_image_tag_list_and_url_list_pair(LIST, IDX){
-    // const [url_list, image_tag_list, image_price_list] = [LIST[13], LIST[11][0].map(V=>this.index_to_tag_name(V)), number_list_for_img[IDX]];
     const [url_list, image_tag_list, image_price_list] = [LIST[13], LIST[11].map(V=>V.map(VAL=>this.index_to_tag_name(VAL))), number_list_for_img[IDX]];
-    // const [url_list, image_tag_list, image_price_list] = [LIST[13], LIST[11], number_list_for_img[IDX]];
-// console.log(R.flatten(image_tag_list));
     return R.transpose([url_list, image_tag_list, image_price_list]);
-    // return R.transpose([url_list, image_tag_list.map(V=>this.index_to_tag_name(V)), image_price_list]);
-    // return R.transpose([url_list, image_tag_list.map(V=>prefectures_of_japan_list_concat_tag_list[V]), image_price_list]);
 },
 convert_index_to_tag_name_and_display(LIST){
     const tmp_list_added_tag_name_list = LIST.map(V=>
@@ -554,13 +544,11 @@ convert_index_to_tag_name_and_display(LIST){
             const res = rest_address.splice(rest_address.map(VAL=>VAL[0]).indexOf(V[0]), 1)[0];
             return V.concat([res[1], res[2], [res[3][0], res[3][1]], res[4]]);
         });
-
     const tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list = tmp_list_3_added_image_url_list_with_map_data.map((V,IDX)=>
             V.concat(
                 [this.make_image_tag_list_and_url_list_pair(V, IDX)]
             )
         );
-    console.log(tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list[0]);
     return tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list;
 },
 clear_current_filter_and_sorter(){
@@ -626,9 +614,8 @@ full_text_search_in_content_data_text_by_fuse_js(TARGET_DATA){
     });
     RES = fuse.search(this.full_text_search_in_content_data_text_by_fuse_js_input);
     RES = RES
-.sort((a,b)=>a.score - b.score)
-.map(V=>V.item);
-    console.log(RES);
+        .sort((a,b)=>a.score - b.score)
+        .map(V=>V.item);
     return RES;
 },
 },
