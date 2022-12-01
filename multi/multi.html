@@ -43,6 +43,8 @@ add map and set map data(make map data??)
                         => ✅
 full-text search (checkboxes for skewering of text or text tags only or image tags only or multiple images, respectively)
     => ✅
+make ten percent data list for rendering make faster(now, i dont need to wait for rendering(it's just a sample data))
+    => ✅
 change multiple data architecture and set multiple data for multiple services
     => 🛠
 
@@ -331,10 +333,6 @@ display: inline-block;
 </footer>
 </body>
 <script>
-let RES;
-let fuse;
-let FOOOOO;
-
 let MAP_DATA = null;
 let MARKER_DATA = null;
 let MARKER_DATA_ARRAY = [];
@@ -397,6 +395,24 @@ function random_length_array(array) {
 
 // R.transpose([address_all_yakusho_error_address_removed_with_latitude_longitude, url_all_yakusho_error_address_removed]).map(V=>V[0].concat(V[1]))
 
+// const SAMPLE_LIST = NEW_3_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number;
+// const ten_percent_list = shuffle(SAMPLE_LIST).slice(0, Math.round(SAMPLE_LIST.length/10));
+
+// https://tabelog.com/cat_lst/
+// const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+// const food = Array.from($$("#column-main > table > tbody > tr > th > a")).map(V=>V.text);
+// const az_AZ_food_array = alphabet.map((V,IDX)=>[V, V.toUpperCase(), food[IDX]]);
+
+const new_map = R.transpose([jp_map_list, prefectures_of_japan_list]);
+const HOGE = ten_percent_list.map((V,IDX)=>{
+    RESULT = R.update(0, new_map.filter(VAL=>VAL[1]===V[0])[0][0], V);
+    RESULT = R.update(
+    1,
+    az_AZ_food_array.filter(VAL=>{if(V[1].includes(VAL[0])){return VAL}})[0][2],
+    RESULT);
+    return RESULT;
+});
+
 const app = Vue.createApp({
 data() {
     return {
@@ -437,7 +453,8 @@ sort_rule_list: [
 
 // sample_list_4: NEW_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
 // sample_list_4: NEW_2_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
-sample_list_4: NEW_3_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
+// sample_list_4: NEW_3_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
+sample_list_4: ten_percent_list,
     }
 },
 watch: {
@@ -608,15 +625,15 @@ if(this.map_is_open){
 };
 },
 full_text_search_in_content_data_text_by_fuse_js(TARGET_DATA){
-    fuse = new Fuse(TARGET_DATA, {
+    const fuse = new Fuse(TARGET_DATA, {
       includeScore: true,
         keys: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90', '91', '92', '93', '94', '95', '96', '97', '98', '99', '100', '101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113', '114', '115', '116', '117', '118', '119', '120', '121', '122', '123', '124', '125', '126', '127', '128', '129', '130', '131', '132', '133', '134', '135', '136', '137', '138', '139', '140', '141', '142', '143', '144', '145', '146', '147', '148', '149', '150', '151', '152', '153', '154', '155', '156', '157', '158', '159', '160', '161']
     });
-    RES = fuse.search(this.full_text_search_in_content_data_text_by_fuse_js_input);
-    RES = RES
+    let SEARCH_RESULT = fuse.search(this.full_text_search_in_content_data_text_by_fuse_js_input);
+    SEARCH_RESULT = SEARCH_RESULT
         .sort((a,b)=>a.score - b.score)
         .map(V=>V.item);
-    return RES;
+    return SEARCH_RESULT;
 },
 },
 }).mount('.app');
