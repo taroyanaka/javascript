@@ -266,6 +266,7 @@ display: inline-block;
 </header>
 
 <main>
+<input type="button" value="change_content_data_to_HOGE" @click="change_content_data_to_HOGE">
 <input type="text" name="" id="" v-model="full_text_search_in_content_data_text_by_fuse_js_input">
 <details data-dropdown>
 <summary>open_$data</summary>
@@ -404,13 +405,27 @@ function random_length_array(array) {
 // const az_AZ_food_array = alphabet.map((V,IDX)=>[V, V.toUpperCase(), food[IDX]]);
 
 const new_map = R.transpose([jp_map_list, prefectures_of_japan_list]);
+const search_upper = (STR) => alphabet_katakana_table.map(V=>V[2])[alphabet_katakana_table.map(V=>V[0]).indexOf(STR)];
+const search_lower = (STR) => alphabet_katakana_table.map(V=>V[2])[alphabet_katakana_table.map(V=>V[1]).indexOf(STR)];
+const alphabet_convert_katakana = (TARGET_alphabet_STRING) => TARGET_alphabet_STRING.split("").map(V=>V.replaceAll((/([a-z]|[A-Z])/ig), "$1")).map(V=>search_lower(V) ? search_lower(V) : search_upper(V) ).join("");
+const alphabet_katakana_table = [
+    ["A","a","エイ"],["B","b","ビー"],["C","c","シー"],["D","d","ディー"],["E","e","イー"],["F","f","エフ"],["G","g","ジー"],["H","h","エイチ"],["I","i","アイ"],["J","j","ジェイ"],["K","k","ケイ"],["L","l","エル"],["M","m","エム"],["N","n","エヌ"],["O","o","オー"],["P","p","ピー"],["Q","q","キュー"],["R","r","アール"],["S","s","エス"],["T","t","ティー"],["U","u","ユー"],["V","v","ヴィー"],["W","w","ダブリュー"],["X","x","エックス"],["Y","y","ワイ"],["Z","z","ズィー"]
+];
 const HOGE = ten_percent_list.map((V,IDX)=>{
-    RESULT = R.update(0, new_map.filter(VAL=>VAL[1]===V[0])[0][0], V);
-    RESULT = R.update(
+    // RESULT = R.update(0, new_map.filter(VAL=>VAL[1]===V[0])[0][0], V);
+    const RESULT = R.update(
     1,
     az_AZ_food_array.filter(VAL=>{if(V[1].includes(VAL[0])){return VAL}})[0][2],
+    V);
+    const RESULT2 = R.update(
+    3,
+    alphabet_convert_katakana(V[3]),
     RESULT);
-    return RESULT;
+    const RESULT3 = R.update(
+    4,
+    alphabet_convert_katakana(V[4]),
+    RESULT2);
+    return RESULT3;
 });
 
 const app = Vue.createApp({
@@ -459,6 +474,12 @@ sample_list_4: ten_percent_list,
 },
 watch: {
    full_text_search_in_content_data_text_by_fuse_js_input: {
+     handler() {
+        this.set_data_to_content({'filter_by_tag': "h_3"});
+     },
+     deep: true
+   },
+   sample_list_4: {
      handler() {
         this.set_data_to_content({'filter_by_tag': "h_3"});
      },
@@ -634,6 +655,9 @@ full_text_search_in_content_data_text_by_fuse_js(TARGET_DATA){
         .sort((a,b)=>a.score - b.score)
         .map(V=>V.item);
     return SEARCH_RESULT;
+},
+change_content_data_to_HOGE(){
+this.sample_list_4 = HOGE;
 },
 },
 }).mount('.app');
