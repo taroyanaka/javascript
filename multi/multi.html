@@ -266,7 +266,9 @@ display: inline-block;
 </header>
 
 <main>
-<input type="button" value="change_content_data_to_HOGE" @click="change_content_data_to_HOGE">
+<input type="button" value="change_content_data_to_EN" @click="change_content_data_to_KIND_OF_ARRAY('az_AZ_food_array', 2)">
+<input type="button" value="change_content_data_to_FR" @click="change_content_data_to_KIND_OF_ARRAY('az_AZ_sport_array', 3)">
+<input type="button" value="change_content_data_to_DE" @click="change_content_data_to_KIND_OF_ARRAY('az_AZ_martialArts_array', 4)">
 <input type="text" name="" id="" v-model="full_text_search_in_content_data_text_by_fuse_js_input">
 <details data-dropdown>
 <summary>open_$data</summary>
@@ -404,29 +406,64 @@ function random_length_array(array) {
 // const food = Array.from($$("#column-main > table > tbody > tr > th > a")).map(V=>V.text);
 // const az_AZ_food_array = alphabet.map((V,IDX)=>[V, V.toUpperCase(), food[IDX]]);
 
-const new_map = R.transpose([jp_map_list, prefectures_of_japan_list]);
-const search_upper = (STR) => alphabet_katakana_table.map(V=>V[2])[alphabet_katakana_table.map(V=>V[0]).indexOf(STR)];
-const search_lower = (STR) => alphabet_katakana_table.map(V=>V[2])[alphabet_katakana_table.map(V=>V[1]).indexOf(STR)];
-const alphabet_convert_katakana = (TARGET_alphabet_STRING) => TARGET_alphabet_STRING.split("").map(V=>V.replaceAll((/([a-z]|[A-Z])/ig), "$1")).map(V=>search_lower(V) ? search_lower(V) : search_upper(V) ).join("");
+// const new_map = R.transpose([jp_map_list, prefectures_of_japan_list]);
+
 const alphabet_katakana_table = [
-    ["A","a","エイ"],["B","b","ビー"],["C","c","シー"],["D","d","ディー"],["E","e","イー"],["F","f","エフ"],["G","g","ジー"],["H","h","エイチ"],["I","i","アイ"],["J","j","ジェイ"],["K","k","ケイ"],["L","l","エル"],["M","m","エム"],["N","n","エヌ"],["O","o","オー"],["P","p","ピー"],["Q","q","キュー"],["R","r","アール"],["S","s","エス"],["T","t","ティー"],["U","u","ユー"],["V","v","ヴィー"],["W","w","ダブリュー"],["X","x","エックス"],["Y","y","ワイ"],["Z","z","ズィー"]
+["A","a","エイ","ア","アー",],
+["B","b","ビー","ベ","ベー",],
+["C","c","シー","セ","ツェー",],
+["D","d","ディー","デ","デー",],
+["E","e","イー","ウ","エー",],
+["F","f","エフ","エフ","エフ",],
+["G","g","ジー","ジェ","ゲー",],
+["H","h","エイチ","アシュ","ハー",],
+["I","i","アイ","イ","イー",],
+["J","j","ジェイ","ジ","ヨット",],
+["K","k","ケイ","カ","カー",],
+["L","l","エル","エル","エル",],
+["M","m","エム","エム","エム",],
+["N","n","エヌ","エン","エン",],
+["O","o","オー","オ","オー",],
+["P","p","ピー","ペ","ペー",],
+["Q","q","キュー","キュ","クー",],
+["R","r","アール","エール","エル",],
+["S","s","エス","エス","エス",],
+["T","t","ティー","テ","テー",],
+["U","u","ユー","ユ","ウー",],
+["V","v","ヴィー","ヴェ","ファオ",],
+["W","w","ダブリュー","ドゥブルヴェ","ヴェー",],
+["X","x","エックス","イクス","イクス",],
+["Y","y","ワイ","イグレク","イプシーロン",],
+["Z","z","ズィー","ゼド","ツェット",],
 ];
-const HOGE = ten_percent_list.map((V,IDX)=>{
-    // RESULT = R.update(0, new_map.filter(VAL=>VAL[1]===V[0])[0][0], V);
-    const RESULT = R.update(
-    1,
-    az_AZ_food_array.filter(VAL=>{if(V[1].includes(VAL[0])){return VAL}})[0][2],
-    V);
-    const RESULT2 = R.update(
-    3,
-    alphabet_convert_katakana(V[3]),
-    RESULT);
-    const RESULT3 = R.update(
-    4,
-    alphabet_convert_katakana(V[4]),
-    RESULT2);
-    return RESULT3;
-});
+const search_upper = (STR, LANG_INDEX) => alphabet_katakana_table.map(V=>V[LANG_INDEX])[alphabet_katakana_table.map(V=>V[0]).indexOf(STR)];
+const search_lower = (STR, LANG_INDEX) => alphabet_katakana_table.map(V=>V[LANG_INDEX])[alphabet_katakana_table.map(V=>V[1]).indexOf(STR)];
+const alphabet_convert_katakana = (TARGET_alphabet_STRING, LANG_INDEX) => TARGET_alphabet_STRING.split("").map(V=>V.replaceAll((/([a-z]|[A-Z])/ig), "$1")).map(V=>search_lower(V, LANG_INDEX) ? search_lower(V, LANG_INDEX) : search_upper(V, LANG_INDEX) ).join("");
+const kind_of_array = (KIND) => {
+    const obj = {
+        "az_AZ_food_array": az_AZ_food_array,
+        "az_AZ_sport_array": az_AZ_sport_array,
+        "az_AZ_martialArts_array": az_AZ_martialArts_array,
+    };
+    return obj[KIND];
+};
+const make_list_with_LANG_INDEX = (KIND, LANG_INDEX) => {
+    return ten_percent_list.map((V,IDX)=>{
+        const RESULT = R.update(
+            1,
+            kind_of_array(KIND).filter(VAL=>{if(V[1].includes(VAL[0])){return VAL}})[0][2],
+            V);
+        const RESULT2 = R.update(
+            3,
+            alphabet_convert_katakana(V[3], LANG_INDEX),
+            RESULT);
+        const RESULT3 = R.update(
+            4,
+            alphabet_convert_katakana(V[4], LANG_INDEX),
+            RESULT2);
+        return RESULT3;
+    });
+};
 
 const app = Vue.createApp({
 data() {
@@ -656,8 +693,8 @@ full_text_search_in_content_data_text_by_fuse_js(TARGET_DATA){
         .map(V=>V.item);
     return SEARCH_RESULT;
 },
-change_content_data_to_HOGE(){
-this.sample_list_4 = HOGE;
+change_content_data_to_KIND_OF_ARRAY(KIND, LANG_INDEX){
+    this.sample_list_4 = make_list_with_LANG_INDEX(KIND, LANG_INDEX);
 },
 },
 }).mount('.app');
