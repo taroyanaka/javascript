@@ -507,6 +507,10 @@ sort_rule_list: [
 // sample_list_4: NEW_2_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
 // sample_list_4: NEW_3_prefectures_of_japan_list_alphabet_1222_0_1_2_with_sample_data_array_and_random_tag_index_1_10_length_array_with_file_name_number,
 sample_list_4: ten_percent_list,
+
+user_list: user_list,
+comment_list: comment_list,
+
     }
 },
 watch: {
@@ -624,6 +628,9 @@ convert_index_to_tag_name_and_display(LIST){
                 [this.make_image_tag_list_and_url_list_pair(V, IDX)]
             )
         );
+
+    this.comment_id_to_comment_txt();
+
     return tmp_list_4_added_image_url_list_with_map_data_and_image_tag_list;
 },
 clear_current_filter_and_sorter(){
@@ -695,6 +702,10 @@ full_text_search_in_content_data_text_by_fuse_js(TARGET_DATA){
 },
 change_content_data_to_KIND_OF_ARRAY(KIND, LANG_INDEX){
     this.sample_list_4 = make_list_with_LANG_INDEX(KIND, LANG_INDEX);
+},
+comment_id_to_comment_txt(){
+    console.log(this.user_list);
+    console.log(this.comment_list);
 },
 },
 }).mount('.app');
