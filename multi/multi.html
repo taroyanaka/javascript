@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>multi</title>
-
+<script src="./ramda.@0.28.0.js"></script>
 <!-- todo -->
 <!--
 
@@ -141,7 +141,6 @@ Attend all seminars.
 <script src="./leaflet@1.3.4.js"></script>
 <script src="./vue@3.2.36.global.prod.js"></script>
 <script src="./prefectures_of_japan_list_alphabet_1222.js"></script>
-<script src="./ramda.@0.28.0.js"></script>
     <script src="./fuse.js.v6.6.2.js"></script>
 
 
@@ -252,7 +251,7 @@ display: inline-block;
 <div class="tracker">
 <ul>
 
-<li><div id="map_id">map_elm</div></li>
+<!-- <li><div id="map_id">map_elm</div></li> -->
 
 <li @click="map_open_and_close" class="map_open_and_close">±</li>
 <li>abc</li>
@@ -266,6 +265,12 @@ display: inline-block;
 </header>
 
 <main>
+<!-- user_list -->
+<!-- comment_list -->
+<!-- <li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in comment_list">{{ LI_DATA_ARRAY }}</li> -->
+<!-- <li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in user_list">{{ LI_DATA_ARRAY }}</li> -->
+<li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in comment_with_user_profile()">{{ LI_DATA_ARRAY }}</li>
+
 <input type="button" value="change_content_data_to_EN" @click="change_content_data_to_KIND_OF_ARRAY('az_AZ_food_array', 2)">
 <input type="button" value="change_content_data_to_FR" @click="change_content_data_to_KIND_OF_ARRAY('az_AZ_sport_array', 3)">
 <input type="button" value="change_content_data_to_DE" @click="change_content_data_to_KIND_OF_ARRAY('az_AZ_martialArts_array', 4)">
@@ -281,10 +286,6 @@ display: inline-block;
 </div>
 <button @click="clear_current_filter_and_sorter">clear_current_filter_and_sorter</button>
 
-<!-- <template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
-<div>{{ LI_DATA_ARRAY[16] }}</div>
-<div>{{ LI_DATA_ARRAY[15] }}</div>
-</template> -->
 
 <ul class="content">
     <template v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in content_data">
@@ -296,7 +297,6 @@ display: inline-block;
 
                 <template v-if="LI_DATA_INDEX === (LI_DATA_ARRAY.length-1)" v-for="(IMAGE_DATA, IMAGE_DATA_INDEX) in LI_DATA">
                     <img :src="IMAGE_DATA[0]" :alt="IMAGE_DATA[0]" class="image_list_to_inline_tag_and_smaller">
-                    <!-- <span v-for="(IMAGE_TAG, IMAGE_TAG_INDEX) in IMAGE_DATA[1]"><button class="article_button image_tag" @click="set_data_to_content({'filter_by_tag': index_to_tag_name(IMAGE_TAG)})">{{ index_to_tag_name(IMAGE_TAG) }}</button></span> -->
                     <span v-for="(IMAGE_TAG, IMAGE_TAG_INDEX) in IMAGE_DATA[1]"><button class="article_button image_tag" @click="set_data_to_content({'filter_by_tag': IMAGE_TAG})">{{ IMAGE_TAG }}</button></span>
                 </template>
             </template>
@@ -706,6 +706,9 @@ change_content_data_to_KIND_OF_ARRAY(KIND, LANG_INDEX){
 comment_id_to_comment_txt(){
     console.log(this.user_list);
     console.log(this.comment_list);
+},
+comment_with_user_profile(){
+    return this.comment_list.map(V=> [V[0], V[1], this.user_list.filter(VAL=>VAL[0] === V[0])[0]] );
 },
 },
 }).mount('.app');
