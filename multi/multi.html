@@ -295,6 +295,13 @@ display: inline-block;
             <template v-for="(LI_DATA, LI_DATA_INDEX) in LI_DATA_ARRAY">
                 <li>{{ LI_DATA_INDEX }}: {{ LI_DATA }}</li>
 
+                <template v-if="LI_DATA_INDEX === 9" v-for="(IMAGE_DATA, IMAGE_DATA_INDEX) in LI_DATA">
+                    <div>
+                    <span>comment id: {{ IMAGE_DATA }}</span>
+                    <span>: {{ comment_with_user_profile(IMAGE_DATA) }}</span>
+                    </div>
+                </template>
+
                 <template v-if="LI_DATA_INDEX === (LI_DATA_ARRAY.length-1)" v-for="(IMAGE_DATA, IMAGE_DATA_INDEX) in LI_DATA">
                     <img :src="IMAGE_DATA[0]" :alt="IMAGE_DATA[0]" class="image_list_to_inline_tag_and_smaller">
                     <span v-for="(IMAGE_TAG, IMAGE_TAG_INDEX) in IMAGE_DATA[1]"><button class="article_button image_tag" @click="set_data_to_content({'filter_by_tag': IMAGE_TAG})">{{ IMAGE_TAG }}</button></span>
@@ -407,6 +414,14 @@ function random_length_array(array) {
 // const az_AZ_food_array = alphabet.map((V,IDX)=>[V, V.toUpperCase(), food[IDX]]);
 
 // const new_map = R.transpose([jp_map_list, prefectures_of_japan_list]);
+
+// 'abcdefghijklmnopqrstuvwxyz'.split('').map(V=>[`user_${V}`,`uid_${V}`,`Profile_of_${V.toUpperCase()}`]);
+
+// R.transpose(
+// [1,2,3,4].map(TIMES=>
+//     'abcdefghijklmnopqrstuvwxyz'.split('').map(V=>[`user_${V}`, shuffle([`${V} say good`, `${V} say bad`])[0].replace(/[a-z](\ssay\s)/ig, `${V}$1`)])
+//                 )
+//     ).flat();
 
 const alphabet_katakana_table = [
 ["A","a","エイ","ア","アー",],
@@ -707,8 +722,9 @@ comment_id_to_comment_txt(){
     console.log(this.user_list);
     console.log(this.comment_list);
 },
-comment_with_user_profile(){
-    return this.comment_list.map(V=> [V[0], V[1], this.user_list.filter(VAL=>VAL[0] === V[0])[0]] );
+comment_with_user_profile(INDEX){
+    LIST = this.comment_list.map(V=> [V[0], V[1], this.user_list.filter(VAL=>VAL[0] === V[0])[0]] );
+    return LIST[INDEX]
 },
 },
 }).mount('.app');
