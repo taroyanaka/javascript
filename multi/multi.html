@@ -722,6 +722,16 @@ comment_with_user_profile(INDEX){
     LIST = this.comment_list.map(V=> [V[0], V[1], this.user_list.filter(VAL=>VAL[0] === V[0])[0]] );
     return LIST[INDEX]
 },
+displays_the_ID_of_the_content_that_the_user_commented_on(USER_ID){
+    USER_ID = USER_ID || 'user_g';
+    return this.sample_list_4.map(V=>V[9].map(VAL=>
+        this.comment_list.map(V=> [V[0], V[1], this.user_list.filter(VAL=>VAL[0] === V[0])[0]] )
+            [VAL]
+    ))
+        .map((V, IDX)=>[IDX, V.map(VAL=>VAL[2])])
+        .filter(V=>V[1].map(VAL=>VAL[0]).includes(USER_ID))
+        .map(V=>V[1])
+},
 },
 }).mount('.app');
 </script>
