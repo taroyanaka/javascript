@@ -251,7 +251,7 @@ display: inline-block;
 <div class="tracker">
 <ul>
 
-<!-- <li><div id="map_id">map_elm</div></li> -->
+<li><div id="map_id">map_elm</div></li>
 
 <li @click="map_open_and_close" class="map_open_and_close">±</li>
 <li>abc</li>
@@ -265,11 +265,7 @@ display: inline-block;
 </header>
 
 <main>
-<!-- user_list -->
-<!-- comment_list -->
-<!-- <li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in comment_list">{{ LI_DATA_ARRAY }}</li> -->
-<!-- <li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in user_list">{{ LI_DATA_ARRAY }}</li> -->
-<li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in comment_with_user_profile()">{{ LI_DATA_ARRAY }}</li>
+<!-- <li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in comment_with_user_profile()">{{ LI_DATA_ARRAY }}</li> -->
 
 <input type="button" value="change_content_data_to_EN" @click="change_content_data_to_KIND_OF_ARRAY('az_AZ_food_array', 2)">
 <input type="button" value="change_content_data_to_FR" @click="change_content_data_to_KIND_OF_ARRAY('az_AZ_sport_array', 3)">
