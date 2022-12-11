@@ -11,18 +11,32 @@
 <script src="./vue@3.2.36.global.prod.js"></script>
 </head>
 <body class="app">
+<button @click="async_await_fetch_json_log_assign">async_await_fetch_json_log_assign</button>
+<ul>
+<li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in all_data">{{ LI_DATA_ARRAY }}</li>
+</ul>
 <input type="text" name="" id="" v-model="sample">
 </body>
 <script>
-// vue.js template
 const app = Vue.createApp({
 data() {
     return {
 sample: 'foo',
+all_data: [],
     }
 },
 methods: {
-sample_method(){
+async async_await_fetch_json_log_assign() {
+    const FETCH_DATA = await fetch('http://127.0.0.1:3000/');
+    const JSON_DATA = await FETCH_DATA.json();
+    this.all_data = [];
+    for (const DATA of JSON_DATA ) {
+        // this[DATA_KEY] = JSON_DATA[KEY];
+        console.log(DATA);
+        this.all_data.push(DATA);
+        // this[DATA_KEY] = DATA[KEY] === "url" ? JSON.parse(DATA[KEY]) : DATA[KEY];
+        // this[DATA_KEY] = JSON.parse(DATA[KEY]);
+    }
 },
 },
 }).mount('.app');
