@@ -841,6 +841,191 @@ app.get("/listurlpopup_deleteid", (req, res, next) => {
 
 
 
+
+function simple_io_for_server_side_CREATETABLE(){
+    db.prepare(`CREATE TABLE IF NOT EXISTS simple_io_for_server_side_main (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+main TEXT NOT NULL,
+simple_io_for_server_side_comment_id INTEGER NOT NULL
+)`).run();
+    db.prepare(`CREATE TABLE IF NOT EXISTS simple_io_for_server_side_comment (
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+comment TEXT NOT NULL
+)`).run();
+}
+
+function simple_io_for_server_side_DROPTABLE(){
+    db.prepare(`DROP TABLE simple_io_for_server_side_main`).run();
+    db.prepare(`DROP TABLE simple_io_for_server_side_comment`).run();
+}
+
+
+const simple_io_for_server_side_db_query_select = (STRING_ARRAY) => {
+    return {
+        "message": "success",
+        "data": db.prepare(`SELECT
+    simple_io_for_server_side_url.id,
+    simple_io_for_server_side_url.url,
+    (SELECT simple_io_for_server_side_uid.uid
+     FROM simple_io_for_server_side_uid
+     WHERE simple_io_for_server_side_uid.id = simple_io_for_server_side_url.simple_io_for_server_side_uid_id)
+            as uid
+FROM simple_io_for_server_side_url
+JOIN simple_io_for_server_side_uid
+    ON simple_io_for_server_side_url.simple_io_for_server_side_uid_id = simple_io_for_server_side_uid.id
+WHERE simple_io_for_server_side_uid.uid = @uid`
+                    ).all({
+                        uid: STRING_ARRAY["uid"],
+                    }
+                )
+    }
+};
+const simple_io_for_server_side_db_query_select_all = () => {
+    return {
+        "message": "success",
+        "data": db.prepare(`SELECT
+    simple_io_for_server_side_url.id,
+    simple_io_for_server_side_url.url,
+    (SELECT simple_io_for_server_side_uid.uid
+     FROM simple_io_for_server_side_uid
+     WHERE simple_io_for_server_side_uid.id = simple_io_for_server_side_url.simple_io_for_server_side_uid_id)
+            as uid
+FROM simple_io_for_server_side_url
+JOIN simple_io_for_server_side_uid
+    ON simple_io_for_server_side_url.simple_io_for_server_side_uid_id = simple_io_for_server_side_uid.id`
+        ).all()
+    }
+};
+const simple_io_for_server_side_db_query_insert_and_select = (STRING_ARRAY) => {
+    const normal_insert = () => {
+        db.prepare(`INSERT INTO simple_io_for_server_side_url (url, simple_io_for_server_side_uid_id)
+    VALUES(
+        @url,
+        (SELECT simple_io_for_server_side_uid.id FROM simple_io_for_server_side_uid WHERE simple_io_for_server_side_uid.uid = @uid)
+    );`
+        ).run({
+            url: STRING_ARRAY["url"],
+            uid: MD5(STRING_ARRAY["uid"]),
+            // uid: "barbarbar",
+        });
+    };
+
+    const insert_uid = () => db.prepare('INSERT INTO simple_io_for_server_side_uid (uid) VALUES (?)').run(MD5(STRING_ARRAY["uid"]));
+
+    // https://github.com/WiseLibs/better-sqlite3/blob/master/docs/api.md#getbindparameters---row
+    // "If the statement was successful but found no data, undefined is returned."
+    // const is_there_uid_result = db.prepare('SELECT * FROM simple_io_for_server_side_uid WHERE uid = ?').get(MD5(STRING_ARRAY["uid"]));
+    // is_there_uid_result === undefined ? insert_uid() : null;
+    db.prepare('SELECT * FROM simple_io_for_server_side_uid WHERE uid = ?').get(MD5(STRING_ARRAY["uid"])) === undefined ? insert_uid() : null;
+    normal_insert();
+
+    return simple_io_for_server_side_db_query_select_all(STRING_ARRAY);
+};
+
+const simple_io_for_server_side_db_query_update_and_select = (STRING_ARRAY) => {
+    db.prepare(`UPDATE simple_io_for_server_side_url
+SET url = @url
+WHERE
+    simple_io_for_server_side_url.id = @id
+    AND
+    simple_io_for_server_side_url.simple_io_for_server_side_uid_id =
+        (SELECT simple_io_for_server_side_uid.id
+         FROM simple_io_for_server_side_uid
+         WHERE simple_io_for_server_side_uid.uid = @uid);`
+        ).run({
+            url: STRING_ARRAY["url"],
+            // uid: STRING_ARRAY["uid"],
+            uid: MD5(STRING_ARRAY["uid"]),
+            id: STRING_ARRAY["id"],
+        });
+    return simple_io_for_server_side_db_query_select_all(STRING_ARRAY);
+};
+const simple_io_for_server_side_db_query_delete = (STRING_ARRAY) => {
+    db.prepare(`DELETE FROM simple_io_for_server_side_url
+WHERE
+    simple_io_for_server_side_url.id = @id
+    AND
+    simple_io_for_server_side_url.simple_io_for_server_side_uid_id =
+        (SELECT simple_io_for_server_side_uid.id
+         FROM simple_io_for_server_side_uid
+         WHERE simple_io_for_server_side_uid.uid = @uid);`
+        ).run({
+            id: STRING_ARRAY["id"],
+            // uid: STRING_ARRAY["uid"],
+            uid: MD5(STRING_ARRAY["uid"]),
+        });
+    return simple_io_for_server_side_db_query_select_all(STRING_ARRAY);
+};
+
+
+const choose_db_mode_for_simple_io_for_server_side = (REQ) => REQ.query.mode === "DEV" ? switch_db("simple_io_for_server_side_DEV") : switch_db("simple_io_for_server_side");
+
+app.get("/simple_io_for_server_side_read_any", (req, res, next) => {
+    choose_db_mode_for_simple_io_for_server_side(req);
+
+    res.json(shinku_hadoken(simple_io_for_server_side_db_query_select, raging_demon(req.query, {
+            'uid': [
+                ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
+            ],
+        }
+    )))
+});
+app.get("/simple_io_for_server_side_readall", (req, res, next) => {
+    console.log("mode is",req.query.mode);
+
+    choose_db_mode_for_simple_io_for_server_side(req);
+ res.json(simple_io_for_server_side_db_query_select_all());
+});
+app.get("/simple_io_for_server_side_insert", (req, res, next) => {
+    choose_db_mode_for_simple_io_for_server_side(req);
+    res.json(shinku_hadoken(simple_io_for_server_side_db_query_insert_and_select, raging_demon(req.query, {
+            "url": [
+                ["isLength", {min: 1, max: 420}, "error: isLength: {min: 1, max: 420}",],
+            ],
+            // "url": [
+            //     ["isLength", {min: 1, max: 420}, "error: isLength: {min: 1, max: 420}",],
+            // ],
+            'uid': [
+                ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
+            ],
+        }
+    )))
+});
+app.get("/simple_io_for_server_side_update", (req, res, next) => {
+    choose_db_mode_for_simple_io_for_server_side(req);
+    res.json(shinku_hadoken(simple_io_for_server_side_db_query_update_and_select, raging_demon(req.query, {
+                    "url": [
+                        ["isLength", {min: 1, max: 420}, "error: isLength: {min: 1, max: 420}",],
+                    ],
+                    'uid': [
+                        ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
+                    ],
+                    "id": [
+                        ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
+                    ],
+                }
+            ))
+    )
+});
+app.get("/simple_io_for_server_side_deleteid", (req, res, next) => {
+    choose_db_mode_for_simple_io_for_server_side(req);
+    res.json(shinku_hadoken(simple_io_for_server_side_db_query_delete, raging_demon(req.query, {
+            "id": [
+                ["isInt", {min: 0, max: 30}, "error: isInt: {min: 0, max: 30}",],
+            ],
+            'uid': [
+                ["isLength", {min: 1, max: 100}, "error: isLength: {min: 1, max: 100}",],
+            ],
+        }
+    )))
+    // res.json(db_query_delete_2(req.query.id));
+});
+
+
+
+
+
+
 // switch_db("listurlpopup_DEV");
 // switch_db("listurlpopup");
 // listurlpopup_CREATETABLE();
@@ -853,3 +1038,4 @@ app.get("/listurlpopup_deleteid", (req, res, next) => {
 //     res.json({ id: "Taro on test server" });
 // });
 
+// 

@@ -852,4 +852,3 @@ app.get("/listurlpopup_deleteid", (req, res, next) => {
 app.get("/sample", (req, res, next) => {
     res.json({ id: "Taro on test server" });
 });
-
