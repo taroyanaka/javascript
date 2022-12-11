@@ -11,7 +11,7 @@
 <script src="./vue@3.2.36.global.prod.js"></script>
 </head>
 <body class="app">
-<button @click="async_await_fetch_json_log_assign">async_await_fetch_json_log_assign</button>
+<button @click="fetch_all">fetch_all</button>
 <ul>
 <li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in all_data">{{ LI_DATA_ARRAY }}</li>
 </ul>
@@ -31,11 +31,8 @@ async fetch_all() {
     const JSON_DATA = await FETCH_DATA.json();
     this.all_data = [];
     for (const DATA of JSON_DATA ) {
-        // this[DATA_KEY] = JSON_DATA[KEY];
         console.log(DATA);
         this.all_data.push(DATA);
-        // this[DATA_KEY] = DATA[KEY] === "url" ? JSON.parse(DATA[KEY]) : DATA[KEY];
-        // this[DATA_KEY] = JSON.parse(DATA[KEY]);
     }
 },
 },
