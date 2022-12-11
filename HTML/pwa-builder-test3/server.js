@@ -858,18 +858,3 @@ app.get("/sample", (req, res, next) => {
 // Array.from(Array(10).keys())
 
 // find how to use captain stack. SQLite3
-// Source: https://stackoverflow.com/a/37009395 .
-var n = 5;
-var points = [];
-for (var i=0; i < n; i++) {
-    var x = 50;
-    var y = -50;
-    var r = 25;
-    points.push([x + r * Math.sin(2 * Math.PI * i / n),
-                 y + r * Math.cos(2 * Math.PI * i / n)]);
-}
-
-
-// find repeat string in javascript.
-// Source: https://stackoverflow.com/a/23437087 .
-"abc".repeat(3) // "abcabcabc"
