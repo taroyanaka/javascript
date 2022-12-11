@@ -26,7 +26,7 @@ all_data: [],
     }
 },
 methods: {
-async async_await_fetch_json_log_assign() {
+async fetch_all() {
     const FETCH_DATA = await fetch('http://127.0.0.1:3000/');
     const JSON_DATA = await FETCH_DATA.json();
     this.all_data = [];
