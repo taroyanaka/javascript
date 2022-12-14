@@ -34,38 +34,30 @@ mounted(){
     this.fetch_all();
 },
 methods: {
+async FN_A(FETCH_DATA){
+    const JSON_DATA = await FETCH_DATA.json();
+    this.all_data = [];
+    for (const DATA of JSON_DATA ) {
+        console.log(DATA);
+        this.all_data.push(DATA);
+    };
+},
 async update_main(ID, MAIN){
     if(
 validator.isNumeric(ID.toString(), {no_symbols: true}) === false
 ||
 validator.isLength(MAIN, {min:1, max: 20}) === false) return;
     const FETCH_DATA = await fetch(`http://127.0.0.1:3000/update_main?ID=${(ID).toString()}&MAIN=${MAIN}`);
-    const JSON_DATA = await FETCH_DATA.json();
-    this.all_data = [];
-    for (const DATA of JSON_DATA ) {
-        console.log(DATA);
-        this.all_data.push(DATA);
-    };
+    await this.FN_A(FETCH_DATA);
 },
 async fetch_all() {
     const FETCH_DATA = await fetch('http://127.0.0.1:3000/');
-    const JSON_DATA = await FETCH_DATA.json();
-    this.all_data = [];
-    for (const DATA of JSON_DATA ) {
-        console.log(DATA);
-        this.all_data.push(DATA);
-    }
+    await this.FN_A(FETCH_DATA);
 },
 async update() {
     if(validator.isLength(this.sample, {min:1, max: 10}) === false) return;
     const FETCH_DATA = await fetch(`http://127.0.0.1:3000/update?ID=1&COMMENT=${this.sample}`);
-    const JSON_DATA = await FETCH_DATA.json();
-// console.log(JSON_DATA);
-    this.all_data = [];
-    for (const DATA of JSON_DATA ) {
-        console.log(DATA);
-        this.all_data.push(DATA);
-    };
+    await this.FN_A(FETCH_DATA);
 },
 },
 }).mount('.app');

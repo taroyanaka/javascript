@@ -55,6 +55,17 @@
 --          FROM simple_io_for_server_side_comment
 --          WHERE simple_io_for_server_side_comment.comment = 'sample comment 4');
 
+
+DELETE FROM simple_io_for_server_side_comment
+WHERE
+    simple_io_for_server_side_comment_id.id =
+    (SELECT simple_io_for_server_side_main.simple_io_for_server_side_comment_id
+        FROM simple_io_for_server_side_main
+        WHERE simple_io_for_server_side_main.id = ?);
+
+DELETE FROM simple_io_for_server_side_main
+WHERE simple_io_for_server_side_main.id = ?;
+
 SELECT *
 FROM simple_io_for_server_side_main
 JOIN simple_io_for_server_side_comment
