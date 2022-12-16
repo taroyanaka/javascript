@@ -13,20 +13,22 @@
 </head>
 <body class="app">
 <button @click="fetch_all">fetch_all</button>
-<button @click="update">update</button>
 <ul>
 <li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in all_data">{{ LI_DATA_ARRAY }}
 <button @click="update_main(LI_DATA_ARRAY['id'], LI_DATA_ARRAY['main'])">update_main</button>
 <input type="text" name="" class="" v-model="LI_DATA_ARRAY['main']">
 </li>
 </ul>
-<input type="text" name="" id="" v-model="sample">
+<!-- <input type="text" name="" id="" v-model="sample"> -->
+<input type="text" name="" id="" v-model="main" placeholder="main text">
+<input type="button" id="" @click="insert_record" value="insert_record">
 </body>
 <script>
 const app = Vue.createApp({
 data() {
     return {
 sample: 'foo',
+main: 'MAIN TEXT',
 all_data: [],
     }
 },
@@ -54,9 +56,14 @@ async fetch_all() {
     const FETCH_DATA = await fetch('http://127.0.0.1:3000/');
     await this.FN_A(FETCH_DATA);
 },
-async update() {
-    if(validator.isLength(this.sample, {min:1, max: 10}) === false) return;
-    const FETCH_DATA = await fetch(`http://127.0.0.1:3000/update?ID=1&COMMENT=${this.sample}`);
+async delete_record(ID) {
+    if(validator.isNumeric(ID.toString(), {no_symbols: true}) === false) return;
+    const FETCH_DATA = await fetch(`http://127.0.0.1:3000/delete_record?ID=${ID}`);
+    await this.FN_A(FETCH_DATA);
+},
+async insert_record() {
+    if(validator.isLength(this.main, {min:1, max: 20}) === false) return;
+    const FETCH_DATA = await fetch(`http://127.0.0.1:3000/insert_record?MAIN=${this.main}`);
     await this.FN_A(FETCH_DATA);
 },
 },

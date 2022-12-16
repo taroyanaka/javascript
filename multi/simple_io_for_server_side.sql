@@ -56,18 +56,38 @@
 --          WHERE simple_io_for_server_side_comment.comment = 'sample comment 4');
 
 
-DELETE FROM simple_io_for_server_side_comment
-WHERE
-    simple_io_for_server_side_comment_id.id =
-    (SELECT simple_io_for_server_side_main.simple_io_for_server_side_comment_id
-        FROM simple_io_for_server_side_main
-        WHERE simple_io_for_server_side_main.id = ?);
+-- DELETE FROM simple_io_for_server_side_comment
+-- WHERE
+--     simple_io_for_server_side_comment_id.id =
+--     (SELECT simple_io_for_server_side_main.simple_io_for_server_side_comment_id
+--         FROM simple_io_for_server_side_main
+--         WHERE simple_io_for_server_side_main.id = ?);
 
-DELETE FROM simple_io_for_server_side_main
-WHERE simple_io_for_server_side_main.id = ?;
+-- DELETE FROM simple_io_for_server_side_main
+-- WHERE simple_io_for_server_side_main.id = ?;
+
+
+-- ALTER TABLE simple_io_for_server_side_main RENAME TO simple_io_for_server_side_main_temp_temp;
+-- CREATE TABLE IF NOT EXISTS simple_io_for_server_side_main (
+-- id INTEGER PRIMARY KEY AUTOINCREMENT,
+-- main TEXT NOT NULL,
+-- simple_io_for_server_side_comment_id INTEGER
+-- );
+-- INSERT INTO simple_io_for_server_side_main(
+-- id,
+-- main,
+-- simple_io_for_server_side_comment_id
+-- ) SELECT
+-- id,
+-- main,
+-- simple_io_for_server_side_comment_id
+-- FROM simple_io_for_server_side_main_temp_temp;
+-- DROP TABLE simple_io_for_server_side_main_temp_temp;
+
+-- select * from sqlite_master;
+
 
 SELECT *
 FROM simple_io_for_server_side_main
 JOIN simple_io_for_server_side_comment
 ON simple_io_for_server_side_main.simple_io_for_server_side_comment_id = simple_io_for_server_side_comment.id;
-

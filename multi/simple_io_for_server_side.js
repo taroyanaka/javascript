@@ -40,15 +40,6 @@ const MD5 = require('./blueimp-md5@2.19.0');
 
 // const uid_create_table = () => `CREATE TABLE IF NOT EXISTS uid (uid TEXT NOT NULL)`;
 
-
-
-
-
-// const express = require('express');
-// const cors = require('cors');
-// const app = express();
-// const port = 8800;
-
 const express = require("express")
 const app = express()
 
@@ -72,18 +63,99 @@ const validator = require('validator');
 const Database = require('better-sqlite3');
 let db;
 
-db = new Database('./tmp2.sqlite3');
+db = new Database('./simple_io_for_server_side.sqlite3');
 
 
+function get_all(){
+    return db.prepare(`SELECT
+simple_io_for_server_side_main.id AS ID,
+simple_io_for_server_side_main.main AS MAIN,
+simple_io_for_server_side_comment.id AS COMMENT_ID,
+simple_io_for_server_side_comment.comment AS COMMENT,
+simple_io_for_server_side_comment.main_id AS MAIN_ID
+FROM simple_io_for_server_side_main
+LEFT JOIN simple_io_for_server_side_comment
+ON simple_io_for_server_side_main.id
+    = simple_io_for_server_side_comment.main_id;`
+    ).all()
+};
 
 app.get('/', (req, res) => {
-    res.json(
-    db.prepare(`SELECT *
-FROM simple_io_for_server_side_main
-JOIN simple_io_for_server_side_comment
-ON simple_io_for_server_side_main.simple_io_for_server_side_comment_id = simple_io_for_server_side_comment.id;`
-        ).all()
-    );
-    // return listurlpopup_db_query_select_all(STRING_ARRAY);
+    res.json(get_all());
+});
+
+app.get('/insert_record', (req, res) => {
+console.log(req.query.MAIN);
+    if(validator.isLength(req.query.MAIN, {min:1, max: 20}) === false){return};
+    // db.prepare(`insert into simple_io_for_server_side_main (main) values (?);`).run(req.query.MAIN);
+    db.prepare(`INSERT INTO simple_io_for_server_side_main (main) VALUES (?)`).run(req.query.MAIN);
+    res.json(get_all());
+});
+
+app.get('/delete_record', (req, res) => {
+    if(validator.isNumeric(req.query.ID, {no_symbols: true}) === false){return};
+    db.prepare(`DELETE FROM simple_io_for_server_side_comment
+WHERE
+    simple_io_for_server_side_comment_id.id =
+    (SELECT simple_io_for_server_side_main.simple_io_for_server_side_comment_id
+        FROM simple_io_for_server_side_main
+        WHERE simple_io_for_server_side_main.id = ?);
+
+DELETE FROM simple_io_for_server_side_main
+WHERE simple_io_for_server_side_main.id = ?;`
+    ).run(req.query.ID, req.query.ID);
+    res.json(get_all());
+});
+
+app.get('/update_main', (req, res) => {
+    if(
+        validator.isNumeric(req.query.ID, {no_symbols: true}) === false
+        &&
+        validator.isLength(req.query.MAIN, {min:1, max: 20}) === false
+    ) {return};
+    db.prepare(`UPDATE simple_io_for_server_side_main
+SET main = ?
+WHERE
+    simple_io_for_server_side_main.id = ?`
+    ).run(req.query.MAIN, req.query.ID);
+    res.json(get_all());
+});
+
+app.get('/update', (req, res) => {
+    if(
+        validator.isNumeric(req.query.ID, {no_symbols: true}) === false
+        &&
+        validator.isLength(req.query.COMMENT, {min:1, max: 10}) === false
+    ) {return res.json("ERROR")}
+    db.prepare(`UPDATE simple_io_for_server_side_comment
+SET comment = ?
+WHERE
+    simple_io_for_server_side_comment.id =
+        (SELECT simple_io_for_server_side_main.simple_io_for_server_side_comment_ID
+         FROM simple_io_for_server_side_main
+         WHERE simple_io_for_server_side_main.simple_io_for_server_side_comment_ID = ?);`
+    ).run(req.query.COMMENT, req.query.ID);
+    res.json(get_all());
+// app.get('/update', (req, res) => {
+//     if(
+//         validator.isNumeric(req.query.ID, {no_symbols: true}) === false
+//         &&
+//         validator.isLength(req.query.COMMENT, {min:1, max: 10}) === false
+//     ) {return res.json("ERROR")}
+//     db.prepare(`UPDATE simple_io_for_server_side_comment
+// SET comment = ?
+// WHERE
+//     simple_io_for_server_side_comment.id =
+//         (SELECT simple_io_for_server_side_main.simple_io_for_server_side_comment_ID
+//          FROM simple_io_for_server_side_main
+//          WHERE simple_io_for_server_side_main.simple_io_for_server_side_comment_ID = ?);`
+//     ).run(req.query.COMMENT, req.query.ID);
+//     res.json(
+//         db.prepare(`SELECT *
+// FROM simple_io_for_server_side_main
+// JOIN simple_io_for_server_side_comment
+// ON simple_io_for_server_side_main.simple_io_for_server_side_comment_id = simple_io_for_server_side_comment.id;`
+//         ).all()
+//     );
 });
 
