@@ -92,9 +92,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/insert_record', (req, res) => {
-// console.log(req.query.MAIN);
     if(validator.isLength(req.query.MAIN, {min:1, max: 20}) === false){return};
-    // db.prepare(`insert into simple_io_for_server_side_main (main) values (?);`).run(req.query.MAIN);
     db.prepare(`INSERT INTO simple_io_for_server_side_main (main) VALUES (?)`).run(req.query.MAIN);
     res.json(get_all());
 });
@@ -102,15 +100,11 @@ app.get('/insert_record', (req, res) => {
 app.get('/delete_record', (req, res) => {
     if(validator.isNumeric(req.query.ID, {no_symbols: true}) === false){return};
     db.prepare(`DELETE FROM simple_io_for_server_side_comment
-WHERE
-    simple_io_for_server_side_comment_id.id =
-    (SELECT simple_io_for_server_side_main.simple_io_for_server_side_comment_id
-        FROM simple_io_for_server_side_main
-        WHERE simple_io_for_server_side_main.id = ?);
-
-DELETE FROM simple_io_for_server_side_main
-WHERE simple_io_for_server_side_main.id = ?;`
-    ).run(req.query.ID, req.query.ID);
+WHERE simple_io_for_server_side_comment.main_id = ?;`
+    ).run(req.query.ID);
+    db.prepare(`DELETE FROM simple_io_for_server_side_main
+    WHERE simple_io_for_server_side_main.id = ?;`
+    ).run(req.query.ID);
     res.json(get_all());
 });
 
