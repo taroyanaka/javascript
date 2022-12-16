@@ -67,7 +67,7 @@ db = new Database('./simple_io_for_server_side.sqlite3');
 
 
 function get_all(){
-    return db.prepare(`SELECT
+    const DB_RESULT = db.prepare(`SELECT
 simple_io_for_server_side_main.id AS ID,
 simple_io_for_server_side_main.main AS MAIN,
 simple_io_for_server_side_comment.id AS COMMENT_ID,
@@ -77,7 +77,14 @@ FROM simple_io_for_server_side_main
 LEFT JOIN simple_io_for_server_side_comment
 ON simple_io_for_server_side_main.id
     = simple_io_for_server_side_comment.main_id;`
-    ).all()
+    ).all();
+    const main_only = DB_RESULT.map(V=>[V.ID, V.MAIN]);
+    const uniq_main_only = R.uniq(main_only);
+    const comment_only = DB_RESULT.filter(V=>V.COMMENT_ID !== null).map(V=>[V.COMMENT_ID, V.MAIN_ID, V.COMMENT]);
+    return R.zip(
+                uniq_main_only, 
+                uniq_main_only.map(V=>comment_only.map(VAL=>{if(VAL[1] === V[0]){return VAL} }))
+            .map(V=>R.without([undefined], V)));
 };
 
 app.get('/', (req, res) => {
@@ -85,7 +92,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/insert_record', (req, res) => {
-console.log(req.query.MAIN);
+// console.log(req.query.MAIN);
     if(validator.isLength(req.query.MAIN, {min:1, max: 20}) === false){return};
     // db.prepare(`insert into simple_io_for_server_side_main (main) values (?);`).run(req.query.MAIN);
     db.prepare(`INSERT INTO simple_io_for_server_side_main (main) VALUES (?)`).run(req.query.MAIN);

@@ -14,9 +14,17 @@
 <body class="app">
 <button @click="fetch_all">fetch_all</button>
 <ul>
-<li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in all_data">{{ LI_DATA_ARRAY }}
+<li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in all_data">
+{{ LI_DATA_ARRAY }}
+<!-- ID: {{ LI_DATA_ARRAY.ID }}
+MAIN: {{ LI_DATA_ARRAY.MAIN }}
+<ul>
+<span>COMMENT_ID: {{ LI_DATA_ARRAY.COMMENT_ID ? LI_DATA_ARRAY.COMMENT_ID : null }}</span>
+<span>{{ '  '}}</span>
+<span>COMMENT: {{ LI_DATA_ARRAY.COMMENT ? LI_DATA_ARRAY.COMMENT : null }}</span>
+</ul>
 <button @click="update_main(LI_DATA_ARRAY['id'], LI_DATA_ARRAY['main'])">update_main</button>
-<input type="text" name="" class="" v-model="LI_DATA_ARRAY['main']">
+<input type="text" name="" class="" v-model="LI_DATA_ARRAY['main']"> -->
 </li>
 </ul>
 <!-- <input type="text" name="" id="" v-model="sample"> -->
@@ -24,12 +32,18 @@
 <input type="button" id="" @click="insert_record" value="insert_record">
 </body>
 <script>
+let tmp = [];
+let main_only = [];
+let comment_only = [];
+let main_with_comment = [];
 const app = Vue.createApp({
 data() {
     return {
 sample: 'foo',
 main: 'MAIN TEXT',
 all_data: [],
+main_only: [],
+comment_only: [],
     }
 },
 mounted(){
@@ -43,6 +57,7 @@ async FN_A(FETCH_DATA){
         console.log(DATA);
         this.all_data.push(DATA);
     };
+    // tmp = R.flatten(this.all_data);
 },
 async update_main(ID, MAIN){
     if(
