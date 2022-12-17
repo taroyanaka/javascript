@@ -15,8 +15,16 @@
 <button @click="fetch_all">fetch_all</button>
 <ul>
 <li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in all_data">
-{{ LI_DATA_ARRAY }}
+{{ LI_DATA_ARRAY[0] }}
+
+
+<template v-for="(COMMENT) in LI_DATA_ARRAY[1]">{{ COMMENT }}<button @click="delete_comment(COMMENT[0])">DELETE {{ COMMENT[0] }}</button></template>
+
+
 <button @click="delete_record(LI_DATA_ARRAY[0][0])">delete_record:{{ LI_DATA_ARRAY[0][0] }}</button>
+
+<input type="text" placeholder="comment" v-model="comment_list[LI_DATA_ARRAY_INDEX]">
+<button @click="insert_comment(comment_list[LI_DATA_ARRAY_INDEX], LI_DATA_ARRAY[0][0])">insert_comment:{{ comment_list[LI_DATA_ARRAY_INDEX] }}</button>
 <!-- ID: {{ LI_DATA_ARRAY.ID }}
 MAIN: {{ LI_DATA_ARRAY.MAIN }}
 <ul>
@@ -45,6 +53,8 @@ main: 'MAIN TEXT',
 all_data: [],
 main_only: [],
 comment_only: [],
+
+comment_list: [],
     }
 },
 mounted(){
@@ -80,6 +90,21 @@ async delete_record(ID) {
 async insert_record() {
     if(validator.isLength(this.main, {min:1, max: 20}) === false) return;
     const FETCH_DATA = await fetch(`http://127.0.0.1:3000/insert_record?MAIN=${this.main}`);
+    await this.FN_A(FETCH_DATA);
+},
+async insert_comment(COMMENT, MAIN_ID) {
+    if(
+        validator.isLength(COMMENT, {min:1, max: 20}) === false
+        &&
+        validator.isNumeric(MAIN_ID, {no_symbols: true}) === false
+    ) {return};
+    const FETCH_DATA = await fetch(`http://127.0.0.1:3000/insert_comment?COMMENT=${COMMENT}&MAIN_ID=${MAIN_ID}`);
+    await this.FN_A(FETCH_DATA);
+},
+async delete_comment(ID) {
+    ID = ID.toString();
+    if(validator.isNumeric(ID, {no_symbols: true}) === false) {return};
+    const FETCH_DATA = await fetch(`http://127.0.0.1:3000/delete_comment?ID=${ID}`);
     await this.FN_A(FETCH_DATA);
 },
 },
