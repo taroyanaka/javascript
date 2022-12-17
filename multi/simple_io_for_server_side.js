@@ -78,13 +78,24 @@ LEFT JOIN simple_io_for_server_side_comment
 ON simple_io_for_server_side_main.id
     = simple_io_for_server_side_comment.main_id;`
     ).all();
-    const main_only = DB_RESULT.map(V=>[V.ID, V.MAIN]);
+    const main_only = DB_RESULT.map(V=>{const obj = {"main": {"ID": V.ID, "MAIN": V.MAIN} } 
+    return obj;
+});
     const uniq_main_only = R.uniq(main_only);
-    const comment_only = DB_RESULT.filter(V=>V.COMMENT_ID !== null).map(V=>[V.COMMENT_ID, V.MAIN_ID, V.COMMENT]);
-    return R.zip(
-                uniq_main_only, 
-                uniq_main_only.map(V=>comment_only.map(VAL=>{if(VAL[1] === V[0]){return VAL} }))
-            .map(V=>R.without([undefined], V)));
+    const comment_only = DB_RESULT.filter(V=>V.COMMENT_ID !== null).map(V=>{
+const obj = {"COMMENT_ID": V.COMMENT_ID, "MAIN_ID": V.MAIN_ID, "COMMENT": V.COMMENT}
+return obj;
+});
+
+    const res2 = R.zip(
+                uniq_main_only,
+                uniq_main_only.map(V=>comment_only.map(VAL=>{ if( VAL["MAIN_ID"] === V["main"]["ID"] )return VAL }))
+                )
+            .map(V=>[V[0], R.without([undefined], V[1])])
+            .map(V=>{const obj = {"comment": V[1]}
+                    return Object.assign(V[0], obj);
+                    });
+    return res2;
 };
 
 app.get('/', (req, res) => {
@@ -138,42 +149,3 @@ WHERE
     ).run(req.query.MAIN, req.query.ID);
     res.json(get_all());
 });
-
-app.get('/update', (req, res) => {
-    if(
-        validator.isNumeric(req.query.ID, {no_symbols: true}) === false
-        &&
-        validator.isLength(req.query.COMMENT, {min:1, max: 10}) === false
-    ) {return res.json("ERROR")}
-    db.prepare(`UPDATE simple_io_for_server_side_comment
-SET comment = ?
-WHERE
-    simple_io_for_server_side_comment.id =
-        (SELECT simple_io_for_server_side_main.simple_io_for_server_side_comment_ID
-         FROM simple_io_for_server_side_main
-         WHERE simple_io_for_server_side_main.simple_io_for_server_side_comment_ID = ?);`
-    ).run(req.query.COMMENT, req.query.ID);
-    res.json(get_all());
-// app.get('/update', (req, res) => {
-//     if(
-//         validator.isNumeric(req.query.ID, {no_symbols: true}) === false
-//         &&
-//         validator.isLength(req.query.COMMENT, {min:1, max: 10}) === false
-//     ) {return res.json("ERROR")}
-//     db.prepare(`UPDATE simple_io_for_server_side_comment
-// SET comment = ?
-// WHERE
-//     simple_io_for_server_side_comment.id =
-//         (SELECT simple_io_for_server_side_main.simple_io_for_server_side_comment_ID
-//          FROM simple_io_for_server_side_main
-//          WHERE simple_io_for_server_side_main.simple_io_for_server_side_comment_ID = ?);`
-//     ).run(req.query.COMMENT, req.query.ID);
-//     res.json(
-//         db.prepare(`SELECT *
-// FROM simple_io_for_server_side_main
-// JOIN simple_io_for_server_side_comment
-// ON simple_io_for_server_side_main.simple_io_for_server_side_comment_id = simple_io_for_server_side_comment.id;`
-//         ).all()
-//     );
-});
-
