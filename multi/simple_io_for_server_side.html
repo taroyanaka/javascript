@@ -17,9 +17,12 @@
 <li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in all_data">
 {{ LI_DATA_ARRAY['main'] }}
 
+<br>
 <template v-for="COMMENT in LI_DATA_ARRAY['comment']">{{ COMMENT }}
 <button @click="delete_comment(COMMENT['COMMENT_ID'])">delete_comment{{ COMMENT['COMMENT_ID'] }}</button>
 </template>
+
+<br>
 <button @click="delete_record(LI_DATA_ARRAY['main']['ID'])">delete_record:{{ LI_DATA_ARRAY['main']['MAIN_ID'] }}</button>
 <input type="text" placeholder="comment" v-model="comment_list[LI_DATA_ARRAY_INDEX]">
 <button @click="insert_comment(comment_list[LI_DATA_ARRAY_INDEX], LI_DATA_ARRAY['main']['ID'])">insert_comment:{{ comment_list[LI_DATA_ARRAY_INDEX] }}</button>
