@@ -17,6 +17,12 @@
 <li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in all_data">
 {{ LI_DATA_ARRAY['main'] }}
 
+<button @click="main_copy(LI_DATA_ARRAY['main']['MAIN'], LI_DATA_ARRAY_INDEX)">⏩</button>
+<input type="text" placeholder="main" v-model="main_list[LI_DATA_ARRAY_INDEX]">
+<button @click="update_main(main_list[LI_DATA_ARRAY_INDEX], LI_DATA_ARRAY['main']['ID'])">update_main</button>
+<!-- <input type="text" placeholder="main" v-model="LI_DATA_ARRAY['main']['MAIN']">
+<button @click="update_main(LI_DATA_ARRAY['main']['MAIN'], LI_DATA_ARRAY['main']['ID'])">update_main</button> -->
+
 <br>
 <template v-for="COMMENT in LI_DATA_ARRAY['comment']">{{ COMMENT }}
 <button @click="delete_comment(COMMENT['COMMENT_ID'])">delete_comment{{ COMMENT['COMMENT_ID'] }}</button>
@@ -30,7 +36,7 @@
 </li>
 </ul>
 <input type="text" name="" id="" v-model="main" placeholder="main text">
-<input type="button" id="" @click="insert_record" value="insert_record">
+<input type="button" id="" @click="insert_main" value="insert_main">
 </body>
 <script>
 const app = Vue.createApp({
@@ -38,6 +44,7 @@ data() {
     return {
         main: 'MAIN TEXT',
         all_data: [],
+        main_list: [],
         comment_list: [],
     }
 },
@@ -53,7 +60,7 @@ async FN_A(FETCH_DATA){
         this.all_data.push(DATA);
     };
 },
-async update_main(ID, MAIN){
+async update_main(MAIN, ID){
     if(
 validator.isNumeric(ID.toString(), {no_symbols: true}) === false
 ||
@@ -70,9 +77,9 @@ async delete_record(ID) {
     const FETCH_DATA = await fetch(`http://127.0.0.1:3000/delete_record?ID=${ID}`);
     await this.FN_A(FETCH_DATA);
 },
-async insert_record() {
+async insert_main() {
     if(validator.isLength(this.main, {min:1, max: 20}) === false) return;
-    const FETCH_DATA = await fetch(`http://127.0.0.1:3000/insert_record?MAIN=${this.main}`);
+    const FETCH_DATA = await fetch(`http://127.0.0.1:3000/insert_main?MAIN=${this.main}`);
     await this.FN_A(FETCH_DATA);
 },
 async insert_comment(COMMENT, MAIN_ID) {
@@ -89,6 +96,9 @@ async delete_comment(ID) {
     if(validator.isNumeric(ID, {no_symbols: true}) === false) {return};
     const FETCH_DATA = await fetch(`http://127.0.0.1:3000/delete_comment?ID=${ID}`);
     await this.FN_A(FETCH_DATA);
+},
+main_copy(MAIN, MAIN_LIST_THE_INDEX){
+    this.main_list[MAIN_LIST_THE_INDEX] = MAIN;
 },
 },
 }).mount('.app');
