@@ -91,6 +91,16 @@ app.get('/', (req, res) => {
     res.json(get_all());
 });
 
+app.get('/insert_comment', (req, res) => {
+    if(
+        validator.isLength(req.query.COMMENT, {min:1, max: 20}) === false
+        &&
+        validator.isNumeric(req.query.MAIN_ID, {no_symbols: true}) === false
+    ) {return};
+    db.prepare(`INSERT INTO simple_io_for_server_side_comment (comment, main_id) VALUES (?, ?)`).run(req.query.COMMENT, req.query.MAIN_ID);
+    res.json(get_all());
+});
+
 app.get('/insert_record', (req, res) => {
     if(validator.isLength(req.query.MAIN, {min:1, max: 20}) === false){return};
     db.prepare(`INSERT INTO simple_io_for_server_side_main (main) VALUES (?)`).run(req.query.MAIN);
@@ -104,6 +114,13 @@ WHERE simple_io_for_server_side_comment.main_id = ?;`
     ).run(req.query.ID);
     db.prepare(`DELETE FROM simple_io_for_server_side_main
     WHERE simple_io_for_server_side_main.id = ?;`
+    ).run(req.query.ID);
+    res.json(get_all());
+});
+app.get('/delete_comment', (req, res) => {
+    if(validator.isNumeric(req.query.ID, {no_symbols: true}) === false){return};
+    db.prepare(`DELETE FROM simple_io_for_server_side_comment
+WHERE simple_io_for_server_side_comment.id = ?;`
     ).run(req.query.ID);
     res.json(get_all());
 });
