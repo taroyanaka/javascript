@@ -50,6 +50,7 @@ data() {
 },
 mounted(){
     this.fetch_all();
+    this.fetch_all2();
 },
 methods: {
 async FN_A(FETCH_DATA){
@@ -71,6 +72,12 @@ validator.isLength(MAIN, {min:1, max: 20}) === false) return;
 async fetch_all() {
     const FETCH_DATA = await fetch('http://127.0.0.1:3000/');
     await this.FN_A(FETCH_DATA);
+},
+async fetch_all2() {
+    const FETCH_DATA = await fetch('http://127.0.0.1:3000/fetch_all2');
+    console.log(
+        await (await fetch(`http://127.0.0.1:3000/`)).json()
+    );
 },
 async delete_record(ID) {
     if(validator.isNumeric(ID.toString(), {no_symbols: true}) === false) return;
