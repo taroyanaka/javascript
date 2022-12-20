@@ -120,34 +120,34 @@ id INTEGER PRIMARY KEY AUTOINCREMENT,
 main TEXT NOT NULL
 );
 
+
+
 DROP TABLE IF EXISTS tag;
 CREATE TABLE IF NOT EXISTS tag (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 tag TEXT NOT NULL
 );
 
-DROP TABLE IF EXISTS main_to_tag;
-CREATE TABLE IF NOT EXISTS main_to_tag (
+DROP TABLE IF EXISTS main_tag;
+CREATE TABLE IF NOT EXISTS main_tag (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 main_id INTEGER NOT NULL,
 tag_id INTEGER NOT NULL
--- ,FOREIGN KEY (main_id) REFERENCES simple_io_for_server_side_main(id)
 );
 
-DROP TABLE IF EXISTS comment_to_tag;
-CREATE TABLE IF NOT EXISTS comment_to_tag (
+DROP TABLE IF EXISTS comment_tag;
+CREATE TABLE IF NOT EXISTS comment_tag (
 id INTEGER PRIMARY KEY AUTOINCREMENT,
 comment_id INTEGER NOT NULL,
 tag_id INTEGER NOT NULL
--- ,FOREIGN KEY (comment_id) REFERENCES simple_io_for_server_side_comment(id)
 );
 
-insert into main_to_tag (main_id, tag_id) values (1,1);
-insert into main_to_tag (main_id, tag_id) values (1,2);
-insert into main_to_tag (main_id, tag_id) values (1,3);
-insert into comment_to_tag (comment_id, tag_id) values (1,4);
-insert into comment_to_tag (comment_id, tag_id) values (1,5);
-insert into comment_to_tag (comment_id, tag_id) values (1,6);
+insert into main_tag (main_id, tag_id) values (1,1);
+insert into main_tag (main_id, tag_id) values (1,2);
+insert into main_tag (main_id, tag_id) values (1,3);
+insert into comment_tag (comment_id, tag_id) values (1,4);
+insert into comment_tag (comment_id, tag_id) values (1,5);
+insert into comment_tag (comment_id, tag_id) values (1,6);
 
 insert into tag (tag) values ('TAG TEXT 1');
 insert into tag (tag) values ('TAG TEXT 2');
@@ -206,42 +206,21 @@ insert into simple_io_for_server_side_comment (comment, main_id) values ('sample
 SELECT * FROM simple_io_for_server_side_main;
 SELECT * FROM simple_io_for_server_side_comment;
 
-
-DROP TABLE IF EXISTS tag;
-CREATE TABLE IF NOT EXISTS tag (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-tag TEXT NOT NULL
-);
-
-DROP TABLE IF EXISTS main_to_tag;
-CREATE TABLE IF NOT EXISTS main_to_tag (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-main_id INTEGER NOT NULL,
-tag_id INTEGER NOT NULL
-);
-
-DROP TABLE IF EXISTS comment_to_tag;
-CREATE TABLE IF NOT EXISTS comment_to_tag (
-id INTEGER PRIMARY KEY AUTOINCREMENT,
-comment_id INTEGER NOT NULL,
-tag_id INTEGER NOT NULL
-);
+SELECT *
+FROM tag
+JOIN main_tag ON tag.id = main_tag.tag_id
+JOIN simple_io_for_server_side_main ON main_tag.main_id = simple_io_for_server_side_main.id;
 
 SELECT *
-FROM TABLE_A
-LEFT JOIN cross_table ON TABLE_A.id = cross_table.TABLE_A_id
-LEFT JOIN TABLE_B ON cross_table.TABLE_B_id = TABLE_B.id;
+FROM tag
+JOIN comment_tag ON tag.id = comment_tag.tag_id
+JOIN simple_io_for_server_side_comment ON comment_tag.comment_id = simple_io_for_server_side_comment.id;
 
-SELECT *
-FROM TABLE_A
-LEFT JOIN cross_table ON TABLE_A.id = cross_table.TABLE_A_id
-LEFT JOIN TABLE_B ON cross_table.TABLE_B_id = TABLE_B.id;
+-- SELECT *
+-- FROM TABLE_A
+-- LEFT JOIN cross_table ON TABLE_A.id = cross_table.TABLE_A_id
+-- LEFT JOIN TABLE_B ON cross_table.TABLE_B_id = TABLE_B.id;
 
--- JOIN simple_io_for_server_side_comment
--- ON
--- simple_io_for_server_side_main.simple_io_for_server_side_comment_id
---  = simple_io_for_server_side_comment.id
--- ;
 
 -- select * from sqlite_master;
 

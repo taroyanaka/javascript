@@ -66,6 +66,41 @@ let db;
 db = new Database('./simple_io_for_server_side.sqlite3');
 
 
+function get_all2(){
+const foo = db.prepare(`
+SELECT
+simple_io_for_server_side_main.id AS ID,
+simple_io_for_server_side_main.main AS MAIN,
+simple_io_for_server_side_comment.id AS COMMENT_ID,
+simple_io_for_server_side_comment.comment AS COMMENT,
+simple_io_for_server_side_comment.main_id AS MAIN_ID
+FROM simple_io_for_server_side_main
+LEFT JOIN simple_io_for_server_side_comment
+ON simple_io_for_server_side_main.id
+    = simple_io_for_server_side_comment.main_id;
+`).all();
+const bar = db.prepare(`
+SELECT *
+FROM tag
+JOIN main_tag ON tag.id = main_tag.tag_id
+JOIN simple_io_for_server_side_main ON main_tag.main_id = simple_io_for_server_side_main.id;
+`).all();
+const buz = db.prepare(`
+SELECT *
+FROM tag
+JOIN comment_tag ON tag.id = comment_tag.tag_id
+JOIN simple_io_for_server_side_comment ON comment_tag.comment_id = simple_io_for_server_side_comment.id;
+`).all();
+
+const DB_RESULT2 = foo.map(V=> [V, bar.filter(VAL=>VAL['main_id'] === V['MAIN_ID'])]  );
+console.log(
+// foo,
+// bar,
+// buz,
+DB_RESULT2
+);
+return DB_RESULT2;
+};
 function get_all(){
     const DB_RESULT = db.prepare(`SELECT
 simple_io_for_server_side_main.id AS ID,
@@ -99,7 +134,8 @@ return obj;
 };
 
 app.get('/', (req, res) => {
-    res.json(get_all());
+    // res.json(get_all());
+    res.json(get_all2());
 });
 
 app.get('/insert_comment', (req, res) => {
@@ -112,7 +148,7 @@ app.get('/insert_comment', (req, res) => {
     res.json(get_all());
 });
 
-app.get('/insert_record', (req, res) => {
+app.get('/insert_main', (req, res) => {
     if(validator.isLength(req.query.MAIN, {min:1, max: 20}) === false){return};
     db.prepare(`INSERT INTO simple_io_for_server_side_main (main) VALUES (?)`).run(req.query.MAIN);
     res.json(get_all());
