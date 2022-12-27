@@ -144,7 +144,7 @@ const res3 = R.zip(
 main_tag = bar;comment_tag = buz;
 
 main_tag.forEach((V,IDX)=>{
-    res3.forEach((res_of_one,IDX)=>{
+    res3.forEach((res_of_one, IDX)=>{
         if(res_of_one['main']['ID'] === V['TAG_ID']){Object.assign(res_of_one, {'main_tag': V})}
     })
 });

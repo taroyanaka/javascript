@@ -17,15 +17,28 @@
 <li v-for="(LI_DATA_ARRAY, LI_DATA_ARRAY_INDEX) in all_data">
 {{ LI_DATA_ARRAY['main'] }}
 
+<span v-if="LI_DATA_ARRAY['main_tag']">
+<div>TAG_ID: {{ LI_DATA_ARRAY['main_tag']['TAG_ID'] }}</div>
+<div>TAG: {{ LI_DATA_ARRAY['main_tag']['TAG'] }}</div>
+</span>
+
 <button @click="main_copy(LI_DATA_ARRAY['main']['MAIN'], LI_DATA_ARRAY_INDEX)">⏩</button>
 <input type="text" placeholder="main" v-model="main_list[LI_DATA_ARRAY_INDEX]">
 <button @click="update_main(main_list[LI_DATA_ARRAY_INDEX], LI_DATA_ARRAY['main']['ID'])">update_main</button>
-<!-- <input type="text" placeholder="main" v-model="LI_DATA_ARRAY['main']['MAIN']">
-<button @click="update_main(LI_DATA_ARRAY['main']['MAIN'], LI_DATA_ARRAY['main']['ID'])">update_main</button> -->
 
 <br>
-<template v-for="COMMENT in LI_DATA_ARRAY['comment']">{{ COMMENT }}
-<button @click="delete_comment(COMMENT['COMMENT_ID'])">delete_comment{{ COMMENT['COMMENT_ID'] }}</button>
+<template v-for="COMMENT in LI_DATA_ARRAY['comment']">
+<div>
+COMMENT_ID: {{ COMMENT['COMMENT_ID'] }}
+MAIN_ID: {{ COMMENT['MAIN_ID'] }}
+COMMENT: {{ COMMENT['COMMENT'] }}
+<template v-for="(value, key) in COMMENT['comment_tag']">
+<div>{{ key }} is {{ value }}</div>
+</template>
+
+<button @click="delete_comment(COMMENT['COMMENT_ID'])">delete_comment{{ COMMENT['COMMENT_ID'] }}
+</div>
+
 </template>
 
 <br>
@@ -70,7 +83,8 @@ validator.isLength(MAIN, {min:1, max: 20}) === false) return;
     await this.FN_A(FETCH_DATA);
 },
 async fetch_all() {
-    const FETCH_DATA = await fetch('http://127.0.0.1:3000/');
+    const FETCH_DATA = await fetch('http://127.0.0.1:3000/fetch_all2');
+    // const FETCH_DATA = await fetch('http://127.0.0.1:3000/');
     await this.FN_A(FETCH_DATA);
 },
 async fetch_all2() {
