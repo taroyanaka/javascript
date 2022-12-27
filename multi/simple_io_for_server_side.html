@@ -39,6 +39,7 @@
 <input type="button" id="" @click="insert_main" value="insert_main">
 </body>
 <script>
+let DATA = null;
 const app = Vue.createApp({
 data() {
     return {
@@ -57,7 +58,6 @@ async FN_A(FETCH_DATA){
     const JSON_DATA = await FETCH_DATA.json();
     this.all_data = [];
     for (const DATA of JSON_DATA ) {
-        // console.log(DATA);
         this.all_data.push(DATA);
     };
 },
@@ -75,8 +75,15 @@ async fetch_all() {
 },
 async fetch_all2() {
     const FETCH_DATA = await fetch('http://127.0.0.1:3000/fetch_all2');
+    const JSON_DATA = await FETCH_DATA.json();
+    // data = [];
+    // for (const DATA of JSON_DATA ) {
+    //     data.push(DATA);
+    // };
     console.log(
-        await (await fetch(`http://127.0.0.1:3000/`)).json()
+        DATA = JSON.parse(
+            JSON.stringify(JSON_DATA)
+        )
     );
 },
 async delete_record(ID) {
