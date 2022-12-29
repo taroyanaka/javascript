@@ -52,7 +52,11 @@ COMMENT: {{ COMMENT['COMMENT'] }}
 <input type="button" id="" @click="insert_main" value="insert_main">
 </body>
 <script>
-let DATA = null;
+let tmp = [];
+let tmp2 = [];
+let only_main = [];
+let only_comment = [];
+let main_and_comment = [];
 const app = Vue.createApp({
 data() {
     return {
@@ -65,6 +69,7 @@ data() {
 mounted(){
     this.fetch_all();
     this.fetch_all2();
+    this.fetch_all3();
 },
 methods: {
 async FN_A(FETCH_DATA){
@@ -99,6 +104,26 @@ async fetch_all2() {
             JSON.stringify(JSON_DATA)
         )
     );
+},
+async fetch_all3() {
+    const FETCH_DATA = await fetch('http://127.0.0.1:3000/fetch_all3');
+    const JSON_DATA = await FETCH_DATA.json();
+    for (const DATA of JSON_DATA ) {
+        tmp.push(DATA);
+    };
+    console.log(
+        tmp = JSON.parse(
+            JSON.stringify(tmp)
+        )
+    );
+
+    tmp2 = R.groupWith((V1,V2)=>V1['ID']===V2['ID'], tmp[2]);
+
+only_main = tmp2.map(VAL=>VAL.map(V=>[V['ID'], V['MAIN']])).map(V=>R.uniq(V)).map(V=>V[0]);
+only_comment = tmp2.map(VAL=>VAL.map(V=>[V['COMMENT_ID'], V['COMMENT'], V['MAIN_ID']]));
+main_and_comment = R.zip(only_main, only_comment).map(V=> V[1][0].every(VAL=>VAL!==null) ? [V[0], V[1]] : [V[0], null]);
+
+
 },
 async delete_record(ID) {
     if(validator.isNumeric(ID.toString(), {no_symbols: true}) === false) return;
