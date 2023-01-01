@@ -57,6 +57,9 @@ let tmp2 = [];
 let only_main = [];
 let only_comment = [];
 let main_and_comment = [];
+
+let main_and_tag = [];
+let comment_and_tag = [];
 const app = Vue.createApp({
 data() {
     return {
@@ -123,6 +126,15 @@ only_main = tmp2.map(VAL=>VAL.map(V=>[V['ID'], V['MAIN']])).map(V=>R.uniq(V)).ma
 only_comment = tmp2.map(VAL=>VAL.map(V=>[V['COMMENT_ID'], V['COMMENT'], V['MAIN_ID']]));
 main_and_comment = R.zip(only_main, only_comment).map(V=> V[1][0].every(VAL=>VAL!==null) ? [V[0], V[1]] : [V[0], null]);
 
+main_and_tag = R.groupWith((V1,V2)=>V1['MAIN_ID']===V2['MAIN_ID'], tmp[0]).map(V=>[V[0]['MAIN_ID'], V]);
+comment_and_tag = R.groupWith((V1,V2)=>V1['COMMENT_ID']===V2['COMMENT_ID'], tmp[1]).map(V=>[V[0]['COMMENT_ID'], V]);
+
+const main_with_tag = R.xprod(R.pluck(0, main_and_comment), main_and_tag).filter(V=>V[0][0] === V[1][0]);
+const comment_with_tag = main_and_comment.map(V=>V[1]).filter(V=>V!==null).map(V=>R.xprod(V, comment_and_tag).filter(V=>V[0][0] === V[1][0]));
+
+
+// const fn = (PARAM) => PARAM.map(V=> [V, comment_and_tag.map(VAL=> V[0] === VAL[0] ? VAL : null ) ] );
+// main_and_comment.map(V=>V[1]).map(V=> V ? fn(V) : null)[0][2];
 
 },
 async delete_record(ID) {
