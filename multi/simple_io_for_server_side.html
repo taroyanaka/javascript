@@ -54,12 +54,17 @@ COMMENT: {{ COMMENT['COMMENT'] }}
 <script>
 let tmp = [];
 let tmp2 = [];
+
 let only_main = [];
 let only_comment = [];
+
 let main_and_comment = [];
 
 let main_and_tag = [];
 let comment_and_tag = [];
+
+let main_with_tag = [];
+let comment_with_tag = [];
 const app = Vue.createApp({
 data() {
     return {
@@ -129,9 +134,26 @@ main_and_comment = R.zip(only_main, only_comment).map(V=> V[1][0].every(VAL=>VAL
 main_and_tag = R.groupWith((V1,V2)=>V1['MAIN_ID']===V2['MAIN_ID'], tmp[0]).map(V=>[V[0]['MAIN_ID'], V]);
 comment_and_tag = R.groupWith((V1,V2)=>V1['COMMENT_ID']===V2['COMMENT_ID'], tmp[1]).map(V=>[V[0]['COMMENT_ID'], V]);
 
-const main_with_tag = R.xprod(R.pluck(0, main_and_comment), main_and_tag).filter(V=>V[0][0] === V[1][0]);
-const comment_with_tag = main_and_comment.map(V=>V[1]).filter(V=>V!==null).map(V=>R.xprod(V, comment_and_tag).filter(V=>V[0][0] === V[1][0]));
+main_with_tag = R.xprod(R.pluck(0, main_and_comment), main_and_tag).filter(V=>V[0][0] === V[1][0]);
+comment_with_tag = main_and_comment.map(V=>V[1]).filter(V=>V!==null).map(V=>R.xprod(V, comment_and_tag).filter(V=>V[0][0] === V[1][0]));
 
+[
+{
+'main': [1,"sample main 1_1"],
+'main_tag': [
+{"MAIN_ID": 1,"TAG_ID": 1,"TAG": "TAG TEXT 1"},
+{"MAIN_ID": 1,"TAG_ID": 2,"TAG": "TAG TEXT 2"},
+{"MAIN_ID": 1,"TAG_ID": 3,"TAG": "TAG TEXT 3"}
+],
+'comment':[
+[1,"sample comment 1",1,
+[{"COMMENT_ID": 1,"TAG_ID": 4,"TAG": "TAG TEXT 4"},{"COMMENT_ID": 1,"TAG_ID": 5,"TAG": "TAG TEXT 5"},{"COMMENT_ID": 1,"TAG_ID": 6,"TAG": "TAG TEXT 6"}]
+],
+[2,"sample comment 2",1
+[{"COMMENT_ID": 2,"TAG_ID": 10,"TAG": "TAG TEXT 10"},{"COMMENT_ID": 2,"TAG_ID": 11,"TAG": "TAG TEXT 11"},{"COMMENT_ID": 2,"TAG_ID": 12,"TAG": "TAG TEXT 12"}]]
+],
+},
+]
 
 // const fn = (PARAM) => PARAM.map(V=> [V, comment_and_tag.map(VAL=> V[0] === VAL[0] ? VAL : null ) ] );
 // main_and_comment.map(V=>V[1]).map(V=> V ? fn(V) : null)[0][2];
