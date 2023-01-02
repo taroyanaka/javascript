@@ -154,6 +154,33 @@ comment_with_tag = main_and_comment.map(V=>V[1]).filter(V=>V!==null).map(V=>R.xp
 },
 ]
 
+
+
+[
+[
+    [1,"sample main 1_1",
+        [1,1,"TAG TEXT 1"],
+        [1,2,"TAG TEXT 2"],
+        [1,3,"TAG TEXT 3"],
+    ],
+    [
+        [1,1,"sample comment 1",
+            [1,4,"TAG TEXT 4"],
+            [1,5,"TAG TEXT 5"],
+            [1,6,"TAG TEXT 6"],
+        ],
+        [1,2,"sample comment 2"
+            [2,10,"TAG TEXT 10"],
+            [2,11,"TAG TEXT 11"],
+            [2,12,"TAG TEXT 12"],
+        ]
+    ],
+]
+];
+
+
+
+
 // const fn = (PARAM) => PARAM.map(V=> [V, comment_and_tag.map(VAL=> V[0] === VAL[0] ? VAL : null ) ] );
 // main_and_comment.map(V=>V[1]).map(V=> V ? fn(V) : null)[0][2];
 
