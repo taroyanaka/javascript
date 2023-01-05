@@ -860,6 +860,7 @@ function simple_io_for_server_side_DROPTABLE(){
 }
 
 
+
 const simple_io_for_server_side_db_query_select = (STRING_ARRAY) => {
     return {
         "message": "success",
