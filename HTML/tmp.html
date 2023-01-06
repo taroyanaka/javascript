@@ -125,6 +125,7 @@ M
 E`,
 data4: [],
 data5: [],
+// test_mode: false,
 test_mode: true,
     }},
 watch: {
@@ -134,13 +135,17 @@ watch: {
      deep: true
    },
 },
+beforeCreate(){
+},
+created(){
+},
 beforeMount(){
 },
 mounted() {
-    // this.fn1();
     this.fn2();
 },
 beforeUpdate() {
+    // this.fn2();
 },
 updated() {
 },
@@ -169,18 +174,13 @@ fn1(){
     console.log(JSON.parse(JSON.stringify(this.data1)));
 },
 fn2(){
-    // data0 = this.data0;
-    data1 = this.data1;
-    data2 = this.data2;
-    data3 = JSON.parse(JSON.stringify(this.data3));
-    data3 = data3.split("\n");
-
-    res = data3.map((V, IDX)=>{
-        return shuffle(shuffle(R.without(data3[IDX], data3)).slice(0, 2).concat(data3[IDX]));
+    this.data4 = data4 = "";
+    this.data2 = this.data3.split("\n");
+    res = this.data2.map((V, IDX)=>{
+        return shuffle(shuffle(R.without(this.data2[IDX], this.data2)).slice(0, 2).concat(this.data2[IDX]));
     });
-    this.data4 = data4 = R.zip(data3, res);
-
-    this.test();
+    this.data4 = data4 = R.zip(this.data2, res);
+    this.test_mode === true ? this.test() : null;
 },
 fn3(correct_answer, answer, INDEX){
 this.data5[INDEX] = answer === correct_answer ? "⭕️" : "❎";
@@ -189,11 +189,18 @@ to_ary(it){
     return JSON.parse(JSON.stringify(it));
 },
 test(){
-    // console.log(JSON.parse(JSON.stringify(this.data4)));
     this.data4.forEach((V,IDX)=>this.fn3(V[0], V[1][0], IDX));
     a = this.to_ary(this.data5);
     b = ["❎","❎","❎","⭕️","❎","⭕️","❎","❎","⭕️","❎","❎","⭕️","⭕️"];
-    console.log(R.equals(a, b));
+    console.log(R.equals(a, b) ? "⭕️" : "❎");
+    this.for_debug();
+},
+for_debug(){
+    data1 = this.to_ary(this.data1);
+    data2 = this.to_ary(this.data2);
+    data3 = this.to_ary(this.data3);
+    data4 = this.to_ary(this.data4);
+    data5 = this.to_ary(this.data5);
 },
 },
 }).mount('.app');
