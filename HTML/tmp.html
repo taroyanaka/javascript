@@ -13,7 +13,7 @@
 <body class="app">
 <!-- <button @click="fn0">fn0</button> -->
 <template v-for="(DATAVAL, DATAIDX) in data4">
-    <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button><spna>{{ data5[DATAIDX] }}</spna>
+    <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button><span>{{ data5[DATAIDX] }}</span>
     <br>
 </template>
 <!-- <textarea name="" id="" cols="30" rows="10" v-model="data0"></textarea> -->
@@ -92,6 +92,17 @@ let data7 = null;
 let data8 = null;
 let data9 = null;
 
+
+
+
+
+const test_0 = () => document.querySelectorAll("body > button").forEach(V=>V.click());
+
+
+
+
+
+
 const app = Vue.createApp({
 data() {
     return {
@@ -114,6 +125,7 @@ M
 E`,
 data4: [],
 data5: [],
+test_mode: true,
     }},
 watch: {
    any: {
@@ -122,7 +134,7 @@ watch: {
      deep: true
    },
 },
-beforeMounte(){
+beforeMount(){
 },
 mounted() {
     // this.fn1();
@@ -167,13 +179,23 @@ fn2(){
         return shuffle(shuffle(R.without(data3[IDX], data3)).slice(0, 2).concat(data3[IDX]));
     });
     this.data4 = data4 = R.zip(data3, res);
+
+    this.test();
 },
 fn3(correct_answer, answer, INDEX){
-answer === correct_answer ? this.data5[INDEX] = "⭕️" : this.data5[INDEX] = "❎";
+this.data5[INDEX] = answer === correct_answer ? "⭕️" : "❎";
+},
+to_ary(it){
+    return JSON.parse(JSON.stringify(it));
+},
+test(){
+    // console.log(JSON.parse(JSON.stringify(this.data4)));
+    this.data4.forEach((V,IDX)=>this.fn3(V[0], V[1][0], IDX));
+    a = this.to_ary(this.data5);
+    b = ["❎","❎","❎","⭕️","❎","⭕️","❎","❎","⭕️","❎","❎","⭕️","⭕️"];
+    console.log(R.equals(a, b));
 },
 },
 }).mount('.app');
-
-
 </script>
 </html>
