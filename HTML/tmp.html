@@ -11,6 +11,9 @@
 <script src="./ramda.@0.28.0.js"></script>
 </head>
 <body class="app">
+<div>
+    <button @click="fn4">fn4</button>
+</div>
 <!-- <button @click="fn0">fn0</button> -->
 <template v-for="(DATAVAL, DATAIDX) in data4">
     <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button><span>{{ data5[DATAIDX] }}</span>
@@ -125,6 +128,7 @@ M
 E`,
 data4: [],
 data5: [],
+data6: [],
 // test_mode: false,
 test_mode: true,
     }},
@@ -180,18 +184,29 @@ fn2(){
         return shuffle(shuffle(R.without(this.data2[IDX], this.data2)).slice(0, 2).concat(this.data2[IDX]));
     });
     this.data4 = data4 = R.zip(this.data2, res);
-    this.test_mode === true ? this.test() : null;
+    this.test_mode === true ? this.test(["❎","❎","❎","⭕️","❎","⭕️","❎","❎","⭕️","❎","❎","⭕️","⭕️"], 0) : null;
 },
 fn3(correct_answer, answer, INDEX){
-this.data5[INDEX] = answer === correct_answer ? "⭕️" : "❎";
+    this.data5[INDEX] = answer === correct_answer ? "⭕️" : "❎";
+},
+fn4(){
+    this.data4 = R.collectBy(
+                    (V)=>V[1],
+                    R.zip(this.data4, this.data5)           
+                )
+                    [0]
+                    .map(V=>V[0]);
+    this.data5 = [];
+
+    this.test_mode === true ? this.test(["⭕️","⭕️","❎","❎","❎","❎","⭕️","⭕️"], 1) : null;
 },
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
 },
-test(){
-    this.data4.forEach((V,IDX)=>this.fn3(V[0], V[1][0], IDX));
+test(TEST_DATA, answer){
+    this.data4.forEach((V,IDX)=>this.fn3(V[0], V[1][answer], IDX));
     a = this.to_ary(this.data5);
-    b = ["❎","❎","❎","⭕️","❎","⭕️","❎","❎","⭕️","❎","❎","⭕️","⭕️"];
+    b = TEST_DATA;
     console.log(R.equals(a, b) ? "⭕️" : "❎");
     this.for_debug();
 },
