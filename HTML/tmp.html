@@ -11,6 +11,8 @@
 <script src="./ramda.@0.28.0.js"></script>
 </head>
 <body class="app">
+<template v-for="(DATAVAL, DATAIDX) in data8"><div>{{ DATAVAL }}</div></template>
+<textarea name="" id="" cols="30" rows="15" v-model="data6"></textarea>
 <div>
     <button @click="fn4">fn4</button>
 </div>
@@ -19,10 +21,10 @@
     <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button><span>{{ data5[DATAIDX] }}</span>
     <br>
 </template>
-<!-- <textarea name="" id="" cols="30" rows="10" v-model="data0"></textarea> -->
-<textarea name="" id="" cols="30" rows="100" v-model="data3"></textarea>
+<!-- <textarea name="" id="" cols="30" rows="15" v-model="data0"></textarea> -->
+<textarea name="" id="" cols="30" rows="15" v-model="data3"></textarea>
 <template v-for="(DATAVAL, DATAIDX) in data2">
-<div>{{ DATAVAL }}</div>
+<!-- <div>{{ DATAVAL }}</div> -->
 </template>
 </body>
 <script>
@@ -128,8 +130,23 @@ M
 E`,
 data4: [],
 data5: [],
-data6: [],
-// test_mode: false,
+data6: `10
+20
+30
+40
+50
+60
+70
+80
+90
+SUN
+OZ
+MARSE
+EVER`,
+data7: [],
+data8: [],
+// data10: [],
+// data11: [],
 test_mode: true,
     }},
 watch: {
@@ -147,6 +164,7 @@ beforeMount(){
 },
 mounted() {
     this.fn2();
+    this.fn5();
 },
 beforeUpdate() {
     // this.fn2();
@@ -192,13 +210,17 @@ fn3(correct_answer, answer, INDEX){
 fn4(){
     this.data4 = R.collectBy(
                     (V)=>V[1],
-                    R.zip(this.data4, this.data5)           
+                    R.zip(this.data4, this.data5)
                 )
                     [0]
                     .map(V=>V[0]);
     this.data5 = [];
 
     this.test_mode === true ? this.test(["⭕️","⭕️","❎","❎","❎","❎","⭕️","⭕️"], 1) : null;
+},
+fn5(){
+    this.data7 = this.data6.split("\n");
+    this.data8 = this.data4.map((V,IDX)=>V.concat([this.data7[IDX]]));
 },
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
@@ -216,6 +238,9 @@ for_debug(){
     data3 = this.to_ary(this.data3);
     data4 = this.to_ary(this.data4);
     data5 = this.to_ary(this.data5);
+    data6 = this.to_ary(this.data6);
+    data7 = this.to_ary(this.data7);
+    data8 = this.to_ary(this.data8);
 },
 },
 }).mount('.app');
