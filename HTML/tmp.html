@@ -51,7 +51,7 @@
 <div class="column-3">
 <template v-for="(DATAVAL, DATAIDX) in data8"><div>{{ DATAVAL }}</div></template>
 <div>
-    <button @click="fn4">fn4</button>
+    <button @click="fn7">fn7</button>
 </div>
 <!-- <button @click="fn0">fn0</button> -->
 <!-- <textarea name="" id="" cols="30" rows="15" v-model="data0"></textarea> -->
@@ -262,6 +262,10 @@ fn6(){
 this.open_close = this.open_close === 'open' ? 'close' : 'open';
 const STYLE = document.documentElement.style;
 this.open_close === 'close' ? STYLE.setProperty('--css-var-foo', 'none') : STYLE.setProperty('--css-var-foo', 'grid');
+},
+fn7(){
+this.fn4();
+this.fn5();
 },
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
