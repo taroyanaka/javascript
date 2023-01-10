@@ -9,26 +9,49 @@
 <script src="./vue@3.2.36.global.prod.js"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.36/vue.cjs.js"></script> -->
 <script src="./ramda.@0.28.0.js"></script>
+<style>
+.app{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    /* grid-template-areas:
+        "header header header"
+        "spacer spacer spacer"
+        "main main article"
+        "footer footer footer"; */
+    height: 100vh;
+    width: 100vw;
+}
+</style>
 </head>
 <body class="app">
-<template v-for="(DATAVAL, DATAIDX) in data8"><div>{{ DATAVAL }}</div></template>
+<div class="column-1">
 <textarea name="" id="" cols="30" rows="15" v-model="data6"></textarea>
-<div>
-    <button @click="fn4">fn4</button>
+<textarea name="" id="" cols="30" rows="15" v-model="data3"></textarea>
 </div>
-<!-- <button @click="fn0">fn0</button> -->
+
+<div class="column-2">
 <template v-for="(DATAVAL, DATAIDX) in data4">
     <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button><span>{{ data5[DATAIDX] }}</span>
     <br>
 </template>
+</div>
+
+
+<div class="column-3">
+<template v-for="(DATAVAL, DATAIDX) in data8"><div>{{ DATAVAL }}</div></template>
+<div>
+    <button @click="fn4">fn4</button>
+</div>
+<!-- <button @click="fn0">fn0</button> -->
 <!-- <textarea name="" id="" cols="30" rows="15" v-model="data0"></textarea> -->
-<textarea name="" id="" cols="30" rows="15" v-model="data3"></textarea>
 <template v-for="(DATAVAL, DATAIDX) in data2">
 <!-- <div>{{ DATAVAL }}</div> -->
 </template>
+</div>
+
 </body>
 <script>
-
 // https://stackoverflow.com/a/68523152
 // TODO: copy and paste mulberry32 and cyrb128 from
 //       https://stackoverflow.com/a/47593316/6243352
@@ -221,6 +244,8 @@ fn4(){
 fn5(){
     this.data7 = this.data6.split("\n");
     this.data8 = this.data4.map((V,IDX)=>V.concat([this.data7[IDX]]));
+
+    this.for_debug();
 },
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
