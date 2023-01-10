@@ -10,6 +10,9 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.36/vue.cjs.js"></script> -->
 <script src="./ramda.@0.28.0.js"></script>
 <style>
+:root {
+--css-var-foo: grid;
+}
 .app{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -22,16 +25,23 @@
     height: 100vh;
     width: 100vw;
 }
+.textarea-column{
+    display: var(--css-var-foo);
+    grid-template-columns: 1fr 1fr;
+}
 </style>
 </head>
 <body class="app">
-<div class="column-1">
+<div class="column-1 textarea-column">
 <textarea name="" id="" cols="30" rows="15" v-model="data6"></textarea>
 <textarea name="" id="" cols="30" rows="15" v-model="data3"></textarea>
 </div>
 
 <div class="column-2">
-<template v-for="(DATAVAL, DATAIDX) in data4">
+<div><button @click="fn6">fn6</button></div>
+<!-- <template v-for="(DATAVAL, DATAIDX) in data4"> -->
+<template v-for="(DATAVAL, DATAIDX) in data8">
+    <span>{{ DATAVAL[2] }}</span>
     <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button><span>{{ data5[DATAIDX] }}</span>
     <br>
 </template>
@@ -170,6 +180,7 @@ data7: [],
 data8: [],
 // data10: [],
 // data11: [],
+open_close: 'open',
 test_mode: true,
     }},
 watch: {
@@ -246,6 +257,11 @@ fn5(){
     this.data8 = this.data4.map((V,IDX)=>V.concat([this.data7[IDX]]));
 
     this.for_debug();
+},
+fn6(){
+this.open_close = this.open_close === 'open' ? 'close' : 'open';
+const STYLE = document.documentElement.style;
+this.open_close === 'close' ? STYLE.setProperty('--css-var-foo', 'none') : STYLE.setProperty('--css-var-foo', 'grid');
 },
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
