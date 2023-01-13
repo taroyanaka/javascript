@@ -66,6 +66,7 @@ grid-area: answer;
 <ul>
 <li v-for="(DATAVAL, DATAIDX) in all_save">{{ DATAVAL[0] }}
 <button @click="save_data_set(DATAIDX)">save_data_set</button>
+<button @click="save_data_delete(DATAIDX)">save_data_delete</button>
 </li>
 </ul>
 </div>
