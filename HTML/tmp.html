@@ -61,11 +61,12 @@ grid-area: answer;
 <body class="app">
 
 <div class="column-1">
+<button @click="save_data_to_all_save">save_data_to_all_save</button>
 <div>
 <ul>
-<li>1</li>
-<li>1</li>
-<li>1</li>
+<li v-for="(DATAVAL, DATAIDX) in all_save">{{ DATAVAL[0] }}
+<button @click="save_data_set(DATAIDX)">save_data_set</button>
+</li>
 </ul>
 </div>
 <div class="textarea-column-1">
@@ -243,14 +244,16 @@ mounted() {
     this.fn2();
     this.fn5();
     this.fn8();
+    this.save_data_load();
 },
 beforeUpdate() {
 },
 updated() {
+    this.save_data_load();
 },
 methods: {
 async save_data_to_all_save(){
-    this.all_save.push(this.data3);
+    this.all_save.push(this.to_ary([this.data6, this.data3]));
     await localforage.setItem('key', JSON.stringify(this.all_save));
 },
 async save_data_load() {
@@ -258,7 +261,8 @@ async save_data_load() {
     // this.temporary_all_save_for_filter = this.all_save;
 },
 save_data_set(INDEX){
-    this.data3 = this.all_save[INDEX];
+    this.data6 = this.all_save[INDEX][0];
+    this.data3 = this.all_save[INDEX][1];
 },
 async save_data_delete(INDEX){
     if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
