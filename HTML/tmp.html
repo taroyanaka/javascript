@@ -31,32 +31,43 @@
 }
 .textarea-column-2{
     display: grid;
-    grid-template-rows: 3rem 1fr;
+    grid-template-rows: 3rem
+1fr;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
-        "header header"
-        "spacer main";
+        "button-zone button-zone"
+        "question answer";
 }
 .a{
-grid-area: header;
+grid-area: button-zone;
 }
 .b {
-grid-area: spacer;
+grid-area: question;
 }
 .c {
-grid-area: main;
+grid-area: answer;
 }
 </style>
 </head>
 <body class="app">
 
-<div class="column-1 textarea-column-1">
+<div class="column-1">
+<div>
+<ul>
+<li>1</li>
+<li>1</li>
+<li>1</li>
+</ul>
+</div>
+<div class="textarea-column-1">
 <textarea name="" id="" cols="30" rows="15" v-model="data6"></textarea>
 <textarea name="" id="" cols="30" rows="15" v-model="data3"></textarea>
+</div>
 </div>
 
 <div class="column-2">
 
+<div><button @click="test_mode_on_off">test_mode_on_off</button></div>
 <div><button @click="fn10">fn10</button></div>
 <div><button @click="fn2">fn2</button></div>
 <div><button @click="fn6">fn6</button></div>
@@ -319,6 +330,9 @@ b
 c
 d
 e`;
+},
+test_mode_on_off(){
+this.test_mode = this.test_mode === true ? false : true;
 },
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
