@@ -25,19 +25,38 @@
     height: 100vh;
     width: 100vw;
 }
-.textarea-column{
+.textarea-column-1{
     display: var(--css-var-foo);
     grid-template-columns: 1fr 1fr;
+}
+.textarea-column-2{
+    display: grid;
+    grid-template-rows: 3rem 1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "header header"
+        "spacer main";
+}
+.a{
+grid-area: header;
+}
+.b {
+grid-area: spacer;
+}
+.c {
+grid-area: main;
 }
 </style>
 </head>
 <body class="app">
-<div class="column-1 textarea-column">
+
+<div class="column-1 textarea-column-1">
 <textarea name="" id="" cols="30" rows="15" v-model="data6"></textarea>
 <textarea name="" id="" cols="30" rows="15" v-model="data3"></textarea>
 </div>
 
 <div class="column-2">
+
 <div><button @click="fn6">fn6</button></div>
 <!-- <template v-for="(DATAVAL, DATAIDX) in data4"> -->
 <template v-for="(DATAVAL, DATAIDX) in data8">
@@ -51,13 +70,23 @@
 <div class="column-3">
 <template v-for="(DATAVAL, DATAIDX) in data8"><div>{{ DATAVAL }}</div></template>
 <div>
+    <button @click="fn4">fn4</button>
+    <button @click="fn5">fn5</button>
+    <button @click="fn8">fn8</button>
     <button @click="fn7">fn7</button>
 </div>
+
+
+<template v-for="(DATAVAL, DATAIDX) in data10">
+<div class="column-1 textarea-column-2">
+<button @click="fn9(DATAIDX)" class="a">fn9</button>
+<textarea name="" id="" cols="30" rows="10" class="b">{{ DATAVAL[0] }}</textarea>
+<textarea name="" id="" cols="30" rows="10" class="c">{{ DATAVAL[1] }}</textarea>
+</div>
+</template>
+
 <!-- <button @click="fn0">fn0</button> -->
 <!-- <textarea name="" id="" cols="30" rows="15" v-model="data0"></textarea> -->
-<template v-for="(DATAVAL, DATAIDX) in data2">
-<!-- <div>{{ DATAVAL }}</div> -->
-</template>
 </div>
 
 </body>
@@ -129,6 +158,12 @@ let data6 = null;
 let data7 = null;
 let data8 = null;
 let data9 = null;
+let data10 = null;
+let data11 = null;
+let data12 = null;
+let data13 = null;
+let data14 = null;
+
 
 
 
@@ -148,40 +183,26 @@ all_save: [],
 // data0: '123456789ANY!',
 data1: [0,1,2],
 data2: [],
-data3: `1
-2
-3
-4
-5
+data3: `4
 6
-7
 8
-9
 S
-O
-M
-E`,
+O`,
 data4: [],
 data5: [],
-data6: `10
-20
-30
-40
-50
+data6: `40
 60
-70
 80
-90
 SUN
-OZ
-MARSE
-EVER`,
+OZ`,
 data7: [],
 data8: [],
+data9: [],
+data10: [],
 // data10: [],
 // data11: [],
 open_close: 'open',
-test_mode: true,
+test_mode: false,
     }},
 watch: {
    any: {
@@ -199,6 +220,8 @@ beforeMount(){
 mounted() {
     this.fn2();
     this.fn5();
+
+    this.fn8();
 },
 beforeUpdate() {
     // this.fn2();
@@ -230,6 +253,8 @@ fn1(){
     console.log(JSON.parse(JSON.stringify(this.data1)));
 },
 fn2(){
+    this.data5 = [];
+
     this.data4 = data4 = "";
     this.data2 = this.data3.split("\n");
     res = this.data2.map((V, IDX)=>{
@@ -244,17 +269,21 @@ fn3(correct_answer, answer, INDEX){
 fn4(){
     this.data4 = R.collectBy(
                     (V)=>V[1],
-                    R.zip(this.data4, this.data5)
+                    R.zip(this.data8, this.data5)
                 )
                     [0]
                     .map(V=>V[0]);
+
+
+
     this.data5 = [];
 
     this.test_mode === true ? this.test(["⭕️","⭕️","❎","❎","❎","❎","⭕️","⭕️"], 1) : null;
 },
 fn5(){
     this.data7 = this.data6.split("\n");
-    this.data8 = this.data4.map((V,IDX)=>V.concat([this.data7[IDX]]));
+    // this.data8 = this.data4.map((V,IDX)=>V.concat([this.data7[IDX]]));
+    this.data8 = this.data4.map((V,IDX)=>[V[0], V[1], this.data7[IDX]]);
 
     this.for_debug();
 },
@@ -266,6 +295,20 @@ this.open_close === 'close' ? STYLE.setProperty('--css-var-foo', 'none') : STYLE
 fn7(){
 this.fn4();
 this.fn5();
+this.fn8();
+},
+fn8(){
+this.data9 = R.transpose(this.data8);
+this.data10.push([
+    this.data9[2].join("\n"),
+    this.data9[0].join("\n"),
+]);
+this.for_debug();
+},
+fn9(IDX){
+console.log(IDX);
+this.data6 = this.data10[IDX][0];
+this.data3 = this.data10[IDX][1];
 },
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
@@ -286,6 +329,8 @@ for_debug(){
     data6 = this.to_ary(this.data6);
     data7 = this.to_ary(this.data7);
     data8 = this.to_ary(this.data8);
+    data9 = this.to_ary(this.data9);
+    data10 = this.to_ary(this.data10);
 },
 },
 }).mount('.app');
