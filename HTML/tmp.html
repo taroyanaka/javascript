@@ -57,6 +57,8 @@ grid-area: main;
 
 <div class="column-2">
 
+<div><button @click="fn10">fn10</button></div>
+<div><button @click="fn2">fn2</button></div>
 <div><button @click="fn6">fn6</button></div>
 <!-- <template v-for="(DATAVAL, DATAIDX) in data4"> -->
 <template v-for="(DATAVAL, DATAIDX) in data8">
@@ -220,11 +222,9 @@ beforeMount(){
 mounted() {
     this.fn2();
     this.fn5();
-
     this.fn8();
 },
 beforeUpdate() {
-    // this.fn2();
 },
 updated() {
 },
@@ -257,11 +257,15 @@ fn2(){
 
     this.data4 = data4 = "";
     this.data2 = this.data3.split("\n");
+    this.data7 = this.data6.split("\n");
     res = this.data2.map((V, IDX)=>{
         return shuffle(shuffle(R.without(this.data2[IDX], this.data2)).slice(0, 2).concat(this.data2[IDX]));
     });
     this.data4 = data4 = R.zip(this.data2, res);
+this.fn5();
     this.test_mode === true ? this.test(["❎","❎","❎","⭕️","❎","⭕️","❎","❎","⭕️","❎","❎","⭕️","⭕️"], 0) : null;
+
+    this.for_debug();
 },
 fn3(correct_answer, answer, INDEX){
     this.data5[INDEX] = answer === correct_answer ? "⭕️" : "❎";
@@ -273,18 +277,12 @@ fn4(){
                 )
                     [0]
                     .map(V=>V[0]);
-
-
-
     this.data5 = [];
-
     this.test_mode === true ? this.test(["⭕️","⭕️","❎","❎","❎","❎","⭕️","⭕️"], 1) : null;
 },
 fn5(){
     this.data7 = this.data6.split("\n");
-    // this.data8 = this.data4.map((V,IDX)=>V.concat([this.data7[IDX]]));
     this.data8 = this.data4.map((V,IDX)=>[V[0], V[1], this.data7[IDX]]);
-
     this.for_debug();
 },
 fn6(){
@@ -309,6 +307,18 @@ fn9(IDX){
 console.log(IDX);
 this.data6 = this.data10[IDX][0];
 this.data3 = this.data10[IDX][1];
+},
+fn10(){
+this.data6 = `A
+B
+C
+D
+E`;
+this.data3 = `a
+b
+c
+d
+e`;
 },
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
