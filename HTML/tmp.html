@@ -9,9 +9,6 @@
 <script src="./vue@3.2.36.global.prod.js"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.36/vue.cjs.js"></script> -->
 
-<!-- Save -->
-<!-- Reverse -->
-<!-- Shuffle -->
 <!-- Refactoring -->
 <!-- Design -->
 <!-- Test -->
@@ -61,6 +58,8 @@ grid-area: answer;
 <body class="app">
 
 <div class="column-1">
+<button @click="fn11">fn11</button>
+<button @click="fn12">fn12</button>
 <button @click="save_data_to_all_save">save_data_to_all_save</button>
 <div>
 <ul>
@@ -344,6 +343,18 @@ b
 c
 d
 e`;
+},
+fn11(){
+    this.data6 = this.data6.split("\n").reverse().join("\n");
+    this.data3 = this.data3.split("\n").reverse().join("\n");
+},
+fn12(){
+    shuffled_data = R.transpose(shuffle(R.zip(
+        this.data6.split("\n"),
+        this.data3.split("\n")
+    )))
+    this.data6 = shuffled_data[0].join("\n");
+    this.data3 = shuffled_data[1].join("\n");
 },
 test_mode_on_off(){
 this.test_mode = this.test_mode === true ? false : true;
