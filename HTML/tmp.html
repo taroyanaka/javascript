@@ -42,15 +42,16 @@
 .a{
 grid-area: button-zone;
 }
-.b {
+.b{
 grid-area: question;
 }
-.c {
+.c{
 grid-area: answer;
 }
 </style>
 </head>
 <body class="app">
+
 
 <div class="column-1">
 <button @click="fn11">fn11</button>
@@ -59,9 +60,10 @@ grid-area: answer;
 <button @click="save_data_to_all_save">save_data_to_all_save</button>
 <div>
 <ul>
-<li v-for="(DATAVAL, DATAIDX) in all_save">{{ DATAVAL[0] }}
-<button @click="save_data_set(DATAIDX)">save_data_set</button>
-<button @click="save_data_delete(DATAIDX)">save_data_delete</button>
+<li v-for="(DATAVAL, DATAIDX) in all_save">
+    {{ DATAVAL[0] }}
+    <button @click="save_data_set(DATAIDX)">save_data_set</button>
+    <button @click="save_data_delete(DATAIDX)">save_data_delete</button>
 </li>
 </ul>
 </div>
@@ -71,13 +73,12 @@ grid-area: answer;
 </div>
 </div>
 
-<div class="column-2">
 
+<div class="column-2">
 <div><button @click="test_mode_on_off">test_mode_on_off</button></div>
 <div><button @click="fn10">fn10</button></div>
 <div><button @click="fn2_0">fn2_0</button></div>
 <div><button @click="fn6">fn6</button></div>
-<!-- <template v-for="(DATAVAL, DATAIDX) in data4"> -->
 <template v-for="(DATAVAL, DATAIDX) in data8">
     <span>{{ DATAVAL[2] }}</span>
     <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button><span>{{ data5[DATAIDX] }}</span>
@@ -87,26 +88,24 @@ grid-area: answer;
 
 
 <div class="column-3">
-<template v-for="(DATAVAL, DATAIDX) in data8"><div>{{ DATAVAL }}</div></template>
-<div>
-    <button @click="fn4">fn4</button>
-    <button @click="fn5">fn5</button>
-    <button @click="fn8">fn8</button>
-    <button @click="fn7">fn7</button>
-</div>
-
-
-<template v-for="(DATAVAL, DATAIDX) in data10">
-<div class="column-1 textarea-column-2">
-<button @click="fn9(DATAIDX)" class="a">fn9</button>
-<textarea name="" id="" cols="30" rows="10" class="b">{{ DATAVAL[0] }}</textarea>
-<textarea name="" id="" cols="30" rows="10" class="c">{{ DATAVAL[1] }}</textarea>
-</div>
+<template v-for="(DATAVAL, DATAIDX) in data8">
+    <div>{{ DATAVAL }}</div>
 </template>
-
-
-<!-- <textarea name="" id="" cols="30" rows="15" v-model="data0"></textarea> -->
+<div>
+<button @click="fn4">fn4</button>
+<button @click="fn5">fn5</button>
+<button @click="fn8">fn8</button>
+<button @click="fn7">fn7</button>
 </div>
+<template v-for="(DATAVAL, DATAIDX) in data10">
+    <div class="textarea-column-2">
+    <button @click="fn9(DATAIDX)" class="a">fn9</button>
+    <textarea name="" id="" cols="30" rows="10" class="b">{{ DATAVAL[0] }}</textarea>
+    <textarea name="" id="" cols="30" rows="10" class="c">{{ DATAVAL[1] }}</textarea>
+    </div>
+</template>
+</div>
+
 
 </body>
 <script>
@@ -176,26 +175,10 @@ let data7 = null;
 let data8 = null;
 let data9 = null;
 let data10 = null;
-let data11 = null;
-let data12 = null;
-let data13 = null;
-let data14 = null;
-
-
-
-
-
-
-const test_0 = () => document.querySelectorAll("body > button").forEach(V=>V.click());
-
-
-
-
-
 
 const app = Vue.createApp({
 data() {
-    return {
+return {
 all_save: [],
 data2: [],
 data3: `4
@@ -261,11 +244,9 @@ async save_data_delete(INDEX){
 },
 fn2_0(){
     this.data5 = [];
-
-    this.data4 = data4 = "";
     this.data2 = this.data3.split("\n");
     this.data7 = this.data6.split("\n");
-    this.data4 = data4 = R.zip(this.data2, this.fn2_1());
+    this.data4 = this.fn2_2();
     this.fn5();
     this.test_mode === true ? this.test(["❎","❎","❎","⭕️","❎","⭕️","❎","❎","⭕️","❎","❎","⭕️","⭕️"], 0) : null;
 
@@ -275,6 +256,9 @@ fn2_1(){
     return this.data2.map((V, IDX)=>{
         return shuffle(shuffle(R.without(this.data2[IDX], this.data2)).slice(0, 2).concat(this.data2[IDX]));
     });
+},
+fn2_2(){
+    return R.zip(this.data2, this.fn2_1());
 },
 fn3(correct_answer, answer, INDEX){
     this.data5[INDEX] = answer === correct_answer ? "⭕️" : "❎";
@@ -313,7 +297,6 @@ this.data10.push([
 this.for_debug();
 },
 fn9(IDX){
-console.log(IDX);
 this.data6 = this.data10[IDX][0];
 this.data3 = this.data10[IDX][1];
 },
@@ -368,6 +351,7 @@ for_debug(){
     data8 = this.to_ary(this.data8);
     data9 = this.to_ary(this.data9);
     data10 = this.to_ary(this.data10);
+    console.log(data2,data3,data4,data5,data6,data7,data8,data9,data10);
 },
 },
 }).mount('.app');
