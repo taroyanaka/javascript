@@ -54,6 +54,8 @@ grid-area: answer;
 
 
 <div class="column-1">
+<button @click="open_close_fn">open_close_fn</button>
+<button @click="fn10">fn10</button>
 <button @click="fn11">fn11</button>
 <button @click="fn12">fn12</button>
 <button @click="fn13">fn13</button>
@@ -75,10 +77,7 @@ grid-area: answer;
 
 
 <div class="column-2">
-<div><button @click="test_mode_on_off">test_mode_on_off</button></div>
-<div><button @click="fn10">fn10</button></div>
 <div><button @click="fn2_0">fn2_0</button></div>
-<div><button @click="fn6">fn6</button></div>
 <template v-for="(DATAVAL, DATAIDX) in data8">
     <span>{{ DATAVAL[2] }}</span>
     <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button><span>{{ data5[DATAIDX] }}</span>
@@ -94,8 +93,9 @@ grid-area: answer;
 <div>
 <button @click="fn4">fn4</button>
 <button @click="fn5">fn5</button>
-<button @click="fn8">fn8</button>
+<button @click="fn6">fn6</button>
 <button @click="fn7">fn7</button>
+
 </div>
 <template v-for="(DATAVAL, DATAIDX) in data10">
     <div class="textarea-column-2">
@@ -171,9 +171,7 @@ let data3 = null;
 let data4 = null;
 let data5 = null;
 let data6 = null;
-let data7 = null;
 let data8 = null;
-let data9 = null;
 let data10 = null;
 
 const app = Vue.createApp({
@@ -193,9 +191,7 @@ data6: `40
 80
 SUN
 OZ`,
-data7: [],
 data8: [],
-data9: [],
 data10: [],
 open_close: 'open',
 test_mode: true,
@@ -216,7 +212,7 @@ beforeMount(){
 mounted() {
     this.fn2_0();
     this.fn5();
-    this.fn8();
+    this.fn6();
     this.save_data_load();
 },
 beforeUpdate() {
@@ -245,7 +241,6 @@ async save_data_delete(INDEX){
 fn2_0(){
     this.data5 = [];
     this.data2 = this.data3.split("\n");
-    this.data7 = this.data6.split("\n");
     this.data4 = this.fn2_2();
     this.fn5();
     this.test_mode === true ? this.test(["❎","❎","❎","⭕️","❎","⭕️","❎","❎","⭕️","❎","❎","⭕️","⭕️"], 0) : null;
@@ -274,27 +269,25 @@ fn4(){
     this.test_mode === true ? this.test(["⭕️","⭕️","❎","❎","❎","❎","⭕️","⭕️"], 1) : null;
 },
 fn5(){
-    this.data7 = this.data6.split("\n");
-    this.data8 = this.data4.map((V,IDX)=>[V[0], V[1], this.data7[IDX]]);
+    this.data8 = this.data4.map((V,IDX)=>[V[0], V[1], this.data6.split("\n")[IDX]]);
     this.for_debug();
 },
 fn6(){
-this.open_close = this.open_close === 'open' ? 'close' : 'open';
-const STYLE = document.documentElement.style;
-this.open_close === 'close' ? STYLE.setProperty('--css-var-foo', 'none') : STYLE.setProperty('--css-var-foo', 'grid');
+this.data10.push([
+    R.transpose(this.data8)[2].join("\n"),
+    R.transpose(this.data8)[0].join("\n"),
+]);
+this.for_debug();
 },
 fn7(){
 this.fn4();
 this.fn5();
-this.fn8();
+this.fn6();
 },
-fn8(){
-this.data9 = R.transpose(this.data8);
-this.data10.push([
-    this.data9[2].join("\n"),
-    this.data9[0].join("\n"),
-]);
-this.for_debug();
+open_close_fn(){
+this.open_close = this.open_close === 'open' ? 'close' : 'open';
+const STYLE = document.documentElement.style;
+this.open_close === 'close' ? STYLE.setProperty('--css-var-foo', 'none') : STYLE.setProperty('--css-var-foo', 'grid');
 },
 fn9(IDX){
 this.data6 = this.data10[IDX][0];
@@ -328,9 +321,6 @@ fn13(){
     [tmp0, tmp1] = [this.data6, this.data3];
     [this.data6, this.data3] = [tmp1, tmp0];
 },
-test_mode_on_off(){
-this.test_mode = this.test_mode === true ? false : true;
-},
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
 },
@@ -347,11 +337,9 @@ for_debug(){
     data4 = this.to_ary(this.data4);
     data5 = this.to_ary(this.data5);
     data6 = this.to_ary(this.data6);
-    data7 = this.to_ary(this.data7);
     data8 = this.to_ary(this.data8);
-    data9 = this.to_ary(this.data9);
     data10 = this.to_ary(this.data10);
-    console.log(data2,data3,data4,data5,data6,data7,data8,data9,data10);
+    console.log(data2,data3,data4,data5,data6,data8,data10);
 },
 },
 }).mount('.app');
