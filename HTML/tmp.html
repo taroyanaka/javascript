@@ -316,12 +316,8 @@ fn13(){
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
 },
-// test(TEST_DATA, answer){
 test(answer){
     this.data4.forEach((V,IDX)=>this.fn3(V[0], V[1][answer], IDX));
-    // a = this.to_ary(this.data5);
-    // b = TEST_DATA;
-    // console.log(this.to_ary(R.equals)(this.to_ary(thisa, b) ? "⭕️" : "❎"));
     this.for_debug();
 },
 for_debug(){
