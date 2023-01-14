@@ -78,7 +78,7 @@ grid-area: answer;
 
 <div class="column-2">
 <div><button @click="fn2_0">fn2_0</button></div>
-<template v-for="(DATAVAL, DATAIDX) in data8">
+<template v-for="(DATAVAL, DATAIDX) in data4">
     <span>{{ DATAVAL[2] }}</span>
     <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button><span>{{ data5[DATAIDX] }}</span>
     <br>
@@ -87,14 +87,11 @@ grid-area: answer;
 
 
 <div class="column-3">
-<template v-for="(DATAVAL, DATAIDX) in data8">
+<template v-for="(DATAVAL, DATAIDX) in data4">
     <div>{{ DATAVAL }}</div>
 </template>
 <div>
 <button @click="fn4">fn4</button>
-<button @click="fn5">fn5</button>
-<button @click="fn6">fn6</button>
-<button @click="fn7">fn7</button>
 
 </div>
 <template v-for="(DATAVAL, DATAIDX) in data10">
@@ -171,7 +168,6 @@ let data3 = null;
 let data4 = null;
 let data5 = null;
 let data6 = null;
-let data8 = null;
 let data10 = null;
 
 const app = Vue.createApp({
@@ -179,26 +175,40 @@ data() {
 return {
 all_save: [],
 data2: [],
-data3: `4
+data3: `1
+2
+3
+4
 6
 8
 S
 O`,
 data4: [],
 data5: [],
-data6: `40
+data6: `10
+20
+30
+40
 60
 80
 SUN
 OZ`,
-data8: [],
 data10: [],
 open_close: 'open',
-test_mode: true,
+test_mode: false,
 }},
 watch: {
-   any: {
+   data3: {
      handler() {
+        this.fn2_0();
+        this.test_mode === true ? this.test(0) : null;
+     },
+     deep: true
+   },
+   data6: {
+     handler() {
+        this.fn2_0();
+        this.test_mode === true ? this.test(0) : null;
      },
      deep: true
    },
@@ -211,8 +221,6 @@ beforeMount(){
 },
 mounted() {
     this.fn2_0();
-    this.fn5();
-    this.fn6();
     this.save_data_load();
 },
 beforeUpdate() {
@@ -242,10 +250,6 @@ fn2_0(){
     this.data5 = [];
     this.data2 = this.data3.split("\n");
     this.data4 = this.fn2_2();
-    this.fn5();
-    this.test_mode === true ? this.test(["❎","❎","❎","⭕️","❎","⭕️","❎","❎","⭕️","❎","❎","⭕️","⭕️"], 0) : null;
-
-    this.for_debug();
 },
 fn2_1(){
     return this.data2.map((V, IDX)=>{
@@ -253,7 +257,7 @@ fn2_1(){
     });
 },
 fn2_2(){
-    return R.zip(this.data2, this.fn2_1());
+    return R.zip(this.data2, this.fn2_1()).map((V,IDX)=>[V[0], V[1], this.data6.split("\n")[IDX]]);
 },
 fn3(correct_answer, answer, INDEX){
     this.data5[INDEX] = answer === correct_answer ? "⭕️" : "❎";
@@ -261,28 +265,16 @@ fn3(correct_answer, answer, INDEX){
 fn4(){
     this.data4 = R.collectBy(
                     (V)=>V[1],
-                    R.zip(this.data8, this.data5)
+                    R.zip(this.data4, this.data5)
                 )
                     [0]
                     .map(V=>V[0]);
     this.data5 = [];
-    this.test_mode === true ? this.test(["⭕️","⭕️","❎","❎","❎","❎","⭕️","⭕️"], 1) : null;
-},
-fn5(){
-    this.data8 = this.data4.map((V,IDX)=>[V[0], V[1], this.data6.split("\n")[IDX]]);
+    this.data10.push([
+        R.transpose(this.data4)[2].join("\n"),
+        R.transpose(this.data4)[0].join("\n"),
+    ]);
     this.for_debug();
-},
-fn6(){
-this.data10.push([
-    R.transpose(this.data8)[2].join("\n"),
-    R.transpose(this.data8)[0].join("\n"),
-]);
-this.for_debug();
-},
-fn7(){
-this.fn4();
-this.fn5();
-this.fn6();
 },
 open_close_fn(){
 this.open_close = this.open_close === 'open' ? 'close' : 'open';
@@ -324,11 +316,12 @@ fn13(){
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
 },
-test(TEST_DATA, answer){
+// test(TEST_DATA, answer){
+test(answer){
     this.data4.forEach((V,IDX)=>this.fn3(V[0], V[1][answer], IDX));
-    a = this.to_ary(this.data5);
-    b = TEST_DATA;
-    console.log(R.equals(a, b) ? "⭕️" : "❎");
+    // a = this.to_ary(this.data5);
+    // b = TEST_DATA;
+    // console.log(this.to_ary(R.equals)(this.to_ary(thisa, b) ? "⭕️" : "❎"));
     this.for_debug();
 },
 for_debug(){
@@ -337,9 +330,8 @@ for_debug(){
     data4 = this.to_ary(this.data4);
     data5 = this.to_ary(this.data5);
     data6 = this.to_ary(this.data6);
-    data8 = this.to_ary(this.data8);
     data10 = this.to_ary(this.data10);
-    console.log(data2,data3,data4,data5,data6,data8,data10);
+    console.log(this.to_ary(data2,data3),this.to_ary(data4,data5,data6,data10));
 },
 },
 }).mount('.app');
