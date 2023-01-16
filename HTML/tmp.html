@@ -48,6 +48,9 @@ grid-area: question;
 .c{
 grid-area: answer;
 }
+.break{
+    word-break: break-all;
+}
 </style>
 </head>
 <body class="app">
@@ -59,6 +62,7 @@ grid-area: answer;
 <button @click="fn11">fn11</button>
 <button @click="fn12">fn12</button>
 <button @click="fn13">fn13</button>
+<button @click="fn15">fn15</button>
 <button @click="save_data_to_all_save">save_data_to_all_save</button>
 <div>
 <ul>
@@ -92,6 +96,9 @@ grid-area: answer;
 </template>
 <div>
 <button @click="fn4">fn4</button>
+<button @click="fn14">fn14</button>
+
+<a :href="data11[0]" class="break">{{data11[0]}}</a>
 
 </div>
 <template v-for="(DATAVAL, DATAIDX) in data10">
@@ -169,6 +176,7 @@ let data4 = null;
 let data5 = null;
 let data6 = null;
 let data10 = null;
+let data11 = null;
 
 const app = Vue.createApp({
 data() {
@@ -194,6 +202,7 @@ data6: `10
 SUN
 OZ`,
 data10: [],
+data11: [],
 open_close: 'open',
 test_mode: false,
 }},
@@ -246,11 +255,6 @@ async save_data_delete(INDEX){
         await localforage.setItem('key', JSON.stringify(this.all_save));
     }
 },
-fn2_0(){
-    this.data5 = [];
-    this.data2 = this.data3.split("\n");
-    this.data4 = this.fn2_2();
-},
 fn2_1(){
     return this.data2.map((V, IDX)=>{
         return shuffle(shuffle(R.without(this.data2[IDX], this.data2)).slice(0, 2).concat(this.data2[IDX]));
@@ -259,8 +263,14 @@ fn2_1(){
 fn2_2(){
     return R.zip(this.data2, this.fn2_1()).map((V,IDX)=>[V[0], V[1], this.data6.split("\n")[IDX]]);
 },
-fn3(correct_answer, answer, INDEX){
-    this.data5[INDEX] = answer === correct_answer ? "⭕️" : "❎";
+fn2_0(){
+    this.data5 = [];
+    this.data2 = this.data3.split("\n");
+    this.data4 = this.fn2_2();
+},
+fn3(correct, answer, INDEX){
+    this.data5[INDEX] = answer === correct ? "⭕️" : "❎";
+console.log(this.to_ary(this.data5));
 },
 fn4(){
     this.data4 = R.collectBy(
@@ -313,6 +323,16 @@ fn13(){
     [tmp0, tmp1] = [this.data6, this.data3];
     [this.data6, this.data3] = [tmp1, tmp0];
 },
+fn14(){
+this.data11[0] = window.location.origin + window.location.pathname + "?QUESTION=" + JSON.stringify(this.to_ary(this.data6)) + "&ANSWER=" + JSON.stringify(this.to_ary(this.data3));
+console.log(tmp0);
+this.for_debug();
+},
+fn15(){
+this.data6 = JSON.parse(new URL(window.location.href).searchParams.get("QUESTION"));
+this.data3 = JSON.parse(new URL(window.location.href).searchParams.get("ANSWER"));
+this.for_debug();
+},
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
 },
@@ -327,7 +347,8 @@ for_debug(){
     data5 = this.to_ary(this.data5);
     data6 = this.to_ary(this.data6);
     data10 = this.to_ary(this.data10);
-    console.log(this.to_ary(data2,data3),this.to_ary(data4,data5,data6,data10));
+    data11 = this.to_ary(this.data11);
+    console.log(data11);
 },
 },
 }).mount('.app');
