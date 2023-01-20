@@ -18,6 +18,7 @@
 <style>
 :root {
 --css-var-foo: grid;
+--css-var-bar: none;
 }
 .app{
     display: grid;
@@ -51,6 +52,9 @@ grid-area: answer;
 .break{
     word-break: break-all;
 }
+.test-fn-none-inline {
+    display: var(--css-var-bar);
+}
 </style>
 </head>
 <body class="app">
@@ -81,7 +85,13 @@ grid-area: answer;
 
 
 <div class="column-2">
-<div><button @click="fn2_0">fn2_0</button></div>
+<div>
+<button @click="fn2_0">fn2_0</button>
+<button @click="test_show_hidden">test_show_hidden</button>
+<button @click="test0" class="test-fn-none-inline">test0</button>
+<button @click="test1" class="test-fn-none-inline">test1</button>
+<button @click="test2" class="test-fn-none-inline">test2</button>
+</div>
 <template v-for="(DATAVAL, DATAIDX) in data4">
     <span>{{ DATAVAL[2] }}</span>
     <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button><span>{{ data5[DATAIDX] }}</span>
@@ -210,14 +220,12 @@ watch: {
    data3: {
      handler() {
         this.fn2_0();
-        this.test_mode === true ? this.test(0) : null;
      },
      deep: true
    },
    data6: {
      handler() {
         this.fn2_0();
-        this.test_mode === true ? this.test(0) : null;
      },
      deep: true
    },
@@ -231,6 +239,7 @@ beforeMount(){
 mounted() {
     this.fn2_0();
     this.save_data_load();
+    this.test_show_hidden();
 },
 beforeUpdate() {
 },
@@ -270,20 +279,38 @@ fn2_0(){
 },
 fn3(correct, answer, INDEX){
     this.data5[INDEX] = answer === correct ? "⭕️" : "❎";
-console.log(this.to_ary(this.data5));
 },
-fn4(){
-    this.data4 = R.collectBy(
-                    (V)=>V[1],
-                    R.zip(this.data4, this.data5)
-                )
-                    [0]
-                    .map(V=>V[0]);
+fn4_1(){
+    a = R.zip(this.data4, this.data5)
+    b = R.collectBy(
+                    (V)=>V[1] === '❎',
+                    a
+                );
+    c = b[0][0][1] === '⭕️' ? b[1] : b[0];
+    d = c.map(V=>V[0]);
+    this.data4 = d;
+// console.log(a,b,c,d);
+},
+fn4_2(){
     this.data5 = [];
+},
+fn4_3(){
     this.data10.push([
         R.transpose(this.data4)[2].join("\n"),
         R.transpose(this.data4)[0].join("\n"),
     ]);
+},
+fn4_4(){
+    return this.to_ary(this.data5).every(V=>V === '⭕️')
+},
+fn4(){
+    // console.log(this.to_ary(this.data5));
+    if(this.fn4_4()){
+        (this.data4 = this.data5 = [], this.for_debug()); return;
+    };
+    this.fn4_1();
+    this.fn4_2();
+    this.fn4_3();
     this.for_debug();
 },
 open_close_fn(){
@@ -325,7 +352,6 @@ fn13(){
 },
 fn14(){
 this.data11[0] = window.location.origin + window.location.pathname + "?Q=" + JSON.stringify(this.to_ary(this.data6).split("\n")) + "&A=" + JSON.stringify(this.to_ary(this.data3).split("\n"));
-console.log(tmp0);
 this.for_debug();
 },
 fn15(){
@@ -336,8 +362,9 @@ this.for_debug();
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
 },
-test(answer){
-    this.data4.forEach((V,IDX)=>this.fn3(V[0], V[1][answer], IDX));
+test_index(TEST_INDEX){
+    this.data4.forEach((V,IDX)=>this.fn3(V[0], V[1][TEST_INDEX], IDX));
+    this.fn4();
     this.for_debug();
 },
 for_debug(){
@@ -348,8 +375,15 @@ for_debug(){
     data6 = this.to_ary(this.data6);
     data10 = this.to_ary(this.data10);
     data11 = this.to_ary(this.data11);
-    console.log(data11);
 },
+test_show_hidden(){
+const STYLE = document.documentElement.style;
+this.test_mode === true ? STYLE.setProperty('--css-var-bar', 'inlilne') : STYLE.setProperty('--css-var-bar', 'none');
+this.test_mode = this.test_mode === true ? false : true;
+},
+test0(){this.test_index(0)},
+test1(){this.test_index(1)},
+test2(){this.test_index(2)},
 },
 }).mount('.app');
 </script>
