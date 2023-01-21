@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue_3_starter</title>
+<!-- <script src="./lib/localforage@1.10.0.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+<script src="./lib/vue@3.2.36.global.prod.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.prod.js"></script> -->
+
+<!-- Design -->
+<!-- Test -->
+<!-- Release -->
+
+<script src="./lib/ramda.@0.28.0.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script> -->
+<style>
+:root {
+--css-var-foo: grid;
+--css-var-bar: none;
+}
+.app{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    height: 100vh;
+    width: 100vw;
+}
+.textarea-column-1{
+    display: var(--css-var-foo);
+    grid-template-columns: 1fr 1fr;
+}
+.textarea-column-2{
+    display: grid;
+    grid-template-rows: 3rem
+1fr;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "button-zone button-zone"
+        "question answer";
+}
+.a{
+grid-area: button-zone;
+}
+.b{
+grid-area: question;
+}
+.c{
+grid-area: answer;
+}
+.break{
+    word-break: break-all;
+}
+.test-fn-none-inline {
+    display: var(--css-var-bar);
+}
+</style>
+</head>
+<body class="app">
+
+
+<div class="column-1">
+<button @click="open_close_fn">open_close_fn</button>
+<button @click="fn10">fn10</button>
+<button @click="fn10">fn10</button>
+<button @click="fn11">fn11</button>
+<button @click="fn12">fn12</button>
+<button @click="fn13">fn13</button>
+<button @click="fn15">fn15</button>
+<button @click="save_data_to_all_save">save_data_to_all_save</button>
+<div>
+<ul>
+<li v-for="(DATAVAL, DATAIDX) in all_save">
+    {{ DATAVAL[0] }}
+    <button @click="save_data_set(DATAIDX)">save_data_set</button>
+    <button @click="save_data_delete(DATAIDX)">save_data_delete</button>
+</li>
+</ul>
+</div>
+<div class="textarea-column-1">
+<textarea name="" id="" cols="30" rows="15" v-model="data6"></textarea>
+<textarea name="" id="" cols="30" rows="15" v-model="data3"></textarea>
+</div>
+</div>
+
+
+<div class="column-2">
+<div>
+<button @click="fn2_0">fn2_0</button>
+<button @click="test_show_hidden">test_show_hidden</button>
+<button @click="test0" class="test-fn-none-inline">test0</button>
+<button @click="test1" class="test-fn-none-inline">test1</button>
+<button @click="test2" class="test-fn-none-inline">test2</button>
+</div>
+<template v-for="(DATAVAL, DATAIDX) in data4">
+    <span>{{ DATAVAL[2] }}</span>
+    <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button><span>{{ data5[DATAIDX] }}</span>
+    <br>
+</template>
+</div>
+
+
+<div class="column-3">
+<template v-for="(DATAVAL, DATAIDX) in data4">
+    <div>{{ DATAVAL }}</div>
+</template>
+<div>
+<button @click="fn4">fn4</button>
+<button @click="fn14">fn14</button>
+
+<a :href="data11[0]" class="break">{{data11[0]}}</a>
+
+</div>
+<template v-for="(DATAVAL, DATAIDX) in data10">
+    <div class="textarea-column-2">
+    <button @click="fn9(DATAIDX)" class="a">fn9</button>
+    <textarea name="" id="" cols="30" rows="10" class="b">{{ DATAVAL[0] }}</textarea>
+    <textarea name="" id="" cols="30" rows="10" class="c">{{ DATAVAL[1] }}</textarea>
+    </div>
+</template>
+</div>
+
+
+</body>
+<script>
+// https://stackoverflow.com/a/68523152
+// TODO: copy and paste mulberry32 and cyrb128 from
+//       https://stackoverflow.com/a/47593316/6243352
+function cyrb128(str) {
+    let h1 = 1779033703, h2 = 3144134277,
+        h3 = 1013904242, h4 = 2773480762;
+    for (let i = 0, k; i < str.length; i++) {
+        k = str.charCodeAt(i);
+        h1 = h2 ^ Math.imul(h1 ^ k, 597399067);
+        h2 = h3 ^ Math.imul(h2 ^ k, 2869860233);
+        h3 = h4 ^ Math.imul(h3 ^ k, 951274213);
+        h4 = h1 ^ Math.imul(h4 ^ k, 2716044179);
+    }
+    h1 = Math.imul(h3 ^ (h1 >>> 18), 597399067);
+    h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233);
+    h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213);
+    h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179);
+    return [(h1^h2^h3^h4)>>>0, (h2^h1)>>>0, (h3^h1)>>>0, (h4^h1)>>>0];
+}
+function mulberry32(a) {
+    return function() {
+      var t = a += 0x6D2B79F5;
+      t = Math.imul(t ^ t >>> 15, t | 1);
+      t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    }
+}
+const seededRandom = ({rng = null, seed = "apples"} = {}) => {
+  rng = rng || mulberry32(cyrb128(seed)[0]);
+
+  const rnd = (lo, hi, defaultHi=1) => {
+    if (hi === undefined) {
+      hi = lo === undefined ? defaultHi : lo;
+      lo = 0;
+    }
+
+    return rng() * (hi - lo) + lo;
+  };
+
+  const rndInt = (lo, hi) => Math.floor(rnd(lo, hi, 2));
+
+  const shuffle = a => {
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = rndInt(i + 1);
+      const x = a[i];
+      a[i] = a[j];
+      a[j] = x;
+    }
+    return a;
+  };
+
+  return {rnd, rndInt, shuffle};
+};
+const {
+  rnd, rndInt, shuffle
+} = seededRandom({seed: "optional seed string"});
+
+let data2 = null;
+let data3 = null;
+let data4 = null;
+let data5 = null;
+let data6 = null;
+let data10 = null;
+let data11 = null;
+
+const app = Vue.createApp({
+data() {
+return {
+all_save: [],
+data2: [],
+data3: `1
+2
+3
+4
+6
+8
+S
+O`,
+data4: [],
+data5: [],
+data6: `10
+20
+30
+40
+60
+80
+SUN
+OZ`,
+data10: [],
+data11: [],
+open_close: 'open',
+test_mode: false,
+}},
+watch: {
+   data3: {
+     handler() {
+        this.fn2_0();
+     },
+     deep: true
+   },
+   data6: {
+     handler() {
+        this.fn2_0();
+     },
+     deep: true
+   },
+},
+beforeCreate(){
+},
+created(){
+},
+beforeMount(){
+},
+mounted() {
+    this.fn2_0();
+    this.save_data_load();
+    this.test_show_hidden();
+},
+beforeUpdate() {
+},
+updated() {
+},
+methods: {
+async save_data_to_all_save(){
+    this.all_save.push(this.to_ary([this.data6, this.data3]));
+    await localforage.setItem('key', JSON.stringify(this.all_save));
+},
+async save_data_load() {
+    this.all_save = JSON.parse(await localforage.getItem('key')) || [];
+},
+save_data_set(INDEX){
+    this.data6 = this.all_save[INDEX][0];
+    this.data3 = this.all_save[INDEX][1];
+},
+async save_data_delete(INDEX){
+    // if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
+        this.all_save.splice(INDEX, 1);
+        await localforage.setItem('key', JSON.stringify(this.all_save));
+    // }
+},
+fn2_1(){
+    return this.data2.map((V, IDX)=>{
+        return shuffle(shuffle(R.without(this.data2[IDX], this.data2)).slice(0, 2).concat(this.data2[IDX]));
+    });
+},
+fn2_2(){
+    return R.zip(this.data2, this.fn2_1()).map((V,IDX)=>[V[0], V[1], this.data6.split("\n")[IDX]]);
+},
+fn2_0(){
+    this.data5 = [];
+    this.data2 = this.data3.split("\n");
+    this.data4 = this.fn2_2();
+},
+fn3(correct, answer, INDEX){
+    this.data5[INDEX] = answer === correct ? "⭕️" : "❎";
+},
+fn4_1(){
+    a = R.zip(this.data4, this.data5)
+    b = R.collectBy(
+                    (V)=>V[1] === '❎',
+                    a
+                );
+    c = b[0][0][1] === '⭕️' ? b[1] : b[0];
+    d = c.map(V=>V[0]);
+    this.data4 = d;
+// console.log(a,b,c,d);
+},
+fn4_2(){
+    this.data5 = [];
+},
+fn4_3(){
+    this.data10.push([
+        R.transpose(this.data4)[2].join("\n"),
+        R.transpose(this.data4)[0].join("\n"),
+    ]);
+},
+fn4_4(){
+    return this.to_ary(this.data5).every(V=>V === '⭕️')
+},
+fn4(){
+    // console.log(this.to_ary(this.data5));
+    if(this.fn4_4()){
+        (this.data4 = this.data5 = [], this.for_debug()); return;
+    };
+    this.fn4_1();
+    this.fn4_2();
+    this.fn4_3();
+    this.for_debug();
+},
+open_close_fn(){
+this.open_close = this.open_close === 'open' ? 'close' : 'open';
+const STYLE = document.documentElement.style;
+this.open_close === 'close' ? STYLE.setProperty('--css-var-foo', 'none') : STYLE.setProperty('--css-var-foo', 'grid');
+},
+fn9(IDX){
+this.data6 = this.data10[IDX][0];
+this.data3 = this.data10[IDX][1];
+},
+fn10(){
+this.data6 = `A
+B
+C
+D
+E`;
+this.data3 = `a
+b
+c
+d
+e`;
+},
+fn11(){
+    this.data6 = this.data6.split("\n").reverse().join("\n");
+    this.data3 = this.data3.split("\n").reverse().join("\n");
+},
+fn12(){
+    shuffled_data = R.transpose(shuffle(R.zip(
+        this.data6.split("\n"),
+        this.data3.split("\n")
+    )))
+    this.data6 = shuffled_data[0].join("\n");
+    this.data3 = shuffled_data[1].join("\n");
+},
+fn13(){
+    [tmp0, tmp1] = [this.data6, this.data3];
+    [this.data6, this.data3] = [tmp1, tmp0];
+},
+fn14(){
+this.data11[0] = window.location.origin + window.location.pathname + "?Q=" + JSON.stringify(this.to_ary(this.data6).split("\n")) + "&A=" + JSON.stringify(this.to_ary(this.data3).split("\n"));
+this.for_debug();
+},
+fn15(){
+this.data6 = JSON.parse(new URL(window.location.href).searchParams.get("Q")).join("\n");
+this.data3 = JSON.parse(new URL(window.location.href).searchParams.get("A")).join("\n");
+this.for_debug();
+},
+to_ary(it){
+    return JSON.parse(JSON.stringify(it));
+},
+test_index(TEST_INDEX){
+    this.data4.forEach((V,IDX)=>this.fn3(V[0], V[1][TEST_INDEX], IDX));
+    this.fn4();
+    this.for_debug();
+},
+for_debug(){
+    data2 = this.to_ary(this.data2);
+    data3 = this.to_ary(this.data3);
+    data4 = this.to_ary(this.data4);
+    data5 = this.to_ary(this.data5);
+    data6 = this.to_ary(this.data6);
+    data10 = this.to_ary(this.data10);
+    data11 = this.to_ary(this.data11);
+},
+test_show_hidden(){
+const STYLE = document.documentElement.style;
+this.test_mode === true ? STYLE.setProperty('--css-var-bar', 'inlilne') : STYLE.setProperty('--css-var-bar', 'none');
+this.test_mode = this.test_mode === true ? false : true;
+},
+test0(){this.test_index(0)},
+test1(){this.test_index(1)},
+test2(){this.test_index(2)},
+},
+}).mount('.app');
+</script>
+</html>
