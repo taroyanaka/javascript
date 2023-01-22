@@ -20,7 +20,6 @@
 :root {
 --css-var-foo: grid;
 --css-var-bar: none;
---css-var-buz: span;
 }
 .app{
     display: grid;
@@ -48,15 +47,9 @@ display: grid;
 grid-template-rows: 3rem;
 grid-template-columns: 1fr 1fr 1fr;
 }
-.a-1{
-
-}
-.a-2{
-
-}
-.a-3{
-
-}
+.a-1{}
+.a-2{}
+.a-3{}
 .b{
 grid-area: question;
 }
@@ -84,7 +77,6 @@ grid-area: answer;
 <button @click="fn11">fn11</button>
 <button @click="fn12">fn12</button>
 <button @click="fn13">fn13</button>
-<!-- <button @click="fn15">fn15</button> -->
 <button @click="save_data_to_all_save">save_data_to_all_save</button>
 <div>
 <ul>
@@ -105,7 +97,6 @@ grid-area: answer;
 <div class="column-2">
 <div>
 <button @click="fn2_0">fn2_0</button>
-<button @click="test_show_hidden">test_show_hidden</button>
 <button @click="test0" class="test-fn-none-inline">test0</button>
 <button @click="test1" class="test-fn-none-inline">test1</button>
 <button @click="test2" class="test-fn-none-inline">test2</button>
@@ -119,9 +110,9 @@ grid-area: answer;
 
 
 <div class="column-3">
-<template v-for="(DATAVAL, DATAIDX) in data4">
-    <div>{{ DATAVAL }}</div>
-</template>
+<!-- <template v-for="(DATAVAL, DATAIDX) in data4"> -->
+    <!-- <div>{{ DATAVAL }}</div> -->
+<!-- </template> -->
 <div>
 <button @click="fn4">fn4</button>
 <button @click="fn14">fn14</button>
@@ -238,7 +229,6 @@ data10: [],
 data11: [],
 open_close: 'open',
 test_mode: false,
-// textarea_show: false,
 }},
 watch: {
    data3: {
@@ -264,9 +254,7 @@ mounted() {
     this.fn2_0();
     this.save_data_load();
     this.fn15();
-    this.test_show_hidden();
-
-    this.test_exe();
+    this.test_mode === true ? this.test_exe() : null;
 },
 beforeUpdate() {
 },
@@ -285,10 +273,10 @@ save_data_set(INDEX){
     this.data3 = this.all_save[INDEX][1];
 },
 async save_data_delete(INDEX){
-    // if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
+    if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
         this.all_save.splice(INDEX, 1);
         await localforage.setItem('key', JSON.stringify(this.all_save));
-    // }
+    }
 },
 fn2_1(){
     return this.data2.map((V, IDX)=>{
@@ -383,7 +371,6 @@ if(new URL(window.location.href).searchParams.get("Q") && new URL(window.locatio
 this.data6 = JSON.parse(new URL(window.location.href).searchParams.get("Q")).join("\n");
 this.data3 = JSON.parse(new URL(window.location.href).searchParams.get("A")).join("\n");
 }
-// this.for_debug();
 },
 fn16(INDEX){
 this.data10.splice(INDEX, 1);
@@ -402,10 +389,10 @@ fn18(){
     document.querySelectorAll('.textarea-column-2 > textarea').forEach(ELM=>ELM.style.display = 'block');
 },
 test_exe(){
+document.documentElement.style.setProperty('--css-var-bar', 'inlilne');
 this.test0();
 this.test1();
 this.test2();
-this.test_show_hidden();
 },
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
@@ -423,11 +410,6 @@ for_debug(){
     data6 = this.to_ary(this.data6);
     data10 = this.to_ary(this.data10);
     data11 = this.to_ary(this.data11);
-},
-test_show_hidden(){
-const STYLE = document.documentElement.style;
-this.test_mode === true ? STYLE.setProperty('--css-var-bar', 'inlilne') : STYLE.setProperty('--css-var-bar', 'none');
-this.test_mode = this.test_mode === true ? false : true;
 },
 test0(){this.test_index(0)},
 test1(){this.test_index(1)},
