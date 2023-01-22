@@ -84,7 +84,7 @@ grid-area: answer;
 <button @click="fn11">fn11</button>
 <button @click="fn12">fn12</button>
 <button @click="fn13">fn13</button>
-<button @click="fn15">fn15</button>
+<!-- <button @click="fn15">fn15</button> -->
 <button @click="save_data_to_all_save">save_data_to_all_save</button>
 <div>
 <ul>
@@ -263,6 +263,7 @@ beforeMount(){
 mounted() {
     this.fn2_0();
     this.save_data_load();
+    this.fn15();
     this.test_show_hidden();
 
     this.test_exe();
@@ -378,8 +379,10 @@ this.data11[0] = window.location.origin + window.location.pathname + "?Q=" + JSO
 this.for_debug();
 },
 fn15(){
+if(new URL(window.location.href).searchParams.get("Q") && new URL(window.location.href).searchParams.get("A")){
 this.data6 = JSON.parse(new URL(window.location.href).searchParams.get("Q")).join("\n");
 this.data3 = JSON.parse(new URL(window.location.href).searchParams.get("A")).join("\n");
+}
 // this.for_debug();
 },
 fn16(INDEX){
