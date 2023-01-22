@@ -125,6 +125,7 @@ grid-area: answer;
 <div>
 <button @click="fn4">fn4</button>
 <button @click="fn14">fn14</button>
+<button @click="fn18">fn18</button>
 
 <a :href="data11[0]" class="break">{{data11[0]}}</a>
 
@@ -132,13 +133,12 @@ grid-area: answer;
 <template v-for="(DATAVAL, DATAIDX) in data10">
     <div class="textarea-column-2">
     <div class="a">
-
         <button @click="fn9(DATAIDX)" class="a-1">fn9</button>
         <button @click="fn16(DATAIDX)" class="a-2">fn16</button>
         <button @click="fn17(DATAIDX)" class="a-3">fn17</button>
     </div>
-<textarea name="" cols="30" rows="10" class="b" :class="'textarea-'+DATAIDX" style="block">{{ DATAVAL[0] }}</textarea>
-<textarea name="" cols="30" rows="10" class="c" :class="'textarea-'+DATAIDX" style="block">{{ DATAVAL[1] }}</textarea>
+<textarea name="" cols="30" rows="10" class="b" :class="'textarea-'+DATAIDX" style='block'>{{ DATAVAL[0] }}</textarea>
+<textarea name="" cols="30" rows="10" class="c" :class="'textarea-'+DATAIDX" style='block'>{{ DATAVAL[1] }}</textarea>
     </div>
 </template>
 </div>
@@ -386,7 +386,6 @@ this.data3 = JSON.parse(new URL(window.location.href).searchParams.get("A")).joi
 // this.for_debug();
 },
 fn16(INDEX){
-console.log(INDEX);
 this.data10.splice(INDEX, 1);
 },
 fn17(INDEX){
@@ -396,6 +395,11 @@ fn17(INDEX){
         ELM.style.display = "block"
         }
     });
+},
+fn18(){
+    Array.from(document.querySelectorAll('.textarea-column-2 > textarea')).map(ELM=>ELM.style.display).some(DISPLAY=>DISPLAY==='block' || DISPLAY==='') ?
+    document.querySelectorAll('.textarea-column-2 > textarea').forEach(ELM=>ELM.style.display = 'none') :
+    document.querySelectorAll('.textarea-column-2 > textarea').forEach(ELM=>ELM.style.display = 'block');
 },
 test_exe(){
 this.test0();
