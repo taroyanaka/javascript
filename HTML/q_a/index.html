@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>vue_3_starter</title>
-<!-- <script src="./lib/localforage@1.10.0.js"></script> -->
-<script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+<script src="./lib/localforage@1.10.0.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script> -->
 <script src="./lib/vue@3.2.36.global.prod.js"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.prod.js"></script> -->
 
@@ -20,6 +20,7 @@
 :root {
 --css-var-foo: grid;
 --css-var-bar: none;
+--css-var-buz: span;
 }
 .app{
     display: grid;
@@ -43,6 +44,18 @@
 }
 .a{
 grid-area: button-zone;
+display: grid;
+grid-template-rows: 3rem;
+grid-template-columns: 1fr 1fr 1fr;
+}
+.a-1{
+
+}
+.a-2{
+
+}
+.a-3{
+
 }
 .b{
 grid-area: question;
@@ -55,6 +68,9 @@ grid-area: answer;
 }
 .test-fn-none-inline {
     display: var(--css-var-bar);
+}
+.textarea_none {
+    display: none;
 }
 </style>
 </head>
@@ -115,9 +131,14 @@ grid-area: answer;
 </div>
 <template v-for="(DATAVAL, DATAIDX) in data10">
     <div class="textarea-column-2">
-    <button @click="fn9(DATAIDX)" class="a">fn9</button>
-    <textarea name="" id="" cols="30" rows="10" class="b">{{ DATAVAL[0] }}</textarea>
-    <textarea name="" id="" cols="30" rows="10" class="c">{{ DATAVAL[1] }}</textarea>
+    <div class="a">
+
+        <button @click="fn9(DATAIDX)" class="a-1">fn9</button>
+        <button @click="fn16(DATAIDX)" class="a-2">fn16</button>
+        <button @click="fn17(DATAIDX)" class="a-3">fn17</button>
+    </div>
+<textarea name="" cols="30" rows="10" class="b" :class="'textarea-'+DATAIDX" style="block">{{ DATAVAL[0] }}</textarea>
+<textarea name="" cols="30" rows="10" class="c" :class="'textarea-'+DATAIDX" style="block">{{ DATAVAL[1] }}</textarea>
     </div>
 </template>
 </div>
@@ -217,6 +238,7 @@ data10: [],
 data11: [],
 open_close: 'open',
 test_mode: false,
+// textarea_show: false,
 }},
 watch: {
    data3: {
@@ -242,6 +264,8 @@ mounted() {
     this.fn2_0();
     this.save_data_load();
     this.test_show_hidden();
+
+    this.test_exe();
 },
 beforeUpdate() {
 },
@@ -290,7 +314,6 @@ fn4_1(){
     c = b[0][0][1] === '⭕️' ? b[1] : b[0];
     d = c.map(V=>V[0]);
     this.data4 = d;
-// console.log(a,b,c,d);
 },
 fn4_2(){
     this.data5 = [];
@@ -305,7 +328,6 @@ fn4_4(){
     return this.to_ary(this.data5).every(V=>V === '⭕️')
 },
 fn4(){
-    // console.log(this.to_ary(this.data5));
     if(this.fn4_4()){
         (this.data4 = this.data5 = [], this.for_debug()); return;
     };
@@ -358,7 +380,25 @@ this.for_debug();
 fn15(){
 this.data6 = JSON.parse(new URL(window.location.href).searchParams.get("Q")).join("\n");
 this.data3 = JSON.parse(new URL(window.location.href).searchParams.get("A")).join("\n");
-this.for_debug();
+// this.for_debug();
+},
+fn16(INDEX){
+console.log(INDEX);
+this.data10.splice(INDEX, 1);
+},
+fn17(INDEX){
+    document.querySelectorAll('.textarea-'+INDEX).forEach(ELM=>{
+        if(ELM.style.display === "block" || ELM.style.display === ''){
+        ELM.style.display = "none"}else{
+        ELM.style.display = "block"
+        }
+    });
+},
+test_exe(){
+this.test0();
+this.test1();
+this.test2();
+this.test_show_hidden();
 },
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
