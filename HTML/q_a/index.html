@@ -20,13 +20,37 @@
 :root {
 --css-var-foo: grid;
 --css-var-bar: none;
+
+--css-var-column-1-none: 1fr;
+--css-var-column-2-none: 1fr;
+--css-var-column-3-none: 1fr;
+
+--css-var-color-1: ;
+--css-var-color-2: ;
+--css-var-color-3: ;
 }
 .app{
-    display: grid;
+}
+.header{
+display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 3rem;
+}
+.contents{
+    display: grid;
+    grid-template-columns: var(--css-var-column-1-none) var(--css-var-column-2-none) var(--css-var-column-3-none);
     grid-template-rows: 1fr;
     height: 100vh;
     width: 100vw;
+}
+.column-1-none{
+    visibility: hidden;
+}
+.column-2-none{
+    visibility: hidden;
+}
+.column-3-none{
+    visibility: hidden;
 }
 .textarea-column-1{
     display: var(--css-var-foo);
@@ -34,13 +58,15 @@
 }
 .textarea-column-2{
     display: grid;
-    grid-template-rows: 3rem
-1fr;
+    grid-template-rows: 3rem 1fr;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
         "button-zone button-zone"
         "question answer";
 }
+.column-1{background-color: var(--css-var-color-1)}
+.column-2{background-color: var(--css-var-color-2)}
+.column-3{background-color: var(--css-var-color-3)}
 .a{
 grid-area: button-zone;
 display: grid;
@@ -68,9 +94,14 @@ grid-area: answer;
 </style>
 </head>
 <body class="app">
+<header class="header">
+<button @click="column_1_none_fn">column_1_none_fn</button>
+<button @click="column_2_none_fn">column_2_none_fn</button>
+<button @click="column_3_none_fn">column_3_none_fn</button>
+</header>
+<div class="contents">
 
-
-<div class="column-1">
+<div class="column-1" :class="{'column-1-none': column_1_none}">
 <button @click="open_close_fn">open_close_fn</button>
 <button @click="fn10">fn10</button>
 <button @click="fn10">fn10</button>
@@ -94,7 +125,7 @@ grid-area: answer;
 </div>
 
 
-<div class="column-2">
+<div class="column-2" :class="{'column-2-none': column_2_none}">
 <div>
 <button @click="fn2_0">fn2_0</button>
 <button @click="test0" class="test-fn-none-inline">test0</button>
@@ -109,7 +140,7 @@ grid-area: answer;
 </div>
 
 
-<div class="column-3">
+<div class="column-3" :class="{'column-3-none': column_3_none}">
 <!-- <template v-for="(DATAVAL, DATAIDX) in data4"> -->
     <!-- <div>{{ DATAVAL }}</div> -->
 <!-- </template> -->
@@ -134,7 +165,7 @@ grid-area: answer;
 </template>
 </div>
 
-
+</div>
 </body>
 <script>
 // https://stackoverflow.com/a/68523152
@@ -228,7 +259,10 @@ OZ`,
 data10: [],
 data11: [],
 open_close: 'open',
-test_mode: false,
+test_mode: true,
+column_1_none: false,
+column_2_none: false,
+column_3_none: false,
 }},
 watch: {
    data3: {
@@ -388,8 +422,23 @@ fn18(){
     document.querySelectorAll('.textarea-column-2 > textarea').forEach(ELM=>ELM.style.display = 'none') :
     document.querySelectorAll('.textarea-column-2 > textarea').forEach(ELM=>ELM.style.display = 'block');
 },
+css_var_set(VAR_NAME, VAR){
+    document.documentElement.style.setProperty(VAR_NAME, VAR);
+},
+column_1_none_fn(){
+    this.column_1_none === true ? (this.css_var_set('--css-var-column-1-none', '1fr'), this.column_1_none = false) : (this.css_var_set('--css-var-column-1-none', '0px'), this.column_1_none = true);
+},
+column_2_none_fn(){
+    this.column_2_none === true ? (this.css_var_set('--css-var-column-2-none', '1fr'), this.column_2_none = false) : (this.css_var_set('--css-var-column-2-none', '0px'), this.column_2_none = true);
+},
+column_3_none_fn(){
+    this.column_3_none === true ? (this.css_var_set('--css-var-column-3-none', '1fr'), this.column_3_none = false) : (this.css_var_set('--css-var-column-3-none', '0px'), this.column_3_none = true);
+},
 test_exe(){
-document.documentElement.style.setProperty('--css-var-bar', 'inlilne');
+this.css_var_set('--css-var-bar', 'inlilne');
+this.css_var_set('--css-var-color-1', 'aqua');
+this.css_var_set('--css-var-color-2', 'bisque');
+this.css_var_set('--css-var-color-3', 'crimson');
 this.test0();
 this.test1();
 this.test2();
