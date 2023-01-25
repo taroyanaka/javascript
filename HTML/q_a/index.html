@@ -106,13 +106,27 @@ height: 2rem;
 margin-left: 0.2rem;
 margin-right: 0.2rem;
 }
-.text_centering{
+.check_button{
+margin-top: 2rem;
+    width: 100%;
+    height: 4rem;
+    justify-self: center;
+    align-self: center;
+}
+.text_center{
+width: fit-content;
+/* background-color: gray; */
 font-size: 2rem;
 align-self: center;
 justify-self:center;
 }
 .text_left{
 text-align: start;
+font-size: 1.8rem;
+}
+.text_right{
+/* background-color: pink; */
+text-align: end;
 font-size: 1.8rem;
 }
 </style>
@@ -158,11 +172,12 @@ font-size: 1.8rem;
 </div>
 <template v-for="(DATAVAL, DATAIDX) in data4">
 <div class="q_and_a">
-    <span class="text_left">{{ data5[DATAIDX] }}</span>
-    <span class="text_centering">{{ DATAVAL[2] }}</span>
+    <span class="text_right">{{ data5[DATAIDX] }}</span>
+    <span class="text_center">{{ DATAVAL[2] }}</span>
     <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button>
 </div>
 </template>
+<button @click="fn4" class="check_button">fn4</button>
 </div>
 
 
