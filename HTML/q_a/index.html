@@ -33,7 +33,7 @@
 .app{
 }
 .header{
-display: grid;
+    display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 3rem;
 }
@@ -92,6 +92,29 @@ grid-area: answer;
 .textarea_none {
     display: none;
 }
+.q_and_a{
+display: grid;
+grid-template-columns: repeat(5, 1fr);
+justify-content: center;
+align-content: center;
+grid-auto-flow: column;
+margin-top: 1rem;
+}
+.q_and_a button{
+width: auto;
+height: 2rem;
+margin-left: 0.2rem;
+margin-right: 0.2rem;
+}
+.text_centering{
+font-size: 2rem;
+align-self: center;
+justify-self:center;
+}
+.text_left{
+text-align: start;
+font-size: 1.8rem;
+}
 </style>
 </head>
 <body class="app">
@@ -134,9 +157,11 @@ grid-area: answer;
 <button @click="test2" class="test-fn-none-inline">test2</button>
 </div>
 <template v-for="(DATAVAL, DATAIDX) in data4">
-    <span>{{ DATAVAL[2] }}</span>
-    <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button><span>{{ data5[DATAIDX] }}</span>
-    <br>
+<div class="q_and_a">
+    <span class="text_left">{{ data5[DATAIDX] }}</span>
+    <span class="text_centering">{{ DATAVAL[2] }}</span>
+    <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button>
+</div>
 </template>
 </div>
 
@@ -437,9 +462,9 @@ this.css_var_set('--css-var-bar', 'inlilne');
 this.css_var_set('--css-var-color-1', 'aqua');
 this.css_var_set('--css-var-color-2', 'bisque');
 this.css_var_set('--css-var-color-3', 'crimson');
-this.test0();
-this.test1();
-this.test2();
+// this.test0();
+// this.test1();
+// this.test2();
 },
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
