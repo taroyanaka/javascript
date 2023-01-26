@@ -30,6 +30,11 @@
 --css-var-color-2: ;
 --css-var-color-3: ;
 }
+button{
+    border: none;
+    background-color: aliceblue;
+    border-radius: 1rem;
+}
 .app{
 }
 .header{
@@ -115,7 +120,6 @@ margin-top: 2rem;
 }
 .text_center{
 width: fit-content;
-/* background-color: gray; */
 font-size: 2rem;
 align-self: center;
 justify-self:center;
@@ -125,9 +129,21 @@ text-align: start;
 font-size: 1.8rem;
 }
 .text_right{
-/* background-color: pink; */
 text-align: end;
 font-size: 1.8rem;
+}
+.optional_function{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 4rem;
+}
+.optional_function button{
+    font-size: 2.5rem;
+}
+.processing{
+    width: 100%;
+    height: 5rem;
+    font-size: 4.5rem;
 }
 </style>
 </head>
@@ -140,13 +156,13 @@ font-size: 1.8rem;
 <div class="contents">
 
 <div class="column-1" :class="{'column-1-none': column_1_none}">
-<button @click="open_close_fn">open_close_fn</button>
-<button @click="fn10">fn10</button>
-<button @click="fn10">fn10</button>
-<button @click="fn11">fn11</button>
-<button @click="fn12">fn12</button>
-<button @click="fn13">fn13</button>
-<button @click="save_data_to_all_save">save_data_to_all_save</button>
+<div class="optional_function">
+    <button @click="open_close_fn">👐</button>
+    <button @click="reverse_q_a">🔃</button>
+    <button @click="shuffle_q_a">🌪️</button>
+    <button @click="swap_q_a">🔁</button>
+    <button @click="save_data_to_all_save">🗂️</button>
+</div>
 <div>
 <ul>
 <li v-for="(DATAVAL, DATAIDX) in all_save">
@@ -155,6 +171,7 @@ font-size: 1.8rem;
     <button @click="save_data_delete(DATAIDX)">save_data_delete</button>
 </li>
 </ul>
+<button @click="processing" class="processing">🏗️</button>
 </div>
 <div class="textarea-column-1">
 <textarea name="" id="" cols="30" rows="15" v-model="data6"></textarea>
@@ -165,7 +182,6 @@ font-size: 1.8rem;
 
 <div class="column-2" :class="{'column-2-none': column_2_none}">
 <div>
-<button @click="fn2_0">fn2_0</button>
 <button @click="test0" class="test-fn-none-inline">test0</button>
 <button @click="test1" class="test-fn-none-inline">test1</button>
 <button @click="test2" class="test-fn-none-inline">test2</button>
@@ -305,13 +321,13 @@ column_3_none: false,
 watch: {
    data3: {
      handler() {
-        this.fn2_0();
+        this.processing();
      },
      deep: true
    },
    data6: {
      handler() {
-        this.fn2_0();
+        this.processing();
      },
      deep: true
    },
@@ -323,7 +339,7 @@ created(){
 beforeMount(){
 },
 mounted() {
-    this.fn2_0();
+    this.processing();
     this.save_data_load();
     this.fn15();
     this.test_mode === true ? this.test_exe() : null;
@@ -358,7 +374,7 @@ fn2_1(){
 fn2_2(){
     return R.zip(this.data2, this.fn2_1()).map((V,IDX)=>[V[0], V[1], this.data6.split("\n")[IDX]]);
 },
-fn2_0(){
+processing(){
     this.data5 = [];
     this.data2 = this.data3.split("\n");
     this.data4 = this.fn2_2();
@@ -406,31 +422,31 @@ fn9(IDX){
 this.data6 = this.data10[IDX][0];
 this.data3 = this.data10[IDX][1];
 },
-fn10(){
-this.data6 = `A
-B
-C
-D
-E`;
-this.data3 = `a
-b
-c
-d
-e`;
-},
-fn11(){
+// fn10(){
+// this.data6 = `A
+// B
+// C
+// D
+// E`;
+// this.data3 = `a
+// b
+// c
+// d
+// e`;
+// },
+reverse_q_a(){
     this.data6 = this.data6.split("\n").reverse().join("\n");
     this.data3 = this.data3.split("\n").reverse().join("\n");
 },
-fn12(){
+shuffle_q_a(){
     shuffled_data = R.transpose(shuffle(R.zip(
         this.data6.split("\n"),
         this.data3.split("\n")
-    )))
+    )));
     this.data6 = shuffled_data[0].join("\n");
     this.data3 = shuffled_data[1].join("\n");
 },
-fn13(){
+swap_q_a(){
     [tmp0, tmp1] = [this.data6, this.data3];
     [this.data6, this.data3] = [tmp1, tmp0];
 },
