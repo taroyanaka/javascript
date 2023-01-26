@@ -66,6 +66,7 @@ button{
 .textarea-column-2{
     display: grid;
     grid-template-rows: 3rem 1fr;
+    /* grid-template-columns: 100% 100%; */
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
         "button-zone button-zone"
@@ -85,9 +86,11 @@ grid-template-columns: 1fr 1fr 1fr;
 .a-3{}
 .b{
 grid-area: question;
+width: 100%;
 }
 .c{
 grid-area: answer;
+width: 100%;
 }
 .break{
     word-break: break-all;
@@ -101,9 +104,11 @@ grid-area: answer;
 .q_and_a{
 display: grid;
 grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr;
+/* grid-template-columns: 10rem 1fr 1fr 1fr 1fr; */
 justify-content: center;
 align-content: center;
 grid-auto-flow: column;
+/* word-break: break-all; */
 }
 .q_and_a button{
 width: auto;
@@ -129,6 +134,9 @@ width: fit-content;
 font-size: 2rem;
 align-self: center;
 justify-self:center;
+
+/* width: 10rem; */
+overflow: hidden;
 }
 .text_left{
 text-align: start;
@@ -175,8 +183,8 @@ font-size: 2rem;
 <ul>
 <li v-for="(DATAVAL, DATAIDX) in all_save">
     {{ DATAVAL[0] }}
-    <button @click="save_data_set(DATAIDX)">save_data_set</button>
-    <button @click="save_data_delete(DATAIDX)">save_data_delete</button>
+    <button @click="save_data_set(DATAIDX)">📂</button>
+    <button @click="save_data_delete(DATAIDX)">🗑️</button>
 </li>
 </ul>
 <button @click="processing" class="processing">🏗️</button>
@@ -217,9 +225,9 @@ font-size: 2rem;
 <template v-for="(DATAVAL, DATAIDX) in data10">
     <div class="textarea-column-2">
     <div class="a">
-        <button @click="fn9(DATAIDX)" class="a-1">fn9</button>
-        <button @click="fn16(DATAIDX)" class="a-2">fn16</button>
-        <button @click="fn17(DATAIDX)" class="a-3">fn17</button>
+        <button @click="fn9(DATAIDX)" class="a-1">↩️</button>
+        <button @click="fn16(DATAIDX)" class="a-2">🗑️</button>
+        <button @click="fn17(DATAIDX)" class="a-3">📚</button>
     </div>
 <textarea name="" cols="30" rows="10" class="b" :class="'textarea-'+DATAIDX" style='display: block;'>{{ DATAVAL[0] }}</textarea>
 <textarea name="" cols="30" rows="10" class="c" :class="'textarea-'+DATAIDX" style='display: block;'>{{ DATAVAL[1] }}</textarea>
@@ -501,9 +509,9 @@ this.css_var_set('--css-var-bar', 'inlilne');
 this.css_var_set('--css-var-color-1', 'aqua');
 this.css_var_set('--css-var-color-2', 'bisque');
 this.css_var_set('--css-var-color-3', 'crimson');
-// this.test0();
-// this.test1();
-// this.test2();
+this.test0();
+this.test1();
+this.test2();
 },
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
