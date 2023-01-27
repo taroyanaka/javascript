@@ -193,10 +193,16 @@ word-break: break-all;
 <div class="contents">
 
 <div class="column-1" :class="{'column-1-none': column_1_none}">
-
+<div class="optional_function">
+    <button @click="open_close_fn">👐</button>
+    <button @click="reverse_q_a">🔃</button>
+    <button @click="shuffle_q_a">🌪️</button>
+    <button @click="swap_q_a">🔁</button>
+    <button @click="save_data_to_all_save">🗂️</button>
+</div>
 <div>
 <button @click="fn19" class="save_opener">📂</button>
-<ul class="save_data_set_list_parent" style='display: inline;'>
+<ul class="save_data_set_list_parent" style='display: block;'>
 <li v-for="(DATAVAL, DATAIDX) in all_save" class="save_data_set_list">
     <span>{{ [DATAVAL[0].split("\n")[0], DATAVAL[1].split("\n")[0]] }}</span>
     <button @click="save_data_set(DATAIDX)" class="save_data_set">📂</button>
@@ -204,12 +210,12 @@ word-break: break-all;
 </li>
 </ul>
 <!-- <button @click="processing" class="processing">🏗️</button> -->
-<button @click="fn14" class="link_button">🌐</button>
+<!-- <button @click="fn14" class="link_button">🌐</button> -->
 <a :href="data11[0]" class="break">{{data11[0]}}</a>
 </div>
 <div class="textarea-column-1">
-<textarea name="" id="" rows="20" v-model="data6"></textarea>
-<textarea name="" id="" rows="20" v-model="data3"></textarea>
+<textarea name="" id="" rows="30" cols="" v-model="data6"></textarea>
+<textarea name="" id="" rows="30" cols="" v-model="data3"></textarea>
 </div>
 </div>
 
@@ -508,7 +514,7 @@ fn18(){
 },
 fn19(){
     THE_STYLE_DISPLAY = document.querySelector('.save_data_set_list_parent').style.display;
-    document.querySelector('.save_data_set_list_parent').style.display = (THE_STYLE_DISPLAY === 'inline' || THE_STYLE_DISPLAY === '') ? 'none' : 'inline';
+    document.querySelector('.save_data_set_list_parent').style.display = (THE_STYLE_DISPLAY === 'block' || THE_STYLE_DISPLAY === '') ? 'none' : 'block';
 },
 css_var_set(VAR_NAME, VAR){
     document.documentElement.style.setProperty(VAR_NAME, VAR);
