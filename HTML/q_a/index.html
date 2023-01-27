@@ -12,7 +12,6 @@
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.prod.js"></script> -->
 
 <!-- Design -->
-    <!-- responsive css media query -->
 <!-- Test -->
 <!-- Release -->
 
@@ -132,8 +131,8 @@ height: 4rem;
 }
 .link_button, .result_opener, .save_opener{
     width: 100%;
-    height: 4rem;
-    font-size: 3rem;
+    height: 2rem;
+    font-size: 1.5rem;
 }
 .text_center{
 width: fit-content;
@@ -156,11 +155,12 @@ font-size: 2rem;
 }
 .optional_function{
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     /* grid-template-columns: 4rem; */
 }
 .optional_function button{
-    font-size: 2rem;
+    height: 2rem;
+    font-size: 1.5rem;
 }
 .processing{
     width: 100%;
@@ -212,7 +212,7 @@ word-break: break-all;
 
 <div class="column-1" :class="{'column-1-none': column_1_none}">
 <div class="optional_function">
-    <button @click="open_close_fn">👐</button>
+    <!-- <button @click="open_close_fn">👐</button> -->
     <button @click="reverse_q_a">🔃</button>
     <button @click="shuffle_q_a">🌪️</button>
     <button @click="swap_q_a">🔁</button>
