@@ -161,6 +161,24 @@ font-size: 2rem;
     height: 4rem;
     font-size: 3rem;
 }
+.save_data_set_list > *{
+    font-size: 1.5rem;
+}
+.save_data_set_list{
+    display: grid;
+    grid-template-columns: 1fr 2.5rem 2.5rem;
+word-break: break-all;
+}
+.save_data_set_list > span{
+    /* background-color: gray; */
+    font-size: 1.3rem;
+}
+.save_data_set{
+    /* background-color: aliceblue; */
+}
+.save_data_delete{
+    /* background-color: aliceblue; */
+}
 </style>
 </head>
 <body class="app">
@@ -181,13 +199,15 @@ font-size: 2rem;
 </div>
 <div>
 <ul>
-<li v-for="(DATAVAL, DATAIDX) in all_save">
-    {{ DATAVAL[0] }}
-    <button @click="save_data_set(DATAIDX)">📂</button>
-    <button @click="save_data_delete(DATAIDX)">🗑️</button>
+<li v-for="(DATAVAL, DATAIDX) in all_save" class="save_data_set_list">
+    <span>{{ [DATAVAL[0].split("\n")[0], DATAVAL[1].split("\n")[0]] }}</span>
+    <button @click="save_data_set(DATAIDX)" class="save_data_set">📂</button>
+    <button @click="save_data_delete(DATAIDX)" class="save_data_delete">🗑️</button>
 </li>
 </ul>
-<button @click="processing" class="processing">🏗️</button>
+<!-- <button @click="processing" class="processing">🏗️</button> -->
+<button @click="fn14" class="link_button">🌐</button>
+<a :href="data11[0]" class="break">{{data11[0]}}</a>
 </div>
 <div class="textarea-column-1">
 <textarea name="" id="" cols="30" rows="15" v-model="data6"></textarea>
@@ -215,11 +235,7 @@ font-size: 2rem;
 
 <div class="column-3" :class="{'column-3-none': column_3_none}">
 <div>
-<!-- <button @click="fn4">👩‍🦼</button> -->
-<button @click="fn14" class="link_button">🌐</button>
 <button @click="fn18" class="result_opener">📖</button>
-
-<a :href="data11[0]" class="break">{{data11[0]}}</a>
 
 </div>
 <template v-for="(DATAVAL, DATAIDX) in data10">
@@ -467,7 +483,7 @@ swap_q_a(){
     [this.data6, this.data3] = [tmp1, tmp0];
 },
 fn14(){
-this.data11[0] = window.location.origin + window.location.pathname + "?Q=" + JSON.stringify(this.to_ary(this.data6).split("\n")) + "&A=" + JSON.stringify(this.to_ary(this.data3).split("\n"));
+this.data11[0] = this.data11[0] === '' ? window.location.origin + window.location.pathname + "?Q=" + JSON.stringify(this.to_ary(this.data6).split("\n")) + "&A=" + JSON.stringify(this.to_ary(this.data3).split("\n")) : '';
 this.for_debug();
 },
 fn15(){
