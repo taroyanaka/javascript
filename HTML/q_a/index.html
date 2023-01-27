@@ -222,7 +222,7 @@ word-break: break-all;
 <button @click="fn19" class="save_opener">📂</button>
 <ul class="save_data_set_list_parent" style='display: block;'>
 <li v-for="(DATAVAL, DATAIDX) in all_save" class="save_data_set_list">
-    <span>{{ [DATAVAL[0].split("\n")[0], DATAVAL[1].split("\n")[0]] }}</span>
+    <span @click="save_data_set(DATAIDX)">{{ [DATAVAL[0].split("\n")[0], DATAVAL[1].split("\n")[0]] }}</span>
     <button @click="save_data_set(DATAIDX)" class="save_data_set">📂</button>
     <button @click="save_data_delete(DATAIDX)" class="save_data_delete">🗑️</button>
 </li>
