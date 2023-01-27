@@ -151,10 +151,10 @@ font-size: 2rem;
 .optional_function{
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: 4rem;
+    /* grid-template-columns: 4rem; */
 }
 .optional_function button{
-    font-size: 2.5rem;
+    font-size: 2rem;
 }
 .processing{
     width: 100%;
@@ -162,12 +162,24 @@ font-size: 2rem;
     font-size: 3rem;
 }
 .save_data_set_list > *{
-    font-size: 1.5rem;
+    /* font-size: 1.5rem; */
+  /* オーバーした要素を非表示にする*/
+  overflow: hidden;
+
+  /* 改行を半角スペースに変換することで、1行にする */
+  white-space: nowrap;
+
+  /* 幅を指定しないとテキストの長さによって要素の幅が変わるため指定 */
+  /* width: 120px; */
+
+  /* オーバーしたテキストを３点リーダーにする */
+  /* text-overflow: ellipsis; */
 }
 .save_data_set_list{
     display: grid;
     grid-template-columns: 1fr 2.5rem 2.5rem;
 word-break: break-all;
+
 }
 .save_data_set_list > span{
     /* background-color: gray; */
