@@ -37,6 +37,8 @@ button{
     margin: 0.1rem;
 }
 .app{
+    height: 100vh;
+    width: 100vw;
 }
 .header{
     display: grid;
@@ -47,8 +49,6 @@ button{
     display: grid;
     grid-template-columns: var(--css-var-column-1-none) var(--css-var-column-2-none) var(--css-var-column-3-none);
     grid-template-rows: 1fr;
-    height: 100vh;
-    width: 100vw;
 }
 .column-1-none{
     visibility: hidden;
@@ -72,9 +72,9 @@ button{
         "button-zone button-zone"
         "question answer";
 }
-.column-1{background-color: var(--css-var-color-1)}
-.column-2{background-color: var(--css-var-color-2)}
-.column-3{background-color: var(--css-var-color-3)}
+.column-1{background-color: var(--css-var-color-1);}
+.column-2{background-color: var(--css-var-color-2);}
+.column-3{background-color: var(--css-var-color-3);}
 .a{
 grid-area: button-zone;
 display: grid;
@@ -193,16 +193,10 @@ word-break: break-all;
 <div class="contents">
 
 <div class="column-1" :class="{'column-1-none': column_1_none}">
-<div class="optional_function">
-    <button @click="open_close_fn">👐</button>
-    <button @click="reverse_q_a">🔃</button>
-    <button @click="shuffle_q_a">🌪️</button>
-    <button @click="swap_q_a">🔁</button>
-    <button @click="save_data_to_all_save">🗂️</button>
-</div>
+
 <div>
 <button @click="fn19" class="save_opener">📂</button>
-<ul class="save_data_set_list_parent" style='display: block;'>
+<ul class="save_data_set_list_parent" style='display: inline;'>
 <li v-for="(DATAVAL, DATAIDX) in all_save" class="save_data_set_list">
     <span>{{ [DATAVAL[0].split("\n")[0], DATAVAL[1].split("\n")[0]] }}</span>
     <button @click="save_data_set(DATAIDX)" class="save_data_set">📂</button>
@@ -214,8 +208,8 @@ word-break: break-all;
 <a :href="data11[0]" class="break">{{data11[0]}}</a>
 </div>
 <div class="textarea-column-1">
-<textarea name="" id="" cols="30" rows="15" v-model="data6"></textarea>
-<textarea name="" id="" cols="30" rows="15" v-model="data3"></textarea>
+<textarea name="" id="" rows="20" v-model="data6"></textarea>
+<textarea name="" id="" rows="20" v-model="data3"></textarea>
 </div>
 </div>
 
@@ -514,7 +508,7 @@ fn18(){
 },
 fn19(){
     THE_STYLE_DISPLAY = document.querySelector('.save_data_set_list_parent').style.display;
-    document.querySelector('.save_data_set_list_parent').style.display = (THE_STYLE_DISPLAY === 'block' || THE_STYLE_DISPLAY === '') ? 'none' : 'block';
+    document.querySelector('.save_data_set_list_parent').style.display = (THE_STYLE_DISPLAY === 'inline' || THE_STYLE_DISPLAY === '') ? 'none' : 'inline';
 },
 css_var_set(VAR_NAME, VAR){
     document.documentElement.style.setProperty(VAR_NAME, VAR);
