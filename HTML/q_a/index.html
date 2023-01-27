@@ -124,7 +124,7 @@ height: 4rem;
     align-self: center;
     font-size: 3rem;
 }
-.link_button, .result_opener{
+.link_button, .result_opener, .save_opener{
     width: 100%;
     height: 4rem;
     font-size: 3rem;
@@ -179,13 +179,16 @@ word-break: break-all;
 .save_data_delete{
     /* background-color: aliceblue; */
 }
+.column_none{
+    font-size: 2rem;
+}
 </style>
 </head>
 <body class="app">
 <header class="header">
-<button @click="column_1_none_fn">column_1_none_fn</button>
-<button @click="column_2_none_fn">column_2_none_fn</button>
-<button @click="column_3_none_fn">column_3_none_fn</button>
+<button @click="column_1_none_fn" class="column_none">💾</button>
+<button @click="column_2_none_fn" class="column_none">⌨️</button>
+<button @click="column_3_none_fn" class="column_none">🖥️</button>
 </header>
 <div class="contents">
 
@@ -198,7 +201,8 @@ word-break: break-all;
     <button @click="save_data_to_all_save">🗂️</button>
 </div>
 <div>
-<ul>
+<button @click="fn19" class="save_opener">📂</button>
+<ul class="save_data_set_list_parent" style='display: block;'>
 <li v-for="(DATAVAL, DATAIDX) in all_save" class="save_data_set_list">
     <span>{{ [DATAVAL[0].split("\n")[0], DATAVAL[1].split("\n")[0]] }}</span>
     <button @click="save_data_set(DATAIDX)" class="save_data_set">📂</button>
@@ -507,6 +511,10 @@ fn18(){
     Array.from(document.querySelectorAll('.textarea-column-2 > textarea')).map(ELM=>ELM.style.display).some(DISPLAY=>DISPLAY==='block' || DISPLAY==='') ?
     document.querySelectorAll('.textarea-column-2 > textarea').forEach(ELM=>ELM.style.display = 'none') :
     document.querySelectorAll('.textarea-column-2 > textarea').forEach(ELM=>ELM.style.display = 'block');
+},
+fn19(){
+    THE_STYLE_DISPLAY = document.querySelector('.save_data_set_list_parent').style.display;
+    document.querySelector('.save_data_set_list_parent').style.display = (THE_STYLE_DISPLAY === 'block' || THE_STYLE_DISPLAY === '') ? 'none' : 'block';
 },
 css_var_set(VAR_NAME, VAR){
     document.documentElement.style.setProperty(VAR_NAME, VAR);
