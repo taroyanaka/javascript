@@ -437,9 +437,9 @@ fn3(correct, answer, INDEX){
     this.data5[INDEX] = answer === correct ? "⭕️" : "❎";
 },
 fn4_1(){
-    a = R.zip(this.data4, this.data5)
+    a = R.zip(this.data4, this.data5);
     b = R.collectBy(
-                    (V)=>V[1] === '❎',
+                    (V)=> ( V[1] === '❎' || V[1] === undefined) ,
                     a
                 );
     c = b[0][0][1] === '⭕️' ? b[1] : b[0];
@@ -452,7 +452,7 @@ fn4_2(){
 fn4_3(){
     this.data10.push([
         R.transpose(this.data4)[2].join("\n"),
-        R.transpose(this.data4)[0].join("\n"),
+         R.transpose(this.data4)[0].join("\n"),
     ]);
 },
 fn4_4(){
