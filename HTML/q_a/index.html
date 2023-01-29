@@ -429,9 +429,9 @@ fn2_2(){
     return R.zip(this.data2, this.fn2_1()).map((V,IDX)=>[V[0], V[1], this.data6.split("\n")[IDX]]);
 },
 processing(){
-    this.data5 = [];
     this.data2 = this.data3.split("\n");
     this.data4 = this.fn2_2();
+    this.data5 = R.repeat(undefined, this.data4.length);
 },
 fn3(correct, answer, INDEX){
     this.data5[INDEX] = answer === correct ? "⭕️" : "❎";
@@ -452,7 +452,7 @@ fn4_2(){
 fn4_3(){
     this.data10.push([
         R.transpose(this.data4)[2].join("\n"),
-         R.transpose(this.data4)[0].join("\n"),
+        R.transpose(this.data4)[0].join("\n"),
     ]);
 },
 fn4_4(){
