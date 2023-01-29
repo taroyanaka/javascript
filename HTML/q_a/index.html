@@ -44,13 +44,13 @@ button{
 .header{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 3rem;
+    grid-template-rows: 4rem;
 }
 .contents{
     width: 100vw;
     display: grid;
     grid-template-columns: var(--css-var-column-1-none) var(--css-var-column-2-none) var(--css-var-column-3-none);
-    /* grid-template-rows: 1fr; */
+    /* grid-template-rows: 4fr; */
 }
 .column-1-none{
     visibility: hidden;
@@ -70,7 +70,7 @@ button{
 }
 .textarea-column-2{
     display: grid;
-    grid-template-rows: 3rem 1fr;
+    grid-template-rows: 4rem 1fr;
     /* grid-template-columns: 100% 100%; */
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
@@ -83,7 +83,7 @@ button{
 .a{
 grid-area: button-zone;
 display: grid;
-grid-template-rows: 3rem;
+grid-template-rows: 4rem;
 grid-template-columns: 1fr 1fr 1fr;
 }
 .a-1{}
@@ -101,6 +101,7 @@ width: 100%;
     word-break: break-all;
 }
 .test-fn-none-inline {
+    height: 4rem;
     display: var(--css-var-bar);
 }
 .textarea_none {
@@ -131,7 +132,7 @@ height: 4rem;
 }
 .link_button, .result_opener, .save_opener{
     width: 100%;
-    height: 2rem;
+    height: 4rem;
     font-size: 1.5rem;
 }
 .text_center{
@@ -159,7 +160,7 @@ font-size: 2rem;
     /* grid-template-columns: 4rem; */
 }
 .optional_function button{
-    height: 2rem;
+    height: 4rem;
     font-size: 1.5rem;
 }
 .processing{
@@ -415,7 +416,7 @@ save_data_set(INDEX){
     this.data3 = this.all_save[INDEX][1];
 },
 async save_data_delete(INDEX){
-    if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
+    if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕\n" + R.zip(this.all_save[INDEX][0].split("\n"), this.all_save[INDEX][1].split("\n")).join("\n") )) {
         this.all_save.splice(INDEX, 1);
         await localforage.setItem('key', JSON.stringify(this.all_save));
     }
