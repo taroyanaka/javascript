@@ -10,18 +10,16 @@
 <!-- <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script> -->
 <script src="./lib/vue@3.2.36.global.prod.js"></script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.prod.js"></script> -->
+<script src="./lib/ramda.@0.28.0.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script> -->
 
-<!-- Design -->
 <!-- Test -->
 <!-- Release -->
 
-<script src="./lib/ramda.@0.28.0.js"></script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script> -->
 <style>
 :root {
 font-size:12px;
---css-var-foo: grid;
---css-var-bar: none;
+--css-var-test-inline: none;
 --css-var-column-1-none: 1fr;
 --css-var-column-2-none: 1fr;
 --css-var-column-3-none: 1fr;
@@ -58,7 +56,7 @@ visibility: hidden;
 visibility: hidden;
 }
 .textarea-column-1{
-display: var(--css-var-foo);
+display: grid;
 grid-template-columns: 1fr 1fr;
 }
 .textarea-column-2{
@@ -94,7 +92,7 @@ word-break: break-all;
 }
 .test-fn-none-inline {
 height: 4rem;
-display: var(--css-var-bar);
+display: var(--css-var-test-inline);
 }
 .textarea_none {
 display: none;
@@ -180,7 +178,6 @@ font-size: 2rem;
 
 <div class="column-1" :class="{'column-1-none': column_1_none}">
 <div class="optional_function">
-    <!-- <button @click="open_close_fn">👐</button> -->
     <button @click="reverse_q_a">🔃</button>
     <button @click="shuffle_q_a">🌪️</button>
     <button @click="swap_q_a">🔁</button>
@@ -195,8 +192,7 @@ font-size: 2rem;
     <button @click="save_data_delete(DATAIDX)" class="save_data_delete">🗑️</button>
 </li>
 </ul>
-<!-- <button @click="processing" class="processing">🏗️</button> -->
-<!-- <button @click="fn14" class="link_button">🌐</button> -->
+<button @click="fn14" class="link_button">🌐</button>
 <a :href="data11[0]" class="break">{{data11[0]}}</a>
 </div>
 <div class="textarea-column-1">
@@ -301,13 +297,13 @@ const {
   rnd, rndInt, shuffle
 } = seededRandom({seed: "optional seed string"});
 
-let data2 = null;
-let data3 = null;
-let data4 = null;
-let data5 = null;
-let data6 = null;
-let data10 = null;
-let data11 = null;
+// let data2 = null;
+// let data3 = null;
+// let data4 = null;
+// let data5 = null;
+// let data6 = null;
+// let data10 = null;
+// let data11 = null;
 
 const app = Vue.createApp({
 data() {
@@ -334,7 +330,6 @@ SUN
 OZ`,
 data10: [],
 data11: [],
-open_close: 'open',
 test_mode: false,
 column_1_none: false,
 column_2_none: false,
@@ -428,34 +423,17 @@ fn4_4(){
 },
 fn4(){
     if(this.fn4_4()){
-        (this.data4 = this.data5 = [], this.for_debug()); return;
+        this.data4 = this.data5 = [];
+        return;
     };
     this.fn4_1();
     this.fn4_2();
     this.fn4_3();
-    this.for_debug();
-},
-open_close_fn(){
-this.open_close = this.open_close === 'open' ? 'close' : 'open';
-const STYLE = document.documentElement.style;
-this.open_close === 'close' ? STYLE.setProperty('--css-var-foo', 'none') : STYLE.setProperty('--css-var-foo', 'grid');
 },
 fn9(IDX){
 this.data6 = this.data10[IDX][0];
 this.data3 = this.data10[IDX][1];
 },
-// fn10(){
-// this.data6 = `A
-// B
-// C
-// D
-// E`;
-// this.data3 = `a
-// b
-// c
-// d
-// e`;
-// },
 reverse_q_a(){
     this.data6 = this.data6.split("\n").reverse().join("\n");
     this.data3 = this.data3.split("\n").reverse().join("\n");
@@ -474,7 +452,6 @@ swap_q_a(){
 },
 fn14(){
 this.data11[0] = this.data11[0] === '' ? window.location.origin + window.location.pathname + "?Q=" + JSON.stringify(this.to_ary(this.data6).split("\n")) + "&A=" + JSON.stringify(this.to_ary(this.data3).split("\n")) : '';
-this.for_debug();
 },
 fn15(){
 if(new URL(window.location.href).searchParams.get("Q") && new URL(window.location.href).searchParams.get("A")){
@@ -515,7 +492,7 @@ column_3_none_fn(){
     this.column_3_none === true ? (this.css_var_set('--css-var-column-3-none', '1fr'), this.column_3_none = false) : (this.css_var_set('--css-var-column-3-none', '0px'), this.column_3_none = true);
 },
 test_exe(){
-this.css_var_set('--css-var-bar', 'inlilne');
+this.css_var_set('--css-var-test-inline', 'inlilne');
 this.css_var_set('--css-var-color-1', 'aqua');
 this.css_var_set('--css-var-color-2', 'bisque');
 this.css_var_set('--css-var-color-3', 'crimson');
@@ -529,7 +506,6 @@ to_ary(it){
 test_index(TEST_INDEX){
     this.data4.forEach((V,IDX)=>this.fn3(V[0], V[1][TEST_INDEX], IDX));
     this.fn4();
-    this.for_debug();
 },
 for_debug(){
     data2 = this.to_ary(this.data2);
