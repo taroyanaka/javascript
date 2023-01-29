@@ -22,60 +22,52 @@
 font-size:12px;
 --css-var-foo: grid;
 --css-var-bar: none;
-
 --css-var-column-1-none: 1fr;
 --css-var-column-2-none: 1fr;
 --css-var-column-3-none: 1fr;
-
 --css-var-color-1: ;
 --css-var-color-2: ;
 --css-var-color-3: ;
 }
 button{
-    border: none;
-    background-color: aliceblue;
-    border-radius: 1rem;
-    margin: 0.1rem;
+border: none;
+background-color: aliceblue;
+border-radius: 1rem;
+margin: 0.1rem;
 }
 .app{
-    /* height: 100vh; */
-    width: 100vw;
+width: 100vw;
 }
 .header{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 4rem;
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+grid-template-rows: 4rem;
 }
 .contents{
-    width: 100vw;
-    display: grid;
-    grid-template-columns: var(--css-var-column-1-none) var(--css-var-column-2-none) var(--css-var-column-3-none);
-    /* grid-template-rows: 4fr; */
+width: 100vw;
+display: grid;
+grid-template-columns: var(--css-var-column-1-none) var(--css-var-column-2-none) var(--css-var-column-3-none);
 }
 .column-1-none{
-    visibility: hidden;
-    /* display: none; */
+visibility: hidden;
 }
 .column-2-none{
-    visibility: hidden;
-    /* display: none; */
+visibility: hidden;
 }
 .column-3-none{
-    visibility: hidden;
-    /* display: none; */
+visibility: hidden;
 }
 .textarea-column-1{
-    display: var(--css-var-foo);
-    grid-template-columns: 1fr 1fr;
+display: var(--css-var-foo);
+grid-template-columns: 1fr 1fr;
 }
 .textarea-column-2{
-    display: grid;
-    grid-template-rows: 4rem 1fr;
-    /* grid-template-columns: 100% 100%; */
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-        "button-zone button-zone"
-        "question answer";
+display: grid;
+grid-template-rows: 4rem 1fr;
+grid-template-columns: 1fr 1fr;
+grid-template-areas:
+"button-zone button-zone"
+"question answer";
 }
 .column-1{background-color: var(--css-var-color-1)}
 .column-2{background-color: var(--css-var-color-2)}
@@ -98,50 +90,43 @@ grid-area: answer;
 width: 100%;
 }
 .break{
-    word-break: break-all;
+word-break: break-all;
 }
 .test-fn-none-inline {
-    height: 4rem;
-    display: var(--css-var-bar);
+height: 4rem;
+display: var(--css-var-bar);
 }
 .textarea_none {
-    display: none;
+display: none;
 }
 .q_and_a{
 display: grid;
 grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr;
-/* grid-template-columns: 10rem 1fr 1fr 1fr 1fr; */
 justify-content: center;
 align-content: center;
 grid-auto-flow: column;
-/* word-break: break-all; */
 }
 .q_and_a button{
 width: auto;
 height: 4rem;
-/* margin-left: 0.2rem; */
-/* margin-right: 0.2rem; */
 }
 .check_button{
-/* margin-top: 2rem; */
-    width: 100%;
-    height: 4rem;
-    justify-self: center;
-    align-self: center;
-    font-size: 3rem;
+width: 100%;
+height: 4rem;
+justify-self: center;
+align-self: center;
+font-size: 3rem;
 }
 .link_button, .result_opener, .save_opener{
-    width: 100%;
-    height: 4rem;
-    font-size: 1.5rem;
+width: 100%;
+height: 4rem;
+font-size: 1.5rem;
 }
 .text_center{
 width: fit-content;
 font-size: 2rem;
 align-self: center;
 justify-self:center;
-
-/* width: 10rem; */
 overflow: hidden;
 }
 .text_left{
@@ -149,57 +134,39 @@ text-align: start;
 font-size: 1.8rem;
 }
 .text_right{
-/* text-align: end; */
 justify-self: center;
 align-self: center;
 font-size: 2rem;
 }
 .optional_function{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    /* grid-template-columns: 4rem; */
+display: grid;
+grid-template-columns: repeat(4, 1fr);
 }
 .optional_function button{
-    height: 4rem;
-    font-size: 1.5rem;
+height: 4rem;
+font-size: 1.5rem;
 }
 .processing{
-    width: 100%;
-    height: 4rem;
-    font-size: 3rem;
+width: 100%;
+height: 4rem;
+font-size: 3rem;
 }
 .save_data_set_list > *{
-    /* font-size: 1.5rem; */
-  /* オーバーした要素を非表示にする*/
-  overflow: hidden;
-
-  /* 改行を半角スペースに変換することで、1行にする */
-  white-space: nowrap;
-
-  /* 幅を指定しないとテキストの長さによって要素の幅が変わるため指定 */
-  /* width: 120px; */
-
-  /* オーバーしたテキストを３点リーダーにする */
-  /* text-overflow: ellipsis; */
+overflow: hidden;
+white-space: nowrap;
 }
 .save_data_set_list{
-    display: grid;
-    grid-template-columns: 1fr 2.5rem 2.5rem;
+display: grid;
+grid-template-columns: 1fr 2.5rem 2.5rem;
 word-break: break-all;
-
 }
 .save_data_set_list > span{
-    /* background-color: gray; */
-    font-size: 1.3rem;
+font-size: 1.3rem;
 }
-.save_data_set{
-    /* background-color: aliceblue; */
-}
-.save_data_delete{
-    /* background-color: aliceblue; */
-}
+.save_data_set{}
+.save_data_delete{}
 .column_none{
-    font-size: 2rem;
+font-size: 2rem;
 }
 </style>
 </head>
