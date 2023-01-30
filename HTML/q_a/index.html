@@ -212,7 +212,7 @@ font-size: 2rem;
 </div>
 <template v-for="(DATAVAL, DATAIDX) in data4">
 <div class="q_and_a">
-    <span class="text_right">{{ data5[DATAIDX] }}</span>
+    <span class="text_right" @click="fn20(DATAIDX)">{{ data5[DATAIDX] }}</span>
     <span class="text_center">{{ DATAVAL[2] }}</span>
     <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button>
 </div>
@@ -332,7 +332,7 @@ SUN
 OZ`,
 data10: [],
 data11: [],
-test_mode: false,
+test_mode: true,
 column_1_none: false,
 column_2_none: false,
 column_3_none: false,
@@ -400,6 +400,7 @@ processing(){
 },
 fn3(correct, answer, INDEX){
     this.data5[INDEX] = answer === correct ? "⭕️" : "❎";
+this.for_debug();
 },
 fn4_1(){
     a = R.zip(this.data4, this.data5);
@@ -480,6 +481,17 @@ fn19(){
     THE_STYLE_DISPLAY = document.querySelector('.save_data_set_list_parent').style.display;
     document.querySelector('.save_data_set_list_parent').style.display = (THE_STYLE_DISPLAY === 'block' || THE_STYLE_DISPLAY === '') ? 'none' : 'block';
 },
+fn20(INDEX){
+    // this.data5.splice(INDEX, 1);
+    this.data5[INDEX] = null;
+},
+
+
+
+
+
+
+
 css_var_set(VAR_NAME, VAR){
     document.documentElement.style.setProperty(VAR_NAME, VAR);
 },
@@ -497,9 +509,9 @@ this.css_var_set('--css-var-test-inline', 'inlilne');
 this.css_var_set('--css-var-color-1', 'aqua');
 this.css_var_set('--css-var-color-2', 'bisque');
 this.css_var_set('--css-var-color-3', 'crimson');
-this.test0();
-this.test1();
-this.test2();
+// this.test0();
+// this.test1();
+// this.test2();
 },
 
 
