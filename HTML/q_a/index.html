@@ -124,19 +124,19 @@ font-size: 1.5rem;
 }
 .text_center{
 width: fit-content;
-font-size: 2rem;
+font-size: 1.5rem;
 align-self: center;
 justify-self:center;
 overflow: hidden;
 }
 .text_left{
 text-align: start;
-font-size: 1.8rem;
+font-size: 1.5rem;
 }
 .text_right{
 justify-self: center;
 align-self: center;
-font-size: 2rem;
+font-size: 1.5rem;
 }
 .optional_function{
 display: grid;
@@ -213,8 +213,8 @@ font-size: 2rem;
 <template v-for="(DATAVAL, DATAIDX) in data4">
 <div class="q_and_a">
     <span class="text_right" @click="fn20(DATAIDX)">{{ data5[DATAIDX] }}</span>
-    <span class="text_center">{{ DATAVAL[2] }}</span>
     <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button>
+    <span class="text_center">{{ DATAVAL[2] }}</span>
 </div>
 </template>
 <button @click="fn4" class="check_button">🎮</button>
@@ -482,7 +482,6 @@ fn19(){
     document.querySelector('.save_data_set_list_parent').style.display = (THE_STYLE_DISPLAY === 'block' || THE_STYLE_DISPLAY === '') ? 'none' : 'block';
 },
 fn20(INDEX){
-    // this.data5.splice(INDEX, 1);
     this.data5[INDEX] = null;
 },
 
