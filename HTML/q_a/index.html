@@ -109,8 +109,10 @@ align-content: center;
 grid-auto-flow: column;
 }
 .q_and_a button{
+display: inline-block;
 width: auto;
-height: 4rem;
+min-height: 4rem;
+word-break: break-all;
 }
 .check_button{
 width: 100%;
@@ -125,11 +127,14 @@ height: 4rem;
 font-size: 1.5rem;
 }
 .text_center{
-width: fit-content;
+display: inline-block;
+width: auto;
+min-height: 4rem;
 font-size: 1.5rem;
 align-self: center;
 justify-self:center;
-overflow: hidden;
+/* overflow: hidden; */
+word-break: break-all;
 }
 .text_left{
 text-align: start;
@@ -209,6 +214,8 @@ font-size: 2.5rem;
 <button @click="fn21(1)" class="font_sizing">◉</button>
 <button @click="fn21(-1)" class="font_sizing">⦿</button>
 <button @click="fn21" class="font_sizing">◎</button>
+<button @click="fn22" class="qux" data-foo="qux">fn22</button>
+<!-- <button @click="fn4" class="check_button" :data-foo="qux">🎮</button> -->
 </div>
 
 
@@ -344,6 +351,7 @@ test_mode: false,
 column_1_none: false,
 column_2_none: false,
 column_3_none: false,
+// foo: 'buz',
 }},
 watch: {
    data3: {
@@ -406,6 +414,7 @@ processing(){
     this.data2 = this.data3.split("\n");
     this.data4 = this.fn2_2();
     this.data5 = R.repeat(undefined, this.data4.length);
+    this.for_debug();
 },
 fn3(correct, answer, INDEX){
     this.data5[INDEX] = answer === correct ? "⭕️" : "❎";
@@ -493,14 +502,18 @@ fn19(){
 fn20(INDEX){
     this.data5[INDEX] = null;
 },
-fn21(ONE_UP_OR_ONE_DOWN){
-    ONE_UP_OR_ONE_DOWN = ONE_UP_OR_ONE_DOWN ? ONE_UP_OR_ONE_DOWN : '12px';
+fn21(ONE_UP_OR_ONE_DOWN_OR_12px){
+    ONE_UP_OR_ONE_DOWN_OR_12px = ONE_UP_OR_ONE_DOWN_OR_12px ? ONE_UP_OR_ONE_DOWN_OR_12px : '12px';
     num_px_string = (
             Number(
                 document.documentElement.style.getPropertyValue('--css-var-root-font-size').split("px")[0]
-            ) + (ONE_UP_OR_ONE_DOWN)
+            ) + (ONE_UP_OR_ONE_DOWN_OR_12px)
         ).toString() + 'px';
     this.css_var_set('--css-var-root-font-size', num_px_string);
+},
+fn22(INDEX){
+// document.querySelectorAll(".q_and_a")[INDEX]
+console.log(this.foo);
 },
 
 
