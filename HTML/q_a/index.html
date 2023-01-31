@@ -20,7 +20,8 @@
 
 <style>
 :root {
-font-size: 12px;
+--css-var-root-font-size: 12px;
+font-size: var(--css-var-root-font-size);
 --css-var-test-inline: none;
 --css-var-column-1-none: 1fr;
 --css-var-column-2-none: 1fr;
@@ -28,6 +29,7 @@ font-size: 12px;
 --css-var-color-1: ;
 --css-var-color-2: ;
 --css-var-color-3: ;
+--test: 'blue';
 }
 button{
 border: none;
@@ -168,6 +170,9 @@ font-size: 1.3rem;
 .column_none{
 font-size: 2rem;
 }
+.font_sizing{
+font-size: 2.5rem;
+}
 </style>
 </head>
 <body class="app">
@@ -201,6 +206,9 @@ font-size: 2rem;
 <textarea name="" id="" rows="30" cols="" v-model="data6"></textarea>
 <textarea name="" id="" rows="30" cols="" v-model="data3"></textarea>
 </div>
+<button @click="fn21(1)" class="font_sizing">◉</button>
+<button @click="fn21(-1)" class="font_sizing">⦿</button>
+<button @click="fn21" class="font_sizing">◎</button>
 </div>
 
 
@@ -354,6 +362,7 @@ watch: {
 beforeCreate(){
 },
 created(){
+    this.css_var_set('--css-var-root-font-size', "12px");
 },
 beforeMount(){
 },
@@ -483,6 +492,15 @@ fn19(){
 },
 fn20(INDEX){
     this.data5[INDEX] = null;
+},
+fn21(ONE_UP_OR_ONE_DOWN){
+    ONE_UP_OR_ONE_DOWN = ONE_UP_OR_ONE_DOWN ? ONE_UP_OR_ONE_DOWN : '12px';
+    num_px_string = (
+            Number(
+                document.documentElement.style.getPropertyValue('--css-var-root-font-size').split("px")[0]
+            ) + (ONE_UP_OR_ONE_DOWN)
+        ).toString() + 'px';
+    this.css_var_set('--css-var-root-font-size', num_px_string);
 },
 
 
