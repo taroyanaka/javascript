@@ -14,8 +14,15 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script> -->
 
 <!-- Test -->
-<!-- Design for more UX -->
-<!-- Test -->
+<!--
+more than 1char both column, same volume both
+none
+min
+max
+Not enough
+Too much
+Incorrect characters
+-->
 <!-- Release -->
 
 <style>
@@ -207,13 +214,12 @@ font-size: 2.5rem;
 <a :href="data11[0]" class="break">{{data11[0]}}</a>
 </div>
 <div class="textarea-column-1">
-<textarea name="" id="" rows="30" cols="" v-model="data6"></textarea>
-<textarea name="" id="" rows="30" cols="" v-model="data3"></textarea>
+<textarea name="" id="textarea-column-1-1" rows="30" cols="" v-model="data6"></textarea>
+<textarea name="" id="textarea-column-1-2" rows="30" cols="" v-model="data3"></textarea>
 </div>
 <button @click="fn21(1)" class="font_sizing">◉</button>
 <button @click="fn21(-1)" class="font_sizing">⦿</button>
 <button @click="fn21" class="font_sizing">◎</button>
-<button @click="fn22" class="qux" data-foo="qux">fn22</button>
 <!-- <button @click="fn4" class="check_button" :data-foo="qux">🎮</button> -->
 </div>
 
@@ -510,12 +516,19 @@ fn21(ONE_UP_OR_ONE_DOWN_OR_12px){
         ).toString() + 'px';
     this.css_var_set('--css-var-root-font-size', num_px_string);
 },
-fn22(INDEX){
-// document.querySelectorAll(".q_and_a")[INDEX]
-console.log(this.foo);
+
+is_not_blank(str) {
+    return str.length > 0;
 },
-
-
+fn22(){
+document.querySelectorAll("#textarea-column-1-1")[0].value.split("\n").every(V=>this.isNotBlank(V));
+},
+fn23(){
+document.querySelectorAll("#textarea-column-1-2")[0].value.split("\n").every(V=>this.isNotBlank(V));
+},
+fn24(){
+document.querySelectorAll("#textarea-column-1-1")[0].value.split("\n").length === document.querySelectorAll("#textarea-column-1-2")[0].value.split("\n").length
+},
 
 
 
