@@ -521,15 +521,11 @@ fn21(ONE_UP_OR_ONE_DOWN_OR_12px){
     this.css_var_set('--css-var-root-font-size', num_px_string);
 },
 
-is_not_blank(str) {
-    return str.length > 0;
+is_not_blank(STR) {
+return STR.length > 0;
 },
-blank_check_1(){
-ELM = document.querySelector("#textarea-column-1-1");
-ELM.style.backgroundColor = ELM.value.split("\n").every(V=>this.is_not_blank(V)) === false ? "cornflowerblue" : '';
-},
-blank_check_2(){
-ELM = document.querySelector("#textarea-column-1-2");
+blank_check(TARGET){
+ELM = document.querySelector(TARGET);
 ELM.style.backgroundColor = ELM.value.split("\n").every(V=>this.is_not_blank(V)) === false ? "cornflowerblue" : '';
 },
 check_if_same_length(){
@@ -538,8 +534,8 @@ const both_target_coloring = (COLOR) => document.querySelectorAll(".textarea-col
 length_any_textarea("#textarea-column-1-1") === length_any_textarea("#textarea-column-1-2") ? both_target_coloring() : both_target_coloring('coral');
 },
 all_error_check(){
-this.blank_check_1();
-this.blank_check_2();
+this.blank_check("#textarea-column-1-1");
+this.blank_check("#textarea-column-1-2");
 this.check_if_same_length();
 },
 
