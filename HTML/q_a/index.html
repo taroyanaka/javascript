@@ -37,6 +37,8 @@ font-size: var(--css-var-root-font-size);
 --css-var-color-2: ;
 --css-var-color-3: ;
 --test: 'blue';
+/* background-color:violet */
+/* background-color: cornflowerblue; */
 }
 button{
 border: none;
@@ -361,12 +363,14 @@ column_3_none: false,
 watch: {
    data3: {
      handler() {
+        this.all_error_check();
         this.processing();
      },
      deep: true
    },
    data6: {
      handler() {
+        this.all_error_check();
         this.processing();
      },
      deep: true
@@ -520,14 +524,23 @@ fn21(ONE_UP_OR_ONE_DOWN_OR_12px){
 is_not_blank(str) {
     return str.length > 0;
 },
-fn22(){
-document.querySelectorAll("#textarea-column-1-1")[0].value.split("\n").every(V=>this.isNotBlank(V));
+blank_check_1(){
+ELM = document.querySelector("#textarea-column-1-1");
+ELM.style.backgroundColor = ELM.value.split("\n").every(V=>this.is_not_blank(V)) === false ? "cornflowerblue" : '';
 },
-fn23(){
-document.querySelectorAll("#textarea-column-1-2")[0].value.split("\n").every(V=>this.isNotBlank(V));
+blank_check_2(){
+ELM = document.querySelector("#textarea-column-1-2");
+ELM.style.backgroundColor = ELM.value.split("\n").every(V=>this.is_not_blank(V)) === false ? "cornflowerblue" : '';
 },
-fn24(){
-document.querySelectorAll("#textarea-column-1-1")[0].value.split("\n").length === document.querySelectorAll("#textarea-column-1-2")[0].value.split("\n").length
+check_if_same_length(){
+const length_any_textarea = (TARGET) => document.querySelector(TARGET).value.split("\n").length;
+const both_target_coloring = (COLOR) => document.querySelectorAll(".textarea-column-1 > textarea").forEach(TEXTAREA=>TEXTAREA.style.backgroundColor = COLOR || TEXTAREA.style.backgroundColor);
+length_any_textarea("#textarea-column-1-1") === length_any_textarea("#textarea-column-1-2") ? both_target_coloring() : both_target_coloring('coral');
+},
+all_error_check(){
+this.blank_check_1();
+this.blank_check_2();
+this.check_if_same_length();
 },
 
 
