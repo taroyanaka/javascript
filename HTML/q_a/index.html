@@ -100,9 +100,6 @@ width: 100%;
 grid-area: answer;
 width: 100%;
 }
-.break{
-word-break: break-all;
-}
 .test-fn-none-inline {
 height: 4rem;
 display: var(--css-var-test-inline);
@@ -134,6 +131,29 @@ font-size: 3rem;
 width: 100%;
 height: 4rem;
 font-size: 1.5rem;
+position: relative;
+}
+.link_button{
+display: block;
+/* width: auto; */
+}
+.link_text{
+display: block;
+word-break: break-all;
+width: auto;
+  inline-size: 33vw;
+  overflow: hidden;
+}
+.link_button_top{
+position: absolute;
+right: 50%;
+z-index: 1;
+}
+.link_button_under{
+position: absolute;
+width: 100%;
+z-index: 0;
+/* display: block; */
 }
 .text_center{
 display: inline-block;
@@ -203,7 +223,7 @@ font-size: 2.5rem;
     <button @click="swap_q_a">🔁</button>
     <button @click="save_data_to_all_save">🗂️</button>
 </div>
-<div>
+<!-- <div> -->
 <button @click="fn19" class="save_opener">📂</button>
 <ul class="save_data_set_list_parent" style='display: block;'>
 <li v-for="(DATAVAL, DATAIDX) in all_save" class="save_data_set_list">
@@ -212,9 +232,14 @@ font-size: 2.5rem;
     <button @click="save_data_delete(DATAIDX)" class="save_data_delete">🗑️</button>
 </li>
 </ul>
-<button @click="fn14" class="link_button">🌐</button>
-<a :href="data11[0]" class="break">{{data11[0]}}</a>
+
+<div class="link_button" @click="fn14">
+<button class="link_button_top">🌐</button>
+<progress max="4000" :value="progress_val" class="link_button_under"></progress>
 </div>
+
+<a :href="data11[0]" class="link_text">{{data11[0]}}</a>
+<!-- </div> -->
 <div class="textarea-column-1">
 <textarea name="" id="textarea-column-1-1" rows="30" cols="" v-model="data6"></textarea>
 <textarea name="" id="textarea-column-1-2" rows="30" cols="" v-model="data3"></textarea>
@@ -334,17 +359,95 @@ data() {
 return {
 all_save: [],
 data2: [],
-data3: `1
-2
-3
-4
-6
-8
-S
-O`,
-data4: [],
-data5: [],
-data6: `10
+data3: `10
+20
+30
+40
+60
+80
+SUN
+OZ
+10
+20
+30
+40
+60
+80
+SUN
+OZ
+10
+20
+30
+40
+60
+80
+SUN
+OZ
+10
+20
+30
+40
+60
+80
+SUN
+OZ
+10
+20
+30
+40
+60
+80
+SUN
+OZ
+10
+20
+30
+40
+60
+80
+SUN
+OZ
+10
+20
+30
+40
+60
+80
+SUN
+OZ
+10
+20
+30
+40
+60
+80
+SUN
+OZ
+10
+20
+30
+40
+60
+80
+SUN
+OZ
+10
+20
+30
+40
+60
+80
+SUN
+OZ
+10
+20
+30
+40
+60
+80
+SUN
+OZ
+10
 20
 30
 40
@@ -352,13 +455,111 @@ data6: `10
 80
 SUN
 OZ`,
+data4: [],
+data5: [],
+data6: `1
+2
+3
+4
+6
+8
+S
+O
+1
+2
+3
+4
+6
+8
+S
+O
+1
+2
+3
+4
+6
+8
+S
+O
+1
+2
+3
+4
+6
+8
+S
+O
+1
+2
+3
+4
+6
+8
+S
+O
+1
+2
+3
+4
+6
+8
+S
+O
+1
+2
+3
+4
+6
+8
+S
+O
+1
+2
+3
+4
+6
+8
+S
+O
+1
+2
+3
+4
+6
+8
+S
+O
+1
+2
+3
+4
+6
+8
+S
+O
+1
+2
+3
+4
+6
+8
+S
+O
+1
+2
+3
+4
+6
+8
+S
+O`,
 data10: [],
-data11: [],
+data11: [''],
 test_mode: false,
 column_1_none: false,
 column_2_none: false,
 column_3_none: false,
-// foo: 'buz',
+progress_val: 0,
 }},
 watch: {
    data3: {
@@ -481,6 +682,10 @@ swap_q_a(){
 },
 fn14(){
 this.data11[0] = this.data11[0] === '' ? window.location.origin + window.location.pathname + "?Q=" + JSON.stringify(this.to_ary(this.data6).split("\n")) + "&A=" + JSON.stringify(this.to_ary(this.data3).split("\n")) : '';
+this.progress_val = this.data11[0].length;
+if(this.data11[0].length > 4000){
+this.data11[0] = ''
+}
 },
 fn15(){
 if(new URL(window.location.href).searchParams.get("Q") && new URL(window.location.href).searchParams.get("A")){
@@ -520,8 +725,11 @@ fn21(ONE_UP_OR_ONE_DOWN_OR_12px){
         ).toString() + 'px';
     this.css_var_set('--css-var-root-font-size', num_px_string);
 },
+fn22(){
 
-is_not_blank(STR) {
+},
+
+is_not_blank(STR){
 return STR.length > 0;
 },
 blank_check(TARGET){
