@@ -516,6 +516,8 @@ num_px_string = (
 this.css_var_set('--css-var-root-font-size', num_px_string);
 },
 
+
+
 is_not_blank(STR){
 return STR.length > 0;
 },
@@ -536,19 +538,17 @@ this.check_if_same_length();
 
 
 
-
-
 css_var_set(VAR_NAME, VAR){
 document.documentElement.style.setProperty(VAR_NAME, VAR);
 },
 column_1_none_fn(){
-    this.column_1_none === true ? (this.css_var_set('--css-var-column-1-none', '1fr'), this.column_1_none = false) : (this.css_var_set('--css-var-column-1-none', '0px'), this.column_1_none = true);
+this.column_1_none === true ? (this.css_var_set('--css-var-column-1-none', '1fr'), this.column_1_none = false) : (this.css_var_set('--css-var-column-1-none', '0px'), this.column_1_none = true);
 },
 column_2_none_fn(){
-    this.column_2_none === true ? (this.css_var_set('--css-var-column-2-none', '1fr'), this.column_2_none = false) : (this.css_var_set('--css-var-column-2-none', '0px'), this.column_2_none = true);
+this.column_2_none === true ? (this.css_var_set('--css-var-column-2-none', '1fr'), this.column_2_none = false) : (this.css_var_set('--css-var-column-2-none', '0px'), this.column_2_none = true);
 },
 column_3_none_fn(){
-    this.column_3_none === true ? (this.css_var_set('--css-var-column-3-none', '1fr'), this.column_3_none = false) : (this.css_var_set('--css-var-column-3-none', '0px'), this.column_3_none = true);
+this.column_3_none === true ? (this.css_var_set('--css-var-column-3-none', '1fr'), this.column_3_none = false) : (this.css_var_set('--css-var-column-3-none', '0px'), this.column_3_none = true);
 },
 test_exe(){
 this.css_var_set('--css-var-test-inline', 'inlilne');
@@ -570,13 +570,13 @@ this.data4.forEach((V,IDX)=>this.fn3(V[0], V[1][TEST_INDEX], IDX));
 this.fn4();
 },
 for_debug(){
-    data2 = this.to_ary(this.data2);
-    data3 = this.to_ary(this.data3);
-    data4 = this.to_ary(this.data4);
-    data5 = this.to_ary(this.data5);
-    data6 = this.to_ary(this.data6);
-    data10 = this.to_ary(this.data10);
-    data11 = this.to_ary(this.data11);
+data2 = this.to_ary(this.data2);
+data3 = this.to_ary(this.data3);
+data4 = this.to_ary(this.data4);
+data5 = this.to_ary(this.data5);
+data6 = this.to_ary(this.data6);
+data10 = this.to_ary(this.data10);
+data11 = this.to_ary(this.data11);
 },
 test0(){this.test_index(0)},
 test1(){this.test_index(1)},
