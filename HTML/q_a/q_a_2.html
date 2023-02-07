@@ -15,8 +15,8 @@
 <script src="./lib/ramda.@0.28.0.js"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script> -->
 </head>
-  <body class="app">
 
+<body class="app">
 <div class="result_data">
 <template v-for="(DATAVAL, DATAIDX) in data1">
 <span class="text">{{ (typeof DATAVAL) !== 'object' ? DATAVAL : '' }}</span>
@@ -25,11 +25,9 @@
     </select>
 </template>
 </div>
+</body>
 
-    <script>
-
-
-
+<script>
 let data1 = null;
 let data2 = null;
 let data3 = null;
@@ -99,6 +97,5 @@ data5,
 },
 }
 }).mount('.app');
-    </script>
-  </body>
+</script>
 </html>
