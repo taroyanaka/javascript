@@ -17,6 +17,8 @@
 </head>
 
 <body class="app">
+<textarea name="" class="q_a_original" cols="100" rows="10" v-model="q_a_original"></textarea>
+<textarea name="" class="q_a_target" cols="100" rows="10" v-model="q_a_target"></textarea>
 <div class="result_data">
 <template v-for="(DATAVAL, DATAIDX) in data1">
 <span class="text">{{ (typeof DATAVAL) !== 'object' ? DATAVAL : '' }}</span>
@@ -28,6 +30,8 @@
 </body>
 
 <script>
+let q_a_original = null;
+let q_a_target = null;
 let data1 = null;
 let data2 = null;
 let data3 = null;
@@ -36,8 +40,14 @@ let data5 = null;
 const app = Vue.createApp({
 data() {
 return {
-test_mode: false,
-data1: ['a', [1,'',1,2,3], 'b', ['C','','A','B','C'],'c'],
+test_mode: true,
+q_a_original: `a is 100200300 です。ABはC
+is thAt;.`,
+q_a_target: `100
+AB
+A`,
+data0: [],
+data1: ['a is ', ['100','','AB','A','100'], '200300 です。', ['AB','','AB','A','100'],'はC\nis th', ['A','','AB','A','100'],'t;.'],
 data2: [],
 data3: [],
 data4: [],
@@ -74,7 +84,7 @@ return R.remove(0, 1, ARY);
 },
 
 test(){
-this.data2 = [null, '2', null, 'C', null];
+this.data2 = [null, '100', null, 'A', null, 'A', null];
 },
 
 
@@ -82,6 +92,8 @@ to_ary(it){
 return JSON.parse(JSON.stringify(it));
 },
 for_debug(){
+q_a_original = this.to_ary(this.q_a_original);
+q_a_target = this.to_ary(this.q_a_target);
 data1 = this.to_ary(this.data1);
 data2 = this.to_ary(this.data2);
 data3 = this.to_ary(this.data3);
@@ -93,7 +105,9 @@ data2,
 data3,
 data4,
 data5,
-)
+);
+console.log('test data0 is:', this.to_ary(this.data0));
+console.log('test result:', this.data0 === this.data1);
 },
 }
 }).mount('.app');
