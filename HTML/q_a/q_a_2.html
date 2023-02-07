@@ -14,36 +14,61 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script> -->
 </head>
   <body class="app">
-<!-- <span>text is </span>
-    <select v-model="selected" @change="checkAnswer">
-      <option v-for="option in options">{{ option }}</option>
-    </select>
-<span> , you choosed</span> -->
 
 
-<template v-for="(DATAVAL, DATAIDX) in result">
+<template v-for="(DATAVAL, DATAIDX) in data1">
 {{ (typeof DATAVAL) !== 'object' ? DATAVAL : null }}
-    <select v-model="selected" @change="checkAnswer" v-if="(typeof DATAVAL) === 'object'">
-      <option v-for="option in DATAVAL">{{ option }}</option>
+    <select v-model="data2[DATAIDX]" @change="checkAnswer" v-if="(typeof DATAVAL) === 'object'">
+      <option v-for="option in without_first_param(DATAVAL)">{{ option }}</option>
     </select>
 </template>
 
     <script>
+let data1 = null;
+let data2 = null;
+let data3 = null;
+let data4 = null;
+let data5 = null;
 const app = Vue.createApp({
 data() {
 return {
-result: ['a', [null,1,2,3], 'b', 'c'],
-options: [
-"",
-"red" ,
-"blue" ,
-"yellow",
-],
-selected: "",
+data1: ['a', [1,'',1,2,3], 'b', [10,'',10,20,30],'c'],
+data2: [],
+data3: [],
+data4: [],
+data5: [],
 }},
 methods: {
+array_all_stringify(ARY){
+    return ARY.map(V=> (typeof V === 'string') ? V : V.map(VALUE=>VALUE.toString()));
+},
 checkAnswer() {
-console.log(this.selected);
+this.data3 = this.array_all_stringify(this.data1);
+this.data4 = R.zip(this.data3, this.data2);
+this.data5 = this.data4.map(V=>{if(V[1] !== null){return V[0][0] === V[1]}});
+this.for_debug();
+},
+without_first_param(ARY) {
+return R.remove(0, 1, ARY);
+},
+
+
+to_ary(it){
+return JSON.parse(JSON.stringify(it));
+},
+for_debug(){
+data1 = this.to_ary(this.data1);
+data2 = this.to_ary(this.data2);
+data3 = this.to_ary(this.data3);
+data4 = this.to_ary(this.data4);
+data5 = this.to_ary(this.data5);
+console.log(
+data1,
+data2,
+data3,
+data4,
+data5,
+)
 },
 }
 }).mount('.app');
