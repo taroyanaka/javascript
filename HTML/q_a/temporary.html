@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .question {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+
+      .options {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 20px;
+      }
+
+      .options label {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .options input[type="radio"] {
+        margin-right: 10px;
+      }
+
+      .result {
+        font-size: 20px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="question">What is the capital of France?</div>
+      <form class="options">
+        <label v-for="(option, index) in options">
+          <input type="radio" v-bind:value="option" v-model="selectedOption" />
+          {{ option }}
+        </label>
+      </form>
+
+  <div>
+    <p>{{ question }}</p>
+    <select v-model="selected">
+      <!-- <option v-for="option in options" :key="option.value">{{ option.text }}</option> -->
+      <option v-for="option in options">{{ option }}</option>
+    </select>
+    <p>選択肢: {{ selected }}</p>
+  </div>
+
+      <button @click="checkAnswer">Check Answer</button>
+      <div class="result">{{ result }}</div>
+    </div>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@3.0.0-rc.3/dist/vue.global.js"></script> -->
+<script src="./lib/vue@3.2.36.global.prod.js"></script>
+
+    <script>
+const app = Vue.createApp({
+data() {
+return {
+            options: ["Paris", "London", "Berlin"],
+            selectedOption: "",
+            result: "",
+      question: "好きな色は？",
+
+      options: [
+        "red" ,
+        "blue" ,
+        "yellow",
+      ],
+      selected: "",
+}},
+        methods: {
+          checkAnswer() {
+            if (this.selectedOption === "Paris") {
+              this.result = "Correct!";
+            } else {
+              this.result = "Incorrect.";
+            }
+          }
+        }
+    //   });
+}).mount('#app');
+    </script>
+  </body>
+</html>

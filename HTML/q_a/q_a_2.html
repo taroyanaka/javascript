@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>q_a_2</title>
+<link rel="stylesheet" href="./lib/reset.css">
+<script src="./lib/localforage@1.10.0.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script> -->
+<script src="./lib/vue@3.2.36.global.prod.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.prod.js"></script> -->
+<script src="./lib/ramda.@0.28.0.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script> -->
+</head>
+  <body class="app">
+<!-- <span>text is </span>
+    <select v-model="selected" @change="checkAnswer">
+      <option v-for="option in options">{{ option }}</option>
+    </select>
+<span> , you choosed</span> -->
+
+
+<template v-for="(DATAVAL, DATAIDX) in result">
+{{ (typeof DATAVAL) !== 'object' ? DATAVAL : null }}
+    <select v-model="selected" @change="checkAnswer" v-if="(typeof DATAVAL) === 'object'">
+      <option v-for="option in DATAVAL">{{ option }}</option>
+    </select>
+</template>
+
+    <script>
+const app = Vue.createApp({
+data() {
+return {
+result: ['a', [null,1,2,3], 'b', 'c'],
+options: [
+"",
+"red" ,
+"blue" ,
+"yellow",
+],
+selected: "",
+}},
+methods: {
+checkAnswer() {
+console.log(this.selected);
+},
+}
+}).mount('.app');
+    </script>
+  </body>
+</html>
