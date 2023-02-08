@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<!-- from chatGPT -->
+<!-- vue 3のvue.jsで10問の三択問題を3分で解くプログラムをHTMLファイル形式で出力して -->
+
+<link rel="stylesheet" href="./lib/reset.css">
+<script src="./lib/localforage@1.10.0.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script> -->
+<script src="./lib/vue@3.2.36.global.prod.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.prod.js"></script> -->
+<script src="./lib/ramda.@0.28.0.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script> -->
+
+  </head>
+  <body>
+    <div class="app">
+      <h1>Trivia Quiz</h1>
+      <p>{{ currentQuestion.question }}</p>
+      <ul>
+        <li v-for="choice in currentQuestion.choices" @click="checkAnswer(choice)">
+          <button>{{ choice }}</button>
+        </li>
+      </ul>
+      <p>{{ message }}</p>
+      <p>{{ score }} / 10</p>
+      <p>Time remaining: {{ timeLeft }} seconds</p>
+    </div>
+    
+    <script>
+      const questions = [
+{
+question: 'What is the capital of the United States?',
+choices: ['New York', 'Washington, D.C.', 'Los Angeles'],
+answer: 'Washington, D.C.'
+},
+{
+question: 'What is the largest ocean in the world?',
+choices: ['Atlantic Ocean', 'Pacific Ocean', 'Indian Ocean'],
+answer: 'Pacific Ocean'
+},
+{
+question: 'Who wrote the novel "Pride and Prejudice"?',
+choices: ['Jane Austen', 'Charles Dickens', 'William Shakespeare'],
+answer: 'Jane Austen'
+},
+{
+question: 'What is the currency used in Japan?',
+choices: ['Dollar', 'Euro', 'Yen'],
+answer: 'Yen'
+},
+{
+question: 'Who painted the famous artwork "The Starry Night"?',
+choices: ['Vincent van Gogh', 'Pablo Picasso', 'Salvador Dali'],
+answer: 'Vincent van Gogh'
+},
+{
+question: 'Who invented the telephone?',
+choices: ['Alexander Graham Bell', 'Thomas Edison', 'Nikola Tesla'],
+answer: 'Alexander Graham Bell'
+},
+{
+question: 'What is the highest mountain in the world?',
+choices: ['Mount Everest', 'K2', 'Kangchenjunga'],
+answer: 'Mount Everest'
+},
+{
+question: 'Who wrote the book "To Kill a Mockingbird"?',
+choices: ['Harper Lee', 'F. Scott Fitzgerald', 'Ernest Hemingway'],
+answer: 'Harper Lee'
+},
+{
+question: 'What is the name of the first human who walked on the moon?',
+choices: ['Neil Armstrong', 'Buzz Aldrin', 'Michael Collins'],
+answer: 'Neil Armstrong'
+},
+{
+question: 'What is the capital of Australia?',
+choices: ['Sydney', 'Melbourne', 'Canberra'],
+answer: 'Canberra'
+},
+      ]
+      
+const app = Vue.createApp({
+data() {
+return {
+            questions,
+            currentQuestion: {},
+            index: 0,
+            score: 0,
+            timeLeft: 180,
+            interval: null,
+            message: ''
+          }
+        },
+        created() {
+          this.startQuiz()
+        },
+        beforeDestroy() {
+          clearInterval(this.interval)
+        },
+        methods: {
+          startQuiz() {
+            this.currentQuestion = this.questions[this.index]
+            this.interval = setInterval(() => {
+              this.timeLeft--
+              if (this.timeLeft === 0) {
+                clearInterval(this.interval)
+                this.message = 'Time is up!'
+              }
+            }, 1000)
+          },
+          checkAnswer(choice) {
+            if (choice === this.currentQuestion.answer) {
+              this.score++
+              this.message = 'Correct!'
+            } else {
+              this.message = 'Incorrect'
+            }
+            this.index++
+            if (this.index === this.questions.length) {
+              clearInterval(this.interval)
+              this.message = 'Quiz completed!'
+            } else {
+              this.startQuiz()
+            }
+          }
+}
+}).mount('.app');
+    </script>
+  </body>
+</html>

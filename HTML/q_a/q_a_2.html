@@ -60,6 +60,11 @@ this.check_answer();
 },
 methods: {
 init(){
+// let words = ["dog", "cat", "bird"];
+let words = ["c", "f"];
+// let pattern = new RegExp(words.join("|"), "g");
+let pattern = new RegExp('('+words.join('|')+')', "g");
+'abcdefg'.split(pattern);
 this.data2 = R.repeat(null, this.data1.length);
 },
 array_all_stringify(ARY){
