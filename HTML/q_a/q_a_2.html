@@ -60,11 +60,9 @@ this.check_answer();
 },
 methods: {
 init(){
-// let words = ["dog", "cat", "bird"];
-let words = ["c", "f"];
-// let pattern = new RegExp(words.join("|"), "g");
-let pattern = new RegExp('('+words.join('|')+')', "g");
-'abcdefg'.split(pattern);
+// let words = ["c", "f"];
+// let pattern = new RegExp('('+words.join('|')+')', "g");
+// 'abcdefg'.split(pattern);
 this.data2 = R.repeat(null, this.data1.length);
 },
 array_all_stringify(ARY){
@@ -86,6 +84,12 @@ this.for_debug();
 },
 without_first_param(ARY) {
 return R.remove(0, 1, ARY);
+},
+
+fn1(){
+document.querySelector(".q_a_original").value.split(
+new RegExp('('+(document.querySelector(".q_a_target").value.split("\n")).join('|')+')', "g")
+);
 },
 
 test(){

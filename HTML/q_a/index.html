@@ -390,10 +390,10 @@ updated() {
 methods: {
 async save_data_to_all_save(){
 this.all_save.push(this.to_ary([this.data6, this.data3]));
-await localforage.setItem('key', JSON.stringify(this.all_save));
+await localforage.setItem('q_a_1', JSON.stringify(this.all_save));
 },
 async save_data_load() {
-this.all_save = JSON.parse(await localforage.getItem('key')) || [];
+this.all_save = JSON.parse(await localforage.getItem('q_a_1')) || [];
 },
 save_data_set(INDEX){
 this.data6 = this.all_save[INDEX][0];
@@ -402,7 +402,7 @@ this.data3 = this.all_save[INDEX][1];
 async save_data_delete(INDEX){
 if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕\n" + R.zip(this.all_save[INDEX][0].split("\n"), this.all_save[INDEX][1].split("\n")).join("\n") )) {
     this.all_save.splice(INDEX, 1);
-    await localforage.setItem('key', JSON.stringify(this.all_save));
+    await localforage.setItem('q_a_1', JSON.stringify(this.all_save));
 };
 },
 fn2_1(){
