@@ -305,6 +305,7 @@ all_display: <input type="checkbox" id="all_display" v-model="all_display">
 <summary>open_timer</summary>
     <button @click="start_timer">!!!start_timer!!!</button>
     <button @click="manual_active_layer_index_increment">!!!manual_active_layer_index_increment!!!</button>
+    <button @click="manual_active_layer_index_decrement">!!!manual_active_layer_index_decrement!!!</button>
     <span class="timer"></span>
 
     <div v-for="(TMP_TL, TMP_TL_INDEX) in tmp_tl_array">
@@ -866,6 +867,9 @@ console.log(
 },
 manual_active_layer_index_increment(){
     this.active_layer_index = this.active_layer_index + 1;
+},
+manual_active_layer_index_decrement(){
+    this.active_layer_index = this.active_layer_index - 1;
 },
 set_param_to_textarea_from_URL(){
     const param_val = (new URL(window.location.href)).searchParams.get("time_line_and_text");
