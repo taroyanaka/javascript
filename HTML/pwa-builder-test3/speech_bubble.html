@@ -109,11 +109,10 @@ summary{
 <details data-dropdown>
 <summary>open_time_and_active_layer</summary>
 
+    <button @click="all_save">all_save</button>
     <button @click="set_param_to_textarea_from_URL">set_param_to_textarea_from_URL</button>
 
     <textarea name="time_line_to_textarea" class="time_line_to_textarea" placeholder="time_line_to_textarea" cols="30" rows="10"></textarea>
-    <textarea name="all_text" class="all_text" placeholder="all_text" cols="30" rows="10"></textarea>
-
     <textarea name="active_layer_list" class="active_layer_list" placeholder="active_layer_list" v-model="active_layer_list" cols="30" rows="10"></textarea>
     <textarea name="active_bubble_list" class="active_bubble_list" placeholder="active_bubble_list" v-model="active_bubble_list" cols="30" rows="10"></textarea>
 </details>
@@ -353,6 +352,52 @@ all_display: <input type="checkbox" id="all_display" v-model="all_display">
 </details>
 
 <script>
+
+let SAVE = {
+'COLUMN_POINT': null,
+'MAX_WIDTH': null,
+'ROW_POINT': null,
+'MAX_HEIGHT': null,
+'width_num': null,
+'height_num': null,
+'parent_bubble_color': null,
+'speak_array': null,
+'bubble_data_array': null,
+'bubble_checked': null,
+'image_checked': null,
+'bubble_no_show': null,
+'layer_chunk': null,
+'active_the_image_index': null,
+'image_url_list': null,
+'select_image_url_index': null,
+'image_url_file_url': null,
+'active_layer_index': null,
+'all_display': null,
+'active_layer_list': null,
+'active_bubble_list': null,
+'tmp_tl_array': null,
+'tmp_tl_str': null,
+'index_time': null,
+'timer': null,
+'duration': null,
+'animation_duration_value': null,
+'animation_direction_value': null,
+'animation_iteration_count_value': null,
+'animation_timing_function_value': null,
+'animation_fill_mode_value': null,
+'animation_duration_value_str': null,
+'animation_direction_value_str': null,
+'animation_iteration_count_value_str': null,
+'animation_timing_function_value_str': null,
+'animation_fill_mode_value_str': null,
+'ary_1': null,
+'ary_1_str': null,
+'animation_value_array': null,
+'animation_duration_value_number': null,
+'animation_iteration_count_value_number': null,
+'animation_timing_function_value_numbe': null,
+};
+
 const app = Vue.createApp({
 data() {
 return {
@@ -914,6 +959,52 @@ collect_animation_value(INDEX, EVENT){
     // console.log(this.animation_value_array[INDEX][2]);
     // console.log(this.animation_value_array[INDEX][3]);
 },
+
+all_save(){
+SAVE['COLUMN_POINT'] = this.COLUMN_POINT;
+SAVE['MAX_WIDTH'] = this.MAX_WIDTH;
+SAVE['ROW_POINT'] = this.ROW_POINT;
+SAVE['MAX_HEIGHT'] = this.MAX_HEIGHT;
+SAVE['width_num'] = this.width_num;
+SAVE['height_num'] = this.height_num;
+SAVE['parent_bubble_color'] = this.parent_bubble_color;
+SAVE['speak_array'] = this.speak_array;
+SAVE['bubble_data_array'] = this.bubble_data_array;
+SAVE['bubble_checked'] = this.bubble_checked;
+SAVE['image_checked'] = this.image_checked;
+SAVE['bubble_no_show'] = this.bubble_no_show;
+SAVE['layer_chunk'] = this.layer_chunk;
+SAVE['active_the_image_index'] = this.active_the_image_index;
+SAVE['image_url_list'] = this.image_url_list;
+SAVE['select_image_url_index'] = this.select_image_url_index;
+SAVE['image_url_file_url'] = this.image_url_file_url;
+SAVE['active_layer_index'] = this.active_layer_index;
+SAVE['all_display'] = this.all_display;
+SAVE['active_layer_list'] = this.active_layer_list;
+SAVE['active_bubble_list'] = this.active_bubble_list;
+SAVE['tmp_tl_array'] = this.tmp_tl_array;
+SAVE['tmp_tl_str'] = this.tmp_tl_str;
+SAVE['index_time'] = this.index_time;
+SAVE['timer'] = this.timer;
+SAVE['duration'] = this.duration;
+SAVE['animation_duration_value'] = this.animation_duration_value;
+SAVE['animation_direction_value'] = this.animation_direction_value;
+SAVE['animation_iteration_count_value'] = this.animation_iteration_count_value;
+SAVE['animation_timing_function_value'] = this.animation_timing_function_value;
+SAVE['animation_fill_mode_value'] = this.animation_fill_mode_value;
+SAVE['animation_duration_value_str'] = this.animation_duration_value_str;
+SAVE['animation_direction_value_str'] = this.animation_direction_value_str;
+SAVE['animation_iteration_count_value_str'] = this.animation_iteration_count_value_str;
+SAVE['animation_timing_function_value_str'] = this.animation_timing_function_value_str;
+SAVE['animation_fill_mode_value_str'] = this.animation_fill_mode_value_str;
+SAVE['ary_1'] = this.ary_1;
+SAVE['ary_1_str'] = this.ary_1_str;
+SAVE['animation_value_array'] = this.animation_value_array;
+SAVE['animation_duration_value_number'] = this.animation_duration_value_number;
+SAVE['animation_iteration_count_value_number'] = this.animation_iteration_count_value_number;
+SAVE['animation_timing_function_value_numbe'] = this.animation_timing_function_value_numbe;
+},
+
 },
 }).mount('.app');
 </script>
