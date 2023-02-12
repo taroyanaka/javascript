@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fill-in-the-blank-multiple-choice-question</title>
+    <!-- https://taroyanaka.github.io/javascript/HTML/vent-list.html -->
+    <!-- https://cssgradient.io/ -->
+<link rel="stylesheet" href="./reset.css">
+    <style>
+        :root {
+          --bg-color: white;
+          --button-ul-height: 20vh;
+          --li-visibility: visible;
+          --collapse-display: block;
+        }
+        body{
+            /* background-color: aquamarine; */
+            /* background: rgb(2,0,36); */
+            /* background: rgb(52,44,196); */
+            /* background: linear-gradient(90deg, rgba(52,44,196,1) 9%, rgba(166,60,60,1) 35%, rgba(153,0,157,1) 93%); */
+
+            /* background-color: whitesmoke; */
+            background-color: var(--bg-color);
+        }
+        .collapse{
+            display: var(--collapse-display);
+        }
+        textarea{
+            width: 100%;
+            height: 20rem;
+        }
+        button{
+            width: 100%;
+            height: 100%;
+        }
+        .seedNum{
+            width: 3rem;
+        }
+        .answer{
+            margin: 2rem 1rem;
+        }
+
+        .ul{
+            display: grid;
+            grid-template-columns: auto;
+            grid-template-areas:
+"li-1 li-2 li-3 li-4 li-5 li-6 li-7";
+width: 100vw;
+height: var(--button-ul-height);
+}
+li{
+    list-style: none;
+}
+.li-1{background-color: rgba(122,111,104);
+grid-area: li-1;
+    width: var();
+}
+.li-2{background-color: rgba(227,110,247);
+grid-area: li-2;
+visibility: var(--li-visibility);
+}
+.li-3{background-color: rgba(174,200,103);
+grid-area: li-3;
+visibility: var(--li-visibility);
+}
+.li-4{background-color: rgba(127,163,24);
+grid-area: li-4;
+visibility: var(--li-visibility);
+}
+.li-5{background-color: rgba(234,187,115);
+grid-area: li-5;
+visibility: var(--li-visibility);
+}
+.li-6{background-color: rgba(94,228,153);
+grid-area: li-6;
+visibility: var(--li-visibility);
+}
+.li-7{background-color: rgb(127, 50, 228);
+grid-area: li-7;
+visibility: var(--li-visibility);
+}
+
+.close{
+    --bg-color: whitesmoke;
+    --button-ul-height: 5vh;
+    --li-visibility: hidden;
+    --collapse-display: none;
+}
+    </style>
+</head>
+
+<body>
+<ul class="ul">
+<li class="li-1"><button class="collapseChanger" onclick="collapseChanger()">👐</button></li>
+<li class="li-2"><button class="sample" onclick="sample()">📝</button></li>
+</ul>
+
+<div class="collapse">
+    <!-- <div><input type="number" name="seedNum" class="seedNum" value="42" onchange="changer()"></div> -->
+    <textarea name="question" class="question" oninput="changer();checker();"></textarea>
+    <textarea name="changer" class="changer" oninput="changer();checker();"></textarea>
+</div>
+<div class="answer"></div>
+<button class="retry" onclick="retry()">🔁</button>
+<script>
+const collapseChanger = () => document.querySelector(":root").classList.value === "close" ? document.querySelector(":root").classList.remove("close") : document.querySelector(":root").classList.add("close");
+const mixAnswer = (ARY, ANSWER) => ARY;
+const makeOptionTag = (ARY) => `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("");
+const makeSelectTag = (ARY, ANSWER) => {
+return `<select class="blank" data-answer="${ANSWER}" data-wrong="" onchange="checker();">
+${makeOptionTag(ARY)}
+</select>`;
+};
+const sample = () => {
+    document.querySelector(".question").value = `foo bar baz is foo bar baz
+and foo2 bar2 baz3 is foo2 bar2 baz3
+or not
+or foo2barQUX42ba😄yes😄z3isfoo2bar2baz3
+日本語は自然言語のうちの一つで主に日本国内で使われています`;
+    document.querySelector(".changer").value = `foo
+qux
+日本
+blabla
+yes
+😄yes😄
+no`;
+changer();
+tester();
+checker();
+};
+
+// A function to check if a symbol is contained
+function contains_symbol(input) {
+    const symbols = '!@#$%^&*()_+-={}[]|;:\'"<>,.?/\\';
+    for (let i = 0; i < input.length; i++) {
+        if (symbols.indexOf(input[i]) !== -1) {
+            return false;
+        }
+    }
+    return true;
+}
+const changer = () => {
+    // Return early if symbols are included for security purposes.
+    if(document.querySelector(".changer").value.split("\n").every(V=>contains_symbol(V)) == false){
+        return;
+    }
+    // https://stackoverflow.com/a/1234725
+    const regex = "(" + document.querySelector(".changer").value.split("\n").map(V=>`${V}|`).join("").slice(0, -1) + ")";
+    const RE = new RegExp(regex, "gm");
+    document.querySelector(".answer").innerHTML =
+                document.querySelector(".question").value.replaceAll(
+                    RE,
+                    makeSelectTag(
+                        document.querySelector(".changer").value.split("\n"),
+                        "$1"
+                    )
+                )
+                .replaceAll(
+                    "\n",
+                    `</br>`);
+    narrowDownAnswer();
+};
+const tester = () => {
+    document.querySelectorAll(".blank")[0].value = "foo";
+    document.querySelectorAll(".blank")[1].value = "qux";
+    document.querySelectorAll(".blank")[10].value = "qux";
+    document.querySelectorAll(".blank")[14].value = "日本";
+};
+
+
+const retry = () => {
+    document.querySelectorAll(".blank").forEach(V=>{
+        if(V.dataset.wrong === "wrong"){
+            V.value="";
+            V.dataset.wrong="";
+            V.style.backgroundColor="blueviolet";
+        }
+    })
+};
+const checkAll = (BLANK_ELEMENT, IDX) => {
+    const onceWrongIsKeepColor = (BLANK_ELEMENT) => BLANK_ELEMENT.style.backgroundColor = BLANK_ELEMENT.style.backgroundColor !== "blueviolet" ? "aquamarine" : "blueviolet";
+    const checkWithValueToAnswer = (BLANK_ELEMENT) => BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? BLANK_ELEMENT.style.backgroundColor = "" : onceWrongIsKeepColor(BLANK_ELEMENT);
+    const addWrongAndChangeColor = (ELEMENT) => {
+        ELEMENT.dataset.wrong = "wrong";
+        ELEMENT.style.backgroundColor = "pink";
+    }
+    const onceWrongBeWrong = (BLANK_ELEMENT) => {
+        if(BLANK_ELEMENT.value !== "" && BLANK_ELEMENT.value !== BLANK_ELEMENT.dataset.answer){ addWrongAndChangeColor(BLANK_ELEMENT) };
+        if(BLANK_ELEMENT.dataset.wrong === "wrong"){ BLANK_ELEMENT.style.backgroundColor = "pink" };
+    };
+    checkWithValueToAnswer(BLANK_ELEMENT);
+    onceWrongBeWrong(BLANK_ELEMENT);
+}
+const checker = () => document.querySelectorAll(".blank").forEach((BLANK_ELEMENT, IDX)=> checkAll(BLANK_ELEMENT, IDX));
+function random(seed) {
+    const x = Math.sin(seed++) * 10000;
+    return x - Math.floor(x);
+}
+function seedShuffle(array, seed) {
+    let m = array.length, t, i;
+    while (m) {
+        i = Math.floor(random(seed) * m--);
+        t = array[m];
+        array[m] = array[i];
+        array[i] = t;
+        ++seed
+    }
+    return array;
+}
+const narrowDownAnswer = () => {
+    // let SEED = Number(document.querySelector(`.seedNum`).value);
+    let SEED = 42;
+    const seedIncrement = () => SEED++;
+    document.querySelectorAll(".blank").forEach(SELECT_HTML_ELEMENT=>{
+        const OPTION_HTML_ELEMENT = SELECT_HTML_ELEMENT.children;
+        const answerOption = Array.from(OPTION_HTML_ELEMENT)
+            .filter(V => V.innerText !== "")
+            .filter(V => V.innerText === SELECT_HTML_ELEMENT.dataset.answer);
+        const shuffledWithoutBlankOptionWithoutAnswerOption = seedShuffle(
+                Array.from(OPTION_HTML_ELEMENT)
+                    .filter(V => V.innerText !== "")
+                    .filter(V => V.innerText !== SELECT_HTML_ELEMENT.dataset.answer)
+                , seedIncrement()
+            )
+            .slice(0, 2);
+        const answerAntNotAnswerOptionArray = answerOption.concat(shuffledWithoutBlankOptionWithoutAnswerOption);
+        const shuffledAnswerAntNotAnswerOptionArray = seedShuffle(
+            answerAntNotAnswerOptionArray,
+            seedIncrement());
+        const shuffledAnswerAndNotAnswerOptionHTMLString = shuffledAnswerAntNotAnswerOptionArray
+            .map(V => V.outerHTML)
+            .join("");
+        const blankOptionHTMLTagString = `<option value="" selected></option>`;
+        const blankAndShuffledAnswerAndNotAnswerOptionHTMLString = blankOptionHTMLTagString + shuffledAnswerAndNotAnswerOptionHTMLString;
+        SELECT_HTML_ELEMENT.innerHTML = blankAndShuffledAnswerAndNotAnswerOptionHTMLString;
+    })
+};
+
+changer();
+checker();
+narrowDownAnswer();
+
+
+</script>
+</body>
+</html>
