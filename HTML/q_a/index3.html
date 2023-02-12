@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>image-to-name</title>
+<script src="./lib/ramda.@0.28.0.js"></script>
     <style>
         .res{
             font-size: 3rem;
@@ -33,6 +34,12 @@
 
 <body>
 <div id="target"></div>
+<textarea name="" id="from" cols="30" rows="10">cat
+dog
+hal
+neko
+inu
+wan</textarea>
 
 <!-- <img src="https://pngimg.com/uploads/cat/cat_PNG50538.png" alt=""> -->
 <!-- https://pngimg.com/uploads/dog/dog_PNG159.png -->
@@ -227,21 +234,27 @@ const {
   rnd, rndInt, shuffle
 } = seededRandom({seed: "optional seed string"});
 
-const options = [
-  { text: 'Option 1', value: 'option1' },
-  { text: 'Option 2', value: 'option2' },
-  { text: 'Option 3', value: 'option3' }
-];
+const options = document.querySelector("#from").value.split("\n");
 const select = document.createElement('select');
 shuffle(options).forEach(option => {
   const optionElement = document.createElement('option');
-  optionElement.value = option.value;
-  optionElement.textContent = option.text;
+  optionElement.value = option;
+  optionElement.textContent = option;
+//   optionElement.value = option.value;
+//   optionElement.textContent = option.text;
   select.appendChild(optionElement);
 });
 document.querySelector('#target').appendChild(select);
 
-
+function setup(){
+from_ary = document.querySelector("#from").value.split("\n")
+return from_ary.map((V, IDX)=>{
+    return [V, shuffle(shuffle(R.without(from_ary[IDX], from_ary)).slice(0, 2).concat(from_ary[IDX]))];
+});
+};
+// function setup2(){
+// return R.zip(this.data2, setup()).map((V,IDX)=>[V[0], V[1], this.data6.split("\n")[IDX]]);
+// };
 
 </script>
 </body>
