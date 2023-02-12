@@ -285,16 +285,16 @@ font-size: 2.5rem;
 
 <div class="fill_in">
     <ul class="ul">
-    <li class="li-1"><button class="collapseChanger" @click="collapseChanger">👐</button></li>
-    <li class="li-2"><button class="sample" @click="sample">📝</button></li>
+    <li class="li-1"><button class="collapseChanger" onclick="collapseChanger()">👐</button></li>
+    <li class="li-2"><button class="sample" onclick="sample()">📝</button></li>
     </ul>
 
     <div class="collapse">
-        <textarea name="question" class="question" @input="changer();checker();"></textarea>
-        <textarea name="changer" class="changer" @input="changer();checker();"></textarea>
+        <textarea name="question" class="question" oninput="changer();checker();"></textarea>
+        <textarea name="changer" class="changer" oninput="changer();checker();"></textarea>
     </div>
     <div class="answer"></div>
-    <button class="retry" @click="retry">🔁</button>
+    <button class="retry" onclick="retry()">🔁</button>
 </div>
 </body>
 <script>
@@ -607,160 +607,6 @@ data11 = this.to_ary(this.data11);
 test0(){this.test_index(0)},
 test1(){this.test_index(1)},
 test2(){this.test_index(2)},
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-collapseChanger(){
-document.querySelector(":root").classList.value === "close" ? document.querySelector(":root").classList.remove("close") : document.querySelector(":root").classList.add("close");
-},
-makeOptionTag(ARY){
-return `<option value="" selected></option>` + ARY.map(VAL=>`<option value="${VAL}">${VAL}</option>`).join("")
-},
-makeSelectTag(ARY, ANSWER){
-return `<select class="blank" data-answer="${ANSWER}" data-wrong="" onchange="checker();">
-${makeOptionTag(ARY)}
-</select>`;
-},
-sample(){
-    document.querySelector(".fill_in .question").value = `foo bar baz
-and foo2 bar2 baz3
-or not
-or foo2barQUX42ba😄yes😄z3isfoo2bar2baz3
-日本語は自然言語のうちの一つで主に日本国内で使われています`;
-    document.querySelector(".fill_in .changer").value = `foo
-qux
-日本
-blabla
-yes
-😄yes😄
-no`;
-this.changer();
-this.tester();
-this.checker();
-},
-// A function to check if a symbol is contained
-contains_symbol(input) {
-    const symbols = '!@#$%^&*()_+-={}[]|;:\'"<>,.?/\\';
-    for (let i = 0; i < input.length; i++) {
-        if (symbols.indexOf(input[i]) !== -1) {
-            return false;
-        }
-    }
-    return true;
-},
-changer(){
-    // Return early if symbols are included for security purposes.
-    if(document.querySelector(".fill_in .changer").value.split("\n").every(V=>this.contains_symbol(V)) == false){
-        return;
-    }
-    // https://stackoverflow.com/a/1234725
-    const regex = "(" + document.querySelector(".fill_in .changer").value.split("\n").map(V=>`${V}|`).join("").slice(0, -1) + ")";
-    const RE = new RegExp(regex, "gm");
-    document.querySelector(".fill_in .answer").innerHTML =
-                document.querySelector(".fill_in .question").value.replaceAll(
-                    RE,
-                    makeSelectTag(
-                        document.querySelector(".fill_in .changer").value.split("\n"),
-                        "$1"
-                    )
-                )
-                .replaceAll(
-                    "\n",
-                    `</br>`);
-    this.narrowDownAnswer();
-},
-tester(){
-    document.querySelectorAll(".fill_in .blank")[0].value = "foo";
-    document.querySelectorAll(".fill_in .blank")[1].value = "qux";
-    // document.querySelectorAll(".fill_in .blank")[10].value = "qux";
-    // document.querySelectorAll(".fill_in .blank")[14].value = "日本";
-},
-retry(){
-    document.querySelectorAll(".fill_in .blank").forEach(V=>{
-        if(V.dataset.wrong === "wrong"){
-            V.value="";
-            V.dataset.wrong="";
-            V.style.backgroundColor="blueviolet";
-        }
-    })
-},
-checkAll(BLANK_ELEMENT, IDX){
-    const onceWrongIsKeepColor = (BLANK_ELEMENT) => BLANK_ELEMENT.style.backgroundColor = BLANK_ELEMENT.style.backgroundColor !== "blueviolet" ? "aquamarine" : "blueviolet";
-    const checkWithValueToAnswer = (BLANK_ELEMENT) => BLANK_ELEMENT.value === BLANK_ELEMENT.dataset.answer ? BLANK_ELEMENT.style.backgroundColor = "" : onceWrongIsKeepColor(BLANK_ELEMENT);
-    const addWrongAndChangeColor = (ELEMENT) => {
-        ELEMENT.dataset.wrong = "wrong";
-        ELEMENT.style.backgroundColor = "pink";
-    }
-    const onceWrongBeWrong = (BLANK_ELEMENT) => {
-        if(BLANK_ELEMENT.value !== "" && BLANK_ELEMENT.value !== BLANK_ELEMENT.dataset.answer){ addWrongAndChangeColor(BLANK_ELEMENT) };
-        if(BLANK_ELEMENT.dataset.wrong === "wrong"){ BLANK_ELEMENT.style.backgroundColor = "pink" };
-    };
-    checkWithValueToAnswer(BLANK_ELEMENT);
-    onceWrongBeWrong(BLANK_ELEMENT);
-},
-checker(){
-    document.querySelectorAll(".fill_in .blank").forEach((BLANK_ELEMENT, IDX)=> this.checkAll(BLANK_ELEMENT, IDX));
-},
-random(seed) {
-    const x = Math.sin(seed++) * 10000;
-    return x - Math.floor(x);
-},
-seedShuffle(array, seed){
-    let m = array.length, t, i;
-    while (m) {
-        i = Math.floor(this.random(seed) * m--);
-        t = array[m];
-        array[m] = array[i];
-        array[i] = t;
-        ++seed
-    }
-    return array;
-},
-narrowDownAnswer(){
-    // let SEED = Number(document.querySelector(`fill_in .seedNum`).value);
-    let SEED = 42;
-    const seedIncrement = () =>SEED++;
-    document.querySelectorAll(".fill_in .blank").forEach(SELECT_HTML_ELEMENT=>{
-        const OPTION_HTML_ELEMENT = SELECT_HTML_ELEMENT.children;
-        const answerOption = Array.from(OPTION_HTML_ELEMENT)
-            .filter(V => V.innerText !== "")
-            .filter(V => V.innerText === SELECT_HTML_ELEMENT.dataset.answer);
-        const shuffledWithoutBlankOptionWithoutAnswerOption = this.seedShuffle(
-                Array.from(OPTION_HTML_ELEMENT)
-                    .filter(V => V.innerText !== "")
-                    .filter(V => V.innerText !== SELECT_HTML_ELEMENT.dataset.answer)
-                , seedIncrement()
-            )
-            .slice(0, 2);
-        const answerAntNotAnswerOptionArray = answerOption.concat(shuffledWithoutBlankOptionWithoutAnswerOption);
-        const shuffledAnswerAntNotAnswerOptionArray = this.seedShuffle(
-            answerAntNotAnswerOptionArray,
-            seedIncrement());
-        const shuffledAnswerAndNotAnswerOptionHTMLString = shuffledAnswerAntNotAnswerOptionArray
-            .map(V => V.outerHTML)
-            .join("");
-        const blankOptionHTMLTagString = `<option value="" selected></option>`;
-        const blankAndShuffledAnswerAndNotAnswerOptionHTMLString = blankOptionHTMLTagString + shuffledAnswerAndNotAnswerOptionHTMLString;
-        SELECT_HTML_ELEMENT.innerHTML = blankAndShuffledAnswerAndNotAnswerOptionHTMLString;
-    })
-},
 },
 }).mount('.app');
 </script>
