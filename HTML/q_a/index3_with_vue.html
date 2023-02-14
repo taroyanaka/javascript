@@ -154,6 +154,9 @@ mounted() {
 beforeUpdate() {
 },
 updated() {
+    this.r_zip_form_image_to_name_array_and_image_to_name_images();
+    this.setup();
+    this.to_ary_all_dataNum();
 },
 methods: {
 image_to_name_fn_2(ANSWER, COLLECT_ANSWER){
@@ -211,10 +214,7 @@ contains_symbol(input) {
 },
 // 配列に含まれる文字列の中に記号が含まれているかどうかを判定する関数
 contains_symbol_in_ary(ary){
-    res = this.to_ary(ary).map(V=>this.contains_symbol(V)).includes(false);
-// resの中身を確認
-    console.log(this.to_ary(ary), res);
-    return res;
+    return this.to_ary(ary).map(V=>this.contains_symbol(V)).includes(false);
 },
 create_an_array_of_nulls_of_length_of_length_this_image_to_name_images(){
     this.image_to_name_data_1 = Array(this.image_to_name_images.length).fill(null);
