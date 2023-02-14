@@ -33,13 +33,9 @@
 </head>
 
 <body>
-<div id="target"></div>
 <textarea name="" id="from" cols="30" rows="10">cat
 dog
-hal
-neko
-inu
-wan</textarea>
+halr</textarea>
 
 <!-- <img src="https://pngimg.com/uploads/cat/cat_PNG50538.png" alt=""> -->
 <!-- https://pngimg.com/uploads/dog/dog_PNG159.png -->
@@ -51,7 +47,7 @@ wan</textarea>
 <input type="button" value="⏬" onclick="addQA()">
 <input type="button" value="🔃" onclick="removeOrUnremoveAndCheckAllQA()" data-removed="">
 <input type="button" value="❌" onclick="removeAllQA()">
-<input type="button" value="sample🐶🐱" onclick="sampleQA()">
+<input type="button" value="sample🐶🐱" class="sampleQA" onclick="sampleQA()">
 <textarea name="answer" class="answer" placeholder="image name" cols="30" rows="10"></textarea>
 <div class="parent_qa">
 </div>
@@ -60,19 +56,19 @@ const sampleQA = () =>{
     document.querySelector(`.parent_qa`).innerHTML =
 `<div class="qa qa_0">
     <img src="cat.png" alt="cat" data-answer="cat">
-    <input type="text" name="text" class="text" value="cat">
+<span class="target" id="target_0"></span>
     <span class="res"></span>
     <input type="button" value="❎" onclick="removeQA(event)">
 </div>
 <div class="qa qa_1">
     <img src="dog.png" alt="dog" data-answer="dog">
-    <input type="text" name="text" class="text" value="dog">
+<span class="target" id="target_1"></span>
     <span class="res"></span>
     <input type="button" value="❎" onclick="removeQA(event)">
 </div>
 <div class="qa qa_2">
-    <img src="hal.png" alt="hal" data-answer="hal">
-    <input type="text" name="text" class="text" value="hal">
+    <img src="halr.png" alt="halr" data-answer="halr">
+<span class="target" id="target_2"></span>
     <span class="res"></span>
     <input type="button" value="❎" onclick="removeQA(event)">
 </div>`;
@@ -150,29 +146,6 @@ const removeAllQA = () => {
 
 
 
-// https://stackoverflow.com/a/71869551
-const exe = async () =>{
-    const getBase64FromUrl = async (url) => {
-        const data = await fetch(url);
-        const blob = await data.blob();
-        return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = () => {
-            const base64data = reader.result;
-            resolve(base64data)
-        };
-        });
-    };
-
-    const myImage = await getBase64FromUrl(document.querySelector("img").src);
-    return myImage;
-};
-// tmp_data = await exe();
-const exe2 = async () =>{
-    document.querySelectorAll("img")[1].src = tmp_data;
-}
-
 
 
 
@@ -234,17 +207,33 @@ const {
   rnd, rndInt, shuffle
 } = seededRandom({seed: "optional seed string"});
 
+
+// https://stackoverflow.com/a/71869551
+const image_save_by_base64 = async () =>{
+    const getBase64FromUrl = async (url) => {
+        const data = await fetch(url);
+        const blob = await data.blob();
+        return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            const base64data = reader.result;
+            resolve(base64data)
+        };
+        });
+    };
+
+    const myImage = await getBase64FromUrl(document.querySelector("img").src);
+    return myImage;
+};
+// tmp_data = await image_save_by_base64();
+const image_save_by_base64_2 = async () =>{
+    document.querySelectorAll("img")[1].src = tmp_data;
+}
+
+
+
 const options = document.querySelector("#from").value.split("\n");
-const select = document.createElement('select');
-shuffle(options).forEach(option => {
-  const optionElement = document.createElement('option');
-  optionElement.value = option;
-  optionElement.textContent = option;
-//   optionElement.value = option.value;
-//   optionElement.textContent = option.text;
-  select.appendChild(optionElement);
-});
-document.querySelector('#target').appendChild(select);
 
 function setup(){
 from_ary = document.querySelector("#from").value.split("\n")
@@ -252,9 +241,42 @@ return from_ary.map((V, IDX)=>{
     return [V, shuffle(shuffle(R.without(from_ary[IDX], from_ary)).slice(0, 2).concat(from_ary[IDX]))];
 });
 };
-// function setup2(){
-// return R.zip(this.data2, setup()).map((V,IDX)=>[V[0], V[1], this.data6.split("\n")[IDX]]);
-// };
+
+document.querySelector(".sampleQA").click();
+
+function setup2(){
+    return Array.from(document.querySelectorAll('.target')).map((TARGET, TARGET_INDEX)=>{
+        return TARGET;
+    });
+};
+
+// 配列からselectタグとoptionタグを作って任意のelementに追加する
+function makeSelectBox(array, element) {
+    const select = document.createElement('select');
+    array.forEach((value, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.text = value;
+        select.appendChild(option);
+    });
+    element.appendChild(select);
+}
+// data-answerと直後の要素のvalueを比較して正解か不正解かを判定する
+function checkAnswer() {
+    Array.from(document.querySelector(".parent_qa").children).forEach((ELM,IDX)=>{
+        const answer = ELM.dataset.answer;
+        const nextElement = ELM.nextElementSibling;
+        if (answer === nextElement.value) {
+            alert('正解です');
+        } else {
+            alert('不正解です');
+        }
+    })
+}
+R.pluck(1, setup()).forEach((OPTION_ARRAY, TARGET_INDEX)=>
+    makeSelectBox(OPTION_ARRAY, document.querySelectorAll(".target")[TARGET_INDEX])
+);
+
 
 </script>
 </body>
