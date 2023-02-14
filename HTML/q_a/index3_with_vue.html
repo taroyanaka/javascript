@@ -137,7 +137,6 @@ const {
 const image_to_name = Vue.createApp({
 data() {
     return {
-image_to_name_data_0: 'ANY',
 image_to_name_data_1: [],
 image_to_name_image_data: null,
 image_url: null,
@@ -170,12 +169,6 @@ beforeUpdate() {
 updated() {
 },
 methods: {
-image_to_name_fn_0(){
-    console.log(this.image_to_name_data_0);
-},
-image_to_name_fn_1(){
-    console.log(JSON.parse(JSON.stringify(this.image_to_name_data_1)));
-},
 image_to_name_fn_2(ANSWER, COLLECT_ANSWER){
     console.log(JSON.parse(JSON.stringify(a,b,c)));
 },
