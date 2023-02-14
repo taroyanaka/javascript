@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>image-to-name</title>
+<script src="./lib/localforage@1.10.0.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script> -->
+<script src="./lib/vue@3.2.36.global.prod.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.prod.js"></script> -->
+<script src="./lib/ramda.@0.28.0.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ramda/0.28.0/ramda.min.js"></script> -->
+
+    <style>
+        .res{
+            font-size: 3rem;
+        }
+        img{
+            width: 4.5rem;
+            height: 4rem;
+        }
+        /* input.file, */
+        input[value="❎"], input[value="⏬"], input[value="🔃"], input[value="❌"]{
+            width: 4.5rem;
+            height: 4rem;
+            font-size: 2rem;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 1rem;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+<textarea name="" id="from" cols="30" rows="10">cat
+dog
+halr</textarea>
+
+<!-- <img src="https://pngimg.com/uploads/cat/cat_PNG50538.png" alt=""> -->
+<!-- https://pngimg.com/uploads/dog/dog_PNG159.png -->
+<!-- https://stackoverflow.com/a/25825731 -->
+<label for="file" class="custom-file-upload" value="📁" onchange="nameInsert()">
+    <input type="file" id="file" multiple>
+    📁
+</label>
+<input type="button" value="sample🐶🐱" class="sampleQA" onclick="sampleQA()">
+<textarea name="answer" class="answer" placeholder="image name" cols="30" rows="10"></textarea>
+
+
+<div class="image_to_name">
+<template v-for="(DATAVAL, DATAIDX) in image_to_name_data_1">
+<div>
+    <span  @click="fn20(DATAIDX)">{{ DATAVAL }}</span>
+    <button v-for="item in image_to_name_data_1" @click="image_to_name_fn_2(a,b,c)">{{ item }}</button>
+    <span >{{ DATAVAL }}</span>
+</div>
+</template>
+</div>
+
+<script>
+const image_to_name = Vue.createApp({
+data() {
+    return {
+image_to_name_data_0: 'ANY',
+image_to_name_data_1: [0,1,2],
+    }},
+watch: {
+   any: {
+     handler() {
+     },
+     deep: true
+   },
+},
+beforeMounte(){
+},
+mounted() {
+    // this.fn_1();
+},
+beforeUpdate() {
+},
+updated() {
+},
+methods: {
+image_to_name_fn_0(){
+    console.log(this.image_to_name_data_0);
+},
+image_to_name_fn_1(){
+    console.log(JSON.parse(JSON.stringify(this.image_to_name_data_1)));
+},
+image_to_name_fn_2(a,b,c){
+    console.log(JSON.parse(JSON.stringify(a,b,c)));
+},
+
+
+
+
+
+
+
+
+imageUpload(INT_NUM){
+    if(document.querySelector("input[type=file]").files[0] === undefined){
+        document.querySelector(".answer").placeholder = "select image";
+        return;
+    }
+    Array.from(document.querySelector("input[type=file]").files).forEach((FILE, IDX)=> document.querySelector(".qa_" + (INT_NUM + IDX).toString()).querySelector("img").src = URL.createObjectURL(FILE) );
+},
+// https://stackoverflow.com/a/71869551
+async image_save_by_base64(){
+    const getBase64FromUrl = async (url) => {
+        const data = await fetch(url);
+        const blob = await data.blob();
+        return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            const base64data = reader.result;
+            resolve(base64data)
+        };
+        });
+    };
+
+    const myImage = await getBase64FromUrl(document.querySelector("img").src);
+    return myImage;
+},
+// tmp_data = await image_save_by_base64();
+async image_save_by_base64_2(){
+    document.querySelectorAll("img")[1].src = tmp_data;
+},
+nameInsert(){
+    document.querySelector(".answer").value = Array.from(document.querySelector("input[type=file]").files).map(V => V.name).join("\n");
+    const manualAllQACheck = () => {
+        document.querySelectorAll(".parent_qa > .qa > .text").forEach(textELM=>{
+            textELM.nextElementSibling.textContent =
+                textELM.value === textELM.previousElementSibling.dataset.answer ? "🙆‍♀️" : "🙅‍♀️";
+        })
+    }
+},
+
+setup(){
+from_ary = document.querySelector("#from").value.split("\n")
+return from_ary.map((V, IDX)=>{
+    return [V, shuffle(shuffle(R.without(from_ary[IDX], from_ary)).slice(0, 2).concat(from_ary[IDX]))];
+});
+},
+
+},
+}).mount('.image_to_name');
+</script>
+</body>
+</html>
+
