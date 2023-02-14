@@ -34,7 +34,8 @@ img {
 
   <div>
     <input type="file" @change="onFileSelected">
-    <img :src="imageUrl" alt="selected image">
+    <img :src="image_url" alt="selected image">
+    <span>{{ image_name }}</span>
   </div>
 
 
@@ -139,7 +140,8 @@ data() {
 image_to_name_data_0: 'ANY',
 image_to_name_data_1: [],
 image_to_name_image_data: null,
-imageUrl: null,
+image_url: null,
+image_name: null,
 image_to_name_images: ["cat.png", "dog.png", "halr.png"],
 image_to_name_string: `cat
 dog
@@ -230,13 +232,18 @@ setup(){
     this.create_an_array_of_nulls_of_length_of_length_this_image_to_name_images();
 },
 
+
+// fileからファイル名を取得する関数
+get_file_name_from_file(file){
+    this.image_name = file.name;
+},
 onFileSelected(event) {
-    // console.log(event.target.files[0]);
-    const file = event.target.files[0]
+    const file = event.target.files[0];
+    this.get_file_name_from_file(file);
     const reader = new FileReader()
     reader.onload = (e) => {
-        this.imageUrl = e.target.result
-        data0 = this.imageUrl;
+        this.image_url = e.target.result
+        data0 = this.image_url;
     }
     reader.readAsDataURL(file)
 },
