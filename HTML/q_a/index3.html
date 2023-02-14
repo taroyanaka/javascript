@@ -263,7 +263,7 @@ function makeSelectBox(array, element) {
 }
 // data-answerと直後の要素のvalueを比較して正解か不正解かを判定する
 function checkAnswer() {
-    Array.from(document.querySelector(".parent_qa").children).forEach((ELM,IDX)=>{
+    document.querySelector(".parent_qa").children.forEach((ELM,IDX)=>{
         const answer = ELM.dataset.answer;
         const nextElement = ELM.nextElementSibling;
         if (answer === nextElement.value) {
