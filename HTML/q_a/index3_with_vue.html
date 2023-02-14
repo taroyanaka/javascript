@@ -46,8 +46,8 @@ img {
 <template v-for="(DATAVAL, DATAIDX) in image_to_name_images_Q_AND_A">
 <div>
     <img :src="image_to_name_images[DATAIDX]" :alt="image_to_name_images[DATAIDX]">
-    <button v-for="ANSWER in setup_data[DATAIDX][1]" @click="image_to_name_fn_check_q_and_a(setup_data[DATAIDX][0], ANSWER, DATAIDX)">{{ ANSWER }}</button>
-    <span >{{ return_YES_EMOJI_if_true_and_NO_EMOJI_if_false(DATAIDX) }}</span>
+    <button v-for="ANSWER in setup_data[DATAIDX][1]" @click="image_to_name_fn_check_q_and_a_ramda(setup_data[DATAIDX][0], ANSWER, DATAIDX)">{{ ANSWER }}</button>
+    <span >{{ return_YES_EMOJI_if_true_and_NO_EMOJI_if_false_ramda(DATAIDX) }}</span>
 </div>
 </template>
 </div>
@@ -177,30 +177,14 @@ image_to_name_fn_1(){
 image_to_name_fn_2(ANSWER, COLLECT_ANSWER){
     console.log(JSON.parse(JSON.stringify(a,b,c)));
 },
-// 第一引数を第二引数が合致してるかどうかを判定して、合致していれば第三引数のINDEXにtrueを入れて、合致していなければ第三引数のINDEXにfalseを入れる関数
-image_to_name_fn_check_q_and_a(ANSWER, COLLECT_ANSWER, IDX){
-    if(ANSWER === COLLECT_ANSWER){
-        this.image_to_name_data_1[IDX] = true;
-    }else{
-        this.image_to_name_data_1[IDX] = false;
-    };
-// 全ての引数をconsole.logで出力する関数
-    function a(){
-        console.log(ANSWER, COLLECT_ANSWER, IDX);
-    };
-    a();
-    this.to_ary_all_dataNum();
-    console.log(data0, data1, data2, data3, data4, data5);
+// 第一引数を第二引数が合致してるかどうかを判定して、合致していれば第三引数のINDEXにtrueを入れて、合致していなければ第三引数のINDEXにfalseを入れるramda.jsを利用して1行で書いた関数
+image_to_name_fn_check_q_and_a_ramda(ANSWER, COLLECT_ANSWER, IDX){
+    this.image_to_name_data_1[IDX] = R.ifElse(R.equals(ANSWER), R.always(true), R.always(false))(COLLECT_ANSWER);
 },
-// trueならYES_EMOJIを返しfalseならNO_EMOJIを返す関数
-return_YES_EMOJI_if_true_and_NO_EMOJI_if_false(IDX){
-    if(this.image_to_name_data_1[IDX] === true){
-        return "👍";
-    }else{
-        return "🚫";
-    };
+// trueならYES_EMOJIを返しfalseならNO_EMOJIを返すramda.jsを利用して1行で書いた関数
+return_YES_EMOJI_if_true_and_NO_EMOJI_if_false_ramda(IDX){
+    return R.ifElse(R.equals(true), R.always("👍"), R.always("🚫"))(this.image_to_name_data_1[IDX]);
 },
-
 
 
 imageUpload(INT_NUM){
@@ -286,6 +270,8 @@ to_ary_all_dataNum(){
     data3 = this.to_ary(data3);
     data4 = this.to_ary(data4);
     data5 = this.to_ary(data5);
+// それぞれの変数をconsole.logする
+    console.log(data0,data1,data2,data3,data4,data5);
 },
 function_to_remove_a_string_from_an_array_string_that_is_contained_in_any_array(){
     format = ['.bmp', '.gif', '.ico', '.jpeg', '.jpg', '.png', '.svg', '.tif', '.tiff', '.webp'];
@@ -309,8 +295,6 @@ function_to_remove_a_string_from_an_array_string_that_is_contained_in_any_array(
 
 },
 }).mount('.image_to_name');
-
-// console.log("foo");
 
 // 空白文字列を_で埋める関数
 function fill_blank_with_underscore(str){
