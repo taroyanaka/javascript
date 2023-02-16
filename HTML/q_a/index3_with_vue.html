@@ -28,7 +28,7 @@ dataC(inputText, image(base64)) <= inputText/inputFile_tag
 <body>
 <div class="image_to_name">
 
-<div class="column-1" :class="{'column-1-none': column_1_none}">
+<!-- <div class="column-1" :class="{'column-1-none': column_1_none}">
 <div class="optional_function">
     <button @click="reverse_i_n">🔃</button>
     <button @click="shuffle_i_n">🌪️</button>
@@ -44,11 +44,6 @@ dataC(inputText, image(base64)) <= inputText/inputFile_tag
 </li>
 </ul>
 
-<!-- <div class="link_button" @click="fn14"> -->
-<!-- <button class="link_button_top">🌐</button> -->
-<!-- <progress max="4000" :value="progress_val" class="link_button_under"></progress> -->
-<!-- </div> -->
-<!-- <a :href="data11[0]" class="link_text">{{data11[0]}}</a> -->
 <div class="textarea-column-1">
 <ul class="I_AND_N_list_parent" style='display: block;'>
 <li v-for="(DATAVAL, DATAIDX) in all_save_i_n" class="I_AND_N_list">
@@ -78,31 +73,87 @@ dataC(inputText, image(base64)) <= inputText/inputFile_tag
 
 <div class="column-3" :class="{'column-3-none': column_3_none}">
 <div>
+<button @click="result_opener_i_n" class="result_opener">📖</button> -->
+
+
+
+
+
+<!-- sample_data_apply -->
+<div class="column-1" :class="{'column-1-none': column_1_none}">
+<div class="optional_function">
+    <button @click="reverse_i_n">🔃</button>
+    <button @click="shuffle_i_n">🌪️</button>
+    <button @click="swap_i_n">🔁</button>
+    <button @click="save_data_to_all_save_i_n">🗂️</button>
+</div>
+<button @click="fn19_i_n" class="save_opener">📂</button>
+<ul class="save_data_set_list_parent" style='display: block;'>
+<li v-for="(DATAVAL, DATAIDX) in sample_all_save_i_n" class="save_data_set_list">
+    <span @click="save_data_set_i_n(DATAIDX)">{{ [DATAVAL[0].split("\n")[0], DATAVAL[1].split("\n")[0]] }}</span>
+    <button @click="save_data_set_i_n(DATAIDX)" class="save_data_set">📂</button>
+    <button @click="save_data_delete_i_n(DATAIDX)" class="save_data_delete">🗑️</button>
+</li>
+</ul>
+
+<div class="textarea-column-1">
+<ul class="I_AND_N_list_parent" style='display: block;'>
+<li v-for="(DATAVAL, DATAIDX) in sample_all_save_i_n" class="I_AND_N_list">
+    <input type="text" name="" id="">
+    <input type="file" @change="onFileSelected">
+    <img :src="sample_image_url_i_n" v-if="sample_image_url_i_n">
+</li>
+</ul>
+</div>
+<button @click="fn21(1)" class="font_sizing">◉</button>
+<button @click="fn21(-1)" class="font_sizing">⦿</button>
+<button @click="fn21" class="font_sizing">◎</button>
+</div>
+
+
+<div class="column-2" :class="{'column-2-none': column_2_none}">
+<template v-for="(DATAVAL, DATAIDX) in sample_images_Q_AND_A_i_n">
+    <div>
+    <img :src="sample_image_to_name_images[DATAIDX]" :alt="sample_image_to_name_images[DATAIDX]">
+    <button v-for="ANSWER in sample_setup_data_i_n[DATAIDX][1]" @click="image_to_name_fn_check_q_and_a_ramda(sample_setup_data_i_n[DATAIDX][0], ANSWER, DATAIDX)">{{ ANSWER }}</button>
+    <span >{{ return_YES_EMOJI_if_true_and_NO_EMOJI_if_false_ramda(DATAIDX) }}</span>
+    </div>
+</template>
+<button @click="fn4" class="check_button">🎮</button>
+</div>
+
+
+<div class="column-3" :class="{'column-3-none': column_3_none}">
+<div>
 <button @click="result_opener_i_n" class="result_opener">📖</button>
 
 </div>
-<template v-for="(DATAVAL, DATAIDX) in data10_i_n">
+<template v-for="(DATAVAL, DATAIDX) in sample_data10_i_n">
     <div class="textarea-column-2">
     <div class="a">
         <button @click="fn9_i_n(DATAIDX)" class="a-1">↩️</button>
         <button @click="fn16_i_n(DATAIDX)" class="a-2">🗑️</button>
         <button @click="fn17_i_n(DATAIDX)" class="a-3">📚</button>
     </div>
-    <template v-for="(DATAVAL, DATAIDX) in images_Q_AND_A_i_n">
+    <template v-for="(DATAVAL, DATAIDX) in sample_images_Q_AND_A_i_n">
         <div>
-        <img :src="image_to_name_images[DATAIDX]" :alt="image_to_name_images[DATAIDX]">
-        <button v-for="ANSWER in setup_data_i_n[DATAIDX][1]" @click="image_to_name_fn_check_q_and_a_ramda(setup_data_i_n[DATAIDX][0], ANSWER, DATAIDX)">{{ ANSWER }}</button>
+        <img :src="sample_image_to_name_images[DATAIDX]" :alt="sample_image_to_name_images[DATAIDX]">
+        <button v-for="ANSWER in sample_setup_data_i_n[DATAIDX][1]" @click="image_to_name_fn_check_q_and_a_ramda(sample_setup_data_i_n[DATAIDX][0], ANSWER, DATAIDX)">{{ ANSWER }}</button>
         <span >{{ return_YES_EMOJI_if_true_and_NO_EMOJI_if_false_ramda(DATAIDX) }}</span>
         </div>
     </template>
     </div>
 </template>
 </div>
+<!-- sample_data_apply -->
+
+
+
+
 
 
 </div>
-</template>
-</div>
+
 <script>
 let
 data0=
@@ -187,14 +238,18 @@ const {
 const image_to_name = Vue.createApp({
 data() {
     return {
-sammple_images_Q_AND_A_i_n: [],
-sammple_name_data_1_i_n: [1,2,3],
-sammple_name_data_1_null_i_n: [],
-sammple_image_url_i_n: null,
-sammple_image_name_i_n: null,
-sammple_setup_data_i_n: [],
-sammple_all_save_i_n: [],
-sammple_data10_i_n: [],
+sample_images_Q_AND_A_i_n: [],
+sample_name_data_1_i_n: [1,2,3],
+sample_name_data_1_null_i_n: [],
+sample_image_url_i_n: null,
+sample_image_name_i_n: null,
+sample_setup_data_i_n: [],
+sample_all_save_i_n: [
+['./cat.png', 'cat'],
+['./dog.png', 'dog'],
+['./halr.png', 'halr'],
+],
+sample_data10_i_n: [],
 
 images_Q_AND_A_i_n: [],
 name_data_1_i_n: [1,2,3],
