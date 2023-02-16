@@ -28,73 +28,22 @@ dataC(inputText, image(base64)) <= inputText/inputFile_tag
 <body>
 <div class="image_to_name">
 
-<div class="column-1" :class="{'column-1-none': column_1_none}">
-<div class="optional_function">
-    <button @click="reverse_i_n">🔃</button>
-    <button @click="shuffle_i_n">🌪️</button>
-    <button @click="swap_i_n">🔁</button>
-    <button @click="save_data_to_all_save_i_n">🗂️</button>
-</div>
-<button @click="fn19_i_n" class="save_opener">📂</button>
-<ul class="save_data_set_list_parent" style='display: block;'>
-<li v-for="(DATAVAL, DATAIDX) in all_save_i_n" class="save_data_set_list">
-    <span @click="save_data_set_i_n(DATAIDX)">{{ [DATAVAL[0].split("\n")[0], DATAVAL[1].split("\n")[0]] }}</span>
-    <button @click="save_data_set_i_n(DATAIDX)" class="save_data_set">📂</button>
-    <button @click="save_data_delete_i_n(DATAIDX)" class="save_data_delete">🗑️</button>
-</li>
-</ul>
+<input type="text" name="" id="">
+<input type="file" @change="onFileSelected">
+<img :src="image_url ? image_url : ''" alt="selected image">
 
-<!-- <div class="link_button" @click="fn14"> -->
-<!-- <button class="link_button_top">🌐</button> -->
-<!-- <progress max="4000" :value="progress_val" class="link_button_under"></progress> -->
-<!-- </div> -->
-<!-- <a :href="data11[0]" class="link_text">{{data11[0]}}</a> -->
-<div class="textarea-column-1">
-<ul class="image_name_input_list_parent" style='display: block;'>
-<li v-for="(DATAVAL, DATAIDX) in all_save_i_n" class="image_name_input_list">
-    <input type="text" name="" id="">
-    <input type="file" @change="onFileSelected">
-    <img :src="image_url" v-if="image_url">
-</li>
-</ul>
-</div>
-<button @click="fn21(1)" class="font_sizing">◉</button>
-<button @click="fn21(-1)" class="font_sizing">⦿</button>
-<button @click="fn21" class="font_sizing">◎</button>
-</div>
-
-
-<div class="column-2" :class="{'column-2-none': column_2_none}">
-<template v-for="(DATAVAL, DATAIDX) in image_to_name_images_Q_AND_A">
-    <div>
-    <img :src="image_to_name_images[DATAIDX]" :alt="image_to_name_images[DATAIDX]">
-    <button v-for="ANSWER in setup_data[DATAIDX][1]" @click="image_to_name_fn_check_q_and_a_ramda(setup_data[DATAIDX][0], ANSWER, DATAIDX)">{{ ANSWER }}</button>
-    <span >{{ return_YES_EMOJI_if_true_and_NO_EMOJI_if_false_ramda(DATAIDX) }}</span>
-    </div>
-</template>
-<button @click="fn4" class="check_button">🎮</button>
-</div>
-
-
-<div class="column-3" :class="{'column-3-none': column_3_none}">
+<textarea name="" id="from" cols="30" rows="10" v-model="image_to_name_string"></textarea>
+<textarea name="" id="from" cols="30" rows="10" v-model="image_to_name_images_file_name_str"></textarea>
 <div>
-<button @click="fn18" class="result_opener">📖</button>
-
+<input type="file" @change="onFileSelected">
+<img :src="image_url" alt="selected image">
+<span>{{ image_name }}</span>
 </div>
-<template v-for="(DATAVAL, DATAIDX) in data10">
-    <div class="textarea-column-2">
-    <div class="a">
-        <button @click="fn9(DATAIDX)" class="a-1">↩️</button>
-        <button @click="fn16(DATAIDX)" class="a-2">🗑️</button>
-        <button @click="fn17(DATAIDX)" class="a-3">📚</button>
-    </div>
-<textarea name="" cols="30" rows="10" class="b" :class="'textarea-'+DATAIDX" style='display: block;'>{{ DATAVAL[0] }}</textarea>
-<textarea name="" cols="30" rows="10" class="c" :class="'textarea-'+DATAIDX" style='display: block;'>{{ DATAVAL[1] }}</textarea>
-    </div>
-</template>
-</div>
-
-
+<template v-for="(DATAVAL, DATAIDX) in image_to_name_images_Q_AND_A">
+<div>
+<img :src="image_to_name_images[DATAIDX]" :alt="image_to_name_images[DATAIDX]">
+<button v-for="ANSWER in setup_data[DATAIDX][1]" @click="image_to_name_fn_check_q_and_a_ramda(setup_data[DATAIDX][0], ANSWER, DATAIDX)">{{ ANSWER }}</button>
+<span >{{ return_YES_EMOJI_if_true_and_NO_EMOJI_if_false_ramda(DATAIDX) }}</span>
 </div>
 </template>
 </div>
@@ -182,10 +131,20 @@ const {
 const image_to_name = Vue.createApp({
 data() {
     return {
-image_to_name_images_Q_AND_A: [],
 image_to_name_data_1: [],
+image_to_name_image_data: null,
 image_url: null,
 image_name: null,
+image_to_name_images_file_name_str: `cat.png
+dog.png
+halr.png`,
+image_to_name_images: ["cat.png", "dog.png", "halr.png"],
+image_to_name_string: `cat
+dog
+halr`,
+image_to_name_array: null,
+image_to_name_images_Q_AND_A: null,
+image_to_name_images_without_image_format_str: [],
 setup_data: [],
     }},
 watch: {
@@ -210,18 +169,6 @@ updated() {
     this.to_ary_all_dataNum();
 },
 methods: {
-r_zip_form_image_to_name_array_and_image_to_name_images(){
-    // return early if the array contains a symbol for security reasons
-    if(this.contains_symbol_in_ary(this.image_to_name_images_without_image_format_str)){
-        return;
-    }
-
-    this.image_to_name_images_Q_AND_A = R.zip(
-        [1,2,3],
-        [1,2,3]
-    );
-    this.to_ary_all_dataNum();
-},
 image_to_name_fn_2(ANSWER, COLLECT_ANSWER){
     console.log(JSON.parse(JSON.stringify(a,b,c)));
 },
@@ -308,6 +255,23 @@ onFileSelected(event) {
 },
 
 
+image_to_name_array_from_image_to_name_string(){
+    this.image_to_name_array = this.image_to_name_string.split("\n");
+},
+r_zip_form_image_to_name_array_and_image_to_name_images(){
+    this.image_to_name_array_from_image_to_name_string();
+    this.function_to_remove_a_string_from_an_array_string_that_is_contained_in_any_array();
+    // return early if the array contains a symbol for security reasons
+    if(this.contains_symbol_in_ary(this.image_to_name_images_without_image_format_str)){
+        return;
+    }
+
+    this.image_to_name_images_Q_AND_A = R.zip(
+        this.image_to_name_array,
+        this.image_to_name_images_without_image_format_str
+    );
+    this.to_ary_all_dataNum();
+},
 to_ary(it){
     return JSON.parse(JSON.stringify(it));
 },
@@ -315,7 +279,7 @@ to_ary_all_dataNum(){
     data0 = this.image_to_name_images;
     data1 = this.image_to_name_array;
     data2 = this.image_to_name_images_without_image_format_str;
-    data3 = this.image_to_name_images_Q_AND_A;
+    data3 = this.image_to_name_images_Q_AND_A
     data4 = this.setup_data;
     data5 = this.image_to_name_data_1;
     data0 = this.to_ary(data0);
@@ -338,6 +302,7 @@ function_to_remove_a_string_from_an_array_string_that_is_contained_in_any_array(
         })
     });
 }
+
 
 
 
