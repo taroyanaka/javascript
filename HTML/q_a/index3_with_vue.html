@@ -78,18 +78,23 @@ dataC(inputText, image(base64)) <= inputText/inputFile_tag
 
 <div class="column-3" :class="{'column-3-none': column_3_none}">
 <div>
-<button @click="fn18" class="result_opener">📖</button>
+<button @click="result_opener_i_n" class="result_opener">📖</button>
 
 </div>
-<template v-for="(DATAVAL, DATAIDX) in data10">
+<template v-for="(DATAVAL, DATAIDX) in data10_i_n">
     <div class="textarea-column-2">
     <div class="a">
-        <button @click="fn9(DATAIDX)" class="a-1">↩️</button>
-        <button @click="fn16(DATAIDX)" class="a-2">🗑️</button>
-        <button @click="fn17(DATAIDX)" class="a-3">📚</button>
+        <button @click="fn9_i_n(DATAIDX)" class="a-1">↩️</button>
+        <button @click="fn16_i_n(DATAIDX)" class="a-2">🗑️</button>
+        <button @click="fn17_i_n(DATAIDX)" class="a-3">📚</button>
     </div>
-<textarea name="" cols="30" rows="10" class="b" :class="'textarea-'+DATAIDX" style='display: block;'>{{ DATAVAL[0] }}</textarea>
-<textarea name="" cols="30" rows="10" class="c" :class="'textarea-'+DATAIDX" style='display: block;'>{{ DATAVAL[1] }}</textarea>
+    <template v-for="(DATAVAL, DATAIDX) in image_to_name_images_Q_AND_A">
+        <div>
+        <img :src="image_to_name_images[DATAIDX]" :alt="image_to_name_images[DATAIDX]">
+        <button v-for="ANSWER in setup_data[DATAIDX][1]" @click="image_to_name_fn_check_q_and_a_ramda(setup_data[DATAIDX][0], ANSWER, DATAIDX)">{{ ANSWER }}</button>
+        <span >{{ return_YES_EMOJI_if_true_and_NO_EMOJI_if_false_ramda(DATAIDX) }}</span>
+        </div>
+    </template>
     </div>
 </template>
 </div>
@@ -185,10 +190,14 @@ data() {
 image_to_name_images_Q_AND_A: [],
 // image_to_name_data_1: [],
 image_to_name_data_1: [1,2,3],
+image_to_name_data_1_null: [],
 image_url: null,
 image_name: null,
 setup_data: [],
 all_save_i_n: [],
+
+data10_i_n: [],
+
     }},
 watch: {
    any: {
@@ -210,7 +219,6 @@ updated() {
     this.to_ary_all_dataNum();
 },
 methods: {
-// methods
 reverse_i_n(){},
 shuffle_i_n(){},
 swap_i_n(){},
@@ -219,15 +227,19 @@ fn19_i_n(){},
 save_data_set_i_n(){},
 save_data_set_i_n(){},
 save_data_delete_i_n(){},
+fn9_i_n(DATAIDX){},
+fn16_i_n(DATAIDX){},
+fn17_i_n(DATAIDX){},
 r_zip_form_image_to_name_array_and_image_to_name_images(){
+    this.image_to_name_data_1 = this.test_mode === true ? [1,2,3] : [];
+    this.image_data_array = this.test_mode === true ? ['./dog.png', './cat.png', './halr.png'] : [];
     // return early if the array contains a symbol for security reasons
-    if(this.contains_symbol_in_ary([1,2,3])){
+    if(this.contains_symbol_in_ary(this.image_to_name_data_1)){
         return;
     }
-
     this.image_to_name_images_Q_AND_A = R.zip(
-        [1,2,3],
-        [1,2,3]
+        this.image_to_name_data_1,
+        this.image_data_array
     );
     this.to_ary_all_dataNum();
 },
@@ -289,11 +301,9 @@ contains_symbol_in_ary(ary){
     return this.to_ary(ary).map(V=>this.contains_symbol(V)).includes(false);
 },
 create_an_array_of_nulls_of_length_of_length_this_image_to_name_images(){
-    this.image_to_name_data_1 = Array(this.image_to_name_images.length).fill(null);
+    this.image_to_name_data_1_null = Array(this.image_to_name_data_1.length).fill(null);
 },
 setup(){
-    // this.image_to_name_images = this.image_to_name_images_file_name_str.split("\n");
-    // const from_ary = this.image_to_name_array;
     from_ary = [1,2,3];
     this.setup_data = from_ary.map((V, IDX)=>{
         return [V, shuffle(shuffle(R.without(from_ary[IDX], from_ary)).slice(0, 2).concat(from_ary[IDX]))];
@@ -322,12 +332,6 @@ to_ary(it){
     return JSON.parse(JSON.stringify(it));
 },
 to_ary_all_dataNum(){
-    data0 = this.image_to_name_images;
-    data1 = this.image_to_name_array;
-    data2 = this.image_to_name_images_without_image_format_str;
-    data3 = this.image_to_name_images_Q_AND_A;
-    data4 = this.setup_data;
-    data5 = this.image_to_name_data_1;
     data0 = this.to_ary(data0);
     data1 = this.to_ary(data1);
     data2 = this.to_ary(data2);
@@ -335,7 +339,7 @@ to_ary_all_dataNum(){
     data4 = this.to_ary(data4);
     data5 = this.to_ary(data5);
     // それぞれの変数をconsole.logする
-    console.log(data0,data1,data2,data3,data4,data5);
+    // console.log(data0,data1,data2,data3,data4,data5);
 },
 function_to_remove_a_string_from_an_array_string_that_is_contained_in_any_array(){
     format = ['.bmp', '.gif', '.ico', '.jpeg', '.jpg', '.png', '.svg', '.tif', '.tiff', '.webp'];
