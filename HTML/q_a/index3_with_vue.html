@@ -183,10 +183,12 @@ const image_to_name = Vue.createApp({
 data() {
     return {
 image_to_name_images_Q_AND_A: [],
-image_to_name_data_1: [],
+// image_to_name_data_1: [],
+image_to_name_data_1: [1,2,3],
 image_url: null,
 image_name: null,
 setup_data: [],
+all_save_i_n: [],
     }},
 watch: {
    any: {
@@ -198,21 +200,28 @@ watch: {
 beforeMounte(){
 },
 mounted() {
-    this.r_zip_form_image_to_name_array_and_image_to_name_images();
     this.setup();
     this.to_ary_all_dataNum();
 },
 beforeUpdate() {
 },
 updated() {
-    this.r_zip_form_image_to_name_array_and_image_to_name_images();
     this.setup();
     this.to_ary_all_dataNum();
 },
 methods: {
+// methods
+reverse_i_n(){},
+shuffle_i_n(){},
+swap_i_n(){},
+save_data_to_all_save_i_n(){},
+fn19_i_n(){},
+save_data_set_i_n(){},
+save_data_set_i_n(){},
+save_data_delete_i_n(){},
 r_zip_form_image_to_name_array_and_image_to_name_images(){
     // return early if the array contains a symbol for security reasons
-    if(this.contains_symbol_in_ary(this.image_to_name_images_without_image_format_str)){
+    if(this.contains_symbol_in_ary([1,2,3])){
         return;
     }
 
@@ -283,8 +292,9 @@ create_an_array_of_nulls_of_length_of_length_this_image_to_name_images(){
     this.image_to_name_data_1 = Array(this.image_to_name_images.length).fill(null);
 },
 setup(){
-    this.image_to_name_images = this.image_to_name_images_file_name_str.split("\n");
-    const from_ary = this.image_to_name_array;
+    // this.image_to_name_images = this.image_to_name_images_file_name_str.split("\n");
+    // const from_ary = this.image_to_name_array;
+    from_ary = [1,2,3];
     this.setup_data = from_ary.map((V, IDX)=>{
         return [V, shuffle(shuffle(R.without(from_ary[IDX], from_ary)).slice(0, 2).concat(from_ary[IDX]))];
     });
