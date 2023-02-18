@@ -658,6 +658,7 @@ beforeMount() {
 mounted() {
     this.exe();
 document.querySelectorAll("summary")[4].click();
+this.key_binding();
 },
 updated() {
     this.exe();
@@ -984,6 +985,17 @@ collect_animation_value(INDEX, EVENT){
 show_or_not(){
     const element = document.getElementById('show_or_not');
     element.classList.toggle('invisible');
+},
+key_binding(){
+    document.addEventListener('keydown', (event) => {
+        const keyName = event.key;
+        if (keyName === 'ArrowRight' && (event.ctrlKey || event.metaKey)) {
+            this.manual_active_layer_index_increment();
+        }
+        if (keyName === 'ArrowLeft' && (event.ctrlKey || event.metaKey)) {
+            this.manual_active_layer_index_decrement();
+        }
+    });
 },
 
 
