@@ -98,6 +98,16 @@ summary{
     border: #666 3px solid;
     background-color: #999;
 }
+
+#show_or_not {
+  display: block;
+}
+#show_or_not.invisible * {
+  /* display: none; */
+width: 0;
+height: 0;
+font-size: 0;
+}
     </style>
 <style class="wrap"></style>
 <style class="image_layer"></style>
@@ -106,217 +116,228 @@ summary{
 <body>
 <div class="app">
 
-<details data-dropdown>
-<summary>open_time_and_active_layer</summary>
 
-    <button @click="all_save">all_save</button>
-    <button @click="set_param_to_textarea_from_URL">set_param_to_textarea_from_URL</button>
+<div id="show_or_not">
+        <details data-dropdown>
+        <summary>open_time_and_active_layer</summary>
 
-    <textarea name="time_line_to_textarea" class="time_line_to_textarea" placeholder="time_line_to_textarea" cols="30" rows="10"></textarea>
-    <textarea name="active_layer_list" class="active_layer_list" placeholder="active_layer_list" v-model="active_layer_list" cols="30" rows="10"></textarea>
-    <textarea name="active_bubble_list" class="active_bubble_list" placeholder="active_bubble_list" v-model="active_bubble_list" cols="30" rows="10"></textarea>
-</details>
+            <button @click="all_save">all_save</button>
+            <button @click="set_param_to_tetarea_from_URL">set_param_to_textarea_from_URL</button>
 
-
-<details data-dropdown>
-<summary>open_$data</summary>
-    <span>{{ $data }}</span>
-</details>
+            <textarea name="time_line_to_textarea" class="time_line_to_textarea" placeholder="time_line_to_textarea" cols="30" rows="10"></textarea>
+            <textarea name="active_layer_list" class="active_layer_list" placeholder="active_layer_list" v-model="active_layer_list" cols="30" rows="10"></textarea>
+            <textarea name="active_bubble_list" class="active_bubble_list" placeholder="active_bubble_list" v-model="active_bubble_list" cols="30" rows="10"></textarea>
+        </details>
 
 
-<details data-dropdown>
-<summary>open_width_and_height</summary>
-    <input type="number" name="COLUMN_POINT" class="COLUMN_POINT" v-model="COLUMN_POINT" min="1" max="10" step="1">
-    <input type="number" name="MAX_WIDTH" class="MAX_WIDTH" v-model="MAX_WIDTH">
-    <input type="number" name="ROW_POINT" class="ROW_POINT" v-model="ROW_POINT" min="1" max="10" step="1">
-    <input type="number" name="MAX_HEIGHT" class="MAX_HEIGHT" v-model="MAX_HEIGHT">
-</details>
+        <details data-dropdown>
+        <summary>open_$data</summary>
+            <span>{{ $data }}</span>
+        </details>
 
 
-<details data-dropdown>
-<summary>open_image_url_list</summary>
-    <input type="text" name="image_url_file_url" class="image_url_file_url" v-model="image_url_file_url" @input="get_image_url_list_from_url" @change="get_image_url_list_from_url" placeholder="I am not crazy; my reality is just different from yours.">
-    <textarea name="image_url_list" class="image_url_list" cols="100" rows="10" v-model="image_url_list"></textarea>
-</details>
+        <details data-dropdown>
+        <summary>open_width_and_height</summary>
+            <input type="number" name="COLUMN_POINT" class="COLUMN_POINT" v-model="COLUMN_POINT" min="1" max="10" step="1">
+            <input type="number" name="MAX_WIDTH" class="MAX_WIDTH" v-model="MAX_WIDTH">
+            <input type="number" name="ROW_POINT" class="ROW_POINT" v-model="ROW_POINT" min="1" max="10" step="1">
+            <input type="number" name="MAX_HEIGHT" class="MAX_HEIGHT" v-model="MAX_HEIGHT">
+        </details>
 
-<details data-dropdown>
-<summary>open_layer_chunk</summary>
 
-<div data-tabs>
-    <!-- tab0 not working -->
-    <input v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk" :id="'tab'+(OUTER_ARY_INDEX+1)" type="radio" name="tab" :data-tab="'tab'+(OUTER_ARY_INDEX+1)" />
-    <nav>
-    <label v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk" :for="'tab'+(OUTER_ARY_INDEX+1)" :data-tab-label="'tab'+(OUTER_ARY_INDEX+1)" role="tab">{{ OUTER_ARY_INDEX }}</label>
-    </nav>
-    <template v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
-<section :data-tab-panel="'tab'+(OUTER_ARY_INDEX+1)" role="tabpanel" :aria-labelledby="'tab'+(OUTER_ARY_INDEX+1)">
-    <!-- https://stackoverflow.com/q/61207314/9740478 -->
-    <div v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
-        <div v-for="(NO_USE_VAL, INDEX) in IN_ARY" :class="{ coloring: (active_the_image_index[0] === OUTER_ARY_INDEX && active_the_image_index[1] === IN_ARY_INDEX) ? true : false }">
-            <input type='number' :step="(INDEX === 3||INDEX === 4) ? 0.1 : 1" v-model="IN_ARY[INDEX]">
-            <img v-if="INDEX === 0" :src="image_num_to_image_url(IN_ARY[INDEX])" :alt="IN_ARY[INDEX]" class="small_image">
+        <details data-dropdown>
+        <summary>open_image_url_list</summary>
+            <input type="text" name="image_url_file_url" class="image_url_file_url" v-model="image_url_file_url" @input="get_image_url_list_from_url" @change="get_image_url_list_from_url" placeholder="I am not crazy; my reality is just different from yours.">
+            <textarea name="image_url_list" class="image_url_list" cols="100" rows="10" v-model="image_url_list"></textarea>
+        </details>
+
+        <details data-dropdown>
+        <summary>open_layer_chunk</summary>
+
+        <div data-tabs>
+            <!-- tab0 not working -->
+            <input v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk" :id="'tab'+(OUTER_ARY_INDEX+1)" type="radio" name="tab" :data-tab="'tab'+(OUTER_ARY_INDEX+1)" />
+            <nav>
+            <label v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk" :for="'tab'+(OUTER_ARY_INDEX+1)" :data-tab-label="'tab'+(OUTER_ARY_INDEX+1)" role="tab">{{ OUTER_ARY_INDEX }}</label>
+            </nav>
+            <template v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
+        <section :data-tab-panel="'tab'+(OUTER_ARY_INDEX+1)" role="tabpanel" :aria-labelledby="'tab'+(OUTER_ARY_INDEX+1)">
+            <!-- https://stackoverflow.com/q/61207314/9740478 -->
+            <div v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
+                <div v-for="(NO_USE_VAL, INDEX) in IN_ARY" :class="{ coloring: (active_the_image_index[0] === OUTER_ARY_INDEX && active_the_image_index[1] === IN_ARY_INDEX) ? true : false }">
+                    <input type='number' :step="(INDEX === 3||INDEX === 4) ? 0.1 : 1" v-model="IN_ARY[INDEX]">
+                    <img v-if="INDEX === 0" :src="image_num_to_image_url(IN_ARY[INDEX])" :alt="IN_ARY[INDEX]" class="small_image">
+                </div>
+
+            <div>
+            <select class="ary_1_str_selecter" v-model="animation_value_array[IN_ARY[8]][0]">
+            <option v-for="(ARY_STR, ARY_STR_INDEX) in ary_1" :VALUE="ARY_STR">{{ ARY_STR }}</option>
+            </select>
+            <div>animation_direction: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_direction_value_str" class="animation_direction_value_str" v-model="animation_value_array[IN_ARY[8]][3][0]"><option v-for="(VAL, VAL_INDEX) in animation_direction_value" :value="VAL">{{ VAL }}</option></select></div>
+            {{ IN_ARY[8] }}
+            <div>animation_iteration_count: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_iteration_count_value_str" class="animation_iteration_count_value_str"  v-model="animation_value_array[IN_ARY[8]][3][1]"><option v-for="(VAL, VAL_INDEX) in animation_iteration_count_value" :value="VAL">{{ VAL }}</option></select></div>
+            <div>animation_timing_function: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_timing_function_value_str" class="animation_timing_function_value_str" v-model="animation_value_array[IN_ARY[8]][3][2]"><option v-for="(VAL, VAL_INDEX) in animation_timing_function_value" :value="VAL">{{ VAL }}</option></select></div>
+            <div>animation_fill_mode: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_fill_mode_value_str" class="animation_fill_mode_value_str" v-model="animation_value_array[IN_ARY[8]][3][3]"><option v-for="(VAL, VAL_INDEX) in animation_fill_mode_value" :value="VAL">{{ VAL }}</option></select></div>
+
+            change_animation_duration_value_number: <input type="number" name="change_animation_duration_value_number" class="" value="0" @change="collect_animation_value(IN_ARY[8], $event)">
+            change_animation_iteration_count_value_number: <input type="number" name="change_animation_iteration_count_value_number" class=""  value="0" @change="collect_animation_value(IN_ARY[8], $event)">
+            change_animation_timing_function_value_number: <input type="number" name="change_animation_timing_function_value_number" class=""  value="0" @change="collect_animation_value(IN_ARY[8], $event)">
+
+            <h1>animation_value_array[0] is: {{ animation_value_array[IN_ARY[8]][0] }}</h1>
+            <h1>animation_value_array[1] is: {{ animation_value_array[IN_ARY[8]][1] }}</h1>
+            <h1>IN_ARY is: {{ IN_ARY[8] }}</h1>
+            </div>
+                <input type="file" class="files" accept="image/png, image/jpeg" @change="img_set($event, OUTER_ARY_INDEX, IN_ARY_INDEX)">
+                <select class="image_url_selecter" @change="image_url_select(OUTER_ARY_INDEX, IN_ARY_INDEX)" v-model="select_image_url_index">
+                    <option v-for="(image_url, image_url_index) in image_url_list.split('\n')"  :value="image_url_index">{{ image_url }}</option>
+                </select>
+                <button @click="active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
+            </div>
+            <button @click="image_add(OUTER_ARY_INDEX)">image_add</button>
+        </section>
+            </template>
         </div>
 
-    <div>
-    <select class="ary_1_str_selecter" v-model="animation_value_array[IN_ARY[8]][0]">
-    <option v-for="(ARY_STR, ARY_STR_INDEX) in ary_1" :VALUE="ARY_STR">{{ ARY_STR }}</option>
-    </select>
-    <div>animation_direction: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_direction_value_str" class="animation_direction_value_str" v-model="animation_value_array[IN_ARY[8]][3][0]"><option v-for="(VAL, VAL_INDEX) in animation_direction_value" :value="VAL">{{ VAL }}</option></select></div>
-    {{ IN_ARY[8] }}
-    <div>animation_iteration_count: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_iteration_count_value_str" class="animation_iteration_count_value_str"  v-model="animation_value_array[IN_ARY[8]][3][1]"><option v-for="(VAL, VAL_INDEX) in animation_iteration_count_value" :value="VAL">{{ VAL }}</option></select></div>
-    <div>animation_timing_function: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_timing_function_value_str" class="animation_timing_function_value_str" v-model="animation_value_array[IN_ARY[8]][3][2]"><option v-for="(VAL, VAL_INDEX) in animation_timing_function_value" :value="VAL">{{ VAL }}</option></select></div>
-    <div>animation_fill_mode: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_fill_mode_value_str" class="animation_fill_mode_value_str" v-model="animation_value_array[IN_ARY[8]][3][3]"><option v-for="(VAL, VAL_INDEX) in animation_fill_mode_value" :value="VAL">{{ VAL }}</option></select></div>
 
-    change_animation_duration_value_number: <input type="number" name="change_animation_duration_value_number" class="" value="0" @change="collect_animation_value(IN_ARY[8], $event)">
-    change_animation_iteration_count_value_number: <input type="number" name="change_animation_iteration_count_value_number" class=""  value="0" @change="collect_animation_value(IN_ARY[8], $event)">
-    change_animation_timing_function_value_number: <input type="number" name="change_animation_timing_function_value_number" class=""  value="0" @change="collect_animation_value(IN_ARY[8], $event)">
+            <!-- https://stackoverflow.com/q/61207314/9740478 -->
+            <!-- <template v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
+            <div v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
+                <div v-for="(NO_USE_VAL, INDEX) in IN_ARY" :class="{ coloring: (active_the_image_index[0] === OUTER_ARY_INDEX && active_the_image_index[1] === IN_ARY_INDEX) ? true : false }">
+                    <input type='number' :step="(INDEX === 3||INDEX === 4) ? 0.1 : 1" v-model="IN_ARY[INDEX]">
+                    <img v-if="INDEX === 0" :src="image_num_to_image_url(IN_ARY[INDEX])" :alt="IN_ARY[INDEX]" class="small_image">
+                </div>
 
-    <h1>animation_value_array[0] is: {{ animation_value_array[IN_ARY[8]][0] }}</h1>
-    <h1>animation_value_array[1] is: {{ animation_value_array[IN_ARY[8]][1] }}</h1>
-    <h1>IN_ARY is: {{ IN_ARY[8] }}</h1>
-    </div>
-        <input type="file" class="files" accept="image/png, image/jpeg" @change="img_set($event, OUTER_ARY_INDEX, IN_ARY_INDEX)">
-        <select class="image_url_selecter" @change="image_url_select(OUTER_ARY_INDEX, IN_ARY_INDEX)" v-model="select_image_url_index">
-            <option v-for="(image_url, image_url_index) in image_url_list.split('\n')"  :value="image_url_index">{{ image_url }}</option>
-        </select>
-        <button @click="active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
-    </div>
-    <button @click="image_add(OUTER_ARY_INDEX)">image_add</button>
-</section>
-    </template>
+            <div>
+            <select class="ary_1_str_selecter" v-model="animation_value_array[IN_ARY[8]][0]">
+            <option v-for="(ARY_STR, ARY_STR_INDEX) in ary_1" :VALUE="ARY_STR">{{ ARY_STR }}</option>
+            </select>
+            <div>animation_direction: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_direction_value_str" class="animation_direction_value_str" v-model="animation_value_array[IN_ARY[8]][3][0]"><option v-for="(VAL, VAL_INDEX) in animation_direction_value" :value="VAL">{{ VAL }}</option></select></div>
+            {{ IN_ARY[8] }}
+            <div>animation_iteration_count: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_iteration_count_value_str" class="animation_iteration_count_value_str"  v-model="animation_value_array[IN_ARY[8]][3][1]"><option v-for="(VAL, VAL_INDEX) in animation_iteration_count_value" :value="VAL">{{ VAL }}</option></select></div>
+            <div>animation_timing_function: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_timing_function_value_str" class="animation_timing_function_value_str" v-model="animation_value_array[IN_ARY[8]][3][2]"><option v-for="(VAL, VAL_INDEX) in animation_timing_function_value" :value="VAL">{{ VAL }}</option></select></div>
+            <div>animation_fill_mode: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_fill_mode_value_str" class="animation_fill_mode_value_str" v-model="animation_value_array[IN_ARY[8]][3][3]"><option v-for="(VAL, VAL_INDEX) in animation_fill_mode_value" :value="VAL">{{ VAL }}</option></select></div>
+
+            change_animation_duration_value_number: <input type="number" name="change_animation_duration_value_number" class="" value="0" @change="collect_animation_value(IN_ARY[8], $event)">
+            change_animation_iteration_count_value_number: <input type="number" name="change_animation_iteration_count_value_number" class=""  value="0" @change="collect_animation_value(IN_ARY[8], $event)">
+            change_animation_timing_function_value_number: <input type="number" name="change_animation_timing_function_value_number" class=""  value="0" @change="collect_animation_value(IN_ARY[8], $event)">
+
+            <h1>animation_value_array[0] is: {{ animation_value_array[IN_ARY[8]][0] }}</h1>
+            <h1>animation_value_array[1] is: {{ animation_value_array[IN_ARY[8]][1] }}</h1>
+            <h1>IN_ARY is: {{ IN_ARY[8] }}</h1>
+            </div>
+                <input type="file" class="files" accept="image/png, image/jpeg" @change="img_set($event, OUTER_ARY_INDEX, IN_ARY_INDEX)">
+                <select class="image_url_selecter" @change="image_url_select(OUTER_ARY_INDEX, IN_ARY_INDEX)" v-model="select_image_url_index">
+                    <option v-for="(image_url, image_url_index) in image_url_list.split('\n')"  :value="image_url_index">{{ image_url }}</option>
+                </select>
+                <button @click="active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
+            </div>
+            <button @click="image_add(OUTER_ARY_INDEX)">image_add</button>
+            </template> -->
+        </details>
+
+        <span>image_checked: {{ image_checked }}</span>
+        <div class="image_setter">
+        <input type="checkbox" id="checkbox" v-model="image_checked">
+        <label for="checkbox">{{ image_checked }}</label>
+
+        <details data-dropdown>
+        <summary>open_bubble_data_array</summary>
+
+        <template v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
+        BUBBLE_{{ BUBBLE_DATA_INDEX }}
+        <div>
+        <input type="number" name="bubble_column" class="bubble_column" v-model="BUBBLE_DATA[0]" step="0.1">
+        <input type="number" name="bubble_row" class="bubble_row" v-model="BUBBLE_DATA[1]" step="0.1">
+        <input type="number" name="bubble_2_column" class="bubble_2_column" v-model="BUBBLE_DATA[2]" step="0.1">
+        <input type="number" name="bubble_2_row" class="bubble_2_row" v-model="BUBBLE_DATA[3]" step="0.1">
+        <input type="number" name="speak" class="speak" v-model="BUBBLE_DATA[4]">
+        <input type="number" name="a_0" class="a_0" v-model="BUBBLE_DATA[5]">
+        <input type="number" name="a_1" class="a_1" v-model="BUBBLE_DATA[6]">
+        <input type="number" name="a_2" class="a_2" v-model="BUBBLE_DATA[7]">
+        <input type="number" name="a_3" class="a_3" v-model="BUBBLE_DATA[8]">
+        <input type="number" name="a_4" class="a_4" v-model="BUBBLE_DATA[9]">
+        <input type="number" name="a_5" class="a_5" v-model="BUBBLE_DATA[10]">
+        <input type="color" :class="'bubble_'+BUBBLE_DATA_INDEX+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX+'_color'" v-model='BUBBLE_DATA[11]'>
+        <input type="text" :class="'bubble_'+BUBBLE_DATA_INDEX+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX+'_color'" v-model="BUBBLE_DATA[11]">
+        <input type="color" :class="'bubble_'+BUBBLE_DATA_INDEX_2+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX_2+'_color'" v-model='BUBBLE_DATA[12]'>
+        <input type="text" :class="'bubble_'+BUBBLE_DATA_INDEX_2+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX_2+'_color'" v-model="BUBBLE_DATA[12]">
+
+        bubble_width_num<input type="number" name="bubble_width_num" class="bubble_width_num" v-model="BUBBLE_DATA[13]">
+        bubble_height_num<input type="number" name="bubble_height_num" class="bubble_height_num" v-model="BUBBLE_DATA[14]">
+        bubble_2_width_num<input type="number" name="bubble_2_width_num" class="bubble_2_width_num" v-model="BUBBLE_DATA[15]">
+        bubble_2_height_num<input type="number" name="bubble_2_height_num" class="bubble_2_height_num" v-model="BUBBLE_DATA[16]">
+
+        <input type="number" name="speak_size" class="speak_size" v-model="BUBBLE_DATA[17]" step="0.1">
+        </div>
+        </template>
+
+        </details>
+
+        <div class="parent_bubble_color">
+            <input type="color" id="parent_bubble_color" name="parent_bubble_color" v-model='parent_bubble_color'>
+            <label for="parent_bubble_color">parent_bubble_color</label>
+            <input type="text" name="parent_bubble_color" v-model="parent_bubble_color">
+        </div>
+
+
+        <details data-dropdown>
+        <summary>open_bubble_setter</summary>
+            <div class="bubble_setter">
+            <input type="checkbox" id="checkbox" v-model="bubble_checked">
+            <label for="checkbox">{{ bubble_checked }}</label>
+                <div v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
+                <input type="radio" id="bubble" :value="BUBBLE_DATA_INDEX" v-model="picked_bubble_num">
+                <label for="bubble" :style="'background-color: '+BUBBLE_DATA[11]">bubble: {{ BUBBLE_DATA_INDEX }}</label>
+                <button @click="swap(BUBBLE_DATA)">swap</button>
+                <button @click="numbers_minus_100(BUBBLE_DATA)">numbers_minus_100</button>
+                <button @click="pattern_1(BUBBLE_DATA)">pattern_1</button>
+                <button @click="pattern_2(BUBBLE_DATA)">pattern_2</button>
+                <button @click="pattern_3(BUBBLE_DATA)">pattern_3</button>
+                <button @click="pattern_4(BUBBLE_DATA)">pattern_4</button>
+                <button @click="pattern_5(BUBBLE_DATA)">pattern_5</button>
+                </div>
+            <span>picked_bubble_num: {{ picked_bubble_num }}</span>
+            </div>
+
+            bubble_no_show: <input type="checkbox" id="bubble_no_show_check" v-model="bubble_no_show">
+            <label for="bubble_no_show_check">{{ bubble_no_show }}</label>
+        </details>
+
+        <input type="number" name="active_layer_index" class="active_layer_index" v-model="active_layer_index" min="0" step="1">
+        all_display: <input type="checkbox" id="all_display" v-model="all_display">
+
+        <details data-dropdown>
+        <summary>open_speak_array_and_add</summary>
+        <textarea v-for="(speak, speak_array_IDX) in speak_array" v-model="speak_array[speak_array_IDX]"></textarea>
+        <button @click="speak_array_add">speak_array_add</button>
+        </details>
+
+        <details data-dropdown>
+        <summary>open_timer</summary>
+            <button @click="start_timer">!!!start_timer!!!</button>
+            <button @click="manual_active_layer_index_increment">!!!manual_active_layer_index_increment!!!</button>
+            <button @click="manual_active_layer_index_decrement">!!!manual_active_layer_index_decrement!!!</button>
+            <span class="timer"></span>
+
+            <div v-for="(TMP_TL, TMP_TL_INDEX) in tmp_tl_array">
+                <input type="number" name="a_5" class="a_5" @change="change_tl_array($event, TMP_TL_INDEX)" v-model="TMP_TL">
+            </div>
+            <button @click="pre_set_timer">pre_set_timer</button>
+
+            <textarea cols="30" rows="10" @input="change_tl_str" v-model="tmp_tl_str"></textarea>
+        </details>
+
+
+</div>
 </div>
 
 
-    <!-- https://stackoverflow.com/q/61207314/9740478 -->
-    <!-- <template v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
-    <div v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
-        <div v-for="(NO_USE_VAL, INDEX) in IN_ARY" :class="{ coloring: (active_the_image_index[0] === OUTER_ARY_INDEX && active_the_image_index[1] === IN_ARY_INDEX) ? true : false }">
-            <input type='number' :step="(INDEX === 3||INDEX === 4) ? 0.1 : 1" v-model="IN_ARY[INDEX]">
-            <img v-if="INDEX === 0" :src="image_num_to_image_url(IN_ARY[INDEX])" :alt="IN_ARY[INDEX]" class="small_image">
-        </div>
-
-    <div>
-    <select class="ary_1_str_selecter" v-model="animation_value_array[IN_ARY[8]][0]">
-    <option v-for="(ARY_STR, ARY_STR_INDEX) in ary_1" :VALUE="ARY_STR">{{ ARY_STR }}</option>
-    </select>
-    <div>animation_direction: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_direction_value_str" class="animation_direction_value_str" v-model="animation_value_array[IN_ARY[8]][3][0]"><option v-for="(VAL, VAL_INDEX) in animation_direction_value" :value="VAL">{{ VAL }}</option></select></div>
-    {{ IN_ARY[8] }}
-    <div>animation_iteration_count: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_iteration_count_value_str" class="animation_iteration_count_value_str"  v-model="animation_value_array[IN_ARY[8]][3][1]"><option v-for="(VAL, VAL_INDEX) in animation_iteration_count_value" :value="VAL">{{ VAL }}</option></select></div>
-    <div>animation_timing_function: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_timing_function_value_str" class="animation_timing_function_value_str" v-model="animation_value_array[IN_ARY[8]][3][2]"><option v-for="(VAL, VAL_INDEX) in animation_timing_function_value" :value="VAL">{{ VAL }}</option></select></div>
-    <div>animation_fill_mode: <select @change="collect_animation_value(IN_ARY[8], EVENT)" name="animation_fill_mode_value_str" class="animation_fill_mode_value_str" v-model="animation_value_array[IN_ARY[8]][3][3]"><option v-for="(VAL, VAL_INDEX) in animation_fill_mode_value" :value="VAL">{{ VAL }}</option></select></div>
-
-    change_animation_duration_value_number: <input type="number" name="change_animation_duration_value_number" class="" value="0" @change="collect_animation_value(IN_ARY[8], $event)">
-    change_animation_iteration_count_value_number: <input type="number" name="change_animation_iteration_count_value_number" class=""  value="0" @change="collect_animation_value(IN_ARY[8], $event)">
-    change_animation_timing_function_value_number: <input type="number" name="change_animation_timing_function_value_number" class=""  value="0" @change="collect_animation_value(IN_ARY[8], $event)">
-
-    <h1>animation_value_array[0] is: {{ animation_value_array[IN_ARY[8]][0] }}</h1>
-    <h1>animation_value_array[1] is: {{ animation_value_array[IN_ARY[8]][1] }}</h1>
-    <h1>IN_ARY is: {{ IN_ARY[8] }}</h1>
-    </div>
-        <input type="file" class="files" accept="image/png, image/jpeg" @change="img_set($event, OUTER_ARY_INDEX, IN_ARY_INDEX)">
-        <select class="image_url_selecter" @change="image_url_select(OUTER_ARY_INDEX, IN_ARY_INDEX)" v-model="select_image_url_index">
-            <option v-for="(image_url, image_url_index) in image_url_list.split('\n')"  :value="image_url_index">{{ image_url }}</option>
-        </select>
-        <button @click="active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
-    </div>
-    <button @click="image_add(OUTER_ARY_INDEX)">image_add</button>
-    </template> -->
-</details>
-
-<span>image_checked: {{ image_checked }}</span>
-<div class="image_setter">
-<input type="checkbox" id="checkbox" v-model="image_checked">
-<label for="checkbox">{{ image_checked }}</label>
-
-<details data-dropdown>
-<summary>open_bubble_data_array</summary>
-
-<template v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
-BUBBLE_{{ BUBBLE_DATA_INDEX }}
-<div>
-<input type="number" name="bubble_column" class="bubble_column" v-model="BUBBLE_DATA[0]" step="0.1">
-<input type="number" name="bubble_row" class="bubble_row" v-model="BUBBLE_DATA[1]" step="0.1">
-<input type="number" name="bubble_2_column" class="bubble_2_column" v-model="BUBBLE_DATA[2]" step="0.1">
-<input type="number" name="bubble_2_row" class="bubble_2_row" v-model="BUBBLE_DATA[3]" step="0.1">
-<input type="number" name="speak" class="speak" v-model="BUBBLE_DATA[4]">
-<input type="number" name="a_0" class="a_0" v-model="BUBBLE_DATA[5]">
-<input type="number" name="a_1" class="a_1" v-model="BUBBLE_DATA[6]">
-<input type="number" name="a_2" class="a_2" v-model="BUBBLE_DATA[7]">
-<input type="number" name="a_3" class="a_3" v-model="BUBBLE_DATA[8]">
-<input type="number" name="a_4" class="a_4" v-model="BUBBLE_DATA[9]">
-<input type="number" name="a_5" class="a_5" v-model="BUBBLE_DATA[10]">
-<input type="color" :class="'bubble_'+BUBBLE_DATA_INDEX+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX+'_color'" v-model='BUBBLE_DATA[11]'>
-<input type="text" :class="'bubble_'+BUBBLE_DATA_INDEX+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX+'_color'" v-model="BUBBLE_DATA[11]">
-<input type="color" :class="'bubble_'+BUBBLE_DATA_INDEX_2+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX_2+'_color'" v-model='BUBBLE_DATA[12]'>
-<input type="text" :class="'bubble_'+BUBBLE_DATA_INDEX_2+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX_2+'_color'" v-model="BUBBLE_DATA[12]">
-
-bubble_width_num<input type="number" name="bubble_width_num" class="bubble_width_num" v-model="BUBBLE_DATA[13]">
-bubble_height_num<input type="number" name="bubble_height_num" class="bubble_height_num" v-model="BUBBLE_DATA[14]">
-bubble_2_width_num<input type="number" name="bubble_2_width_num" class="bubble_2_width_num" v-model="BUBBLE_DATA[15]">
-bubble_2_height_num<input type="number" name="bubble_2_height_num" class="bubble_2_height_num" v-model="BUBBLE_DATA[16]">
-
-<input type="number" name="speak_size" class="speak_size" v-model="BUBBLE_DATA[17]" step="0.1">
-</div>
-</template>
-
-</details>
-
-<div class="parent_bubble_color">
-    <input type="color" id="parent_bubble_color" name="parent_bubble_color" v-model='parent_bubble_color'>
-    <label for="parent_bubble_color">parent_bubble_color</label>
-    <input type="text" name="parent_bubble_color" v-model="parent_bubble_color">
-</div>
-
-
-<details data-dropdown>
-<summary>open_bubble_setter</summary>
-    <div class="bubble_setter">
-    <input type="checkbox" id="checkbox" v-model="bubble_checked">
-    <label for="checkbox">{{ bubble_checked }}</label>
-        <div v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
-        <input type="radio" id="bubble" :value="BUBBLE_DATA_INDEX" v-model="picked_bubble_num">
-        <label for="bubble" :style="'background-color: '+BUBBLE_DATA[11]">bubble: {{ BUBBLE_DATA_INDEX }}</label>
-        <button @click="swap(BUBBLE_DATA)">swap</button>
-        <button @click="numbers_minus_100(BUBBLE_DATA)">numbers_minus_100</button>
-        <button @click="pattern_1(BUBBLE_DATA)">pattern_1</button>
-        <button @click="pattern_2(BUBBLE_DATA)">pattern_2</button>
-        <button @click="pattern_3(BUBBLE_DATA)">pattern_3</button>
-        <button @click="pattern_4(BUBBLE_DATA)">pattern_4</button>
-        <button @click="pattern_5(BUBBLE_DATA)">pattern_5</button>
-        </div>
-    <span>picked_bubble_num: {{ picked_bubble_num }}</span>
-    </div>
-
-    bubble_no_show: <input type="checkbox" id="bubble_no_show_check" v-model="bubble_no_show">
-    <label for="bubble_no_show_check">{{ bubble_no_show }}</label>
-</details>
-
-<input type="number" name="active_layer_index" class="active_layer_index" v-model="active_layer_index" min="0" step="1">
-all_display: <input type="checkbox" id="all_display" v-model="all_display">
-
-<details data-dropdown>
-<summary>open_speak_array_and_add</summary>
-<textarea v-for="(speak, speak_array_IDX) in speak_array" v-model="speak_array[speak_array_IDX]"></textarea>
-<button @click="speak_array_add">speak_array_add</button>
-</details>
-
-<details data-dropdown>
-<summary>open_timer</summary>
-    <button @click="start_timer">!!!start_timer!!!</button>
-    <button @click="manual_active_layer_index_increment">!!!manual_active_layer_index_increment!!!</button>
-    <button @click="manual_active_layer_index_decrement">!!!manual_active_layer_index_decrement!!!</button>
-    <span class="timer"></span>
-
-    <div v-for="(TMP_TL, TMP_TL_INDEX) in tmp_tl_array">
-        <input type="number" name="a_5" class="a_5" @change="change_tl_array($event, TMP_TL_INDEX)" v-model="TMP_TL">
-    </div>
-    <button @click="pre_set_timer">pre_set_timer</button>
-
-    <textarea cols="30" rows="10" @input="change_tl_str" v-model="tmp_tl_str"></textarea>
-</details>
 
 <details data-dropdown>
 <summary>open_parent_bubble</summary>
+
+
+<button @click="show_or_not">show_or_not</button>
 <div class="parent_bubble">
 
 <div v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
@@ -959,6 +980,12 @@ collect_animation_value(INDEX, EVENT){
     // console.log(this.animation_value_array[INDEX][2]);
     // console.log(this.animation_value_array[INDEX][3]);
 },
+
+show_or_not(){
+    const element = document.getElementById('show_or_not');
+    element.classList.toggle('invisible');
+},
+
 
 all_save(){
 SAVE['COLUMN_POINT'] = this.COLUMN_POINT;
