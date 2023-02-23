@@ -48,9 +48,16 @@ margin: 0.1rem;
 .app{
 width: 100vw;
 }
+
+.toggleDisplay_parent{
+display: grid;
+grid-template-columns: 1fr;
+grid-template-rows: 4rem;
+}
+
 .header{
 display: grid;
-grid-template-columns: 1fr 1fr 1fr 1fr;
+grid-template-columns: 1fr 1fr 1fr;
 grid-template-rows: 4rem;
 }
 .contents{
@@ -279,85 +286,88 @@ visibility: var(--FITB-li-visibility);
 </style>
 </head>
 <body class="app">
-<header class="header">
-<button @click="column_1_none_fn" class="column_none">💾</button>
-<button @click="column_2_none_fn" class="column_none">⌨️</button>
-<button @click="column_3_none_fn" class="column_none">🖥️</button>
-<button @click="toggleContents" class="toggleContents">🥷</button>
-</header>
-<div class="contents">
 
-<div class="column-1" :class="{'column-1-none': column_1_none}">
-<div class="optional_function">
-    <button @click="reverse_q_a">🔃</button>
-    <button @click="shuffle_q_a">🌪️</button>
-    <button @click="swap_q_a">🔁</button>
-    <button @click="save_data_to_all_save">🗂️</button>
-</div>
-<button @click="fn19" class="save_opener">📂</button>
-<ul class="save_data_set_list_parent" style='display: block;'>
-<li v-for="(DATAVAL, DATAIDX) in all_save" class="save_data_set_list">
-    <span @click="save_data_set(DATAIDX)">{{ [DATAVAL[0].split("\n")[0], DATAVAL[1].split("\n")[0]] }}</span>
-    <button @click="save_data_set(DATAIDX)" class="save_data_set">📂</button>
-    <button @click="save_data_delete(DATAIDX)" class="save_data_delete">🗑️</button>
-</li>
-</ul>
-
-<div class="link_button" @click="fn14">
-<button class="link_button_top">🌐</button>
-<progress max="4000" :value="progress_val" class="link_button_under"></progress>
+<div class="toggleDisplay_parent">
+<button @click="toggleDisplay" class="toggleDisplay">🔽</button>
 </div>
 
-<a :href="data11[0]" class="link_text">{{data11[0]}}</a>
-<div class="textarea-column-1">
-<textarea name="" id="textarea-column-1-1" rows="30" cols="" v-model="data6"></textarea>
-<textarea name="" id="textarea-column-1-2" rows="30" cols="" v-model="data3"></textarea>
-</div>
-<button @click="fn21(1)" class="font_sizing">◉</button>
-<button @click="fn21(-1)" class="font_sizing">⦿</button>
-<button @click="fn21" class="font_sizing">◎</button>
-</div>
+<div class="header_and_contents">
+    <header class="header">
+    <button @click="column_1_none_fn" class="column_none">💾</button>
+    <button @click="column_2_none_fn" class="column_none">⌨️</button>
+    <button @click="column_3_none_fn" class="column_none">🖥️</button>
+    </header>
 
-
-<div class="column-2" :class="{'column-2-none': column_2_none}">
-<div>
-<button @click="test0" class="test-fn-none-inline">test0</button>
-<button @click="test1" class="test-fn-none-inline">test1</button>
-<button @click="test2" class="test-fn-none-inline">test2</button>
-</div>
-<template v-for="(DATAVAL, DATAIDX) in data4">
-<div class="q_and_a">
-    <span class="text_right" @click="fn20(DATAIDX)">{{ data5[DATAIDX] }}</span>
-    <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button>
-    <span class="text_center">{{ DATAVAL[2] }}</span>
-</div>
-</template>
-<button @click="fn4" class="check_button">🎮</button>
-</div>
-
-
-<div class="column-3" :class="{'column-3-none': column_3_none}">
-<div>
-<button @click="fn18" class="result_opener">📖</button>
-
-</div>
-<template v-for="(DATAVAL, DATAIDX) in data10">
-    <div class="textarea-column-2">
-    <div class="a">
-        <button @click="fn9(DATAIDX)" class="a-1">↩️</button>
-        <button @click="fn16(DATAIDX)" class="a-2">🗑️</button>
-        <button @click="fn17(DATAIDX)" class="a-3">📚</button>
+    <div class="contents">
+    <div class="column-1" :class="{'column-1-none': column_1_none}">
+    <div class="optional_function">
+        <button @click="reverse_q_a">🔃</button>
+        <button @click="shuffle_q_a">🌪️</button>
+        <button @click="swap_q_a">🔁</button>
+        <button @click="save_data_to_all_save">🗂️</button>
     </div>
-<textarea name="" cols="30" rows="10" class="b" :class="'textarea-'+DATAIDX" style='display: block;'>{{ DATAVAL[0] }}</textarea>
-<textarea name="" cols="30" rows="10" class="c" :class="'textarea-'+DATAIDX" style='display: block;'>{{ DATAVAL[1] }}</textarea>
+    <button @click="fn19" class="save_opener">📂</button>
+    <ul class="save_data_set_list_parent" style='display: block;'>
+    <li v-for="(DATAVAL, DATAIDX) in all_save" class="save_data_set_list">
+        <span @click="save_data_set(DATAIDX)">{{ [DATAVAL[0].split("\n")[0], DATAVAL[1].split("\n")[0]] }}</span>
+        <button @click="save_data_set(DATAIDX)" class="save_data_set">📂</button>
+        <button @click="save_data_delete(DATAIDX)" class="save_data_delete">🗑️</button>
+    </li>
+    </ul>
+
+    <div class="link_button" @click="fn14">
+    <button class="link_button_top">🌐</button>
+    <progress max="4000" :value="progress_val" class="link_button_under"></progress>
     </div>
-</template>
+
+    <a :href="data11[0]" class="link_text">{{data11[0]}}</a>
+    <div class="textarea-column-1">
+    <textarea name="" id="textarea-column-1-1" rows="30" cols="" v-model="data6"></textarea>
+    <textarea name="" id="textarea-column-1-2" rows="30" cols="" v-model="data3"></textarea>
+    </div>
+    <button @click="fn21(1)" class="font_sizing">◉</button>
+    <button @click="fn21(-1)" class="font_sizing">⦿</button>
+    <button @click="fn21" class="font_sizing">◎</button>
+    </div>
+
+
+    <div class="column-2" :class="{'column-2-none': column_2_none}">
+    <div>
+    <button @click="test0" class="test-fn-none-inline">test0</button>
+    <button @click="test1" class="test-fn-none-inline">test1</button>
+    <button @click="test2" class="test-fn-none-inline">test2</button>
+    </div>
+    <template v-for="(DATAVAL, DATAIDX) in data4">
+    <div class="q_and_a">
+        <span class="text_right" @click="fn20(DATAIDX)">{{ data5[DATAIDX] }}</span>
+        <button v-for="item in DATAVAL[1]" @click="fn3(DATAVAL[0], item, DATAIDX)">{{ item }}</button>
+        <span class="text_center">{{ DATAVAL[2] }}</span>
+    </div>
+    </template>
+    <button @click="fn4" class="check_button">🎮</button>
+    </div>
+
+
+    <div class="column-3" :class="{'column-3-none': column_3_none}">
+    <div>
+    <button @click="fn18" class="result_opener">📖</button>
+
+    </div>
+    <template v-for="(DATAVAL, DATAIDX) in data10">
+        <div class="textarea-column-2">
+        <div class="a">
+            <button @click="fn9(DATAIDX)" class="a-1">↩️</button>
+            <button @click="fn16(DATAIDX)" class="a-2">🗑️</button>
+            <button @click="fn17(DATAIDX)" class="a-3">📚</button>
+        </div>
+    <textarea name="" cols="30" rows="10" class="b" :class="'textarea-'+DATAIDX" style='display: block;'>{{ DATAVAL[0] }}</textarea>
+    <textarea name="" cols="30" rows="10" class="c" :class="'textarea-'+DATAIDX" style='display: block;'>{{ DATAVAL[1] }}</textarea>
+        </div>
+    </template>
+    </div>
+
+    </div>
 </div>
-
-</div>
-
-
-
 
 
 
@@ -500,6 +510,7 @@ mounted() {
 this.processing();
 this.save_data_load();
 this.fn15();
+this.toggleDisplay();
 this.test_mode === true ? this.test_exe() : null;
 },
 beforeUpdate() {
@@ -857,16 +868,16 @@ narrowDownAnswer(){
 },
 
 
-// class='contents'要素とclass='fill_in'要素の表示と非表示の切り替えの関数
-toggleContents(){
-    const contents = document.querySelector(".contents");
+// header_and_contentsとfill_inの表示非表示のトグル
+toggleDisplay(){
+    const header_and_contents = document.querySelector(".header_and_contents");
     const fill_in = document.querySelector(".fill_in");
-    if(contents.style.display === "none"){
-        contents.style.display = "block";
-        fill_in.style.display = "none";
-    }else{
-        contents.style.display = "none";
+    if(header_and_contents.style.display === "block"){
+        header_and_contents.style.display = "none";
         fill_in.style.display = "block";
+    }else{
+        header_and_contents.style.display = "block";
+        fill_in.style.display = "none";
     }
 },
 
