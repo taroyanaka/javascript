@@ -35,6 +35,54 @@
 }
 </style>
 </head>
+
+
+<!-- https://qiita.com/satto_sann/items/be4177360a0bc3691fdf -->
+<script id="google_apps_script">
+// function doGet(e) {
+//     var p = e.parameter;
+// function sleep(waitMsec) {
+//     var startMsec = new Date();
+//     while (new Date() - startMsec < waitMsec);
+// }
+// function json_string_to_array(json_string) {
+//     return JSON.parse(json_string);
+// }
+// var ary = json_string_to_array(p.text);
+// function translate_array(array) {
+//     let translated_array = [];
+//     for (let i = 0; i < array.length; i++) {
+//         let element = array[i];
+//         sleep(500);
+//         translated_array.push(LanguageApp.translate(element, p.source, p.target));
+//     }
+//     return translated_array;
+// }
+// var res = translate_array(ary);
+// function array_to_json_string(array) {
+//     return JSON.stringify(array);
+// }
+// var translatedTextJSON_Str = array_to_json_string(res);
+//     var body;
+//     if (translatedTextJSON_Str) {
+//         body = {
+//           code: 200,
+//           text: translatedTextJSON_Str
+//         };
+//     } else {
+//         body = {
+//           code: 400,
+//           text: "Bad Request"
+//         };
+//     }
+//     var response = ContentService.createTextOutput();
+//     response.setMimeType(ContentService.MimeType.JSON);
+//     response.setContent(JSON.stringify(body));
+//     return response;
+// }
+</script>
+
+
 <body>
     <h1>recognize with Tesseract.js</h1>
     <img id="image" src="">
@@ -207,6 +255,10 @@ function json_string_to_array(json_string) {
 // }
 
 
-    </script>
+</script>
+
+
+
+
 </body>
 </html>
