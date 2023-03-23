@@ -130,10 +130,7 @@ async function url_data_fetch() {
 page_number = 1;
 limit_word_volume = 5;
 
-let data = null;
-let test = null;
-let test2 = null;
-
+const endpoint = 'https://script.google.com/macros/s/AKfycbzZuVNS36WugiFnBLpNYVEHdC5DicIxZYZWpfTFGXj_6UusY6H-7Z6IdKdKnLg7kcey/exec';
 
 
 function paging_from_urls_array(urls_array) {
@@ -167,8 +164,6 @@ function execute(){
     //   Tesseract.recognize('https://tesseract.projectnaptha.com/img/eng_bw.png', 'eng', { logger: progressFn })
     Tesseract.recognize(img, 'eng', { logger: progressFn })
         .then(result => {
-        data = result;
-        console.log(result);
         // 抽出されたテキストをHTMLページに出力
         // document.getElementById('text').innerText = result.text;
         document.getElementById('text').innerText = result.data.text;
@@ -223,12 +218,10 @@ function translateText() {
 );
     const source = 'en';
     const target = 'ja';
-    const endpoint = 'https://script.google.com/macros/s/AKfycbzZuVNS36WugiFnBLpNYVEHdC5DicIxZYZWpfTFGXj_6UusY6H-7Z6IdKdKnLg7kcey/exec';
-    const url = test2 = endpoint + `?text=` + text + `&source=${source}&target=${target}`;
+    const url = endpoint + `?text=` + text + `&source=${source}&target=${target}`;
     fetch(url)
         .then(response => response.json())
         .then(json => {
-test = json_string_to_array(json.text);
             document.getElementById('ja_result_text').value = json_string_to_array(json.text).join("\n");
         });
 }
