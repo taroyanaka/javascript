@@ -6,5 +6,6 @@
             "cmd": "cp /Users/yanakataro/Desktop/js2/javascript/HTML/pwa-builder-test3/node_express_cors_better-sqlite3_server.js /Users/yanakataro/Desktop/npm_package/better-sqlite3/"
         }
     ]
-}
+},
+"git.ignoreLimitWarning": true
 }

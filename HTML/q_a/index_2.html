@@ -384,8 +384,8 @@ visibility: var(--FITB-li-visibility);
     </ul>
 
     <div class="collapse">
-        <textarea name="question" class="question" @input="changer();checker();"></textarea>
-        <textarea name="changer" class="changer" @input="changer();checker();"></textarea>
+        <textarea name="question" class="question" @input="changer_and_checker"></textarea>
+        <textarea name="changer" class="changer" @input="changer_and_checker"></textarea>
     </div>
     <div class="answer"></div>
     <button class="retry" @click="retry">🔁</button>
@@ -823,6 +823,10 @@ checkAll(BLANK_ELEMENT, IDX){
 checker(){
     document.querySelectorAll(".fill_in .blank").forEach((BLANK_ELEMENT, IDX)=> this.checkAll(BLANK_ELEMENT, IDX));
 },
+changer_and_checker(){
+    this.changer();
+    // this.checker();
+},
 random(seed) {
     const x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
@@ -883,5 +887,9 @@ toggleDisplay(){
 
 },
 }).mount('.app');
+
+function checker(){
+    document.querySelectorAll(".fill_in .blank").forEach((BLANK_ELEMENT, IDX)=> app.checkAll(BLANK_ELEMENT, IDX));
+};
 </script>
 </html>

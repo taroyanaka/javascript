@@ -12,7 +12,7 @@
     <!-- <script src="ramda.js"></script> -->
     <script src="localforage.js"></script>
     <!-- https://github.com/davidshimjs/qrcodejs -->
-    <script src="qrcode.js"></script>
+    <!-- <script src="qrcode.js"></script> -->
 <link rel="stylesheet" href="./reset.css">
     <style>
         :root {
@@ -105,8 +105,8 @@ visibility: var(--li-visibility);
 <ul class="ul">
 <li class="li-1"><button class="collapseChanger" onclick="collapseChanger()">👐</button></li>
 <li class="li-2"><button class="sample" onclick="sample()">📝</button></li>
-<li class="li-3"><button class="makeShareURLButton" onclick="makeShareURLButton()">🔗</button></li>
-<li class="li-4"><button class="QRCodeButton" onclick="QRCodeButton()">🔣</button></li>
+<!-- <li class="li-3"><button class="makeShareURLButton" onclick="makeShareURLButton()">🔗</button></li> -->
+<!-- <li class="li-4"><button class="QRCodeButton" onclick="QRCodeButton()">🔣</button></li> -->
 <li class="li-5"><button class="dataNameToHTMLInsert" onclick="dataNameToHTMLInsert()">👆</button></li>
 <li class="li-6"><button class="saveData" onclick="saveData()">👇</button></li>
 <li class="li-7"><button class="clearAllSaveData" onclick="clearAllSaveData()">💨</button></li>
@@ -159,7 +159,26 @@ changer();
 tester();
 checker();
 };
+
+// A function to check if a symbol is contained
+function contains_symbol(input) {
+    const symbols = '!@#$%^&*()_+-={}[]|;:\'"<>,.?/\\';
+    for (let i = 0; i < input.length; i++) {
+        if (symbols.indexOf(input[i]) !== -1) {
+            return false;
+        }
+    }
+    return true;
+}
 const changer = () => {
+console.log("A");
+// Return early if symbols are included for security purposes.
+if(document.querySelector(".changer").value.split("\n").every(V=>contains_symbol(V)) == false){
+    console.log("B");
+    return;
+}
+console.log("C");
+
     // https://stackoverflow.com/a/1234725
     const regex = "(" + document.querySelector(".changer").value.split("\n").map(V=>`${V}|`).join("").slice(0, -1) + ")";
     const RE = new RegExp(regex, "gm");
@@ -255,13 +274,13 @@ const narrowDownAnswer = () => {
 const getQAValue = () => [document.querySelector(`.question`).value, document.querySelector(`.changer`).value];
 const dataNameToHTML = (ARY) => ARY.map(V=>`<button onclick="loadAndExe('${V}')">${V}</button>`).join("");
 // (await localforage.keys()).filter(V=>V.includes(location.href)).map(V=>V.split("_")).map(V=>[V[0], Number(V[1])]).sort((A,B)=>A[1] - B[1])
-const dataNameToHTMLInsert = async () => {
-    document.querySelector(`.saveData`).innerHTML
-    = dataNameToHTML(
-        (await localforage.keys())
-            .filter(V=>V.includes(location.href))
-    )
-};
+// const dataNameToHTMLInsert = async () => {
+//     document.querySelector(`.saveData`).innerHTML
+//     = dataNameToHTML(
+//         (await localforage.keys())
+//             .filter(V=>V.includes(location.href))
+//     )
+// };
 
 const loadData = async (KEY) => {
     const saveDataJSON = await localforage.getItem(KEY);
@@ -294,11 +313,11 @@ const saveData = async () => {
     //     [0]
     // );
 };
-const dataNameToHTMLRemove = () => document.querySelector(`.saveData`).innerHTML = "";
-const clearAllSaveData = async () => {
-    await localforage.clear();
-    dataNameToHTMLRemove();
-};
+// const dataNameToHTMLRemove = () => document.querySelector(`.saveData`).innerHTML = "";
+// const clearAllSaveData = async () => {
+//     await localforage.clear();
+//     dataNameToHTMLRemove();
+// };
 
 // const saveAndLoadSample = async () => {
 //     await localforage.setItem("foo", JSON.stringify([0,1,2]));
@@ -319,33 +338,31 @@ const clearAllSaveData = async () => {
 // };
 
 // https://stackoverflow.com/a/6257480
-const makeShareURLButton = () => document.querySelector(`.shareURL`).href = document.querySelector(`.shareURL`).innerText = makeShareURL();
+// const makeShareURLButton = () => document.querySelector(`.shareURL`).href = document.querySelector(`.shareURL`).innerText = makeShareURL();
 
-const makeShareURL = () => location.protocol + '//' + location.host + location.pathname +
-"?question=" +
-JSON.stringify(document.querySelector(`.question`).value) +
-"&changer=" +
-JSON.stringify(document.querySelector(`.changer`).value);
+// const makeShareURL = () => location.protocol + '//' + location.host + location.pathname +
+// "?question=" +
+// JSON.stringify(document.querySelector(`.question`).value) +
+// "&changer=" +
+// JSON.stringify(document.querySelector(`.changer`).value);
 
 
 // https://github.com/davidshimjs/qrcodejs
-const makeQRCode = () => {
-    new QRCode(document.querySelector(".qrcode"), {
-        text: makeShareURL(),
-        // width: window.screen.width,
-        width: window.innerWidth,
-        // height: window.screen.height,
-        height: window.innerHeight,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-    });
-};
-const removeQRCode = () => document.querySelector(`.qrcode`).outerHTML = `<div class="qrcode"></div>`;
-
-const QRCodeButton
- = () => document.querySelector(".qrcode").innerHTML ? removeQRCode() : makeQRCode();
-// if(){"hoge"}else{"fuga"}
+// const makeQRCode = () => {
+//     new QRCode(document.querySelector(".qrcode"), {
+//         text: makeShareURL(),
+//         // width: window.screen.width,
+//         width: window.innerWidth,
+//         // height: window.screen.height,
+//         height: window.innerHeight,
+//         colorDark : "#000000",
+//         colorLight : "#ffffff",
+//         correctLevel : QRCode.CorrectLevel.H
+//     });
+// };
+// const removeQRCode = () => document.querySelector(`.qrcode`).outerHTML = `<div class="qrcode"></div>`;
+// const QRCodeButton
+//  = () => document.querySelector(".qrcode").innerHTML ? removeQRCode() : makeQRCode();
 
 changer();
 checker();
