@@ -232,7 +232,6 @@ test = json_string_to_array(json.text);
             document.getElementById('ja_result_text').value = json_string_to_array(json.text).join("\n");
         });
 }
-
 // 配列をJSON.stringifyで文字列に変換する関数
 function array_to_json_string(array) {
     return JSON.stringify(array);
@@ -241,24 +240,6 @@ function array_to_json_string(array) {
 function json_string_to_array(json_string) {
     return JSON.parse(json_string);
 }
-
-
-// var translatedText = LanguageApp.translate(p.text, p.source, p.target);
-// という処理を配列のそれぞれの要素に対して行う関数に書き換える
-// function translate_array(array) {
-//     let translated_array = [];
-//     for (let i = 0; i < array.length; i++) {
-//         let element = array[i];
-//         translated_array.push(LanguageApp.translate(element, 'en', 'ja'));
-//     }
-//     return translated_array;
-// }
-
-
 </script>
-
-
-
-
 </body>
 </html>
