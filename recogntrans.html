@@ -87,7 +87,7 @@
     <img id="image" src="">
     <pre id="text"></pre>
 <!-- <button onclick="execute()">execute</button> -->
-<button onclick="next_page()">next_page</button>
+<button @click="next_page">next_page</button>
 <div id="progress"></div>
 <button @click="setup_data">setup_data</button>
 <button @click="translateText">translateText</button>
@@ -114,17 +114,23 @@ data() {
     return {
 data_0: 'ANY',
 data_1: [0,1,2],
-json_string_url: 'https://gist.githubusercontent.com/taroyanaka/acacbb47f5504f9ce70229e13a8d6117/raw/c18f1d481948f9145e4ad51dba120d71966950b7/book_data.json',
+json_string_url: 'https://gist.githubusercontent.com/taroyanaka/02180d7216e2002e1aadada150fc37ed/raw/81604ca5c11c08a979b0acbc55d2f01d4ef1720d/wiki_image.json',
+// json_string_url: 'https://gist.githubusercontent.com/taroyanaka/acacbb47f5504f9ce70229e13a8d6117/raw/c18f1d481948f9145e4ad51dba120d71966950b7/book_data.json',
 
 urls: ['sample_img_url1.jpg', 'sample_img_url2.jpg', 'sample_img_url3.jpg'],
 // (async function() {
 // })();
 // urls: [],
-page_number: 1,
+page_number: 0,
 limit_word_volume: 5,
 endpoint: 'https://script.google.com/macros/s/AKfycbzZuVNS36WugiFnBLpNYVEHdC5DicIxZYZWpfTFGXj_6UusY6H-7Z6IdKdKnLg7kcey/exec',
 page: null,
 text: '',
+
+source: 'en',
+target: 'ja',
+url: '',
+
     }},
 watch: {
    any: {
@@ -138,7 +144,8 @@ beforeMounte(){
 mounted() {
     this.fn_1();
     // this.url_data_fetch();
-    (async () => {  this.urls = await url_data_fetch() })();
+    (async () => {  this.urls = await this.url_data_fetch() })();
+    // this.urls = await this.url_data_fetch();
 },
 beforeUpdate() {
 },
@@ -157,6 +164,7 @@ async url_data_fetch() {
     const data = await response.json();
     // console.log(data);
     this.urls = JSON.parse(data);
+    return JSON.parse(data);
   } catch (error) {
     // console.error(error);
   }
@@ -173,7 +181,7 @@ paging_from_urls_array(urls_array) {
 
 next_page(){
     // this.page_number++;
-    this.page = paging_from_urls_array(this.urls)[this.page_number++];
+    this.page = this.paging_from_urls_array(this.to_ary(this.urls))[this.page_number++];
     this.execute();
 },
 
@@ -187,7 +195,7 @@ execute(){
     // Tesseract.jsの処理中に進捗を表示するコールバック関数
     const progressFn = (progress) => {
         // 進捗状況を整形して表示
-        document.getElementById('progress').innerText = `進捗: ${progress.progress}% (${progress.status})`;
+        document.getElementById('progress').innerText = `進捗: ${progress.progress * 100}% (${progress.status})`;
     };
     //   Tesseract.recognize('https://tesseract.projectnaptha.com/img/eng_bw.png', 'eng', { logger: progressFn })
     Tesseract.recognize(img, 'eng', { logger: progressFn })
@@ -236,39 +244,34 @@ translateText() {
         document.getElementById('en_result_text').value.split("\n")
             .slice(0, this.limit_word_volume)
     );
-    const source = 'en';
-    const target = 'ja';
-    const url = endpoint + `?text=` + this.text + `&source=${source}&target=${target}`;
-    fetch(url)
+    this.source = 'en';
+    this.target = 'ja';
+    this.url = this.endpoint + `?text=` + this.text + `&source=${this.source}&target=${this.target}`;
+    fetch(this.url)
         .then(response => response.json())
         .then(json => {
-            document.getElementById('ja_result_text').value = json_string_to_array(json.text).join("\n");
+            document.getElementById('ja_result_text').value = this.json_string_to_array(json.text).join("\n");
         });
 
 },
 
+// 配列をJSON.stringifyで文字列に変換する関数
+array_to_json_string(array) {
+    return JSON.stringify(array);
+},
+// JSON文字列をJSON.parseで配列に変換する関数
+json_string_to_array(json_string) {
+    return JSON.parse(json_string);
+},
 
+to_ary(it){
+return JSON.parse(JSON.stringify(it));
+},
 
 },
 }).mount('.app');
 
 
-
-
-
-
-
-
-
-
-// 配列をJSON.stringifyで文字列に変換する関数
-function array_to_json_string(array) {
-    return JSON.stringify(array);
-}
-// JSON文字列をJSON.parseで配列に変換する関数
-function json_string_to_array(json_string) {
-    return JSON.parse(json_string);
-}
 
 </script>
 </html>
