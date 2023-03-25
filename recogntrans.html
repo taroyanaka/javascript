@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>recogntrans: recognize and translate</title>
+    <script src="./vue@3.2.36.global.prod.js"></script>
     <!-- v4 -->
     <!-- <script src='https://unpkg.com/tesseract.js@4.0.2/dist/tesseract.min.js'></script> -->
     <script src='./tesseract@4.0.2.js'></script>
-
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.36/vue.cjs.js"></script> -->
 <style>
 /* en_result_textのtextareaとja_result_textのtextareaをgridで50%と50%の2カラムで表示するCSS */
 #en_result_text, #ja_result_text {
@@ -27,7 +31,6 @@
     grid-template-rows: 1fr;
     grid-template-areas: "ja_text en_result_text ja_result_text";
 }
-
 /* imgタグを10rem10remで表示する */
 #image {
     width: 10rem;
@@ -35,8 +38,6 @@
 }
 </style>
 </head>
-
-
 <!-- https://qiita.com/satto_sann/items/be4177360a0bc3691fdf -->
 <script id="google_apps_script">
 // function doGet(e) {
@@ -81,85 +82,112 @@
 //     return response;
 // }
 </script>
-
-
-<body>
+<body class="app">
     <h1>recognize with Tesseract.js</h1>
     <img id="image" src="">
     <pre id="text"></pre>
 <!-- <button onclick="execute()">execute</button> -->
 <button onclick="next_page()">next_page</button>
-
 <div id="progress"></div>
-
-<button onclick="setup_data()">setup_data</button>
-<button onclick="translateText()">translateText</button>
-
+<button @click="setup_data">setup_data</button>
+<button @click="translateText">translateText</button>
 <h1>google apps script 翻訳の元データ</h1>
 <p>urls = ['sample_img_url1.jpg', 'sample_img_url2.jpg', 'sample_img_url3.jpg'];</p>
 <p>page_number = 1;</p>
 <p>limit_word_volume = 5;</p>
 <p>の値を変更して利用する</p>
-
 <!-- <button onclick="set_ja_text()">set_ja_text</button> -->
-
 <div id="grid_parent">
 <div id="ja_text"></div>
 <textarea name="" cols="30" rows="1000" id="en_result_text"></textarea>
 <textarea name="" cols="30" rows="1000" id="ja_result_text"></textarea>
 </div>
-
+<button @click="fn_0">fn_0</button>
+<template v-for="(DATA_VAL, DATA_IDX) in data_1">
+<div>{{ DATA_VAL }}</div>
+</template>
+<textarea name="" id="" cols="30" rows="10" v-model="data_0"></textarea>
+</body>
 <script>
-json_string_url = 'https://gist.githubusercontent.com/taroyanaka/acacbb47f5504f9ce70229e13a8d6117/raw/c18f1d481948f9145e4ad51dba120d71966950b7/book_data.json';
+const app = Vue.createApp({
+data() {
+    return {
+data_0: 'ANY',
+data_1: [0,1,2],
+json_string_url: 'https://gist.githubusercontent.com/taroyanaka/acacbb47f5504f9ce70229e13a8d6117/raw/c18f1d481948f9145e4ad51dba120d71966950b7/book_data.json',
 
-urls = ['sample_img_url1.jpg', 'sample_img_url2.jpg', 'sample_img_url3.jpg'];
-async function url_data_fetch() {
+urls: ['sample_img_url1.jpg', 'sample_img_url2.jpg', 'sample_img_url3.jpg'],
+// (async function() {
+// })();
+// urls: [],
+page_number: 1,
+limit_word_volume: 5,
+endpoint: 'https://script.google.com/macros/s/AKfycbzZuVNS36WugiFnBLpNYVEHdC5DicIxZYZWpfTFGXj_6UusY6H-7Z6IdKdKnLg7kcey/exec',
+page: null,
+text: '',
+    }},
+watch: {
+   any: {
+     handler() {
+     },
+     deep: true
+   },
+},
+beforeMounte(){
+},
+mounted() {
+    this.fn_1();
+    // this.url_data_fetch();
+    (async () => {  this.urls = await url_data_fetch() })();
+},
+beforeUpdate() {
+},
+updated() {
+},
+methods: {
+fn_0(){
+    console.log(this.data_0);
+},
+fn_1(){
+    console.log(JSON.parse(JSON.stringify(this.data_1)));
+},
+async url_data_fetch() {
   try {
-    const response = await fetch(json_string_url);
+    const response = await fetch(this.json_string_url);
     const data = await response.json();
     // console.log(data);
-    return JSON.parse(data);
+    this.urls = JSON.parse(data);
   } catch (error) {
     // console.error(error);
   }
-}
-(async function() {
-  urls = await url_data_fetch();
-})();
+},
 
-page_number = 1;
-limit_word_volume = 5;
-
-const endpoint = 'https://script.google.com/macros/s/AKfycbzZuVNS36WugiFnBLpNYVEHdC5DicIxZYZWpfTFGXj_6UusY6H-7Z6IdKdKnLg7kcey/exec';
-
-
-function paging_from_urls_array(urls_array) {
+paging_from_urls_array(urls_array) {
     let paging = [];
     for (let i = 0; i < urls_array.length; i++) {
         let url = urls_array[i];
         paging.push(url);
     }
     return paging;
-}
+},
 
-let page = null;
-function next_page(){
-    page_number++;
-    page = paging_from_urls_array(urls)[page_number];
-    execute();
-}
+next_page(){
+    // this.page_number++;
+    this.page = paging_from_urls_array(this.urls)[this.page_number++];
+    this.execute();
+},
 
 
 // 画像の読み込み
-function execute(){
+execute(){
     const img = document.getElementById('image');
-    img.src = page;
+    img.src = this.page;
     // 進捗表示用の要素を取得
-    const progressEl = document.getElementById('progress');
+    // const progressEl = document.getElementById('progress');
     // Tesseract.jsの処理中に進捗を表示するコールバック関数
     const progressFn = (progress) => {
         // 進捗状況を整形して表示
-        progressEl.innerText = `進捗: ${progress.progress}% (${progress.status})`;
+        document.getElementById('progress').innerText = `進捗: ${progress.progress}% (${progress.status})`;
     };
     //   Tesseract.recognize('https://tesseract.projectnaptha.com/img/eng_bw.png', 'eng', { logger: progressFn })
     Tesseract.recognize(img, 'eng', { logger: progressFn })
@@ -168,63 +196,71 @@ function execute(){
         // document.getElementById('text').innerText = result.text;
         document.getElementById('text').innerText = result.data.text;
     });
-}
+},
 
 
 // スペースか改行で区切られた文字列を配列に変換
-function split_string_to_array(str) {
+split_string_to_array(str) {
     return str.split(/[\s]+/);
-}
+},
 
 
 
 
-function setup_data(){
+
+setup_data(){
     sample_text = document.getElementById('text').innerText
-    result = split_string_to_array(sample_text);
-
+    result = this.split_string_to_array(sample_text);
     // resultを改行した文字列に変換してlines_resultに代入する関数を1行で書く
     joined_result = result.join("\n");
     // textareaにlines_resultを代入
     document.getElementById('en_result_text').value = joined_result;
 
     // 配列のそれぞれが文字列の要素をdivタグに変換する関数
-    function array_to_div(array) {
-        let div = "";
-        for (let i = 0; i < array.length; i++) {
-            let element = array[i];
-            div += `<div>${element}</div>`;
-        }
-        return div;
-    }
-
+    const array_to_div = (array) => array.map(element => `<div>${element}</div>`).join("");
     // ja_textにlines_resultを代入
     document.getElementById('ja_text').innerHTML = array_to_div(result);
+    document.getElementById('ja_result_text').value = document.getElementById('ja_text').innerText;
 
-    // 3秒後にja_textをja_result_textに代入する関数
-    function set_ja_text() {
-        document.getElementById('ja_result_text').value = document.getElementById('ja_text').innerText;
-    }
-    set_ja_text();
     // 3秒後にja_textをja_result_textに代入
     // setTimeout(googleTranslateElementInit, 3000);
-}
+},
+
+
+
 
 // fetchのサンプルコード
 // ?text=Hello&source=en&target=ja がパラメーター
-function translateText() {
-    const text = array_to_json_string(document.getElementById('en_result_text').value.split("\n")
-.slice(0, limit_word_volume)
-);
+translateText() {
+    this.text = this.array_to_json_string(
+        document.getElementById('en_result_text').value.split("\n")
+            .slice(0, this.limit_word_volume)
+    );
     const source = 'en';
     const target = 'ja';
-    const url = endpoint + `?text=` + text + `&source=${source}&target=${target}`;
+    const url = endpoint + `?text=` + this.text + `&source=${source}&target=${target}`;
     fetch(url)
         .then(response => response.json())
         .then(json => {
             document.getElementById('ja_result_text').value = json_string_to_array(json.text).join("\n");
         });
-}
+
+},
+
+
+
+},
+}).mount('.app');
+
+
+
+
+
+
+
+
+
+
 // 配列をJSON.stringifyで文字列に変換する関数
 function array_to_json_string(array) {
     return JSON.stringify(array);
@@ -233,6 +269,6 @@ function array_to_json_string(array) {
 function json_string_to_array(json_string) {
     return JSON.parse(json_string);
 }
+
 </script>
-</body>
 </html>
