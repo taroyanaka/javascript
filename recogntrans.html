@@ -14,7 +14,7 @@
     height: 100%;
     resize: none;
     /* border: none; */
-    padding: 0;
+    padding: 0.1rem;
     margin: 0;
     /* font-size: 16px; */
     font-family: monospace;
@@ -24,7 +24,7 @@
 /* grid_parentでgrid_parentの子要素を3カラムで表示 */
 #grid_parent {
     display: grid;
-    grid-template-columns: 0fr 1fr 1fr;
+    grid-template-columns: 0.5fr 1fr 1fr;
     grid-template-rows: 1fr;
     grid-template-areas: "ja_text en_result_text ja_result_text";
 }
@@ -80,10 +80,10 @@
 </script>
 <body class="app">
     <h1>recognize with tesseract.js</h1>
-    <img id="image" src="">
-    <pre id="text"></pre>
+    <img id="image" :src="img_src" ref="img_element">
+    <pre id="text">{{ text }}</pre>
 <button @click="next_page">next_page</button>
-<div id="progress"></div>
+<div id="progress">{{ progress }}</div>
 <button @click="setup_data">setup_data</button>
 <button @click="translateText">translateText</button>
 <h1>google apps script 翻訳の元データ</h1>
@@ -92,9 +92,11 @@
 <p>app.limit_word_volume = 5;</p>
 <p>の値を変更して利用する</p>
 <div id="grid_parent">
-<div id="ja_text"></div>
-<textarea name="" cols="30" rows="1000" id="en_result_text"></textarea>
-<textarea name="" cols="30" rows="1000" id="ja_result_text"></textarea>
+<div id="ja_text">
+    <div v-for="(TXT, IDX) in ja_text">{{ TXT }}</div>
+</div>
+<textarea name="" cols="30" rows="1000" id="en_result_text" v-model="en_result_text"></textarea>
+<textarea name="" cols="30" rows="1000" id="ja_result_text" v-model="ja_result_text"></textarea>
 </div>
 </body>
 <script>
@@ -102,7 +104,6 @@ const app = Vue.createApp({
 data() {
     return {
 json_string_url: 'https://gist.githubusercontent.com/taroyanaka/02180d7216e2002e1aadada150fc37ed/raw/42ec5db5f4871125099cb6fc88e7a19c88b1f2d9/wiki_image.json',
-// json_string_url: 'https://gist.githubusercontent.com/taroyanaka/02180d7216e2002e1aadada150fc37ed/raw/81604ca5c11c08a979b0acbc55d2f01d4ef1720d/wiki_image.json',
 // json_string_url: 'https://gist.githubusercontent.com/taroyanaka/acacbb47f5504f9ce70229e13a8d6117/raw/c18f1d481948f9145e4ad51dba120d71966950b7/book_data.json',
 
 urls: ['sample_img_url1.jpg', 'sample_img_url2.jpg', 'sample_img_url3.jpg'],
@@ -114,6 +115,14 @@ text: '',
 source: 'en',
 target: 'ja',
 url: '',
+
+en_result_text: '',
+ja_result_text: '',
+progress: '',
+
+ja_text: [],
+img_src: '',
+
     }},
 watch: {
 //    any: {
@@ -141,56 +150,30 @@ async url_data_fetch() {
     // console.error(error);
   }
 },
-paging_from_urls_array(urls_array) {
-    let paging = [];
-    for (let i = 0; i < urls_array.length; i++) {
-        let url = urls_array[i];
-        paging.push(url);
-    }
-    return paging;
-},
 next_page(){
-    this.page = this.paging_from_urls_array(this.to_ary(this.urls))[this.page_number++];
-    this.execute();
+    this.img_src = this.to_ary(this.urls)[this.page_number++];
+    (async () => { await this.recognize() })();
 },
 // 画像の読み込み
-execute(){
-    const img = document.getElementById('image');
-    img.src = this.page;
-    // 進捗表示用の要素を取得
-    // const progressEl = document.getElementById('progress');
+async recognize(){
     // Tesseract.jsの処理中に進捗を表示するコールバック関数
-    const progressFn = (progress) => {
-        // 進捗状況を整形して表示
-        document.getElementById('progress').innerText = `進捗: ${progress.progress * 100}% (${progress.status})`;
-    };
-    Tesseract.recognize(img, 'eng', { logger: progressFn })
-        .then(result => {
-        // 抽出されたテキストをHTMLページに出力
-        document.getElementById('text').innerText = result.data.text;
-    });
+    const progressFn = (PRG_VAL) => this.progress = `進捗: ${PRG_VAL.progress * 100}% (${PRG_VAL.status})`;
+    const RESULT = await Tesseract.recognize(this.$refs.img_element, 'eng', { logger: progressFn })
+    this.text = await RESULT.data.text;
 },
 // スペースか改行で区切られた文字列を配列に変換
 split_string_to_array(str) {
     return str.split(/[\s]+/);
 },
 setup_data(){
-    sample_text = document.getElementById('text').innerText
-    result = this.split_string_to_array(sample_text);
-    // resultを改行した文字列に変換してlines_resultに代入する関数を1行で書く
-    joined_result = result.join("\n");
-    // textareaにlines_resultを代入
-    document.getElementById('en_result_text').value = joined_result;
-    // 配列のそれぞれが文字列の要素をdivタグに変換する関数
-    const array_to_div = (array) => array.map(element => `<div>${element}</div>`).join("");
-    // ja_textにlines_resultを代入
-    document.getElementById('ja_text').innerHTML = array_to_div(result);
-    document.getElementById('ja_result_text').value = document.getElementById('ja_text').innerText;
+    // textを、スペースか改行で区切られた文字列を配列に変換、その配列を改行した文字列に変換し、en_result_textに代入する
+    this.en_result_text = this.split_string_to_array(this.text).join("\n");
+    this.ja_text = this.split_string_to_array(this.text);
 },
 // ?text=Hello&source=en&target=ja がパラメーター
 translateText() {
     this.text = this.array_to_json_string(
-        document.getElementById('en_result_text').value.split("\n")
+        this.en_result_text.split("\n")
             .slice(0, this.limit_word_volume)
     );
     this.source = 'en';
@@ -199,7 +182,7 @@ translateText() {
     fetch(this.url)
         .then(response => response.json())
         .then(json => {
-            document.getElementById('ja_result_text').value = this.json_string_to_array(json.text).join("\n");
+            this.ja_result_text = this.json_string_to_array(json.text).join("\n");
         });
 
 },
@@ -212,7 +195,7 @@ json_string_to_array(json_string) {
     return JSON.parse(json_string);
 },
 to_ary(it){
-return JSON.parse(JSON.stringify(it));
+    return JSON.parse(JSON.stringify(it));
 },
 },
 }).mount('.app');
