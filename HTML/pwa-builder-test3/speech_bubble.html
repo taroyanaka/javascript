@@ -601,6 +601,9 @@ animation_duration_value_number: 0,
 animation_iteration_count_value_number: 0,
 animation_timing_function_value_numbe: 0,
 
+all_save: [],
+current_save_data: null,
+
 }
 },
 watch: {
@@ -999,16 +1002,17 @@ key_binding(){
     });
 },
 
-async save_data_to_all_save(){
-    this.all_save.push(this.to_ary([this.data2, this.data3]));
+async save_data_to_all_save(SAVE_DATA){
+    // all_save: [],
+// current_save_data: null,
+    this.all_save.push(SAVE_DATA);
     await localforage.setItem('speech_bubble', JSON.stringify(this.all_save));
 },
 async save_data_load() {
     this.all_save = JSON.parse(await localforage.getItem('speech_bubble')) || [];
 },
 save_data_set(INDEX){
-    this.data2 = this.all_save[INDEX][0];
-    this.data3 = this.all_save[INDEX][1];
+    SAVE = this.all_save[INDEX];
 },
 async save_data_delete(INDEX){
     if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕\n" + R.zip(this.all_save[INDEX][0].split("\n"), this.all_save[INDEX][1].split("\n")).join("\n") )) {
@@ -1059,8 +1063,54 @@ SAVE['animation_value_array'] = this.animation_value_array;
 SAVE['animation_duration_value_number'] = this.animation_duration_value_number;
 SAVE['animation_iteration_count_value_number'] = this.animation_iteration_count_value_number;
 SAVE['animation_timing_function_value_numbe'] = this.animation_timing_function_value_numbe;
-},
 
+this.save_data_to_all_save(SAVE);
+},
+all_load(INDEX){
+    save_data_set(INDEX);
+    this.COLUMN_POINT = SAVE['COLUMN_POINT'];
+    this.MAX_WIDTH = SAVE['MAX_WIDTH'];
+    this.ROW_POINT = SAVE['ROW_POINT'];
+    this.MAX_HEIGHT = SAVE['MAX_HEIGHT'];
+    this.width_num = SAVE['width_num'];
+    this.height_num = SAVE['height_num'];
+    this.parent_bubble_color = SAVE['parent_bubble_color'];
+    this.speak_array = SAVE['speak_array'];
+    this.bubble_data_array = SAVE['bubble_data_array'];
+    this.bubble_checked = SAVE['bubble_checked'];
+    this.image_checked = SAVE['image_checked'];
+    this.bubble_no_show = SAVE['bubble_no_show'];
+    this.layer_chunk = SAVE['layer_chunk'];
+    this.active_the_image_index = SAVE['active_the_image_index'];
+    this.image_url_list = SAVE['image_url_list'];
+    this.select_image_url_index = SAVE['select_image_url_index'];
+    this.image_url_file_url = SAVE['image_url_file_url'];
+    this.active_layer_index = SAVE['active_layer_index'];
+    this.all_display = SAVE['all_display'];
+    this.active_layer_list = SAVE['active_layer_list'];
+    this.active_bubble_list = SAVE['active_bubble_list'];
+    this.tmp_tl_array = SAVE['tmp_tl_array'];
+    this.tmp_tl_str = SAVE['tmp_tl_str'];
+    this.index_time = SAVE['index_time'];
+    this.timer = SAVE['timer'];
+    this.duration = SAVE['duration'];
+    this.animation_duration_value = SAVE['animation_duration_value'];
+    this.animation_direction_value = SAVE['animation_direction_value'];
+    this.animation_iteration_count_value = SAVE['animation_iteration_count_value'];
+    this.animation_timing_function_value = SAVE['animation_timing_function_value'];
+    this.animation_fill_mode_value = SAVE['animation_fill_mode_value'];
+    this.animation_duration_value_str = SAVE['animation_duration_value_str'];
+    this.animation_direction_value_str = SAVE['animation_direction_value_str'];
+    this.animation_iteration_count_value_str = SAVE['animation_iteration_count_value_str'];
+    this.animation_timing_function_value_str = SAVE['animation_timing_function_value_str'];
+    this.animation_fill_mode_value_str = SAVE['animation_fill_mode_value_str'];
+    this.ary_1 = SAVE['ary_1'];
+    this.ary_1_str = SAVE['ary_1_str'];
+    this.animation_value_array = SAVE['animation_value_array'];
+    this.animation_duration_value_number = SAVE['animation_duration_value_number'];
+    this.animation_iteration_count_value_number = SAVE['animation_iteration_count_value_number'];
+    this.animation_timing_function_value_numbe = SAVE['animation_timing_function_value_numbe'];
+},
 },
 }).mount('.app');
 </script>
