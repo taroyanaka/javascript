@@ -999,28 +999,22 @@ key_binding(){
     });
 },
 
-save_setting(){
-// Create: データを保存する
-async function saveData() {
-  try { await localforage.setItem('speech_bubble', 'value');
-  } catch (error) {console.log('Error saving data: ' + error)}
-}
-// Read: データを取得する
-async function retrieveData() {
-  try { const value = await localforage.getItem('speech_bubble');
-  } catch (error) {console.log('Error retrieving data: ' + error)}
-}
-// Update: データを更新する
-async function updateData() {
-  try { await localforage.setItem('speech_bubble', 'new value');
-  } catch (error) {console.log('Error updating data: ' + error)}
-}
-// Delete: データを削除する
-async function deleteData() {
-  try { await localforage.removeItem('speech_bubble');
-  } catch (error) {console.log('Error deleting data: ' + error)}
-}
-
+async save_data_to_all_save(){
+    this.all_save.push(this.to_ary([this.data2, this.data3]));
+    await localforage.setItem('speech_bubble', JSON.stringify(this.all_save));
+},
+async save_data_load() {
+    this.all_save = JSON.parse(await localforage.getItem('speech_bubble')) || [];
+},
+save_data_set(INDEX){
+    this.data2 = this.all_save[INDEX][0];
+    this.data3 = this.all_save[INDEX][1];
+},
+async save_data_delete(INDEX){
+    if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕\n" + R.zip(this.all_save[INDEX][0].split("\n"), this.all_save[INDEX][1].split("\n")).join("\n") )) {
+        this.all_save.splice(INDEX, 1);
+        await localforage.setItem('speech_bubble', JSON.stringify(this.all_save));
+    };
 },
 all_save(){
 SAVE['COLUMN_POINT'] = this.COLUMN_POINT;
