@@ -1002,31 +1002,24 @@ key_binding(){
 save_setting(){
 // Create: データを保存する
 async function saveData() {
-  try { await localforage.setItem('key', 'value');
+  try { await localforage.setItem('speech_bubble', 'value');
   } catch (error) {console.log('Error saving data: ' + error)}
 }
-saveData();
-
 // Read: データを取得する
 async function retrieveData() {
-  try { const value = await localforage.getItem('key');
+  try { const value = await localforage.getItem('speech_bubble');
   } catch (error) {console.log('Error retrieving data: ' + error)}
 }
-retrieveData();
-
 // Update: データを更新する
 async function updateData() {
-  try { await localforage.setItem('key', 'new value');
+  try { await localforage.setItem('speech_bubble', 'new value');
   } catch (error) {console.log('Error updating data: ' + error)}
 }
-updateData();
-
 // Delete: データを削除する
 async function deleteData() {
-  try { await localforage.removeItem('key');
+  try { await localforage.removeItem('speech_bubble');
   } catch (error) {console.log('Error deleting data: ' + error)}
 }
-deleteData();
 
 },
 all_save(){
