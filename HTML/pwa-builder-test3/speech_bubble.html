@@ -121,16 +121,12 @@ font-size: 0;
 <div id="show_or_not">
         <details data-dropdown>
         <summary>open_data_save_load</summary>
-<ul>
-<li v-for="(SAVE, SAVE_INDEX) in all_save">
-    <button @click="LOAD_CURRENT_SAVE(SAVE_INDEX)">LOAD {{ SAVE_INDEX }}</button>
-</li>
-</ul>
-
+            <ul>
+            <li v-for="(SAVE, SAVE_INDEX) in all_save">
+                <button @click="LOAD_CURRENT_SAVE(SAVE_INDEX)">LOAD {{ SAVE_INDEX }}</button>
+            </li>
+            </ul>
             <button @click="(async () => await this.SAVE_CURRENT_SAVE() )">SAVE_CURRENT_SAVE</button>
-            <!-- <textarea name="time_line_to_textarea" class="time_line_to_textarea" placeholder="time_line_to_textarea" cols="30" rows="10"></textarea> -->
-            <!-- <textarea name="active_layer_list" class="active_layer_list" placeholder="active_layer_list" v-model="active_layer_list" cols="30" rows="10"></textarea> -->
-            <!-- <textarea name="active_bubble_list" class="active_bubble_list" placeholder="active_bubble_list" v-model="active_bubble_list" cols="30" rows="10"></textarea> -->
         </details>
 
 
