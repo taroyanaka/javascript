@@ -124,6 +124,7 @@ font-size: 0;
             <ul>
             <li v-for="(SAVE, SAVE_INDEX) in all_save">
                 <button @click="LOAD_CURRENT_SAVE(SAVE_INDEX)">LOAD {{ SAVE_INDEX }}</button>
+                <button @click="save_data_delete(SAVE_INDEX)">DELETE {{ SAVE_INDEX }}</button>
             </li>
             </ul>
             <button @click="(async () => await this.SAVE_CURRENT_SAVE() )">SAVE_CURRENT_SAVE</button>
@@ -1020,7 +1021,7 @@ async save_data_load() {
     this.all_save = JSON.parse(await localforage.getItem('speech_bubble')) || [];
 },
 async save_data_delete(INDEX){
-    if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕\n" + R.zip(this.all_save[INDEX][0].split("\n"), this.all_save[INDEX][1].split("\n")).join("\n") )) {
+    if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕\n")) {
         this.all_save.splice(INDEX, 1);
         await localforage.setItem('speech_bubble', JSON.stringify(this.all_save));
     };
