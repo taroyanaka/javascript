@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dup_replacer</title>
+<!-- <script src="./vue@3.2.36.global.js"></script> -->
+<script src="./vue@3.2.36.global.prod.js"></script>
+<!-- <script src="./localforage.js"></script> -->
+<!-- <script src="./localforage@1.10.0.nopromises.js"></script> -->
+<script src="./localforage@1.10.0.js"></script>
+<script src="./ramda.@0.28.0.js"></script>
+<style>
+ul{
+list-style-type: none;
+}
+.app {
+display: grid;
+grid-auto-columns: auto;
+grid-template-rows: 3rem auto 1fr;
+grid-gap: 0px;
+grid-template-areas:
+    "button"
+    "textarea"
+    "list";
+}
+textarea{
+    width: 100%;
+    height: auto;
+}
+/* .button_parent{
+display: grid;
+grid-area: button;
+grid-template-rows: 1fr;
+grid-template-columns: repeat(3, 1fr);
+}
+.textarea_parent {
+display: grid;
+grid-auto-rows: auto;
+grid-template-columns: 2fr 1fr 1fr 2fr;
+grid-gap: 0px;
+}
+.limited_item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 20rem;
+  height: 1.5rem;
+} */
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="button_parent">
+<input type="button" value="save_data_to_all_save" @click="save_data_to_all_save">
+<input type="button" value="apply_data_increment" @click="apply_data_increment">
+<input type="button" value="apply_data_decrement" @click="apply_data_decrement">
+<!-- <input type="button" value="sample_ja" @click="sample_ja"> -->
+</div>
+
+<div class="textarea_parent">
+<!-- <div class="tag">
+<input type="text" name="tag_input" class="tag_input">
+<ul>
+<li v-for="(item, index) in tag">
+{{item}}
+</li>
+</ul>
+</div> -->
+
+<textarea name="a" id="a" v-model="a" @input=""></textarea>
+<div v-for="(DATA, INDEX) in B_C_list">
+<textarea name="b" id="b" v-model="DATA[0]"></textarea>
+<textarea name="c" id="c" v-model="DATA[1]"></textarea>
+</div>
+<textarea name="d" id="d" v-model="result">{{ result }}</textarea>
+</div>
+
+<input type="button" value="sort_by_when" @click="sort_by_when">
+<input type="button" value="sort_by_rating" @click="sort_by_rating">
+<input type="button" value="is_limited_item_change" @click="is_limited_item_change">
+<input type="text" name="filter_by_text" class="filter_by_text" @input="filter_by_text" v-model="filter_text" placeholder="filter_text">
+<ul>
+<li v-for="(item, index) in all_save">
+<!-- <span>{{ item[5] ? item[5] : ['a','b','c'] }}</span> -->
+<button @click="save_data_set(index)">save_data_set</button>
+{{ item[4] }}: rating {{ item[3] }} <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>: <p :class="{ limited_item: is_limited_item ? true : false }">{{ item }}</p>
+<button @click="save_data_delete(index)">save_data_delete</button>
+</li>
+</ul>
+
+</div>
+</body>
+<script>
+const app = Vue.createApp({
+data() {
+return {
+    a: 'ABCDEFGHIJKLMNOPQRSTUVWXYZaabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzAABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ',
+    B_C_list:[
+        ['BC\nEF\nHI\nXY', 'bc\nef\nhi\nxy'],
+        ['aa\nBB\nHI\nXY', 'AA\nbb\nhi\nxy'],
+        ['XX\nYY\nZZ', 'xx\nyy\nzz'],
+    ],
+    B_C_list_INDEX: 0,
+    b: '',
+    c: '',
+    rating: 0,
+    when: null,
+    save_data: [],
+    all_save: [],
+    sort_by: 'asc',
+    filter_text: '',
+    temporary_all_save_for_filter: [],
+    is_limited_item: true,
+
+    tag: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+}
+},
+computed: {
+result: function () {
+    this.when = (new Date()).toLocaleString('en');
+    // this.save_data_load();
+    this.refresh_save_data();
+
+    let tmp = this.a;
+    this.b = this.B_C_list[this.B_C_list_INDEX][0];
+    this.c = this.B_C_list[this.B_C_list_INDEX][1];
+    R.zip(
+        this.b.split("\n"),
+        this.c.split("\n"))
+            .forEach(V=>
+                tmp = tmp.replaceAll(V[0],
+                                        V[1]));
+    return tmp;
+}
+},
+mounted() {
+this.save_data_load();
+},
+beforeUpdated() {
+},
+updated() {
+},
+methods: {
+    // ja: アプライデーターインクリメント
+    // en: apply_data_increment
+apply_data_increment(){
+    // this.a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    this.B_C_list_INDEX++;
+    // this.b = this.B_C_list[this.B_C_list_INDEX][0];
+    // this.c = this.B_C_list[this.B_C_list_INDEX][1];
+},
+apply_data_decrement(){
+    // this.a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    this.B_C_list_INDEX--;
+    // this.b = this.B_C_list[this.B_C_list_INDEX][0];
+    // this.c = this.B_C_list[this.B_C_list_INDEX][1];
+},
+// sample_en_2(){
+//     this.a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+//     this.B_C_list_INDEX = 1;
+//     this.b = this.B_C_list[this.B_C_list_INDEX][0];
+//     this.c = this.B_C_list[this.B_C_list_INDEX][1];
+// },
+// sample_ja(){
+//             this.a = `いろはにほへと　ちりぬるを
+// わかよたれそ　つねならむ
+// うゐのおくやま　けふこえて
+// あさきゆめみし　ゑひもせす`;
+//             this.b = 'はに\nなら\nゆめ\nもせ';
+//             this.c = 'hani\nnara\nyume\nmose';
+// },
+refresh_save_data() {
+    this.save_data = [
+        this.a,
+        this.b,
+        this.c,
+        this.rating,
+        this.when,
+    ];
+},
+async rating_up(INDEX){
+    this.all_save[INDEX][3]++;
+    await localforage.setItem('key', JSON.stringify(this.all_save));
+},
+async rating_down(INDEX){
+    this.all_save[INDEX][3]--;
+    await localforage.setItem('key', JSON.stringify(this.all_save));
+},
+async save_data_to_all_save(){
+    this.all_save.push(this.save_data);
+    await localforage.setItem('key', JSON.stringify(this.all_save));
+},
+async save_data_load() {
+    this.all_save = JSON.parse(await localforage.getItem('key')) || [];
+    this.temporary_all_save_for_filter = this.all_save;
+},
+save_data_set(INDEX){
+    [this.a, this.b, this.c, this.rating, this.when, this.tag] = this.all_save[INDEX];
+},
+async save_data_delete(INDEX){
+    if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
+        this.all_save.splice(INDEX, 1);
+        await localforage.setItem('key', JSON.stringify(this.all_save));
+    }
+},
+sort_by_when(){
+    this.all_save.sort((a, b) => {
+        time_A = new Date(a[4]);
+        time_B = new Date(b[4]);
+        return this.sort_by === 'asc' ? time_A - time_B : time_B - time_A;
+    });
+    this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
+},
+sort_by_rating(){
+    this.all_save.sort((a, b) => {
+        return this.sort_by === 'asc' ? a[3] - b[3] : b[3] - a[3];
+    });
+    this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
+},
+filter_by_text(){
+    this.all_save = this.temporary_all_save_for_filter.filter(VAL => {
+        return VAL[0].includes(this.filter_text) || VAL[1].includes(this.filter_text) || VAL[2].includes(this.filter_text);
+    });
+    this.filter_text === "" ? this.all_save = this.temporary_all_save_for_filter : null;
+},
+is_limited_item_change(){
+    this.is_limited_item = this.is_limited_item ? false : true;
+},
+
+
+
+
+}
+}).mount('.app');
+</script>
+</html>
