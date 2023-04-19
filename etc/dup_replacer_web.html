@@ -17,8 +17,8 @@ list-style-type: none;
 }
 .app {
 display: grid;
-grid-auto-columns: auto;
-grid-template-rows: 3rem auto 1fr;
+/* grid-auto-columns: auto; */
+/* grid-template-rows: 3rem auto 1fr; */
 grid-gap: 0px;
 grid-template-areas:
     "button"
@@ -27,8 +27,34 @@ grid-template-areas:
 }
 textarea{
     width: 100%;
-    height: auto;
+    max-height: 30rem; /* 最大高さ */
 }
+.textarea_childs{
+    display: grid;
+    /* grid-template-columns: 1fr 1fr 1fr 1fr; */
+    /* grid-template-rows: calc(100% + 3rem) calc(100% + 3rem) calc(100% + 3rem) calc(100% + 3rem); */
+    /* grid-gap: 0px; */
+    grid-template-areas:
+    'a b b d'
+    'a c c d';
+}
+.a{
+    grid-area: a;
+    /* height: 100%; */
+}
+.b{
+    grid-area: b;
+}
+.c{
+    grid-area: c;
+}
+.d{
+    grid-area: d;
+    /* height: 100%; */
+}
+
+
+
 /* .button_parent{
 display: grid;
 grid-area: button;
@@ -70,12 +96,14 @@ grid-gap: 0px;
 </ul>
 </div> -->
 
-<textarea name="a" id="a" v-model="a" @input=""></textarea>
-<div v-for="(DATA, INDEX) in B_C_list">
-<textarea name="b" id="b" v-model="DATA[0]"></textarea>
-<textarea name="c" id="c" v-model="DATA[1]"></textarea>
+<div v-for="(DATA, INDEX) in B_C_list" class="textarea_childs">
+    <textarea name="a" class="a" v-model="a" @input=""></textarea>
+
+    <textarea name="b" class="b" v-model="DATA[0]"></textarea>
+    <textarea name="c" class="c" v-model="DATA[1]"></textarea>
+
+    <textarea name="d" class="d" v-model="result">{{ result }}</textarea>
 </div>
-<textarea name="d" id="d" v-model="result">{{ result }}</textarea>
 </div>
 
 <input type="button" value="sort_by_when" @click="sort_by_when">
@@ -120,6 +148,7 @@ return {
 },
 computed: {
 result: function () {
+
     this.when = (new Date()).toLocaleString('en');
     // this.save_data_load();
     this.refresh_save_data();
@@ -133,11 +162,13 @@ result: function () {
             .forEach(V=>
                 tmp = tmp.replaceAll(V[0],
                                         V[1]));
+    this.auto_resize();
     return tmp;
 }
 },
 mounted() {
 this.save_data_load();
+this.auto_resize();
 },
 beforeUpdated() {
 },
@@ -229,8 +260,12 @@ filter_by_text(){
 is_limited_item_change(){
     this.is_limited_item = this.is_limited_item ? false : true;
 },
-
-
+auto_resize(){
+    document.querySelectorAll('textarea').forEach(textarea=>{
+        textarea.style.height = 'auto';
+        textarea.style.height = `${textarea.scrollHeight}px`;
+    });
+},
 
 
 }
