@@ -137,13 +137,13 @@ data() {
 return {
     // a: 'ABCDEFGHIJKLMNOPQRSTUVWXYZaabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzAABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ',
     B_C_list:[
-        ['ABCDEFGHIJKLMNOPQRSTUVWXYZaabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzAABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ', 'BC\nEF\nHI\nXY', 'bc\nef\nhi\nxy', ''],
+        ['aaBBccDD', 'aa\nEF\nHI', 'XX\nef\nhi', ''],
         // ['aa\nBB\nHI\nXY', 'AA\nbb\nhi\nxy', ''],
         // ['XX\nYY\nZZ', 'xx\nyy\nzz', ''],
     ],
     // B_C_list_INDEX: 0,
-    b: '',
-    c: '',
+    // b: '',
+    // c: '',
     rating: 0,
     when: null,
     save_data: [],
@@ -161,6 +161,7 @@ watch: {
    B_C_list: {
      handler() {
         this.in_reference_to_INDEX_0_apply();
+        this.make_result();
      },
      deep: true
    },
@@ -189,9 +190,7 @@ methods: {
 // },
 refresh_save_data() {
     this.save_data = [
-        this.a,
-        this.b,
-        this.c,
+        this.B_C_list,
         this.rating,
         this.when,
     ];
@@ -199,38 +198,43 @@ refresh_save_data() {
 make_result(){
     this.when = (new Date()).toLocaleString('en');
     JSON.parse(JSON.stringify(this.B_C_list)).map((B_C)=>{
-        let tmp = '';
+        let tmp = B_C[0];
         R.zip(
             B_C[1].split("\n"),
             B_C[2].split("\n"))
-                .forEach(V=> tmp = B_C[0].replaceAll(V[0], V[1]) );
+                .forEach(V=> tmp = tmp.replaceAll(V[0], V[1]) );
         return tmp;
     }).forEach((item, index)=>this.B_C_list[index][3] = item);
-    this.auto_resize();
 },
 async rating_up(INDEX){
-    this.all_save[INDEX][3]++;
-    await localforage.setItem('key', JSON.stringify(this.all_save));
+    this.all_save[INDEX][1]++;
+    await localforage.setItem('dup_replacer_web', JSON.stringify(this.all_save));
 },
 async rating_down(INDEX){
-    this.all_save[INDEX][3]--;
-    await localforage.setItem('key', JSON.stringify(this.all_save));
+    this.all_save[INDEX][1]--;
+    await localforage.setItem('dup_replacer_web', JSON.stringify(this.all_save));
 },
 async save_data_to_all_save(){
+    this.refresh_save_data();
     this.all_save.push(this.save_data);
-    await localforage.setItem('key', JSON.stringify(this.all_save));
+    await localforage.setItem('dup_replacer_web', JSON.stringify(this.all_save));
 },
 async save_data_load() {
-    this.all_save = JSON.parse(await localforage.getItem('key')) || [];
+    this.all_save = JSON.parse(await localforage.getItem('dup_replacer_web')) || [];
     this.temporary_all_save_for_filter = this.all_save;
 },
 save_data_set(INDEX){
-    [this.a, this.b, this.c, this.rating, this.when, this.tag] = this.all_save[INDEX];
+    console.log(INDEX);
+    [
+        this.B_C_list,
+        this.rating,
+        this.when,
+    ] = this.all_save[INDEX];
 },
 async save_data_delete(INDEX){
     if (window.confirm("Do you really want to delete??🦖\n本当に削除する？?🦕")) {
         this.all_save.splice(INDEX, 1);
-        await localforage.setItem('key', JSON.stringify(this.all_save));
+        await localforage.setItem('dup_replacer_web', JSON.stringify(this.all_save));
     }
 },
 sort_by_when(){
@@ -258,21 +262,17 @@ is_limited_item_change(){
 },
 auto_resize(){
     document.querySelectorAll('textarea').forEach(textarea=>{
-        textarea.style.height = 'auto';
+        // textarea.style.height = 'auto';
         textarea.style.height = `${textarea.scrollHeight}px`;
     });
 },
 duplicate_button(){
     const copy = R.clone(this.B_C_list[0]);
     this.B_C_list.push(copy);
-    this.auto_resize();
-    // this.all_save[this.all_save.length - 1][4] = (new Date()).toLocaleString('en');
-    // this.all_save[this.all_save.length - 1][3] = 0;
-    // localforage.setItem('key', JSON.stringify(this.all_save));
+    // this.auto_resize();
 },
 in_reference_to_INDEX_0_apply(){
     this.in_reference_to_INDEX_0_apply_check === true ? this.B_C_list.forEach((item, index)=>item[0] = this.B_C_list[0][0]) : null;
-    // this.checked === true ? console.log("hoge") :  console.log("fuga");
     // this.make_result();
 },
 
