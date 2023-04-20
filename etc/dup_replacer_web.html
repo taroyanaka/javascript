@@ -23,7 +23,9 @@ grid-gap: 0px;
 grid-template-areas:
     "button"
     "textarea"
-    "list";
+    "list"
+    "duplicate_button"
+    ;
 }
 textarea{
     width: 100%;
@@ -35,8 +37,8 @@ textarea{
     /* grid-template-rows: calc(100% + 3rem) calc(100% + 3rem) calc(100% + 3rem) calc(100% + 3rem); */
     /* grid-gap: 0px; */
     grid-template-areas:
-    'a b b d'
-    'a c c d';
+    'a b d'
+    'a c d';
 }
 .a{
     grid-area: a;
@@ -51,6 +53,9 @@ textarea{
 .d{
     grid-area: d;
     /* height: 100%; */
+}
+.duplicate_button{
+    grid-area: duplicate_button;
 }
 
 
@@ -83,7 +88,11 @@ grid-gap: 0px;
 <input type="button" value="save_data_to_all_save" @click="save_data_to_all_save">
 <input type="button" value="apply_data_increment" @click="apply_data_increment">
 <input type="button" value="apply_data_decrement" @click="apply_data_decrement">
-<!-- <input type="button" value="sample_ja" @click="sample_ja"> -->
+<!-- vue.jsのチェックボックスのデータのバインドの仕方のサンプルのHTML-->
+<input type="checkbox" id="check" v-model="in_reference_to_INDEX_0_apply_check">: in_reference_to_INDEX_0_apply_check
+<!-- <input type="checkbox" name="in_reference_to_INDEX_0_apply_check" id="in_reference_to_INDEX_0_apply_check" v-model="in_reference_to_INDEX_0_apply_check"> -->
+
+
 </div>
 
 <div class="textarea_parent">
@@ -97,13 +106,14 @@ grid-gap: 0px;
 </div> -->
 
 <div v-for="(DATA, INDEX) in B_C_list" class="textarea_childs">
-    <textarea name="a" class="a" v-model="a" @input=""></textarea>
+    <textarea name="a" class="a" v-model="DATA[0]"></textarea>
 
-    <textarea name="b" class="b" v-model="DATA[0]"></textarea>
-    <textarea name="c" class="c" v-model="DATA[1]"></textarea>
+    <textarea name="b" class="b" v-model="DATA[1]"></textarea>
+    <textarea name="c" class="c" v-model="DATA[2]"></textarea>
 
-    <textarea name="d" class="d" v-model="result">{{ result }}</textarea>
+    <textarea name="d" class="d" v-model="DATA[3]"></textarea>
 </div>
+<button @click="duplicate_button">duplicate_button</button>
 </div>
 
 <input type="button" value="sort_by_when" @click="sort_by_when">
@@ -125,13 +135,13 @@ grid-gap: 0px;
 const app = Vue.createApp({
 data() {
 return {
-    a: 'ABCDEFGHIJKLMNOPQRSTUVWXYZaabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzAABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ',
+    // a: 'ABCDEFGHIJKLMNOPQRSTUVWXYZaabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzAABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ',
     B_C_list:[
-        ['BC\nEF\nHI\nXY', 'bc\nef\nhi\nxy'],
-        ['aa\nBB\nHI\nXY', 'AA\nbb\nhi\nxy'],
-        ['XX\nYY\nZZ', 'xx\nyy\nzz'],
+        ['ABCDEFGHIJKLMNOPQRSTUVWXYZaabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzAABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ', 'BC\nEF\nHI\nXY', 'bc\nef\nhi\nxy', ''],
+        // ['aa\nBB\nHI\nXY', 'AA\nbb\nhi\nxy', ''],
+        // ['XX\nYY\nZZ', 'xx\nyy\nzz', ''],
     ],
-    B_C_list_INDEX: 0,
+    // B_C_list_INDEX: 0,
     b: '',
     c: '',
     rating: 0,
@@ -144,30 +154,24 @@ return {
     is_limited_item: true,
 
     tag: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+    in_reference_to_INDEX_0_apply_check: true,
 }
 },
-computed: {
-result: function () {
-
-    this.when = (new Date()).toLocaleString('en');
-    // this.save_data_load();
-    this.refresh_save_data();
-
-    let tmp = this.a;
-    this.b = this.B_C_list[this.B_C_list_INDEX][0];
-    this.c = this.B_C_list[this.B_C_list_INDEX][1];
-    R.zip(
-        this.b.split("\n"),
-        this.c.split("\n"))
-            .forEach(V=>
-                tmp = tmp.replaceAll(V[0],
-                                        V[1]));
-    this.auto_resize();
-    return tmp;
-}
+watch: {
+   B_C_list: {
+     handler() {
+        this.in_reference_to_INDEX_0_apply();
+     },
+     deep: true
+   },
 },
+// computed: {
+// result: function () {
+// }
+// },
 mounted() {
 this.save_data_load();
+this.make_result();
 this.auto_resize();
 },
 beforeUpdated() {
@@ -177,31 +181,11 @@ updated() {
 methods: {
     // ja: アプライデーターインクリメント
     // en: apply_data_increment
-apply_data_increment(){
-    // this.a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    this.B_C_list_INDEX++;
-    // this.b = this.B_C_list[this.B_C_list_INDEX][0];
-    // this.c = this.B_C_list[this.B_C_list_INDEX][1];
-},
-apply_data_decrement(){
-    // this.a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    this.B_C_list_INDEX--;
-    // this.b = this.B_C_list[this.B_C_list_INDEX][0];
-    // this.c = this.B_C_list[this.B_C_list_INDEX][1];
-},
-// sample_en_2(){
-//     this.a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-//     this.B_C_list_INDEX = 1;
-//     this.b = this.B_C_list[this.B_C_list_INDEX][0];
-//     this.c = this.B_C_list[this.B_C_list_INDEX][1];
+// apply_data_increment(){
+//     this.B_C_list_INDEX++;
 // },
-// sample_ja(){
-//             this.a = `いろはにほへと　ちりぬるを
-// わかよたれそ　つねならむ
-// うゐのおくやま　けふこえて
-// あさきゆめみし　ゑひもせす`;
-//             this.b = 'はに\nなら\nゆめ\nもせ';
-//             this.c = 'hani\nnara\nyume\nmose';
+// apply_data_decrement(){
+//     this.B_C_list_INDEX--;
 // },
 refresh_save_data() {
     this.save_data = [
@@ -211,6 +195,18 @@ refresh_save_data() {
         this.rating,
         this.when,
     ];
+},
+make_result(){
+    this.when = (new Date()).toLocaleString('en');
+    JSON.parse(JSON.stringify(this.B_C_list)).map((B_C)=>{
+        let tmp = '';
+        R.zip(
+            B_C[1].split("\n"),
+            B_C[2].split("\n"))
+                .forEach(V=> tmp = B_C[0].replaceAll(V[0], V[1]) );
+        return tmp;
+    }).forEach((item, index)=>this.B_C_list[index][3] = item);
+    this.auto_resize();
 },
 async rating_up(INDEX){
     this.all_save[INDEX][3]++;
@@ -265,6 +261,19 @@ auto_resize(){
         textarea.style.height = 'auto';
         textarea.style.height = `${textarea.scrollHeight}px`;
     });
+},
+duplicate_button(){
+    const copy = R.clone(this.B_C_list[0]);
+    this.B_C_list.push(copy);
+    this.auto_resize();
+    // this.all_save[this.all_save.length - 1][4] = (new Date()).toLocaleString('en');
+    // this.all_save[this.all_save.length - 1][3] = 0;
+    // localforage.setItem('key', JSON.stringify(this.all_save));
+},
+in_reference_to_INDEX_0_apply(){
+    this.in_reference_to_INDEX_0_apply_check === true ? this.B_C_list.forEach((item, index)=>item[0] = this.B_C_list[0][0]) : null;
+    // this.checked === true ? console.log("hoge") :  console.log("fuga");
+    // this.make_result();
 },
 
 
