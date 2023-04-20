@@ -280,13 +280,13 @@ a_copy_to_clipboard_button_with_a_message_conveying_that_browser_vendor_politics
         })
         .catch((err) => {
         console.error('Failed to copy text: ', err);
-        this.fallbackCopyToClipboard(textarea);
+        this.fallback_copy_to_clipboard(textarea);
         });
     } else {
-    this.fallbackCopyToClipboard(textarea);
+    this.fallback_copy_to_clipboard(textarea);
     }
 },
-fallbackCopyToClipboard(textarea) {
+fallback_copy_to_clipboard(textarea) {
     const isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
 
     // For iOS devices, select the text in the textarea and show the copy menu
