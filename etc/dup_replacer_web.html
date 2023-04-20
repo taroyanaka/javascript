@@ -106,6 +106,16 @@ in_reference_to_INDEX_0_apply_check: <input type="checkbox" id="check" v-model="
     <textarea name="d" class="d" v-model="DATA[3]"></textarea>
 </div>
 <button @click="duplicate_button">duplicate_button</button>
+
+<!-- <input id="foo" value="https://github.com/zenorocha/clipboard.js.git" /> -->
+<!-- <textarea id="all_result" placeholder="all_result is here">{{ all_result }}</textarea> -->
+<!-- <textarea id="all_result" placeholder="all_result is here">hoge</textarea> -->
+<!-- <button class="btn" data-clipboard-target="#all_result">Copy to clipboard</button> -->
+<!-- Target -->
+<textarea ref="all_result_textarea" placeholder="all_result is here">{{ all_result }}</textarea>
+<button @click="a_copy_to_clipboard_button_with_a_message_conveying_that_browser_vendor_politics_suck">all_result Copy to Clipboard</button>
+
+
 </div>
 
 <input type="button" value="sort_by_when" @click="sort_by_when">
@@ -145,7 +155,9 @@ return {
     filter_text: '',
     temporary_all_save_for_filter: [],
 
-    tag: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+    all_result: '',
+
+    // tag: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
     in_reference_to_INDEX_0_apply_check: true,
 }
 },
@@ -189,6 +201,7 @@ make_result(){
                 .forEach(V=> tmp = tmp.replaceAll(V[0], V[1]) );
         return tmp;
     }).forEach((item, index)=>this.B_C_list[index][3] = item);
+    this.all_result = this.B_C_list.map((item)=>item[3]).join("\n");
 },
 async rating_up(INDEX){
     this.all_save[INDEX][1]++;
@@ -253,6 +266,45 @@ duplicate_button(){
 },
 in_reference_to_INDEX_0_apply(){
     this.in_reference_to_INDEX_0_apply_check === true ? this.B_C_list.forEach((item, index)=>item[0] = this.B_C_list[0][0]) : null;
+},
+
+
+
+a_copy_to_clipboard_button_with_a_message_conveying_that_browser_vendor_politics_suck() {
+    const textarea = this.$refs.all_result_textarea;
+
+    if (navigator.clipboard) {
+    navigator.clipboard.writeText(textarea.value)
+        .then(() => {
+        console.log('Text copied to clipboard');
+        })
+        .catch((err) => {
+        console.error('Failed to copy text: ', err);
+        this.fallbackCopyToClipboard(textarea);
+        });
+    } else {
+    this.fallbackCopyToClipboard(textarea);
+    }
+},
+fallbackCopyToClipboard(textarea) {
+    const isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
+
+    // For iOS devices, select the text in the textarea and show the copy menu
+    if (isiOSDevice) {
+    const range = document.createRange();
+    range.selectNodeContents(textarea);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    textarea.setSelectionRange(0, 999999);
+    document.execCommand('copy');
+    console.log('Text copied to clipboard');
+    } else {
+    // For other devices, simply copy the text to clipboard using execCommand
+    textarea.select();
+    document.execCommand('copy');
+    console.log('Text copied to clipboard');
+    }
 },
 
 
