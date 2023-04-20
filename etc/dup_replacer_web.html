@@ -72,13 +72,7 @@ grid-auto-rows: auto;
 grid-template-columns: 2fr 1fr 1fr 2fr;
 grid-gap: 0px;
 }
-.limited_item {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 20rem;
-  height: 1.5rem;
-} */
+*/
 </style>
 </head>
 <body>
@@ -86,8 +80,6 @@ grid-gap: 0px;
 
 <div class="button_parent">
 <input type="button" value="save_data_to_all_save" @click="save_data_to_all_save">
-<input type="button" value="apply_data_increment" @click="apply_data_increment">
-<input type="button" value="apply_data_decrement" @click="apply_data_decrement">
 <!-- vue.jsのチェックボックスのデータのバインドの仕方のサンプルのHTML-->
 <input type="checkbox" id="check" v-model="in_reference_to_INDEX_0_apply_check">: in_reference_to_INDEX_0_apply_check
 <!-- <input type="checkbox" name="in_reference_to_INDEX_0_apply_check" id="in_reference_to_INDEX_0_apply_check" v-model="in_reference_to_INDEX_0_apply_check"> -->
@@ -118,13 +110,14 @@ grid-gap: 0px;
 
 <input type="button" value="sort_by_when" @click="sort_by_when">
 <input type="button" value="sort_by_rating" @click="sort_by_rating">
-<input type="button" value="is_limited_item_change" @click="is_limited_item_change">
+<!-- <input type="button" value="is_limited_item_change" @click="is_limited_item_change"> -->
 <input type="text" name="filter_by_text" class="filter_by_text" @input="filter_by_text" v-model="filter_text" placeholder="filter_text">
 <ul>
 <li v-for="(item, index) in all_save">
 <!-- <span>{{ item[5] ? item[5] : ['a','b','c'] }}</span> -->
 <button @click="save_data_set(index)">save_data_set</button>
-{{ item[4] }}: rating {{ item[3] }} <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>: <p :class="{ limited_item: is_limited_item ? true : false }">{{ item }}</p>
+{{ item[4] }}: rating {{ item[3] }} <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>
+<p>{{ item }}</p>
 <button @click="save_data_delete(index)">save_data_delete</button>
 </li>
 </ul>
@@ -151,7 +144,6 @@ return {
     sort_by: 'asc',
     filter_text: '',
     temporary_all_save_for_filter: [],
-    is_limited_item: true,
 
     tag: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
     in_reference_to_INDEX_0_apply_check: true,
@@ -180,14 +172,6 @@ beforeUpdated() {
 updated() {
 },
 methods: {
-    // ja: アプライデーターインクリメント
-    // en: apply_data_increment
-// apply_data_increment(){
-//     this.B_C_list_INDEX++;
-// },
-// apply_data_decrement(){
-//     this.B_C_list_INDEX--;
-// },
 refresh_save_data() {
     this.save_data = [
         this.B_C_list,
@@ -239,26 +223,23 @@ async save_data_delete(INDEX){
 },
 sort_by_when(){
     this.all_save.sort((a, b) => {
-        time_A = new Date(a[4]);
-        time_B = new Date(b[4]);
+        time_A = new Date(a[2]);
+        time_B = new Date(b[2]);
         return this.sort_by === 'asc' ? time_A - time_B : time_B - time_A;
     });
     this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
 },
 sort_by_rating(){
     this.all_save.sort((a, b) => {
-        return this.sort_by === 'asc' ? a[3] - b[3] : b[3] - a[3];
+        return this.sort_by === 'asc' ? a[1] - b[1] : b[1] - a[1];
     });
     this.sort_by = this.sort_by === 'asc' ? 'desc' : 'asc';
 },
 filter_by_text(){
     this.all_save = this.temporary_all_save_for_filter.filter(VAL => {
-        return VAL[0].includes(this.filter_text) || VAL[1].includes(this.filter_text) || VAL[2].includes(this.filter_text);
+        return VAL.join("").includes(this.filter_text);
     });
     this.filter_text === "" ? this.all_save = this.temporary_all_save_for_filter : null;
-},
-is_limited_item_change(){
-    this.is_limited_item = this.is_limited_item ? false : true;
 },
 auto_resize(){
     document.querySelectorAll('textarea').forEach(textarea=>{
@@ -269,11 +250,9 @@ auto_resize(){
 duplicate_button(){
     const copy = R.clone(this.B_C_list[0]);
     this.B_C_list.push(copy);
-    // this.auto_resize();
 },
 in_reference_to_INDEX_0_apply(){
     this.in_reference_to_INDEX_0_apply_check === true ? this.B_C_list.forEach((item, index)=>item[0] = this.B_C_list[0][0]) : null;
-    // this.make_result();
 },
 
 
