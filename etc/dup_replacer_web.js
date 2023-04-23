@@ -59,3 +59,24 @@ const port = 8000;
 app.listen(port, "0.0.0.0", () => console.log(`App listening!! at http://localhost:${port}`) );
 
 
+const true_if_within_4000_characters_and_not_empty = (str) => str.length > 0 && str.length <= 4000 && typeof str === 'string';
+
+// '/read_dups_parent'というGETのリクエストを受け取るエンドポイントで、dups_parentとそれに付随するdupsとそれを紐づけるuserを取得する。
+// それらの全てのidとcontent1とcontent2とcontent3を返すとcreated_atとupdated_atとuserのnameを返す
+app.get('/read_dups_parent', (req, res) => {
+    const sql = db.prepare('SELECT dups_parent.id AS dups_parent_id, dups.id AS dups_id, dups.content_1 AS dups_content_1, dups.content_2 AS dups_content_2, dups.content_3 AS dups_content_3, dups.created_at AS dups_created_at, dups.updated_at AS dups_updated_at, users.name AS user_name FROM dups_parent LEFT JOIN dups ON dups_parent.id = dups.dups_parent_id LEFT JOIN users ON dups_parent.user_id = users.id');
+    const rows = sql.all();
+    res.json(rows);
+});
+
+// これは'/insert_dup'というPOSTのリクエストを受け取るエンドポイントで、dupにcontent1とcontent2とcontent3を追加し、dups_parentにuser_idを追加する。
+app.post('/insert_dup', (req, res) => {
+    true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_1)) ? null : error_response(res, '4000文字以内で入力して');
+    true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_2)) ? null : error_response(res, '4000文字以内で入力して');
+    true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_3)) ? null : error_response(res, '4000文字以内で入力して');
+    true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_1 + req.body.content_2 + req.body.content_3)) ? null : error_response(res, '4000文字以内で入力して');
+    const user = user_with_permission(req);
+    user ? null : error_response(res, 'ユーザーが存在しません');
+    user.writable === 1 ? null : error_response(res, '書き込み権限がありません');
+
+    
