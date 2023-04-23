@@ -5,10 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>dup_replacer</title>
-<!-- <script src="./vue@3.2.36.global.js"></script> -->
 <script src="./vue@3.2.36.global.prod.js"></script>
-<!-- <script src="./localforage.js"></script> -->
-<!-- <script src="./localforage@1.10.0.nopromises.js"></script> -->
 <script src="./localforage@1.10.0.js"></script>
 <script src="./ramda.@0.28.0.js"></script>
 <style>
@@ -107,11 +104,6 @@ in_reference_to_INDEX_0_apply_check: <input type="checkbox" id="check" v-model="
 </div>
 <button @click="duplicate_button">duplicate_button</button>
 
-<!-- <input id="foo" value="https://github.com/zenorocha/clipboard.js.git" /> -->
-<!-- <textarea id="all_result" placeholder="all_result is here">{{ all_result }}</textarea> -->
-<!-- <textarea id="all_result" placeholder="all_result is here">hoge</textarea> -->
-<!-- <button class="btn" data-clipboard-target="#all_result">Copy to clipboard</button> -->
-<!-- Target -->
 <textarea ref="all_result_textarea" placeholder="all_result is here">{{ all_result }}</textarea>
 <button @click="a_copy_to_clipboard_button_with_a_message_conveying_that_browser_vendor_politics_suck">all_result Copy to Clipboard</button>
 
@@ -120,11 +112,9 @@ in_reference_to_INDEX_0_apply_check: <input type="checkbox" id="check" v-model="
 
 <input type="button" value="sort_by_when" @click="sort_by_when">
 <input type="button" value="sort_by_rating" @click="sort_by_rating">
-<!-- <input type="button" value="is_limited_item_change" @click="is_limited_item_change"> -->
 <input type="text" name="filter_by_text" class="filter_by_text" @input="filter_by_text" v-model="filter_text" placeholder="filter_text">
 <ul>
 <li v-for="(item, index) in all_save">
-<!-- <span>{{ item[5] ? item[5] : ['a','b','c'] }}</span> -->
 <button @click="save_data_set(index)">save_data_set</button>
 {{ item[4] }}: rating {{ item[3] }} <button @click="rating_up(index)">🔼</button><button @click="rating_down(index)">🔽</button>
 <p>{{ item }}</p>
@@ -138,15 +128,9 @@ in_reference_to_INDEX_0_apply_check: <input type="checkbox" id="check" v-model="
 const app = Vue.createApp({
 data() {
 return {
-    // a: 'ABCDEFGHIJKLMNOPQRSTUVWXYZaabbccddeeffgghhiijjkkllmmnnooppqqrrssttuuvvwwxxyyzzAABBCCDDEEFFGGHHIIJJKKLLMMNNOOPPQQRRSSTTUUVVWWXXYYZZ',
     B_C_list:[
         ['aaBBccDD', 'aa\nEF\nHI', 'XX\nef\nhi', ''],
-        // ['aa\nBB\nHI\nXY', 'AA\nbb\nhi\nxy', ''],
-        // ['XX\nYY\nZZ', 'xx\nyy\nzz', ''],
     ],
-    // B_C_list_INDEX: 0,
-    // b: '',
-    // c: '',
     rating: 0,
     when: null,
     save_data: [],
@@ -156,8 +140,6 @@ return {
     temporary_all_save_for_filter: [],
 
     all_result: '',
-
-    // tag: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
     in_reference_to_INDEX_0_apply_check: true,
 }
 },
@@ -170,10 +152,6 @@ watch: {
      deep: true
    },
 },
-// computed: {
-// result: function () {
-// }
-// },
 mounted() {
 this.save_data_load();
 this.make_result();
@@ -271,40 +249,31 @@ in_reference_to_INDEX_0_apply(){
 
 
 a_copy_to_clipboard_button_with_a_message_conveying_that_browser_vendor_politics_suck() {
-    const textarea = this.$refs.all_result_textarea;
-
-    if (navigator.clipboard) {
-    navigator.clipboard.writeText(textarea.value)
-        .then(() => {
+    const copyTextToClipboard = (text) => {
+        const range = document.createRange();
+        const selection = window.getSelection();
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        range.selectNodeContents(textarea);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        textarea.setSelectionRange(0, 999999);
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
         console.log('Text copied to clipboard');
-        })
-        .catch((err) => {
-        console.error('Failed to copy text: ', err);
-        this.fallback_copy_to_clipboard(textarea);
-        });
-    } else {
-    this.fallback_copy_to_clipboard(textarea);
     }
-},
-fallback_copy_to_clipboard(textarea) {
-    const isiOSDevice = navigator.userAgent.match(/ipad|iphone/i);
 
-    // For iOS devices, select the text in the textarea and show the copy menu
-    if (isiOSDevice) {
-    const range = document.createRange();
-    range.selectNodeContents(textarea);
-    const selection = window.getSelection();
-    selection.removeAllRanges();
-    selection.addRange(range);
-    textarea.setSelectionRange(0, 999999);
-    document.execCommand('copy');
-    console.log('Text copied to clipboard');
-    } else {
-    // For other devices, simply copy the text to clipboard using execCommand
-    textarea.select();
-    document.execCommand('copy');
-    console.log('Text copied to clipboard');
+    const copyToClipboard = () => {
+        try {
+            navigator.clipboard ? navigator.clipboard.writeText(this.$refs.all_result_textarea.value).then(() => console.log('Text copied to clipboard')).catch(() => {
+            navigator.userAgent.match(/ipad|iphone/i) ? copyTextToClipboard(this.$refs.all_result_textarea.value) : (this.$refs.all_result_textarea.select() && document.execCommand('copy'));
+            }) : (navigator.userAgent.match(/ipad|iphone/i) ? copyTextToClipboard(this.$refs.all_result_textarea.value) : (this.$refs.all_result_textarea.select() && document.execCommand('copy') && console.log('Text copied to clipboard')));
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
     }
+    copyToClipboard()
 },
 
 
