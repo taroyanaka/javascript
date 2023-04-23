@@ -69,7 +69,34 @@ app.get('/read_dups_parent', (req, res) => {
     res.json(rows);
 });
 
-// これは'/insert_dup'というPOSTのリクエストを受け取るエンドポイントで、dupにcontent1とcontent2とcontent3を追加し、dups_parentにuser_idを追加する。
+const user_with_permission = (req) => {
+    const sql = db.prepare('SELECT users.id AS user_id, users.name AS user_name, user_permission.permission AS user_permission FROM users LEFT JOIN user_permission ON users.role_id = user_permission.id WHERE users.name = ? AND users.password = ?');
+    const user = sql.get(req.body.name, req.body.password);
+    return user;
+};
+
+const error_response = (res, message) => {
+    res.status(400);
+    res.json({message: message});
+};
+
+const insert_dups_parent = (req, user) => {
+    const sql = db.prepare('INSERT INTO dups_parent (user_id, created_at, updated_at) VALUES (?, DATETIME("now"), DATETIME("now"))');
+    const info = sql.run(user.id);
+    return info.lastInsertRowid;
+};
+
+const insert_dups = (req, dups_parent_id) => {
+    const sql = db.prepare('INSERT INTO dups (dups_parent_id, content_1, content_2, content_3, created_at, updated_at) VALUES (?, ?, ?, ?, DATETIME("now"), DATETIME("now"))');
+    const info = sql.run(dups_parent_id, req.body.content_1, req.body.content_2, req.body.content_3);
+    return info.lastInsertRowid;
+};
+
+
+
+// これは'/insert_dup'というPOSTのリクエストを受け取るエンドポイントで、
+// dups_parentにuser_idを追加し、そのdups_parent_idをdupsに追加する。
+// dupsにcontent1とcontent2とcontent3を追加する。
 app.post('/insert_dup', (req, res) => {
     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_1)) ? null : error_response(res, '4000文字以内で入力して');
     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_2)) ? null : error_response(res, '4000文字以内で入力して');
@@ -78,5 +105,8 @@ app.post('/insert_dup', (req, res) => {
     const user = user_with_permission(req);
     user ? null : error_response(res, 'ユーザーが存在しません');
     user.writable === 1 ? null : error_response(res, '書き込み権限がありません');
-
+    const dups_parent_id = insert_dups_parent(req, user);
+    insert_dups(req, dups_parent_id);
+    res.json({message: 'success'});
+});
     
