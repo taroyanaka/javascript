@@ -59,7 +59,7 @@ const port = 8000;
 app.listen(port, "0.0.0.0", () => console.log(`App listening!! at http://localhost:${port}`) );
 
 
-const true_if_within_4000_characters_and_not_empty = (str) => str.length > 0 && str.length <= 4000 && typeof str === 'string';
+const true_if_within_4000_characters_and_not_empty = (str) => str.length > 2 && str.length <= 4000 && typeof str === 'string' && str !== 'undefined' ? true : false && str !== 'null' ? true : false;
 
 // '/read_dups_parent'というGETのリクエストを受け取るエンドポイントで、dups_parentとそれに付随するdupsとそれを紐づけるuserを取得する。
 // それらの全てのidとcontent1とcontent2とcontent3を返すとcreated_atとupdated_atとuserのnameを返す
@@ -69,44 +69,48 @@ app.get('/read_dups_parent', (req, res) => {
     res.json(rows);
 });
 
-const user_with_permission = (req) => {
-    const sql = db.prepare('SELECT users.id AS user_id, users.name AS user_name, user_permission.permission AS user_permission FROM users LEFT JOIN user_permission ON users.role_id = user_permission.id WHERE users.name = ? AND users.password = ?');
-    const user = sql.get(req.body.name, req.body.password);
-    return user;
-};
+
 
 const error_response = (res, message) => {
     res.status(400);
     res.json({message: message});
 };
 
-const insert_dups_parent = (req, user) => {
-    const sql = db.prepare('INSERT INTO dups_parent (user_id, created_at, updated_at) VALUES (?, DATETIME("now"), DATETIME("now"))');
-    const info = sql.run(user.id);
-    return info.lastInsertRowid;
-};
 
-const insert_dups = (req, dups_parent_id) => {
-    const sql = db.prepare('INSERT INTO dups (dups_parent_id, content_1, content_2, content_3, created_at, updated_at) VALUES (?, ?, ?, ?, DATETIME("now"), DATETIME("now"))');
-    const info = sql.run(dups_parent_id, req.body.content_1, req.body.content_2, req.body.content_3);
-    return info.lastInsertRowid;
-};
-
-
-
-// これは'/insert_dup'というPOSTのリクエストを受け取るエンドポイントで、
-// dups_parentにuser_idを追加し、そのdups_parent_idをdupsに追加する。
-// dupsにcontent1とcontent2とcontent3を追加する。
+// '/insert_dup'というPOSTのリクエストを受け取るエンドポイントで、dups_parentとそれに付随するdupsを作成する。
+// error_responseを使ってエラーを返すパターンとしては、
+// 1. 4000文字以内で入力して
+// 2. ユーザーが存在しません
+// 3. 書き込み権限がありません
+// 4. dups_parentにuser_idを追加できませんでした
+// 5. dups_parent_idを取得できませんでした
+// 6. dupsにcontentを追加できませんでした
 app.post('/insert_dup', (req, res) => {
     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_1)) ? null : error_response(res, '4000文字以内で入力して');
     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_2)) ? null : error_response(res, '4000文字以内で入力して');
     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_3)) ? null : error_response(res, '4000文字以内で入力して');
     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_1 + req.body.content_2 + req.body.content_3)) ? null : error_response(res, '4000文字以内で入力して');
-    const user = user_with_permission(req);
-    user ? null : error_response(res, 'ユーザーが存在しません');
-    user.writable === 1 ? null : error_response(res, '書き込み権限がありません');
-    const dups_parent_id = insert_dups_parent(req, user);
-    insert_dups(req, dups_parent_id);
+    
+    const user_with_permission = db.prepare('SELECT users.id AS user_id, users.name AS user_name, user_permission.permission AS user_permission FROM users LEFT JOIN user_permission ON users.role_id = user_permission.id WHERE users.name = ? AND users.password = ?').get(req.body.name, req.body.password);
+    user_with_permission ? null : error_response(res, 'ユーザーが存在しません');
+    user_with_permission.writable === 1 ? null : error_response(res, '書き込み権限がありません');
+    db.prepare('INSERT INTO dups_parent (user_id, created_at, updated_at) VALUES (?, DATETIME("now"), DATETIME("now"))').run(user_with_permission.id) ? null : error_response(res, 'dups_parentにuser_idを追加できませんでした');
+    const dups_parent_id = db.prepare('SELECT id FROM dups_parent ORDER BY id DESC LIMIT 1').get().id ? null : error_response(res, 'dups_parent_idを取得できませんでした');
+    db.prepare('INSERT INTO dups (dups_parent_id, content_1, content_2, content_3) VALUES (?, ?, ?, ?)').run(dups_parent_id, req.body.content_1, req.body.content_2, req.body.content_3) ? null : error_response(res, 'dupsにcontentを追加できませんでした');
     res.json({message: 'success'});
 });
-    
+
+// '/delete_dup'というPOSTのリクエストを受け取るエンドポイントで、dups_parentとそれに付随するdupsを削除する。
+// error_responseを使ってエラーを返すパターンとしては、
+// 1. ユーザーが存在しません
+// 2. 削除権限がありません
+// 3. dupsを削除できませんでした
+// 4. dups_parentを削除できませんでした
+app.post('/delete_dup', (req, res) => {
+    const user_with_permission = db.prepare('SELECT users.id AS user_id, users.name AS user_name, user_permission.permission AS user_permission FROM users LEFT JOIN user_permission ON users.role_id = user_permission.id WHERE users.name = ? AND users.password = ?').get(req.body.name, req.body.password);
+    user_with_permission ? null : error_response(res, 'ユーザーが存在しません');
+    user_with_permission.deletable === 1 ? null : error_response(res, '削除権限がありません');
+    db.prepare('DELETE FROM dups WHERE dups_parent_id = ?').run(req.body.dups_parent_id) ? null : error_response(res, 'dupsを削除できませんでした');
+    db.prepare('DELETE FROM dups_parent WHERE id = ?').run(req.body.dups_parent_id) ? null : error_response(res, 'dups_parentを削除できませんでした');
+    res.json({message: 'success'});
+});

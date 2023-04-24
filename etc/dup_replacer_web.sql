@@ -27,7 +27,7 @@ CREATE TABLE user_permission (
   updated_at DATETIME NOT NULL
 );
 
--- dups_parentというテーブル1つに対して複数のdupsテーブルを持つ
+-- dups_parentというテーブル1つに対して1つ以上のdupsテーブルを持つ
 CREATE TABLE dups_parent (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
