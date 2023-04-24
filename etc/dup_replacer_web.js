@@ -91,8 +91,7 @@ app.post('/insert_dup', (req, res) => {
     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_3)) ? null : error_response(res, '4000文字以内で入力して');
     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_1 + req.body.content_2 + req.body.content_3)) ? null : error_response(res, '4000文字以内で入力して');
     
-    const user_with_permission = db.prepare('SELECT users.id AS user_id, users.name AS user_name, user_permission.permission AS user_permission FROM users LEFT JOIN user_permission ON users.role_id = user_permission.id WHERE users.name = ? AND users.password = ?').get(req.body.name, req.body.password);
-    user_with_permission ? null : error_response(res, 'ユーザーが存在しません');
+    const user_with_permission = db.prepare('SELECT users.id AS user_id, users.name AS user_name, user_permission.permission AS user_permission FROM users LEFT JOIN user_permission ON users.role_id = user_permission.id WHERE users.name = ? AND users.password = ?').get(req.body.name, req.body.password) ? null : error_response(res, 'ユーザーが存在しません');
     user_with_permission.writable === 1 ? null : error_response(res, '書き込み権限がありません');
     db.prepare('INSERT INTO dups_parent (user_id, created_at, updated_at) VALUES (?, DATETIME("now"), DATETIME("now"))').run(user_with_permission.id) ? null : error_response(res, 'dups_parentにuser_idを追加できませんでした');
     const dups_parent_id = db.prepare('SELECT id FROM dups_parent ORDER BY id DESC LIMIT 1').get().id ? null : error_response(res, 'dups_parent_idを取得できませんでした');
@@ -107,8 +106,7 @@ app.post('/insert_dup', (req, res) => {
 // 3. dupsを削除できませんでした
 // 4. dups_parentを削除できませんでした
 app.post('/delete_dup', (req, res) => {
-    const user_with_permission = db.prepare('SELECT users.id AS user_id, users.name AS user_name, user_permission.permission AS user_permission FROM users LEFT JOIN user_permission ON users.role_id = user_permission.id WHERE users.name = ? AND users.password = ?').get(req.body.name, req.body.password);
-    user_with_permission ? null : error_response(res, 'ユーザーが存在しません');
+    const user_with_permission = db.prepare('SELECT users.id AS user_id, users.name AS user_name, user_permission.permission AS user_permission FROM users LEFT JOIN user_permission ON users.role_id = user_permission.id WHERE users.name = ? AND users.password = ?').get(req.body.name, req.body.password) ? null : error_response(res, 'ユーザーが存在しません');
     user_with_permission.deletable === 1 ? null : error_response(res, '削除権限がありません');
     db.prepare('DELETE FROM dups WHERE dups_parent_id = ?').run(req.body.dups_parent_id) ? null : error_response(res, 'dupsを削除できませんでした');
     db.prepare('DELETE FROM dups_parent WHERE id = ?').run(req.body.dups_parent_id) ? null : error_response(res, 'dups_parentを削除できませんでした');
