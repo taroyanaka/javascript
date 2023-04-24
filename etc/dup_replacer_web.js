@@ -85,7 +85,9 @@ const error_response = (res, message) => {
 // 4. dups_parentにuser_idを追加できませんでした
 // 5. dups_parent_idを取得できませんでした
 // 6. dupsにcontentを追加できませんでした
+// 原因不明のエラーの場合は適当なエラーレスポンスを返す
 app.post('/insert_dup', (req, res) => {
+    try {
     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_1)) ? null : error_response(res, '4000文字以内で入力して');
     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_2)) ? null : error_response(res, '4000文字以内で入力して');
     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_3)) ? null : error_response(res, '4000文字以内で入力して');
@@ -97,6 +99,11 @@ app.post('/insert_dup', (req, res) => {
     const dups_parent_id = db.prepare('SELECT id FROM dups_parent ORDER BY id DESC LIMIT 1').get().id ? null : error_response(res, 'dups_parent_idを取得できませんでした');
     db.prepare('INSERT INTO dups (dups_parent_id, content_1, content_2, content_3) VALUES (?, ?, ?, ?)').run(dups_parent_id, req.body.content_1, req.body.content_2, req.body.content_3) ? null : error_response(res, 'dupsにcontentを追加できませんでした');
     res.json({message: 'success'});
+
+    } catch (error) {
+        console.log(error);
+        error_response(res, '原因不明のエラー' + error);
+    }
 });
 
 // '/delete_dup'というPOSTのリクエストを受け取るエンドポイントで、dups_parentとそれに付随するdupsを削除する。
@@ -105,10 +112,17 @@ app.post('/insert_dup', (req, res) => {
 // 2. 削除権限がありません
 // 3. dupsを削除できませんでした
 // 4. dups_parentを削除できませんでした
+// 原因不明のエラーの場合は適当なエラーレスポンスを返す
 app.post('/delete_dup', (req, res) => {
+    try {
     const user_with_permission = db.prepare('SELECT users.id AS user_id, users.name AS user_name, user_permission.permission AS user_permission FROM users LEFT JOIN user_permission ON users.role_id = user_permission.id WHERE users.name = ? AND users.password = ?').get(req.body.name, req.body.password) ? null : error_response(res, 'ユーザーが存在しません');
     user_with_permission.deletable === 1 ? null : error_response(res, '削除権限がありません');
     db.prepare('DELETE FROM dups WHERE dups_parent_id = ?').run(req.body.dups_parent_id) ? null : error_response(res, 'dupsを削除できませんでした');
     db.prepare('DELETE FROM dups_parent WHERE id = ?').run(req.body.dups_parent_id) ? null : error_response(res, 'dups_parentを削除できませんでした');
     res.json({message: 'success'});
+
+    } catch (error) {
+        console.log(error);
+        error_response(res, '原因不明のエラー' + error);
+    }
 });
