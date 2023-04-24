@@ -1,15 +1,3 @@
-// DROP TABLE IF EXISTS users;
-// DROP TABLE IF EXISTS user_permission;
-// DROP TABLE IF EXISTS dups;
-
-// CREATE TABLE users (
-//   id INTEGER PRIMARY KEY AUTOINCREMENT,
-//   role_id INTEGER NOT NULL,
-//   name TEXT NOT NULL,
-//   password TEXT NOT NULL,
-//   created_at DATETIME NOT NULL,
-//   updated_at DATETIME NOT NULL
-// );
 // CREATE TABLE user_permission (
 //   id INTEGER PRIMARY KEY,
 
@@ -20,6 +8,16 @@
 
 //   created_at DATETIME NOT NULL,
 //   updated_at DATETIME NOT NULL
+// );
+
+// CREATE TABLE users (
+//   id INTEGER PRIMARY KEY AUTOINCREMENT,
+//   user_permission_id INTEGER NOT NULL,
+//   name TEXT NOT NULL,
+//   password TEXT NOT NULL,
+//   created_at DATETIME NOT NULL,
+//   updated_at DATETIME NOT NULL,
+//   FOREIGN KEY (user_permission_id) REFERENCES user_permission(id)
 // );
 
 // CREATE TABLE dups_parent (
@@ -34,17 +32,16 @@
 // CREATE TABLE dups (
 //   id INTEGER PRIMARY KEY AUTOINCREMENT,
 //   dups_parent_id INTEGER NOT NULL,
-//   content_1 TEXT NOT NULL,
-//   content_2 TEXT NOT NULL,
-//   content_3 TEXT NOT NULL,
+//   content TEXT NOT NULL,
 //     FOREIGN KEY (dups_parent_id) REFERENCES dups_parent(id)
 // );
 
-
-// INSERT INTO users (name, password, created_at, updated_at) VALUES ('name1', 'password1', DATETIME('now'), DATETIME('now'));
-// INSERT INTO users (name, password, created_at, updated_at) VALUES ('name2', 'password2', DATETIME('now'), DATETIME('now'));
 // INSERT INTO user_permission (id, permission, readable, writable, deletable, created_at, updated_at) VALUES (1, 'guest', 1, 0, 0, DATETIME('now'), DATETIME('now'));
 // INSERT INTO user_permission (id, permission, readable, writable, deletable, created_at, updated_at) VALUES (2, 'user', 1, 1, 1, DATETIME('now'), DATETIME('now'));
+
+// INSERT INTO users (user_permission_id, name, password, created_at, updated_at) VALUES (1, 'GUEST', 'GUEST_PASS', DATETIME('now'), DATETIME('now'));
+// INSERT INTO users (user_permission_id, name, password, created_at, updated_at) VALUES (2, 'name1', 'password1', DATETIME('now'), DATETIME('now'));
+// INSERT INTO users (user_permission_id, name, password, created_at, updated_at) VALUES (2, 'name2', 'password2', DATETIME('now'), DATETIME('now'));
 
 
 const express = require('express');
@@ -66,7 +63,7 @@ const true_if_within_4000_characters_and_not_empty = (str) => str.length > 2 && 
 // 原因不明のエラーの場合は適当なエラーレスポンスを返す
 app.get('/read_dups_parent', (req, res) => {
     try {
-    const rows = db.prepare('SELECT dups_parent.id AS dups_parent_id, dups.id AS dups_id, dups.content_1 AS dups_content_1, dups.content_2 AS dups_content_2, dups.content_3 AS dups_content_3, dups.created_at AS dups_created_at, dups.updated_at AS dups_updated_at, users.name AS user_name FROM dups_parent LEFT JOIN dups ON dups_parent.id = dups.dups_parent_id LEFT JOIN users ON dups_parent.user_id = users.id').all();
+    const rows = db.prepare('SELECT dups_parent.id AS dups_parent_id, dups_parent.user_id AS user_id, dups_parent.created_at AS dups_parent_created_at, dups_parent.updated_at AS dups_parent_updated_at, dups.id AS dups_id, dups.content AS dups_content, users.name AS user_name FROM dups_parent LEFT JOIN dups ON dups_parent.id = dups.dups_parent_id LEFT JOIN users ON dups_parent.user_id = users.id').all();
     res.json(rows);
     } catch (error) {
         console.log(error);
@@ -75,36 +72,31 @@ app.get('/read_dups_parent', (req, res) => {
 });
 
 
-
-const error_response = (res, message) => {
-    res.status(400);
-    res.json({message: message});
-};
-
+// expressの一般的なエラーのレスポンス。引数としてエラー文字列を含めて呼び出す
+const error_response = (res, error_message) => res.status(400).json({ error: error_message });
 
 // '/insert_dup'というPOSTのリクエストを受け取るエンドポイントで、dups_parentとそれに付随するdupsを作成する。
-// error_responseを使ってエラーを返すパターンとしては、
-// 1. 4000文字以内で入力して
-// 2. ユーザーが存在しません
-// 3. 書き込み権限がありません
-// 4. dups_parentにuser_idを追加できませんでした
-// 5. dups_parent_idを取得できませんでした
-// 6. dupsにcontentを追加できませんでした
-// 原因不明のエラーの場合は適当なエラーレスポンスを返す
 app.post('/insert_dup', (req, res) => {
     try {
-    true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_1)) ? null : error_response(res, '4000文字以内で入力して');
-    true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_2)) ? null : error_response(res, '4000文字以内で入力して');
-    true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_3)) ? null : error_response(res, '4000文字以内で入力して');
-    true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_1 + req.body.content_2 + req.body.content_3)) ? null : error_response(res, '4000文字以内で入力して');
-    
+    // content_1, content_2, content_3はそれぞれがは配列で["abc", "def", "ghi"]のように入ってくる
+    const { content_1, content_2, content_3, name, password } = JSON.parse(req.body);
+    [content_1, content_2, content_3].forEach((content) => {
+        content.forEach((str) => {
+            true_if_within_4000_characters_and_not_empty(str) ? null : error_response(res, '4000文字以内で入力して');
+        });
+        true_if_within_4000_characters_and_not_empty(content.join("")) ? null : error_response(res, '4000文字以内で入力して');
+    });
     const user_with_permission = db.prepare('SELECT users.id AS user_id, users.name AS user_name, user_permission.permission AS user_permission FROM users LEFT JOIN user_permission ON users.role_id = user_permission.id WHERE users.name = ? AND users.password = ?').get(req.body.name, req.body.password) ? null : error_response(res, 'ユーザーが存在しません');
     user_with_permission.writable === 1 ? null : error_response(res, '書き込み権限がありません');
     db.prepare('INSERT INTO dups_parent (user_id, created_at, updated_at) VALUES (?, DATETIME("now"), DATETIME("now"))').run(user_with_permission.id) ? null : error_response(res, 'dups_parentにuser_idを追加できませんでした');
     const dups_parent_id = db.prepare('SELECT id FROM dups_parent ORDER BY id DESC LIMIT 1').get().id ? null : error_response(res, 'dups_parent_idを取得できませんでした');
-    db.prepare('INSERT INTO dups (dups_parent_id, content_1, content_2, content_3) VALUES (?, ?, ?, ?)').run(dups_parent_id, req.body.content_1, req.body.content_2, req.body.content_3) ? null : error_response(res, 'dupsにcontentを追加できませんでした');
+    [content_1, content_2, content_3].forEach((content) => {
+        content.forEach((str) => {
+            // db.prepare('INSERT INTO dups (dups_parent_id, content, created_at, updated_at) VALUES (?, ?, DATETIME("now"), DATETIME("now"))').run(dups_parent_id, str) ? null : error_response(res, 'dupsにcontentを追加できませんでした');
+            db.prepare('INSERT INTO dups (dups_parent_id, content, created_at, updated_at) VALUES (?, ?, DATETIME("now"), DATETIME("now"))').run(dups_parent_id, str);
+        });
+    });
     res.json({message: 'success'});
-
     } catch (error) {
         console.log(error);
         error_response(res, '原因不明のエラー' + error);

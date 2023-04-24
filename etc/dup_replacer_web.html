@@ -131,6 +131,9 @@ return {
     B_C_list:[
         ['aaBBccDD', 'aa\nEF\nHI', 'XX\nef\nhi', ''],
     ],
+    content_1: [],
+    content_2: [],
+    content_3: [],
     rating: 0,
     when: null,
     save_data: [],
@@ -277,7 +280,110 @@ a_copy_to_clipboard_button_with_a_message_conveying_that_browser_vendor_politics
 },
 
 
-}
+
+// CREATE TABLE user_permission (
+//   id INTEGER PRIMARY KEY,
+
+//   permission TEXT NOT NULL,
+//   readable INTEGER NOT NULL,
+//   writable INTEGER NOT NULL,
+//   deletable INTEGER NOT NULL, 
+
+//   created_at DATETIME NOT NULL,
+//   updated_at DATETIME NOT NULL
+// );
+
+// CREATE TABLE users (
+//   id INTEGER PRIMARY KEY AUTOINCREMENT,
+//   user_permission_id INTEGER NOT NULL,
+//   name TEXT NOT NULL,
+//   password TEXT NOT NULL,
+//   created_at DATETIME NOT NULL,
+//   updated_at DATETIME NOT NULL,
+//   FOREIGN KEY (user_permission_id) REFERENCES user_permission(id)
+// );
+
+// CREATE TABLE dups_parent (
+//   id INTEGER PRIMARY KEY AUTOINCREMENT,
+//     user_id INTEGER NOT NULL,
+//   created_at DATETIME NOT NULL,
+//   updated_at DATETIME NOT NULL,
+//     FOREIGN KEY (user_id) REFERENCES users(id)
+// );
+
+
+// CREATE TABLE dups (
+//   id INTEGER PRIMARY KEY AUTOINCREMENT,
+//   dups_parent_id INTEGER NOT NULL,
+//   content_1 TEXT NOT NULL,
+//   content_2 TEXT NOT NULL,
+//   content_3 TEXT NOT NULL,
+//     FOREIGN KEY (dups_parent_id) REFERENCES dups_parent(id)
+// );
+
+// INSERT INTO user_permission (id, permission, readable, writable, deletable, created_at, updated_at) VALUES (1, 'guest', 1, 0, 0, DATETIME('now'), DATETIME('now'));
+// INSERT INTO user_permission (id, permission, readable, writable, deletable, created_at, updated_at) VALUES (2, 'user', 1, 1, 1, DATETIME('now'), DATETIME('now'));
+
+// INSERT INTO users (user_permission_id, name, password, created_at, updated_at) VALUES (1, 'GUEST', 'GUEST_PASS', DATETIME('now'), DATETIME('now'));
+// INSERT INTO users (user_permission_id, name, password, created_at, updated_at) VALUES (2, 'name1', 'password1', DATETIME('now'), DATETIME('now'));
+// INSERT INTO users (user_permission_id, name, password, created_at, updated_at) VALUES (2, 'name2', 'password2', DATETIME('now'), DATETIME('now'));
+
+
+// app.post('/insert_dup', (req, res) => {
+//     try {
+//     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_1)) ? null : error_response(res, '4000文字以内で入力して');
+//     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_2)) ? null : error_response(res, '4000文字以内で入力して');
+//     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_3)) ? null : error_response(res, '4000文字以内で入力して');
+//     true_if_within_4000_characters_and_not_empty(JSON.stringify(req.body.content_1 + req.body.content_2 + req.body.content_3)) ? null : error_response(res, '4000文字以内で入力して');
+//     const user_with_permission = db.prepare('SELECT users.id AS user_id, users.name AS user_name, user_permission.permission AS user_permission FROM users LEFT JOIN user_permission ON users.role_id = user_permission.id WHERE users.name = ? AND users.password = ?').get(req.body.name, req.body.password) ? null : error_response(res, 'ユーザーが存在しません');
+//     user_with_permission.writable === 1 ? null : error_response(res, '書き込み権限がありません');
+//     db.prepare('INSERT INTO dups_parent (user_id, created_at, updated_at) VALUES (?, DATETIME("now"), DATETIME("now"))').run(user_with_permission.id) ? null : error_response(res, 'dups_parentにuser_idを追加できませんでした');
+//     const dups_parent_id = db.prepare('SELECT id FROM dups_parent ORDER BY id DESC LIMIT 1').get().id ? null : error_response(res, 'dups_parent_idを取得できませんでした');
+//     db.prepare('INSERT INTO dups (dups_parent_id, content_1, content_2, content_3) VALUES (?, ?, ?, ?)').run(dups_parent_id, req.body.content_1, req.body.content_2, req.body.content_3) ? null : error_response(res, 'dupsにcontentを追加できませんでした');
+//     res.json({message: 'success'});
+//     } catch (error) {
+//         console.log(error);
+//         error_response(res, '原因不明のエラー' + error);
+//     }
+// });
+
+collect_B_C_list_each_index_0_to_content_1(){
+    this.content_1 = [];
+    this.B_C_list.forEach((B_C, index) => this.content_1.push(B_C[0]) );
+},
+collect_B_C_list_each_index_1_to_content_2(){
+    this.content_2 = [];
+    this.B_C_list.forEach((B_C, index) => this.content_2.push(B_C[1]) );
+},
+collect_B_C_list_each_index_2_to_content_3(){
+    this.content_3 = [];
+    this.B_C_list.forEach((B_C, index) => this.content_3.push(B_C[2]) );
+},
+collect_each_content(){
+    this.collect_B_C_list_each_index_0_to_content_1();
+    this.collect_B_C_list_each_index_1_to_content_2();
+    this.collect_B_C_list_each_index_2_to_content_3();
+},
+fetch_insert_dup(content_1, content_2, content_3){
+    this.collect_each_content();
+    const response = await fetch('http://localhost:3000/insert_dup', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: 'name1',
+            password: 'password1',
+            content_1: this.content_1,
+            content_2: this.content_2,
+            content_3: this.content_3
+        })
+    });
+    const json = await response.json();
+    console.log(json);
+},
+
+
 }).mount('.app');
 </script>
 </html>
