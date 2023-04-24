@@ -63,9 +63,15 @@ const true_if_within_4000_characters_and_not_empty = (str) => str.length > 2 && 
 
 // '/read_dups_parent'というGETのリクエストを受け取るエンドポイントで、dups_parentとそれに付随するdupsとそれを紐づけるuserを取得する。
 // それらの全てのidとcontent1とcontent2とcontent3を返すとcreated_atとupdated_atとuserのnameを返す
+// 原因不明のエラーの場合は適当なエラーレスポンスを返す
 app.get('/read_dups_parent', (req, res) => {
+    try {
     const rows = db.prepare('SELECT dups_parent.id AS dups_parent_id, dups.id AS dups_id, dups.content_1 AS dups_content_1, dups.content_2 AS dups_content_2, dups.content_3 AS dups_content_3, dups.created_at AS dups_created_at, dups.updated_at AS dups_updated_at, users.name AS user_name FROM dups_parent LEFT JOIN dups ON dups_parent.id = dups.dups_parent_id LEFT JOIN users ON dups_parent.user_id = users.id').all();
     res.json(rows);
+    } catch (error) {
+        console.log(error);
+        error_response(res, '原因不明のエラー' + error);
+    }
 });
 
 
