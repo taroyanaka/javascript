@@ -35,6 +35,10 @@ https://stackoverflow.com/questions/20618355/how-to-write-a-countdown-timer-in-j
 </script>
 <!-- https://devtools.vuejs.org/ -->
 <style>
+.app{
+    display: grid;
+    grid-template-columns: 0.1fr 1fr;
+}
 input[type=text] {
 width: 100%;
 font-size: 5px;
@@ -117,7 +121,48 @@ font-size: 0;
 <body>
 <div class="app">
 
+<!-- <details data-dropdown> -->
+<!-- <summary>open_parent_bubble</summary> -->
 
+<div class="side_A">
+    <button @click="show_or_not">show_or_not</button>
+    <div class="parent_bubble">
+    
+    <div v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
+    <div :class="'bubble_'+BUBBLE_DATA_INDEX">
+        <p :class="'speak_'+BUBBLE_DATA_INDEX">{{ speak_array[BUBBLE_DATA[4]] }}</p>
+    </div>
+    <div :class="'bubble_'+BUBBLE_DATA_INDEX+'_2'"></div>
+    </div>
+    
+    <div class="parent_image_layer">
+    
+    
+        <div :class="'layer_'+(OUTER_ARY_INDEX+1)" v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
+        <!-- <img :class="'image_'+(OUTER_ARY_INDEX+1)+'_'+IN_ARY_INDEX+' animated shake infinite'" style="animation-duration: 3s;animation-timing-function: steps(3);" v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY"> -->
+        <!-- {{ OUTER_ARY[0][8] }} -->
+        <img :class="'image_'+(OUTER_ARY_INDEX+1)+'_'+IN_ARY_INDEX+' animated '+animation_value_array[IN_ARY[8]][0]" :style="animation_value_array[IN_ARY[8]][1]" v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
+        </div>
+    
+    
+        <div class="foo" :class="{ no_show: image_checked ? false : true }">
+        <div v-for="(item, index) in foo_or_bar_matrix" class="fitter" @click="get_num_for_image">
+            {{ item }}
+        </div>
+        </div>
+    
+        <div class="bar" :class="{ no_show: bubble_checked ? false : true }">
+            <div v-for="(item, index) in foo_or_bar_matrix" class="fitter" @click="get_num_for_bubble">
+                {{ item }}
+            </div>
+        </div>
+    
+    </div>
+    </div>
+</div>
+<!-- </details> -->
+
+<div class="side_B">
 <div id="show_or_not">
         <details data-dropdown>
         <summary>open_data_save_load</summary>
@@ -341,47 +386,8 @@ font-size: 0;
 
 </div>
 </div>
-
-
-
-<details data-dropdown>
-<summary>open_parent_bubble</summary>
-
-
-<button @click="show_or_not">show_or_not</button>
-<div class="parent_bubble">
-
-<div v-for="(BUBBLE_DATA, BUBBLE_DATA_INDEX) in bubble_data_array">
-<div :class="'bubble_'+BUBBLE_DATA_INDEX">
-    <p :class="'speak_'+BUBBLE_DATA_INDEX">{{ speak_array[BUBBLE_DATA[4]] }}</p>
-</div>
-<div :class="'bubble_'+BUBBLE_DATA_INDEX+'_2'"></div>
 </div>
 
-<div class="parent_image_layer">
-
-<div :class="'layer_'+(OUTER_ARY_INDEX+1)" v-for="(OUTER_ARY, OUTER_ARY_INDEX) in layer_chunk">
-<!-- <img :class="'image_'+(OUTER_ARY_INDEX+1)+'_'+IN_ARY_INDEX+' animated shake infinite'" style="animation-duration: 3s;animation-timing-function: steps(3);" v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY"> -->
-<!-- {{ OUTER_ARY[0][8] }} -->
-<img :class="'image_'+(OUTER_ARY_INDEX+1)+'_'+IN_ARY_INDEX+' animated '+animation_value_array[IN_ARY[8]][0]" :style="animation_value_array[IN_ARY[8]][1]" v-for="(IN_ARY, IN_ARY_INDEX) in OUTER_ARY">
-</div>
-
-
-<div class="foo" :class="{ no_show: image_checked ? false : true }">
-  <div v-for="(item, index) in foo_or_bar_matrix" class="fitter" @click="get_num_for_image">
-    {{ item }}
-  </div>
-</div>
-
-<div class="bar" :class="{ no_show: bubble_checked ? false : true }">
-    <div v-for="(item, index) in foo_or_bar_matrix" class="fitter" @click="get_num_for_bubble">
-        {{ item }}
-    </div>
-</div>
-
-</div>
-</div>
-</details>
 
 <script>
 const app = Vue.createApp({
