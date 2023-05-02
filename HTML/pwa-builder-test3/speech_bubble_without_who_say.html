@@ -270,12 +270,6 @@ font-size: 0;
         <input type="number" name="bubble_column" class="bubble_column" v-model="BUBBLE_DATA[0]" step="0.1">
         <input type="number" name="bubble_row" class="bubble_row" v-model="BUBBLE_DATA[1]" step="0.1">
         <input type="number" name="speak" class="speak" v-model="BUBBLE_DATA[2]">
-        <!-- <input type="number" name="a_0" class="a_0" v-model="BUBBLE_DATA[3]">
-        <input type="number" name="a_1" class="a_1" v-model="BUBBLE_DATA[4]">
-        <input type="number" name="a_2" class="a_2" v-model="BUBBLE_DATA[5]">
-        <input type="number" name="a_3" class="a_3" v-model="BUBBLE_DATA[6]">
-        <input type="number" name="a_4" class="a_4" v-model="BUBBLE_DATA[7]">
-        <input type="number" name="a_5" class="a_5" v-model="BUBBLE_DATA[8]"> -->
         <input type="color" :class="'bubble_'+BUBBLE_DATA_INDEX+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX+'_color'" v-model='BUBBLE_DATA[3]'>
         <input type="text" :class="'bubble_'+BUBBLE_DATA_INDEX+'_color'" :name="'bubble_'+BUBBLE_DATA_INDEX+'_color'" v-model="BUBBLE_DATA[3]">
 
@@ -285,7 +279,7 @@ font-size: 0;
         <input type="number" name="speak_size" class="speak_size" v-model="BUBBLE_DATA[9]" step="0.1">
         </div>
         </template>
-
+            <button @click="clone_previous_bubble_data_array">clone_previous_bubble_data_array</button>
         </details>
 
         <div class="parent_bubble_color">
@@ -949,13 +943,13 @@ async LOAD_CURRENT_SAVE(SAVE_INDEX){
     }
 },
 async SAVE_CURRENT_SAVE(){
-
-for (const [key, value] of Object.entries(this.CURRENT_SAVE)) {
-    this.CURRENT_SAVE[key] = this[key];
-}
-
-
+    for (const [key, value] of Object.entries(this.CURRENT_SAVE)) {
+        this.CURRENT_SAVE[key] = this[key];
+    }
     await this.save_data_to_all_save(this.CURRENT_SAVE)
+},
+clone_previous_bubble_data_array(){
+    this.bubble_data_array.push(JSON.parse(JSON.stringify(this.bubble_data_array[this.bubble_data_array.length - 1])));
 },
 
 },
