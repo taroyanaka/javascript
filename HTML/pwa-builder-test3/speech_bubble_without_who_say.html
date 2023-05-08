@@ -255,8 +255,11 @@ font-size: 0;
                 <button @click="active_the_image_for_get_num_fn(OUTER_ARY_INDEX, IN_ARY_INDEX)">active_the_image_for_get_num_fn</button>
 
                 <button @click="clone_the_in_ary_index(IN_ARY_INDEX)">clone_the_in_ary_index</button>
+                <button @click="delete_the_in_ary_index(IN_ARY_INDEX)">delete_the_in_ary_index</button>
             </div>
             <button @click="image_add(OUTER_ARY_INDEX)">image_add</button>
+            <button @click="clone_the_layer_chunk_group(OUTER_ARY_INDEX)">clone_the_layer_chunk_group</button>
+            <button @click="delete_the_layer_chunk_group(OUTER_ARY_INDEX)">delete_the_layer_chunk_group</button>
         </section>
             </template>
         </div>
@@ -945,10 +948,10 @@ async LOAD_CURRENT_SAVE(SAVE_INDEX){
     await this.save_data_load();
     this.CURRENT_SAVE = this.all_save[SAVE_INDEX];
 
-
     for (const [key, value] of Object.entries(this.CURRENT_SAVE)) {
         this[key] = value;
     }
+
 },
 async SAVE_CURRENT_SAVE(){
     for (const [key, value] of Object.entries(this.CURRENT_SAVE)) {
@@ -964,6 +967,15 @@ to_ary(it){
 },
 clone_the_in_ary_index(INDEX){
     this.layer_chunk[this.active_layer_index].splice(INDEX, 0, this.to_ary(this.layer_chunk[this.active_layer_index][INDEX]));
+},
+delete_the_in_ary_index(INDEX){
+    this.layer_chunk[this.active_layer_index].splice(INDEX, 1);
+},
+clone_the_layer_chunk_group(INDEX){
+    this.layer_chunk.splice(INDEX, 0, this.to_ary(this.layer_chunk[INDEX]));
+},
+delete_the_layer_chunk_group(INDEX){
+    confirm("Do you really want to delete??🦖\n本当に削除する？?🦕\n") ? this.layer_chunk.splice(INDEX, 1) : null;
 },
 
 },
