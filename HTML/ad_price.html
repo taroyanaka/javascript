@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>広告収入計算</title>
+  <script type="text/javascript">
+    // 多言語対応
+    var lang = (window.navigator.languages && window.navigator.languages[0]) ||
+               window.navigator.language ||
+               window.navigator.userLanguage ||
+               window.navigator.browserLanguage;
+let current_lang_array = []               ;
+// 言語と国の絵文字の一覧を表示する関数['言語コード', '国コード', '絵文字']がcurrent_lang_arrayに入る
+function get_lang_array(lang) {
+    switch(lang) {
+        case 'en-US': current_lang_array = ['en', 'US', '🇺🇸'];break; // 英語,
+        case 'zh-CN': current_lang_array = ['zh', 'CN', '🇨🇳🇹🇼'];break; // 中国語,
+        case 'ko-KR': current_lang_array = ['ko', 'KR', '🇰🇷'];break; // 韓国語,
+        case 'es-ES': current_lang_array = ['es', 'ES', '🇪🇸'];break; // スペイン語,
+        case 'fr-FR': current_lang_array = ['fr', 'FR', '🇫🇷'];break; // フランス語,
+        case 'de-DE': current_lang_array = ['de', 'DE', '🇩🇪'];break; // ドイツ語,
+        case 'it-IT': current_lang_array = ['it', 'IT', '🇮🇹'];break; // イタリア語,
+        case 'ru-RU': current_lang_array = ['ru', 'RU', '🇷🇺'];break; // ロシア語,
+        case 'pt-PT': current_lang_array = ['pt', 'PT', '🇵🇹'];break; // ポルトガル語,
+        default: current_lang_array = ['ja', 'JP', '🇯🇵'];break;
+    }
+};
+// 全てのspanタグのvalueを言語に合わせて変更する関数
+function change_lang() {
+    get_lang_array(lang);
+    var span_list = document.getElementsByTagName('span');
+    for (var i = 0; i < span_list.length; i++) {
+        if (span_list[i].getAttribute('value') != null) {
+            span_list[i].innerHTML = span_list[i].getAttribute('value');
+        }
+    }
+};
+
+
+// 日本語を選択する正規表現
+
+    function calculateAdRevenue() {
+      // 入力値の取得
+            // 広告収入の計算
+      // 1000000 * 30 * 1 が 20000円になる場合の計算式
+      var views = parseInt(document.getElementById("views").value);
+      var duration = parseInt(document.getElementById("duration").value);
+      var revenue = parseInt(document.getElementById("revenue").value);
+// 動画本数
+        var video = parseInt(document.getElementById("video").value);
+
+      // 入力値のチェック
+      if (isNaN(views) || isNaN(duration) || isNaN(revenue)) {
+        alert("入力値が不正です。");
+        return;
+      }
+
+
+      var adRevenue = views * duration * revenue * video;
+
+      // 結果の表示
+      document.getElementById("result").innerHTML = "広告収入: " + adRevenue + "円";
+    }
+  </script>
+</head>
+<body>
+  <h1><span value="広告収入計算"></span></h1>
+  <form>
+    <label for="views">
+        <span value='再生回数'></span>
+        <span value='再生回数'></span>
+        :</label>
+    <input type="number" id="views" min="0" value="100" onchange="calculateAdRevenue()" /><br />
+    <label for="duration">
+        <span value="動画の長さ"></span>
+        （<span value="分"></span>）:</label>
+    <input type="number" id="duration" min="0" value="30" onchange="calculateAdRevenue()" /><br />
+
+    <label for="revenue">
+        <span value="単位再生あたりの収益"></span>
+        （<span value="円"></span>）:</label>
+    <input type="number" id="revenue" min="0" value="7" onchange="calculateAdRevenue()" /><br />
+
+    <label for="video">
+        <span value="動画本数"></span>
+        （<span value="本"></span>）:</label>
+    <input type="number" id="video" min="0" value="1" onchange="calculateAdRevenue()" /><br />
+
+    <button type="button" onclick="calculateAdRevenue()">
+        <span value="計算する"></span></button>
+  </form>
+
+  <div id="result"></div>
+</body>
+</html>

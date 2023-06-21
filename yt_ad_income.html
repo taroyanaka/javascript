@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>広告収入計算</title>
+  <script src="https://unpkg.com/vue@next"></script>
+  <style>
+    /* 全ての文字を1.3remにする */
+    * {
+      font-size: 1.3rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h2>{{changeLanguage('広告収入計算', current_language)}}</h2>
+    <div>
+      <select name="" id="" @change="change_current_language($event.target.value)">
+        <option value=""></option>
+        <option v-for="lang in langs" :value="lang[0]">{{ lang[2] }}</option>
+      </select>  
+    </div>
+
+    <label for="views">{{changeLanguage('再生回数（万回）', current_language)}}</label>
+    <input type="number" id="views" min="0" v-model="views" /><br />
+    <label for="duration">{{changeLanguage('動画の長さ（分）', current_language)}}</label>
+    <input type="number" id="duration" min="0" v-model="duration" /><br />
+    <label for="revenue">{{changeLanguage('単位再生あたりの収益（円）', current_language)}}</label>
+    <input type="number" id="revenue" min="0" v-model="revenue" /><br />
+    <label for="video">{{changeLanguage('動画本数', current_language)}}</label>
+    <input type="number" id="video" min="0" v-model="video" /><br />
+    <button type="button" @click="calculateAdRevenue()">{{changeLanguage('計算する', current_language)}}</button>
+    <div>{{ adRevenue === null ? changeLanguage('計算してください', current_language) : adRevenue + changeLanguage('円', current_language) }}</div>
+  </div>
+
+  <script>
+const app = Vue.createApp({
+  setup() {
+    const views = Vue.ref(100);
+    const duration = Vue.ref(30);
+    const revenue = Vue.ref(7);
+    const video = Vue.ref(1);
+    const adRevenue = Vue.ref(null);
+    const current_lang_array = Vue.ref(['en', 'US', '🇺🇸']);
+
+    const langs = [
+      ['ja', 'JP', '🇯🇵'],
+      ['en', 'US', '🇺🇸'],
+      ['zh', 'CN', '🇨🇳🇹🇼'],
+      ['ko', 'KR', '🇰🇷'],
+      ['es', 'ES', '🇪🇸'],
+      ['fr', 'FR', '🇫🇷'],
+      ['de', 'DE', '🇩🇪'],
+      ['it', 'IT', '🇮🇹'],
+      ['ru', 'RU', '🇷🇺'],
+      ['pt', 'PT', '🇵🇹'],
+    ];
+
+    // get_paramでこのサイトのURLのパラメータを取得する。paramはlang=jaのようにな理、jaの部分を取得する
+  const get_param = () => {
+    try {
+      const url = window.location.href;
+      const param = url.split('?')[1] ? url.split('?')[1] : null;
+      const lang = param.split('=')[1] ? param.split('=')[1] : null;
+      if (lang === undefined || lang === null || lang === '' || param === null) {
+          return null;
+      }
+      return lang;
+    } catch (error) {
+      return null;
+    }
+  };
+  let current_language = get_param() ? get_param() : 'ja';
+
+  // langのパラメーターをつけたURLを作り、それを開く
+  function change_current_language(lang){
+    if (lang) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', lang);
+      window.location.href = url.toString();
+    }
+  }
+
+// 言語を変更する関数
+function changeLanguage(word, lang) {
+      const all_lang = [
+        [ 
+          ['ja', '広告収入計算'],
+          ['en', 'Ad revenue calculation'],
+          ['zh', '广告收入计算'],
+          ['ko', '광고 수익 계산'],
+          ['es', 'Cálculo de ingresos por publicidad'],
+          ['fr', 'Calcul des revenus publicitaires'],
+          ['de', 'Berechnung der Werbeeinnahmen'],
+          ['it', 'Calcolo del ricavo pubblicitario'],
+          ['ru', 'Расчет дохода от рекламы'],
+          ['pt', 'Cálculo de receita de anúncios'],
+        ],
+        [ 
+          ['ja', '再生回数（万回）'],
+          ['en', 'Number of views (10,000 times)'],
+          ['zh', '观看次数（万次）'],
+          ['ko', '조회수 (만 번)'],
+          ['es', 'Número de vistas (10,000 veces)'],
+          ['fr', 'Nombre de vues (10 000 fois)'],
+          ['de', 'Anzahl der Aufrufe (10.000 Mal)'],
+          ['it', 'Numero di visualizzazioni (10.000 volte)'],
+          ['ru', 'Количество просмотров (в 10 000 раз)'],
+          ['pt', 'Número de visualizações (10.000 vezes)'],
+        ],
+        [ 
+          ['ja', '動画の長さ（分）'],
+          ['en', 'Video length (minutes)'],
+          ['zh', '视频长度（分钟）'],
+          ['ko', '동영상 길이 (분)'],
+          ['es', 'Duración del video (minutos)'],
+          ['fr', 'Durée de la vidéo (minutes)'],
+          ['de', 'Videolänge (Minuten)'],
+          ['it', 'Durata del video (minuti)'],
+          ['ru', 'Длительность видео (минуты)'],
+          ['pt', 'Duração do vídeo (minutos)'],
+        ],
+        [ 
+          ['ja', '単位再生あたりの収益（円）'],
+          ['en', 'Revenue per unit view (yen)'],
+          ['zh', '每个单位观看的收入（日元）'],
+          ['ko', '조회당 수익 (엔)'],
+          ['es', 'Ingresos por unidad de vista (yen)'],
+          ['fr', 'Revenu par vue unitaire (yen)'],
+          ['de', 'Einnahmen pro Einheit Ansicht (Yen)'],
+          ['it', 'Ricavo per unità di visualizzazione (yen)'],
+          ['ru', 'Доход за просмотр (иена)'],
+          ['pt', 'Receita por visualização unitária (iene)'],
+        ],
+        [ 
+          ['ja', '動画本数'],
+          ['en', 'Number of videos'],
+          ['zh', '视频数量'],
+          ['ko', '동영상 수'],
+          ['es', 'Número de videos'],
+          ['fr', 'Nombre de vidéos'],
+          ['de', 'Anzahl der Videos'],
+          ['it', 'Numero di video'],
+          ['ru', 'Количество видео'],
+          ['pt', 'Número de vídeos'],
+        ],
+        [ 
+          ['ja', '計算する'],
+          ['en', 'Calculate'],
+          ['zh', '计算'],
+          ['ko', '계산'],
+          ['es', 'Calcular'],
+          ['fr', 'Calculer'],
+          ['de', 'Berechnen'],
+          ['it', 'Calcolare'],
+          ['ru', 'Рассчитать'],
+          ['pt', 'Calcular'],
+        ],
+        [
+          ['ja', '計算してください'],
+          ['en', 'Please calculate'],
+          ['zh', '请计算'],
+          ['ko', '계산해주세요'],
+          ['es', 'Por favor, calcula'],
+          ['fr', 'S\'il vous plaît calculer'],
+          ['de', 'Bitte berechnen'],
+          ['it', 'Si prega di calcolare'],
+          ['ru', 'Пожалуйста, рассчитайте'],
+          ['pt', 'Por favor, calcule'],
+        ],
+        [
+          ['ja', '円'],
+          ['en', 'yen'],
+          ['zh', '日元'],
+          ['ko', '엔'],
+          ['es', 'yen'],
+          ['fr', 'yen'],
+          ['de', 'Yen'],
+          ['it', 'yen'],
+          ['ru', 'иена'],
+          ['pt', 'iene'],
+        ],
+        ];
+  // wordをall_langから探してlangの言語を返す
+  // wordが'広告収入'で、langが'en'なら'Ad revenue'を返す
+  const point = all_lang.map((V,IDX)=>[V[0], IDX])
+    .filter(V=>V[0][1]===word)[0][1];
+  const res = all_lang[point];
+  // resからlangの言語を返す
+  const res2 = res.filter(V=>V[0]===lang)[0][1];
+
+  return res2;
+};
+  function calculateAdRevenue() {
+    const viewsValue = parseInt(views.value);
+    const durationValue = parseInt(duration.value);
+    const revenueValue = parseInt(revenue.value);
+    const videoValue = parseInt(video.value);
+    if (isNaN(viewsValue) || isNaN(durationValue) || isNaN(revenueValue) || isNaN(videoValue)) {
+      alert("入力値が不正です。");
+      return;
+    }
+    adRevenue.value = viewsValue * durationValue * revenueValue * videoValue;
+  }
+
+    Vue.watch([views, duration, revenue, video], () => {
+      calculateAdRevenue();
+    });
+
+    return {
+      langs,
+      current_language,
+      current_lang_array,
+
+      views,
+      duration,
+      revenue,
+      video,
+      adRevenue,
+
+      calculateAdRevenue,
+      changeLanguage,
+      change_current_language,
+    };
+  },
+});
+
+app.mount("#app");
+</script>
+</body>
+</html>
