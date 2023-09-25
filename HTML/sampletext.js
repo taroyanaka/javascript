@@ -1,3 +1,2 @@
-const sampleText = `Youth Daughter
-1234 feist 1234
-Hometown Glory - Live at Hotel Cafe Adele`
+const sampleText = `1234 feist
+Youth Daughter`
